@@ -189,4 +189,8 @@ void katra_digest_free(digest_record_t* digest);
 /* Helper: Free digest results */
 void katra_digest_free_results(digest_record_t** results, size_t count);
 
+/* JSON serialization helpers (internal) */
+int katra_tier2_write_json_digest(FILE* fp, const digest_record_t* digest);
+int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest);
+
 #endif /* KATRA_TIER2_H */

@@ -164,9 +164,9 @@ void test_free_digest(void) {
     TEST_PASS();
 }
 
-/* Test: Store digest (placeholder test) */
-void test_store_digest_placeholder(void) {
-    printf("Testing: Store digest (not yet implemented) ... ");
+/* Test: Store digest */
+void test_store_digest(void) {
+    printf("Testing: Store digest ... ");
     tests_run++;
 
     tier2_init(TEST_CI_ID);
@@ -183,11 +183,26 @@ void test_store_digest_placeholder(void) {
         return;
     }
 
+    /* Add some content to the digest */
+    digest->summary = strdup("Test summary for week 1");
+    digest->questions_asked = 5;
+    digest->source_record_count = 10;
+
     int result = tier2_store_digest(digest);
     katra_digest_free(digest);
 
-    /* Expect E_INTERNAL_NOTIMPL until implemented */
-    ASSERT(result == E_INTERNAL_NOTIMPL, "Expected not implemented");
+    ASSERT(result == KATRA_SUCCESS, "tier2_store_digest() failed");
+}
+
+/* Test: Store digest with NULL */
+void test_store_digest_null(void) {
+    printf("Testing: Store digest with NULL ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    int result = tier2_store_digest(NULL);
+    ASSERT(result == E_INPUT_NULL, "Should fail with NULL digest");
 }
 
 /* Test: Tier 2 statistics */
@@ -220,6 +235,147 @@ void test_tier2_stats(void) {
     TEST_PASS();
 }
 
+/* Test: Query empty Tier 2 */
+void test_query_empty(void) {
+    printf("Testing: Query empty Tier 2 ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    digest_query_t query = {
+        .ci_id = TEST_CI_ID,
+        .start_time = 0,
+        .end_time = 0,
+        .period_type = (period_type_t)-1,
+        .theme = NULL,
+        .keyword = NULL,
+        .digest_type = (digest_type_t)-1,
+        .limit = 0
+    };
+
+    digest_record_t** results = NULL;
+    size_t count = 0;
+
+    int result = tier2_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("tier2_query() failed");
+        return;
+    }
+
+    if (count != 0) {
+        TEST_FAIL("Expected 0 results");
+        katra_digest_free_results(results, count);
+        return;
+    }
+
+    TEST_PASS();
+}
+
+/* Test: Query with NULL parameters */
+void test_query_null(void) {
+    printf("Testing: Query with NULL parameters ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    digest_query_t query = {
+        .ci_id = TEST_CI_ID,
+        .start_time = 0,
+        .end_time = 0,
+        .period_type = (period_type_t)-1,
+        .theme = NULL,
+        .keyword = NULL,
+        .digest_type = (digest_type_t)-1,
+        .limit = 0
+    };
+
+    digest_record_t** results = NULL;
+    size_t count = 0;
+
+    /* NULL query */
+    int result = tier2_query(NULL, &results, &count);
+    if (result != E_INPUT_NULL) {
+        TEST_FAIL("Should fail with NULL query");
+        return;
+    }
+
+    /* NULL results */
+    result = tier2_query(&query, NULL, &count);
+    if (result != E_INPUT_NULL) {
+        TEST_FAIL("Should fail with NULL results");
+        return;
+    }
+
+    /* NULL count */
+    result = tier2_query(&query, &results, NULL);
+    if (result != E_INPUT_NULL) {
+        TEST_FAIL("Should fail with NULL count");
+        return;
+    }
+
+    TEST_PASS();
+}
+
+/* Test: Query after store */
+void test_query_after_store(void) {
+    printf("Testing: Query after store ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    /* Store a digest */
+    digest_record_t* digest = katra_digest_create(
+        TEST_CI_ID,
+        PERIOD_TYPE_WEEKLY,
+        "2025-W02",
+        DIGEST_TYPE_LEARNING
+    );
+
+    if (!digest) {
+        TEST_FAIL("Failed to create digest");
+        return;
+    }
+
+    digest->summary = strdup("Test learning summary");
+    digest->questions_asked = 3;
+    digest->source_record_count = 5;
+
+    int result = tier2_store_digest(digest);
+    katra_digest_free(digest);
+
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("Failed to store digest");
+        return;
+    }
+
+    /* Query for the digest */
+    digest_query_t query = {
+        .ci_id = TEST_CI_ID,
+        .start_time = 0,
+        .end_time = 0,
+        .period_type = PERIOD_TYPE_WEEKLY,
+        .theme = NULL,
+        .keyword = NULL,
+        .digest_type = DIGEST_TYPE_LEARNING,
+        .limit = 10
+    };
+
+    digest_record_t** results = NULL;
+    size_t count = 0;
+
+    result = tier2_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("tier2_query() failed");
+        return;
+    }
+
+    /* Note: Current implementation doesn't scan files yet, so count will be 0 */
+    /* This test verifies the query succeeds without crashing */
+    katra_digest_free_results(results, count);
+
+    TEST_PASS();
+}
+
 /* Test: Tier 2 cleanup */
 void test_tier2_cleanup(void) {
     printf("Testing: Tier 2 cleanup ... ");
@@ -248,7 +404,11 @@ int main(void) {
     test_tier2_directories_created();
     test_create_digest();
     test_free_digest();
-    test_store_digest_placeholder();
+    test_store_digest();
+    test_store_digest_null();
+    test_query_empty();
+    test_query_null();
+    test_query_after_store();
     test_tier2_stats();
     test_tier2_cleanup();
 
