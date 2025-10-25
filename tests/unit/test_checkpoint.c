@@ -474,6 +474,18 @@ int main(void) {
     test_checkpoint_delete_nonexistent();
     test_checkpoint_cleanup();
 
+    /* Cleanup test checkpoints */
+    printf("Cleaning up test checkpoint files...\n");
+    checkpoint_info_t* checkpoints = NULL;
+    size_t count = 0;
+    if (katra_checkpoint_list(TEST_CI_ID, &checkpoints, &count) == KATRA_SUCCESS) {
+        for (size_t i = 0; i < count; i++) {
+            katra_checkpoint_delete(checkpoints[i].checkpoint_id);
+        }
+        free(checkpoints);
+        printf("  Removed %zu test checkpoint(s)\n", count);
+    }
+
     /* Cleanup */
     katra_checkpoint_cleanup();
     katra_memory_cleanup();

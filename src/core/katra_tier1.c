@@ -14,7 +14,9 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
-#include "katra_env_utils.h"
+#include "katra_path_utils.h"
+#include "katra_json_utils.h"
+#include "katra_file_utils.h"
 
 /* File path for Tier 1 storage: ~/.katra/memory/tier1/ */
 #define TIER1_DIR_FORMAT "%s/.katra/memory/tier1"
@@ -32,27 +34,22 @@ static void json_escape_string(const char* src, char* dst, size_t dst_size);
 static int get_tier1_dir(const char* ci_id, char* buffer, size_t size) {
     (void)ci_id;  /* Unused - future multi-tenant support */
 
-    const char* home = getenv("HOME");
-    if (!home) {
-        return E_SYSTEM_FILE;
-    }
-
-    snprintf(buffer, size, TIER1_DIR_FORMAT, home);
-    return KATRA_SUCCESS;
+    return katra_build_path(buffer, size, "memory", "tier1", NULL);
 }
 
 /* Get today's daily file path */
 static int get_daily_file_path(char* buffer, size_t size) {
-    const char* home = getenv("HOME");
-    if (!home) {
-        return E_SYSTEM_FILE;
-    }
-
     time_t now = time(NULL);
     struct tm* tm_info = localtime(&now);
 
-    snprintf(buffer, size, TIER1_FILE_FORMAT,
-            home,
+    char tier1_dir[KATRA_PATH_MAX];
+    int result = katra_build_path(tier1_dir, sizeof(tier1_dir), "memory", "tier1", NULL);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    snprintf(buffer, size, "%s/%04d-%02d-%02d.jsonl",
+            tier1_dir,
             tm_info->tm_year + 1900,
             tm_info->tm_mon + 1,
             tm_info->tm_mday);
@@ -60,39 +57,9 @@ static int get_daily_file_path(char* buffer, size_t size) {
     return KATRA_SUCCESS;
 }
 
-/* JSON escape string helper */
+/* JSON escape string helper (wrapper for utility function) */
 static void json_escape_string(const char* src, char* dst, size_t dst_size) {
-    if (!src || !dst || dst_size == 0) {
-        return;
-    }
-
-    size_t dst_idx = 0;
-    for (const char* p = src; *p && dst_idx < dst_size - 1; p++) {
-        if (*p == '"' || *p == '\\') {
-            if (dst_idx < dst_size - 2) {
-                dst[dst_idx++] = '\\';
-                dst[dst_idx++] = *p;
-            }
-        } else if (*p == '\n') {
-            if (dst_idx < dst_size - 2) {
-                dst[dst_idx++] = '\\';
-                dst[dst_idx++] = 'n';
-            }
-        } else if (*p == '\r') {
-            if (dst_idx < dst_size - 2) {
-                dst[dst_idx++] = '\\';
-                dst[dst_idx++] = 'r';
-            }
-        } else if (*p == '\t') {
-            if (dst_idx < dst_size - 2) {
-                dst[dst_idx++] = '\\';
-                dst[dst_idx++] = 't';
-            }
-        } else {
-            dst[dst_idx++] = *p;
-        }
-    }
-    dst[dst_idx] = '\0';
+    katra_json_escape(src, dst, dst_size);
 }
 
 /* Write memory record as JSON line */
@@ -171,22 +138,7 @@ static int parse_json_record(const char* line, memory_record_t** record) {
 
 /* Count records in a file */
 static int count_file_records(const char* filepath, size_t* count) {
-    FILE* fp = fopen(filepath, "r");
-    if (!fp) {
-        *count = 0;
-        return KATRA_SUCCESS;  /* File doesn't exist yet */
-    }
-
-    size_t lines = 0;
-    char buffer[KATRA_BUFFER_LARGE];
-
-    while (fgets(buffer, sizeof(buffer), fp)) {
-        lines++;
-    }
-
-    fclose(fp);
-    *count = lines;
-    return KATRA_SUCCESS;
+    return katra_file_count_lines(filepath, count);
 }
 
 /* Initialize Tier 1 storage */
@@ -194,30 +146,17 @@ int tier1_init(const char* ci_id) {
     int result = KATRA_SUCCESS;
     char tier1_dir[KATRA_PATH_MAX];
 
-    result = get_tier1_dir(ci_id, tier1_dir, sizeof(tier1_dir));
+    /* Build and create directory structure */
+    result = katra_build_and_ensure_dir(tier1_dir, sizeof(tier1_dir), "memory", "tier1", NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
 
+    (void)ci_id;  /* Unused - future multi-tenant support */
+
     LOG_DEBUG("Initializing Tier 1 storage: %s", tier1_dir);
-
-    /* Create directory structure */
-    const char* home = getenv("HOME");
-    if (!home) {
-        return E_SYSTEM_FILE;
-    }
-
-    char dir_path[KATRA_PATH_MAX];
-
-    /* Create ~/.katra/memory */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/memory", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
-
-    /* Create ~/.katra/memory/tier1 */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/memory/tier1", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
-
     LOG_INFO("Tier 1 storage initialized");
+
     return KATRA_SUCCESS;
 }
 
@@ -311,6 +250,31 @@ int tier1_archive(const char* ci_id, int max_age_days) {
     return 0;  /* No records archived yet */
 }
 
+/* Stats visitor context */
+typedef struct {
+    size_t total_records;
+    size_t bytes_used;
+} tier1_stats_context_t;
+
+/* Stats visitor function */
+static int tier1_stats_visitor(const char* filepath, void* userdata) {
+    tier1_stats_context_t* ctx = (tier1_stats_context_t*)userdata;
+
+    /* Get file size */
+    size_t file_size = 0;
+    if (katra_file_get_size(filepath, &file_size) == KATRA_SUCCESS) {
+        ctx->bytes_used += file_size;
+    }
+
+    /* Count records */
+    size_t file_records = 0;
+    if (count_file_records(filepath, &file_records) == KATRA_SUCCESS) {
+        ctx->total_records += file_records;
+    }
+
+    return KATRA_SUCCESS;
+}
+
 /* Get Tier 1 statistics */
 int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used) {
     int result = KATRA_SUCCESS;
@@ -328,34 +292,22 @@ int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used) {
         return result;
     }
 
-    /* Scan directory for .jsonl files */
-    DIR* dir = opendir(tier1_dir);
-    if (!dir) {
-        /* Directory doesn't exist yet - no records */
-        return KATRA_SUCCESS;
+    /* Iterate over .jsonl files */
+    tier1_stats_context_t ctx = {0, 0};
+    result = katra_dir_foreach(tier1_dir, ".jsonl", tier1_stats_visitor, &ctx);
+
+    /* If directory doesn't exist, that's okay - no records yet */
+    if (result == E_SYSTEM_FILE) {
+        result = KATRA_SUCCESS;
     }
 
-    struct dirent* entry;
-    while ((entry = readdir(dir)) != NULL) {
-        if (strstr(entry->d_name, ".jsonl")) {
-            char filepath[KATRA_PATH_MAX];
-            snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, entry->d_name);
-
-            struct stat st;
-            if (stat(filepath, &st) == 0) {
-                *bytes_used += st.st_size;
-
-                size_t file_records = 0;
-                count_file_records(filepath, &file_records);
-                *total_records += file_records;
-            }
-        }
+    if (result == KATRA_SUCCESS) {
+        *total_records = ctx.total_records;
+        *bytes_used = ctx.bytes_used;
+        LOG_DEBUG("Tier 1 stats: records=%zu, bytes=%zu", *total_records, *bytes_used);
     }
 
-    closedir(dir);
-
-    LOG_DEBUG("Tier 1 stats: records=%zu, bytes=%zu", *total_records, *bytes_used);
-    return KATRA_SUCCESS;
+    return result;
 }
 
 /* Cleanup Tier 1 storage */

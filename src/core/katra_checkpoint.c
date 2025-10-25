@@ -17,6 +17,9 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_env_utils.h"
+#include "katra_path_utils.h"
+#include "katra_json_utils.h"
+#include "katra_file_utils.h"
 
 /* Checkpoint directory and file format */
 #define CHECKPOINT_DIR_FORMAT "%s/.katra/checkpoints"
@@ -35,24 +38,13 @@ static int compare_version(const char* v1, const char* v2);
 
 /* Get checkpoint directory path */
 static int get_checkpoint_dir(char* buffer, size_t size) {
-    const char* home = getenv("HOME");
-    if (!home) {
-        return E_SYSTEM_FILE;
-    }
-
-    snprintf(buffer, size, CHECKPOINT_DIR_FORMAT, home);
-    return KATRA_SUCCESS;
+    return katra_build_path(buffer, size, "checkpoints", NULL);
 }
 
 /* Get full path for checkpoint file */
 static int get_checkpoint_path(const char* checkpoint_id, char* buffer, size_t size) {
     if (!checkpoint_id) {
         return E_INPUT_NULL;
-    }
-
-    const char* home = getenv("HOME");
-    if (!home) {
-        return E_SYSTEM_FILE;
     }
 
     /* Parse checkpoint_id to extract components: ci_id_timestamp */
@@ -78,7 +70,14 @@ static int get_checkpoint_path(const char* checkpoint_id, char* buffer, size_t s
         return E_INPUT_FORMAT;
     }
 
-    snprintf(buffer, size, CHECKPOINT_FILE_FORMAT, home, ci_id, timestamp);
+    /* Build path: ~/.katra/checkpoints/checkpoint_{ci_id}_{timestamp}.kcp */
+    char checkpoint_dir[KATRA_PATH_MAX];
+    int result = katra_build_path(checkpoint_dir, sizeof(checkpoint_dir), "checkpoints", NULL);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    snprintf(buffer, size, "%s/checkpoint_%s_%ld.kcp", checkpoint_dir, ci_id, timestamp);
     return KATRA_SUCCESS;
 }
 
@@ -213,25 +212,14 @@ int katra_checkpoint_init(void) {
     int result = KATRA_SUCCESS;
     char checkpoint_dir[KATRA_PATH_MAX];
 
-    result = get_checkpoint_dir(checkpoint_dir, sizeof(checkpoint_dir));
+    /* Build and create directory structure */
+    result = katra_build_and_ensure_dir(checkpoint_dir, sizeof(checkpoint_dir),
+                                        "checkpoints", NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
 
     LOG_DEBUG("Initializing checkpoint system: %s", checkpoint_dir);
-
-    /* Create directory structure */
-    const char* home = getenv("HOME");
-    if (!home) {
-        return E_SYSTEM_FILE;
-    }
-
-    char dir_path[KATRA_PATH_MAX];
-
-    /* Create ~/.katra/checkpoints */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/checkpoints", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
-
     LOG_INFO("Checkpoint system initialized");
     return KATRA_SUCCESS;
 }
@@ -322,9 +310,9 @@ int katra_checkpoint_save(const checkpoint_save_options_t* options,
     calculate_checksum(filepath, metadata.checksum, sizeof(metadata.checksum));
 
     /* Get file size */
-    struct stat st;
-    if (stat(filepath, &st) == 0) {
-        metadata.file_size = st.st_size;
+    size_t file_size = 0;
+    if (katra_file_get_size(filepath, &file_size) == KATRA_SUCCESS) {
+        metadata.file_size = file_size;
     }
 
     /* Return checkpoint ID */
@@ -505,9 +493,9 @@ int katra_checkpoint_get_metadata(const char* checkpoint_id,
     fclose(fp);
 
     /* Get file size */
-    struct stat st;
-    if (stat(filepath, &st) == 0) {
-        metadata->file_size = st.st_size;
+    size_t file_size = 0;
+    if (katra_file_get_size(filepath, &file_size) == KATRA_SUCCESS) {
+        metadata->file_size = file_size;
     }
 
     return KATRA_SUCCESS;

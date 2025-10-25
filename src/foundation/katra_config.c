@@ -15,6 +15,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_path_utils.h"
 
 /* Config entry structure */
 typedef struct config_entry {
@@ -40,45 +41,47 @@ static void strip_quotes(char* str);
 
 /* Create .katra directory structure */
 static void create_directory_structure(void) {
-    const char* home = getenv("HOME");
-    if (!home) return;
-
     char dir_path[KATRA_PATH_MAX];
 
-    /* Create ~/.katra */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
-
     /* Create ~/.katra/config */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/config", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "config", NULL) != KATRA_SUCCESS) {
+        LOG_WARN("Failed to create config directory");
+    }
 
     /* Create ~/.katra/logs */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/logs", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "logs", NULL) != KATRA_SUCCESS) {
+        LOG_WARN("Failed to create logs directory");
+    }
 
     /* Create ~/.katra/memory */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/memory", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "memory", NULL) != KATRA_SUCCESS) {
+        LOG_WARN("Failed to create memory directory");
+    }
 
     /* Create ~/.katra/checkpoints */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/checkpoints", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "checkpoints", NULL) != KATRA_SUCCESS) {
+        LOG_WARN("Failed to create checkpoints directory");
+    }
 
     /* Create ~/.katra/audit */
-    snprintf(dir_path, sizeof(dir_path), "%s/.katra/audit", home);
-    mkdir(dir_path, KATRA_DIR_PERMISSIONS);
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "audit", NULL) != KATRA_SUCCESS) {
+        LOG_WARN("Failed to create audit directory");
+    }
 
     /* If we have KATRA_ROOT, create project directories */
     const char* katra_root = katra_getenv("KATRA_ROOT");
     if (katra_root && katra_root[0]) {
         /* Create <project>/.katra */
         snprintf(dir_path, sizeof(dir_path), "%s/.katra", katra_root);
-        mkdir(dir_path, KATRA_DIR_PERMISSIONS);
+        if (katra_ensure_dir(dir_path) != KATRA_SUCCESS) {
+            LOG_WARN("Failed to create project .katra directory");
+        }
 
         /* Create <project>/.katra/config */
         snprintf(dir_path, sizeof(dir_path), "%s/.katra/config", katra_root);
-        mkdir(dir_path, KATRA_DIR_PERMISSIONS);
+        if (katra_ensure_dir(dir_path) != KATRA_SUCCESS) {
+            LOG_WARN("Failed to create project config directory");
+        }
     }
 }
 
@@ -315,12 +318,10 @@ int katra_config(void) {
     create_directory_structure();
 
     /* Load config in precedence order (later overrides earlier) */
-    const char* home = getenv("HOME");
-    if (home) {
-        char config_dir[KATRA_PATH_MAX];
+    char config_dir[KATRA_PATH_MAX];
 
-        /* 1. Load ~/.katra/config/ directory */
-        snprintf(config_dir, sizeof(config_dir), "%s/.katra/config", home);
+    /* 1. Load ~/.katra/config/ directory */
+    if (katra_build_path(config_dir, sizeof(config_dir), "config", NULL) == KATRA_SUCCESS) {
         load_config_directory(config_dir);
     }
 
