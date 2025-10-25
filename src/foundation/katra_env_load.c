@@ -100,10 +100,12 @@ static int load_system_environ(void) {
         if (!eq) continue;
 
         size_t name_len = eq - *env;
+        /* GUIDELINE_APPROVED - Aggregate NULL check pattern */
         char* name = strndup(*env, name_len);
         char* value = strdup(eq + 1);
 
         if (!name || !value) {
+        /* GUIDELINE_APPROVED_END */
             free(name);
             free(value);
             return E_SYSTEM_MEMORY;
@@ -176,6 +178,7 @@ static int parse_env_line(const char* line, char** key, char** value) {
 
     if (parse_start[0] == '\0') { free(buffer); return KATRA_SUCCESS; }
 
+    /* GUIDELINE_APPROVED - Aggregate NULL check pattern */
     *key = strdup(parse_start);
 
     char* val = eq + 1;
@@ -184,6 +187,7 @@ static int parse_env_line(const char* line, char** key, char** value) {
     *value = strdup(val);
 
     if (!*key || !*value) {
+    /* GUIDELINE_APPROVED_END */
         free(*key);
         free(*value);
         *key = *value = NULL;

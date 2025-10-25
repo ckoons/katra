@@ -152,12 +152,14 @@ static int parse_config_line(const char* line, char** key, char** value) {
         return KATRA_SUCCESS;
     }
 
+    /* GUIDELINE_APPROVED - Aggregate NULL check pattern */
     *key = strdup(key_str);
     *value = strdup(val_str);
 
     free(buffer);
 
     if (!*key || !*value) {
+    /* GUIDELINE_APPROVED_END */
         free(*key);
         free(*value);
         *key = *value = NULL;
@@ -202,10 +204,12 @@ static void set_config_internal(const char* key, const char* value) {
     config_entry_t* entry = calloc(1, sizeof(config_entry_t));
     if (!entry) return;
 
+    /* GUIDELINE_APPROVED - Aggregate NULL check pattern */
     entry->key = strdup(key);
     entry->value = strdup(value);
 
     if (!entry->key || !entry->value) {
+    /* GUIDELINE_APPROVED_END */
         free(entry->key);
         free(entry->value);
         free(entry);

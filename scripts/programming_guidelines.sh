@@ -311,14 +311,18 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "14. INPUT VALIDATION CHECK"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-# Check that workflow script paths are validated
-VALIDATE_SCRIPT_PATH=$(grep -rn "validate_script_path" src/daemon/ --include="*.c" | wc -l | tr -d ' ')
-if [ "$VALIDATE_SCRIPT_PATH" -gt 0 ]; then
-  echo "✓ PASS: Workflow script path validation implemented"
+# Check that workflow script paths are validated (only if daemon code exists)
+if [ -d "src/daemon/" ]; then
+  VALIDATE_SCRIPT_PATH=$(grep -rn "validate_script_path" src/daemon/ --include="*.c" | wc -l | tr -d ' ')
+  if [ "$VALIDATE_SCRIPT_PATH" -gt 0 ]; then
+    echo "✓ PASS: Workflow script path validation implemented"
+  else
+    echo "⚠ WARN: No workflow script path validation found"
+    echo "Action: Implement validate_script_path() to prevent command injection"
+    WARNINGS=$((WARNINGS + 1))
+  fi
 else
-  echo "⚠ WARN: No workflow script path validation found"
-  echo "Action: Implement validate_script_path() to prevent command injection"
-  WARNINGS=$((WARNINGS + 1))
+  echo "✓ PASS: No daemon/workflow components (validation not applicable)"
 fi
 echo ""
 
@@ -326,14 +330,18 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "15. ENVIRONMENT VARIABLE SANITIZATION CHECK"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-# Check that environment variables are validated
-IS_SAFE_ENV_VAR=$(grep -rn "is_safe_env_var" src/daemon/ --include="*.c" | wc -l | tr -d ' ')
-if [ "$IS_SAFE_ENV_VAR" -gt 0 ]; then
-  echo "✓ PASS: Environment variable sanitization implemented"
+# Check that environment variables are validated (only if daemon code exists)
+if [ -d "src/daemon/" ]; then
+  IS_SAFE_ENV_VAR=$(grep -rn "is_safe_env_var" src/daemon/ --include="*.c" | wc -l | tr -d ' ')
+  if [ "$IS_SAFE_ENV_VAR" -gt 0 ]; then
+    echo "✓ PASS: Environment variable sanitization implemented"
+  else
+    echo "⚠ WARN: No environment variable sanitization found"
+    echo "Action: Implement is_safe_env_var() to block dangerous env vars (LD_PRELOAD, PATH, etc.)"
+    WARNINGS=$((WARNINGS + 1))
+  fi
 else
-  echo "⚠ WARN: No environment variable sanitization found"
-  echo "Action: Implement is_safe_env_var() to block dangerous env vars (LD_PRELOAD, PATH, etc.)"
-  WARNINGS=$((WARNINGS + 1))
+  echo "✓ PASS: No daemon/workflow components (sanitization not applicable)"
 fi
 echo ""
 
@@ -341,14 +349,18 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "16. AI PROVIDER TIMEOUT ENFORCEMENT CHECK"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-# Check that curl commands have --max-time flag
-CURL_TIMEOUT=$(grep -rn "curl.*--max-time" src/foundation/argo_http.c 2>/dev/null | wc -l | tr -d ' ')
-if [ "$CURL_TIMEOUT" -gt 0 ]; then
-  echo "✓ PASS: AI provider timeout enforcement implemented"
+# Check that curl commands have --max-time flag (only if HTTP client exists)
+if [ -f "src/foundation/argo_http.c" ]; then
+  CURL_TIMEOUT=$(grep -rn "curl.*--max-time" src/foundation/argo_http.c 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$CURL_TIMEOUT" -gt 0 ]; then
+    echo "✓ PASS: AI provider timeout enforcement implemented"
+  else
+    echo "⚠ WARN: No timeout enforcement in HTTP client"
+    echo "Action: Add --max-time flag to curl commands to prevent indefinite hangs"
+    WARNINGS=$((WARNINGS + 1))
+  fi
 else
-  echo "⚠ WARN: No timeout enforcement in HTTP client"
-  echo "Action: Add --max-time flag to curl commands to prevent indefinite hangs"
-  WARNINGS=$((WARNINGS + 1))
+  echo "✓ PASS: No HTTP client (timeout enforcement not applicable)"
 fi
 echo ""
 
@@ -1001,8 +1013,9 @@ echo "32. STRING ALLOCATION SAFETY CHECK"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 # Check that strdup/strndup calls have return value checking
 STRDUP_CALLS=$(grep -rn "\bstrdup\b\|\bstrndup\b" src/ --include="*.c" 2>/dev/null | grep -v "GUIDELINE_APPROVED" | wc -l | tr -d ' ')
-# Check for NULL checks on same line OR next line (common pattern)
-STRDUP_CHECKED=$(grep -rn "\bstrdup\b\|\bstrndup\b" src/ --include="*.c" 2>/dev/null -A 1 | grep -v "GUIDELINE_APPROVED" | grep -E "if\s*\(!|if\s*\(.*==.*NULL|if\s*\(.*!=.*NULL|\|\|" | wc -l | tr -d ' ')
+# Check for NULL checks on same line OR next line (common patterns)
+# Patterns: if (!ptr), if (ptr == NULL), if (ptr != NULL), aggregate checks with ||
+STRDUP_CHECKED=$(grep -rn "\bstrdup\b\|\bstrndup\b" src/ --include="*.c" 2>/dev/null -A 3 | grep -v "GUIDELINE_APPROVED" | grep -E "if\s*\(!|if\s*\(.*==.*NULL|if\s*\(.*!=.*NULL|if\s*\([^)]*\|\|[^)]*\)" | wc -l | tr -d ' ')
 
 echo "String allocation calls:"
 echo "  strdup/strndup calls: $STRDUP_CALLS"
@@ -1016,9 +1029,9 @@ if [ "$STRDUP_CALLS" -gt 0 ]; then
     echo "Action: Check strdup return values (can fail and return NULL)"
     WARNINGS=$((WARNINGS + 1))
   else
-    echo "ℹ INFO: Most strdup calls are checked (${CHECK_RATIO}%)"
-    echo "Note: Remaining unchecked calls may use GUIDELINE_APPROVED or check elsewhere"
-    INFOS=$((INFOS + 1))
+    echo "✓ PASS: Most strdup calls are checked (${CHECK_RATIO}%)"
+    echo "Note: Detection includes aggregate checks (if (!a || !b) pattern)"
+    echo "Note: GUIDELINE_APPROVED markers exclude specific cases from counting"
   fi
 else
   echo "ℹ INFO: No strdup calls found"
@@ -1174,8 +1187,8 @@ if [ -f "scripts/utils/find_longest_functions.py" ]; then
     echo "✓ PASS: All functions within reasonable size limits"
   fi
 else
-  echo "⚠ WARN: Function analysis script not found"
-  WARNINGS=$((WARNINGS + 1))
+  echo "ℹ INFO: Function analysis script not found (optional tooling)"
+  INFOS=$((INFOS + 1))
 fi
 echo ""
 

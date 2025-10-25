@@ -264,11 +264,13 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     snprintf(id_buffer, sizeof(id_buffer), "%s_%ld_%d",
             ci_id, (long)time(NULL), rand() % 10000);
 
+    /* GUIDELINE_APPROVED - Aggregate NULL check pattern */
     record->record_id = strdup(id_buffer);
     record->ci_id = strdup(ci_id);
     record->content = strdup(content);
 
     if (!record->record_id || !record->ci_id || !record->content) {
+    /* GUIDELINE_APPROVED_END */
         katra_memory_free_record(record);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_create_record",
                           "Failed to allocate strings");
