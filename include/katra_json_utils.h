@@ -4,6 +4,7 @@
 #define KATRA_JSON_UTILS_H
 
 #include <stddef.h>
+#include <stdbool.h>
 
 /* JSON utility functions for Katra
  *
@@ -78,5 +79,56 @@ int katra_json_get_long(const char* json, const char* key, long* value);
  *   E_INPUT_NULL if any parameter is NULL
  */
 int katra_json_get_size(const char* json, const char* key, size_t* value);
+
+/* Extract integer value from JSON
+ *
+ * Simple parser for key-value pairs in JSON.
+ * Looks for pattern: "key": 123
+ *
+ * Parameters:
+ *   json - JSON string to parse
+ *   key - Key name to find
+ *   value - Pointer to store extracted value
+ *
+ * Returns:
+ *   KATRA_SUCCESS if found and extracted
+ *   E_NOT_FOUND if key not found
+ *   E_INPUT_NULL if any parameter is NULL
+ */
+int katra_json_get_int(const char* json, const char* key, int* value);
+
+/* Extract float value from JSON
+ *
+ * Simple parser for key-value pairs in JSON.
+ * Looks for pattern: "key": 1.23
+ *
+ * Parameters:
+ *   json - JSON string to parse
+ *   key - Key name to find
+ *   value - Pointer to store extracted value
+ *
+ * Returns:
+ *   KATRA_SUCCESS if found and extracted
+ *   E_NOT_FOUND if key not found
+ *   E_INPUT_NULL if any parameter is NULL
+ */
+int katra_json_get_float(const char* json, const char* key, float* value);
+
+/* Extract boolean value from JSON
+ *
+ * Simple parser for key-value pairs in JSON.
+ * Looks for pattern: "key": true or "key": false
+ *
+ * Parameters:
+ *   json - JSON string to parse
+ *   key - Key name to find
+ *   value - Pointer to store extracted value
+ *
+ * Returns:
+ *   KATRA_SUCCESS if found and extracted
+ *   E_NOT_FOUND if key not found
+ *   E_INPUT_NULL if any parameter is NULL
+ */
+int katra_json_get_bool(const char* json, const char* key, bool* value);
 
 #endif /* KATRA_JSON_UTILS_H */

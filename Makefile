@@ -80,6 +80,7 @@ FOUNDATION_OBJS := $(BUILD_DIR)/katra_error.o \
 # Memory/Core object files
 CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_tier1.o \
+             $(BUILD_DIR)/katra_tier1_json.o \
              $(BUILD_DIR)/katra_checkpoint.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o
 
@@ -107,6 +108,10 @@ $(BUILD_DIR)/katra_memory.o: $(SRC_DIR)/core/katra_memory.c
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 $(BUILD_DIR)/katra_tier1.o: $(SRC_DIR)/core/katra_tier1.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_tier1_json.o: $(SRC_DIR)/core/katra_tier1_json.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 

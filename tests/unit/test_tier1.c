@@ -332,6 +332,241 @@ void test_tier1_cleanup(void) {
     TEST_PASS();
 }
 
+/* Test: Query with no results */
+void test_tier1_query_empty(void) {
+    printf("Testing: Query with no results ... ");
+    tests_run++;
+
+    tier1_init(TEST_CI_ID);
+
+    memory_query_t query = {
+        .ci_id = "nonexistent_ci",
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 0
+    };
+
+    memory_record_t** results = NULL;
+    size_t count = 0;
+
+    int result = tier1_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("tier1_query() failed");
+        return;
+    }
+
+    if (count != 0) {
+        TEST_FAIL("Expected 0 results for nonexistent CI");
+        katra_memory_free_results(results, count);
+        return;
+    }
+
+    TEST_PASS();
+}
+
+/* Test: Query with results */
+void test_tier1_query_with_results(void) {
+    printf("Testing: Query with results ... ");
+    tests_run++;
+
+    tier1_init(TEST_CI_ID);
+
+    /* Store some test records */
+    for (int i = 0; i < 5; i++) {
+        char content[128];
+        snprintf(content, sizeof(content), "Query test record %d", i);
+
+        memory_record_t* record = katra_memory_create_record(
+            TEST_CI_ID,
+            MEMORY_TYPE_INTERACTION,
+            content,
+            MEMORY_IMPORTANCE_MEDIUM
+        );
+
+        if (record) {
+            tier1_store(record);
+            katra_memory_free_record(record);
+        }
+    }
+
+    /* Query all records */
+    memory_query_t query = {
+        .ci_id = TEST_CI_ID,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 0
+    };
+
+    memory_record_t** results = NULL;
+    size_t count = 0;
+
+    int result = tier1_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("tier1_query() failed");
+        return;
+    }
+
+    if (count < 5) {
+        char msg[128];
+        snprintf(msg, sizeof(msg), "Expected at least 5 results, got %zu", count);
+        TEST_FAIL(msg);
+        katra_memory_free_results(results, count);
+        return;
+    }
+
+    /* Verify we got records back */
+    if (!results || !results[0] || !results[0]->content) {
+        TEST_FAIL("Results missing expected data");
+        katra_memory_free_results(results, count);
+        return;
+    }
+
+    katra_memory_free_results(results, count);
+    TEST_PASS();
+}
+
+/* Test: Query with limit */
+void test_tier1_query_with_limit(void) {
+    printf("Testing: Query with limit ... ");
+    tests_run++;
+
+    tier1_init(TEST_CI_ID);
+
+    /* Store records */
+    for (int i = 0; i < 10; i++) {
+        char content[128];
+        snprintf(content, sizeof(content), "Limit test record %d", i);
+
+        memory_record_t* record = katra_memory_create_record(
+            TEST_CI_ID,
+            MEMORY_TYPE_INTERACTION,
+            content,
+            MEMORY_IMPORTANCE_LOW
+        );
+
+        if (record) {
+            tier1_store(record);
+            katra_memory_free_record(record);
+        }
+    }
+
+    /* Query with limit of 3 */
+    memory_query_t query = {
+        .ci_id = TEST_CI_ID,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 3
+    };
+
+    memory_record_t** results = NULL;
+    size_t count = 0;
+
+    int result = tier1_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("tier1_query() failed");
+        return;
+    }
+
+    if (count > 3) {
+        char msg[128];
+        snprintf(msg, sizeof(msg), "Expected max 3 results with limit, got %zu", count);
+        TEST_FAIL(msg);
+        katra_memory_free_results(results, count);
+        return;
+    }
+
+    katra_memory_free_results(results, count);
+    TEST_PASS();
+}
+
+/* Test: Query with importance filter */
+void test_tier1_query_importance_filter(void) {
+    printf("Testing: Query with importance filter ... ");
+    tests_run++;
+
+    tier1_init(TEST_CI_ID);
+
+    /* Store records with different importance */
+    memory_record_t* low = katra_memory_create_record(
+        TEST_CI_ID, MEMORY_TYPE_INTERACTION, "Low importance", MEMORY_IMPORTANCE_LOW);
+    memory_record_t* high = katra_memory_create_record(
+        TEST_CI_ID, MEMORY_TYPE_INTERACTION, "High importance", MEMORY_IMPORTANCE_HIGH);
+
+    if (low) {
+        tier1_store(low);
+        katra_memory_free_record(low);
+    }
+    if (high) {
+        tier1_store(high);
+        katra_memory_free_record(high);
+    }
+
+    /* Query for high importance only */
+    memory_query_t query = {
+        .ci_id = TEST_CI_ID,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = MEMORY_IMPORTANCE_HIGH,
+        .tier = KATRA_TIER1,
+        .limit = 0
+    };
+
+    memory_record_t** results = NULL;
+    size_t count = 0;
+
+    int result = tier1_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("tier1_query() failed");
+        return;
+    }
+
+    /* Verify all results have high importance */
+    bool all_high = true;
+    for (size_t i = 0; i < count; i++) {
+        if (results[i]->importance < MEMORY_IMPORTANCE_HIGH) {
+            all_high = false;
+            break;
+        }
+    }
+
+    if (!all_high) {
+        TEST_FAIL("Found low importance records in high importance query");
+        katra_memory_free_results(results, count);
+        return;
+    }
+
+    katra_memory_free_results(results, count);
+    TEST_PASS();
+}
+
+/* Test: Archive function (counts only, since Tier 2 not implemented) */
+void test_tier1_archive(void) {
+    printf("Testing: Archive function (counting) ... ");
+    tests_run++;
+
+    tier1_init(TEST_CI_ID);
+
+    /* Archive with 7 days - should return count */
+    int count = tier1_archive(TEST_CI_ID, 7);
+    if (count < 0) {
+        TEST_FAIL("tier1_archive() failed");
+        return;
+    }
+
+    /* Count >= 0 is success (may be 0 if no old records) */
+    TEST_PASS();
+}
+
 /* Main test runner */
 int main(void) {
     printf("\n");
@@ -352,6 +587,11 @@ int main(void) {
     test_tier1_json_escaping();
     test_tier1_store_full_record();
     test_tier1_store_null();
+    test_tier1_query_empty();
+    test_tier1_query_with_results();
+    test_tier1_query_with_limit();
+    test_tier1_query_importance_filter();
+    test_tier1_archive();
     test_tier1_cleanup();
 
     /* Cleanup */

@@ -104,4 +104,8 @@ int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used);
  */
 void tier1_cleanup(void);
 
+/* JSON parsing helpers (internal) */
+void katra_tier1_json_unescape(const char* src, char* dst, size_t dst_size);
+int katra_tier1_parse_json_record(const char* line, memory_record_t** record);
+
 #endif /* KATRA_TIER1_H */

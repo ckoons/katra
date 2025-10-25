@@ -27,9 +27,14 @@
 static int get_tier1_dir(const char* ci_id, char* buffer, size_t size);
 static int get_daily_file_path(char* buffer, size_t size);
 static int write_json_record(FILE* fp, const memory_record_t* record);
-static int parse_json_record(const char* line, memory_record_t** record);
-static int count_file_records(const char* filepath, size_t* count);
-static void json_escape_string(const char* src, char* dst, size_t dst_size);
+static int collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count);
+static void sort_filenames_desc(char** filenames, size_t count);
+static void free_filenames(char** filenames, size_t count);
+static bool record_matches_query(const memory_record_t* record, const memory_query_t* query);
+static int scan_file_for_records(const char* filepath, const memory_query_t* query,
+                                   memory_record_t*** result_array, size_t* result_count,
+                                   size_t* result_capacity);
+static int count_archivable_in_file(const char* filepath, time_t cutoff, int* count);
 
 /* Get Tier 1 directory path */
 static int get_tier1_dir(const char* ci_id, char* buffer, size_t size) {
@@ -58,27 +63,22 @@ static int get_daily_file_path(char* buffer, size_t size) {
     return KATRA_SUCCESS;
 }
 
-/* JSON escape string helper (wrapper for utility function) */
-static void json_escape_string(const char* src, char* dst, size_t dst_size) {
-    katra_json_escape(src, dst, dst_size);
-}
-
 /* Write memory record as JSON line */
 static int write_json_record(FILE* fp, const memory_record_t* record) {
     char content_escaped[KATRA_BUFFER_LARGE];
     char response_escaped[KATRA_BUFFER_LARGE];
     char context_escaped[KATRA_BUFFER_LARGE];
 
-    json_escape_string(record->content, content_escaped, sizeof(content_escaped));
+    katra_json_escape(record->content, content_escaped, sizeof(content_escaped));
 
     if (record->response) {
-        json_escape_string(record->response, response_escaped, sizeof(response_escaped));
+        katra_json_escape(record->response, response_escaped, sizeof(response_escaped));
     } else {
         response_escaped[0] = '\0';
     }
 
     if (record->context) {
-        json_escape_string(record->context, context_escaped, sizeof(context_escaped));
+        katra_json_escape(record->context, context_escaped, sizeof(context_escaped));
     } else {
         context_escaped[0] = '\0';
     }
@@ -114,32 +114,6 @@ static int write_json_record(FILE* fp, const memory_record_t* record) {
     fprintf(fp, "}\n");
 
     return KATRA_SUCCESS;
-}
-
-/* Parse JSON record from line */
-__attribute__((unused))
-static int parse_json_record(const char* line, memory_record_t** record) {
-    (void)line;  /* TODO: Implement proper JSON parsing */
-
-    /* Simplified JSON parsing - in production use a proper JSON library */
-    /* For MVP, we'll use simple string scanning */
-
-    memory_record_t* rec = calloc(1, sizeof(memory_record_t));
-    if (!rec) {
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* This is a simplified parser - in production, use cJSON or similar */
-    /* For now, we'll just mark as not implemented and return success */
-    /* This allows the file format to be defined and tested */
-
-    *record = rec;
-    return E_INTERNAL_NOTIMPL;  /* TODO: Implement proper JSON parsing */
-}
-
-/* Count records in a file */
-static int count_file_records(const char* filepath, size_t* count) {
-    return katra_file_count_lines(filepath, count);
 }
 
 /* Initialize Tier 1 storage */
@@ -217,10 +191,174 @@ cleanup:
     return result;
 }
 
+/* Collect .jsonl files from directory */
+static int collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count) {
+    DIR* dir = opendir(tier1_dir);
+    if (!dir) {
+        *filenames = NULL;
+        *count = 0;
+        return KATRA_SUCCESS;  /* No files yet */
+    }
+
+    char** files = NULL;
+    size_t file_count = 0;
+    size_t capacity = 0;
+
+    struct dirent* entry;
+    while ((entry = readdir(dir)) != NULL) {
+        size_t name_len = strlen(entry->d_name);
+        if (name_len < 6 || strcmp(entry->d_name + name_len - 6, ".jsonl") != 0) {
+            continue;
+        }
+
+        if (file_count >= capacity) {
+            size_t new_cap = capacity == 0 ? 32 : capacity * 2;
+            char** new_array = realloc(files, new_cap * sizeof(char*));
+            if (!new_array) {
+                free_filenames(files, file_count);
+                closedir(dir);
+                return E_SYSTEM_MEMORY;
+            }
+            files = new_array;
+            capacity = new_cap;
+        }
+
+        files[file_count] = strdup(entry->d_name);
+        if (!files[file_count]) {
+            free_filenames(files, file_count);
+            closedir(dir);
+            return E_SYSTEM_MEMORY;
+        }
+        file_count++;
+    }
+    closedir(dir);
+
+    *filenames = files;
+    *count = file_count;
+    return KATRA_SUCCESS;
+}
+
+/* Sort filenames in descending order (newest first) */
+static void sort_filenames_desc(char** filenames, size_t count) {
+    for (size_t i = 0; i < count; i++) {
+        for (size_t j = i + 1; j < count; j++) {
+            if (strcmp(filenames[i], filenames[j]) < 0) {
+                char* temp = filenames[i];
+                filenames[i] = filenames[j];
+                filenames[j] = temp;
+            }
+        }
+    }
+}
+
+/* Free filename array */
+static void free_filenames(char** filenames, size_t count) {
+    if (!filenames) return;
+    for (size_t i = 0; i < count; i++) {
+        free(filenames[i]);
+    }
+    free(filenames);
+}
+
+/* Helper: Check if record matches query */
+static bool record_matches_query(const memory_record_t* record,
+                                   const memory_query_t* query) {
+    /* Check CI ID (required) */
+    if (query->ci_id && record->ci_id) {
+        if (strcmp(record->ci_id, query->ci_id) != 0) {
+            return false;
+        }
+    }
+
+    /* Check time range */
+    if (query->start_time > 0 && record->timestamp < query->start_time) {
+        return false;
+    }
+    if (query->end_time > 0 && record->timestamp > query->end_time) {
+        return false;
+    }
+
+    /* Check type filter */
+    if (query->type > 0 && record->type != query->type) {
+        return false;
+    }
+
+    /* Check importance filter */
+    if (record->importance < query->min_importance) {
+        return false;
+    }
+
+    return true;
+}
+
+/* Helper: Scan file for matching records
+ * Returns: KATRA_SUCCESS (continue), 1 (limit reached), E_SYSTEM_MEMORY (error) */
+static int scan_file_for_records(const char* filepath, const memory_query_t* query,
+                                   memory_record_t*** result_array, size_t* result_count,
+                                   size_t* result_capacity) {
+    FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
+    if (!fp) {
+        return KATRA_SUCCESS;  /* Skip unreadable files */
+    }
+
+    char line[KATRA_BUFFER_LARGE];
+    while (fgets(line, sizeof(line), fp)) {  /* GUIDELINE_APPROVED: fgets in while condition */
+        /* Remove newline */
+        size_t len = strlen(line);
+        if (len > 0 && line[len-1] == '\n') {
+            line[len-1] = '\0';
+        }
+
+        /* Parse record */
+        memory_record_t* record = NULL;
+        if (katra_tier1_parse_json_record(line, &record) != KATRA_SUCCESS || !record) {
+            continue;
+        }
+
+        /* Check if matches query */
+        if (!record_matches_query(record, query)) {
+            katra_memory_free_record(record);
+            continue;
+        }
+
+        /* Add to results */
+        if (*result_count >= *result_capacity) {
+            size_t new_capacity = *result_capacity == 0 ? 32 : *result_capacity * 2;
+            memory_record_t** new_array = realloc(*result_array,
+                                                   new_capacity * sizeof(memory_record_t*));
+            if (!new_array) {
+                katra_memory_free_record(record);
+                fclose(fp);
+                return E_SYSTEM_MEMORY;
+            }
+            *result_array = new_array;
+            *result_capacity = new_capacity;
+        }
+
+        (*result_array)[(*result_count)++] = record;
+
+        /* Check limit */
+        if (query->limit > 0 && *result_count >= query->limit) {
+            fclose(fp);
+            return 1;  /* Signal limit reached */
+        }
+    }
+
+    fclose(fp);
+    return KATRA_SUCCESS;
+}
+
 /* Query Tier 1 recordings */
 int tier1_query(const memory_query_t* query,
                 memory_record_t*** results,
                 size_t* count) {
+    int result = KATRA_SUCCESS;
+    memory_record_t** result_array = NULL;
+    size_t result_count = 0;
+    size_t result_capacity = 0;
+    char** filenames = NULL;
+    size_t file_count = 0;
+
     if (!query || !results || !count) {
         katra_report_error(E_INPUT_NULL, "tier1_query", "NULL parameter");
         return E_INPUT_NULL;
@@ -229,26 +367,140 @@ int tier1_query(const memory_query_t* query,
     *results = NULL;
     *count = 0;
 
-    /* TODO: Implement query logic - scan daily files
-     * For MVP, we'll return empty results */
+    /* Get Tier 1 directory */
+    char tier1_dir[KATRA_PATH_MAX];
+    result = get_tier1_dir(query->ci_id, tier1_dir, sizeof(tier1_dir));
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
 
-    LOG_DEBUG("Tier 1 query (not yet implemented)");
-    return E_INTERNAL_NOTIMPL;
+    /* Collect and sort filenames */
+    result = collect_jsonl_files(tier1_dir, &filenames, &file_count);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
+    if (file_count == 0) {
+        result = KATRA_SUCCESS;
+        goto cleanup;
+    }
+
+    sort_filenames_desc(filenames, file_count);
+
+    /* Scan files */
+    for (size_t f = 0; f < file_count; f++) {
+        char filepath[KATRA_PATH_MAX];
+        snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[f]);
+
+        result = scan_file_for_records(filepath, query, &result_array,
+                                        &result_count, &result_capacity);
+        if (result == E_SYSTEM_MEMORY) {
+            goto cleanup;
+        } else if (result == 1) {
+            /* Limit reached */
+            break;
+        }
+    }
+
+    free_filenames(filenames, file_count);
+    *results = result_array;
+    *count = result_count;
+    LOG_DEBUG("Tier 1 query returned %zu results", result_count);
+    return KATRA_SUCCESS;
+
+cleanup:
+    if (result_array) {
+        for (size_t i = 0; i < result_count; i++) {
+            katra_memory_free_record(result_array[i]);
+        }
+        free(result_array);
+    }
+    free_filenames(filenames, file_count);
+    return result;
+}
+
+/* Helper: Count archivable records in a file */
+static int count_archivable_in_file(const char* filepath, time_t cutoff, int* count) {
+    FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
+    if (!fp) {
+        return KATRA_SUCCESS;  /* Skip unreadable files */
+    }
+
+    char line[KATRA_BUFFER_LARGE];
+    while (fgets(line, sizeof(line), fp)) {  /* GUIDELINE_APPROVED: fgets in while condition */
+        /* Remove newline */
+        size_t len = strlen(line);
+        if (len > 0 && line[len-1] == '\n') {
+            line[len-1] = '\0';
+        }
+
+        /* Parse record */
+        memory_record_t* record = NULL;
+        if (katra_tier1_parse_json_record(line, &record) != KATRA_SUCCESS || !record) {
+            continue;
+        }
+
+        /* Check if old enough to archive */
+        if (record->timestamp < cutoff && !record->archived) {
+            (*count)++;
+        }
+
+        katra_memory_free_record(record);
+    }
+
+    fclose(fp);
+    return KATRA_SUCCESS;
 }
 
 /* Archive old Tier 1 recordings */
 int tier1_archive(const char* ci_id, int max_age_days) {
-    (void)max_age_days;  /* TODO: Use this parameter for archival logic */
+    int archivable_count = 0;
+    char tier1_dir[KATRA_PATH_MAX];
+    char** filenames = NULL;
+    size_t file_count = 0;
 
     if (!ci_id) {
         return E_INPUT_NULL;
     }
 
-    /* TODO: Implement archival logic
-     * For MVP, return 0 (no records archived) */
+    if (max_age_days < 0) {
+        return E_INPUT_RANGE;
+    }
 
-    LOG_DEBUG("Tier 1 archive (not yet implemented)");
-    return 0;  /* No records archived yet */
+    /* Get Tier 1 directory */
+    int result = get_tier1_dir(ci_id, tier1_dir, sizeof(tier1_dir));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Calculate cutoff time */
+    time_t now = time(NULL);
+    time_t cutoff = now - (max_age_days * 24 * 3600);
+
+    /* Collect filenames */
+    result = collect_jsonl_files(tier1_dir, &filenames, &file_count);
+    if (result != KATRA_SUCCESS || file_count == 0) {
+        free_filenames(filenames, file_count);
+        return 0;  /* No files to archive */
+    }
+
+    /* Scan files and count archivable records */
+    for (size_t f = 0; f < file_count; f++) {
+        char filepath[KATRA_PATH_MAX];
+        snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[f]);
+        count_archivable_in_file(filepath, cutoff, &archivable_count);
+    }
+
+    free_filenames(filenames, file_count);
+
+    /* Note: Actual archiving to Tier 2 will be implemented when Tier 2 exists */
+    /* For now, just return count of records that WOULD be archived */
+    if (archivable_count > 0) {
+        LOG_INFO("Found %d Tier 1 records ready for archival (Tier 2 not yet implemented)",
+                archivable_count);
+    }
+
+    return archivable_count;
 }
 
 /* Stats visitor context */
@@ -269,7 +521,7 @@ static int tier1_stats_visitor(const char* filepath, void* userdata) {
 
     /* Count records */
     size_t file_records = 0;
-    if (count_file_records(filepath, &file_records) == KATRA_SUCCESS) {
+    if (katra_file_count_lines(filepath, &file_records) == KATRA_SUCCESS) {
         ctx->total_records += file_records;
     }
 

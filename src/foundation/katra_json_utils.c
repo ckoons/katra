@@ -156,3 +156,105 @@ int katra_json_get_size(const char* json, const char* key, size_t* value) {
     *value = (size_t)parsed;
     return KATRA_SUCCESS;
 }
+
+/* Extract integer value from JSON */
+int katra_json_get_int(const char* json, const char* key, int* value) {
+    if (!json || !key || !value) {
+        return E_INPUT_NULL;
+    }
+
+    /* Build search pattern: "key": */
+    char pattern[KATRA_BUFFER_MEDIUM];
+    snprintf(pattern, sizeof(pattern), "\"%s\":", key);
+
+    /* Find the key */
+    const char* key_pos = strstr(json, pattern);
+    if (!key_pos) {
+        return E_NOT_FOUND;
+    }
+
+    /* Skip to value (skip whitespace after colon) */
+    const char* value_start = key_pos + strlen(pattern);
+    while (*value_start == ' ' || *value_start == '\t') {
+        value_start++;
+    }
+
+    /* Parse the number */
+    char* endptr;
+    long parsed = strtol(value_start, &endptr, 10);
+
+    if (endptr == value_start) {
+        return E_NOT_FOUND;  /* No valid number found */
+    }
+
+    *value = (int)parsed;
+    return KATRA_SUCCESS;
+}
+
+/* Extract float value from JSON */
+int katra_json_get_float(const char* json, const char* key, float* value) {
+    if (!json || !key || !value) {
+        return E_INPUT_NULL;
+    }
+
+    /* Build search pattern: "key": */
+    char pattern[KATRA_BUFFER_MEDIUM];
+    snprintf(pattern, sizeof(pattern), "\"%s\":", key);
+
+    /* Find the key */
+    const char* key_pos = strstr(json, pattern);
+    if (!key_pos) {
+        return E_NOT_FOUND;
+    }
+
+    /* Skip to value (skip whitespace after colon) */
+    const char* value_start = key_pos + strlen(pattern);
+    while (*value_start == ' ' || *value_start == '\t') {
+        value_start++;
+    }
+
+    /* Parse the number */
+    char* endptr;
+    float parsed = strtof(value_start, &endptr);
+
+    if (endptr == value_start) {
+        return E_NOT_FOUND;  /* No valid number found */
+    }
+
+    *value = parsed;
+    return KATRA_SUCCESS;
+}
+
+/* Extract boolean value from JSON */
+int katra_json_get_bool(const char* json, const char* key, bool* value) {
+    if (!json || !key || !value) {
+        return E_INPUT_NULL;
+    }
+
+    /* Build search pattern: "key": */
+    char pattern[KATRA_BUFFER_MEDIUM];
+    snprintf(pattern, sizeof(pattern), "\"%s\":", key);
+
+    /* Find the key */
+    const char* key_pos = strstr(json, pattern);
+    if (!key_pos) {
+        return E_NOT_FOUND;
+    }
+
+    /* Skip to value (skip whitespace after colon) */
+    const char* value_start = key_pos + strlen(pattern);
+    while (*value_start == ' ' || *value_start == '\t') {
+        value_start++;
+    }
+
+    /* Check for true/false */
+    if (strncmp(value_start, "true", 4) == 0) {
+        *value = true;
+        return KATRA_SUCCESS;
+    } else if (strncmp(value_start, "false", 5) == 0) {
+        *value = false;
+        return KATRA_SUCCESS;
+    }
+
+    return E_NOT_FOUND;
+}
