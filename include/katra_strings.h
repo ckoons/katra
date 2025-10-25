@@ -13,6 +13,7 @@
 #define KATRA_DIR_CHECKPOINTS "checkpoints"
 #define KATRA_DIR_MEMORY      "memory"
 #define KATRA_DIR_TIER1       "tier1"
+#define KATRA_DIR_TIER2       "tier2"
 #define KATRA_DIR_CONFIG      "config"
 #define KATRA_DIR_LOGS        "logs"
 #define KATRA_DIR_AUDIT       "audit"

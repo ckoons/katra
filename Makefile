@@ -81,6 +81,7 @@ FOUNDATION_OBJS := $(BUILD_DIR)/katra_error.o \
 CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_tier1.o \
              $(BUILD_DIR)/katra_tier1_json.o \
+             $(BUILD_DIR)/katra_tier2.o \
              $(BUILD_DIR)/katra_checkpoint.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o
 
@@ -115,6 +116,10 @@ $(BUILD_DIR)/katra_tier1_json.o: $(SRC_DIR)/core/katra_tier1_json.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+$(BUILD_DIR)/katra_tier2.o: $(SRC_DIR)/core/katra_tier2.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
 $(BUILD_DIR)/katra_checkpoint.o: $(SRC_DIR)/core/katra_checkpoint.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
@@ -135,10 +140,11 @@ TEST_LOG := $(BIN_DIR)/tests/test_log
 TEST_INIT := $(BIN_DIR)/tests/test_init
 TEST_MEMORY := $(BIN_DIR)/tests/test_memory
 TEST_TIER1 := $(BIN_DIR)/tests/test_tier1
+TEST_TIER2 := $(BIN_DIR)/tests/test_tier2
 TEST_CHECKPOINT := $(BIN_DIR)/tests/test_checkpoint
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-checkpoint
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-checkpoint
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -177,6 +183,10 @@ test-tier1: $(TEST_TIER1)
 	@echo "Running Tier 1 storage tests..."
 	@$(TEST_TIER1)
 
+test-tier2: $(TEST_TIER2)
+	@echo "Running Tier 2 storage tests..."
+	@$(TEST_TIER2)
+
 test-checkpoint: $(TEST_CHECKPOINT)
 	@echo "Running checkpoint tests..."
 	@$(TEST_CHECKPOINT)
@@ -207,6 +217,10 @@ $(TEST_MEMORY): $(TEST_DIR)/unit/test_memory.c $(LIBKATRA_FOUNDATION)
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
 
 $(TEST_TIER1): $(TEST_DIR)/unit/test_tier1.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+
+$(TEST_TIER2): $(TEST_DIR)/unit/test_tier2.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
 

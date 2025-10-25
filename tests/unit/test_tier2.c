@@ -1,0 +1,269 @@
+/* © 2025 Casey Koons All rights reserved */
+
+/* System includes */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+/* Project includes */
+#include "katra_tier2.h"
+#include "katra_init.h"
+#include "katra_error.h"
+#include "katra_log.h"
+
+/* Test macros */
+#define TEST_PASS() do { \
+    tests_passed++; \
+    printf(" ✓\n"); \
+} while(0)
+
+#define TEST_FAIL(msg) do { \
+    tests_failed++; \
+    printf(" ✗\n  Error: %s\n", msg); \
+} while(0)
+
+#define ASSERT(cond, msg) \
+    if (!(cond)) { \
+        TEST_FAIL(msg); \
+        return; \
+    } else { \
+        TEST_PASS(); \
+    }
+
+/* Test counters */
+static int tests_run = 0;
+static int tests_passed = 0;
+static int tests_failed = 0;
+
+/* Test CI ID */
+static const char* TEST_CI_ID = "test_ci_tier2";
+
+/* Test: Tier 2 initialization */
+void test_tier2_init(void) {
+    printf("Testing: Tier 2 initialization ... ");
+    tests_run++;
+
+    int result = tier2_init(TEST_CI_ID);
+    ASSERT(result == KATRA_SUCCESS, "tier2_init() failed");
+}
+
+/* Test: Tier 2 directories created */
+void test_tier2_directories_created(void) {
+    printf("Testing: Tier 2 directories created ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    const char* home = getenv("HOME");
+    if (!home) {
+        TEST_FAIL("HOME not set");
+        return;
+    }
+
+    char tier2_dir[512];
+    snprintf(tier2_dir, sizeof(tier2_dir), "%s/.katra/memory/tier2", home);
+
+    struct stat st;
+    if (stat(tier2_dir, &st) != 0) {
+        TEST_FAIL("Tier 2 directory not created");
+        return;
+    }
+
+    if (!S_ISDIR(st.st_mode)) {
+        TEST_FAIL("Tier 2 path exists but is not a directory");
+        return;
+    }
+
+    /* Check weekly subdirectory */
+    char weekly_dir[512];
+    snprintf(weekly_dir, sizeof(weekly_dir), "%s/weekly", tier2_dir);
+    if (stat(weekly_dir, &st) != 0 || !S_ISDIR(st.st_mode)) {
+        TEST_FAIL("Weekly subdirectory not created");
+        return;
+    }
+
+    /* Check monthly subdirectory */
+    char monthly_dir[512];
+    snprintf(monthly_dir, sizeof(monthly_dir), "%s/monthly", tier2_dir);
+    if (stat(monthly_dir, &st) != 0 || !S_ISDIR(st.st_mode)) {
+        TEST_FAIL("Monthly subdirectory not created");
+        return;
+    }
+
+    /* Check index subdirectory */
+    char index_dir[512];
+    snprintf(index_dir, sizeof(index_dir), "%s/index", tier2_dir);
+    if (stat(index_dir, &st) != 0 || !S_ISDIR(st.st_mode)) {
+        TEST_FAIL("Index subdirectory not created");
+        return;
+    }
+
+    TEST_PASS();
+}
+
+/* Test: Create digest record */
+void test_create_digest(void) {
+    printf("Testing: Create digest record ... ");
+    tests_run++;
+
+    digest_record_t* digest = katra_digest_create(
+        TEST_CI_ID,
+        PERIOD_TYPE_WEEKLY,
+        "2025-W01",
+        DIGEST_TYPE_INTERACTION
+    );
+
+    if (!digest) {
+        TEST_FAIL("Failed to create digest");
+        return;
+    }
+
+    if (!digest->digest_id || !digest->ci_id || !digest->period_id) {
+        TEST_FAIL("Missing required fields");
+        katra_digest_free(digest);
+        return;
+    }
+
+    if (digest->period_type != PERIOD_TYPE_WEEKLY) {
+        TEST_FAIL("Wrong period type");
+        katra_digest_free(digest);
+        return;
+    }
+
+    if (digest->digest_type != DIGEST_TYPE_INTERACTION) {
+        TEST_FAIL("Wrong digest type");
+        katra_digest_free(digest);
+        return;
+    }
+
+    katra_digest_free(digest);
+    TEST_PASS();
+}
+
+/* Test: Free digest record */
+void test_free_digest(void) {
+    printf("Testing: Free digest record ... ");
+    tests_run++;
+
+    digest_record_t* digest = katra_digest_create(
+        TEST_CI_ID,
+        PERIOD_TYPE_MONTHLY,
+        "2025-01",
+        DIGEST_TYPE_LEARNING
+    );
+
+    if (!digest) {
+        TEST_FAIL("Failed to create digest");
+        return;
+    }
+
+    /* Should not crash */
+    katra_digest_free(digest);
+    TEST_PASS();
+}
+
+/* Test: Store digest (placeholder test) */
+void test_store_digest_placeholder(void) {
+    printf("Testing: Store digest (not yet implemented) ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    digest_record_t* digest = katra_digest_create(
+        TEST_CI_ID,
+        PERIOD_TYPE_WEEKLY,
+        "2025-W01",
+        DIGEST_TYPE_INTERACTION
+    );
+
+    if (!digest) {
+        TEST_FAIL("Failed to create digest");
+        return;
+    }
+
+    int result = tier2_store_digest(digest);
+    katra_digest_free(digest);
+
+    /* Expect E_INTERNAL_NOTIMPL until implemented */
+    ASSERT(result == E_INTERNAL_NOTIMPL, "Expected not implemented");
+}
+
+/* Test: Tier 2 statistics */
+void test_tier2_stats(void) {
+    printf("Testing: Tier 2 statistics ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    size_t total_digests = 0;
+    size_t bytes_used = 0;
+
+    int result = tier2_stats(TEST_CI_ID, &total_digests, &bytes_used);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("tier2_stats() failed");
+        return;
+    }
+
+    /* Should be 0 since nothing stored yet */
+    if (total_digests != 0) {
+        TEST_FAIL("Expected 0 digests");
+        return;
+    }
+
+    if (bytes_used != 0) {
+        TEST_FAIL("Expected 0 bytes");
+        return;
+    }
+
+    TEST_PASS();
+}
+
+/* Test: Tier 2 cleanup */
+void test_tier2_cleanup(void) {
+    printf("Testing: Tier 2 cleanup ... ");
+    tests_run++;
+
+    tier2_init(TEST_CI_ID);
+
+    /* Should not crash */
+    tier2_cleanup();
+
+    TEST_PASS();
+}
+
+/* Main test runner */
+int main(void) {
+    printf("\n");
+    printf("========================================\n");
+    printf("Katra Tier 2 Storage Tests\n");
+    printf("========================================\n\n");
+
+    /* Initialize katra first */
+    katra_init();
+
+    /* Run tests */
+    test_tier2_init();
+    test_tier2_directories_created();
+    test_create_digest();
+    test_free_digest();
+    test_store_digest_placeholder();
+    test_tier2_stats();
+    test_tier2_cleanup();
+
+    /* Cleanup */
+    tier2_cleanup();
+    katra_exit();
+
+    /* Print results */
+    printf("\n");
+    printf("========================================\n");
+    printf("Test Results:\n");
+    printf("  Tests run:    %d\n", tests_run);
+    printf("  Tests passed: %d\n", tests_passed);
+    printf("  Tests failed: %d\n", tests_failed);
+    printf("========================================\n\n");
+
+    return (tests_failed == 0) ? 0 : 1;
+}
