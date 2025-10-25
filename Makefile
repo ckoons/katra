@@ -76,7 +76,8 @@ FOUNDATION_OBJS := $(BUILD_DIR)/katra_error.o \
 
 # Memory/Core object files
 CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
-             $(BUILD_DIR)/katra_tier1.o
+             $(BUILD_DIR)/katra_tier1.o \
+             $(BUILD_DIR)/katra_checkpoint.o
 
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
@@ -105,6 +106,10 @@ $(BUILD_DIR)/katra_tier1.o: $(SRC_DIR)/core/katra_tier1.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+$(BUILD_DIR)/katra_checkpoint.o: $(SRC_DIR)/core/katra_checkpoint.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
 # ==============================================================================
 # TEST SECTION (future Makefile.test)
 # ==============================================================================
@@ -117,12 +122,13 @@ TEST_LOG := $(BIN_DIR)/tests/test_log
 TEST_INIT := $(BIN_DIR)/tests/test_init
 TEST_MEMORY := $(BIN_DIR)/tests/test_memory
 TEST_TIER1 := $(BIN_DIR)/tests/test_tier1
+TEST_CHECKPOINT := $(BIN_DIR)/tests/test_checkpoint
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-checkpoint
 	@echo ""
 	@echo "========================================"
-	@echo "All foundation and memory tests passed!"
+	@echo "All tests passed!"
 	@echo "========================================"
 
 test: test-quick
@@ -158,6 +164,10 @@ test-tier1: $(TEST_TIER1)
 	@echo "Running Tier 1 storage tests..."
 	@$(TEST_TIER1)
 
+test-checkpoint: $(TEST_CHECKPOINT)
+	@echo "Running checkpoint tests..."
+	@$(TEST_CHECKPOINT)
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
@@ -184,6 +194,10 @@ $(TEST_MEMORY): $(TEST_DIR)/unit/test_memory.c $(LIBKATRA_FOUNDATION)
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
 
 $(TEST_TIER1): $(TEST_DIR)/unit/test_tier1.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+
+$(TEST_CHECKPOINT): $(TEST_DIR)/unit/test_checkpoint.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
 
