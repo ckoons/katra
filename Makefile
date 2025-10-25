@@ -74,6 +74,10 @@ FOUNDATION_OBJS := $(BUILD_DIR)/katra_error.o \
                    $(BUILD_DIR)/katra_config.o \
                    $(BUILD_DIR)/katra_init.o
 
+# Memory/Core object files
+CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
+             $(BUILD_DIR)/katra_tier1.o
+
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
 
@@ -83,12 +87,21 @@ directories:
 	@$(MKDIR_P) $(BIN_DIR)/tests
 
 # Build foundation library
-$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS)
+$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS)
 	@echo "Creating foundation library: $@"
 	@ar rcs $@ $^
 
 # Compile foundation sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/foundation/%.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile core sources
+$(BUILD_DIR)/katra_memory.o: $(SRC_DIR)/core/katra_memory.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_tier1.o: $(SRC_DIR)/core/katra_tier1.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
@@ -102,12 +115,14 @@ TEST_CONFIG := $(BIN_DIR)/tests/test_config
 TEST_ERROR := $(BIN_DIR)/tests/test_error
 TEST_LOG := $(BIN_DIR)/tests/test_log
 TEST_INIT := $(BIN_DIR)/tests/test_init
+TEST_MEMORY := $(BIN_DIR)/tests/test_memory
+TEST_TIER1 := $(BIN_DIR)/tests/test_tier1
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1
 	@echo ""
 	@echo "========================================"
-	@echo "All foundation tests passed!"
+	@echo "All foundation and memory tests passed!"
 	@echo "========================================"
 
 test: test-quick
@@ -135,6 +150,14 @@ test-init: $(TEST_INIT)
 	@echo "Running initialization tests..."
 	@$(TEST_INIT)
 
+test-memory: $(TEST_MEMORY)
+	@echo "Running memory tests..."
+	@$(TEST_MEMORY)
+
+test-tier1: $(TEST_TIER1)
+	@echo "Running Tier 1 storage tests..."
+	@$(TEST_TIER1)
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
@@ -153,6 +176,14 @@ $(TEST_LOG): $(TEST_DIR)/unit/test_log.c $(LIBKATRA_FOUNDATION)
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
 
 $(TEST_INIT): $(TEST_DIR)/unit/test_init.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+
+$(TEST_MEMORY): $(TEST_DIR)/unit/test_memory.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+
+$(TEST_TIER1): $(TEST_DIR)/unit/test_tier1.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
 
