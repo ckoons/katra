@@ -235,15 +235,16 @@ void test_tier2_stats(void) {
     TEST_PASS();
 }
 
-/* Test: Query empty Tier 2 */
+/* Test: Query with CI ID that has no digests */
 void test_query_empty(void) {
-    printf("Testing: Query empty Tier 2 ... ");
+    printf("Testing: Query with nonexistent CI ID ... ");
     tests_run++;
 
     tier2_init(TEST_CI_ID);
 
+    /* Query for a CI ID that doesn't have any stored digests */
     digest_query_t query = {
-        .ci_id = TEST_CI_ID,
+        .ci_id = "nonexistent_ci_id",
         .start_time = 0,
         .end_time = 0,
         .period_type = (period_type_t)-1,
@@ -263,7 +264,7 @@ void test_query_empty(void) {
     }
 
     if (count != 0) {
-        TEST_FAIL("Expected 0 results");
+        TEST_FAIL("Expected 0 results for nonexistent CI ID");
         katra_digest_free_results(results, count);
         return;
     }
@@ -323,11 +324,11 @@ void test_query_after_store(void) {
 
     tier2_init(TEST_CI_ID);
 
-    /* Store a digest */
+    /* Store a digest with unique period_id */
     digest_record_t* digest = katra_digest_create(
         TEST_CI_ID,
         PERIOD_TYPE_WEEKLY,
-        "2025-W02",
+        "2025-W42",  /* Unique week to avoid conflicts */
         DIGEST_TYPE_LEARNING
     );
 
@@ -369,9 +370,30 @@ void test_query_after_store(void) {
         return;
     }
 
-    /* Note: Current implementation doesn't scan files yet, so count will be 0 */
-    /* This test verifies the query succeeds without crashing */
+    /* Should find at least the digest we just stored */
+    if (count == 0) {
+        TEST_FAIL("Expected at least 1 result after storing digest");
+        katra_digest_free_results(results, count);
+        return;
+    }
+
+    /* Verify at least one result matches our stored digest */
+    bool found = false;
+    for (size_t i = 0; i < count; i++) {
+        if (results[i]->period_type == PERIOD_TYPE_WEEKLY &&
+            results[i]->digest_type == DIGEST_TYPE_LEARNING &&
+            strcmp(results[i]->period_id, "2025-W42") == 0) {
+            found = true;
+            break;
+        }
+    }
+
     katra_digest_free_results(results, count);
+
+    if (!found) {
+        TEST_FAIL("Could not find the stored digest in query results");
+        return;
+    }
 
     TEST_PASS();
 }

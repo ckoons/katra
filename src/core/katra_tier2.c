@@ -7,6 +7,7 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <stdbool.h>
+#include <dirent.h>
 
 /* Project includes */
 #include "katra_tier2.h"
@@ -197,8 +198,6 @@ static bool digest_matches_query(const digest_record_t* digest,
 }
 
 /* Helper: Scan digest file and collect matching records */
-/* TODO: Will be used once directory enumeration is implemented */
-__attribute__((unused))
 static int scan_digest_file(const char* filepath,
                             const digest_query_t* query,
                             digest_record_t*** results,
@@ -252,11 +251,55 @@ static int scan_digest_file(const char* filepath,
     return KATRA_SUCCESS;
 }
 
+/* Helper: Scan all .jsonl files in directory */
+static int scan_directory(const char* dir_path,
+                          const digest_query_t* query,
+                          digest_record_t*** results,
+                          size_t* count,
+                          size_t* capacity) {
+    DIR* dir = opendir(dir_path);
+    if (!dir) {
+        return KATRA_SUCCESS;  /* Directory doesn't exist, skip */
+    }
+
+    struct dirent* entry;
+    while ((entry = readdir(dir)) != NULL) {
+        /* Check for .jsonl extension */
+        size_t name_len = strlen(entry->d_name);
+        if (name_len < 6 || strcmp(entry->d_name + name_len - 6, ".jsonl") != 0) {
+            continue;
+        }
+
+        /* Build full file path */
+        char filepath[KATRA_PATH_MAX];
+        snprintf(filepath, sizeof(filepath), "%s/%s", dir_path, entry->d_name);
+
+        /* Scan file */
+        int result = scan_digest_file(filepath, query, results, count, capacity);
+        if (result != KATRA_SUCCESS) {
+            closedir(dir);
+            return result;
+        }
+
+        /* Check if limit reached */
+        if (query->limit > 0 && *count >= query->limit) {
+            closedir(dir);
+            return KATRA_SUCCESS;
+        }
+    }
+
+    closedir(dir);
+    return KATRA_SUCCESS;
+}
+
 /* Query Tier 2 digests */
 int tier2_query(const digest_query_t* query,
                 digest_record_t*** results,
                 size_t* count) {
     int result = KATRA_SUCCESS;
+    digest_record_t** result_array = NULL;
+    size_t result_count = 0;
+    size_t result_capacity = 0;
 
     if (!query || !results || !count) {
         katra_report_error(E_INPUT_NULL, "tier2_query", "NULL parameter");
@@ -279,32 +322,55 @@ int tier2_query(const digest_query_t* query,
                               KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
                               TIER2_DIR_WEEKLY, NULL);
     if (result != KATRA_SUCCESS) {
-        return result;
+        goto cleanup;
     }
 
     result = katra_build_path(monthly_dir, sizeof(monthly_dir),
                               KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
                               TIER2_DIR_MONTHLY, NULL);
     if (result != KATRA_SUCCESS) {
-        return result;
+        goto cleanup;
     }
 
     /* Scan weekly digest files if period type allows */
     if ((int)query->period_type == -1 || query->period_type == PERIOD_TYPE_WEEKLY) {
-        /* TODO: Enumerate .jsonl files in weekly_dir and scan each */
-        /* For now, simplified implementation assumes known file names */
-        (void)weekly_dir;  /* Suppress unused warning */
+        result = scan_directory(weekly_dir, query, &result_array,
+                               &result_count, &result_capacity);
+        if (result != KATRA_SUCCESS) {
+            goto cleanup;
+        }
+
+        /* Check if limit reached */
+        if (query->limit > 0 && result_count >= query->limit) {
+            *results = result_array;
+            *count = result_count;
+            LOG_DEBUG("Tier 2 query returned %zu results (limit reached)", result_count);
+            return KATRA_SUCCESS;
+        }
     }
 
     /* Scan monthly digest files if period type allows */
     if ((int)query->period_type == -1 || query->period_type == PERIOD_TYPE_MONTHLY) {
-        /* TODO: Enumerate .jsonl files in monthly_dir and scan each */
-        /* For now, simplified implementation assumes known file names */
-        (void)monthly_dir;  /* Suppress unused warning */
+        result = scan_directory(monthly_dir, query, &result_array,
+                               &result_count, &result_capacity);
+        if (result != KATRA_SUCCESS) {
+            goto cleanup;
+        }
     }
 
-    LOG_DEBUG("Tier 2 query returned %zu results", *count);
+    *results = result_array;
+    *count = result_count;
+    LOG_DEBUG("Tier 2 query returned %zu results", result_count);
     return KATRA_SUCCESS;
+
+cleanup:
+    if (result_array) {
+        for (size_t i = 0; i < result_count; i++) {
+            katra_digest_free(result_array[i]);
+        }
+        free(result_array);
+    }
+    return result;
 }
 
 /* Archive old Tier 2 digests (placeholder) */
