@@ -20,29 +20,26 @@
 #include "katra_path_utils.h"
 #include "katra_json_utils.h"
 #include "katra_file_utils.h"
+#include "katra_strings.h"
 
 /* Checkpoint directory and file format */
 #define CHECKPOINT_DIR_FORMAT "%s/.katra/checkpoints"
 #define CHECKPOINT_FILE_FORMAT "%s/.katra/checkpoints/checkpoint_%s_%ld.kcp"
-#define CHECKPOINT_VERSION "1.0.0"
-#define CHECKPOINT_MAGIC "KATRA_CHECKPOINT_V1"
 
 /* Forward declarations */
-static int get_checkpoint_dir(char* buffer, size_t size);
-static int get_checkpoint_path(const char* checkpoint_id, char* buffer, size_t size);
 static int generate_checkpoint_id(const char* ci_id, char* buffer, size_t size);
 static int write_checkpoint_header(FILE* fp, const checkpoint_metadata_t* metadata);
 static int read_checkpoint_header(FILE* fp, checkpoint_metadata_t* metadata);
 static int calculate_checksum(const char* filepath, char* checksum, size_t size);
 static int compare_version(const char* v1, const char* v2);
 
-/* Get checkpoint directory path */
-static int get_checkpoint_dir(char* buffer, size_t size) {
-    return katra_build_path(buffer, size, "checkpoints", NULL);
+/* Get checkpoint directory path (exposed for management module) */
+int katra_checkpoint_get_dir_internal(char* buffer, size_t size) {
+    return katra_build_path(buffer, size, KATRA_DIR_CHECKPOINTS, NULL);
 }
 
-/* Get full path for checkpoint file */
-static int get_checkpoint_path(const char* checkpoint_id, char* buffer, size_t size) {
+/* Get full path for checkpoint file (exposed for management module) */
+int katra_checkpoint_get_path_internal(const char* checkpoint_id, char* buffer, size_t size) {
     if (!checkpoint_id) {
         return E_INPUT_NULL;
     }
@@ -65,19 +62,21 @@ static int get_checkpoint_path(const char* checkpoint_id, char* buffer, size_t s
     ci_id[ci_id_len] = '\0';
 
     /* Extract timestamp (everything after last underscore) */
-    long timestamp = atol(last_underscore + 1);
-    if (timestamp == 0) {
+    char* endptr;
+    long timestamp = strtol(last_underscore + 1, &endptr, 10);
+    if (endptr == last_underscore + 1 || *endptr != '\0' || timestamp == 0) {
         return E_INPUT_FORMAT;
     }
 
     /* Build path: ~/.katra/checkpoints/checkpoint_{ci_id}_{timestamp}.kcp */
     char checkpoint_dir[KATRA_PATH_MAX];
-    int result = katra_build_path(checkpoint_dir, sizeof(checkpoint_dir), "checkpoints", NULL);
+    int result = katra_build_path(checkpoint_dir, sizeof(checkpoint_dir), KATRA_DIR_CHECKPOINTS, NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
 
-    snprintf(buffer, size, "%s/checkpoint_%s_%ld.kcp", checkpoint_dir, ci_id, timestamp);
+    snprintf(buffer, size, "%s/%s%s_%ld%s", checkpoint_dir,
+            KATRA_CHECKPOINT_PREFIX, ci_id, timestamp, KATRA_CHECKPOINT_SUFFIX);
     return KATRA_SUCCESS;
 }
 
@@ -99,7 +98,7 @@ static int write_checkpoint_header(FILE* fp, const checkpoint_metadata_t* metada
     }
 
     /* Write magic string */
-    fprintf(fp, "%s\n", CHECKPOINT_MAGIC);
+    fprintf(fp, "%s\n", KATRA_CHECKPOINT_MAGIC);
 
     /* Write metadata as JSON */
     fprintf(fp, "{\n");
@@ -114,7 +113,7 @@ static int write_checkpoint_header(FILE* fp, const checkpoint_metadata_t* metada
     fprintf(fp, "  \"compressed\": %s,\n", metadata->compressed ? "true" : "false");
     fprintf(fp, "  \"notes\": \"%s\"\n", metadata->notes);
     fprintf(fp, "}\n");
-    fprintf(fp, "---RECORDS---\n");
+    fprintf(fp, "%s\n", KATRA_CHECKPOINT_RECORD_SEPARATOR);
 
     return KATRA_SUCCESS;
 }
@@ -133,9 +132,9 @@ static int read_checkpoint_header(FILE* fp, checkpoint_metadata_t* metadata) {
     }
 
     /* Remove newline */
-    line[strcspn(line, "\n")] = '\0';
+    line[strcspn(line, KATRA_LINE_TERMINATOR)] = '\0';
 
-    if (strcmp(line, CHECKPOINT_MAGIC) != 0) {
+    if (strcmp(line, KATRA_CHECKPOINT_MAGIC) != 0) {
         return E_CHECKPOINT_INVALID;
     }
 
@@ -144,29 +143,29 @@ static int read_checkpoint_header(FILE* fp, checkpoint_metadata_t* metadata) {
 
     while (fgets(line, sizeof(line), fp)) {
         /* Remove newline */
-        line[strcspn(line, "\n")] = '\0';
+        line[strcspn(line, KATRA_LINE_TERMINATOR)] = '\0';
 
         /* Check for end of header */
-        if (strcmp(line, "---RECORDS---") == 0) {
+        if (strcmp(line, KATRA_CHECKPOINT_RECORD_SEPARATOR) == 0) {
             break;
         }
 
         /* Parse key-value pairs (simplified) */
-        if (strstr(line, "\"checkpoint_id\"")) {
+        if (strstr(line, KATRA_JSON_FIELD_CHECKPOINT_ID)) {
             sscanf(line, "  \"checkpoint_id\": \"%255[^\"]\"", metadata->checkpoint_id);
-        } else if (strstr(line, "\"ci_id\"")) {
+        } else if (strstr(line, KATRA_JSON_FIELD_CI_ID)) {
             sscanf(line, "  \"ci_id\": \"%255[^\"]\"", metadata->ci_id);
-        } else if (strstr(line, "\"timestamp\"")) {
+        } else if (strstr(line, KATRA_JSON_FIELD_TIMESTAMP)) {
             long ts;
             sscanf(line, "  \"timestamp\": %ld", &ts);
             metadata->timestamp = (time_t)ts;
-        } else if (strstr(line, "\"version\"")) {
+        } else if (strstr(line, KATRA_JSON_FIELD_VERSION)) {
             sscanf(line, "  \"version\": \"%63[^\"]\"", metadata->version);
-        } else if (strstr(line, "\"record_count\"")) {
+        } else if (strstr(line, KATRA_JSON_FIELD_RECORD_COUNT)) {
             sscanf(line, "  \"record_count\": %zu", &metadata->record_count);
-        } else if (strstr(line, "\"tier1_records\"")) {
+        } else if (strstr(line, KATRA_JSON_FIELD_TIER1_RECORDS)) {
             sscanf(line, "  \"tier1_records\": %zu", &metadata->tier1_records);
-        } else if (strstr(line, "\"notes\"")) {
+        } else if (strstr(line, KATRA_JSON_FIELD_NOTES)) {
             sscanf(line, "  \"notes\": \"%511[^\"]\"", metadata->notes);
         }
     }
@@ -180,7 +179,7 @@ static int calculate_checksum(const char* filepath, char* checksum, size_t size)
         return E_INPUT_NULL;
     }
 
-    FILE* fp = fopen(filepath, "r");
+    FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
     if (!fp) {
         return E_SYSTEM_FILE;
     }
@@ -214,7 +213,7 @@ int katra_checkpoint_init(void) {
 
     /* Build and create directory structure */
     result = katra_build_and_ensure_dir(checkpoint_dir, sizeof(checkpoint_dir),
-                                        "checkpoints", NULL);
+                                        KATRA_DIR_CHECKPOINTS, NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -256,7 +255,7 @@ int katra_checkpoint_save(const checkpoint_save_options_t* options,
     }
 
     /* Get file path */
-    result = get_checkpoint_path(id_buffer, filepath, sizeof(filepath));
+    result = katra_checkpoint_get_path_internal(id_buffer, filepath, sizeof(filepath));
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "katra_checkpoint_save", "Failed to get path");
         goto cleanup;
@@ -266,7 +265,7 @@ int katra_checkpoint_save(const checkpoint_save_options_t* options,
     memset(&metadata, 0, sizeof(metadata));
     strncpy(metadata.checkpoint_id, id_buffer, sizeof(metadata.checkpoint_id) - 1);
     strncpy(metadata.ci_id, options->ci_id, sizeof(metadata.ci_id) - 1);
-    strncpy(metadata.version, CHECKPOINT_VERSION, sizeof(metadata.version) - 1);
+    strncpy(metadata.version, KATRA_CHECKPOINT_VERSION, sizeof(metadata.version) - 1);
     metadata.timestamp = time(NULL);
     metadata.compressed = options->compress;
 
@@ -285,7 +284,7 @@ int katra_checkpoint_save(const checkpoint_save_options_t* options,
     }
 
     /* Open checkpoint file */
-    fp = fopen(filepath, "w");
+    fp = fopen(filepath, KATRA_FILE_MODE_WRITE);
     if (!fp) {
         katra_report_error(E_SYSTEM_FILE, "katra_checkpoint_save",
                           "Failed to open %s", filepath);
@@ -318,6 +317,8 @@ int katra_checkpoint_save(const checkpoint_save_options_t* options,
     /* Return checkpoint ID */
     *checkpoint_id = strdup(id_buffer);
     if (!*checkpoint_id) {
+        katra_report_error(E_SYSTEM_MEMORY, "katra_checkpoint_save",
+                          "Failed to allocate checkpoint ID");
         result = E_SYSTEM_MEMORY;
         goto cleanup;
     }
@@ -348,7 +349,7 @@ int katra_checkpoint_load(const char* checkpoint_id, const char* ci_id) {
     LOG_INFO("Loading checkpoint: %s for CI: %s", checkpoint_id, ci_id);
 
     /* Get file path */
-    result = get_checkpoint_path(checkpoint_id, filepath, sizeof(filepath));
+    result = katra_checkpoint_get_path_internal(checkpoint_id, filepath, sizeof(filepath));
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "katra_checkpoint_load", "Failed to get path");
         goto cleanup;
@@ -369,7 +370,7 @@ int katra_checkpoint_load(const char* checkpoint_id, const char* ci_id) {
     }
 
     /* Open checkpoint file */
-    fp = fopen(filepath, "r");
+    fp = fopen(filepath, KATRA_FILE_MODE_READ);
     if (!fp) {
         katra_report_error(E_SYSTEM_FILE, "katra_checkpoint_load",
                           "Failed to open %s", filepath);
@@ -417,7 +418,7 @@ int katra_checkpoint_validate(const char* checkpoint_id) {
     }
 
     /* Get file path */
-    result = get_checkpoint_path(checkpoint_id, filepath, sizeof(filepath));
+    result = katra_checkpoint_get_path_internal(checkpoint_id, filepath, sizeof(filepath));
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -428,7 +429,7 @@ int katra_checkpoint_validate(const char* checkpoint_id) {
     }
 
     /* Open file */
-    fp = fopen(filepath, "r");
+    fp = fopen(filepath, KATRA_FILE_MODE_READ);
     if (!fp) {
         return E_SYSTEM_FILE;
     }
@@ -443,9 +444,9 @@ int katra_checkpoint_validate(const char* checkpoint_id) {
     }
 
     /* Check version compatibility */
-    if (compare_version(metadata.version, CHECKPOINT_VERSION) != 0) {
+    if (compare_version(metadata.version, KATRA_CHECKPOINT_VERSION) != 0) {
         LOG_WARN("Checkpoint version mismatch: %s vs %s",
-                 metadata.version, CHECKPOINT_VERSION);
+                 metadata.version, KATRA_CHECKPOINT_VERSION);
         /* For MVP, we'll accept it anyway */
     }
 
@@ -466,7 +467,7 @@ int katra_checkpoint_get_metadata(const char* checkpoint_id,
     }
 
     /* Get file path */
-    result = get_checkpoint_path(checkpoint_id, filepath, sizeof(filepath));
+    result = katra_checkpoint_get_path_internal(checkpoint_id, filepath, sizeof(filepath));
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -477,7 +478,7 @@ int katra_checkpoint_get_metadata(const char* checkpoint_id,
     }
 
     /* Open file */
-    fp = fopen(filepath, "r");
+    fp = fopen(filepath, KATRA_FILE_MODE_READ);
     if (!fp) {
         return E_SYSTEM_FILE;
     }
@@ -498,135 +499,6 @@ int katra_checkpoint_get_metadata(const char* checkpoint_id,
         metadata->file_size = file_size;
     }
 
-    return KATRA_SUCCESS;
-}
-
-/* List checkpoints */
-int katra_checkpoint_list(const char* ci_id,
-                          checkpoint_info_t** checkpoints,
-                          size_t* count) {
-    if (!checkpoints || !count) {
-        return E_INPUT_NULL;
-    }
-
-    *checkpoints = NULL;
-    *count = 0;
-
-    char checkpoint_dir[KATRA_PATH_MAX];
-    int result = get_checkpoint_dir(checkpoint_dir, sizeof(checkpoint_dir));
-    if (result != KATRA_SUCCESS) {
-        return result;
-    }
-
-    /* Open directory */
-    DIR* dir = opendir(checkpoint_dir);
-    if (!dir) {
-        /* Directory doesn't exist yet - no checkpoints */
-        return KATRA_SUCCESS;
-    }
-
-    /* Count matching checkpoints first */
-    size_t checkpoint_count = 0;
-    struct dirent* entry;
-
-    while ((entry = readdir(dir)) != NULL) {
-        if (strstr(entry->d_name, ".kcp")) {
-            /* Count all .kcp files (we'll filter during population) */
-            checkpoint_count++;
-        }
-    }
-
-    if (checkpoint_count == 0) {
-        closedir(dir);
-        return KATRA_SUCCESS;
-    }
-
-    /* Allocate result array */
-    *checkpoints = calloc(checkpoint_count, sizeof(checkpoint_info_t));
-    if (!*checkpoints) {
-        closedir(dir);
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Rewind and populate results */
-    rewinddir(dir);
-    size_t idx = 0;
-
-    while ((entry = readdir(dir)) != NULL && idx < checkpoint_count) {
-        if (strstr(entry->d_name, ".kcp")) {
-            /* Extract checkpoint ID from filename: checkpoint_CI_ID_TIMESTAMP.kcp */
-            /* Remove "checkpoint_" prefix and ".kcp" suffix */
-            if (strncmp(entry->d_name, "checkpoint_", 11) != 0) {
-                continue;
-            }
-
-            const char* id_part = entry->d_name + 11;  /* Skip "checkpoint_" */
-            size_t id_len = strlen(id_part);
-            if (id_len < 5) continue;  /* Need at least ".kcp" */
-
-            /* Remove ".kcp" suffix */
-            char checkpoint_id[KATRA_BUFFER_MEDIUM];
-            strncpy(checkpoint_id, id_part, sizeof(checkpoint_id) - 1);
-            checkpoint_id[sizeof(checkpoint_id) - 1] = '\0';
-
-            /* Remove .kcp extension */
-            char* ext = strstr(checkpoint_id, ".kcp");
-            if (ext) {
-                *ext = '\0';
-            }
-
-            /* Get metadata to extract CI ID for filtering */
-            checkpoint_metadata_t metadata;
-            if (katra_checkpoint_get_metadata(checkpoint_id, &metadata) == KATRA_SUCCESS) {
-                /* Filter by CI if specified */
-                if (ci_id && strcmp(metadata.ci_id, ci_id) != 0) {
-                    continue;
-                }
-
-                strncpy((*checkpoints)[idx].checkpoint_id, checkpoint_id,
-                       sizeof((*checkpoints)[idx].checkpoint_id) - 1);
-                strncpy((*checkpoints)[idx].ci_id, metadata.ci_id,
-                       sizeof((*checkpoints)[idx].ci_id) - 1);
-                (*checkpoints)[idx].timestamp = metadata.timestamp;
-                (*checkpoints)[idx].record_count = metadata.record_count;
-                (*checkpoints)[idx].file_size = metadata.file_size;
-                (*checkpoints)[idx].valid = (katra_checkpoint_validate(checkpoint_id) == KATRA_SUCCESS);
-                idx++;
-            }
-        }
-    }
-
-    closedir(dir);
-    *count = idx;
-
-    return KATRA_SUCCESS;
-}
-
-/* Delete checkpoint */
-int katra_checkpoint_delete(const char* checkpoint_id) {
-    if (!checkpoint_id) {
-        return E_INPUT_NULL;
-    }
-
-    char filepath[KATRA_PATH_MAX];
-    int result = get_checkpoint_path(checkpoint_id, filepath, sizeof(filepath));
-    if (result != KATRA_SUCCESS) {
-        return result;
-    }
-
-    /* Check if file exists */
-    if (access(filepath, F_OK) != 0) {
-        return E_CHECKPOINT_NOT_FOUND;
-    }
-
-    /* Delete file */
-    if (unlink(filepath) != 0) {
-        katra_report_error(E_SYSTEM_FILE, "katra_checkpoint_delete",
-                          "Failed to delete %s", filepath);
-        return E_SYSTEM_FILE;
-    }
-
-    LOG_INFO("Checkpoint deleted: %s", checkpoint_id);
     return KATRA_SUCCESS;
 }
 

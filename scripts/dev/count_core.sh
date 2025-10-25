@@ -64,7 +64,7 @@ count_meaningful_lines_no_includes() {
 category_data=$(mktemp)
 trap "rm -f $category_data" EXIT
 
-# Count all src/*.c files
+# Count all src/**/*.c files (including subdirectories)
 total=0
 total_no_includes=0
 include_count=0
@@ -91,14 +91,14 @@ echo "Core Implementation Files:"
 echo "--------------------------"
 
 file_count=0
-for file in "$SRC_DIR"/*.c; do
-    [ -f "$file" ] || continue
+while IFS= read -r -d '' file; do
     file_count=$((file_count + 1))
 
     basename=$(basename "$file")
+    relative_path=${file#$SRC_DIR/}
 
-    # Skip third-party files and utility files
-    if echo "$basename" | grep -qE "(jsmn|cJSON|_utils\.c$)"; then
+    # Skip third-party files only (count our own utility files)
+    if echo "$basename" | grep -qE "(jsmn|cJSON)"; then
         continue
     fi
 
@@ -136,13 +136,13 @@ for file in "$SRC_DIR"/*.c; do
         category="error_utils"
     fi
 
-    printf "  %-30s %5d lines (%d actual, -%d%% diet)\n" \
-           "$basename" "$meaningful" "$actual" "$percent"
+    printf "  %-40s %5d lines (%d actual, -%d%% diet)\n" \
+           "$relative_path" "$meaningful" "$actual" "$percent"
     total=$((total + meaningful))
     total_no_includes=$((total_no_includes + meaningful_no_inc))
     include_count=$((include_count + file_includes))
     echo "$category $meaningful $meaningful_no_inc" >> "$category_data"
-done
+done < <(find "$SRC_DIR" -name "*.c" -type f -print0 | sort -z)
 
 if [ "$file_count" -eq 0 ]; then
     echo "  No .c files found yet (expected during documentation phase)"

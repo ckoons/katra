@@ -17,6 +17,7 @@
 #include "katra_path_utils.h"
 #include "katra_json_utils.h"
 #include "katra_file_utils.h"
+#include "katra_strings.h"
 
 /* File path for Tier 1 storage: ~/.katra/memory/tier1/ */
 #define TIER1_DIR_FORMAT "%s/.katra/memory/tier1"
@@ -34,7 +35,7 @@ static void json_escape_string(const char* src, char* dst, size_t dst_size);
 static int get_tier1_dir(const char* ci_id, char* buffer, size_t size) {
     (void)ci_id;  /* Unused - future multi-tenant support */
 
-    return katra_build_path(buffer, size, "memory", "tier1", NULL);
+    return katra_build_path(buffer, size, KATRA_DIR_MEMORY, KATRA_DIR_TIER1, NULL);
 }
 
 /* Get today's daily file path */
@@ -43,7 +44,7 @@ static int get_daily_file_path(char* buffer, size_t size) {
     struct tm* tm_info = localtime(&now);
 
     char tier1_dir[KATRA_PATH_MAX];
-    int result = katra_build_path(tier1_dir, sizeof(tier1_dir), "memory", "tier1", NULL);
+    int result = katra_build_path(tier1_dir, sizeof(tier1_dir), KATRA_DIR_MEMORY, KATRA_DIR_TIER1, NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -147,7 +148,7 @@ int tier1_init(const char* ci_id) {
     char tier1_dir[KATRA_PATH_MAX];
 
     /* Build and create directory structure */
-    result = katra_build_and_ensure_dir(tier1_dir, sizeof(tier1_dir), "memory", "tier1", NULL);
+    result = katra_build_and_ensure_dir(tier1_dir, sizeof(tier1_dir), KATRA_DIR_MEMORY, KATRA_DIR_TIER1, NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -192,7 +193,7 @@ int tier1_store(const memory_record_t* record) {
     }
 
     /* Open file for append */
-    fp = fopen(filepath, "a");
+    fp = fopen(filepath, KATRA_FILE_MODE_APPEND);
     if (!fp) {
         katra_report_error(E_SYSTEM_FILE, "tier1_store",
                           "Failed to open %s", filepath);

@@ -258,10 +258,22 @@ cleanup:
 /* Get home directory */
 static char* get_home_dir(void) {
     const char* home = getenv("HOME");
-    if (home) return strdup(home); /* GUIDELINE_APPROVED: NULL return handled by caller */
+    if (home) {
+        char* result = strdup(home);
+        if (!result) {
+            LOG_ERROR("Failed to allocate memory for home directory");
+        }
+        return result;
+    }
 
     struct passwd* pw = getpwuid(getuid());
-    if (pw && pw->pw_dir) return strdup(pw->pw_dir); /* GUIDELINE_APPROVED: NULL return handled by caller */
+    if (pw && pw->pw_dir) {
+        char* result = strdup(pw->pw_dir);
+        if (!result) {
+            LOG_ERROR("Failed to allocate memory for home directory");
+        }
+        return result;
+    }
 
     return NULL;
 }
@@ -298,7 +310,11 @@ static const char* find_env_katra_file(void) {
 static char* expand_value(const char* value, int depth) {
     if (depth >= KATRA_ENV_MAX_EXPANSION_DEPTH) {
         LOG_WARN("Variable expansion depth limit reached");
-        return strdup(value); /* GUIDELINE_APPROVED: NULL return handled by caller */
+        char* result = strdup(value);
+        if (!result) {
+            LOG_ERROR("Failed to allocate memory for value expansion");
+        }
+        return result;
     }
 
     char var_name[KATRA_ENV_VAR_NAME_MAX];
@@ -325,8 +341,12 @@ static char* expand_value(const char* value, int depth) {
                         if (eq) {
                             const char* var_value = eq + 1;
                             char* expanded = expand_value(var_value, depth + 1);
-                            size_t exp_len = strlen(expanded);
+                            if (!expanded) {
+                                LOG_ERROR("Failed to expand variable: %s", var_name);
+                                continue;
+                            }
 
+                            size_t exp_len = strlen(expanded);
                             if (result_len + exp_len < sizeof(result) - 1) {
                                 snprintf(result + result_len, sizeof(result) - result_len, "%s", expanded);
                                 result_len += exp_len;
@@ -344,7 +364,11 @@ static char* expand_value(const char* value, int depth) {
     }
 
     result[result_len] = '\0';
-    return strdup(result); /* GUIDELINE_APPROVED: NULL return handled by caller */
+    char* final_result = strdup(result);
+    if (!final_result) {
+        LOG_ERROR("Failed to allocate memory for expanded value");
+    }
+    return final_result;
 }
 
 /* Expand all variables in environment */

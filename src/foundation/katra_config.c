@@ -191,6 +191,10 @@ static void set_config_internal(const char* key, const char* value) {
         /* Update existing */
         free(existing->value);
         existing->value = strdup(value);
+        if (!existing->value) {
+            LOG_ERROR("Failed to allocate memory for config value");
+            existing->value = NULL;
+        }
         return;
     }
 
