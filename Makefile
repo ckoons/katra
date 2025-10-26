@@ -90,7 +90,8 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_tier2_index_mgmt.o \
              $(BUILD_DIR)/katra_checkpoint.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o \
-             $(BUILD_DIR)/katra_continuity.o
+             $(BUILD_DIR)/katra_continuity.o \
+             $(BUILD_DIR)/katra_sunrise_sunset.o
 
 # Database backend object files
 DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
@@ -170,6 +171,10 @@ $(BUILD_DIR)/katra_continuity.o: $(SRC_DIR)/core/katra_continuity.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+$(BUILD_DIR)/katra_sunrise_sunset.o: $(SRC_DIR)/core/katra_sunrise_sunset.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
 # Compile DB backend sources
 $(BUILD_DIR)/katra_db_backend.o: $(SRC_DIR)/db/katra_db_backend.c
 	@echo "Compiling: $<"
@@ -234,12 +239,13 @@ TEST_CHECKPOINT := $(BIN_DIR)/tests/test_checkpoint
 TEST_CONTINUITY := $(BIN_DIR)/tests/test_continuity
 TEST_VECTOR := $(BIN_DIR)/tests/test_vector
 TEST_GRAPH := $(BIN_DIR)/tests/test_graph
+TEST_SUNRISE_SUNSET := $(BIN_DIR)/tests/test_sunrise_sunset
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -302,6 +308,10 @@ test-graph: $(TEST_GRAPH)
 	@echo "Running graph database tests..."
 	@$(TEST_GRAPH)
 
+test-sunrise-sunset: $(TEST_SUNRISE_SUNSET)
+	@echo "Running sunrise/sunset tests..."
+	@$(TEST_SUNRISE_SUNSET)
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
@@ -354,6 +364,10 @@ $(TEST_VECTOR): $(TEST_DIR)/unit/test_vector.c $(LIBKATRA_FOUNDATION)
 $(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_SUNRISE_SUNSET): $(TEST_DIR)/unit/test_sunrise_sunset.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
 
 # Benchmark executables
 $(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_FOUNDATION)
