@@ -98,6 +98,10 @@ DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
            $(BUILD_DIR)/katra_db_sqlite.o \
            $(BUILD_DIR)/katra_encoder.o
 
+# Engram/cognitive object files
+ENGRAM_OBJS := $(BUILD_DIR)/cognitive_workflows.o \
+               $(BUILD_DIR)/emotional_context.o
+
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
 
@@ -107,7 +111,7 @@ directories:
 	@$(MKDIR_P) $(BIN_DIR)/tests
 
 # Build foundation library
-$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS)
+$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS)
 	@echo "Creating foundation library: $@"
 	@ar rcs $@ $^
 
@@ -175,6 +179,15 @@ $(BUILD_DIR)/katra_db_sqlite.o: $(SRC_DIR)/db/katra_db_sqlite.c
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 $(BUILD_DIR)/katra_encoder.o: $(SRC_DIR)/db/katra_encoder.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile engram sources
+$(BUILD_DIR)/cognitive_workflows.o: $(SRC_DIR)/engram/cognitive_workflows.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/emotional_context.o: $(SRC_DIR)/engram/emotional_context.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
