@@ -102,7 +102,8 @@ DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
 ENGRAM_OBJS := $(BUILD_DIR)/cognitive_workflows.o \
                $(BUILD_DIR)/emotional_context.o \
                $(BUILD_DIR)/working_memory.o \
-               $(BUILD_DIR)/interstitial.o
+               $(BUILD_DIR)/interstitial.o \
+               $(BUILD_DIR)/string_utils.o
 
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
@@ -198,6 +199,10 @@ $(BUILD_DIR)/working_memory.o: $(SRC_DIR)/engram/working_memory.c
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 $(BUILD_DIR)/interstitial.o: $(SRC_DIR)/engram/interstitial.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/string_utils.o: $(SRC_DIR)/engram/string_utils.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 

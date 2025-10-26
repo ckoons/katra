@@ -12,60 +12,13 @@
 #include "katra_experience.h"
 #include "katra_cognitive.h"
 #include "katra_memory.h"
+#include "katra_engram_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
-/* Helper: Check if string contains any of the keywords (case-insensitive) */
-static bool contains_emotion_keyword(const char* text, const char** keywords,
-                                     size_t count) {
-    if (!text || !keywords) {
-        return false;
-    }
-
-    char* text_lower = strdup(text);
-    if (!text_lower) {
-        return false;
-    }
-
-    /* Convert to lowercase */
-    for (size_t i = 0; text_lower[i]; i++) {
-        text_lower[i] = tolower(text_lower[i]);
-    }
-
-    /* Check each keyword */
-    for (size_t i = 0; i < count; i++) {
-        if (strstr(text_lower, keywords[i]) != NULL) {
-            free(text_lower);
-            return true;
-        }
-    }
-
-    free(text_lower);
-    return false;
-}
-
-/* Helper: Count character occurrences */
-static size_t count_char(const char* text, char ch) {
-    if (!text) {
-        return 0;
-    }
-
-    size_t count = 0;
-    for (size_t i = 0; text[i]; i++) {
-        if (text[i] == ch) {
-            count++;
-        }
-    }
-    return count;
-}
-
 /* Detect emotion from content */
 int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
-    if (!content || !emotion_out) {
-        katra_report_error(E_INPUT_NULL, "katra_detect_emotion",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_2(content, emotion_out);
 
     /* Initialize to neutral */
     emotion_out->valence = 0.0f;
@@ -76,7 +29,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
             sizeof(emotion_out->emotion) - 1);
 
     /* Arousal detection - exclamation marks */
-    size_t exclaim_count = count_char(content, '!');
+    size_t exclaim_count = katra_str_count_char(content, '!');
     if (exclaim_count > 0) {
         emotion_out->arousal = (exclaim_count > 3) ? 1.0f : (exclaim_count * 0.3f);
     }
@@ -105,7 +58,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "excited", "amazing", "awesome", "fantastic", "good", "nice",
         "thank", "appreciate", "glad"
     };
-    if (contains_emotion_keyword(content, positive_keywords, 15)) {
+    if (katra_str_contains_any(content, positive_keywords, 15)) {
         emotion_out->valence += 0.6f;
     }
 
@@ -115,7 +68,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "frustrated", "annoyed", "disappointed", "upset", "worried",
         "afraid", "fear", "angry"
     };
-    if (contains_emotion_keyword(content, negative_keywords, 15)) {
+    if (katra_str_contains_any(content, negative_keywords, 15)) {
         emotion_out->valence -= 0.6f;
     }
 
@@ -124,7 +77,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "must", "need to", "have to", "should", "will", "going to",
         "definitely", "certainly"
     };
-    if (contains_emotion_keyword(content, dominance_keywords, 8)) {
+    if (katra_str_contains_any(content, dominance_keywords, 8)) {
         emotion_out->dominance = 0.8f;
     }
 
@@ -133,7 +86,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "maybe", "perhaps", "i don't know", "not sure", "might",
         "could be", "possibly"
     };
-    if (contains_emotion_keyword(content, submissive_keywords, 7)) {
+    if (katra_str_contains_any(content, submissive_keywords, 7)) {
         emotion_out->dominance = 0.2f;
     }
 
@@ -213,11 +166,7 @@ int katra_store_experience(const char* ci_id,
                            const char* content,
                            float importance,
                            const emotional_tag_t* emotion) {
-    if (!ci_id || !content) {
-        katra_report_error(E_INPUT_NULL, "katra_store_experience",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_2(ci_id, content);
 
     /* Detect emotion if not provided */
     emotional_tag_t detected_emotion;
@@ -248,11 +197,7 @@ int katra_recall_emotional_experiences(const char* ci_id,
                                        size_t limit,
                                        experience_t*** results,
                                        size_t* count) {
-    if (!ci_id || !results || !count) {
-        katra_report_error(E_INPUT_NULL, "katra_recall_emotional_experiences",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_3(ci_id, results, count);
 
     /* Query cognitive records */
     cognitive_record_t** cog_results = NULL;
@@ -325,11 +270,7 @@ int katra_recall_emotional_experiences(const char* ci_id,
 int katra_get_mood_summary(const char* ci_id,
                            int hours_back,
                            emotional_tag_t* mood_out) {
-    if (!ci_id || !mood_out) {
-        katra_report_error(E_INPUT_NULL, "katra_get_mood_summary",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_2(ci_id, mood_out);
 
     /* Query recent experiences */
     experience_t** experiences = NULL;
@@ -396,11 +337,7 @@ int katra_track_emotional_arc(const char* ci_id,
                               time_t end_time,
                               emotional_tag_t** arc,
                               size_t* count) {
-    if (!ci_id || !arc || !count) {
-        katra_report_error(E_INPUT_NULL, "katra_track_emotional_arc",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_3(ci_id, arc, count);
 
     /* Note: start_time, end_time not yet used (will filter by time range) */
     (void)start_time;

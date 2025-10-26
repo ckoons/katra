@@ -11,6 +11,7 @@
 #include "katra_working_memory.h"
 #include "katra_experience.h"
 #include "katra_cognitive.h"
+#include "katra_engram_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -117,11 +118,7 @@ static int evict_item(working_memory_t* wm, size_t index) {
 int katra_working_memory_add(working_memory_t* wm,
                               experience_t* experience,
                               float attention_score) {
-    if (!wm || !experience) {
-        katra_report_error(E_INPUT_NULL, "katra_working_memory_add",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_2(wm, experience);
 
     /* Clamp attention score */
     if (attention_score < 0.0f) attention_score = 0.0f;
@@ -347,11 +344,7 @@ int katra_working_memory_stats(working_memory_t* wm,
                                 size_t* current_count,
                                 float* avg_attention,
                                 time_t* time_since_consolidation) {
-    if (!wm || !current_count || !avg_attention || !time_since_consolidation) {
-        katra_report_error(E_INPUT_NULL, "katra_working_memory_stats",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_4(wm, current_count, avg_attention, time_since_consolidation);
 
     *current_count = wm->count;
 

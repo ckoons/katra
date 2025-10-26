@@ -13,6 +13,7 @@
 #include "katra_working_memory.h"
 #include "katra_experience.h"
 #include "katra_cognitive.h"
+#include "katra_engram_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -38,8 +39,7 @@ const char* katra_boundary_type_name(boundary_type_t type) {
 /* Initialize interstitial processor */
 interstitial_processor_t* katra_interstitial_init(const char* ci_id) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "katra_interstitial_init",
-                          "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, __func__, "ci_id is NULL");
         return NULL;
     }
 
@@ -68,50 +68,6 @@ interstitial_processor_t* katra_interstitial_init(const char* ci_id) {
     return processor;
 }
 
-/* Helper: Simple keyword extraction and comparison */
-static float compare_keywords(const char* text1, const char* text2) {
-    if (!text1 || !text2) {
-        return 0.0f;
-    }
-
-    /* Simple word counting - count matching words */
-    char* t1 = strdup(text1);
-    char* t2 = strdup(text2);
-    if (!t1 || !t2) {
-        free(t1);
-        free(t2);
-        return 0.0f;
-    }
-
-    /* Convert to lowercase */
-    for (size_t i = 0; t1[i]; i++) t1[i] = tolower(t1[i]);
-    for (size_t i = 0; t2[i]; i++) t2[i] = tolower(t2[i]);
-
-    /* Count matching significant words (>3 chars) */
-    size_t matches = 0;
-    size_t total = 0;
-
-    char* word1 = strtok(t1, " .,!?;:\n\t");
-    while (word1) {
-        if (strlen(word1) > 3) {
-            total++;
-            if (strstr(t2, word1)) {
-                matches++;
-            }
-        }
-        word1 = strtok(NULL, " .,!?;:\n\t");
-    }
-
-    free(t1);
-    free(t2);
-
-    if (total == 0) {
-        return 0.0f;
-    }
-
-    return (float)matches / (float)total;
-}
-
 /* Detect topic similarity */
 float katra_topic_similarity(const experience_t* prev, const experience_t* curr) {
     if (!prev || !curr) {
@@ -127,8 +83,8 @@ float katra_topic_similarity(const experience_t* prev, const experience_t* curr)
     }
 
     /* Compare content keywords */
-    float similarity = compare_keywords(prev->record->content,
-                                       curr->record->content);
+    float similarity = katra_str_similarity(prev->record->content,
+                                            curr->record->content);
 
     /* Boost similarity if same thought type */
     if (prev->record->thought_type == curr->record->thought_type) {
@@ -159,8 +115,7 @@ float katra_emotional_delta(const experience_t* prev, const experience_t* curr) 
 boundary_event_t* katra_detect_boundary(interstitial_processor_t* processor,
                                         experience_t* experience) {
     if (!processor || !experience) {
-        katra_report_error(E_INPUT_NULL, "katra_detect_boundary",
-                          "NULL parameter");
+        katra_report_error(E_INPUT_NULL, __func__, "NULL parameter");
         return NULL;
     }
 
@@ -293,11 +248,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
                            size_t count,
                            char*** patterns,
                            size_t* pattern_count) {
-    if (!processor || !experiences || !patterns || !pattern_count) {
-        katra_report_error(E_INPUT_NULL, "katra_extract_patterns",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_4(processor, experiences, patterns, pattern_count);
 
     /* Simple pattern detection: repeated thought types */
     int thought_type_counts[11] = {0};
@@ -343,7 +294,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
                     katra_thought_type_name((thought_type_t)i),
                     thought_type_counts[i], count);
 
-            (*patterns)[idx] = strdup(pattern);
+            (*patterns)[idx] = katra_safe_strdup(pattern);
             if ((*patterns)[idx]) {
                 idx++;
             }
@@ -360,11 +311,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
 int katra_process_boundary(interstitial_processor_t* processor,
                            boundary_event_t* boundary,
                            working_memory_t* wm) {
-    if (!processor || !boundary || !wm) {
-        katra_report_error(E_INPUT_NULL, "katra_process_boundary",
-                          "NULL parameter");
-        return E_INPUT_NULL;
-    }
+    ENGRAM_CHECK_PARAMS_3(processor, boundary, wm);
 
     if (boundary->type == BOUNDARY_NONE) {
         return KATRA_SUCCESS;
