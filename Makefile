@@ -92,6 +92,12 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o \
              $(BUILD_DIR)/katra_continuity.o
 
+# Database backend object files
+DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
+           $(BUILD_DIR)/katra_db_jsonl.o \
+           $(BUILD_DIR)/katra_db_sqlite.o \
+           $(BUILD_DIR)/katra_encoder.o
+
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
 
@@ -101,7 +107,7 @@ directories:
 	@$(MKDIR_P) $(BIN_DIR)/tests
 
 # Build foundation library
-$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS)
+$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS)
 	@echo "Creating foundation library: $@"
 	@ar rcs $@ $^
 
@@ -152,6 +158,23 @@ $(BUILD_DIR)/katra_checkpoint_mgmt.o: $(SRC_DIR)/core/katra_checkpoint_mgmt.c
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 $(BUILD_DIR)/katra_continuity.o: $(SRC_DIR)/core/katra_continuity.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile DB backend sources
+$(BUILD_DIR)/katra_db_backend.o: $(SRC_DIR)/db/katra_db_backend.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_db_jsonl.o: $(SRC_DIR)/db/katra_db_jsonl.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_db_sqlite.o: $(SRC_DIR)/db/katra_db_sqlite.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_encoder.o: $(SRC_DIR)/db/katra_encoder.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
