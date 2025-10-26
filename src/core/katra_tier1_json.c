@@ -40,6 +40,38 @@ void katra_tier1_json_unescape(const char* src, char* dst, size_t dst_size) {
     dst[dst_idx] = '\0';
 }
 
+/* Helper: Extract and unescape optional string field */
+static int extract_optional_string(const char* line, const char* field,
+                                    char** dest) {
+    char temp_buffer[KATRA_BUFFER_LARGE];
+    char unescaped[KATRA_BUFFER_LARGE];
+
+    if (katra_json_get_string(line, field, temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
+        katra_tier1_json_unescape(temp_buffer, unescaped, sizeof(unescaped));
+        *dest = strdup(unescaped);
+        if (!*dest) {
+            return E_SYSTEM_MEMORY;
+        }
+    }
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Extract required string field */
+static int extract_required_string(const char* line, const char* field,
+                                    char** dest) {
+    char temp_buffer[KATRA_BUFFER_LARGE];
+    char unescaped[KATRA_BUFFER_LARGE];
+
+    if (katra_json_get_string(line, field, temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
+        katra_tier1_json_unescape(temp_buffer, unescaped, sizeof(unescaped));
+        *dest = strdup(unescaped);
+        if (!*dest) {
+            return E_SYSTEM_MEMORY;
+        }
+    }
+    return KATRA_SUCCESS;
+}
+
 /* Parse JSON record from line */
 int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     int result = KATRA_SUCCESS;
@@ -84,63 +116,36 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     }
 
     /* Extract content (required) */
-    if (katra_json_get_string(line, "content", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        char unescaped[KATRA_BUFFER_LARGE];
-        katra_tier1_json_unescape(temp_buffer, unescaped, sizeof(unescaped));
-        rec->content = strdup(unescaped);
-        if (!rec->content) {
-            result = E_SYSTEM_MEMORY;
-            goto cleanup;
-        }
+    result = extract_required_string(line, "content", &rec->content);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
     }
 
-    /* Extract response (optional) */
-    if (katra_json_get_string(line, "response", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        char unescaped[KATRA_BUFFER_LARGE];
-        katra_tier1_json_unescape(temp_buffer, unescaped, sizeof(unescaped));
-        rec->response = strdup(unescaped);
-        if (!rec->response) {
-            result = E_SYSTEM_MEMORY;
-            goto cleanup;
-        }
+    /* Extract optional string fields */
+    result = extract_optional_string(line, "response", &rec->response);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
     }
 
-    /* Extract context (optional) */
-    if (katra_json_get_string(line, "context", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        char unescaped[KATRA_BUFFER_LARGE];
-        katra_tier1_json_unescape(temp_buffer, unescaped, sizeof(unescaped));
-        rec->context = strdup(unescaped);
-        if (!rec->context) {
-            result = E_SYSTEM_MEMORY;
-            goto cleanup;
-        }
+    result = extract_optional_string(line, "context", &rec->context);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
     }
 
-    /* Extract ci_id */
-    if (katra_json_get_string(line, "ci_id", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        rec->ci_id = strdup(temp_buffer);
-        if (!rec->ci_id) {
-            result = E_SYSTEM_MEMORY;
-            goto cleanup;
-        }
+    /* Extract remaining optional fields */
+    result = extract_optional_string(line, "ci_id", &rec->ci_id);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
     }
 
-    /* Extract session_id (optional) */
-    if (katra_json_get_string(line, "session_id", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        rec->session_id = strdup(temp_buffer);
-        if (!rec->session_id) {
-            result = E_SYSTEM_MEMORY;
-            goto cleanup;
-        }
+    result = extract_optional_string(line, "session_id", &rec->session_id);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
     }
 
-    /* Extract component (optional) */
-    if (katra_json_get_string(line, "component", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        rec->component = strdup(temp_buffer);
-        if (!rec->component) {
-            result = E_SYSTEM_MEMORY;
-            goto cleanup;
-        }
+    result = extract_optional_string(line, "component", &rec->component);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
     }
 
     /* Extract tier */

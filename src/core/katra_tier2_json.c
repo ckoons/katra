@@ -11,6 +11,38 @@
 #include "katra_json_utils.h"
 #include "katra_limits.h"
 
+/* Helper: Write string array as JSON */
+static void write_json_string_array(FILE* fp, const char* field_name,
+                                     char** items, size_t count) {
+    fprintf(fp, "\"%s\":[", field_name);
+    for (size_t i = 0; i < count; i++) {
+        if (items && items[i]) {
+            fprintf(fp, "\"%s\"", items[i]);
+            if (i < count - 1) {
+                fprintf(fp, ",");
+            }
+        }
+    }
+    fprintf(fp, "]");
+}
+
+/* Helper: Write escaped string array as JSON */
+static void write_json_escaped_array(FILE* fp, const char* field_name,
+                                      char** items, size_t count) {
+    fprintf(fp, "\"%s\":[", field_name);
+    for (size_t i = 0; i < count; i++) {
+        if (items && items[i]) {
+            char escaped[KATRA_BUFFER_LARGE];
+            katra_json_escape(items[i], escaped, sizeof(escaped));
+            fprintf(fp, "\"%s\"", escaped);
+            if (i < count - 1) {
+                fprintf(fp, ",");
+            }
+        }
+    }
+    fprintf(fp, "]");
+}
+
 /* Write digest record as JSON line */
 int katra_tier2_write_json_digest(FILE* fp, const digest_record_t* digest) {
     if (!fp || !digest) {
@@ -31,61 +63,20 @@ int katra_tier2_write_json_digest(FILE* fp, const digest_record_t* digest) {
     fprintf(fp, "\"digest_type\":%d,", digest->digest_type);
 
     /* Themes array */
-    fprintf(fp, "\"themes\":[");
-    for (size_t i = 0; i < digest->theme_count; i++) {
-        if (digest->themes && digest->themes[i]) {
-            fprintf(fp, "\"%s\"", digest->themes[i]);
-            if (i < digest->theme_count - 1) {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fprintf(fp, "],");
+    write_json_string_array(fp, "themes", digest->themes, digest->theme_count);
+    fprintf(fp, ",");
 
     /* Keywords array */
-    fprintf(fp, "\"keywords\":[");
-    for (size_t i = 0; i < digest->keyword_count; i++) {
-        if (digest->keywords && digest->keywords[i]) {
-            fprintf(fp, "\"%s\"", digest->keywords[i]);
-            if (i < digest->keyword_count - 1) {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fprintf(fp, "],");
+    write_json_string_array(fp, "keywords", digest->keywords, digest->keyword_count);
+    fprintf(fp, ",");
 
     /* Entities object */
     fprintf(fp, "\"entities\":{");
-    fprintf(fp, "\"files\":[");
-    for (size_t i = 0; i < digest->entities.file_count; i++) {
-        if (digest->entities.files && digest->entities.files[i]) {
-            fprintf(fp, "\"%s\"", digest->entities.files[i]);
-            if (i < digest->entities.file_count - 1) {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fprintf(fp, "],");
-    fprintf(fp, "\"concepts\":[");
-    for (size_t i = 0; i < digest->entities.concept_count; i++) {
-        if (digest->entities.concepts && digest->entities.concepts[i]) {
-            fprintf(fp, "\"%s\"", digest->entities.concepts[i]);
-            if (i < digest->entities.concept_count - 1) {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fprintf(fp, "],");
-    fprintf(fp, "\"people\":[");
-    for (size_t i = 0; i < digest->entities.people_count; i++) {
-        if (digest->entities.people && digest->entities.people[i]) {
-            fprintf(fp, "\"%s\"", digest->entities.people[i]);
-            if (i < digest->entities.people_count - 1) {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fprintf(fp, "]");
+    write_json_string_array(fp, "files", digest->entities.files, digest->entities.file_count);
+    fprintf(fp, ",");
+    write_json_string_array(fp, "concepts", digest->entities.concepts, digest->entities.concept_count);
+    fprintf(fp, ",");
+    write_json_string_array(fp, "people", digest->entities.people, digest->entities.people_count);
     fprintf(fp, "},");
 
     /* Summary (escaped) */
@@ -98,35 +89,15 @@ int katra_tier2_write_json_digest(FILE* fp, const digest_record_t* digest) {
     }
 
     /* Key insights array */
-    fprintf(fp, "\"key_insights\":[");
-    for (size_t i = 0; i < digest->insight_count; i++) {
-        if (digest->key_insights && digest->key_insights[i]) {
-            char insight_escaped[KATRA_BUFFER_LARGE];
-            katra_json_escape(digest->key_insights[i], insight_escaped, sizeof(insight_escaped));
-            fprintf(fp, "\"%s\"", insight_escaped);
-            if (i < digest->insight_count - 1) {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fprintf(fp, "],");
+    write_json_escaped_array(fp, "key_insights", digest->key_insights, digest->insight_count);
+    fprintf(fp, ",");
 
     /* Metadata */
     fprintf(fp, "\"questions_asked\":%d,", digest->questions_asked);
 
     /* Decisions array */
-    fprintf(fp, "\"decisions_made\":[");
-    for (size_t i = 0; i < digest->decision_count; i++) {
-        if (digest->decisions_made && digest->decisions_made[i]) {
-            char decision_escaped[KATRA_BUFFER_LARGE];
-            katra_json_escape(digest->decisions_made[i], decision_escaped, sizeof(decision_escaped));
-            fprintf(fp, "\"%s\"", decision_escaped);
-            if (i < digest->decision_count - 1) {
-                fprintf(fp, ",");
-            }
-        }
-    }
-    fprintf(fp, "],");
+    write_json_escaped_array(fp, "decisions_made", digest->decisions_made, digest->decision_count);
+    fprintf(fp, ",");
 
     /* Archived flag */
     fprintf(fp, "\"archived\":%s", digest->archived ? "true" : "false");
@@ -134,6 +105,63 @@ int katra_tier2_write_json_digest(FILE* fp, const digest_record_t* digest) {
     /* End JSON object */
     fprintf(fp, "}\n");
 
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Extract string field from JSON */
+static int extract_json_string(const char* line, const char* field,
+                                char* buffer, size_t buffer_size) {
+    char search_str[128];
+    snprintf(search_str, sizeof(search_str), "\"%s\":\"", field);
+
+    const char* start = strstr(line, search_str);
+    if (!start) {
+        buffer[0] = '\0';
+        return KATRA_SUCCESS;
+    }
+
+    start += strlen(search_str);
+    const char* end = strchr(start, '"');
+    if (!end) {
+        buffer[0] = '\0';
+        return KATRA_SUCCESS;
+    }
+
+    size_t len = end - start;
+    if (len >= buffer_size) {
+        len = buffer_size - 1;
+    }
+
+    strncpy(buffer, start, len);
+    buffer[len] = '\0';
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Extract int field from JSON */
+static int extract_json_int(const char* line, const char* field, int* value) {
+    char search_str[128];
+    snprintf(search_str, sizeof(search_str), "\"%s\":", field);
+
+    const char* start = strstr(line, search_str);
+    if (!start) {
+        return E_SYSTEM_FILE;
+    }
+
+    sscanf(start + strlen(search_str), "%d", value);
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Extract long field from JSON */
+static int extract_json_long(const char* line, const char* field, long* value) {
+    char search_str[128];
+    snprintf(search_str, sizeof(search_str), "\"%s\":", field);
+
+    const char* start = strstr(line, search_str);
+    if (!start) {
+        return E_SYSTEM_FILE;
+    }
+
+    sscanf(start + strlen(search_str), "%ld", value);
     return KATRA_SUCCESS;
 }
 
@@ -149,7 +177,7 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
         return E_SYSTEM_MEMORY;
     }
 
-    /* Extract basic fields using sscanf */
+    /* Extract basic fields */
     char digest_id[256] = {0};
     char period_id[64] = {0};
     char ci_id[256] = {0};
@@ -160,89 +188,24 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
     int questions_asked = 0;
     int archived = 0;
 
-    /* Parse main fields - simplified parsing, production would use JSON library */
-    const char* ptr = line;
+    /* Parse fields using helpers */
+    extract_json_string(line, "digest_id", digest_id, sizeof(digest_id));
+    extract_json_long(line, "timestamp", &timestamp);
+    extract_json_int(line, "period_type", &period_type);
+    extract_json_string(line, "period_id", period_id, sizeof(period_id));
+    extract_json_int(line, "source_tier", &source_tier);
+    extract_json_string(line, "ci_id", ci_id, sizeof(ci_id));
+    extract_json_int(line, "digest_type", &digest_type);
+    extract_json_int(line, "questions_asked", &questions_asked);
 
-    /* digest_id */
-    const char* digest_id_start = strstr(ptr, "\"digest_id\":\"");
-    if (digest_id_start) {
-        digest_id_start += 13;
-        const char* digest_id_end = strchr(digest_id_start, '"');
-        if (digest_id_end) {
-            size_t len = digest_id_end - digest_id_start;
-            if (len < sizeof(digest_id)) {
-                strncpy(digest_id, digest_id_start, len);
-                digest_id[len] = '\0';
-            }
-        }
-    }
-
-    /* timestamp */
-    const char* timestamp_start = strstr(ptr, "\"timestamp\":");
-    if (timestamp_start) {
-        sscanf(timestamp_start, "\"timestamp\":%ld", &timestamp);
-    }
-
-    /* period_type */
-    const char* period_type_start = strstr(ptr, "\"period_type\":");
-    if (period_type_start) {
-        sscanf(period_type_start, "\"period_type\":%d", &period_type);
-    }
-
-    /* period_id */
-    const char* period_id_start = strstr(ptr, "\"period_id\":\"");
-    if (period_id_start) {
-        period_id_start += 13;
-        const char* period_id_end = strchr(period_id_start, '"');
-        if (period_id_end) {
-            size_t len = period_id_end - period_id_start;
-            if (len < sizeof(period_id)) {
-                strncpy(period_id, period_id_start, len);
-                period_id[len] = '\0';
-            }
-        }
-    }
-
-    /* source_tier */
-    const char* source_tier_start = strstr(ptr, "\"source_tier\":");
-    if (source_tier_start) {
-        sscanf(source_tier_start, "\"source_tier\":%d", &source_tier);
-    }
-
-    /* source_record_count */
-    const char* src_count_start = strstr(ptr, "\"source_record_count\":");
+    /* Parse source_record_count */
+    const char* src_count_start = strstr(line, "\"source_record_count\":");
     if (src_count_start) {
         sscanf(src_count_start, "\"source_record_count\":%zu", &d->source_record_count);
     }
 
-    /* ci_id */
-    const char* ci_id_start = strstr(ptr, "\"ci_id\":\"");
-    if (ci_id_start) {
-        ci_id_start += 9;
-        const char* ci_id_end = strchr(ci_id_start, '"');
-        if (ci_id_end) {
-            size_t len = ci_id_end - ci_id_start;
-            if (len < sizeof(ci_id)) {
-                strncpy(ci_id, ci_id_start, len);
-                ci_id[len] = '\0';
-            }
-        }
-    }
-
-    /* digest_type */
-    const char* digest_type_start = strstr(ptr, "\"digest_type\":");
-    if (digest_type_start) {
-        sscanf(digest_type_start, "\"digest_type\":%d", &digest_type);
-    }
-
-    /* questions_asked */
-    const char* questions_start = strstr(ptr, "\"questions_asked\":");
-    if (questions_start) {
-        sscanf(questions_start, "\"questions_asked\":%d", &questions_asked);
-    }
-
-    /* archived */
-    const char* archived_start = strstr(ptr, "\"archived\":");
+    /* Parse archived boolean */
+    const char* archived_start = strstr(line, "\"archived\":");
     if (archived_start) {
         archived_start += 11;
         archived = (strncmp(archived_start, "true", 4) == 0) ? 1 : 0;

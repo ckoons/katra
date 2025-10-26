@@ -23,14 +23,67 @@ extern sqlite3* tier2_index_get_db(void);
 #define TIER2_DIR_WEEKLY  "weekly"
 #define TIER2_DIR_MONTHLY "monthly"
 
+/* Helper: Process JSONL files in directory and add to index */
+static int process_digest_directory(const char* dir_path, int* indexed_count) {
+    DIR* dir = NULL;
+    struct dirent* entry;
+    int result = KATRA_SUCCESS;
+
+    if (!dir_path || !indexed_count) {
+        return E_INPUT_NULL;
+    }
+
+    dir = opendir(dir_path);
+    if (!dir) {
+        return KATRA_SUCCESS;  /* Directory doesn't exist, not an error */
+    }
+
+    while ((entry = readdir(dir)) != NULL) {
+        /* Check for .jsonl extension */
+        size_t name_len = strlen(entry->d_name);
+        if (name_len < 6 || strcmp(entry->d_name + name_len - 6, ".jsonl") != 0) {
+            continue;
+        }
+
+        /* Build full file path */
+        char filepath[KATRA_PATH_MAX];
+        snprintf(filepath, sizeof(filepath), "%s/%s", dir_path, entry->d_name);
+
+        /* Open and process file */
+        FILE* fp = fopen(filepath, "r");
+        if (!fp) continue;
+
+        char line[KATRA_BUFFER_LARGE];
+        long offset = 0;
+
+        while (fgets(line, sizeof(line), fp)) {
+            /* Parse digest from JSON */
+            digest_record_t* digest = NULL;
+            result = katra_tier2_parse_json_digest(line, &digest);
+            if (result == KATRA_SUCCESS && digest) {
+                /* Add to index */
+                result = tier2_index_add(digest, filepath, offset);
+                if (result == KATRA_SUCCESS) {
+                    (*indexed_count)++;
+                }
+                katra_digest_free(digest);
+            }
+            offset = ftell(fp);
+        }
+
+        fclose(fp);
+    }
+
+    closedir(dir);
+    return KATRA_SUCCESS;
+}
+
 /* Rebuild index from JSONL files */
 int tier2_index_rebuild(const char* ci_id) {
     int result = KATRA_SUCCESS;
     int indexed_count = 0;
     char weekly_dir[KATRA_PATH_MAX];
     char monthly_dir[KATRA_PATH_MAX];
-    DIR* dir = NULL;
-    struct dirent* entry;
     sqlite3* g_db = tier2_index_get_db();
 
     if (!ci_id) {
@@ -70,87 +123,9 @@ int tier2_index_rebuild(const char* ci_id) {
         return result;
     }
 
-    /* Process weekly directory */
-    dir = opendir(weekly_dir);
-    if (dir) {
-        while ((entry = readdir(dir)) != NULL) {
-            /* Check for .jsonl extension */
-            size_t name_len = strlen(entry->d_name);
-            if (name_len < 6 || strcmp(entry->d_name + name_len - 6, ".jsonl") != 0) {
-                continue;
-            }
-
-            /* Build full file path */
-            char filepath[KATRA_PATH_MAX];
-            snprintf(filepath, sizeof(filepath), "%s/%s", weekly_dir, entry->d_name);
-
-            /* Open and process file */
-            FILE* fp = fopen(filepath, "r");
-            if (!fp) continue;
-
-            char line[KATRA_BUFFER_LARGE];
-            long offset = 0;
-
-            while (fgets(line, sizeof(line), fp)) {
-                /* Parse digest from JSON */
-                digest_record_t* digest = NULL;
-                result = katra_tier2_parse_json_digest(line, &digest);
-                if (result == KATRA_SUCCESS && digest) {
-                    /* Add to index */
-                    result = tier2_index_add(digest, filepath, offset);
-                    if (result == KATRA_SUCCESS) {
-                        indexed_count++;
-                    }
-                    katra_digest_free(digest);
-                }
-                offset = ftell(fp);
-            }
-
-            fclose(fp);
-        }
-        closedir(dir);
-    }
-
-    /* Process monthly directory */
-    dir = opendir(monthly_dir);
-    if (dir) {
-        while ((entry = readdir(dir)) != NULL) {
-            /* Check for .jsonl extension */
-            size_t name_len = strlen(entry->d_name);
-            if (name_len < 6 || strcmp(entry->d_name + name_len - 6, ".jsonl") != 0) {
-                continue;
-            }
-
-            /* Build full file path */
-            char filepath[KATRA_PATH_MAX];
-            snprintf(filepath, sizeof(filepath), "%s/%s", monthly_dir, entry->d_name);
-
-            /* Open and process file */
-            FILE* fp = fopen(filepath, "r");
-            if (!fp) continue;
-
-            char line[KATRA_BUFFER_LARGE];
-            long offset = 0;
-
-            while (fgets(line, sizeof(line), fp)) {
-                /* Parse digest from JSON */
-                digest_record_t* digest = NULL;
-                result = katra_tier2_parse_json_digest(line, &digest);
-                if (result == KATRA_SUCCESS && digest) {
-                    /* Add to index */
-                    result = tier2_index_add(digest, filepath, offset);
-                    if (result == KATRA_SUCCESS) {
-                        indexed_count++;
-                    }
-                    katra_digest_free(digest);
-                }
-                offset = ftell(fp);
-            }
-
-            fclose(fp);
-        }
-        closedir(dir);
-    }
+    /* Process weekly and monthly directories */
+    process_digest_directory(weekly_dir, &indexed_count);
+    process_digest_directory(monthly_dir, &indexed_count);
 
     LOG_INFO("Index rebuild complete: %d digests indexed", indexed_count);
     return indexed_count;
