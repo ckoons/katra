@@ -96,7 +96,9 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
 DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
            $(BUILD_DIR)/katra_db_jsonl.o \
            $(BUILD_DIR)/katra_db_sqlite.o \
-           $(BUILD_DIR)/katra_encoder.o
+           $(BUILD_DIR)/katra_encoder.o \
+           $(BUILD_DIR)/katra_vector.o \
+           $(BUILD_DIR)/katra_graph.o
 
 # Engram/cognitive object files
 ENGRAM_OBJS := $(BUILD_DIR)/cognitive_workflows.o \
@@ -185,6 +187,14 @@ $(BUILD_DIR)/katra_encoder.o: $(SRC_DIR)/db/katra_encoder.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+$(BUILD_DIR)/katra_vector.o: $(SRC_DIR)/db/katra_vector.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_graph.o: $(SRC_DIR)/db/katra_graph.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
 # Compile engram sources
 $(BUILD_DIR)/cognitive_workflows.o: $(SRC_DIR)/engram/cognitive_workflows.c
 	@echo "Compiling: $<"
@@ -222,12 +232,14 @@ TEST_TIER2 := $(BIN_DIR)/tests/test_tier2
 TEST_TIER2_INDEX := $(BIN_DIR)/tests/test_tier2_index
 TEST_CHECKPOINT := $(BIN_DIR)/tests/test_checkpoint
 TEST_CONTINUITY := $(BIN_DIR)/tests/test_continuity
+TEST_VECTOR := $(BIN_DIR)/tests/test_vector
+TEST_GRAPH := $(BIN_DIR)/tests/test_graph
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -282,6 +294,14 @@ test-continuity: $(TEST_CONTINUITY)
 	@echo "Running continuity tests..."
 	@$(TEST_CONTINUITY)
 
+test-vector: $(TEST_VECTOR)
+	@echo "Running vector database tests..."
+	@$(TEST_VECTOR)
+
+test-graph: $(TEST_GRAPH)
+	@echo "Running graph database tests..."
+	@$(TEST_GRAPH)
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
@@ -324,6 +344,14 @@ $(TEST_CHECKPOINT): $(TEST_DIR)/unit/test_checkpoint.c $(LIBKATRA_FOUNDATION)
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_CONTINUITY): $(TEST_DIR)/unit/test_continuity.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_VECTOR): $(TEST_DIR)/unit/test_vector.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+
+$(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
