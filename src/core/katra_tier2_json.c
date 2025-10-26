@@ -228,7 +228,14 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
         return E_SYSTEM_MEMORY;
     }
 
-    /* Note: Arrays (themes, keywords, entities, etc.) not parsed in this simplified version */
+    /* Parse summary field */
+    char summary_buf[KATRA_BUFFER_LARGE];
+    extract_json_string(line, "summary", summary_buf, sizeof(summary_buf));
+    if (summary_buf[0] != '\0') {
+        d->summary = strdup(summary_buf);
+    }
+
+    /* Note: Arrays (themes, keywords, entities, etc.) not fully parsed in this simplified version */
     /* Production would use a proper JSON library like cJSON or jsmn */
 
     *digest = d;
