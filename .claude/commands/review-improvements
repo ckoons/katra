@@ -1,0 +1,44 @@
+ Review the Katra codebase for improvement opportunities:
+
+  ## 1. Code Duplication Analysis
+  - Scan for duplicate or near-duplicate code blocks (3+ occurrences)
+  - Identify boilerplate that could become helper functions or macros
+  - Look for repeated patterns in error handling, resource cleanup, etc.
+
+  ## 2. Abstraction Opportunities
+  - Find common function signatures that could use macro wrappers
+  - Identify repeated sequences (malloc+check, open+check+close)
+  - Suggest helper functions for 4+ usage patterns (Rule of 3)
+
+  ## 3. Line Count Optimization
+  - Identify files approaching 600-line limit
+  - Suggest logical splits for files 500+ lines
+  - Find verbose sections that could be condensed
+
+  ## 4. Pattern Standardization
+  - Check consistency of error reporting (katra_report_error usage)
+  - Verify goto cleanup pattern compliance
+  - Identify non-standard approaches that should be unified
+
+  ## 5. Macro vs Function Trade-offs
+  - Evaluate existing macros for overuse/underuse
+  - Suggest where macros would reduce boilerplate
+  - Recommend converting complex macros to inline functions
+
+  ## 6. Reusable Utilities
+  - Find code that appears in 2 files (watch for Rule of 3)
+  - Identify candidate utility functions for next extraction
+  - Suggest new *_common.h utilities
+
+  **Output Format:**
+  - Priority: HIGH/MEDIUM/LOW
+  - Effort: 5min/30min/2hr
+  - Impact: Line reduction, clarity, maintainability
+  - No changes - analysis only with specific file:line references
+
+  **Focus Areas:**
+  - Files: {specify if needed, otherwise scan all src/core/ and src/foundation/}
+  - Recent changes: {git log since last review}
+  - Budget status: {from count_core.sh}
+
+

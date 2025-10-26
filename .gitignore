@@ -53,3 +53,28 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Katra build artifacts
+build/
+bin/
+
+# Katra runtime/config (local only)
+.env.katra.local
+.katra/
+
+# Katra logs
+*.log
+
+# Temporary files
+/tmp/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Claude Code commands (keep structure, ignore local customizations)
+.claude/commands/*.local

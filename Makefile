@@ -41,8 +41,9 @@ RM_RF := rm -rf
 # PHONY TARGETS
 # ==============================================================================
 
-.PHONY: all clean distclean test help
+.PHONY: all clean clean-all distclean test help
 .PHONY: count-report programming-guidelines check
+.PHONY: improvement-scan
 .PHONY: directories
 
 # ==============================================================================
@@ -71,6 +72,7 @@ FOUNDATION_OBJS := $(BUILD_DIR)/katra_error.o \
                    $(BUILD_DIR)/katra_log.o \
                    $(BUILD_DIR)/katra_env_utils.o \
                    $(BUILD_DIR)/katra_env_load.o \
+                   $(BUILD_DIR)/katra_env_parse.o \
                    $(BUILD_DIR)/katra_config.o \
                    $(BUILD_DIR)/katra_init.o \
                    $(BUILD_DIR)/katra_path_utils.o \
@@ -287,6 +289,15 @@ check: programming-guidelines count-report
 	@echo "All code discipline checks complete"
 	@echo "========================================"
 
+improvement-scan:
+	@echo "Running Katra improvement scan..."
+	@if [ -f $(SCRIPTS_DIR)/scan_improvements.sh ]; then \
+		$(SCRIPTS_DIR)/scan_improvements.sh; \
+	else \
+		echo "Error: $(SCRIPTS_DIR)/scan_improvements.sh not found"; \
+		exit 1; \
+	fi
+
 # ==============================================================================
 # INSTALL SECTION (future Makefile.install)
 # ==============================================================================
@@ -308,11 +319,17 @@ clean:
 	@$(RM_RF) $(BIN_DIR)
 	@echo "Clean complete"
 
-distclean: clean
-	@echo "Removing all generated files..."
-	@$(RM_RF) .env.katra.local
+clean-all: clean
+	@echo "Deep clean (build/, bin/, logs, temp files)..."
 	@$(RM_RF) *.log
-	@echo "Distclean complete"
+	@$(RM_RF) /tmp/katra_*.txt
+	@echo "Clean-all complete"
+
+distclean: clean-all
+	@echo "Removing all generated and local config files..."
+	@$(RM_RF) .env.katra.local
+	@$(RM_RF) .katra/
+	@echo "Distclean complete (preserves .env.katra)"
 
 # ==============================================================================
 # HELP SECTION (future Makefile.help)
@@ -331,6 +348,7 @@ help:
 	@echo "  make count-report           - Count meaningful lines (diet-aware)"
 	@echo "  make programming-guidelines - Run 39 code quality checks"
 	@echo "  make check                  - Run both discipline reports"
+	@echo "  make improvement-scan       - Scan for code improvement opportunities"
 	@echo ""
 	@echo "Test Targets:"
 	@echo "  make test       - Run test suite (not yet implemented)"
@@ -342,8 +360,9 @@ help:
 	@echo "  make uninstall - Remove from ~/.local/bin/ (not yet implemented)"
 	@echo ""
 	@echo "Clean Targets:"
-	@echo "  make clean     - Remove build artifacts (build/, bin/)"
-	@echo "  make distclean - Remove all generated files"
+	@echo "  make clean      - Remove build artifacts (build/, bin/)"
+	@echo "  make clean-all  - Deep clean (build/, bin/, logs, temp files)"
+	@echo "  make distclean  - Remove all generated + local config"
 	@echo ""
 	@echo "Help:"
 	@echo "  make help      - Show this help message"

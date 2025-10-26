@@ -32,4 +32,11 @@ int grow_env_array(void);            /* LOCKS: none (caller holds katra_env_mute
 int find_env_index(const char* name);  /* LOCKS: none (caller holds katra_env_mutex) */
 int set_env_internal(const char* name, const char* value);  /* LOCKS: none (caller holds katra_env_mutex) */
 
+/* Parsing and expansion functions (from katra_env_parse.c) - CALLER MUST HOLD katra_env_mutex */
+void katra_env_trim_whitespace(char* str);
+void katra_env_strip_quotes(char* str);
+int katra_env_parse_line(const char* line, char** key, char** value);
+char* katra_env_expand_value(const char* value, int depth);
+int katra_env_expand_all(void);
+
 #endif /* KATRA_ENV_INTERNAL_H */

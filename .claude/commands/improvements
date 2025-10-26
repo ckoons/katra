@@ -1,0 +1,20 @@
+Analyze Katra codebase for improvement opportunities. Scan src/core/ and
+  src/foundation/ for:
+
+  1. **Duplicate patterns** (3+ occurrences) - candidates for extraction
+  2. **Boilerplate** - repeated error handling, cleanup, checks
+  3. **Macro opportunities** - common function call patterns
+  4. **Files approaching 600 lines** - suggest splits
+  5. **Shared utility candidates** - code in 2+ files
+  6. **Inconsistent patterns** - standardization opportunities
+
+  For each finding:
+  - Location: file:line
+  - Occurrences: count
+  - Priority: HIGH/MED/LOW
+  - Effort: minutes/hours
+  - Impact: lines saved, clarity gain
+  - Recommendation: specific action
+
+  **IMPORTANT: Analysis only, no code changes.**
+
