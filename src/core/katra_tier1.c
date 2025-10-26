@@ -25,27 +25,17 @@
 #define TIER1_FILE_FORMAT "%s/.katra/memory/tier1/%04d-%02d-%02d.jsonl"
 
 /* Forward declarations */
-static int get_tier1_dir(const char* ci_id, char* buffer, size_t size);
 static int get_daily_file_path(char* buffer, size_t size);
 static int write_json_record(FILE* fp, const memory_record_t* record);
-static int collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count);
 static void sort_filenames_desc(char** filenames, size_t count);
-static void free_filenames(char** filenames, size_t count);
+void tier1_free_filenames(char** filenames, size_t count);
 static bool record_matches_query(const memory_record_t* record, const memory_query_t* query);
 static int scan_file_for_records(const char* filepath, const memory_query_t* query,
-                                   memory_record_t*** result_array, size_t* result_count,
-                                   size_t* result_capacity);
-static int collect_archivable_from_file(const char* filepath, time_t cutoff,
-                                         memory_record_t*** records,
-                                         size_t* count, size_t* capacity);
-static void get_week_id(time_t timestamp, char* week_id, size_t size);
-static digest_record_t* create_digest_from_records(const char* ci_id,
-                                                     const char* week_id,
-                                                     memory_record_t** records,
-                                                     size_t count);
+                                  memory_record_t*** result_array, size_t* result_count,
+                                  size_t* result_capacity);
 
-/* Get Tier 1 directory path */
-static int get_tier1_dir(const char* ci_id, char* buffer, size_t size) {
+/* Get Tier 1 directory path (exported for archive module) */
+int tier1_get_dir(const char* ci_id, char* buffer, size_t size) {
     (void)ci_id;  /* Unused - future multi-tenant support */
 
     return katra_build_path(buffer, size, KATRA_DIR_MEMORY, KATRA_DIR_TIER1, NULL);
@@ -199,8 +189,8 @@ cleanup:
     return result;
 }
 
-/* Collect .jsonl files from directory */
-static int collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count) {
+/* Collect .jsonl files from directory (exported for archive module) */
+int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count) {
     DIR* dir = opendir(tier1_dir);
     if (!dir) {
         *filenames = NULL;
@@ -223,7 +213,7 @@ static int collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t*
             size_t new_cap = capacity == 0 ? 32 : capacity * 2;
             char** new_array = realloc(files, new_cap * sizeof(char*));
             if (!new_array) {
-                free_filenames(files, file_count);
+                tier1_free_filenames(files, file_count);
                 closedir(dir);
                 return E_SYSTEM_MEMORY;
             }
@@ -233,7 +223,7 @@ static int collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t*
 
         files[file_count] = strdup(entry->d_name);
         if (!files[file_count]) {
-            free_filenames(files, file_count);
+            tier1_free_filenames(files, file_count);
             closedir(dir);
             return E_SYSTEM_MEMORY;
         }
@@ -259,8 +249,8 @@ static void sort_filenames_desc(char** filenames, size_t count) {
     }
 }
 
-/* Free filename array */
-static void free_filenames(char** filenames, size_t count) {
+/* Free filename array (exported for archive module) */
+void tier1_free_filenames(char** filenames, size_t count) {
     if (!filenames) return;
     for (size_t i = 0; i < count; i++) {
         free(filenames[i]);
@@ -270,7 +260,7 @@ static void free_filenames(char** filenames, size_t count) {
 
 /* Helper: Check if record matches query */
 static bool record_matches_query(const memory_record_t* record,
-                                   const memory_query_t* query) {
+                                  const memory_query_t* query) {
     /* Check CI ID (required) */
     if (query->ci_id && record->ci_id) {
         if (strcmp(record->ci_id, query->ci_id) != 0) {
@@ -302,8 +292,8 @@ static bool record_matches_query(const memory_record_t* record,
 /* Helper: Scan file for matching records
  * Returns: KATRA_SUCCESS (continue), 1 (limit reached), E_SYSTEM_MEMORY (error) */
 static int scan_file_for_records(const char* filepath, const memory_query_t* query,
-                                   memory_record_t*** result_array, size_t* result_count,
-                                   size_t* result_capacity) {
+                                  memory_record_t*** result_array, size_t* result_count,
+                                  size_t* result_capacity) {
     FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
     if (!fp) {
         return KATRA_SUCCESS;  /* Skip unreadable files */
@@ -333,7 +323,7 @@ static int scan_file_for_records(const char* filepath, const memory_query_t* que
         if (*result_count >= *result_capacity) {
             size_t new_capacity = *result_capacity == 0 ? 32 : *result_capacity * 2;
             memory_record_t** new_array = realloc(*result_array,
-                                                   new_capacity * sizeof(memory_record_t*));
+                                                  new_capacity * sizeof(memory_record_t*));
             if (!new_array) {
                 katra_memory_free_record(record);
                 fclose(fp);
@@ -377,13 +367,13 @@ int tier1_query(const memory_query_t* query,
 
     /* Get Tier 1 directory */
     char tier1_dir[KATRA_PATH_MAX];
-    result = get_tier1_dir(query->ci_id, tier1_dir, sizeof(tier1_dir));
+    result = tier1_get_dir(query->ci_id, tier1_dir, sizeof(tier1_dir));
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
 
     /* Collect and sort filenames */
-    result = collect_jsonl_files(tier1_dir, &filenames, &file_count);
+    result = tier1_collect_jsonl_files(tier1_dir, &filenames, &file_count);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
@@ -410,7 +400,7 @@ int tier1_query(const memory_query_t* query,
         }
     }
 
-    free_filenames(filenames, file_count);
+    tier1_free_filenames(filenames, file_count);
     *results = result_array;
     *count = result_count;
     LOG_DEBUG("Tier 1 query returned %zu results", result_count);
@@ -423,199 +413,7 @@ cleanup:
         }
         free(result_array);
     }
-    free_filenames(filenames, file_count);
-    return result;
-}
-
-/* Helper: Collect archivable records from a file */
-static int collect_archivable_from_file(const char* filepath, time_t cutoff,
-                                         memory_record_t*** records,
-                                         size_t* count, size_t* capacity) {
-    FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
-    if (!fp) {
-        return KATRA_SUCCESS;  /* Skip unreadable files */
-    }
-
-    char line[KATRA_BUFFER_LARGE];
-    while (fgets(line, sizeof(line), fp)) {  /* GUIDELINE_APPROVED: fgets in while condition */
-        /* Remove newline */
-        size_t len = strlen(line);
-        if (len > 0 && line[len-1] == '\n') {
-            line[len-1] = '\0';
-        }
-
-        /* Parse record */
-        memory_record_t* record = NULL;
-        if (katra_tier1_parse_json_record(line, &record) != KATRA_SUCCESS || !record) {
-            continue;
-        }
-
-        /* Check if old enough to archive */
-        if (record->timestamp >= cutoff || record->archived) {
-            katra_memory_free_record(record);
-            continue;
-        }
-
-        /* Add to array */
-        if (*count >= *capacity) {
-            size_t new_cap = *capacity == 0 ? 64 : *capacity * 2;
-            memory_record_t** new_array = realloc(*records, new_cap * sizeof(memory_record_t*));
-            if (!new_array) {
-                katra_memory_free_record(record);
-                fclose(fp);
-                return E_SYSTEM_MEMORY;
-            }
-            *records = new_array;
-            *capacity = new_cap;
-        }
-
-        (*records)[(*count)++] = record;
-    }
-
-    fclose(fp);
-    return KATRA_SUCCESS;
-}
-
-/* Helper: Get week identifier from timestamp (YYYY-Www format) */
-static void get_week_id(time_t timestamp, char* week_id, size_t size) {
-    struct tm* tm_info = localtime(&timestamp);
-
-    /* Calculate ISO week number (simplified - proper implementation would handle edge cases) */
-    int day_of_year = tm_info->tm_yday;
-    int week_num = (day_of_year / 7) + 1;
-
-    snprintf(week_id, size, "%04d-W%02d",
-            tm_info->tm_year + 1900,
-            week_num);
-}
-
-/* Helper: Create digest from records */
-static digest_record_t* create_digest_from_records(const char* ci_id,
-                                                     const char* week_id,
-                                                     memory_record_t** records,
-                                                     size_t count) {
-    if (count == 0) {
-        return NULL;
-    }
-
-    /* Create digest */
-    digest_record_t* digest = katra_digest_create(ci_id, PERIOD_TYPE_WEEKLY,
-                                                   week_id, DIGEST_TYPE_INTERACTION);
-    if (!digest) {
-        return NULL;
-    }
-
-    /* Set source information */
-    digest->source_record_count = count;
-
-    /* Create simple summary */
-    char summary[KATRA_BUFFER_MEDIUM];
-    snprintf(summary, sizeof(summary),
-            "Weekly digest for %s: %zu interactions archived from Tier 1",
-            week_id, count);
-    digest->summary = strdup(summary);
-    if (!digest->summary) {
-        katra_digest_free(digest);
-        return NULL;
-    }
-
-    /* Count questions (records with '?' in content) */
-    int question_count = 0;
-    for (size_t i = 0; i < count; i++) {
-        if (records[i]->content && strchr(records[i]->content, '?')) {
-            question_count++;
-        }
-    }
-    digest->questions_asked = question_count;
-
-    return digest;
-}
-
-/* Archive old Tier 1 recordings */
-int tier1_archive(const char* ci_id, int max_age_days) {
-    int result = KATRA_SUCCESS;
-    char tier1_dir[KATRA_PATH_MAX];
-    char** filenames = NULL;
-    size_t file_count = 0;
-    memory_record_t** records = NULL;
-    size_t record_count = 0;
-    size_t record_capacity = 0;
-
-    if (!ci_id) {
-        return E_INPUT_NULL;
-    }
-
-    if (max_age_days < 0) {
-        return E_INPUT_RANGE;
-    }
-
-    /* Get Tier 1 directory */
-    result = get_tier1_dir(ci_id, tier1_dir, sizeof(tier1_dir));
-    if (result != KATRA_SUCCESS) {
-        return result;
-    }
-
-    /* Calculate cutoff time */
-    time_t now = time(NULL);
-    time_t cutoff = now - (max_age_days * 24 * 3600);
-
-    /* Collect filenames */
-    result = collect_jsonl_files(tier1_dir, &filenames, &file_count);
-    if (result != KATRA_SUCCESS || file_count == 0) {
-        free_filenames(filenames, file_count);
-        return 0;  /* No files to archive */
-    }
-
-    /* Collect archivable records from all files */
-    for (size_t f = 0; f < file_count; f++) {
-        char filepath[KATRA_PATH_MAX];
-        snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[f]);
-        result = collect_archivable_from_file(filepath, cutoff, &records,
-                                               &record_count, &record_capacity);
-        if (result != KATRA_SUCCESS) {
-            goto cleanup;
-        }
-    }
-
-    if (record_count == 0) {
-        result = 0;  /* No records to archive */
-        goto cleanup;
-    }
-
-    /* Group records by week and create digests */
-    /* Simplified implementation: create one digest for all records */
-    /* Production would group by week_id */
-    char week_id[32];
-    get_week_id(records[0]->timestamp, week_id, sizeof(week_id));
-
-    digest_record_t* digest = create_digest_from_records(ci_id, week_id,
-                                                          records, record_count);
-    if (!digest) {
-        result = E_SYSTEM_MEMORY;
-        goto cleanup;
-    }
-
-    /* Store digest to Tier 2 */
-    result = tier2_store_digest(digest);
-    katra_digest_free(digest);
-
-    if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "tier1_archive", "Failed to store digest to Tier 2");
-        goto cleanup;
-    }
-
-    LOG_INFO("Archived %zu Tier 1 records to Tier 2 digest %s", record_count, week_id);
-    result = (int)record_count;
-
-cleanup:
-    if (records) {
-        for (size_t i = 0; i < record_count; i++) {
-            katra_memory_free_record(records[i]);
-        }
-        free(records);
-    }
-    free_filenames(filenames, file_count);
-
+    tier1_free_filenames(filenames, file_count);
     return result;
 }
 
@@ -656,7 +454,7 @@ int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used) {
     *total_records = 0;
     *bytes_used = 0;
 
-    result = get_tier1_dir(ci_id, tier1_dir, sizeof(tier1_dir));
+    result = tier1_get_dir(ci_id, tier1_dir, sizeof(tier1_dir));
     if (result != KATRA_SUCCESS) {
         return result;
     }
