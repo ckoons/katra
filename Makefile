@@ -43,7 +43,7 @@ RM_RF := rm -rf
 
 .PHONY: all clean clean-all distclean test help
 .PHONY: count-report programming-guidelines check
-.PHONY: improvement-scan
+.PHONY: improvement-scan benchmark
 .PHONY: directories
 
 # ==============================================================================
@@ -166,6 +166,9 @@ TEST_TIER2 := $(BIN_DIR)/tests/test_tier2
 TEST_TIER2_INDEX := $(BIN_DIR)/tests/test_tier2_index
 TEST_CHECKPOINT := $(BIN_DIR)/tests/test_checkpoint
 
+# Benchmark executables
+BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
+
 # Test targets
 test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint
 	@echo ""
@@ -258,6 +261,17 @@ $(TEST_TIER2_INDEX): $(TEST_DIR)/unit/test_tier2_index.c $(LIBKATRA_FOUNDATION)
 $(TEST_CHECKPOINT): $(TEST_DIR)/unit/test_checkpoint.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+# Benchmark executables
+$(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_FOUNDATION)
+	@echo "Building benchmark: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+# Benchmark targets
+benchmark: $(BENCHMARK_TIER2_QUERY)
+	@echo ""
+	@echo "Running Tier 2 query performance benchmark..."
+	@$(BENCHMARK_TIER2_QUERY)
 
 # ==============================================================================
 # CODE DISCIPLINE TARGETS

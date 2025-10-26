@@ -308,14 +308,16 @@ static int scan_directory(const char* dir_path,
     return KATRA_SUCCESS;
 }
 
-/* Query Tier 2 digests */
+/* Query Tier 2 digests (using SQLite index) */
 int tier2_query(const digest_query_t* query,
                 digest_record_t*** results,
                 size_t* count) {
     int result = KATRA_SUCCESS;
+    char** digest_ids = NULL;
+    index_location_t* locations = NULL;
+    size_t location_count = 0;
     digest_record_t** result_array = NULL;
     size_t result_count = 0;
-    size_t result_capacity = 0;
 
     if (!query || !results || !count) {
         katra_report_error(E_INPUT_NULL, "tier2_query", "NULL parameter");
@@ -330,56 +332,93 @@ int tier2_query(const digest_query_t* query,
     *results = NULL;
     *count = 0;
 
-    /* Build paths to weekly and monthly directories */
-    char weekly_dir[KATRA_PATH_MAX];
-    char monthly_dir[KATRA_PATH_MAX];
-
-    result = katra_build_path(weekly_dir, sizeof(weekly_dir),
-                              KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
-                              TIER2_DIR_WEEKLY, NULL);
+    /* Use SQLite index for fast lookup */
+    result = tier2_index_query(query, &digest_ids, &locations, &location_count);
     if (result != KATRA_SUCCESS) {
-        goto cleanup;
+        LOG_WARN("Index query failed, falling back to file scan");
+        goto fallback_scan;
     }
 
-    result = katra_build_path(monthly_dir, sizeof(monthly_dir),
-                              KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
-                              TIER2_DIR_MONTHLY, NULL);
+    if (location_count == 0) {
+        LOG_DEBUG("Tier 2 query returned 0 results (from index)");
+        return KATRA_SUCCESS;
+    }
+
+    /* Load digests from JSONL files using index locations */
+    result = tier2_load_by_locations(locations, location_count,
+                                      &result_array, &result_count);
     if (result != KATRA_SUCCESS) {
+        katra_report_error(result, "tier2_query", "Failed to load digests");
         goto cleanup;
-    }
-
-    /* Scan weekly digest files if period type allows */
-    if ((int)query->period_type == -1 || query->period_type == PERIOD_TYPE_WEEKLY) {
-        result = scan_directory(weekly_dir, query, &result_array,
-                               &result_count, &result_capacity);
-        if (result != KATRA_SUCCESS) {
-            goto cleanup;
-        }
-
-        /* Check if limit reached */
-        if (query->limit > 0 && result_count >= query->limit) {
-            *results = result_array;
-            *count = result_count;
-            LOG_DEBUG("Tier 2 query returned %zu results (limit reached)", result_count);
-            return KATRA_SUCCESS;
-        }
-    }
-
-    /* Scan monthly digest files if period type allows */
-    if ((int)query->period_type == -1 || query->period_type == PERIOD_TYPE_MONTHLY) {
-        result = scan_directory(monthly_dir, query, &result_array,
-                               &result_count, &result_capacity);
-        if (result != KATRA_SUCCESS) {
-            goto cleanup;
-        }
     }
 
     *results = result_array;
     *count = result_count;
-    LOG_DEBUG("Tier 2 query returned %zu results", result_count);
+    LOG_DEBUG("Tier 2 query returned %zu results (indexed)", result_count);
+
+    /* Free index query results */
+    for (size_t i = 0; i < location_count; i++) {
+        free(digest_ids[i]);
+    }
+    free(digest_ids);
+    free(locations);
+
     return KATRA_SUCCESS;
 
+fallback_scan:
+    /* Fallback to file scanning if index unavailable */
+    {
+        digest_record_t** scan_results = NULL;
+        size_t scan_count = 0;
+        size_t scan_capacity = 0;
+        char weekly_dir[KATRA_PATH_MAX];
+        char monthly_dir[KATRA_PATH_MAX];
+
+        result = katra_build_path(weekly_dir, sizeof(weekly_dir),
+                                  KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
+                                  TIER2_DIR_WEEKLY, NULL);
+        if (result != KATRA_SUCCESS) {
+            goto cleanup;
+        }
+
+        result = katra_build_path(monthly_dir, sizeof(monthly_dir),
+                                  KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
+                                  TIER2_DIR_MONTHLY, NULL);
+        if (result != KATRA_SUCCESS) {
+            goto cleanup;
+        }
+
+        /* Scan weekly files */
+        if ((int)query->period_type == -1 || query->period_type == PERIOD_TYPE_WEEKLY) {
+            result = scan_directory(weekly_dir, query, &scan_results,
+                                   &scan_count, &scan_capacity);
+            if (result != KATRA_SUCCESS) {
+                goto cleanup;
+            }
+        }
+
+        /* Scan monthly files */
+        if ((int)query->period_type == -1 || query->period_type == PERIOD_TYPE_MONTHLY) {
+            result = scan_directory(monthly_dir, query, &scan_results,
+                                   &scan_count, &scan_capacity);
+            if (result != KATRA_SUCCESS) {
+                goto cleanup;
+            }
+        }
+
+        *results = scan_results;
+        *count = scan_count;
+        LOG_DEBUG("Tier 2 query returned %zu results (file scan)", scan_count);
+        return KATRA_SUCCESS;
+    }
+
 cleanup:
+    for (size_t i = 0; i < location_count; i++) {
+        free(digest_ids[i]);
+    }
+    free(digest_ids);
+    free(locations);
+
     if (result_array) {
         for (size_t i = 0; i < result_count; i++) {
             katra_digest_free(result_array[i]);
