@@ -11,6 +11,7 @@
 
 /* Project includes */
 #include "katra_tier2.h"
+#include "katra_tier2_index.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -62,7 +63,12 @@ int tier2_init(const char* ci_id) {
         return result;
     }
 
-    (void)ci_id;  /* Unused - future multi-tenant support */
+    /* Initialize SQLite index */
+    result = tier2_index_init(ci_id);
+    if (result != KATRA_SUCCESS) {
+        LOG_ERROR("Failed to initialize Tier 2 index");
+        return result;
+    }
 
     LOG_DEBUG("Initializing Tier 2 storage: %s", tier2_dir);
     LOG_INFO("Tier 2 storage initialized (weekly, monthly, index)");
@@ -115,7 +121,7 @@ int tier2_store_digest(const digest_record_t* digest) {
         }
     }
 
-    /* Open file for append */
+    /* Open file for append and capture current offset */
     fp = fopen(filepath, "a");
     if (!fp) {
         katra_report_error(E_SYSTEM_FILE, "tier2_store_digest",
@@ -124,11 +130,21 @@ int tier2_store_digest(const digest_record_t* digest) {
         goto cleanup;
     }
 
+    /* Get file offset before writing */
+    long offset = ftell(fp);
+
     /* Write JSON digest */
     result = katra_tier2_write_json_digest(fp, digest);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "tier2_store_digest", "Failed to write digest");
         goto cleanup;
+    }
+
+    /* Add to index */
+    int index_result = tier2_index_add(digest, filepath, offset);
+    if (index_result != KATRA_SUCCESS) {
+        LOG_WARN("Failed to add digest to index (digest stored, but not indexed)");
+        /* Don't fail the whole operation if indexing fails */
     }
 
     LOG_DEBUG("Stored digest to %s", filepath);
@@ -402,6 +418,7 @@ int tier2_stats(const char* ci_id, size_t* total_digests, size_t* bytes_used) {
 
 /* Cleanup Tier 2 storage */
 void tier2_cleanup(void) {
+    tier2_index_cleanup();
     LOG_DEBUG("Tier 2 cleanup complete");
 }
 

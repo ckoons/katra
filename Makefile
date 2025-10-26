@@ -83,6 +83,8 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_tier1_json.o \
              $(BUILD_DIR)/katra_tier2.o \
              $(BUILD_DIR)/katra_tier2_json.o \
+             $(BUILD_DIR)/katra_tier2_index.o \
+             $(BUILD_DIR)/katra_tier2_index_mgmt.o \
              $(BUILD_DIR)/katra_checkpoint.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o
 
@@ -125,6 +127,14 @@ $(BUILD_DIR)/katra_tier2_json.o: $(SRC_DIR)/core/katra_tier2_json.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+$(BUILD_DIR)/katra_tier2_index.o: $(SRC_DIR)/core/katra_tier2_index.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_tier2_index_mgmt.o: $(SRC_DIR)/core/katra_tier2_index_mgmt.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
 $(BUILD_DIR)/katra_checkpoint.o: $(SRC_DIR)/core/katra_checkpoint.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
@@ -146,10 +156,11 @@ TEST_INIT := $(BIN_DIR)/tests/test_init
 TEST_MEMORY := $(BIN_DIR)/tests/test_memory
 TEST_TIER1 := $(BIN_DIR)/tests/test_tier1
 TEST_TIER2 := $(BIN_DIR)/tests/test_tier2
+TEST_TIER2_INDEX := $(BIN_DIR)/tests/test_tier2_index
 TEST_CHECKPOINT := $(BIN_DIR)/tests/test_checkpoint
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-checkpoint
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -192,6 +203,10 @@ test-tier2: $(TEST_TIER2)
 	@echo "Running Tier 2 storage tests..."
 	@$(TEST_TIER2)
 
+test-tier2-index: $(TEST_TIER2_INDEX)
+	@echo "Running Tier 2 index tests..."
+	@$(TEST_TIER2_INDEX)
+
 test-checkpoint: $(TEST_CHECKPOINT)
 	@echo "Running checkpoint tests..."
 	@$(TEST_CHECKPOINT)
@@ -199,39 +214,43 @@ test-checkpoint: $(TEST_CHECKPOINT)
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_CONFIG): $(TEST_DIR)/unit/test_config.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_ERROR): $(TEST_DIR)/unit/test_error.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_LOG): $(TEST_DIR)/unit/test_log.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_INIT): $(TEST_DIR)/unit/test_init.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_MEMORY): $(TEST_DIR)/unit/test_memory.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_TIER1): $(TEST_DIR)/unit/test_tier1.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_TIER2): $(TEST_DIR)/unit/test_tier2.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_TIER2_INDEX): $(TEST_DIR)/unit/test_tier2_index.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_CHECKPOINT): $(TEST_DIR)/unit/test_checkpoint.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 # ==============================================================================
 # CODE DISCIPLINE TARGETS

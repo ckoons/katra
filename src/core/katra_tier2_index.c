@@ -17,6 +17,11 @@
 /* SQLite connection (one per process) */
 static sqlite3* g_db = NULL;
 
+/* Get database handle (for mgmt module) */
+sqlite3* tier2_index_get_db(void) {
+    return g_db;
+}
+
 /* SQL schema for index database */
 static const char* SCHEMA_SQL =
     "CREATE TABLE IF NOT EXISTS digests ("
@@ -132,9 +137,9 @@ int tier2_index_add(const digest_record_t* digest,
     }
 
     if (!g_db) {
-        katra_report_error(E_INTERNAL_STATE, "tier2_index_add",
+        katra_report_error(E_INTERNAL_LOGIC, "tier2_index_add",
                           "Index not initialized");
-        return E_INTERNAL_STATE;
+        return E_INTERNAL_LOGIC;
     }
 
     /* Begin transaction */
@@ -255,6 +260,248 @@ bool tier2_index_exists(const char* ci_id) {
     }
 
     return false;
+}
+
+/* Helper: Build SQL WHERE clause from query */
+static int build_where_clause(const digest_query_t* query, char* buffer, size_t size) {
+    size_t offset = 0;
+    bool has_condition = false;
+
+    offset += snprintf(buffer + offset, size - offset, " WHERE");
+
+    /* CI ID filter */
+    if (query->ci_id) {
+        offset += snprintf(buffer + offset, size - offset, "%s ci_id = '%s'",
+                          has_condition ? " AND" : "", query->ci_id);
+        has_condition = true;
+    }
+
+    /* Time range filters */
+    if (query->start_time > 0) {
+        offset += snprintf(buffer + offset, size - offset, "%s timestamp >= %ld",
+                          has_condition ? " AND" : "", (long)query->start_time);
+        has_condition = true;
+    }
+    if (query->end_time > 0) {
+        offset += snprintf(buffer + offset, size - offset, "%s timestamp <= %ld",
+                          has_condition ? " AND" : "", (long)query->end_time);
+        has_condition = true;
+    }
+
+    /* Period type filter (-1 means any) */
+    if ((int)query->period_type != -1) {
+        offset += snprintf(buffer + offset, size - offset, "%s period_type = %d",
+                          has_condition ? " AND" : "", (int)query->period_type);
+        has_condition = true;
+    }
+
+    /* Digest type filter (-1 means any) */
+    if ((int)query->digest_type != -1) {
+        offset += snprintf(buffer + offset, size - offset, "%s digest_type = %d",
+                          has_condition ? " AND" : "", (int)query->digest_type);
+        has_condition = true;
+    }
+
+    /* Archived filter (always exclude archived by default) */
+    offset += snprintf(buffer + offset, size - offset, "%s archived = 0",
+                      has_condition ? " AND" : "");
+    has_condition = true;
+
+    /* If no conditions, return empty WHERE clause */
+    if (!has_condition) {
+        buffer[0] = '\0';
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Query index for matching digest IDs */
+int tier2_index_query(const digest_query_t* query,
+                      char*** digest_ids,
+                      index_location_t** locations,
+                      size_t* count) {
+    int result = KATRA_SUCCESS;
+    sqlite3_stmt* stmt = NULL;
+    char sql_query[KATRA_BUFFER_LARGE];
+    char where_clause[KATRA_BUFFER_MEDIUM];
+    size_t capacity = 0;
+    char** ids = NULL;
+    index_location_t* locs = NULL;
+
+    if (!query || !digest_ids || !locations || !count) {
+        return E_INPUT_NULL;
+    }
+
+    if (!g_db) {
+        katra_report_error(E_INTERNAL_LOGIC, "tier2_index_query",
+                          "Index not initialized");
+        return E_INTERNAL_LOGIC;
+    }
+
+    *digest_ids = NULL;
+    *locations = NULL;
+    *count = 0;
+
+    /* Build WHERE clause */
+    result = build_where_clause(query, where_clause, sizeof(where_clause));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Build full SQL query */
+    snprintf(sql_query, sizeof(sql_query),
+            "SELECT digest_id, file_path, file_offset FROM digests%s ORDER BY timestamp DESC",
+            where_clause);
+
+    /* Add limit if specified */
+    if (query->limit > 0) {
+        size_t len = strlen(sql_query);
+        snprintf(sql_query + len, sizeof(sql_query) - len, " LIMIT %zu", query->limit);
+    }
+
+    /* Prepare statement */
+    int rc = sqlite3_prepare_v2(g_db, sql_query, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_query",
+                          "Failed to prepare query: %s", sqlite3_errmsg(g_db));
+        return E_SYSTEM_FILE;
+    }
+
+    /* Execute query and collect results */
+    capacity = 10;
+    ids = calloc(capacity, sizeof(char*));
+    locs = calloc(capacity, sizeof(index_location_t));
+
+    if (!ids || !locs) {
+        result = E_SYSTEM_MEMORY;
+        goto cleanup;
+    }
+
+    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+        /* Grow arrays if needed */
+        if (*count >= capacity) {
+            capacity *= 2;
+            char** new_ids = realloc(ids, capacity * sizeof(char*));
+            index_location_t* new_locs = realloc(locs, capacity * sizeof(index_location_t));
+
+            if (!new_ids || !new_locs) {
+                result = E_SYSTEM_MEMORY;
+                goto cleanup;
+            }
+
+            ids = new_ids;
+            locs = new_locs;
+        }
+
+        /* Extract digest_id */
+        const char* digest_id = (const char*)sqlite3_column_text(stmt, 0);
+        ids[*count] = strdup(digest_id ? digest_id : "");
+        if (!ids[*count]) {
+            result = E_SYSTEM_MEMORY;
+            goto cleanup;
+        }
+
+        /* Extract file location */
+        const char* file_path = (const char*)sqlite3_column_text(stmt, 1);
+        long offset = (long)sqlite3_column_int64(stmt, 2);
+
+        strncpy(locs[*count].file_path, file_path ? file_path : "",
+                sizeof(locs[*count].file_path) - 1);
+        locs[*count].file_path[sizeof(locs[*count].file_path) - 1] = '\0';
+        locs[*count].offset = offset;
+
+        (*count)++;
+    }
+
+    if (rc != SQLITE_DONE) {
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_query",
+                          "Query execution failed: %s", sqlite3_errmsg(g_db));
+        result = E_SYSTEM_FILE;
+        goto cleanup;
+    }
+
+    *digest_ids = ids;
+    *locations = locs;
+    sqlite3_finalize(stmt);
+
+    LOG_DEBUG("Index query found %zu digests", *count);
+    return KATRA_SUCCESS;
+
+cleanup:
+    if (ids) {
+        for (size_t i = 0; i < *count; i++) {
+            free(ids[i]);
+        }
+        free(ids);
+    }
+    free(locs);
+    if (stmt) {
+        sqlite3_finalize(stmt);
+    }
+    return result;
+}
+
+/* Load specific digests by locations */
+int tier2_load_by_locations(const index_location_t* locations,
+                             size_t count,
+                             digest_record_t*** results,
+                             size_t* result_count) {
+    int result = KATRA_SUCCESS;
+    digest_record_t** digests = NULL;
+    size_t loaded = 0;
+
+    if (!locations || !results || !result_count) {
+        return E_INPUT_NULL;
+    }
+
+    *results = NULL;
+    *result_count = 0;
+
+    if (count == 0) {
+        return KATRA_SUCCESS;
+    }
+
+    /* Allocate results array */
+    digests = calloc(count, sizeof(digest_record_t*));
+    if (!digests) {
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Load each digest from its file location */
+    for (size_t i = 0; i < count; i++) {
+        FILE* fp = fopen(locations[i].file_path, "r");
+        if (!fp) {
+            continue;  /* Skip missing files */
+        }
+
+        /* Seek to offset */
+        if (fseek(fp, locations[i].offset, SEEK_SET) != 0) {
+            fclose(fp);
+            continue;
+        }
+
+        /* Read line */
+        char line[KATRA_BUFFER_LARGE];
+        if (!fgets(line, sizeof(line), fp)) {
+            fclose(fp);
+            continue;
+        }
+
+        fclose(fp);
+
+        /* Parse digest from JSON */
+        digest_record_t* digest = NULL;
+        result = katra_tier2_parse_json_digest(line, &digest);
+        if (result == KATRA_SUCCESS && digest) {
+            digests[loaded++] = digest;
+        }
+    }
+
+    *results = digests;
+    *result_count = loaded;
+
+    LOG_DEBUG("Loaded %zu digests from %zu locations", loaded, count);
+    return KATRA_SUCCESS;
 }
 
 /* Cleanup index resources */
