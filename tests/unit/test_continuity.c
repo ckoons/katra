@@ -106,14 +106,14 @@ void test_get_daily_stats_with_memories(void) {
     /* Create some test memories for today */
     memory_record_t* rec1 = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "How do I implement sunrise/sunset?",
         MEMORY_IMPORTANCE_HIGH
     );
 
     memory_record_t* rec2 = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "What is the difference between Tier 1 and Tier 2?",
         MEMORY_IMPORTANCE_MEDIUM
     );
@@ -323,7 +323,7 @@ void test_sundown_sunrise_workflow(void) {
     /* Create memories for today */
     memory_record_t* rec = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "Test interaction for continuity",
         MEMORY_IMPORTANCE_MEDIUM
     );

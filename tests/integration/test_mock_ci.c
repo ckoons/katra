@@ -157,9 +157,9 @@ void test_ci_record_patterns(void) {
     ASSERT(stored_count == 3, "Should store all 3 patterns");
 }
 
-/* Test: CI records formations */
+/* Test: CI records knowledge formations */
 void test_ci_record_formations(void) {
-    printf("Testing: CI records memory formations ... ");
+    printf("Testing: CI records knowledge formations ... ");
     tests_run++;
 
     const char* formations[] = {
@@ -173,7 +173,7 @@ void test_ci_record_formations(void) {
     for (size_t i = 0; i < sizeof(formations) / sizeof(formations[0]); i++) {
         memory_record_t* record = katra_memory_create_record(
             MOCK_CI_ID,
-            MEMORY_TYPE_FORMATION,
+            MEMORY_TYPE_KNOWLEDGE,
             formations[i],
             MEMORY_IMPORTANCE_HIGH
         );
@@ -186,7 +186,7 @@ void test_ci_record_formations(void) {
         }
     }
 
-    ASSERT(stored_count == 3, "Should store all 3 formations");
+    ASSERT(stored_count == 3, "Should store all 3 knowledge formations");
 }
 
 /* Test: CI queries recent memories */

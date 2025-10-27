@@ -92,7 +92,7 @@ int katra_get_daily_stats(const char* ci_id, daily_stats_t* stats) {
     for (size_t i = 0; i < count; i++) {
         memory_record_t* rec = records[i];
 
-        if (rec->type == MEMORY_TYPE_INTERACTION && rec->content) {
+        if (rec->type == MEMORY_TYPE_EXPERIENCE && rec->content) {
             /* Simple heuristic: count question marks */
             const char* p = rec->content;
             while ((p = strchr(p, '?')) != NULL) {

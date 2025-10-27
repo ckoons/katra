@@ -77,7 +77,7 @@ void test_memory_create_record(void) {
 
     memory_record_t* record = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "Test interaction content",
         MEMORY_IMPORTANCE_MEDIUM
     );
@@ -112,7 +112,7 @@ void test_memory_create_record(void) {
         return;
     }
 
-    if (record->type != MEMORY_TYPE_INTERACTION) {
+    if (record->type != MEMORY_TYPE_EXPERIENCE) {
         katra_memory_free_record(record);
         TEST_FAIL("Type mismatch");
         return;
@@ -143,7 +143,7 @@ void test_memory_store(void) {
 
     memory_record_t* record = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "Store test content",
         MEMORY_IMPORTANCE_HIGH
     );
@@ -179,7 +179,7 @@ void test_memory_store_invalid_importance(void) {
 
     memory_record_t* record = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "Invalid importance test",
         1.5  /* Invalid - must be 0.0-1.0 */
     );
@@ -209,7 +209,7 @@ void test_memory_stats(void) {
 
         memory_record_t* record = katra_memory_create_record(
             TEST_CI_ID,
-            MEMORY_TYPE_INTERACTION,
+            MEMORY_TYPE_EXPERIENCE,
             content,
             MEMORY_IMPORTANCE_MEDIUM
         );

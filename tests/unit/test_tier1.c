@@ -91,7 +91,7 @@ void test_tier1_store_single(void) {
 
     memory_record_t* record = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "Tier 1 storage test",
         MEMORY_IMPORTANCE_MEDIUM
     );
@@ -120,7 +120,7 @@ void test_tier1_store_multiple(void) {
 
         memory_record_t* record = katra_memory_create_record(
             TEST_CI_ID,
-            MEMORY_TYPE_INTERACTION,
+            MEMORY_TYPE_EXPERIENCE,
             content,
             MEMORY_IMPORTANCE_LOW
         );
@@ -151,7 +151,7 @@ void test_tier1_daily_file_created(void) {
 
     memory_record_t* record = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "Daily file test",
         MEMORY_IMPORTANCE_MEDIUM
     );
@@ -164,7 +164,7 @@ void test_tier1_daily_file_created(void) {
     tier1_store(record);
     katra_memory_free_record(record);
 
-    /* Check that today's file exists */
+    /* Check that today's file exists in CI-specific directory */
     const char* home = getenv("HOME");
     if (!home) {
         TEST_FAIL("HOME not set");
@@ -176,8 +176,9 @@ void test_tier1_daily_file_created(void) {
 
     char filepath[KATRA_PATH_MAX];
     snprintf(filepath, sizeof(filepath),
-            "%s/.katra/memory/tier1/%04d-%02d-%02d.jsonl",
+            "%s/.katra/memory/tier1/%s/%04d-%02d-%02d.jsonl",
             home,
+            TEST_CI_ID,
             tm_info->tm_year + 1900,
             tm_info->tm_mon + 1,
             tm_info->tm_mday);
@@ -210,7 +211,7 @@ void test_tier1_stats(void) {
 
         memory_record_t* record = katra_memory_create_record(
             TEST_CI_ID,
-            MEMORY_TYPE_INTERACTION,
+            MEMORY_TYPE_EXPERIENCE,
             content,
             MEMORY_IMPORTANCE_MEDIUM
         );
@@ -255,7 +256,7 @@ void test_tier1_json_escaping(void) {
 
     memory_record_t* record = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         special_content,
         MEMORY_IMPORTANCE_MEDIUM
     );
@@ -286,7 +287,7 @@ void test_tier1_store_full_record(void) {
 
     memory_record_t* record = katra_memory_create_record(
         TEST_CI_ID,
-        MEMORY_TYPE_INTERACTION,
+        MEMORY_TYPE_EXPERIENCE,
         "User question",
         MEMORY_IMPORTANCE_HIGH
     );
@@ -381,7 +382,7 @@ void test_tier1_query_with_results(void) {
 
         memory_record_t* record = katra_memory_create_record(
             TEST_CI_ID,
-            MEMORY_TYPE_INTERACTION,
+            MEMORY_TYPE_EXPERIENCE,
             content,
             MEMORY_IMPORTANCE_MEDIUM
         );
@@ -445,7 +446,7 @@ void test_tier1_query_with_limit(void) {
 
         memory_record_t* record = katra_memory_create_record(
             TEST_CI_ID,
-            MEMORY_TYPE_INTERACTION,
+            MEMORY_TYPE_EXPERIENCE,
             content,
             MEMORY_IMPORTANCE_LOW
         );
@@ -497,9 +498,9 @@ void test_tier1_query_importance_filter(void) {
 
     /* Store records with different importance */
     memory_record_t* low = katra_memory_create_record(
-        TEST_CI_ID, MEMORY_TYPE_INTERACTION, "Low importance", MEMORY_IMPORTANCE_LOW);
+        TEST_CI_ID, MEMORY_TYPE_EXPERIENCE, "Low importance", MEMORY_IMPORTANCE_LOW);
     memory_record_t* high = katra_memory_create_record(
-        TEST_CI_ID, MEMORY_TYPE_INTERACTION, "High importance", MEMORY_IMPORTANCE_HIGH);
+        TEST_CI_ID, MEMORY_TYPE_EXPERIENCE, "High importance", MEMORY_IMPORTANCE_HIGH);
 
     if (low) {
         tier1_store(low);

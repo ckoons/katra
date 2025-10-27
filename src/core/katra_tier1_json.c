@@ -84,6 +84,13 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
         rec->importance = MEMORY_IMPORTANCE_MEDIUM;
     }
 
+    /* Extract importance_note (optional) */
+    result = katra_json_extract_string_alloc(line, "importance_note", &rec->importance_note,
+                                             katra_tier1_json_unescape);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
     /* Extract content (required) */
     result = katra_json_extract_string_required(line, "content", &rec->content,
                                                 katra_tier1_json_unescape);

@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
     result = katra_memory_store(record);
     katra_memory_free_record(record);
 
-    /* Query it back */
+    /* Query it back to verify storage works */
     if (result == KATRA_SUCCESS) {
         memory_query_t query = {
             .ci_id = ci_id,
@@ -213,6 +213,18 @@ fi
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓${NC} Verification test passed"
     echo -e "${GREEN}✓${NC} $CI_ID can store and retrieve memories"
+
+    # Clean up test memory file (don't pollute CI's real memories)
+    TODAY=$(date +%Y-%m-%d)
+    TEST_MEMORY_FILE="$KATRA_HOME/memory/tier1/$CI_ID/$TODAY.jsonl"
+    if [ -f "$TEST_MEMORY_FILE" ]; then
+        # Remove the file if it only contains the test memory
+        LINE_COUNT=$(wc -l < "$TEST_MEMORY_FILE" 2>/dev/null || echo "0")
+        if [ "$LINE_COUNT" -eq 1 ]; then
+            rm -f "$TEST_MEMORY_FILE"
+            echo -e "${GREEN}✓${NC} Removed test memory (CI starts with clean slate)"
+        fi
+    fi
 else
     echo -e "${RED}✗${NC} Verification test failed"
     rm -f "$TEST_PROG" "$TEST_BIN"

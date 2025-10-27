@@ -96,7 +96,7 @@ void test_checkpoint_save(void) {
 
         memory_record_t* record = katra_memory_create_record(
             TEST_CI_ID,
-            MEMORY_TYPE_INTERACTION,
+            MEMORY_TYPE_EXPERIENCE,
             content,
             MEMORY_IMPORTANCE_MEDIUM
         );

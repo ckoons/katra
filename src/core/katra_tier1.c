@@ -74,6 +74,7 @@ static int write_json_record(FILE* fp, const memory_record_t* record) {
     char content_escaped[KATRA_BUFFER_LARGE];
     char response_escaped[KATRA_BUFFER_LARGE];
     char context_escaped[KATRA_BUFFER_LARGE];
+    char importance_note_escaped[KATRA_BUFFER_LARGE];
 
     katra_json_escape(record->content, content_escaped, sizeof(content_escaped));
 
@@ -89,12 +90,23 @@ static int write_json_record(FILE* fp, const memory_record_t* record) {
         context_escaped[0] = '\0';
     }
 
+    if (record->importance_note) {
+        katra_json_escape(record->importance_note, importance_note_escaped, sizeof(importance_note_escaped));
+    } else {
+        importance_note_escaped[0] = '\0';
+    }
+
     /* Write JSON object (one line) */
     fprintf(fp, "{");
     fprintf(fp, "\"record_id\":\"%s\",", record->record_id ? record->record_id : "");
     fprintf(fp, "\"timestamp\":%ld,", (long)record->timestamp);
     fprintf(fp, "\"type\":%d,", record->type);
     fprintf(fp, "\"importance\":%.2f,", record->importance);
+
+    if (record->importance_note) {
+        fprintf(fp, "\"importance_note\":\"%s\",", importance_note_escaped);
+    }
+
     fprintf(fp, "\"content\":\"%s\",", content_escaped);
 
     if (record->response) {

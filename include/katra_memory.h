@@ -13,12 +13,23 @@ typedef enum {
     KATRA_TIER3 = 3     /* Pattern summaries (months to years) */
 } katra_tier_t;
 
-/* Memory record types */
+/* Memory record types
+ *
+ * These categories align with how CIs naturally organize thoughts:
+ * - EXPERIENCE: What happened (events, interactions, observations)
+ * - KNOWLEDGE: What I learned (facts, skills, understanding)
+ * - REFLECTION: What I think about it (analysis, insights, meaning)
+ * - PATTERN: What I've noticed (recurring themes, connections)
+ * - GOAL: What I want to do (intentions, plans, aspirations)
+ * - DECISION: What I decided and why (choices with reasoning)
+ */
 typedef enum {
-    MEMORY_TYPE_INTERACTION = 1,   /* User-CI interaction */
-    MEMORY_TYPE_FORMATION = 2,     /* Memory creation event */
-    MEMORY_TYPE_PATTERN = 3,       /* Identified pattern */
-    MEMORY_TYPE_EXPERIENCE = 4     /* General experience */
+    MEMORY_TYPE_EXPERIENCE = 1,    /* What happened */
+    MEMORY_TYPE_KNOWLEDGE = 2,     /* What I learned */
+    MEMORY_TYPE_REFLECTION = 3,    /* What I think about it */
+    MEMORY_TYPE_PATTERN = 4,       /* What I've noticed */
+    MEMORY_TYPE_GOAL = 5,          /* What I want to do */
+    MEMORY_TYPE_DECISION = 6       /* What I decided and why */
 } memory_type_t;
 
 /* Memory importance levels (0.0 = trivial, 1.0 = critical) */
@@ -39,6 +50,7 @@ typedef struct {
 
     memory_type_t type;        /* Type of memory */
     float importance;          /* 0.0-1.0 importance score */
+    char* importance_note;     /* Why this importance level? (optional) */
 
     char* content;             /* Memory content (user input or experience) */
     char* response;            /* CI response (if interaction) */

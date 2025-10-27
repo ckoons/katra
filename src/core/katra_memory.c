@@ -289,6 +289,7 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     record->timestamp = time(NULL);
     record->type = type;
     record->importance = importance;
+    record->importance_note = NULL;  /* Optional field - set by caller if needed */
     record->tier = KATRA_TIER1;  /* Default to Tier 1 */
     record->archived = false;
 
@@ -308,6 +309,7 @@ void katra_memory_free_record(memory_record_t* record) {
     free(record->context);
     free(record->session_id);
     free(record->component);
+    free(record->importance_note);
 
     free(record);
 }
