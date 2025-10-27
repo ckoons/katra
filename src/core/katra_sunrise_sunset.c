@@ -36,7 +36,7 @@ int katra_extract_topics(const char* ci_id,
         .type = MEMORY_TYPE_EXPERIENCE,
         .min_importance = 0.0f,
         .tier = KATRA_TIER1,
-        .limit = 1000
+        .limit = SUNRISE_MEMORY_QUERY_LIMIT
     };
 
     memory_record_t** records = NULL;
@@ -49,7 +49,7 @@ int katra_extract_topics(const char* ci_id,
     }
 
     /* Simple clustering: group similar memories */
-    topic_cluster_t** clusters = calloc(10, sizeof(topic_cluster_t*));
+    topic_cluster_t** clusters = calloc(SUNRISE_MAX_CLUSTERS, sizeof(topic_cluster_t*));
     if (!clusters) {
         katra_memory_free_results(records, record_count);
         return E_SYSTEM_MEMORY;
@@ -72,7 +72,7 @@ int katra_extract_topics(const char* ci_id,
     }
 
     /* Assign remaining records to clusters */
-    for (size_t i = 1; i < record_count && i < 100; i++) {
+    for (size_t i = 1; i < record_count && i < SUNRISE_MAX_RECORDS_TO_PROCESS; i++) {
         if (!records[i]->content) continue;
 
         /* Find best matching cluster using vector similarity */
@@ -100,7 +100,7 @@ int katra_extract_topics(const char* ci_id,
             cluster->record_ids[cluster->record_count] =
                 katra_safe_strdup(records[i]->record_id);
             cluster->record_count++;
-        } else if (cluster_count < 10) {
+        } else if (cluster_count < SUNRISE_MAX_CLUSTERS) {
             clusters[cluster_count] = calloc(1, sizeof(topic_cluster_t));
             if (clusters[cluster_count]) {
                 snprintf(clusters[cluster_count]->topic_name,
@@ -140,7 +140,7 @@ int katra_trace_threads(const char* ci_id,
         .type = MEMORY_TYPE_EXPERIENCE,
         .min_importance = 0.0f,
         .tier = KATRA_TIER1,
-        .limit = 1000
+        .limit = SUNRISE_MEMORY_QUERY_LIMIT
     };
 
     memory_record_t** records = NULL;
@@ -153,7 +153,7 @@ int katra_trace_threads(const char* ci_id,
     }
 
     /* Create threads from sequential relationships */
-    conversation_thread_t** threads = calloc(10, sizeof(conversation_thread_t*));
+    conversation_thread_t** threads = calloc(SUNRISE_MAX_THREADS, sizeof(conversation_thread_t*));
     if (!threads) {
         katra_memory_free_results(records, record_count);
         return E_SYSTEM_MEMORY;
@@ -162,12 +162,12 @@ int katra_trace_threads(const char* ci_id,
     size_t thread_count = 0;
 
     /* Simple thread detection: follow sequential edges */
-    for (size_t i = 0; i < record_count && thread_count < 10; i++) {
+    for (size_t i = 0; i < record_count && thread_count < SUNRISE_MAX_THREADS; i++) {
         graph_path_node_t** path = NULL;
         size_t path_len = 0;
 
         /* Traverse from this record */
-        result = katra_graph_traverse(graph, records[i]->record_id, 10,
+        result = katra_graph_traverse(graph, records[i]->record_id, SUNRISE_GRAPH_TRAVERSAL_DEPTH,
                                       &path, &path_len);
 
         if (result == KATRA_SUCCESS && path_len >= MIN_THREAD_LENGTH) {
@@ -217,7 +217,7 @@ int katra_build_emotional_arc(const char* ci_id,
         .type = MEMORY_TYPE_EXPERIENCE,
         .min_importance = 0.0f,
         .tier = KATRA_TIER1,
-        .limit = 1000
+        .limit = SUNRISE_MEMORY_QUERY_LIMIT
     };
 
     memory_record_t** records = NULL;
@@ -230,7 +230,7 @@ int katra_build_emotional_arc(const char* ci_id,
     }
 
     /* Sample emotional state at regular intervals */
-    size_t samples = (record_count < 10) ? record_count : 10;
+    size_t samples = (record_count < SUNRISE_EMOTIONAL_ARC_SAMPLES) ? record_count : SUNRISE_EMOTIONAL_ARC_SAMPLES;
     emotional_tag_t* arc = calloc(samples, sizeof(emotional_tag_t));
     if (!arc) {
         katra_memory_free_results(records, record_count);
@@ -277,7 +277,7 @@ int katra_detect_insights(const char* ci_id,
     (void)threads; /* Used below */
 
     /* Generate simple insights from topics and threads */
-    daily_insight_t** insights = calloc(5, sizeof(daily_insight_t*));
+    daily_insight_t** insights = calloc(SUNRISE_MAX_INSIGHTS, sizeof(daily_insight_t*));
     if (!insights) {
         return E_SYSTEM_MEMORY;
     }

@@ -22,6 +22,9 @@ typedef enum {
     THOUGHT_TYPE_UNKNOWN = 10       /* Cannot determine type */
 } thought_type_t;
 
+/* Number of thought types (for array sizing) */
+#define THOUGHT_TYPE_COUNT 11
+
 /* Cognitive memory record - extends base memory_record_t
  *
  * Adds cognitive fields for thought classification, confidence scoring,

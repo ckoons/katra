@@ -12,6 +12,15 @@
 
 /* Advanced Sunrise/Sunset Protocol with vector and graph integration */
 
+/* Configuration constants */
+#define SUNRISE_MEMORY_QUERY_LIMIT 1000        /* Max memories per query */
+#define SUNRISE_MAX_CLUSTERS 10                /* Max topic clusters */
+#define SUNRISE_MAX_THREADS 10                 /* Max conversation threads */
+#define SUNRISE_MAX_INSIGHTS 5                 /* Max daily insights */
+#define SUNRISE_EMOTIONAL_ARC_SAMPLES 10       /* Samples for emotional arc */
+#define SUNRISE_MAX_RECORDS_TO_PROCESS 100     /* Max records to cluster */
+#define SUNRISE_GRAPH_TRAVERSAL_DEPTH 10       /* Max depth for graph traversal */
+
 /* Topic cluster (from vector similarity) */
 typedef struct {
     char topic_name[128];       /* Extracted topic name */

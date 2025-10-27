@@ -45,7 +45,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
             }
         }
     }
-    if (total_letters > 10 && caps_count > total_letters * 0.7) {
+    if (total_letters > EMOTION_MIN_LETTERS_FOR_CAPS && caps_count > total_letters * EMOTION_CAPS_THRESHOLD) {
         emotion_out->arousal += 0.4f;
         if (emotion_out->arousal > 1.0f) {
             emotion_out->arousal = 1.0f;
@@ -58,7 +58,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "excited", "amazing", "awesome", "fantastic", "good", "nice",
         "thank", "appreciate", "glad"
     };
-    if (katra_str_contains_any(content, positive_keywords, 15)) {
+    if (katra_str_contains_any(content, positive_keywords, EMOTION_KEYWORD_COUNT_POSITIVE)) {
         emotion_out->valence += 0.6f;
     }
 
@@ -68,7 +68,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "frustrated", "annoyed", "disappointed", "upset", "worried",
         "afraid", "fear", "angry"
     };
-    if (katra_str_contains_any(content, negative_keywords, 15)) {
+    if (katra_str_contains_any(content, negative_keywords, EMOTION_KEYWORD_COUNT_NEGATIVE)) {
         emotion_out->valence -= 0.6f;
     }
 
@@ -77,7 +77,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "must", "need to", "have to", "should", "will", "going to",
         "definitely", "certainly"
     };
-    if (katra_str_contains_any(content, dominance_keywords, 8)) {
+    if (katra_str_contains_any(content, dominance_keywords, EMOTION_KEYWORD_COUNT_DOMINANCE)) {
         emotion_out->dominance = 0.8f;
     }
 
@@ -86,7 +86,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
         "maybe", "perhaps", "i don't know", "not sure", "might",
         "could be", "possibly"
     };
-    if (katra_str_contains_any(content, submissive_keywords, 7)) {
+    if (katra_str_contains_any(content, submissive_keywords, EMOTION_KEYWORD_COUNT_SUBMISSIVE)) {
         emotion_out->dominance = 0.2f;
     }
 
@@ -277,7 +277,7 @@ int katra_get_mood_summary(const char* ci_id,
     size_t exp_count = 0;
 
     int result = katra_recall_emotional_experiences(ci_id, -2.0f, 2.0f,
-                                                     -1.0f, 100,
+                                                     -1.0f, EMOTION_MOOD_SUMMARY_LIMIT,
                                                      &experiences, &exp_count);
     if (result != KATRA_SUCCESS) {
         return result;
@@ -286,7 +286,7 @@ int katra_get_mood_summary(const char* ci_id,
     /* Filter by time if hours_back specified */
     time_t cutoff_time = 0;
     if (hours_back > 0) {
-        cutoff_time = time(NULL) - (hours_back * 3600);
+        cutoff_time = time(NULL) - (hours_back * SECONDS_PER_HOUR);
     }
 
     /* Calculate average VAD */

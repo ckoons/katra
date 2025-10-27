@@ -7,6 +7,16 @@
 #include <stdbool.h>
 #include <time.h>
 
+/* Emotion detection constants */
+#define EMOTION_MIN_LETTERS_FOR_CAPS 10     /* Min letters to detect shouting */
+#define EMOTION_CAPS_THRESHOLD 0.7f         /* Percentage of caps = shouting */
+#define EMOTION_KEYWORD_COUNT_POSITIVE 15   /* Positive keyword array size */
+#define EMOTION_KEYWORD_COUNT_NEGATIVE 15   /* Negative keyword array size */
+#define EMOTION_KEYWORD_COUNT_DOMINANCE 8   /* Dominance keyword array size */
+#define EMOTION_KEYWORD_COUNT_SUBMISSIVE 7  /* Submissive keyword array size */
+#define EMOTION_MOOD_SUMMARY_LIMIT 100      /* Max experiences for mood summary */
+#define SECONDS_PER_HOUR 3600               /* Time conversion constant */
+
 /* Emotional dimensions (VAD model: Valence, Arousal, Dominance) */
 typedef struct {
     float valence;      /* -1.0 (negative) to +1.0 (positive) */

@@ -251,12 +251,12 @@ int katra_extract_patterns(interstitial_processor_t* processor,
     ENGRAM_CHECK_PARAMS_4(processor, experiences, patterns, pattern_count);
 
     /* Simple pattern detection: repeated thought types */
-    int thought_type_counts[11] = {0};
+    int thought_type_counts[THOUGHT_TYPE_COUNT] = {0};
 
     for (size_t i = 0; i < count; i++) {
         if (experiences[i] && experiences[i]->record) {
             thought_type_t type = experiences[i]->record->thought_type;
-            if (type >= 0 && type < 11) {
+            if (type >= 0 && type < THOUGHT_TYPE_COUNT) {
                 thought_type_counts[type]++;
             }
         }
@@ -267,7 +267,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
     *pattern_count = 0;
     *patterns = NULL;
 
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < THOUGHT_TYPE_COUNT; i++) {
         if (thought_type_counts[i] > (int)threshold) {
             (*pattern_count)++;
         }
@@ -286,7 +286,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
     }
 
     size_t idx = 0;
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < THOUGHT_TYPE_COUNT; i++) {
         if (thought_type_counts[i] > (int)threshold) {
             char pattern[256];
             snprintf(pattern, sizeof(pattern),
