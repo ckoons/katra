@@ -25,7 +25,7 @@
 #define TIER1_FILE_FORMAT "%s/.katra/memory/tier1/%04d-%02d-%02d.jsonl"
 
 /* Forward declarations */
-static int get_daily_file_path(char* buffer, size_t size);
+static int get_daily_file_path(const char* ci_id, char* buffer, size_t size);
 static int write_json_record(FILE* fp, const memory_record_t* record);
 static void sort_filenames_desc(char** filenames, size_t count);
 void tier1_free_filenames(char** filenames, size_t count);
@@ -36,18 +36,26 @@ static int scan_file_for_records(const char* filepath, const memory_query_t* que
 
 /* Get Tier 1 directory path (exported for archive module) */
 int tier1_get_dir(const char* ci_id, char* buffer, size_t size) {
-    (void)ci_id;  /* Unused - future multi-tenant support */
+    if (!ci_id) {
+        katra_report_error(E_INPUT_NULL, "tier1_get_dir", "ci_id is NULL");
+        return E_INPUT_NULL;
+    }
 
-    return katra_build_path(buffer, size, KATRA_DIR_MEMORY, KATRA_DIR_TIER1, NULL);
+    return katra_build_path(buffer, size, KATRA_DIR_MEMORY, KATRA_DIR_TIER1, ci_id, NULL);
 }
 
 /* Get today's daily file path */
-static int get_daily_file_path(char* buffer, size_t size) {
+static int get_daily_file_path(const char* ci_id, char* buffer, size_t size) {
     time_t now = time(NULL);
     struct tm* tm_info = localtime(&now);
 
+    if (!ci_id) {
+        katra_report_error(E_INPUT_NULL, "get_daily_file_path", "ci_id is NULL");
+        return E_INPUT_NULL;
+    }
+
     char tier1_dir[KATRA_PATH_MAX];
-    int result = katra_build_path(tier1_dir, sizeof(tier1_dir), KATRA_DIR_MEMORY, KATRA_DIR_TIER1, NULL);
+    int result = katra_build_path(tier1_dir, sizeof(tier1_dir), KATRA_DIR_MEMORY, KATRA_DIR_TIER1, ci_id, NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -119,16 +127,20 @@ int tier1_init(const char* ci_id) {
     int result = KATRA_SUCCESS;
     char tier1_dir[KATRA_PATH_MAX];
 
-    /* Build and create directory structure */
-    result = katra_build_and_ensure_dir(tier1_dir, sizeof(tier1_dir), KATRA_DIR_MEMORY, KATRA_DIR_TIER1, NULL);
+    if (!ci_id) {
+        katra_report_error(E_INPUT_NULL, "tier1_init", "ci_id is NULL");
+        return E_INPUT_NULL;
+    }
+
+    /* Build and create per-CI directory structure */
+    result = katra_build_and_ensure_dir(tier1_dir, sizeof(tier1_dir),
+                                        KATRA_DIR_MEMORY, KATRA_DIR_TIER1, ci_id, NULL);
     if (result != KATRA_SUCCESS) {
         return result;
     }
 
-    (void)ci_id;  /* Unused - future multi-tenant support */
-
-    LOG_DEBUG("Initializing Tier 1 storage: %s", tier1_dir);
-    LOG_INFO("Tier 1 storage initialized");
+    LOG_DEBUG("Initializing Tier 1 storage for CI '%s': %s", ci_id, tier1_dir);
+    LOG_INFO("Tier 1 storage initialized for CI: %s", ci_id);
 
     return KATRA_SUCCESS;
 }
@@ -145,10 +157,26 @@ int tier1_store(const memory_record_t* record) {
         goto cleanup;
     }
 
+    /* Validate ci_id */
+    if (!record->ci_id) {
+        katra_report_error(E_INPUT_NULL, "tier1_store", "record->ci_id is NULL");
+        result = E_INPUT_NULL;
+        goto cleanup;
+    }
+
     /* Get today's file path */
-    result = get_daily_file_path(filepath, sizeof(filepath));
+    result = get_daily_file_path(record->ci_id, filepath, sizeof(filepath));
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "tier1_store", "Failed to get file path");
+        goto cleanup;
+    }
+
+    /* Ensure directory exists (in case it was deleted between init and store) */
+    char tier1_dir[KATRA_PATH_MAX];
+    result = katra_build_and_ensure_dir(tier1_dir, sizeof(tier1_dir),
+                                        KATRA_DIR_MEMORY, KATRA_DIR_TIER1, record->ci_id, NULL);
+    if (result != KATRA_SUCCESS) {
+        katra_report_error(result, "tier1_store", "Failed to ensure directory");
         goto cleanup;
     }
 

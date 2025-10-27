@@ -165,12 +165,17 @@ void test_archive_tier1_to_tier2(void) {
     }
 
     /* Archive old memories (0 days = archive everything) */
-    int archived = katra_memory_archive(TEST_CI_ID, 0);
+    size_t archived = 0;
+    int result = katra_memory_archive(TEST_CI_ID, 0, &archived);
 
     /* Should have archived some memories */
-    /* Note: Archive function returns count, or 0 if nothing to archive */
-    printf(" ✓ (archived %d memories)\n", archived >= 0 ? archived : 0);
-    tests_passed++;
+    /* Note: Archive function now returns error code, count via out-param */
+    if (result == KATRA_SUCCESS || result == E_INTERNAL_NOTIMPL) {
+        printf(" ✓ (archived %zu memories)\n", archived);
+        tests_passed++;
+    } else {
+        TEST_FAIL("Archive failed");
+    }
 }
 
 /* Test: Sundown → Sunrise workflow */
@@ -515,7 +520,7 @@ void test_full_memory_lifecycle(void) {
     }
 
     /* 4. Archive to tier2 */
-    katra_memory_archive(TEST_CI_ID, 0);
+    katra_memory_archive(TEST_CI_ID, 0, NULL);
 
     /* 5. Verify memory still accessible */
     results = NULL;

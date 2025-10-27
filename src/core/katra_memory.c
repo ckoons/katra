@@ -148,6 +148,12 @@ int katra_memory_query(const memory_query_t* query,
         return E_INPUT_NULL;
     }
 
+    if (!query->ci_id) {
+        katra_report_error(E_INPUT_NULL, "katra_memory_query",
+                          "query->ci_id is NULL");
+        return E_INPUT_NULL;
+    }
+
     if (!memory_initialized) {
         katra_report_error(E_INVALID_STATE, "katra_memory_query",
                           "Memory subsystem not initialized");
@@ -217,7 +223,7 @@ int katra_memory_stats(const char* ci_id, memory_stats_t* stats) {
 }
 
 /* Archive old memories */
-int katra_memory_archive(const char* ci_id, int max_age_days) {
+int katra_memory_archive(const char* ci_id, int max_age_days, size_t* archived_count) {
     if (!ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_memory_archive",
                           "ci_id is NULL");
@@ -236,11 +242,18 @@ int katra_memory_archive(const char* ci_id, int max_age_days) {
     /* Archive Tier 1 → Tier 2 */
     int archived = tier1_archive(ci_id, max_age_days);
 
-    if (archived >= 0) {
-        LOG_INFO("Archived %d memory records", archived);
+    if (archived < 0) {
+        /* tier1_archive returned error code */
+        return archived;
     }
 
-    return archived;
+    /* Success - set output parameter if provided */
+    if (archived_count) {
+        *archived_count = (size_t)archived;
+    }
+
+    LOG_INFO("Archived %zu memory records", (size_t)archived);
+    return KATRA_SUCCESS;
 }
 
 /* Create memory record (helper) */

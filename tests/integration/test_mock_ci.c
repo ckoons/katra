@@ -244,7 +244,8 @@ void test_ci_archive_workflow(void) {
     tests_run++;
 
     /* Perform tier1 to tier2 archive */
-    int result = katra_memory_archive(MOCK_CI_ID, 0);
+    size_t archived = 0;
+    int result = katra_memory_archive(MOCK_CI_ID, 0, &archived);
 
     /* Archive might not be fully implemented, so we accept success or not-impl */
     if (result == KATRA_SUCCESS || result == E_INTERNAL_NOTIMPL) {
@@ -438,7 +439,7 @@ void test_complete_ci_lifecycle(void) {
     }
 
     /* Night: Archive old memories */
-    katra_memory_archive(MOCK_CI_ID, 0);
+    katra_memory_archive(MOCK_CI_ID, 0, NULL);
 
     /* Query to verify memories exist */
     memory_query_t query = {

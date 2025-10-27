@@ -204,11 +204,11 @@ void test_archive_respects_consent(void) {
     }
 
     /* Archive operation by owner should succeed */
-    int result = katra_memory_archive(TEST_CI_OWNER, 0);
+    int result = katra_memory_archive(TEST_CI_OWNER, 0, NULL);
     (void)result;  /* Intentionally unused - testing consent boundaries */
 
     /* TODO: When consent system is implemented, test that OTHER CI cannot archive:
-     * result = katra_memory_archive(TEST_CI_OTHER, 0);
+     * result = katra_memory_archive(TEST_CI_OTHER, 0, NULL);
      * ASSERT(result == E_CONSENT_REQUIRED, "Should block archive without consent");
      */
 

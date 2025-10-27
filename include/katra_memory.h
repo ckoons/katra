@@ -151,12 +151,15 @@ int katra_memory_stats(const char* ci_id, memory_stats_t* stats);
  * Parameters:
  *   ci_id - CI identifier
  *   max_age_days - Archive memories older than this many days
+ *   archived_count - (output) Number of records archived (may be NULL)
  *
  * Returns:
  *   KATRA_SUCCESS on success
- *   Number of records archived
+ *   E_INPUT_NULL if ci_id is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ *   E_INTERNAL_NOTIMPL if archival not yet implemented
  */
-int katra_memory_archive(const char* ci_id, int max_age_days);
+int katra_memory_archive(const char* ci_id, int max_age_days, size_t* archived_count);
 
 /* Create memory record (helper)
  *
