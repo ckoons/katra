@@ -11,6 +11,7 @@
 #include "katra_memory.h"
 #include "katra_encoder.h"
 #include "katra_engram_common.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -238,8 +239,7 @@ int katra_recall_experience(const char* ci_id, const char* query_text,
     }
 
     /* Convert to cognitive records */
-    cognitive_record_t** cog_results = calloc(base_count,
-                                              sizeof(cognitive_record_t*));
+    cognitive_record_t** cog_results = calloc(base_count, sizeof(cognitive_record_t*));
     if (!cog_results) {
         katra_memory_free_results(base_results, base_count);
         katra_report_error(E_SYSTEM_MEMORY, __func__,
@@ -272,10 +272,8 @@ cognitive_record_t* katra_memory_to_cognitive(const memory_record_t* base_record
         return NULL;
     }
 
-    cognitive_record_t* cog = calloc(1, sizeof(cognitive_record_t));
-    if (!cog) {
-        return NULL;
-    }
+    cognitive_record_t* cog;
+    ALLOC_OR_RETURN_NULL(cog, cognitive_record_t);
 
     /* Copy base fields with safe strdup */
     cog->record_id = katra_safe_strdup(base_record->record_id);
@@ -317,10 +315,8 @@ memory_record_t* katra_cognitive_to_memory(const cognitive_record_t* cognitive_r
         return NULL;
     }
 
-    memory_record_t* mem = calloc(1, sizeof(memory_record_t));
-    if (!mem) {
-        return NULL;
-    }
+    memory_record_t* mem;
+    ALLOC_OR_RETURN_NULL(mem, memory_record_t);
 
     /* Copy base fields with safe strdup */
     mem->record_id = katra_safe_strdup(cognitive_record->record_id);

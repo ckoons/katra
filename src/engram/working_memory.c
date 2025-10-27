@@ -12,6 +12,7 @@
 #include "katra_experience.h"
 #include "katra_cognitive.h"
 #include "katra_engram_common.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -31,16 +32,11 @@ working_memory_t* katra_working_memory_init(const char* ci_id, size_t capacity) 
     }
 
     /* Allocate working memory context */
-    working_memory_t* wm = calloc(1, sizeof(working_memory_t));
-    if (!wm) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_working_memory_init",
-                          "Failed to allocate working memory");
-        return NULL;
-    }
+    working_memory_t* wm;
+    ALLOC_OR_RETURN_NULL(wm, working_memory_t);
 
     /* Initialize fields */
-    strncpy(wm->ci_id, ci_id, sizeof(wm->ci_id) - 1);
-    wm->ci_id[sizeof(wm->ci_id) - 1] = '\0';
+    SAFE_STRNCPY(wm->ci_id, ci_id);
     wm->count = 0;
     wm->capacity = capacity;
     wm->last_consolidation = time(NULL);
@@ -132,12 +128,8 @@ int katra_working_memory_add(working_memory_t* wm,
     }
 
     /* Create working memory item */
-    working_memory_item_t* item = calloc(1, sizeof(working_memory_item_t));
-    if (!item) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_working_memory_add",
-                          "Failed to allocate item");
-        return E_SYSTEM_MEMORY;
-    }
+    working_memory_item_t* item;
+    ALLOC_OR_RETURN(item, working_memory_item_t);
 
     item->experience = experience;
     item->attention_score = attention_score;

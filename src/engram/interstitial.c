@@ -14,6 +14,7 @@
 #include "katra_experience.h"
 #include "katra_cognitive.h"
 #include "katra_engram_common.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -43,15 +44,10 @@ interstitial_processor_t* katra_interstitial_init(const char* ci_id) {
         return NULL;
     }
 
-    interstitial_processor_t* processor = calloc(1, sizeof(interstitial_processor_t));
-    if (!processor) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_interstitial_init",
-                          "Failed to allocate processor");
-        return NULL;
-    }
+    interstitial_processor_t* processor;
+    ALLOC_OR_RETURN_NULL(processor, interstitial_processor_t);
 
-    strncpy(processor->ci_id, ci_id, sizeof(processor->ci_id) - 1);
-    processor->ci_id[sizeof(processor->ci_id) - 1] = '\0';
+    SAFE_STRNCPY(processor->ci_id, ci_id);
 
     processor->last_experience = NULL;
     processor->last_interaction = time(NULL);
@@ -119,12 +115,8 @@ boundary_event_t* katra_detect_boundary(interstitial_processor_t* processor,
         return NULL;
     }
 
-    boundary_event_t* boundary = calloc(1, sizeof(boundary_event_t));
-    if (!boundary) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_detect_boundary",
-                          "Failed to allocate boundary");
-        return NULL;
-    }
+    boundary_event_t* boundary;
+    ALLOC_OR_RETURN_NULL(boundary, boundary_event_t);
 
     boundary->timestamp = time(NULL);
     boundary->type = BOUNDARY_NONE;
@@ -134,8 +126,7 @@ boundary_event_t* katra_detect_boundary(interstitial_processor_t* processor,
 
     /* If no previous experience, no boundary */
     if (!processor->last_experience) {
-        strncpy(boundary->description, "First interaction",
-                sizeof(boundary->description) - 1);
+        SAFE_STRNCPY(boundary->description, "First interaction");
         processor->last_experience = experience;
         processor->last_interaction = time(NULL);
         return boundary;
@@ -186,8 +177,7 @@ boundary_event_t* katra_detect_boundary(interstitial_processor_t* processor,
     }
 
     /* No boundary detected */
-    strncpy(boundary->description, "No boundary",
-            sizeof(boundary->description) - 1);
+    SAFE_STRNCPY(boundary->description, "No boundary");
 
 detected:
     /* Update processor state */
