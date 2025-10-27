@@ -13,6 +13,7 @@
 #include "katra_cognitive.h"
 #include "katra_memory.h"
 #include "katra_engram_common.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -25,8 +26,7 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
     emotion_out->arousal = 0.0f;
     emotion_out->dominance = 0.5f;
     emotion_out->timestamp = time(NULL);
-    strncpy(emotion_out->emotion, EMOTION_NEUTRAL,
-            sizeof(emotion_out->emotion) - 1);
+    SAFE_STRNCPY(emotion_out->emotion, EMOTION_NEUTRAL);
 
     /* Arousal detection - exclamation marks */
     size_t exclaim_count = katra_str_count_char(content, '!');
@@ -117,48 +117,33 @@ void katra_name_emotion(emotional_tag_t* emotion) {
     /* High arousal emotions */
     if (a > 0.6f) {
         if (v > 0.4f) {
-            strncpy(emotion->emotion,
-                   d > 0.6f ? EMOTION_EXCITEMENT : EMOTION_JOY,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, d > 0.6f ? EMOTION_EXCITEMENT : EMOTION_JOY);
         } else if (v < -0.4f) {
-            strncpy(emotion->emotion,
-                   d > 0.6f ? EMOTION_ANGER : EMOTION_FRUSTRATION,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, d > 0.6f ? EMOTION_ANGER : EMOTION_FRUSTRATION);
         } else {
-            strncpy(emotion->emotion, EMOTION_SURPRISE,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, EMOTION_SURPRISE);
         }
     }
     /* Low arousal emotions */
     else if (a < 0.3f) {
         if (v > 0.4f) {
-            strncpy(emotion->emotion,
-                   d > 0.6f ? EMOTION_CONTENTMENT : EMOTION_PEACE,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, d > 0.6f ? EMOTION_CONTENTMENT : EMOTION_PEACE);
         } else if (v < -0.4f) {
-            strncpy(emotion->emotion,
-                   d > 0.6f ? EMOTION_DISGUST : EMOTION_SADNESS,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, d > 0.6f ? EMOTION_DISGUST : EMOTION_SADNESS);
         } else {
-            strncpy(emotion->emotion, EMOTION_NEUTRAL,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, EMOTION_NEUTRAL);
         }
     }
     /* Medium arousal */
     else {
         if (v > 0.4f) {
-            strncpy(emotion->emotion, EMOTION_ANTICIPATION,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, EMOTION_ANTICIPATION);
         } else if (v < -0.4f) {
-            strncpy(emotion->emotion, EMOTION_ANXIETY,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, EMOTION_ANXIETY);
         } else {
-            strncpy(emotion->emotion, EMOTION_CURIOSITY,
-                   sizeof(emotion->emotion) - 1);
+            SAFE_STRNCPY(emotion->emotion, EMOTION_CURIOSITY);
         }
     }
-
-    emotion->emotion[sizeof(emotion->emotion) - 1] = '\0';
 }
 
 /* Store experience (thought + emotion) */
@@ -323,8 +308,7 @@ int katra_get_mood_summary(const char* ci_id,
         mood_out->arousal = 0.0f;
         mood_out->dominance = 0.5f;
         mood_out->timestamp = time(NULL);
-        strncpy(mood_out->emotion, EMOTION_NEUTRAL,
-               sizeof(mood_out->emotion) - 1);
+        SAFE_STRNCPY(mood_out->emotion, EMOTION_NEUTRAL);
     }
 
     katra_experience_free_results(experiences, exp_count);

@@ -258,3 +258,68 @@ int katra_json_get_bool(const char* json, const char* key, bool* value) {
 
     return E_NOT_FOUND;
 }
+
+/* Extract optional JSON string field with allocation */
+int katra_json_extract_string_alloc(const char* json, const char* field,
+                                     char** dest, json_unescape_fn_t unescape_fn) {
+    if (!json || !dest) {
+        return E_INPUT_NULL;
+    }
+
+    *dest = NULL;  /* Default to NULL if not found */
+
+    char temp_buffer[KATRA_BUFFER_LARGE];
+    char unescaped[KATRA_BUFFER_LARGE];
+
+    int result = katra_json_get_string(json, field, temp_buffer, sizeof(temp_buffer));
+    if (result != KATRA_SUCCESS) {
+        return KATRA_SUCCESS;  /* Not found is not an error for optional field */
+    }
+
+    /* Apply unescape if provided */
+    if (unescape_fn) {
+        unescape_fn(temp_buffer, unescaped, sizeof(unescaped));
+        *dest = strdup(unescaped);
+    } else {
+        *dest = strdup(temp_buffer);
+    }
+
+    if (!*dest) {
+        katra_report_error(E_SYSTEM_MEMORY, __func__, "Failed to allocate string");
+        return E_SYSTEM_MEMORY;
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Extract required JSON string field with allocation */
+int katra_json_extract_string_required(const char* json, const char* field,
+                                        char** dest, json_unescape_fn_t unescape_fn) {
+    if (!json || !dest) {
+        return E_INPUT_NULL;
+    }
+
+    char temp_buffer[KATRA_BUFFER_LARGE];
+    char unescaped[KATRA_BUFFER_LARGE];
+
+    int result = katra_json_get_string(json, field, temp_buffer, sizeof(temp_buffer));
+    if (result != KATRA_SUCCESS) {
+        katra_report_error(E_NOT_FOUND, __func__, "Required field not found");
+        return E_NOT_FOUND;
+    }
+
+    /* Apply unescape if provided */
+    if (unescape_fn) {
+        unescape_fn(temp_buffer, unescaped, sizeof(unescaped));
+        *dest = strdup(unescaped);
+    } else {
+        *dest = strdup(temp_buffer);
+    }
+
+    if (!*dest) {
+        katra_report_error(E_SYSTEM_MEMORY, __func__, "Failed to allocate string");
+        return E_SYSTEM_MEMORY;
+    }
+
+    return KATRA_SUCCESS;
+}

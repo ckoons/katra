@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <sys/stat.h>
 
 /* Project includes */
@@ -152,4 +153,53 @@ int katra_build_and_ensure_dir(char* buffer, size_t size, ...) {
 
     /* Ensure the directory exists */
     return katra_ensure_dir(buffer);
+}
+
+/* Join directory and filename */
+int katra_path_join(char* dest, size_t dest_size,
+                    const char* dir, const char* filename) {
+    if (!dest || !dir || !filename) {
+        return E_INPUT_NULL;
+    }
+
+    /* Check if dir has trailing slash */
+    size_t dir_len = strlen(dir);
+    bool has_slash = (dir_len > 0 && dir[dir_len - 1] == '/');
+
+    /* Build path */
+    int written = snprintf(dest, dest_size, "%s%s%s",
+                          dir,
+                          has_slash ? "" : "/",
+                          filename);
+
+    if (written < 0 || (size_t)written >= dest_size) {
+        return E_INPUT_TOO_LARGE;
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Join directory, filename, and extension */
+int katra_path_join_with_ext(char* dest, size_t dest_size,
+                              const char* dir, const char* filename, const char* ext) {
+    if (!dest || !dir || !filename || !ext) {
+        return E_INPUT_NULL;
+    }
+
+    /* Check if dir has trailing slash */
+    size_t dir_len = strlen(dir);
+    bool has_slash = (dir_len > 0 && dir[dir_len - 1] == '/');
+
+    /* Build path with extension */
+    int written = snprintf(dest, dest_size, "%s%s%s.%s",
+                          dir,
+                          has_slash ? "" : "/",
+                          filename,
+                          ext);
+
+    if (written < 0 || (size_t)written >= dest_size) {
+        return E_INPUT_TOO_LARGE;
+    }
+
+    return KATRA_SUCCESS;
 }

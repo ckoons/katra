@@ -7,6 +7,7 @@
 
 /* Project includes */
 #include "katra_tier2.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_json_utils.h"
 #include "katra_limits.h"
@@ -172,10 +173,8 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
     }
 
     /* Allocate digest structure */
-    digest_record_t* d = calloc(1, sizeof(digest_record_t));
-    if (!d) {
-        return E_SYSTEM_MEMORY;
-    }
+    digest_record_t* d;
+    ALLOC_OR_RETURN(d, digest_record_t);
 
     /* Extract basic fields */
     char digest_id[256] = {0};

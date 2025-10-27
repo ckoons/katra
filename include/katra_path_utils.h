@@ -74,4 +74,43 @@ int katra_ensure_dir(const char* path);
  */
 int katra_build_and_ensure_dir(char* buffer, size_t size, ...);
 
+/* Join directory and filename
+ *
+ * Simple path join: dir/filename
+ * Handles trailing slashes in dir automatically.
+ *
+ * Parameters:
+ *   dest - Destination buffer
+ *   dest_size - Size of destination buffer
+ *   dir - Directory path
+ *   filename - Filename to append
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if any parameter is NULL
+ *   E_INPUT_TOO_LARGE if path exceeds buffer
+ */
+int katra_path_join(char* dest, size_t dest_size,
+                    const char* dir, const char* filename);
+
+/* Join directory, filename, and extension
+ *
+ * Simple path join: dir/filename.ext
+ * Handles trailing slashes in dir automatically.
+ *
+ * Parameters:
+ *   dest - Destination buffer
+ *   dest_size - Size of destination buffer
+ *   dir - Directory path
+ *   filename - Filename to append
+ *   ext - Extension (without leading dot)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if any parameter is NULL
+ *   E_INPUT_TOO_LARGE if path exceeds buffer
+ */
+int katra_path_join_with_ext(char* dest, size_t dest_size,
+                              const char* dir, const char* filename, const char* ext);
+
 #endif /* KATRA_PATH_UTILS_H */

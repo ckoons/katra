@@ -77,7 +77,8 @@ FOUNDATION_OBJS := $(BUILD_DIR)/katra_error.o \
                    $(BUILD_DIR)/katra_init.o \
                    $(BUILD_DIR)/katra_path_utils.o \
                    $(BUILD_DIR)/katra_json_utils.o \
-                   $(BUILD_DIR)/katra_file_utils.o
+                   $(BUILD_DIR)/katra_file_utils.o \
+                   $(BUILD_DIR)/katra_core_common.o
 
 # Memory/Core object files
 CORE_OBJS := $(BUILD_DIR)/katra_memory.o \

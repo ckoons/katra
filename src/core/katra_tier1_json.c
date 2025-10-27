@@ -8,6 +8,7 @@
 
 /* Project includes */
 #include "katra_tier1.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_json_utils.h"
 #include "katra_limits.h"
@@ -40,37 +41,9 @@ void katra_tier1_json_unescape(const char* src, char* dst, size_t dst_size) {
     dst[dst_idx] = '\0';
 }
 
-/* Helper: Extract and unescape optional string field */
-static int extract_optional_string(const char* line, const char* field,
-                                    char** dest) {
-    char temp_buffer[KATRA_BUFFER_LARGE];
-    char unescaped[KATRA_BUFFER_LARGE];
-
-    if (katra_json_get_string(line, field, temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        katra_tier1_json_unescape(temp_buffer, unescaped, sizeof(unescaped));
-        *dest = strdup(unescaped);
-        if (!*dest) {
-            return E_SYSTEM_MEMORY;
-        }
-    }
-    return KATRA_SUCCESS;
-}
-
-/* Helper: Extract required string field */
-static int extract_required_string(const char* line, const char* field,
-                                    char** dest) {
-    char temp_buffer[KATRA_BUFFER_LARGE];
-    char unescaped[KATRA_BUFFER_LARGE];
-
-    if (katra_json_get_string(line, field, temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
-        katra_tier1_json_unescape(temp_buffer, unescaped, sizeof(unescaped));
-        *dest = strdup(unescaped);
-        if (!*dest) {
-            return E_SYSTEM_MEMORY;
-        }
-    }
-    return KATRA_SUCCESS;
-}
+/* Note: extract_optional_string and extract_required_string replaced by
+ * katra_json_extract_string_alloc() and katra_json_extract_string_required()
+ * from katra_json_utils.h */
 
 /* Parse JSON record from line */
 int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
@@ -83,11 +56,7 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
         goto cleanup;
     }
 
-    rec = calloc(1, sizeof(memory_record_t));
-    if (!rec) {
-        result = E_SYSTEM_MEMORY;
-        goto cleanup;
-    }
+    ALLOC_OR_GOTO(rec, memory_record_t, cleanup);
 
     /* Extract record_id */
     if (katra_json_get_string(line, "record_id", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
@@ -116,34 +85,39 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     }
 
     /* Extract content (required) */
-    result = extract_required_string(line, "content", &rec->content);
+    result = katra_json_extract_string_required(line, "content", &rec->content,
+                                                katra_tier1_json_unescape);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
 
     /* Extract optional string fields */
-    result = extract_optional_string(line, "response", &rec->response);
+    result = katra_json_extract_string_alloc(line, "response", &rec->response,
+                                             katra_tier1_json_unescape);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
 
-    result = extract_optional_string(line, "context", &rec->context);
+    result = katra_json_extract_string_alloc(line, "context", &rec->context,
+                                             katra_tier1_json_unescape);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
 
-    /* Extract remaining optional fields */
-    result = extract_optional_string(line, "ci_id", &rec->ci_id);
+    result = katra_json_extract_string_alloc(line, "ci_id", &rec->ci_id,
+                                             katra_tier1_json_unescape);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
 
-    result = extract_optional_string(line, "session_id", &rec->session_id);
+    result = katra_json_extract_string_alloc(line, "session_id", &rec->session_id,
+                                             katra_tier1_json_unescape);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
 
-    result = extract_optional_string(line, "component", &rec->component);
+    result = katra_json_extract_string_alloc(line, "component", &rec->component,
+                                             katra_tier1_json_unescape);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }

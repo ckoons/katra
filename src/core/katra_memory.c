@@ -10,6 +10,7 @@
 /* Project includes */
 #include "katra_memory.h"
 #include "katra_tier1.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -36,8 +37,7 @@ int katra_memory_init(const char* ci_id) {
     LOG_INFO("Initializing memory subsystem for CI: %s", ci_id);
 
     /* Store CI ID */
-    strncpy(current_ci_id, ci_id, sizeof(current_ci_id) - 1);
-    current_ci_id[sizeof(current_ci_id) - 1] = '\0';
+    SAFE_STRNCPY(current_ci_id, ci_id);
 
     /* Initialize Tier 1 (raw recordings) */
     result = tier1_init(ci_id);
@@ -252,12 +252,8 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
         return NULL;
     }
 
-    memory_record_t* record = calloc(1, sizeof(memory_record_t));
-    if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_memory_create_record",
-                          "Failed to allocate record");
-        return NULL;
-    }
+    memory_record_t* record;
+    ALLOC_OR_RETURN_NULL(record, memory_record_t);
 
     /* Generate unique ID: ci_id_timestamp_random */
     char id_buffer[KATRA_BUFFER_MEDIUM];

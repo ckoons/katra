@@ -131,4 +131,47 @@ int katra_json_get_float(const char* json, const char* key, float* value);
  */
 int katra_json_get_bool(const char* json, const char* key, bool* value);
 
+/* ===== Higher-Level Extraction Helpers ===== */
+
+/* Unescape function pointer type for JSON extraction */
+typedef void (*json_unescape_fn_t)(const char* src, char* dst, size_t dst_size);
+
+/* Extract optional JSON string field with allocation
+ *
+ * Extracts string field, allocates memory, and stores pointer.
+ * Returns NULL in dest if field not found (not an error).
+ *
+ * Parameters:
+ *   json - JSON string to parse
+ *   field - Field name to extract
+ *   dest - Pointer to store allocated string
+ *   unescape_fn - Optional unescape function (can be NULL)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success (even if field not found)
+ *   E_SYSTEM_MEMORY if allocation fails
+ *   E_INPUT_NULL if json or dest is NULL
+ */
+int katra_json_extract_string_alloc(const char* json, const char* field,
+                                     char** dest, json_unescape_fn_t unescape_fn);
+
+/* Extract required JSON string field with allocation
+ *
+ * Like extract_string_alloc but returns error if field not found.
+ *
+ * Parameters:
+ *   json - JSON string to parse
+ *   field - Field name to extract
+ *   dest - Pointer to store allocated string
+ *   unescape_fn - Optional unescape function (can be NULL)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_NOT_FOUND if field not present
+ *   E_SYSTEM_MEMORY if allocation fails
+ *   E_INPUT_NULL if json or dest is NULL
+ */
+int katra_json_extract_string_required(const char* json, const char* field,
+                                        char** dest, json_unescape_fn_t unescape_fn);
+
 #endif /* KATRA_JSON_UTILS_H */

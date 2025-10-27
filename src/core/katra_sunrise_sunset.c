@@ -12,6 +12,7 @@
 #include "katra_memory.h"
 #include "katra_tier1.h"
 #include "katra_engram_common.h"
+#include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -49,9 +50,12 @@ int katra_extract_topics(const char* ci_id,
     }
 
     /* Simple clustering: group similar memories */
-    topic_cluster_t** clusters = calloc(SUNRISE_MAX_CLUSTERS, sizeof(topic_cluster_t*));
+    topic_cluster_t** clusters;
+    /* Note: Using manual allocation due to complex cleanup with records */
+    clusters = calloc(SUNRISE_MAX_CLUSTERS, sizeof(topic_cluster_t*));
     if (!clusters) {
         katra_memory_free_results(records, record_count);
+        katra_report_error(E_SYSTEM_MEMORY, __func__, "Failed to allocate clusters array");
         return E_SYSTEM_MEMORY;
     }
 
@@ -183,8 +187,8 @@ int katra_trace_threads(const char* ci_id,
                     thread->record_ids[j] = katra_safe_strdup(path[j]->record_id);
                 }
 
-                strncpy(thread->start_topic, "Conversation", sizeof(thread->start_topic) - 1);
-                strncpy(thread->end_topic, "Discussion", sizeof(thread->end_topic) - 1);
+                SAFE_STRNCPY(thread->start_topic, "Conversation");
+                SAFE_STRNCPY(thread->end_topic, "Discussion");
                 thread->resolved = false;
 
                 threads[thread_count++] = thread;
@@ -248,7 +252,7 @@ int katra_build_emotional_arc(const char* ci_id,
             arc[i].valence = 0.0f;
             arc[i].arousal = 0.0f;
             arc[i].dominance = 0.5f;
-            strncpy(arc[i].emotion, EMOTION_NEUTRAL, sizeof(arc[i].emotion) - 1);
+            SAFE_STRNCPY(arc[i].emotion, EMOTION_NEUTRAL);
         }
         arc[i].timestamp = records[idx]->timestamp;
     }
@@ -322,12 +326,10 @@ int katra_sundown(const char* ci_id,
                   sundown_context_t** context_out) {
     ENGRAM_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
 
-    sundown_context_t* context = calloc(1, sizeof(sundown_context_t));
-    if (!context) {
-        return E_SYSTEM_MEMORY;
-    }
+    sundown_context_t* context;
+    ALLOC_OR_RETURN(context, sundown_context_t);
 
-    strncpy(context->ci_id, ci_id, sizeof(context->ci_id) - 1);
+    SAFE_STRNCPY(context->ci_id, ci_id);
     context->timestamp = time(NULL);
 
     /* Get basic daily stats */
@@ -377,12 +379,10 @@ int katra_sunrise(const char* ci_id,
                   sunrise_context_t** context_out) {
     ENGRAM_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
 
-    sunrise_context_t* context = calloc(1, sizeof(sunrise_context_t));
-    if (!context) {
-        return E_SYSTEM_MEMORY;
-    }
+    sunrise_context_t* context;
+    ALLOC_OR_RETURN(context, sunrise_context_t);
 
-    strncpy(context->ci_id, ci_id, sizeof(context->ci_id) - 1);
+    SAFE_STRNCPY(context->ci_id, ci_id);
     context->timestamp = time(NULL);
 
     /* Load yesterday's sundown if available */
@@ -393,8 +393,7 @@ int katra_sunrise(const char* ci_id,
     context->baseline_mood.valence = 0.0f;
     context->baseline_mood.arousal = 0.0f;
     context->baseline_mood.dominance = 0.5f;
-    strncpy(context->baseline_mood.emotion, EMOTION_NEUTRAL,
-           sizeof(context->baseline_mood.emotion) - 1);
+    SAFE_STRNCPY(context->baseline_mood.emotion, EMOTION_NEUTRAL);
 
     *context_out = context;
 
