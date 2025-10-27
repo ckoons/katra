@@ -43,8 +43,12 @@ RM_RF := rm -rf
 
 .PHONY: all clean clean-all distclean test help
 .PHONY: count-report programming-guidelines check
-.PHONY: improvement-scan benchmark
+.PHONY: improvement-scan benchmark check-ready
 .PHONY: directories
+.PHONY: test-quick test-env test-config test-error test-log test-init test-memory
+.PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
+.PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
+.PHONY: test-lifecycle test-mock-ci
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -242,11 +246,17 @@ TEST_VECTOR := $(BIN_DIR)/tests/test_vector
 TEST_GRAPH := $(BIN_DIR)/tests/test_graph
 TEST_SUNRISE_SUNSET := $(BIN_DIR)/tests/test_sunrise_sunset
 
+# New test categories
+TEST_CONSENT := $(BIN_DIR)/tests/test_consent_enforcement
+TEST_CORRUPTION := $(BIN_DIR)/tests/test_corruption_recovery
+TEST_LIFECYCLE := $(BIN_DIR)/tests/test_memory_lifecycle
+TEST_MOCK_CI := $(BIN_DIR)/tests/test_mock_ci
+
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -313,6 +323,27 @@ test-sunrise-sunset: $(TEST_SUNRISE_SUNSET)
 	@echo "Running sunrise/sunset tests..."
 	@$(TEST_SUNRISE_SUNSET)
 
+test-consent: $(TEST_CONSENT)
+	@echo "Running ethical consent tests..."
+	@$(TEST_CONSENT)
+
+test-corruption: $(TEST_CORRUPTION)
+	@echo "Running corruption recovery tests..."
+	@$(TEST_CORRUPTION)
+
+test-lifecycle: $(TEST_LIFECYCLE)
+	@echo "Running memory lifecycle integration tests..."
+	@$(TEST_LIFECYCLE)
+
+test-mock-ci: $(TEST_MOCK_CI)
+	@echo "Running mock CI integration tests..."
+	@$(TEST_MOCK_CI)
+
+# CI readiness check
+check-ready: directories $(LIBKATRA_FOUNDATION)
+	@echo "Checking Katra readiness for CI testing..."
+	@./scripts/check_ready.sh
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
@@ -367,6 +398,22 @@ $(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_FOUNDATION)
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 $(TEST_SUNRISE_SUNSET): $(TEST_DIR)/unit/test_sunrise_sunset.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+
+$(TEST_CONSENT): $(TEST_DIR)/ethical/test_consent_enforcement.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_CORRUPTION): $(TEST_DIR)/failure/test_corruption_recovery.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_LIFECYCLE): $(TEST_DIR)/integration/test_memory_lifecycle.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+
+$(TEST_MOCK_CI): $(TEST_DIR)/integration/test_mock_ci.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
 
