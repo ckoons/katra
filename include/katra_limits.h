@@ -184,4 +184,13 @@
 /* Buffer sizes for breathing layer operations */
 #define BREATHING_CONTEXT_BUFFER_INCREMENT 1024
 
+/* Periodic maintenance intervals */
+#define BREATHING_MAINTENANCE_INTERVAL_SECONDS (6 * 3600)  /* 6 hours */
+
+/* Memory pressure thresholds */
+#define BREATHING_MEMORY_PRESSURE_WARN_PERCENT 75    /* Warn at 75% full */
+#define BREATHING_MEMORY_PRESSURE_CRITICAL_PERCENT 90 /* Critical at 90% full */
+#define BREATHING_TIER1_SOFT_LIMIT 7500               /* Soft limit for tier1 entries */
+#define BREATHING_TIER1_HARD_LIMIT 9000               /* Hard limit before forcing consolidation */
+
 #endif /* KATRA_LIMITS_H */

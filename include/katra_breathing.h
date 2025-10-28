@@ -198,6 +198,7 @@ char** recall_about(const char* topic, size_t* count);
  *   - relevant_memories()
  *   - recent_thoughts()
  *   - recall_about()
+ *   - recall_previous_session()
  *
  * Frees both the array and all strings in it.
  *
@@ -207,6 +208,31 @@ char** recall_about(const char* topic, size_t* count);
  *   free_memory_list(thoughts, count);
  */
 void free_memory_list(char** list, size_t count);
+
+/**
+ * recall_previous_session() - Load memories from most recent session
+ *
+ * Enables cross-session continuity by retrieving memories from the
+ * previous session. Useful for "warming up" context at session start.
+ *
+ * Returns memories from the most recent session that is NOT the current
+ * session, ordered by recency, limited to the specified count.
+ *
+ * Example usage at session start:
+ *   session_start(ci_id);
+ *   size_t count = 0;
+ *   char** prev = recall_previous_session(ci_id, 50, &count);
+ *   if (prev) {
+ *       LOG_INFO("Recalled %zu memories from previous session", count);
+ *       // Use previous session context...
+ *       free_memory_list(prev, count);
+ *   }
+ *
+ * Memory ownership: Caller must call free_memory_list() when done.
+ *
+ * Returns: Array of strings (caller owns), or NULL if no previous session
+ */
+char** recall_previous_session(const char* ci_id, size_t limit, size_t* count);
 
 /* ============================================================================
  * INTERSTITIAL CAPTURE - Automatic thought extraction
@@ -274,6 +300,22 @@ int auto_consolidate(void);
  * Loads recent + relevant memories so they're "just there."
  */
 int load_context(void);
+
+/**
+ * breathe_periodic_maintenance() - Periodic background maintenance
+ *
+ * Performs periodic health checks and consolidation.
+ * Safe to call frequently - only acts when maintenance is due.
+ *
+ * Runs:
+ *   - Every 6 hours: auto_consolidate() to prevent tier1 overflow
+ *   - Health checks and memory pressure monitoring
+ *
+ * Should be called from session_start() and periodically during long sessions.
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int breathe_periodic_maintenance(void);
 
 /* ============================================================================
  * SESSION MANAGEMENT - Automatic sunrise/sunset
@@ -365,6 +407,7 @@ int get_context_statistics(context_stats_t* stats);
  *   - Context loading patterns
  *   - Query patterns
  *   - Session metrics
+ *   - Health indicators
  */
 typedef struct {
     /* Memory formation stats */
@@ -388,6 +431,12 @@ typedef struct {
     time_t session_start_time;          /* When session started */
     time_t last_activity_time;          /* Most recent operation */
     size_t session_duration_seconds;    /* Total session duration */
+
+    /* Health indicators (NEW) */
+    time_t last_consolidation;          /* When last consolidation occurred */
+    size_t consolidation_count;         /* Number of consolidations this session */
+    size_t failed_stores;               /* Failed memory store operations */
+    size_t recovered_errors;            /* Recovered error count */
 } enhanced_stats_t;
 
 /**
@@ -401,6 +450,52 @@ typedef struct {
  * Returns: Allocated stats structure or NULL on error
  */
 enhanced_stats_t* get_enhanced_statistics(void);
+
+/**
+ * memory_health_t - Memory system health indicators
+ *
+ * Provides visibility into memory system state for long-running CIs:
+ *   - Tier fill levels and capacity usage
+ *   - Memory pressure indicators
+ *   - System health flags
+ */
+typedef struct {
+    /* Tier 1 status */
+    size_t tier1_records;               /* Current records in tier1 */
+    size_t tier1_bytes;                 /* Bytes used in tier1 */
+    float tier1_fill_percentage;        /* Percentage of capacity used (0-100) */
+
+    /* Memory pressure indicators */
+    bool memory_pressure;               /* True if approaching limits */
+    bool degraded_mode;                 /* True if operating in reduced capacity */
+
+    /* Consolidation status */
+    time_t last_consolidation;          /* When last consolidation ran */
+    size_t consolidation_count;         /* Total consolidations */
+
+    /* Overall health */
+    bool tier2_available;               /* True if tier2 is initialized */
+    bool tier2_enabled;                 /* True if tier2 archiving is active */
+} memory_health_t;
+
+/**
+ * get_memory_health() - Get current memory system health status
+ *
+ * Returns health indicators for monitoring and decision-making.
+ * Long-running CIs can use this to adjust behavior based on memory pressure.
+ *
+ * Example usage:
+ *   memory_health_t* health = get_memory_health(ci_id);
+ *   if (health->memory_pressure) {
+ *       // Only store high-importance memories
+ *   }
+ *   free(health);
+ *
+ * Caller owns returned structure (must free).
+ *
+ * Returns: Allocated health structure or NULL on error
+ */
+memory_health_t* get_memory_health(const char* ci_id);
 
 /**
  * reset_session_statistics() - Reset session statistics

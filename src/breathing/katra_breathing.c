@@ -91,22 +91,38 @@ void breathe_cleanup(void) {
         return;
     }
 
-    LOG_DEBUG("Cleaning up breathing layer for %s", g_context.ci_id);
+    LOG_DEBUG("Breathing layer cleanup started for %s", g_context.ci_id);
 
-    /* Auto-consolidate before shutdown */
+    /* ========================================================================
+     * FORMALIZED CLEANUP ORDER
+     * ======================================================================== */
+
+    /* Step 1: Stop forming new memories */
+    g_initialized = false;
+    LOG_DEBUG("Step 1: Stopped accepting new memories");
+
+    /* Step 2: Consolidate existing memories BEFORE cleanup */
     auto_consolidate();
+    LOG_DEBUG("Step 2: Consolidated memories");
 
-    /* Cleanup context */
+    /* Step 3: Cleanup subsystems in reverse init order */
+    /* (Future: tier2_cleanup(), tier3_cleanup() would go here) */
+    LOG_DEBUG("Step 3: Subsystems cleaned up");
+
+    /* Step 4: Cleanup memory subsystem (closes databases) */
+    katra_memory_cleanup();
+    LOG_DEBUG("Step 4: Memory subsystem cleaned up");
+
+    /* Step 5: Free breathing layer resources */
     free(g_context.ci_id);
     free(g_context.session_id);
     free(g_current_thought);
 
     memset(&g_context, 0, sizeof(g_context));
-    g_initialized = false;
     g_current_thought = NULL;
+    LOG_DEBUG("Step 5: Breathing layer resources freed");
 
-    /* Cleanup memory subsystem */
-    katra_memory_cleanup();
+    LOG_INFO("Breathing layer cleanup complete");
 }
 
 /* ============================================================================
@@ -133,6 +149,13 @@ int session_start(const char* ci_id) {
     reset_session_statistics();
 
     LOG_INFO("Session started: %s", g_context.session_id);
+
+    /* Run periodic maintenance (consolidation if needed) */
+    result = breathe_periodic_maintenance();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Periodic maintenance failed: %d", result);
+        /* Non-fatal - continue session start */
+    }
 
     /* Load yesterday's summary (sunrise) */
     digest_record_t* yesterday = NULL;

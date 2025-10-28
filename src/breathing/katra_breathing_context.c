@@ -197,3 +197,104 @@ void free_memory_list(char** list, size_t count) {
     /* Free the array itself */
     free(list);
 }
+
+/* ============================================================================
+ * CROSS-SESSION CONTINUITY
+ * ============================================================================ */
+
+char** recall_previous_session(const char* ci_id, size_t limit, size_t* count) {
+    if (!ci_id || !count) {
+        if (count) *count = 0;
+        katra_report_error(E_INPUT_NULL, "recall_previous_session", "NULL parameter");
+        return NULL;
+    }
+
+    if (!breathing_get_initialized()) {
+        *count = 0;
+        return NULL;
+    }
+
+    /* Get current session ID to exclude it */
+    const char* current_session = breathing_get_session_id();
+    if (!current_session) {
+        /* No current session - can query all sessions */
+        LOG_DEBUG("No current session - querying all recent memories");
+    }
+
+    /* Query recent memories for this CI */
+    memory_query_t query = {
+        .ci_id = ci_id,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,  /* All types */
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = limit * 2  /* Query 2x to filter current session */
+    };
+
+    memory_record_t** results = NULL;
+    size_t result_count = 0;
+
+    int result = katra_memory_query(&query, &results, &result_count);
+    if (result != KATRA_SUCCESS || result_count == 0) {
+        *count = 0;
+        return NULL;
+    }
+
+    /* Build filtered array - exclude current session, find previous session */
+    const char* prev_session_id = NULL;
+    memory_record_t** filtered = calloc(limit, sizeof(memory_record_t*));
+    if (!filtered) {
+        katra_memory_free_results(results, result_count);
+        *count = 0;
+        return NULL;
+    }
+
+    size_t match_count = 0;
+    for (size_t i = 0; i < result_count && match_count < limit; i++) {
+        const char* session = results[i]->session_id;
+
+        /* Skip memories without session_id */
+        if (!session) {
+            continue;
+        }
+
+        /* Skip current session */
+        if (current_session && strcmp(session, current_session) == 0) {
+            continue;
+        }
+
+        /* Found a previous session memory */
+        if (prev_session_id == NULL) {
+            /* First previous session we encountered */
+            prev_session_id = session;
+            filtered[match_count++] = results[i];
+        } else if (strcmp(session, prev_session_id) == 0) {
+            /* Same previous session */
+            filtered[match_count++] = results[i];
+        }
+        /* Else: Different previous session (even older), skip */
+    }
+
+    if (match_count == 0) {
+        free(filtered);
+        katra_memory_free_results(results, result_count);
+        *count = 0;
+        LOG_DEBUG("No previous session found");
+        return NULL;
+    }
+
+    /* Use helper to copy matching memories */
+    char** prev_memories = breathing_copy_memory_contents(filtered, match_count, count);
+
+    /* Clean up */
+    free(filtered);
+    katra_memory_free_results(results, result_count);
+
+    if (prev_memories) {
+        LOG_INFO("Recalled %zu memories from previous session: %s",
+                match_count, prev_session_id ? prev_session_id : "unknown");
+    }
+
+    return prev_memories;
+}
