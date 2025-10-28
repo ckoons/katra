@@ -81,8 +81,8 @@ int set_context_config(const context_config_t* config) {
         return E_INVALID_PARAMS;
     }
 
-    if (config->min_importance_relevant < 0.0 ||
-        config->min_importance_relevant > 1.0) {
+    if (config->min_importance_relevant < MEMORY_IMPORTANCE_TRIVIAL ||
+        config->min_importance_relevant > MEMORY_IMPORTANCE_CRITICAL) {
         katra_report_error(E_INVALID_PARAMS, "set_context_config",
                           "Invalid importance threshold");
         return E_INVALID_PARAMS;

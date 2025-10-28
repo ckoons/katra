@@ -17,6 +17,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
+#include "katra_breathing_helpers.h"
 
 /* ============================================================================
  * ENUM/STRING HELPERS
@@ -62,35 +63,14 @@ int remember(const char* thought, why_remember_t why) {
 
     LOG_DEBUG("Remembering (%s): %s", why_to_string(why), thought);
 
-    /* Create memory record */
-    memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+    return breathing_store_typed_memory(
         MEMORY_TYPE_EXPERIENCE,
         thought,
-        why_to_importance(why)
+        why_to_importance(why),
+        NULL,  /* No importance note */
+        why,
+        "remember"
     );
-
-    if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "remember", "Failed to create record");
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Add session context if available */
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
-    }
-
-    /* Store memory */
-    int result = katra_memory_store(record);
-    katra_memory_free_record(record);
-
-    if (result == KATRA_SUCCESS) {
-        LOG_DEBUG("Memory stored successfully");
-        breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, why);
-    }
-
-    return result;
 }
 
 int remember_with_note(const char* thought, why_remember_t why, const char* why_note) {
@@ -107,40 +87,14 @@ int remember_with_note(const char* thought, why_remember_t why, const char* why_
 
     LOG_DEBUG("Remembering (%s) with note: %s", why_to_string(why), thought);
 
-    /* Create memory record */
-    memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+    return breathing_store_typed_memory(
         MEMORY_TYPE_EXPERIENCE,
         thought,
-        why_to_importance(why)
+        why_to_importance(why),
+        why_note,  /* Importance note provided */
+        why,
+        "remember_with_note"
     );
-
-    if (!record) {
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Add importance note */
-    record->importance_note = strdup(why_note);
-    if (!record->importance_note) {
-        katra_memory_free_record(record);
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Add session context */
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
-    }
-
-    /* Store memory */
-    int result = katra_memory_store(record);
-    katra_memory_free_record(record);
-
-    if (result == KATRA_SUCCESS) {
-        breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, why);
-    }
-
-    return result;
 }
 
 int reflect(const char* insight) {
@@ -150,30 +104,14 @@ int reflect(const char* insight) {
 
     LOG_DEBUG("Reflecting: %s", insight);
 
-    memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+    return breathing_store_typed_memory(
         MEMORY_TYPE_REFLECTION,
         insight,
-        MEMORY_IMPORTANCE_HIGH  /* Reflections are usually significant */
+        MEMORY_IMPORTANCE_HIGH,  /* Reflections are usually significant */
+        NULL,
+        WHY_SIGNIFICANT,
+        "reflect"
     );
-
-    if (!record) {
-        return E_SYSTEM_MEMORY;
-    }
-
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
-    }
-
-    int result = katra_memory_store(record);
-    katra_memory_free_record(record);
-
-    if (result == KATRA_SUCCESS) {
-        breathing_track_memory_stored(MEMORY_TYPE_REFLECTION, WHY_SIGNIFICANT);
-    }
-
-    return result;
 }
 
 int learn(const char* knowledge) {
@@ -183,30 +121,14 @@ int learn(const char* knowledge) {
 
     LOG_DEBUG("Learning: %s", knowledge);
 
-    memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+    return breathing_store_typed_memory(
         MEMORY_TYPE_KNOWLEDGE,
         knowledge,
-        MEMORY_IMPORTANCE_HIGH  /* New knowledge is important */
+        MEMORY_IMPORTANCE_HIGH,  /* New knowledge is important */
+        NULL,
+        WHY_SIGNIFICANT,
+        "learn"
     );
-
-    if (!record) {
-        return E_SYSTEM_MEMORY;
-    }
-
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
-    }
-
-    int result = katra_memory_store(record);
-    katra_memory_free_record(record);
-
-    if (result == KATRA_SUCCESS) {
-        breathing_track_memory_stored(MEMORY_TYPE_KNOWLEDGE, WHY_SIGNIFICANT);
-    }
-
-    return result;
 }
 
 int decide(const char* decision, const char* reasoning) {
@@ -216,37 +138,14 @@ int decide(const char* decision, const char* reasoning) {
 
     LOG_DEBUG("Deciding: %s (because: %s)", decision, reasoning);
 
-    memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+    return breathing_store_typed_memory(
         MEMORY_TYPE_DECISION,
         decision,
-        MEMORY_IMPORTANCE_HIGH  /* Decisions are important */
+        MEMORY_IMPORTANCE_HIGH,  /* Decisions are important */
+        reasoning,  /* Use importance_note for reasoning */
+        WHY_SIGNIFICANT,
+        "decide"
     );
-
-    if (!record) {
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Use importance_note for reasoning */
-    record->importance_note = strdup(reasoning);
-    if (!record->importance_note) {
-        katra_memory_free_record(record);
-        return E_SYSTEM_MEMORY;
-    }
-
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
-    }
-
-    int result = katra_memory_store(record);
-    katra_memory_free_record(record);
-
-    if (result == KATRA_SUCCESS) {
-        breathing_track_memory_stored(MEMORY_TYPE_DECISION, WHY_SIGNIFICANT);
-    }
-
-    return result;
 }
 
 int notice_pattern(const char* pattern) {
@@ -256,28 +155,12 @@ int notice_pattern(const char* pattern) {
 
     LOG_DEBUG("Noticing pattern: %s", pattern);
 
-    memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+    return breathing_store_typed_memory(
         MEMORY_TYPE_PATTERN,
         pattern,
-        MEMORY_IMPORTANCE_HIGH  /* Patterns are significant */
+        MEMORY_IMPORTANCE_HIGH,  /* Patterns are significant */
+        NULL,
+        WHY_SIGNIFICANT,
+        "notice_pattern"
     );
-
-    if (!record) {
-        return E_SYSTEM_MEMORY;
-    }
-
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
-    }
-
-    int result = katra_memory_store(record);
-    katra_memory_free_record(record);
-
-    if (result == KATRA_SUCCESS) {
-        breathing_track_memory_stored(MEMORY_TYPE_PATTERN, WHY_SIGNIFICANT);
-    }
-
-    return result;
 }

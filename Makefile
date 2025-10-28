@@ -91,7 +91,8 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_context.o \
                   $(BUILD_DIR)/katra_breathing_config.o \
                   $(BUILD_DIR)/katra_breathing_interstitial.o \
-                  $(BUILD_DIR)/katra_breathing_integration.o
+                  $(BUILD_DIR)/katra_breathing_integration.o \
+                  $(BUILD_DIR)/katra_breathing_helpers.o
 
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a

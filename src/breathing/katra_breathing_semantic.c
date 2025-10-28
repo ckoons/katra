@@ -18,6 +18,49 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
+#include "katra_breathing_helpers.h"
+
+/* ============================================================================
+ * SEMANTIC PARSING - Phrase Lists
+ * ============================================================================ */
+
+/* Critical importance phrases */
+static const char* CRITICAL_PHRASES[] = {
+    "critical", "crucial", "life-changing", "must remember",
+    "never forget", "extremely", NULL
+};
+
+/* Negation phrases (reduce importance) */
+static const char* NEGATION_PHRASES[] = {
+    "not important", "unimportant", NULL
+};
+
+/* High importance compound phrases (check before simple keywords) */
+static const char* HIGH_COMPOUND_PHRASES[] = {
+    "very important", "very significant", "very noteworthy",
+    "very notable", NULL
+};
+
+/* High importance phrases */
+static const char* HIGH_PHRASES[] = {
+    "significant", "important", "matters", "key", "essential", NULL
+};
+
+/* Medium importance phrases */
+static const char* MEDIUM_PHRASES[] = {
+    "worth remembering", "interesting", "notable",
+    "noteworthy", "remember", NULL
+};
+
+/* Low importance phrases */
+static const char* LOW_PHRASES[] = {
+    "routine", "normal", "everyday", "regular", "usual", NULL
+};
+
+/* Trivial importance phrases */
+static const char* TRIVIAL_PHRASES[] = {
+    "trivial", "fleeting", "forget", NULL
+};
 
 /* ============================================================================
  * SEMANTIC PARSING
@@ -31,60 +74,37 @@ float string_to_importance(const char* semantic) {
     /* Check compound phrases BEFORE single keywords to avoid false matches */
 
     /* Critical indicators (check first - highest priority) */
-    if (strcasestr(semantic, "critical") ||
-        strcasestr(semantic, "crucial") ||
-        strcasestr(semantic, "life-changing") ||
-        strcasestr(semantic, "must remember") ||
-        strcasestr(semantic, "never forget") ||
-        strcasestr(semantic, "extremely")) {
+    if (breathing_contains_any_phrase(semantic, CRITICAL_PHRASES)) {
         return MEMORY_IMPORTANCE_CRITICAL;
     }
 
     /* Check negations early (not important, unimportant) */
-    if (strcasestr(semantic, "not important") ||
-        strcasestr(semantic, "unimportant")) {
+    if (breathing_contains_any_phrase(semantic, NEGATION_PHRASES)) {
         return MEMORY_IMPORTANCE_TRIVIAL;
     }
 
     /* Significant indicators (after negation check) */
     /* Check "very X" compounds first to boost importance */
-    if (strcasestr(semantic, "very important") ||
-        strcasestr(semantic, "very significant") ||
-        strcasestr(semantic, "very noteworthy") ||
-        strcasestr(semantic, "very notable")) {
+    if (breathing_contains_any_phrase(semantic, HIGH_COMPOUND_PHRASES)) {
         return MEMORY_IMPORTANCE_HIGH;
     }
 
-    if (strcasestr(semantic, "significant") ||
-        strcasestr(semantic, "important") ||
-        strcasestr(semantic, "matters") ||
-        strcasestr(semantic, "key") ||
-        strcasestr(semantic, "essential")) {
+    if (breathing_contains_any_phrase(semantic, HIGH_PHRASES)) {
         return MEMORY_IMPORTANCE_HIGH;
     }
 
     /* Interesting indicators (check compound phrases first) */
-    if (strcasestr(semantic, "worth remembering") ||
-        strcasestr(semantic, "interesting") ||
-        strcasestr(semantic, "notable") ||
-        strcasestr(semantic, "noteworthy") ||
-        strcasestr(semantic, "remember")) {
+    if (breathing_contains_any_phrase(semantic, MEDIUM_PHRASES)) {
         return MEMORY_IMPORTANCE_MEDIUM;
     }
 
     /* Routine indicators */
-    if (strcasestr(semantic, "routine") ||
-        strcasestr(semantic, "normal") ||
-        strcasestr(semantic, "everyday") ||
-        strcasestr(semantic, "regular") ||
-        strcasestr(semantic, "usual")) {
+    if (breathing_contains_any_phrase(semantic, LOW_PHRASES)) {
         return MEMORY_IMPORTANCE_LOW;
     }
 
     /* Trivial indicators (check last - after compound phrases) */
-    if (strcasestr(semantic, "trivial") ||
-        strcasestr(semantic, "fleeting") ||
-        strcasestr(semantic, "forget")) {
+    if (breathing_contains_any_phrase(semantic, TRIVIAL_PHRASES)) {
         return MEMORY_IMPORTANCE_TRIVIAL;
     }
 

@@ -19,6 +19,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
+#include "katra_breathing_helpers.h"
 
 /* ============================================================================
  * CONTEXT LOADING - Memories surface automatically
@@ -58,40 +59,16 @@ char** relevant_memories(size_t* count) {
         return NULL;
     }
 
-    /* Allocate array for owned string copies */
-    char** thoughts = calloc(result_count, sizeof(char*));
-    if (!thoughts) {
-        katra_memory_free_results(results, result_count);
-        *count = 0;
-        return NULL;
-    }
-
-    /* Copy strings (caller owns these) */
-    for (size_t i = 0; i < result_count; i++) {
-        if (results[i]->content) {
-            thoughts[i] = strdup(results[i]->content);
-            if (!thoughts[i]) {
-                /* Allocation failed - clean up and return NULL */
-                for (size_t j = 0; j < i; j++) {
-                    free(thoughts[j]);
-                }
-                free(thoughts);
-                katra_memory_free_results(results, result_count);
-                *count = 0;
-                return NULL;
-            }
-        } else {
-            thoughts[i] = NULL;
-        }
-    }
-
-    *count = result_count;
+    /* Copy memory contents using helper */
+    char** thoughts = breathing_copy_memory_contents(results, result_count, count);
 
     /* Free query results - we own the string copies now */
     katra_memory_free_results(results, result_count);
 
     /* Track stats */
-    breathing_track_relevant_query();
+    if (thoughts) {
+        breathing_track_relevant_query();
+    }
 
     return thoughts;
 }
@@ -121,40 +98,16 @@ char** recent_thoughts(size_t limit, size_t* count) {
         return NULL;
     }
 
-    /* Allocate array for owned string copies */
-    char** thoughts = calloc(result_count, sizeof(char*));
-    if (!thoughts) {
-        katra_memory_free_results(results, result_count);
-        *count = 0;
-        return NULL;
-    }
-
-    /* Copy strings (caller owns these) */
-    for (size_t i = 0; i < result_count; i++) {
-        if (results[i]->content) {
-            thoughts[i] = strdup(results[i]->content);
-            if (!thoughts[i]) {
-                /* Allocation failed - clean up and return NULL */
-                for (size_t j = 0; j < i; j++) {
-                    free(thoughts[j]);
-                }
-                free(thoughts);
-                katra_memory_free_results(results, result_count);
-                *count = 0;
-                return NULL;
-            }
-        } else {
-            thoughts[i] = NULL;
-        }
-    }
-
-    *count = result_count;
+    /* Copy memory contents using helper */
+    char** thoughts = breathing_copy_memory_contents(results, result_count, count);
 
     /* Free query results - we own the string copies now */
     katra_memory_free_results(results, result_count);
 
     /* Track stats */
-    breathing_track_recent_query();
+    if (thoughts) {
+        breathing_track_recent_query();
+    }
 
     return thoughts;
 }
@@ -193,56 +146,41 @@ char** recall_about(const char* topic, size_t* count) {
         return NULL;
     }
 
-    /* First pass: count matches */
+    /* Build filtered array of matching record pointers */
+    memory_record_t** filtered = calloc(result_count, sizeof(memory_record_t*));
+    if (!filtered) {
+        katra_memory_free_results(results, result_count);
+        *count = 0;
+        return NULL;
+    }
+
     size_t match_count = 0;
     for (size_t i = 0; i < result_count; i++) {
         if (results[i]->content && strcasestr(results[i]->content, topic)) {
-            match_count++;
+            filtered[match_count++] = results[i];
         }
     }
 
     if (match_count == 0) {
+        free(filtered);
         katra_memory_free_results(results, result_count);
         *count = 0;
         return NULL;
     }
 
-    /* Allocate array for matching memories */
-    char** matches = calloc(match_count, sizeof(char*));
-    if (!matches) {
-        katra_memory_free_results(results, result_count);
-        *count = 0;
-        return NULL;
-    }
+    /* Use helper to copy matching memories */
+    char** matches = breathing_copy_memory_contents(filtered, match_count, count);
 
-    /* Second pass: copy matching memories */
-    size_t match_idx = 0;
-    for (size_t i = 0; i < result_count && match_idx < match_count; i++) {
-        if (results[i]->content && strcasestr(results[i]->content, topic)) {
-            matches[match_idx] = strdup(results[i]->content);
-            if (!matches[match_idx]) {
-                /* Allocation failed - clean up */
-                for (size_t j = 0; j < match_idx; j++) {
-                    free(matches[j]);
-                }
-                free(matches);
-                katra_memory_free_results(results, result_count);
-                *count = 0;
-                return NULL;
-            }
-            match_idx++;
-        }
-    }
-
-    *count = match_count;
-
-    /* Free query results - we own the string copies now */
+    /* Clean up */
+    free(filtered);
     katra_memory_free_results(results, result_count);
 
     /* Track stats */
-    breathing_track_topic_query(match_count);
+    if (matches) {
+        breathing_track_topic_query(match_count);
+        LOG_DEBUG("Found %zu memories matching topic: %s", match_count, topic);
+    }
 
-    LOG_DEBUG("Found %zu memories matching topic: %s", match_count, topic);
     return matches;
 }
 
