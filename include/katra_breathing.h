@@ -40,6 +40,15 @@ typedef enum {
     WHY_CRITICAL = 4      /* Life-changing, must never forget */
 } why_remember_t;
 
+/** Context configuration - tunable limits for memory loading */
+typedef struct {
+    size_t max_relevant_memories;   /* Max memories in relevant_memories() (default: 10) */
+    size_t max_recent_thoughts;     /* Max default for recent_thoughts() (default: 20) */
+    size_t max_topic_recall;        /* Max memories in recall_about() search (default: 100) */
+    float min_importance_relevant;  /* Min importance for relevant_memories() (default: HIGH) */
+    int max_context_age_days;       /* Max age in days for context (default: 7) */
+} context_config_t;
+
 /** Memory context - automatically captured */
 typedef struct {
     char* ci_id;                    /* Who is remembering */
@@ -102,6 +111,36 @@ int decide(const char* decision, const char* reasoning);
  *   notice_pattern("CIs find numeric importance scores unnatural");
  */
 int notice_pattern(const char* pattern);
+
+/**
+ * remember_semantic() - Store with natural language importance
+ *
+ * Accepts semantic importance strings like:
+ *   "trivial", "routine", "interesting", "significant", "critical"
+ *   "fleeting", "normal", "worth remembering", "important", "life-changing"
+ *   Or any natural description - parsed for meaning
+ *
+ * Example:
+ *   remember_semantic("Found a bug in tier1.c", "very important");
+ *   remember_semantic("Typo in comment", "not important");
+ */
+int remember_semantic(const char* thought, const char* why_semantic);
+
+/**
+ * remember_with_semantic_note() - Store with semantic importance + note
+ *
+ * Combines semantic importance string with reasoning note.
+ *
+ * Example:
+ *   remember_with_semantic_note(
+ *       "Per-CI directories prevent memory leakage",
+ *       "very important",
+ *       "This was blocking multi-CI testing"
+ *   );
+ */
+int remember_with_semantic_note(const char* thought,
+                                 const char* why_semantic,
+                                 const char* why_note);
 
 /* ============================================================================
  * AUTOMATIC CONTEXT LOADING - Memories surface when relevant
@@ -318,6 +357,61 @@ typedef struct {
 
 int get_context_statistics(context_stats_t* stats);
 
+/**
+ * enhanced_stats_t - Detailed memory operation statistics
+ *
+ * Extended statistics for monitoring and optimization:
+ *   - Memory formation patterns (by type and importance)
+ *   - Context loading patterns
+ *   - Query patterns
+ *   - Session metrics
+ */
+typedef struct {
+    /* Memory formation stats */
+    size_t total_memories_stored;       /* Total memories stored this session */
+    size_t by_type[7];                  /* Count by memory type (indices 0-6) */
+    size_t by_importance[5];            /* Count by importance (TRIVIAL to CRITICAL) */
+    size_t semantic_remember_count;     /* Count of semantic remember() calls */
+
+    /* Context loading stats */
+    size_t context_loads;               /* Number of context load operations */
+    size_t avg_context_size;            /* Average context size in memories */
+    size_t max_context_size;            /* Peak context size */
+
+    /* Query stats */
+    size_t relevant_queries;            /* relevant_memories() calls */
+    size_t recent_queries;              /* recent_thoughts() calls */
+    size_t topic_queries;               /* recall_about() calls */
+    size_t topic_matches;               /* Total matches from topic queries */
+
+    /* Session metrics */
+    time_t session_start_time;          /* When session started */
+    time_t last_activity_time;          /* Most recent operation */
+    size_t session_duration_seconds;    /* Total session duration */
+} enhanced_stats_t;
+
+/**
+ * get_enhanced_statistics() - Get detailed operation statistics
+ *
+ * Returns comprehensive stats about memory operations this session.
+ * Useful for optimization and understanding CI memory patterns.
+ *
+ * Caller owns returned structure (must free).
+ *
+ * Returns: Allocated stats structure or NULL on error
+ */
+enhanced_stats_t* get_enhanced_statistics(void);
+
+/**
+ * reset_session_statistics() - Reset session statistics
+ *
+ * Clears all session-specific counters while preserving configuration.
+ * Called automatically at session_start().
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int reset_session_statistics(void);
+
 /* ============================================================================
  * HELPERS - Convert between layers
  * ============================================================================ */
@@ -327,6 +421,57 @@ float why_to_importance(why_remember_t why);
 
 /** Convert why_remember_t to human-readable string */
 const char* why_to_string(why_remember_t why);
+
+/**
+ * string_to_importance() - Convert semantic string to numeric importance
+ *
+ * Parses natural language importance descriptions and maps to 0.0-1.0 scale.
+ *
+ * Recognized patterns:
+ *   Trivial:     "trivial", "fleeting", "not important", "unimportant"
+ *   Routine:     "routine", "normal", "everyday", "regular"
+ *   Interesting: "interesting", "worth remembering", "notable"
+ *   Significant: "significant", "important", "very important", "matters"
+ *   Critical:    "critical", "crucial", "life-changing", "must remember"
+ *
+ * Returns: Importance value 0.0-1.0 (defaults to MEDIUM if unrecognized)
+ */
+float string_to_importance(const char* semantic);
+
+/**
+ * string_to_why_enum() - Convert semantic string to why_remember_t enum
+ *
+ * Maps natural language to enum constant for backward compatibility.
+ *
+ * Returns: why_remember_t enum value (defaults to WHY_INTERESTING if unrecognized)
+ */
+why_remember_t string_to_why_enum(const char* semantic);
+
+/**
+ * set_context_config() - Configure context loading limits
+ *
+ * Allows tuning of context size and filtering:
+ *   - max_relevant_memories: Limit for relevant_memories()
+ *   - max_recent_thoughts: Default limit for recent_thoughts()
+ *   - max_topic_recall: Search depth for recall_about()
+ *   - min_importance_relevant: Minimum importance for relevant memories
+ *   - max_context_age_days: Only load memories within this age
+ *
+ * Pass NULL to reset to defaults.
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int set_context_config(const context_config_t* config);
+
+/**
+ * get_context_config() - Get current context configuration
+ *
+ * Returns copy of current configuration.
+ * Caller owns returned structure (must free).
+ *
+ * Returns: Allocated config structure or NULL on error
+ */
+context_config_t* get_context_config(void);
 
 /** Get current memory context (who, where, when) */
 memory_context_t* get_current_context(void);

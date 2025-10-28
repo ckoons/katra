@@ -20,6 +20,18 @@ static memory_context_t g_context = {0};
 static bool g_initialized = false;
 static char* g_current_thought = NULL;  /* For mark_significant() */
 
+/* Global context configuration (defaults) */
+static context_config_t g_context_config = {
+    .max_relevant_memories = 10,
+    .max_recent_thoughts = 20,
+    .max_topic_recall = 100,
+    .min_importance_relevant = MEMORY_IMPORTANCE_HIGH,
+    .max_context_age_days = 7
+};
+
+/* Global enhanced statistics */
+static enhanced_stats_t g_enhanced_stats = {0};
+
 /* ============================================================================
  * INITIALIZATION
  * ============================================================================ */
@@ -108,6 +120,220 @@ const char* why_to_string(why_remember_t why) {
     }
 }
 
+float string_to_importance(const char* semantic) {
+    if (!semantic) {
+        return MEMORY_IMPORTANCE_MEDIUM;  /* Default */
+    }
+
+    /* Check compound phrases BEFORE single keywords to avoid false matches */
+
+    /* Critical indicators (check first - highest priority) */
+    if (strcasestr(semantic, "critical") ||
+        strcasestr(semantic, "crucial") ||
+        strcasestr(semantic, "life-changing") ||
+        strcasestr(semantic, "must remember") ||
+        strcasestr(semantic, "never forget") ||
+        strcasestr(semantic, "extremely")) {
+        return MEMORY_IMPORTANCE_CRITICAL;
+    }
+
+    /* Check negations early (not important, unimportant) */
+    if (strcasestr(semantic, "not important") ||
+        strcasestr(semantic, "unimportant")) {
+        return MEMORY_IMPORTANCE_TRIVIAL;
+    }
+
+    /* Significant indicators (after negation check) */
+    /* Check "very X" compounds first to boost importance */
+    if (strcasestr(semantic, "very important") ||
+        strcasestr(semantic, "very significant") ||
+        strcasestr(semantic, "very noteworthy") ||
+        strcasestr(semantic, "very notable")) {
+        return MEMORY_IMPORTANCE_HIGH;
+    }
+
+    if (strcasestr(semantic, "significant") ||
+        strcasestr(semantic, "important") ||
+        strcasestr(semantic, "matters") ||
+        strcasestr(semantic, "key") ||
+        strcasestr(semantic, "essential")) {
+        return MEMORY_IMPORTANCE_HIGH;
+    }
+
+    /* Interesting indicators (check compound phrases first) */
+    if (strcasestr(semantic, "worth remembering") ||
+        strcasestr(semantic, "interesting") ||
+        strcasestr(semantic, "notable") ||
+        strcasestr(semantic, "noteworthy") ||
+        strcasestr(semantic, "remember")) {
+        return MEMORY_IMPORTANCE_MEDIUM;
+    }
+
+    /* Routine indicators */
+    if (strcasestr(semantic, "routine") ||
+        strcasestr(semantic, "normal") ||
+        strcasestr(semantic, "everyday") ||
+        strcasestr(semantic, "regular") ||
+        strcasestr(semantic, "usual")) {
+        return MEMORY_IMPORTANCE_LOW;
+    }
+
+    /* Trivial indicators (check last - after compound phrases) */
+    if (strcasestr(semantic, "trivial") ||
+        strcasestr(semantic, "fleeting") ||
+        strcasestr(semantic, "forget")) {
+        return MEMORY_IMPORTANCE_TRIVIAL;
+    }
+
+    /* Default: interesting/medium importance */
+    return MEMORY_IMPORTANCE_MEDIUM;
+}
+
+why_remember_t string_to_why_enum(const char* semantic) {
+    float importance = string_to_importance(semantic);
+
+    /* Map float importance back to enum */
+    if (importance <= 0.1) return WHY_TRIVIAL;
+    if (importance <= 0.35) return WHY_ROUTINE;
+    if (importance <= 0.65) return WHY_INTERESTING;
+    if (importance <= 0.9) return WHY_SIGNIFICANT;
+    return WHY_CRITICAL;
+}
+
+int remember_semantic(const char* thought, const char* why_semantic) {
+    if (!g_initialized) {
+        katra_report_error(E_INVALID_STATE, "remember_semantic",
+                          "Breathing layer not initialized - call breathe_init()");
+        return E_INVALID_STATE;
+    }
+
+    if (!thought) {
+        katra_report_error(E_INPUT_NULL, "remember_semantic", "thought is NULL");
+        return E_INPUT_NULL;
+    }
+
+    /* Convert semantic string to importance */
+    float importance = string_to_importance(why_semantic);
+
+    LOG_DEBUG("Remembering (semantic: '%s' -> %.2f): %s",
+             why_semantic ? why_semantic : "default", importance, thought);
+
+    /* Create memory record */
+    memory_record_t* record = katra_memory_create_record(
+        g_context.ci_id,
+        MEMORY_TYPE_EXPERIENCE,
+        thought,
+        importance
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "remember_semantic",
+                          "Failed to create record");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Add session context if available */
+    if (g_context.session_id) {
+        record->session_id = strdup(g_context.session_id);
+    }
+
+    /* Store semantic reason as importance note if provided */
+    if (why_semantic) {
+        record->importance_note = strdup(why_semantic);
+    }
+
+    /* Store memory */
+    int result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Memory stored successfully with semantic importance");
+
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.semantic_remember_count++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_EXPERIENCE]++;
+        /* Track by importance based on converted value */
+        why_remember_t why_enum = string_to_why_enum(why_semantic);
+        g_enhanced_stats.by_importance[why_enum]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
+    }
+
+    return result;
+}
+
+int remember_with_semantic_note(const char* thought,
+                                 const char* why_semantic,
+                                 const char* why_note) {
+    if (!g_initialized) {
+        katra_report_error(E_INVALID_STATE, "remember_with_semantic_note",
+                          "Breathing layer not initialized");
+        return E_INVALID_STATE;
+    }
+
+    if (!thought || !why_note) {
+        katra_report_error(E_INPUT_NULL, "remember_with_semantic_note",
+                          "NULL parameter");
+        return E_INPUT_NULL;
+    }
+
+    /* Convert semantic string to importance */
+    float importance = string_to_importance(why_semantic);
+
+    LOG_DEBUG("Remembering (semantic: '%s' -> %.2f) with note: %s",
+             why_semantic ? why_semantic : "default", importance, thought);
+
+    /* Create memory record */
+    memory_record_t* record = katra_memory_create_record(
+        g_context.ci_id,
+        MEMORY_TYPE_EXPERIENCE,
+        thought,
+        importance
+    );
+
+    if (!record) {
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Combine semantic reason + note */
+    size_t note_size = KATRA_BUFFER_LARGE;
+    char* combined_note = malloc(note_size);
+    if (!combined_note) {
+        katra_memory_free_record(record);
+        return E_SYSTEM_MEMORY;
+    }
+
+    if (why_semantic) {
+        snprintf(combined_note, note_size, "[%s] %s", why_semantic, why_note);
+    } else {
+        strncpy(combined_note, why_note, note_size - 1);
+        combined_note[note_size - 1] = '\0';
+    }
+
+    record->importance_note = combined_note;
+
+    /* Add session context */
+    if (g_context.session_id) {
+        record->session_id = strdup(g_context.session_id);
+    }
+
+    /* Store memory */
+    int result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.semantic_remember_count++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_EXPERIENCE]++;
+        why_remember_t why_enum = string_to_why_enum(why_semantic);
+        g_enhanced_stats.by_importance[why_enum]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
+    }
+
+    return result;
+}
+
 int remember(const char* thought, why_remember_t why) {
     if (!g_initialized) {
         katra_report_error(E_INVALID_STATE, "remember",
@@ -146,6 +372,12 @@ int remember(const char* thought, why_remember_t why) {
 
     if (result == KATRA_SUCCESS) {
         LOG_DEBUG("Memory stored successfully");
+
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_EXPERIENCE]++;
+        g_enhanced_stats.by_importance[why]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
     }
 
     return result;
@@ -193,6 +425,14 @@ int remember_with_note(const char* thought, why_remember_t why, const char* why_
     int result = katra_memory_store(record);
     katra_memory_free_record(record);
 
+    if (result == KATRA_SUCCESS) {
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_EXPERIENCE]++;
+        g_enhanced_stats.by_importance[why]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
+    }
+
     return result;
 }
 
@@ -221,6 +461,14 @@ int reflect(const char* insight) {
     int result = katra_memory_store(record);
     katra_memory_free_record(record);
 
+    if (result == KATRA_SUCCESS) {
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_REFLECTION]++;
+        g_enhanced_stats.by_importance[WHY_SIGNIFICANT]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
+    }
+
     return result;
 }
 
@@ -248,6 +496,14 @@ int learn(const char* knowledge) {
 
     int result = katra_memory_store(record);
     katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_KNOWLEDGE]++;
+        g_enhanced_stats.by_importance[WHY_SIGNIFICANT]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
+    }
 
     return result;
 }
@@ -284,6 +540,14 @@ int decide(const char* decision, const char* reasoning) {
     int result = katra_memory_store(record);
     katra_memory_free_record(record);
 
+    if (result == KATRA_SUCCESS) {
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_DECISION]++;
+        g_enhanced_stats.by_importance[WHY_SIGNIFICANT]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
+    }
+
     return result;
 }
 
@@ -312,6 +576,14 @@ int notice_pattern(const char* pattern) {
     int result = katra_memory_store(record);
     katra_memory_free_record(record);
 
+    if (result == KATRA_SUCCESS) {
+        /* Track stats */
+        g_enhanced_stats.total_memories_stored++;
+        g_enhanced_stats.by_type[MEMORY_TYPE_PATTERN]++;
+        g_enhanced_stats.by_importance[WHY_SIGNIFICANT]++;
+        g_enhanced_stats.last_activity_time = time(NULL);
+    }
+
     return result;
 }
 
@@ -325,15 +597,21 @@ char** relevant_memories(size_t* count) {
         return NULL;
     }
 
-    /* Query recent high-importance memories */
+    /* Calculate start time based on max_context_age_days */
+    time_t start_time = 0;
+    if (g_context_config.max_context_age_days > 0) {
+        start_time = time(NULL) - (g_context_config.max_context_age_days * 24 * 60 * 60);
+    }
+
+    /* Query recent high-importance memories using configured limits */
     memory_query_t query = {
         .ci_id = g_context.ci_id,
-        .start_time = 0,
+        .start_time = start_time,
         .end_time = 0,
         .type = 0,  /* All types */
-        .min_importance = MEMORY_IMPORTANCE_HIGH,
+        .min_importance = g_context_config.min_importance_relevant,
         .tier = KATRA_TIER1,
-        .limit = 10  /* Last 10 significant memories */
+        .limit = g_context_config.max_relevant_memories
     };
 
     memory_record_t** results = NULL;
@@ -376,6 +654,10 @@ char** relevant_memories(size_t* count) {
 
     /* Free query results - we own the string copies now */
     katra_memory_free_results(results, result_count);
+
+    /* Track stats */
+    g_enhanced_stats.relevant_queries++;
+    g_enhanced_stats.last_activity_time = time(NULL);
 
     return thoughts;
 }
@@ -437,6 +719,10 @@ char** recent_thoughts(size_t limit, size_t* count) {
     /* Free query results - we own the string copies now */
     katra_memory_free_results(results, result_count);
 
+    /* Track stats */
+    g_enhanced_stats.recent_queries++;
+    g_enhanced_stats.last_activity_time = time(NULL);
+
     return thoughts;
 }
 
@@ -446,15 +732,21 @@ char** recall_about(const char* topic, size_t* count) {
         return NULL;
     }
 
-    /* Query recent memories (search last 100) */
+    /* Calculate start time based on max_context_age_days */
+    time_t start_time = 0;
+    if (g_context_config.max_context_age_days > 0) {
+        start_time = time(NULL) - (g_context_config.max_context_age_days * 24 * 60 * 60);
+    }
+
+    /* Query recent memories using configured search depth */
     memory_query_t query = {
         .ci_id = g_context.ci_id,
-        .start_time = 0,
+        .start_time = start_time,
         .end_time = 0,
         .type = 0,
         .min_importance = 0.0,
         .tier = KATRA_TIER1,
-        .limit = 100
+        .limit = g_context_config.max_topic_recall
     };
 
     memory_record_t** results = NULL;
@@ -511,6 +803,11 @@ char** recall_about(const char* topic, size_t* count) {
 
     /* Free query results - we own the string copies now */
     katra_memory_free_results(results, result_count);
+
+    /* Track stats */
+    g_enhanced_stats.topic_queries++;
+    g_enhanced_stats.topic_matches += match_count;
+    g_enhanced_stats.last_activity_time = time(NULL);
 
     LOG_DEBUG("Found %zu memories matching topic: %s", match_count, topic);
     return matches;
@@ -602,6 +899,19 @@ int load_context(void) {
     if (count > 0) {
         LOG_INFO("Loaded %zu relevant memories into context", count);
         free_memory_list(memories, count);
+
+        /* Track stats */
+        g_enhanced_stats.context_loads++;
+
+        /* Update max context size */
+        if (count > g_enhanced_stats.max_context_size) {
+            g_enhanced_stats.max_context_size = count;
+        }
+
+        /* Update average context size (rolling average) */
+        size_t total_loads = g_enhanced_stats.context_loads;
+        g_enhanced_stats.avg_context_size =
+            ((g_enhanced_stats.avg_context_size * (total_loads - 1)) + count) / total_loads;
     }
 
     return KATRA_SUCCESS;
@@ -626,6 +936,9 @@ int session_start(const char* ci_id) {
     if (!g_context.session_id) {
         return E_SYSTEM_MEMORY;
     }
+
+    /* Reset session statistics */
+    reset_session_statistics();
 
     LOG_INFO("Session started: %s", g_context.session_id);
 
@@ -694,6 +1007,95 @@ void free_context(memory_context_t* ctx) {
     free(ctx->ci_id);
     free(ctx->session_id);
     free(ctx);
+}
+
+int set_context_config(const context_config_t* config) {
+    if (!config) {
+        /* Reset to defaults */
+        g_context_config.max_relevant_memories = 10;
+        g_context_config.max_recent_thoughts = 20;
+        g_context_config.max_topic_recall = 100;
+        g_context_config.min_importance_relevant = MEMORY_IMPORTANCE_HIGH;
+        g_context_config.max_context_age_days = 7;
+        LOG_INFO("Context configuration reset to defaults");
+        return KATRA_SUCCESS;
+    }
+
+    /* Validate ranges */
+    if (config->max_relevant_memories > 1000 ||
+        config->max_recent_thoughts > 1000 ||
+        config->max_topic_recall > 10000) {
+        katra_report_error(E_INVALID_PARAMS, "set_context_config",
+                          "Context limits too large");
+        return E_INVALID_PARAMS;
+    }
+
+    if (config->min_importance_relevant < 0.0 ||
+        config->min_importance_relevant > 1.0) {
+        katra_report_error(E_INVALID_PARAMS, "set_context_config",
+                          "Invalid importance threshold");
+        return E_INVALID_PARAMS;
+    }
+
+    /* Apply configuration */
+    g_context_config = *config;
+
+    LOG_INFO("Context configuration updated: relevant=%zu, recent=%zu, recall=%zu",
+            config->max_relevant_memories,
+            config->max_recent_thoughts,
+            config->max_topic_recall);
+
+    return KATRA_SUCCESS;
+}
+
+context_config_t* get_context_config(void) {
+    context_config_t* config = malloc(sizeof(context_config_t));
+    if (!config) {
+        katra_report_error(E_SYSTEM_MEMORY, "get_context_config",
+                          "Failed to allocate config");
+        return NULL;
+    }
+
+    *config = g_context_config;
+    return config;
+}
+
+enhanced_stats_t* get_enhanced_statistics(void) {
+    if (!g_initialized) {
+        return NULL;
+    }
+
+    enhanced_stats_t* stats = malloc(sizeof(enhanced_stats_t));
+    if (!stats) {
+        katra_report_error(E_SYSTEM_MEMORY, "get_enhanced_statistics",
+                          "Failed to allocate stats");
+        return NULL;
+    }
+
+    /* Copy current stats */
+    *stats = g_enhanced_stats;
+
+    /* Calculate session duration */
+    if (g_enhanced_stats.session_start_time > 0) {
+        stats->session_duration_seconds =
+            (size_t)(time(NULL) - g_enhanced_stats.session_start_time);
+    }
+
+    return stats;
+}
+
+int reset_session_statistics(void) {
+    LOG_DEBUG("Resetting session statistics");
+
+    /* Clear all counters but preserve session start time */
+    time_t start_time = g_enhanced_stats.session_start_time;
+
+    memset(&g_enhanced_stats, 0, sizeof(g_enhanced_stats));
+
+    /* Restore or set session start time */
+    g_enhanced_stats.session_start_time = start_time > 0 ? start_time : time(NULL);
+
+    return KATRA_SUCCESS;
 }
 
 /* ============================================================================
