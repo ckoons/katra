@@ -1,6 +1,6 @@
 # Makefile
 # © 2025 Casey Koons All rights reserved
-# Katra Project Makefile
+# Katra Project Makefile - Improved version with automatic dependency tracking
 
 # NOTE: This is a single-file Makefile organized into sections.
 # When it grows beyond ~300 lines, we'll split into:
@@ -26,8 +26,9 @@ SCRIPTS_DIR := scripts
 # Compiler and flags
 CC := gcc
 CFLAGS := -Wall -Werror -Wextra -std=c11 -I$(INCLUDE_DIR)
-CFLAGS_DEBUG := $(CFLAGS) -g -O0 -DDEBUG
-CFLAGS_RELEASE := $(CFLAGS) -O2 -DNDEBUG
+# Auto-dependency generation: -MMD creates .d files, -MP adds phony targets for headers
+CFLAGS_DEBUG := $(CFLAGS) -g -O0 -DDEBUG -MMD -MP
+CFLAGS_RELEASE := $(CFLAGS) -O2 -DNDEBUG -MMD -MP
 
 # Linker flags
 LDFLAGS :=
@@ -38,37 +39,7 @@ MKDIR_P := mkdir -p
 RM_RF := rm -rf
 
 # ==============================================================================
-# PHONY TARGETS
-# ==============================================================================
-
-.PHONY: all clean clean-all distclean test help
-.PHONY: count-report programming-guidelines check
-.PHONY: improvement-scan benchmark check-ready
-.PHONY: directories
-.PHONY: test-quick test-env test-config test-error test-log test-init test-memory
-.PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
-.PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
-.PHONY: test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives
-
-# ==============================================================================
-# DEFAULT TARGET
-# ==============================================================================
-
-all: directories $(LIBKATRA_FOUNDATION)
-	@echo ""
-	@echo "========================================"
-	@echo "Katra foundation build complete!"
-	@echo "========================================"
-	@echo ""
-	@echo "Available targets:"
-	@echo "  make test-quick             - Run foundation unit tests"
-	@echo "  make count-report           - Run line count (diet-aware)"
-	@echo "  make programming-guidelines - Run code discipline checks"
-	@echo "  make check                  - Run both reports"
-	@echo "  make help                   - Show all available targets"
-
-# ==============================================================================
-# BUILD SECTION (future Makefile.build)
+# BUILD VARIABLES (must be before targets that use them)
 # ==============================================================================
 
 # Foundation object files
@@ -125,144 +96,106 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
 
+# All object files (for dependency tracking)
+ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS)
+
+# Auto-generated dependency files
+DEP_FILES := $(ALL_OBJS:.o=.d)
+
+# ==============================================================================
+# PHONY TARGETS
+# ==============================================================================
+
+.PHONY: all clean clean-all distclean test help
+.PHONY: count-report programming-guidelines check
+.PHONY: improvement-scan benchmark check-ready
+.PHONY: directories
+.PHONY: test-quick test-env test-config test-error test-log test-init test-memory
+.PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
+.PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
+.PHONY: test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives
+
+# ==============================================================================
+# DEFAULT TARGET
+# ==============================================================================
+
+all: directories $(LIBKATRA_FOUNDATION)
+	@echo ""
+	@echo "========================================"
+	@echo "Katra foundation build complete!"
+	@echo "========================================"
+	@echo ""
+	@echo "Available targets:"
+	@echo "  make test-quick             - Run foundation unit tests"
+	@echo "  make count-report           - Run line count (diet-aware)"
+	@echo "  make programming-guidelines - Run code discipline checks"
+	@echo "  make check                  - Run both reports"
+	@echo "  make help                   - Show all available targets"
+
+# ==============================================================================
+# BUILD SECTION (future Makefile.build)
+# ==============================================================================
+
+# Create directories (order-only prerequisite to avoid timestamp issues)
 directories:
 	@$(MKDIR_P) $(BUILD_DIR)
 	@$(MKDIR_P) $(BIN_DIR)
 	@$(MKDIR_P) $(BIN_DIR)/tests
 
+# Pattern rule to create build directory (for order-only prerequisites)
+$(BUILD_DIR):
+	@$(MKDIR_P) $@
+
 # Build foundation library
+# Note: Delete library first to ensure deterministic rebuild
 $(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS)
 	@echo "Creating foundation library: $@"
+	@rm -f $@
 	@ar rcs $@ $^
+	@echo "Library created successfully"
+
+# ==============================================================================
+# PATTERN RULES - Automatic compilation rules per directory
+# ==============================================================================
+# These replace the 30+ explicit rules with 5 concise pattern rules
+# The '| $(BUILD_DIR)' is an order-only prerequisite - creates dir without
+# triggering rebuilds when dir timestamp changes
 
 # Compile foundation sources
-$(BUILD_DIR)/%.o: $(SRC_DIR)/foundation/%.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/foundation/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 # Compile core sources
-$(BUILD_DIR)/katra_memory.o: $(SRC_DIR)/core/katra_memory.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_tier1.o: $(SRC_DIR)/core/katra_tier1.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_tier1_json.o: $(SRC_DIR)/core/katra_tier1_json.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_tier1_archive.o: $(SRC_DIR)/core/katra_tier1_archive.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_tier2.o: $(SRC_DIR)/core/katra_tier2.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_tier2_json.o: $(SRC_DIR)/core/katra_tier2_json.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_tier2_index.o: $(SRC_DIR)/core/katra_tier2_index.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_tier2_index_mgmt.o: $(SRC_DIR)/core/katra_tier2_index_mgmt.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_checkpoint.o: $(SRC_DIR)/core/katra_checkpoint.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_checkpoint_mgmt.o: $(SRC_DIR)/core/katra_checkpoint_mgmt.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_continuity.o: $(SRC_DIR)/core/katra_continuity.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_sunrise_sunset.o: $(SRC_DIR)/core/katra_sunrise_sunset.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/core/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 # Compile DB backend sources
-$(BUILD_DIR)/katra_db_backend.o: $(SRC_DIR)/db/katra_db_backend.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_db_jsonl.o: $(SRC_DIR)/db/katra_db_jsonl.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_db_sqlite.o: $(SRC_DIR)/db/katra_db_sqlite.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_encoder.o: $(SRC_DIR)/db/katra_encoder.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_vector.o: $(SRC_DIR)/db/katra_vector.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_graph.o: $(SRC_DIR)/db/katra_graph.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/db/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 # Compile engram sources
-$(BUILD_DIR)/cognitive_workflows.o: $(SRC_DIR)/engram/cognitive_workflows.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/engram/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
-$(BUILD_DIR)/emotional_context.o: $(SRC_DIR)/engram/emotional_context.c
+# Compile breathing layer sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/breathing/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
-$(BUILD_DIR)/working_memory.o: $(SRC_DIR)/engram/working_memory.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+# ==============================================================================
+# AUTOMATIC DEPENDENCY INCLUSION
+# ==============================================================================
+# Include auto-generated .d files (header dependencies)
+# The '-' prefix means "don't error if files don't exist yet"
+# Make will automatically regenerate them during compilation
+-include $(DEP_FILES)
 
-$(BUILD_DIR)/interstitial.o: $(SRC_DIR)/engram/interstitial.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/string_utils.o: $(SRC_DIR)/engram/string_utils.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-# Compile breathing layer sources (Level 2 + Level 3)
-$(BUILD_DIR)/katra_breathing.o: $(SRC_DIR)/breathing/katra_breathing.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_breathing_primitives.o: $(SRC_DIR)/breathing/katra_breathing_primitives.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_breathing_semantic.o: $(SRC_DIR)/breathing/katra_breathing_semantic.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_breathing_context.o: $(SRC_DIR)/breathing/katra_breathing_context.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_breathing_config.o: $(SRC_DIR)/breathing/katra_breathing_config.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_breathing_interstitial.o: $(SRC_DIR)/breathing/katra_breathing_interstitial.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
-
-$(BUILD_DIR)/katra_breathing_integration.o: $(SRC_DIR)/breathing/katra_breathing_integration.c
-	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+# Mark .d files as secondary targets (don't delete them as intermediate files)
+.SECONDARY: $(DEP_FILES)
 
 # ==============================================================================
 # TEST SECTION (future Makefile.test)
@@ -565,7 +498,7 @@ help:
 	@echo "======================"
 	@echo ""
 	@echo "Build Targets:"
-	@echo "  make           - Build katra (not yet implemented)"
+	@echo "  make           - Build katra foundation library"
 	@echo "  make all       - Same as 'make' (default target)"
 	@echo "  make directories - Create build directories"
 	@echo ""
@@ -576,9 +509,9 @@ help:
 	@echo "  make improvement-scan       - Scan for code improvement opportunities"
 	@echo ""
 	@echo "Test Targets:"
-	@echo "  make test       - Run test suite (not yet implemented)"
-	@echo "  make test-quick - Run quick tests (not yet implemented)"
-	@echo "  make test-all   - Run all tests (not yet implemented)"
+	@echo "  make test       - Run all tests"
+	@echo "  make test-quick - Run quick test suite (21 tests)"
+	@echo "  make test-all   - Run all tests (same as test-quick)"
 	@echo ""
 	@echo "Install Targets:"
 	@echo "  make install   - Install to ~/.local/bin/ (not yet implemented)"
@@ -596,6 +529,13 @@ help:
 	@echo "  Name:    $(PROJECT_NAME)"
 	@echo "  Version: $(VERSION)"
 	@echo "  Budget:  10,000 meaningful lines"
+	@echo ""
+	@echo "Build Improvements (vs old Makefile):"
+	@echo "  ✓ Automatic header dependency tracking (-MMD -MP)"
+	@echo "  ✓ Pattern rules (5 rules vs 30+ explicit rules)"
+	@echo "  ✓ Deterministic library rebuild"
+	@echo "  ✓ Parallel build safety (make -j4)"
+	@echo "  ✓ Order-only prerequisites for directories"
 	@echo ""
 	@echo "Code Discipline:"
 	@echo "  - Memory safety: goto cleanup pattern, NULL checks"
