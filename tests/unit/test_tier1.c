@@ -550,6 +550,96 @@ void test_tier1_query_importance_filter(void) {
     TEST_PASS();
 }
 
+/* Test: Importance note persistence (Gap #9) */
+void test_tier1_importance_note(void) {
+    printf("Testing: Importance note persistence ... ");
+    tests_run++;
+
+    tier1_init(TEST_CI_ID);
+
+    /* Create record with importance note */
+    memory_record_t* record = katra_memory_create_record(
+        TEST_CI_ID,
+        MEMORY_TYPE_DECISION,
+        "Use JSONL for tier1 storage",
+        MEMORY_IMPORTANCE_HIGH
+    );
+
+    if (!record) {
+        TEST_FAIL("Failed to create record");
+        return;
+    }
+
+    /* Add importance note explaining WHY this is important */
+    record->importance_note = strdup("Human-readable format makes debugging easier");
+
+    /* Store record */
+    int result = tier1_store(record);
+    katra_memory_free_record(record);
+
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("Failed to store record with importance_note");
+        return;
+    }
+
+    /* Query it back */
+    memory_query_t query = {
+        .ci_id = TEST_CI_ID,
+        .start_time = 0,
+        .end_time = 0,
+        .type = MEMORY_TYPE_DECISION,
+        .min_importance = MEMORY_IMPORTANCE_HIGH,
+        .tier = KATRA_TIER1,
+        .limit = 10
+    };
+
+    memory_record_t** results = NULL;
+    size_t count = 0;
+
+    result = tier1_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        TEST_FAIL("Query failed");
+        return;
+    }
+
+    if (count == 0) {
+        TEST_FAIL("No results returned");
+        katra_memory_free_results(results, count);
+        return;
+    }
+
+    /* Find the record we just stored */
+    bool found = false;
+    for (size_t i = 0; i < count; i++) {
+        if (results[i]->content &&
+            strstr(results[i]->content, "Use JSONL for tier1 storage")) {
+            /* Verify importance_note was persisted */
+            if (!results[i]->importance_note) {
+                TEST_FAIL("importance_note was not persisted");
+                katra_memory_free_results(results, count);
+                return;
+            }
+            if (strcmp(results[i]->importance_note,
+                      "Human-readable format makes debugging easier") != 0) {
+                TEST_FAIL("importance_note content mismatch");
+                katra_memory_free_results(results, count);
+                return;
+            }
+            found = true;
+            break;
+        }
+    }
+
+    katra_memory_free_results(results, count);
+
+    if (!found) {
+        TEST_FAIL("Could not find stored record");
+        return;
+    }
+
+    TEST_PASS();
+}
+
 /* Test: Archive function (counts only, since Tier 2 not implemented) */
 void test_tier1_archive(void) {
     printf("Testing: Archive function (counting) ... ");
@@ -592,6 +682,7 @@ int main(void) {
     test_tier1_query_with_results();
     test_tier1_query_with_limit();
     test_tier1_query_importance_filter();
+    test_tier1_importance_note();
     test_tier1_archive();
     test_tier1_cleanup();
 

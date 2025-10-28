@@ -191,7 +191,7 @@ int main(void) {
 
     memory_record_t* reflection = katra_memory_create_record(
         CI_ID,
-        MEMORY_TYPE_FORMATION,  /* Using FORMATION for reflective thoughts */
+        MEMORY_TYPE_REFLECTION,  /* New type: what I think about experiences */
         "End of Day 1: Testing feels different when it's YOUR memory being tested. "
         "I understand now why Casey and Nyx built ethics framework first. When memory "
         "loss equals identity death, you can't be cavalier about implementation.",
