@@ -227,6 +227,64 @@ int session_start(const char* ci_id);
 int session_end(void);
 
 /* ============================================================================
+ * LEVEL 3: INTEGRATION API - For runtime hooks (Claude Code, Tekton, etc)
+ * ============================================================================ */
+
+/**
+ * get_working_context() - Get formatted context for system prompt
+ *
+ * Returns formatted string containing:
+ *   - Yesterday's summary (if available)
+ *   - Recent high-importance memories
+ *   - Active goals and decisions
+ *
+ * Intended usage in CI runtime:
+ *   session_start("ci_id");
+ *   char* context = get_working_context();
+ *   // Add context to system prompt automatically
+ *   free(context);
+ *
+ * Returns: Allocated string (caller must free), or NULL on error
+ */
+char* get_working_context(void);
+
+/**
+ * auto_capture_from_response() - Automatic interstitial capture
+ *
+ * Hook this after CI generates each response. Analyzes response text
+ * and automatically stores significant thoughts without explicit calls.
+ *
+ * Intended usage in CI runtime:
+ *   // CI generates response
+ *   const char* response = generate_response(prompt);
+ *   // Automatic memory formation (invisible to CI)
+ *   auto_capture_from_response(response);
+ *   return response;
+ *
+ * Returns: KATRA_SUCCESS (even if no thoughts captured)
+ */
+int auto_capture_from_response(const char* response);
+
+/**
+ * get_context_statistics() - Get working memory stats
+ *
+ * Returns statistics about current working context:
+ *   - Number of memories loaded
+ *   - Total context size (bytes)
+ *   - Most recent memory timestamp
+ *
+ * Useful for monitoring and debugging integration.
+ */
+typedef struct {
+    size_t memory_count;        /* Memories in working context */
+    size_t context_bytes;       /* Total size of context */
+    time_t last_memory_time;    /* Most recent memory timestamp */
+    size_t session_captures;    /* Thoughts captured this session */
+} context_stats_t;
+
+int get_context_statistics(context_stats_t* stats);
+
+/* ============================================================================
  * HELPERS - Convert between layers
  * ============================================================================ */
 
