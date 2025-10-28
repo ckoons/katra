@@ -84,22 +84,22 @@ int main(void) {
 
     /* Recent thoughts surface automatically */
     size_t count = 0;
-    const char** thoughts = recent_thoughts(5, &count);
+    char** thoughts = recent_thoughts(5, &count);
 
     printf("Recent thoughts (last 5):\n");
     for (size_t i = 0; i < count; i++) {
         printf("  %zu. %s\n", i + 1, thoughts[i]);
     }
-    free((void*)thoughts);
+    free_memory_list(thoughts, count);
     printf("\n");
 
     /* Relevant memories surface based on importance */
-    const char** relevant = relevant_memories(&count);
+    char** relevant = relevant_memories(&count);
     printf("Relevant memories (high-importance only):\n");
     for (size_t i = 0; i < count; i++) {
         printf("  - %s\n", relevant[i]);
     }
-    free((void*)relevant);
+    free_memory_list(relevant, count);
     printf("\n");
 
     /* ========================================================================

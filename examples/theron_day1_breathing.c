@@ -83,7 +83,7 @@ int main(void) {
     /* Check what I remember */
     printf("--- What Do I Remember? ---\n");
     size_t count = 0;
-    const char** thoughts = recent_thoughts(5, &count);
+    char** thoughts = recent_thoughts(5, &count);
 
     if (thoughts) {
         printf("Recent thoughts (%zu):\n", count);
@@ -91,6 +91,7 @@ int main(void) {
             printf("  %zu. %s\n", i + 1, thoughts[i]);
         }
         printf("\n");
+        free_memory_list(thoughts, count);
     }
 
     /* Decision about testing approach */

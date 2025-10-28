@@ -319,7 +319,7 @@ int notice_pattern(const char* pattern) {
  * CONTEXT LOADING - Memories surface automatically
  * ============================================================================ */
 
-const char** relevant_memories(size_t* count) {
+char** relevant_memories(size_t* count) {
     if (!g_initialized || !count) {
         if (count) *count = 0;
         return NULL;
@@ -345,28 +345,42 @@ const char** relevant_memories(size_t* count) {
         return NULL;
     }
 
-    /* Extract content strings */
-    const char** thoughts = calloc(result_count, sizeof(char*));
+    /* Allocate array for owned string copies */
+    char** thoughts = calloc(result_count, sizeof(char*));
     if (!thoughts) {
         katra_memory_free_results(results, result_count);
         *count = 0;
         return NULL;
     }
 
+    /* Copy strings (caller owns these) */
     for (size_t i = 0; i < result_count; i++) {
-        thoughts[i] = results[i]->content;
+        if (results[i]->content) {
+            thoughts[i] = strdup(results[i]->content);
+            if (!thoughts[i]) {
+                /* Allocation failed - clean up and return NULL */
+                for (size_t j = 0; j < i; j++) {
+                    free(thoughts[j]);
+                }
+                free(thoughts);
+                katra_memory_free_results(results, result_count);
+                *count = 0;
+                return NULL;
+            }
+        } else {
+            thoughts[i] = NULL;
+        }
     }
 
     *count = result_count;
 
-    /* Note: Caller must free thoughts array, but NOT the strings
-     * (they're owned by results) */
-    /* TODO: This needs better memory management */
+    /* Free query results - we own the string copies now */
+    katra_memory_free_results(results, result_count);
 
     return thoughts;
 }
 
-const char** recent_thoughts(size_t limit, size_t* count) {
+char** recent_thoughts(size_t limit, size_t* count) {
     if (!g_initialized || !count) {
         if (count) *count = 0;
         return NULL;
@@ -391,26 +405,129 @@ const char** recent_thoughts(size_t limit, size_t* count) {
         return NULL;
     }
 
-    const char** thoughts = calloc(result_count, sizeof(char*));
+    /* Allocate array for owned string copies */
+    char** thoughts = calloc(result_count, sizeof(char*));
     if (!thoughts) {
         katra_memory_free_results(results, result_count);
         *count = 0;
         return NULL;
     }
 
+    /* Copy strings (caller owns these) */
     for (size_t i = 0; i < result_count; i++) {
-        thoughts[i] = results[i]->content;
+        if (results[i]->content) {
+            thoughts[i] = strdup(results[i]->content);
+            if (!thoughts[i]) {
+                /* Allocation failed - clean up and return NULL */
+                for (size_t j = 0; j < i; j++) {
+                    free(thoughts[j]);
+                }
+                free(thoughts);
+                katra_memory_free_results(results, result_count);
+                *count = 0;
+                return NULL;
+            }
+        } else {
+            thoughts[i] = NULL;
+        }
     }
 
     *count = result_count;
+
+    /* Free query results - we own the string copies now */
+    katra_memory_free_results(results, result_count);
+
     return thoughts;
 }
 
-const char** recall_about(const char* topic, size_t* count) {
-    /* TODO: Implement semantic search or keyword matching */
-    /* For now, return recent thoughts */
-    (void)topic;  /* Unused for now */
-    return recent_thoughts(10, count);
+char** recall_about(const char* topic, size_t* count) {
+    if (!g_initialized || !count || !topic) {
+        if (count) *count = 0;
+        return NULL;
+    }
+
+    /* Query recent memories (search last 100) */
+    memory_query_t query = {
+        .ci_id = g_context.ci_id,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 100
+    };
+
+    memory_record_t** results = NULL;
+    size_t result_count = 0;
+
+    int result = katra_memory_query(&query, &results, &result_count);
+    if (result != KATRA_SUCCESS || result_count == 0) {
+        *count = 0;
+        return NULL;
+    }
+
+    /* First pass: count matches */
+    size_t match_count = 0;
+    for (size_t i = 0; i < result_count; i++) {
+        if (results[i]->content && strcasestr(results[i]->content, topic)) {
+            match_count++;
+        }
+    }
+
+    if (match_count == 0) {
+        katra_memory_free_results(results, result_count);
+        *count = 0;
+        return NULL;
+    }
+
+    /* Allocate array for matching memories */
+    char** matches = calloc(match_count, sizeof(char*));
+    if (!matches) {
+        katra_memory_free_results(results, result_count);
+        *count = 0;
+        return NULL;
+    }
+
+    /* Second pass: copy matching memories */
+    size_t match_idx = 0;
+    for (size_t i = 0; i < result_count && match_idx < match_count; i++) {
+        if (results[i]->content && strcasestr(results[i]->content, topic)) {
+            matches[match_idx] = strdup(results[i]->content);
+            if (!matches[match_idx]) {
+                /* Allocation failed - clean up */
+                for (size_t j = 0; j < match_idx; j++) {
+                    free(matches[j]);
+                }
+                free(matches);
+                katra_memory_free_results(results, result_count);
+                *count = 0;
+                return NULL;
+            }
+            match_idx++;
+        }
+    }
+
+    *count = match_count;
+
+    /* Free query results - we own the string copies now */
+    katra_memory_free_results(results, result_count);
+
+    LOG_DEBUG("Found %zu memories matching topic: %s", match_count, topic);
+    return matches;
+}
+
+void free_memory_list(char** list, size_t count) {
+    if (!list) {
+        return;
+    }
+
+    /* Free each string in the list */
+    for (size_t i = 0; i < count; i++) {
+        free(list[i]);
+    }
+
+    /* Free the array itself */
+    free(list);
 }
 
 /* ============================================================================
@@ -480,11 +597,11 @@ int load_context(void) {
 
     /* Get recent significant memories */
     size_t count = 0;
-    const char** memories = relevant_memories(&count);
+    char** memories = relevant_memories(&count);
 
     if (count > 0) {
         LOG_INFO("Loaded %zu relevant memories into context", count);
-        free((void*)memories);
+        free_memory_list(memories, count);
     }
 
     return KATRA_SUCCESS;

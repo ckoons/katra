@@ -89,11 +89,11 @@ void breathing_level_example(void) {
     /* Automatic context - memories just appear when relevant */
     printf("\nRecent thoughts:\n");
     size_t count = 0;
-    const char** thoughts = recent_thoughts(5, &count);
+    char** thoughts = recent_thoughts(5, &count);
     for (size_t i = 0; i < count; i++) {
         printf("  - %s\n", thoughts[i]);
     }
-    free((void*)thoughts);
+    free_memory_list(thoughts, count);
 
     /* End session - consolidation happens automatically */
     session_end();
@@ -128,11 +128,11 @@ void interstitial_example(void) {
     printf("\nStored memories:\n");
 
     size_t count = 0;
-    const char** thoughts = recent_thoughts(10, &count);
+    char** thoughts = recent_thoughts(10, &count);
     for (size_t i = 0; i < count; i++) {
         printf("  - %s\n", thoughts[i]);
     }
-    free((void*)thoughts);
+    free_memory_list(thoughts, count);
 
     session_end();
     breathe_cleanup();

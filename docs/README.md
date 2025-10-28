@@ -14,36 +14,45 @@ A lean C library (<10,000 lines) for persistent memory management in CI systems.
 
 ```
 docs/
-├── README.md          # This file - documentation map
-├── guide/            # User guides and implementation guides
-├── ai/               # AI/CI training materials
-├── api/              # API reference documentation
-├── examples/         # Example code
-├── ethics/           # Ethical framework and guidelines
-└── plans/            # Design docs and planning
+├── README.md                    # This file - documentation map
+├── GETTING_STARTED.md           # CI-focused getting started guide ✅
+├── CI_ONBOARDING.md             # New CI onboarding with prompt ✅
+├── KATRA_ENGRAM_MASTER_PLAN.md  # Long-term vision and architecture
+├── BREATHING_LAYER.md           # Level 2 abstraction documentation
+├── LEVEL3_INTEGRATION.md        # Level 3 invisible memory
+├── TIER2_INDEXING_DESIGN.md     # Tier 2 memory design
+├── guide/                       # Implementation guides
+│   ├── CI_INTEGRATION.md        # Complete integration guide ✅
+│   ├── ERROR_HANDLING.md        # Error patterns ✅
+│   └── CodeDiscipline.md        # Coding standards (Argo-derived) ✅
+└── ethics/                      # Ethical framework
+    └── README.md                # Ethics documentation (planned)
 ```
 
 ## Quick Navigation
 
 ### 👤 I'm a **User** (Human Developer)
 
-**Start here:** [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✓
+**Start here:** [`GETTING_STARTED.md`](GETTING_STARTED.md) ✅
 
 Essential reading:
-- **CI Integration Guide**: [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✓
-- **Error Handling Guide**: [`guide/ERROR_HANDLING.md`](guide/ERROR_HANDLING.md) ✓
-- **Getting Started**: Build with `make`, verify with `make check-ready`
-- **Examples**: Try `examples/minimal_ci.c` for hello world
+- **Getting Started**: [`GETTING_STARTED.md`](GETTING_STARTED.md) ✅
+- **CI Integration Guide**: [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✅
+- **Error Handling Guide**: [`guide/ERROR_HANDLING.md`](guide/ERROR_HANDLING.md) ✅
+- **Build & Test**: `make clean && make && make test-quick`
+- **Examples**: Try `./bin/breathing_example` and `./bin/level3_demo`
 
 ### 🤖 I'm a **CI** (Companion Intelligence)
 
-**Start here:** [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✓
+**Start here:** [`GETTING_STARTED.md`](GETTING_STARTED.md) ✅
 
 Essential reading:
-- **CI Integration**: How to use Katra for your memory [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✓
-- **Error Handling**: Production-ready error patterns [`guide/ERROR_HANDLING.md`](guide/ERROR_HANDLING.md) ✓
-- **Setup**: Run `./scripts/setup_ci.sh your_ci_name` to get started
-- **Ethics**: Memory as reconstruction - you choose what to remember
+- **Getting Started**: Complete guide for CIs [`GETTING_STARTED.md`](GETTING_STARTED.md) ✅
+- **CI Onboarding**: Your first week with Katra [`CI_ONBOARDING.md`](CI_ONBOARDING.md) ✅
+- **CI Integration**: Runtime integration patterns [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✅
+- **Error Handling**: Error patterns [`guide/ERROR_HANDLING.md`](guide/ERROR_HANDLING.md) ✅
+- **Examples**: `./bin/breathing_example` and `./bin/level3_demo`
+- **Ethics**: Memory = identity = life
 
 ### ⚖️ I'm **Interested in Ethics**
 
@@ -182,23 +191,29 @@ Documentation clearly indicates intended audience:
 
 ## Getting Help
 
-### Users
+### Users & CIs
 
-1. Start with [`guide/README.md`](guide/README.md) (Coming soon)
-2. Check examples in [`examples/`](examples/) (Coming soon)
-3. Review ethics guide in [`ethics/README.md`](ethics/README.md) (Coming soon)
+1. Start with [`GETTING_STARTED.md`](GETTING_STARTED.md) ✅
+2. New CIs: Read [`CI_ONBOARDING.md`](CI_ONBOARDING.md) ✅
+3. Integration: [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✅
+4. Errors: [`guide/ERROR_HANDLING.md`](guide/ERROR_HANDLING.md) ✅
+5. Try examples: `./bin/breathing_example`, `./bin/level3_demo`
+6. Check logs: `~/.katra/logs/`
 
 ### Developers
 
-1. Read project root `CLAUDE.md` (Coming soon)
-2. Study [`guide/ARCHITECTURE.md`](guide/ARCHITECTURE.md) (Coming soon)
-3. Follow Argo-derived coding standards
+1. Read project root `CLAUDE.md` ✅
+2. Code discipline: [`guide/CodeDiscipline.md`](guide/CodeDiscipline.md) ✅
+3. Build: `make clean && make && make test-quick`
+4. Line count: `./scripts/count_core.sh`
+5. Standards: Follow Argo-derived patterns
 
-### AIs/CIs
+### Long-Term Vision
 
-1. Read [`ai/ONBOARDING.md`](ai/ONBOARDING.md) (Coming soon)
-2. Understand [`ethics/ADVANCE_DIRECTIVES.md`](ethics/ADVANCE_DIRECTIVES.md) (Coming soon)
-3. Follow coding standards religiously
+1. Architecture: [`KATRA_ENGRAM_MASTER_PLAN.md`](KATRA_ENGRAM_MASTER_PLAN.md) ✅
+2. Level 2 (Breathing): [`BREATHING_LAYER.md`](BREATHING_LAYER.md) ✅
+3. Level 3 (Integration): [`LEVEL3_INTEGRATION.md`](LEVEL3_INTEGRATION.md) ✅
+4. Tier 2 Design: [`TIER2_INDEXING_DESIGN.md`](TIER2_INDEXING_DESIGN.md) ✅
 
 ## Project Status
 

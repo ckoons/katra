@@ -117,23 +117,57 @@ int notice_pattern(const char* pattern);
  *   - Recency
  *
  * This replaces explicit queries with automatic surfacing.
+ *
+ * Memory ownership: Caller must call free_memory_list() when done.
+ *
+ * Returns: Array of strings (caller owns), or NULL on error
  */
-const char** relevant_memories(size_t* count);
+char** relevant_memories(size_t* count);
 
 /**
  * recent_thoughts() - Get recent memories (last N)
  *
  * Quick access to recent context without explicit query.
+ *
+ * Memory ownership: Caller must call free_memory_list() when done.
+ *
+ * Returns: Array of strings (caller owns), or NULL on error
  */
-const char** recent_thoughts(size_t limit, size_t* count);
+char** recent_thoughts(size_t limit, size_t* count);
 
 /**
  * recall_about() - Find memories about a topic
  *
+ * Performs keyword-based search in memory content.
+ * Searches for topic keywords in recent memories.
+ *
  * Example:
- *   recall_about("tier1 bugs");
+ *   char** memories = recall_about("tier1 bugs", &count);
+ *   // Use memories...
+ *   free_memory_list(memories, count);
+ *
+ * Memory ownership: Caller must call free_memory_list() when done.
+ *
+ * Returns: Array of strings (caller owns), or NULL on error/no matches
  */
-const char** recall_about(const char* topic, size_t* count);
+char** recall_about(const char* topic, size_t* count);
+
+/**
+ * free_memory_list() - Free memory list returned by context functions
+ *
+ * Use this to free arrays returned by:
+ *   - relevant_memories()
+ *   - recent_thoughts()
+ *   - recall_about()
+ *
+ * Frees both the array and all strings in it.
+ *
+ * Example:
+ *   char** thoughts = recent_thoughts(10, &count);
+ *   // Use thoughts...
+ *   free_memory_list(thoughts, count);
+ */
+void free_memory_list(char** list, size_t count);
 
 /* ============================================================================
  * INTERSTITIAL CAPTURE - Automatic thought extraction
