@@ -29,8 +29,9 @@ int breathing_store_typed_memory(memory_type_t type,
 /*
  * Attach current session ID to memory record
  * Handles strdup and error checking
+ * Returns: KATRA_SUCCESS or E_SYSTEM_MEMORY on strdup failure
  */
-void breathing_attach_session(memory_record_t* record);
+int breathing_attach_session(memory_record_t* record);
 
 /* ============================================================================
  * QUERY RESULT HELPERS

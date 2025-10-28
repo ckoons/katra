@@ -137,8 +137,8 @@ int tier2_index_add(const digest_record_t* digest,
     }
 
     if (!g_db) {
-        katra_report_error(E_INTERNAL_LOGIC, "tier2_index_add",
-                          "Index not initialized");
+        /* Index not initialized - this is expected when tier2 is not set up */
+        LOG_DEBUG("Tier 2 index not initialized, skipping index add");
         return E_INTERNAL_LOGIC;
     }
 
@@ -333,8 +333,8 @@ int tier2_index_query(const digest_query_t* query,
     }
 
     if (!g_db) {
-        katra_report_error(E_INTERNAL_LOGIC, "tier2_index_query",
-                          "Index not initialized");
+        /* Index not initialized - this is expected when tier2 is not set up */
+        LOG_DEBUG("Tier 2 index not initialized, skipping index query");
         return E_INTERNAL_LOGIC;
     }
 

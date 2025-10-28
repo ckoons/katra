@@ -159,15 +159,22 @@ int remember_semantic(const char* thought, const char* why_semantic) {
         return E_SYSTEM_MEMORY;
     }
 
-    /* Add session context if available */
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
-    }
-
     /* Store semantic reason as importance note if provided */
     if (why_semantic) {
         record->importance_note = strdup(why_semantic);
+        if (!record->importance_note) {
+            katra_memory_free_record(record);
+            katra_report_error(E_SYSTEM_MEMORY, "remember_semantic",
+                              "Failed to duplicate why_semantic");
+            return E_SYSTEM_MEMORY;
+        }
+    }
+
+    /* Add session context if available */
+    int session_result = breathing_attach_session(record);
+    if (session_result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return session_result;
     }
 
     /* Store memory */
@@ -234,9 +241,10 @@ int remember_with_semantic_note(const char* thought,
     record->importance_note = combined_note;
 
     /* Add session context */
-    const char* session_id = breathing_get_session_id();
-    if (session_id) {
-        record->session_id = strdup(session_id);
+    int session_result = breathing_attach_session(record);
+    if (session_result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return session_result;
     }
 
     /* Store memory */

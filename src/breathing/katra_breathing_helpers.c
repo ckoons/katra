@@ -52,7 +52,11 @@ int breathing_store_typed_memory(memory_type_t type,
     }
 
     /* Attach session ID */
-    breathing_attach_session(record);
+    int session_result = breathing_attach_session(record);
+    if (session_result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return session_result;
+    }
 
     /* Store memory */
     int result = katra_memory_store(record);
@@ -66,15 +70,22 @@ int breathing_store_typed_memory(memory_type_t type,
     return result;
 }
 
-void breathing_attach_session(memory_record_t* record) {
+int breathing_attach_session(memory_record_t* record) {
     if (!record) {
-        return;
+        return E_INPUT_NULL;
     }
 
     const char* session_id = breathing_get_session_id();
     if (session_id) {
         record->session_id = strdup(session_id);
+        if (!record->session_id) {
+            katra_report_error(E_SYSTEM_MEMORY, "breathing_attach_session",
+                              "Failed to duplicate session_id");
+            return E_SYSTEM_MEMORY;
+        }
     }
+
+    return KATRA_SUCCESS;
 }
 
 /* ============================================================================

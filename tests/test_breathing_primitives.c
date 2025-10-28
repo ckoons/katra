@@ -177,7 +177,7 @@ static bool test_reflect_basic(void) {
 
 static bool test_reflect_null_thought(void) {
     int result = reflect(NULL);
-    ASSERT_EQUAL(result, E_INVALID_STATE);
+    ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
 
@@ -210,7 +210,7 @@ static bool test_learn_basic(void) {
 
 static bool test_learn_null_thought(void) {
     int result = learn(NULL);
-    ASSERT_EQUAL(result, E_INVALID_STATE);
+    ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
 
@@ -243,7 +243,7 @@ static bool test_decide_basic(void) {
 
 static bool test_decide_null_decision(void) {
     int result = decide(NULL, "reasoning");
-    ASSERT_EQUAL(result, E_INVALID_STATE);
+    ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
 
@@ -276,7 +276,7 @@ static bool test_notice_pattern_basic(void) {
 
 static bool test_notice_pattern_null_thought(void) {
     int result = notice_pattern(NULL);
-    ASSERT_EQUAL(result, E_INVALID_STATE);
+    ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
 

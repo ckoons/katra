@@ -98,8 +98,15 @@ int remember_with_note(const char* thought, why_remember_t why, const char* why_
 }
 
 int reflect(const char* insight) {
-    if (!breathing_get_initialized() || !insight) {
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "reflect",
+                          "Breathing layer not initialized - call breathe_init()");
         return E_INVALID_STATE;
+    }
+
+    if (!insight) {
+        katra_report_error(E_INPUT_NULL, "reflect", "insight is NULL");
+        return E_INPUT_NULL;
     }
 
     LOG_DEBUG("Reflecting: %s", insight);
@@ -115,8 +122,15 @@ int reflect(const char* insight) {
 }
 
 int learn(const char* knowledge) {
-    if (!breathing_get_initialized() || !knowledge) {
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "learn",
+                          "Breathing layer not initialized - call breathe_init()");
         return E_INVALID_STATE;
+    }
+
+    if (!knowledge) {
+        katra_report_error(E_INPUT_NULL, "learn", "knowledge is NULL");
+        return E_INPUT_NULL;
     }
 
     LOG_DEBUG("Learning: %s", knowledge);
@@ -132,8 +146,16 @@ int learn(const char* knowledge) {
 }
 
 int decide(const char* decision, const char* reasoning) {
-    if (!breathing_get_initialized() || !decision || !reasoning) {
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "decide",
+                          "Breathing layer not initialized - call breathe_init()");
         return E_INVALID_STATE;
+    }
+
+    if (!decision || !reasoning) {
+        katra_report_error(E_INPUT_NULL, "decide",
+                          "decision or reasoning is NULL");
+        return E_INPUT_NULL;
     }
 
     LOG_DEBUG("Deciding: %s (because: %s)", decision, reasoning);
@@ -149,8 +171,15 @@ int decide(const char* decision, const char* reasoning) {
 }
 
 int notice_pattern(const char* pattern) {
-    if (!breathing_get_initialized() || !pattern) {
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "notice_pattern",
+                          "Breathing layer not initialized - call breathe_init()");
         return E_INVALID_STATE;
+    }
+
+    if (!pattern) {
+        katra_report_error(E_INPUT_NULL, "notice_pattern", "pattern is NULL");
+        return E_INPUT_NULL;
     }
 
     LOG_DEBUG("Noticing pattern: %s", pattern);
