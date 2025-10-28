@@ -113,8 +113,9 @@ ENGRAM_OBJS := $(BUILD_DIR)/cognitive_workflows.o \
                $(BUILD_DIR)/interstitial.o \
                $(BUILD_DIR)/string_utils.o
 
-# Breathing layer object files
-BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o
+# Breathing layer object files (Level 2 + Level 3)
+BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
+                  $(BUILD_DIR)/katra_breathing_integration.o
 
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
@@ -229,8 +230,12 @@ $(BUILD_DIR)/string_utils.o: $(SRC_DIR)/engram/string_utils.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
-# Compile breathing layer sources
+# Compile breathing layer sources (Level 2 + Level 3)
 $(BUILD_DIR)/katra_breathing.o: $(SRC_DIR)/breathing/katra_breathing.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_breathing_integration.o: $(SRC_DIR)/breathing/katra_breathing_integration.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
