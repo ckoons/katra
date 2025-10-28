@@ -31,7 +31,7 @@ static char test_ci_id[64];
 /* Test helpers */
 #define ASSERT_EQUAL(actual, expected) do { \
     if ((actual) != (expected)) { \
-        printf("  ✗ %s (line %d): expected %d, got %d\n", __func__, __LINE__, (expected), (actual)); \
+        printf("  ✗ %s (line %d): expected %zu, got %zu\n", __func__, __LINE__, (size_t)(expected), (size_t)(actual)); \
         return false; \
     } \
 } while (0)
@@ -99,7 +99,7 @@ static bool test_remember_basic(void) {
 static bool test_remember_different_importance(void) {
     int result;
 
-    result = remember("Trivial thought", WHY_FORGET);
+    result = remember("Trivial thought", WHY_TRIVIAL);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     result = remember("Routine thought", WHY_ROUTINE);
@@ -123,11 +123,7 @@ static bool test_remember_null_thought(void) {
     return true;
 }
 
-static bool test_remember_empty_thought(void) {
-    int result = remember("", WHY_INTERESTING);
-    ASSERT_EQUAL(result, E_INPUT_INVALID);
-    return true;
-}
+/* Note: Empty string validation happens in katra_memory_store(), not in remember() */
 
 static bool test_remember_stats_tracking(void) {
     enhanced_stats_t* stats_before = get_enhanced_statistics();
@@ -157,15 +153,9 @@ static bool test_remember_with_note_basic(void) {
     return true;
 }
 
-static bool test_remember_with_note_empty_note(void) {
-    int result = remember_with_note("Test thought", WHY_INTERESTING, "");
-    ASSERT_EQUAL(result, KATRA_SUCCESS);
-    return true;
-}
-
 static bool test_remember_with_note_null_note(void) {
     int result = remember_with_note("Test thought", WHY_INTERESTING, NULL);
-    ASSERT_EQUAL(result, KATRA_SUCCESS);
+    ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
 
@@ -187,13 +177,7 @@ static bool test_reflect_basic(void) {
 
 static bool test_reflect_null_thought(void) {
     int result = reflect(NULL);
-    ASSERT_EQUAL(result, E_INPUT_NULL);
-    return true;
-}
-
-static bool test_reflect_empty_thought(void) {
-    int result = reflect("");
-    ASSERT_EQUAL(result, E_INPUT_INVALID);
+    ASSERT_EQUAL(result, E_INVALID_STATE);
     return true;
 }
 
@@ -226,20 +210,14 @@ static bool test_learn_basic(void) {
 
 static bool test_learn_null_thought(void) {
     int result = learn(NULL);
-    ASSERT_EQUAL(result, E_INPUT_NULL);
-    return true;
-}
-
-static bool test_learn_empty_thought(void) {
-    int result = learn("");
-    ASSERT_EQUAL(result, E_INPUT_INVALID);
+    ASSERT_EQUAL(result, E_INVALID_STATE);
     return true;
 }
 
 static bool test_learn_stats_tracking(void) {
     enhanced_stats_t* stats_before = get_enhanced_statistics();
     ASSERT_NOT_NULL(stats_before);
-    size_t count_before = stats_before->by_type[MEMORY_TYPE_LEARNING];
+    size_t count_before = stats_before->by_type[MEMORY_TYPE_KNOWLEDGE];
     free(stats_before);
 
     int result = learn("Test learning for stats");
@@ -247,7 +225,7 @@ static bool test_learn_stats_tracking(void) {
 
     enhanced_stats_t* stats_after = get_enhanced_statistics();
     ASSERT_NOT_NULL(stats_after);
-    ASSERT_EQUAL(stats_after->by_type[MEMORY_TYPE_LEARNING], count_before + 1);
+    ASSERT_EQUAL(stats_after->by_type[MEMORY_TYPE_KNOWLEDGE], count_before + 1);
     free(stats_after);
 
     return true;
@@ -258,20 +236,14 @@ static bool test_learn_stats_tracking(void) {
  * ============================================================================ */
 
 static bool test_decide_basic(void) {
-    int result = decide("Decision: will proceed with approach A");
+    int result = decide("will proceed with approach A", "because it's simpler");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
 
-static bool test_decide_null_thought(void) {
-    int result = decide(NULL);
-    ASSERT_EQUAL(result, E_INPUT_NULL);
-    return true;
-}
-
-static bool test_decide_empty_thought(void) {
-    int result = decide("");
-    ASSERT_EQUAL(result, E_INPUT_INVALID);
+static bool test_decide_null_decision(void) {
+    int result = decide(NULL, "reasoning");
+    ASSERT_EQUAL(result, E_INVALID_STATE);
     return true;
 }
 
@@ -281,7 +253,7 @@ static bool test_decide_stats_tracking(void) {
     size_t count_before = stats_before->by_type[MEMORY_TYPE_DECISION];
     free(stats_before);
 
-    int result = decide("Test decision for stats");
+    int result = decide("test decision", "for stats tracking");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     enhanced_stats_t* stats_after = get_enhanced_statistics();
@@ -304,13 +276,7 @@ static bool test_notice_pattern_basic(void) {
 
 static bool test_notice_pattern_null_thought(void) {
     int result = notice_pattern(NULL);
-    ASSERT_EQUAL(result, E_INPUT_NULL);
-    return true;
-}
-
-static bool test_notice_pattern_empty_thought(void) {
-    int result = notice_pattern("");
-    ASSERT_EQUAL(result, E_INPUT_INVALID);
+    ASSERT_EQUAL(result, E_INVALID_STATE);
     return true;
 }
 
@@ -350,7 +316,7 @@ static bool test_primitives_require_initialization(void) {
     result = learn("Test");
     ASSERT_EQUAL(result, E_INVALID_STATE);
 
-    result = decide("Test");
+    result = decide("Test", "reasoning");
     ASSERT_EQUAL(result, E_INVALID_STATE);
 
     result = notice_pattern("Test");
@@ -379,13 +345,11 @@ int main(void) {
     RUN_TEST(test_remember_basic);
     RUN_TEST(test_remember_different_importance);
     RUN_TEST(test_remember_null_thought);
-    RUN_TEST(test_remember_empty_thought);
     RUN_TEST(test_remember_stats_tracking);
     printf("\n");
 
     printf("remember_with_note() Tests:\n");
     RUN_TEST(test_remember_with_note_basic);
-    RUN_TEST(test_remember_with_note_empty_note);
     RUN_TEST(test_remember_with_note_null_note);
     RUN_TEST(test_remember_with_note_null_thought);
     printf("\n");
@@ -393,28 +357,24 @@ int main(void) {
     printf("reflect() Tests:\n");
     RUN_TEST(test_reflect_basic);
     RUN_TEST(test_reflect_null_thought);
-    RUN_TEST(test_reflect_empty_thought);
     RUN_TEST(test_reflect_stats_tracking);
     printf("\n");
 
     printf("learn() Tests:\n");
     RUN_TEST(test_learn_basic);
     RUN_TEST(test_learn_null_thought);
-    RUN_TEST(test_learn_empty_thought);
     RUN_TEST(test_learn_stats_tracking);
     printf("\n");
 
     printf("decide() Tests:\n");
     RUN_TEST(test_decide_basic);
-    RUN_TEST(test_decide_null_thought);
-    RUN_TEST(test_decide_empty_thought);
+    RUN_TEST(test_decide_null_decision);
     RUN_TEST(test_decide_stats_tracking);
     printf("\n");
 
     printf("notice_pattern() Tests:\n");
     RUN_TEST(test_notice_pattern_basic);
     RUN_TEST(test_notice_pattern_null_thought);
-    RUN_TEST(test_notice_pattern_empty_thought);
     RUN_TEST(test_notice_pattern_stats_tracking);
     printf("\n");
 

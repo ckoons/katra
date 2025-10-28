@@ -48,7 +48,7 @@ RM_RF := rm -rf
 .PHONY: test-quick test-env test-config test-error test-log test-init test-memory
 .PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
 .PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
-.PHONY: test-lifecycle test-mock-ci test-breathing-phase2
+.PHONY: test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -466,6 +466,10 @@ $(TEST_MOCK_CI): $(TEST_DIR)/integration/test_mock_ci.c $(LIBKATRA_FOUNDATION)
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
 
 $(TEST_BREATHING_PHASE2): $(TEST_DIR)/test_breathing_phase2.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_BREATHING_PRIMITIVES): $(TEST_DIR)/test_breathing_primitives.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
