@@ -48,7 +48,7 @@ RM_RF := rm -rf
 .PHONY: test-quick test-env test-config test-error test-log test-init test-memory
 .PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
 .PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
-.PHONY: test-lifecycle test-mock-ci
+.PHONY: test-lifecycle test-mock-ci test-breathing-phase2
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -115,6 +115,11 @@ ENGRAM_OBJS := $(BUILD_DIR)/cognitive_workflows.o \
 
 # Breathing layer object files (Level 2 + Level 3)
 BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
+                  $(BUILD_DIR)/katra_breathing_primitives.o \
+                  $(BUILD_DIR)/katra_breathing_semantic.o \
+                  $(BUILD_DIR)/katra_breathing_context.o \
+                  $(BUILD_DIR)/katra_breathing_config.o \
+                  $(BUILD_DIR)/katra_breathing_interstitial.o \
                   $(BUILD_DIR)/katra_breathing_integration.o
 
 # Foundation library
@@ -235,6 +240,26 @@ $(BUILD_DIR)/katra_breathing.o: $(SRC_DIR)/breathing/katra_breathing.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+$(BUILD_DIR)/katra_breathing_primitives.o: $(SRC_DIR)/breathing/katra_breathing_primitives.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_breathing_semantic.o: $(SRC_DIR)/breathing/katra_breathing_semantic.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_breathing_context.o: $(SRC_DIR)/breathing/katra_breathing_context.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_breathing_config.o: $(SRC_DIR)/breathing/katra_breathing_config.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+$(BUILD_DIR)/katra_breathing_interstitial.o: $(SRC_DIR)/breathing/katra_breathing_interstitial.c
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
 $(BUILD_DIR)/katra_breathing_integration.o: $(SRC_DIR)/breathing/katra_breathing_integration.c
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
@@ -264,12 +289,14 @@ TEST_CONSENT := $(BIN_DIR)/tests/test_consent_enforcement
 TEST_CORRUPTION := $(BIN_DIR)/tests/test_corruption_recovery
 TEST_LIFECYCLE := $(BIN_DIR)/tests/test_memory_lifecycle
 TEST_MOCK_CI := $(BIN_DIR)/tests/test_mock_ci
+TEST_BREATHING_PHASE2 := $(BIN_DIR)/tests/test_breathing_phase2
+TEST_BREATHING_PRIMITIVES := $(BIN_DIR)/tests/test_breathing_primitives
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -352,6 +379,14 @@ test-mock-ci: $(TEST_MOCK_CI)
 	@echo "Running mock CI integration tests..."
 	@$(TEST_MOCK_CI)
 
+test-breathing-phase2: $(TEST_BREATHING_PHASE2)
+	@echo "Running breathing layer Phase 2 tests..."
+	@$(TEST_BREATHING_PHASE2)
+
+test-breathing-primitives: $(TEST_BREATHING_PRIMITIVES)
+	@echo "Running breathing primitives unit tests..."
+	@$(TEST_BREATHING_PRIMITIVES)
+
 # CI readiness check
 check-ready: directories $(LIBKATRA_FOUNDATION)
 	@echo "Checking Katra readiness for CI testing..."
@@ -429,6 +464,10 @@ $(TEST_LIFECYCLE): $(TEST_DIR)/integration/test_memory_lifecycle.c $(LIBKATRA_FO
 $(TEST_MOCK_CI): $(TEST_DIR)/integration/test_mock_ci.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+
+$(TEST_BREATHING_PHASE2): $(TEST_DIR)/test_breathing_phase2.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
 
 # Benchmark executables
 $(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_FOUNDATION)
