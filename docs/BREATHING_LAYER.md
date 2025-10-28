@@ -129,6 +129,100 @@ session_end();
 // Automatically: sunset, consolidate, archive old memories
 ```
 
+## Phase 2: Enhanced Natural Memory (New)
+
+### Semantic Reasons
+
+Instead of remembering importance as enums, use natural language:
+
+```c
+// Instead of:
+remember("Fixed critical bug", WHY_CRITICAL);
+
+// You can now use:
+remember_semantic("Fixed critical bug", "extremely important");
+remember_semantic("Daily standup", "routine");
+remember_semantic("Interesting observation", "worth noting");
+```
+
+The system understands natural language:
+- **Critical**: "critical", "crucial", "life-changing", "must remember", "never forget"
+- **Significant**: "significant", "important", "very important", "matters", "essential"
+- **Interesting**: "interesting", "worth remembering", "notable", "noteworthy"
+- **Routine**: "routine", "normal", "everyday", "regular", "usual"
+- **Trivial**: "trivial", "fleeting", "not important", "unimportant"
+
+```c
+// With reasoning note
+remember_with_semantic_note(
+    "Per-CI directories prevent memory leakage",
+    "very important",
+    "This was blocking multi-CI testing"
+);
+```
+
+### Context Configuration
+
+Tune memory retrieval to your needs:
+
+```c
+// Configure context loading limits
+context_config_t config = {
+    .max_relevant_memories = 20,      // More context (default: 10)
+    .max_recent_thoughts = 50,        // Longer recent memory (default: 20)
+    .max_topic_recall = 200,          // Deeper search (default: 100)
+    .min_importance_relevant = 0.5,   // Lower threshold (default: HIGH)
+    .max_context_age_days = 14        // Older memories (default: 7)
+};
+
+set_context_config(&config);
+
+// Now queries use your configured limits
+char** relevant = relevant_memories(&count);
+char** recent = recent_thoughts(limit, &count);
+char** about = recall_about("topic", &count);
+
+// Reset to defaults
+set_context_config(NULL);
+```
+
+### Enhanced Statistics
+
+Monitor your memory patterns:
+
+```c
+enhanced_stats_t* stats = get_enhanced_statistics();
+
+// Memory formation stats
+printf("Total memories: %zu\n", stats->total_memories_stored);
+printf("By type: EXP=%zu, KNOW=%zu, REFLECT=%zu\n",
+       stats->by_type[MEMORY_TYPE_EXPERIENCE],
+       stats->by_type[MEMORY_TYPE_KNOWLEDGE],
+       stats->by_type[MEMORY_TYPE_REFLECTION]);
+printf("By importance: TRIVIAL=%zu, CRITICAL=%zu\n",
+       stats->by_importance[WHY_TRIVIAL],
+       stats->by_importance[WHY_CRITICAL]);
+
+// Query patterns
+printf("Queries: relevant=%zu, recent=%zu, topic=%zu\n",
+       stats->relevant_queries,
+       stats->recent_queries,
+       stats->topic_queries);
+
+// Context loading
+printf("Context loads: %zu (avg size: %zu)\n",
+       stats->context_loads,
+       stats->avg_context_size);
+
+// Session metrics
+printf("Session duration: %zu seconds\n",
+       stats->session_duration_seconds);
+
+free(stats);
+```
+
+Statistics reset automatically at `session_start()` for fresh tracking each session.
+
 ## Example
 
 See `examples/breathing_example.c` for a working demonstration.

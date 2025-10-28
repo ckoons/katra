@@ -15,6 +15,7 @@
 #include "katra_breathing.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 #include "katra_breathing_internal.h"
 
 /* ============================================================================
@@ -62,19 +63,19 @@ int set_context_config(const context_config_t* config) {
 
     if (!config) {
         /* Reset to defaults */
-        global_config->max_relevant_memories = 10;
-        global_config->max_recent_thoughts = 20;
-        global_config->max_topic_recall = 100;
+        global_config->max_relevant_memories = BREATHING_DEFAULT_RELEVANT_MEMORIES;
+        global_config->max_recent_thoughts = BREATHING_DEFAULT_RECENT_THOUGHTS;
+        global_config->max_topic_recall = BREATHING_DEFAULT_TOPIC_RECALL;
         global_config->min_importance_relevant = MEMORY_IMPORTANCE_HIGH;
-        global_config->max_context_age_days = 7;
+        global_config->max_context_age_days = BREATHING_DEFAULT_CONTEXT_AGE_DAYS;
         LOG_INFO("Context configuration reset to defaults");
         return KATRA_SUCCESS;
     }
 
     /* Validate ranges */
-    if (config->max_relevant_memories > 1000 ||
-        config->max_recent_thoughts > 1000 ||
-        config->max_topic_recall > 10000) {
+    if (config->max_relevant_memories > BREATHING_MAX_RELEVANT_LIMIT ||
+        config->max_recent_thoughts > BREATHING_MAX_RECENT_LIMIT ||
+        config->max_topic_recall > BREATHING_MAX_TOPIC_LIMIT) {
         katra_report_error(E_INVALID_PARAMS, "set_context_config",
                           "Context limits too large");
         return E_INVALID_PARAMS;

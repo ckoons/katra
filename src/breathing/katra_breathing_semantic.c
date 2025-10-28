@@ -96,10 +96,10 @@ why_remember_t string_to_why_enum(const char* semantic) {
     float importance = string_to_importance(semantic);
 
     /* Map float importance back to enum */
-    if (importance <= 0.1) return WHY_TRIVIAL;
-    if (importance <= 0.35) return WHY_ROUTINE;
-    if (importance <= 0.65) return WHY_INTERESTING;
-    if (importance <= 0.9) return WHY_SIGNIFICANT;
+    if (importance <= MEMORY_IMPORTANCE_TRIVIAL) return WHY_TRIVIAL;
+    if (importance <= BREATHING_IMPORTANCE_THRESHOLD_ROUTINE) return WHY_ROUTINE;
+    if (importance <= BREATHING_IMPORTANCE_THRESHOLD_INTERESTING) return WHY_INTERESTING;
+    if (importance <= MEMORY_IMPORTANCE_HIGH) return WHY_SIGNIFICANT;
     return WHY_CRITICAL;
 }
 

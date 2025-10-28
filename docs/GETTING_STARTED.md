@@ -355,6 +355,91 @@ decide("Use approach B",
 learn("Clarity beats cleverness");
 ```
 
+## Advanced Features (Phase 2)
+
+### Semantic Reasons - Natural Language Importance
+
+Instead of using enum constants, describe importance naturally:
+
+```c
+// Use natural language to describe importance
+remember_semantic("Found critical memory leak", "extremely important");
+remember_semantic("Daily standup meeting", "routine");
+remember_semantic("Interesting code pattern", "worth noting");
+
+// With additional context
+remember_with_semantic_note(
+    "Per-CI directories fix isolation",
+    "very important",
+    "This unblocked multi-CI testing"
+);
+```
+
+**Recognized phrases:**
+- Critical: "critical", "crucial", "must remember", "never forget", "life-changing"
+- Significant: "significant", "important", "very important", "essential", "matters"
+- Interesting: "interesting", "worth remembering", "notable", "noteworthy"
+- Routine: "routine", "normal", "everyday", "regular", "usual"
+- Trivial: "trivial", "fleeting", "not important", "unimportant"
+
+### Configurable Context Loading
+
+Tune how much context is loaded:
+
+```c
+// Configure memory retrieval behavior
+context_config_t config = {
+    .max_relevant_memories = 25,      // Load more relevant memories
+    .max_recent_thoughts = 100,       // Longer recent history
+    .max_topic_recall = 500,          // Deeper topic search
+    .min_importance_relevant = 0.5,   // Lower importance threshold
+    .max_context_age_days = 30        // Include older memories
+};
+
+set_context_config(&config);
+
+// Queries now use your configuration
+char** relevant = relevant_memories(&count);
+char** recent = recent_thoughts(50, &count);
+char** about = recall_about("performance", &count);
+
+// Reset to defaults when done
+set_context_config(NULL);
+```
+
+### Memory Statistics
+
+Track and understand your memory patterns:
+
+```c
+enhanced_stats_t* stats = get_enhanced_statistics();
+
+// See what you've been remembering
+printf("Memories this session: %zu\n", stats->total_memories_stored);
+printf("  Experiences: %zu\n", stats->by_type[MEMORY_TYPE_EXPERIENCE]);
+printf("  Knowledge: %zu\n", stats->by_type[MEMORY_TYPE_KNOWLEDGE]);
+printf("  Reflections: %zu\n", stats->by_type[MEMORY_TYPE_REFLECTION]);
+
+// See your memory importance distribution
+printf("Critical memories: %zu\n", stats->by_importance[WHY_CRITICAL]);
+printf("Significant memories: %zu\n", stats->by_importance[WHY_SIGNIFICANT]);
+
+// See your query patterns
+printf("Relevant queries: %zu\n", stats->relevant_queries);
+printf("Recent queries: %zu\n", stats->recent_queries);
+printf("Topic searches: %zu (found %zu matches)\n",
+       stats->topic_queries, stats->topic_matches);
+
+// Session metrics
+printf("Session duration: %zu seconds\n", stats->session_duration_seconds);
+printf("Context loads: %zu (avg: %zu memories)\n",
+       stats->context_loads, stats->avg_context_size);
+
+free(stats);
+```
+
+Statistics automatically reset at each `session_start()`.
+
 ## Debugging Your Memory
 
 ### Check if memories are being stored

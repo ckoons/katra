@@ -164,4 +164,24 @@
 #define EXIT_CODE_SUCCESS 0
 #define EXIT_CODE_FAILURE 1
 
+/* ===== Breathing Layer Configuration ===== */
+
+/* Default context configuration values */
+#define BREATHING_DEFAULT_RELEVANT_MEMORIES 10
+#define BREATHING_DEFAULT_RECENT_THOUGHTS 20
+#define BREATHING_DEFAULT_TOPIC_RECALL 100
+#define BREATHING_DEFAULT_CONTEXT_AGE_DAYS 7
+
+/* Context configuration limits */
+#define BREATHING_MAX_RELEVANT_LIMIT 1000
+#define BREATHING_MAX_RECENT_LIMIT 1000
+#define BREATHING_MAX_TOPIC_LIMIT 10000
+
+/* Semantic importance parsing thresholds */
+#define BREATHING_IMPORTANCE_THRESHOLD_ROUTINE 0.35f
+#define BREATHING_IMPORTANCE_THRESHOLD_INTERESTING 0.65f
+
+/* Buffer sizes for breathing layer operations */
+#define BREATHING_CONTEXT_BUFFER_INCREMENT 1024
+
 #endif /* KATRA_LIMITS_H */

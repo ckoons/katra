@@ -17,6 +17,7 @@
 #include "katra_memory.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 #include "katra_breathing_internal.h"
 
 /* ============================================================================
@@ -34,7 +35,7 @@ char** relevant_memories(size_t* count) {
     /* Calculate start time based on max_context_age_days */
     time_t start_time = 0;
     if (config->max_context_age_days > 0) {
-        start_time = time(NULL) - (config->max_context_age_days * 24 * 60 * 60);
+        start_time = time(NULL) - (config->max_context_age_days * SECONDS_PER_DAY);
     }
 
     /* Query recent high-importance memories using configured limits */
@@ -169,7 +170,7 @@ char** recall_about(const char* topic, size_t* count) {
     /* Calculate start time based on max_context_age_days */
     time_t start_time = 0;
     if (config->max_context_age_days > 0) {
-        start_time = time(NULL) - (config->max_context_age_days * 24 * 60 * 60);
+        start_time = time(NULL) - (config->max_context_age_days * SECONDS_PER_DAY);
     }
 
     /* Query recent memories using configured search depth */

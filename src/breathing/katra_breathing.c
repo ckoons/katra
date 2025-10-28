@@ -37,11 +37,11 @@ static char* g_current_thought = NULL;  /* For mark_significant() */
 
 /* Global context configuration (defaults) */
 static context_config_t g_context_config = {
-    .max_relevant_memories = 10,
-    .max_recent_thoughts = 20,
-    .max_topic_recall = 100,
+    .max_relevant_memories = BREATHING_DEFAULT_RELEVANT_MEMORIES,
+    .max_recent_thoughts = BREATHING_DEFAULT_RECENT_THOUGHTS,
+    .max_topic_recall = BREATHING_DEFAULT_TOPIC_RECALL,
     .min_importance_relevant = MEMORY_IMPORTANCE_HIGH,
-    .max_context_age_days = 7
+    .max_context_age_days = BREATHING_DEFAULT_CONTEXT_AGE_DAYS
 };
 
 /* Global enhanced statistics */
