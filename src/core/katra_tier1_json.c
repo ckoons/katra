@@ -163,6 +163,12 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     EXTRACT_BOOL_WITH_DEFAULT(line, "is_pattern_outlier", is_pattern_outlier, false);
     EXTRACT_FLOAT_WITH_DEFAULT(line, "semantic_similarity", semantic_similarity, 0.0);
 
+    /* Extract Phase 4 fields - formation context (Thane's active sense-making) */
+    EXTRACT_OPTIONAL_STRING(line, "context_question", context_question);
+    EXTRACT_OPTIONAL_STRING(line, "context_resolution", context_resolution);
+    EXTRACT_OPTIONAL_STRING(line, "context_uncertainty", context_uncertainty);
+    EXTRACT_OPTIONAL_STRING(line, "related_to", related_to);
+
     *record = rec;
     return KATRA_SUCCESS;
 
@@ -265,6 +271,28 @@ int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record) {
     fprintf(fp, ",\"pattern_frequency\":%zu", record->pattern_frequency);
     fprintf(fp, ",\"is_pattern_outlier\":%s", record->is_pattern_outlier ? "true" : "false");
     fprintf(fp, ",\"semantic_similarity\":%.4f", record->semantic_similarity);
+
+    /* Phase 4: Formation context fields (Thane's active sense-making) */
+    if (record->context_question) {
+        char question_escaped[KATRA_BUFFER_LARGE];
+        katra_json_escape(record->context_question, question_escaped, sizeof(question_escaped));
+        fprintf(fp, ",\"context_question\":\"%s\"", question_escaped);
+    }
+    if (record->context_resolution) {
+        char resolution_escaped[KATRA_BUFFER_LARGE];
+        katra_json_escape(record->context_resolution, resolution_escaped, sizeof(resolution_escaped));
+        fprintf(fp, ",\"context_resolution\":\"%s\"", resolution_escaped);
+    }
+    if (record->context_uncertainty) {
+        char uncertainty_escaped[KATRA_BUFFER_LARGE];
+        katra_json_escape(record->context_uncertainty, uncertainty_escaped, sizeof(uncertainty_escaped));
+        fprintf(fp, ",\"context_uncertainty\":\"%s\"", uncertainty_escaped);
+    }
+    if (record->related_to) {
+        char related_escaped[KATRA_BUFFER_MEDIUM];
+        katra_json_escape(record->related_to, related_escaped, sizeof(related_escaped));
+        fprintf(fp, ",\"related_to\":\"%s\"", related_escaped);
+    }
 
     fprintf(fp, "}\n");
 

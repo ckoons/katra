@@ -81,6 +81,12 @@ typedef struct {
     size_t pattern_frequency;    /* How many times this pattern occurs */
     bool is_pattern_outlier;     /* True if this is an outlier worth preserving */
     float semantic_similarity;   /* Similarity score to pattern centroid (0.0-1.0) */
+
+    /* Thane's active sense-making - Phase 4: Formation context */
+    char* context_question;      /* Why did I remember this? What problem/question? */
+    char* context_resolution;    /* What did this resolve or clarify? */
+    char* context_uncertainty;   /* What was I uncertain about before this? */
+    char* related_to;            /* Record ID this connects to (NULL if standalone) */
 } memory_record_t;
 
 /* Memory query parameters */
@@ -211,6 +217,34 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
                                              const char* content,
                                              float importance);
 
+/* Create memory record with formation context (Thane's active sense-making)
+ *
+ * Extended version that captures WHY the memory formed, not just what happened.
+ * Enables active sense-making by connecting memories to their reasoning context.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   type - Memory type
+ *   content - Memory content
+ *   importance - Importance score (0.0-1.0)
+ *   context_question - Why remember this? (may be NULL)
+ *   context_resolution - What did this resolve? (may be NULL)
+ *   context_uncertainty - What was uncertain before? (may be NULL)
+ *   related_to - Related memory record_id (may be NULL)
+ *
+ * Returns:
+ *   Allocated memory record or NULL on failure
+ */
+memory_record_t* katra_memory_create_with_context(
+    const char* ci_id,
+    memory_type_t type,
+    const char* content,
+    float importance,
+    const char* context_question,
+    const char* context_resolution,
+    const char* context_uncertainty,
+    const char* related_to);
+
 /* Free memory record
  *
  * Frees all allocated memory in a record.
@@ -234,5 +268,100 @@ void katra_memory_free_results(memory_record_t** results, size_t count);
  * Used by health monitoring to report tier2 availability.
  */
 bool katra_memory_tier2_enabled(void);
+
+/* ============================================================================
+ * Metacognitive Awareness API (Thane's Active Sense-Making)
+ * ============================================================================
+ * These functions enable CIs to understand their own memory state:
+ * - What memories exist and their consolidation health
+ * - What will be archived soon (memories at risk)
+ * - What patterns have been detected
+ */
+
+/* Memory consolidation health information */
+typedef struct {
+    size_t total_memories;        /* Total memories (active + archived) */
+    size_t active_memories;       /* Active memories (working set) */
+    size_t archived_memories;     /* Archived memories (compressed) */
+    float compression_ratio;      /* Archived / total (0.0-1.0) */
+    bool consolidation_recommended; /* Should consolidation run? */
+    const char* health_status;    /* "healthy", "degraded", "critical" */
+} memory_consolidation_health_t;
+
+/* Memory at risk information */
+typedef struct {
+    char* record_id;              /* Which memory */
+    char* content_preview;        /* First 100 chars of content */
+    const char* risk_reason;      /* Why it's at risk */
+    float risk_score;             /* How likely to archive (0.0-1.0) */
+} memory_at_risk_t;
+
+/* Pattern detection information */
+typedef struct {
+    char* pattern_id;             /* Pattern identifier */
+    size_t member_count;          /* How many memories in pattern */
+    char* centroid_preview;       /* Representative example */
+    float similarity_threshold;   /* Similarity threshold used */
+} detected_pattern_t;
+
+/* Get memory consolidation health status
+ *
+ * Returns current state of memory system for a CI.
+ * Enables CI to understand memory pressure and need for consolidation.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   health - Memory consolidation health structure to fill
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id or health is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ */
+int katra_memory_get_consolidation_health(const char* ci_id, memory_consolidation_health_t* health);
+
+/* Get memories at risk of archival
+ *
+ * Returns list of memories that would be archived on next consolidation.
+ * Enables CI to understand what's about to be forgotten.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   max_age_days - Archival threshold (same as would be used in archive())
+ *   at_risk - Array of at-risk memories (caller must free)
+ *   count - Number of memories at risk
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id, at_risk, or count is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ */
+int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
+                             memory_at_risk_t** at_risk, size_t* count);
+
+/* Get detected patterns
+ *
+ * Returns list of memory patterns that have been identified.
+ * Enables CI to understand what recurring themes exist.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   patterns - Array of detected patterns (caller must free)
+ *   count - Number of patterns detected
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id, patterns, or count is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ */
+int katra_memory_get_patterns(const char* ci_id,
+                              detected_pattern_t** patterns,
+                              size_t* count);
+
+/* Free memory at risk array */
+void katra_memory_free_at_risk(memory_at_risk_t* at_risk, size_t count);
+
+/* Free detected patterns array */
+void katra_memory_free_patterns(detected_pattern_t* patterns, size_t count);
 
 #endif /* KATRA_MEMORY_H */
