@@ -39,6 +39,16 @@ typedef enum {
 #define MEMORY_IMPORTANCE_HIGH       0.75
 #define MEMORY_IMPORTANCE_CRITICAL   1.0
 
+/* Memory system thresholds and limits */
+#define MEMORY_ID_RANDOM_MAX         10000  /* Random component for record IDs */
+#define MEMORY_HEALTH_THRESHOLD_LOW  50     /* Active memories for "healthy" status */
+#define MEMORY_HEALTH_THRESHOLD_HIGH 200    /* Active memories for "critical" status */
+#define MEMORY_CONSOLIDATION_THRESHOLD 100  /* Active memories to recommend consolidation */
+#define MEMORY_QUERY_LIMIT_DEFAULT   10000  /* Default query limit for large batches */
+#define MEMORY_PREVIEW_LENGTH        100    /* Content preview length in characters */
+#define MEMORY_ACCESS_IGNORE_SECONDS 5      /* Ignore recent accesses (query side effect) */
+/* Note: SECONDS_PER_DAY is defined in katra_limits.h */
+
 /* Memory record structure
  *
  * This is the fundamental unit of persistent memory in Katra.
