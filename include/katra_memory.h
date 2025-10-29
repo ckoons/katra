@@ -314,6 +314,14 @@ typedef struct {
     float similarity_threshold;   /* Similarity threshold used */
 } detected_pattern_t;
 
+/* Connection hub information */
+typedef struct {
+    char* record_id;              /* Hub memory record ID */
+    char* content_preview;        /* First 100 chars of content */
+    size_t connection_count;      /* Number of connections */
+    float centrality_score;       /* Normalized centrality (0.0-1.0) */
+} memory_connection_hub_t;
+
 /* Get memory consolidation health status
  *
  * Returns current state of memory system for a CI.
@@ -373,5 +381,70 @@ void katra_memory_free_at_risk(memory_at_risk_t* at_risk, size_t count);
 
 /* Free detected patterns array */
 void katra_memory_free_patterns(detected_pattern_t* patterns, size_t count);
+
+/* Get connection graph hub memories
+ *
+ * Returns memories with high graph centrality scores (well-connected hubs).
+ * These are important memories that connect many other memories together.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   min_centrality - Minimum centrality threshold (0.0-1.0, recommend 0.5)
+ *   hubs - Array of hub memories (caller must free)
+ *   count - Number of hub memories found
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id, hubs, or count is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ */
+int katra_memory_get_connection_hubs(const char* ci_id, float min_centrality,
+                                      memory_connection_hub_t** hubs, size_t* count);
+
+/* Free connection hubs array */
+void katra_memory_free_connection_hubs(memory_connection_hub_t* hubs, size_t count);
+
+/* ============================================================================
+ * Connection Graph API (Thane's Phase 2)
+ * ============================================================================
+ * These functions build and analyze memory connections:
+ * - Build connection counts based on content similarity
+ * - Calculate graph centrality to identify hub memories
+ * - Use centrality in consolidation to preserve important connections
+ */
+
+/* Build connections for a single memory record
+ *
+ * Analyzes memory content and counts connections to other memories.
+ * Updates the record's connection_count field (does not persist).
+ *
+ * Parameters:
+ *   record - Memory record to analyze
+ *   all_memories - Array of all memories to compare against
+ *   memory_count - Number of memories in array
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if record or all_memories is NULL
+ */
+int katra_memory_build_connections_for_record(memory_record_t* record,
+                                                memory_record_t** all_memories,
+                                                size_t memory_count);
+
+/* Calculate graph centrality for a set of memory records
+ *
+ * Builds connection graphs and calculates normalized centrality scores.
+ * Updates each record's connection_count and graph_centrality fields.
+ *
+ * Parameters:
+ *   memories - Array of memory records
+ *   count - Number of records in array
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if memories is NULL
+ */
+int katra_memory_calculate_centrality_for_records(memory_record_t** memories,
+                                                    size_t count);
 
 #endif /* KATRA_MEMORY_H */

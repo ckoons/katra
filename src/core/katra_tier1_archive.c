@@ -501,6 +501,14 @@ int tier1_archive(const char* ci_id, int max_age_days) {
         goto cleanup;
     }
 
+    /* Thane's Phase 2: Calculate graph centrality for connection-aware consolidation */
+    LOG_DEBUG("Calculating graph centrality for %zu records", record_count);
+    result = katra_memory_calculate_centrality_for_records(records, record_count);
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Failed to calculate centrality, continuing without it");
+        /* Non-fatal - continue with archival */
+    }
+
     /* Thane's Phase 3: Detect patterns and filter outliers */
     LOG_DEBUG("Detecting patterns in %zu archivable records", record_count);
     detect_patterns(records, record_count);

@@ -396,3 +396,158 @@ void katra_memory_free_patterns(detected_pattern_t* patterns, size_t count) {
 
     free(patterns);
 }
+
+/* Get connection graph hub memories
+ *
+ * Returns memories with high graph centrality (well-connected hubs).
+ * These are important memories that connect many other memories.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   min_centrality - Minimum centrality threshold (0.0-1.0)
+ *   hubs - Array of hub memories (caller must free)
+ *   count - Number of hub memories found
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id, hubs, or count is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ */
+int katra_memory_get_connection_hubs(const char* ci_id, float min_centrality,
+                                      memory_connection_hub_t** hubs, size_t* count) {
+    if (!ci_id || !hubs || !count) {
+        katra_report_error(E_INPUT_NULL, "katra_memory_get_connection_hubs",
+                          "NULL parameter");
+        return E_INPUT_NULL;
+    }
+
+    if (!katra_memory_is_initialized()) {
+        katra_report_error(E_INVALID_STATE, "katra_memory_get_connection_hubs",
+                          "Memory subsystem not initialized");
+        return E_INVALID_STATE;
+    }
+
+    /* Check consent */
+    int consent_result = katra_consent_check_current(ci_id);
+    if (consent_result != KATRA_SUCCESS) {
+        return consent_result;
+    }
+
+    /* Query all active memories */
+    memory_query_t query = {
+        .ci_id = ci_id,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = MEMORY_QUERY_LIMIT_DEFAULT
+    };
+
+    memory_record_t** results = NULL;
+    size_t result_count = 0;
+    int result = katra_memory_query(&query, &results, &result_count);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Calculate centrality for all memories */
+    result = katra_memory_calculate_centrality_for_records(results, result_count);
+    if (result != KATRA_SUCCESS) {
+        katra_memory_free_results(results, result_count);
+        return result;
+    }
+
+    /* Count memories above centrality threshold */
+    size_t hub_count = 0;
+    for (size_t i = 0; i < result_count; i++) {
+        if (results[i]->graph_centrality >= min_centrality) {
+            hub_count++;
+        }
+    }
+
+    if (hub_count == 0) {
+        *hubs = NULL;
+        *count = 0;
+        katra_memory_free_results(results, result_count);
+        return KATRA_SUCCESS;
+    }
+
+    /* Allocate hub array */
+    memory_connection_hub_t* hub_array = calloc(hub_count, sizeof(memory_connection_hub_t));
+    if (!hub_array) {
+        katra_memory_free_results(results, result_count);
+        katra_report_error(E_SYSTEM_MEMORY, "katra_memory_get_connection_hubs",
+                          "Failed to allocate hub array");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Populate hub array */
+    size_t hub_idx = 0;
+    for (size_t i = 0; i < result_count; i++) {
+        memory_record_t* rec = results[i];
+        if (rec->graph_centrality < min_centrality) {
+            continue;
+        }
+
+        hub_array[hub_idx].record_id = strdup(rec->record_id);
+        if (!hub_array[hub_idx].record_id) {
+            result = E_SYSTEM_MEMORY;
+            goto cleanup;
+        }
+
+        /* Create content preview */
+        size_t preview_len = strlen(rec->content);
+        if (preview_len > MEMORY_PREVIEW_LENGTH) {
+            preview_len = MEMORY_PREVIEW_LENGTH;
+        }
+        hub_array[hub_idx].content_preview = malloc(preview_len + 4);
+        if (!hub_array[hub_idx].content_preview) {
+            free(hub_array[hub_idx].record_id);
+            result = E_SYSTEM_MEMORY;
+            goto cleanup;
+        }
+        memcpy(hub_array[hub_idx].content_preview, rec->content, preview_len);
+        if (strlen(rec->content) > MEMORY_PREVIEW_LENGTH) {
+            memcpy(hub_array[hub_idx].content_preview + preview_len, "...", 4);
+        } else {
+            hub_array[hub_idx].content_preview[preview_len] = '\0';
+        }
+
+        hub_array[hub_idx].connection_count = rec->connection_count;
+        hub_array[hub_idx].centrality_score = rec->graph_centrality;
+        hub_idx++;
+    }
+
+    katra_memory_free_results(results, result_count);
+
+    *hubs = hub_array;
+    *count = hub_count;
+
+    LOG_DEBUG("Found %zu connection hubs for CI %s (min centrality: %.2f)",
+              hub_count, ci_id, min_centrality);
+    return KATRA_SUCCESS;
+
+cleanup:
+    for (size_t i = 0; i < hub_idx; i++) {
+        free(hub_array[i].record_id);
+        free(hub_array[i].content_preview);
+    }
+    free(hub_array);
+    katra_memory_free_results(results, result_count);
+    return result;
+}
+
+/* Free connection hubs array */
+void katra_memory_free_connection_hubs(memory_connection_hub_t* hubs, size_t count) {
+    if (!hubs) {
+        return;
+    }
+
+    for (size_t i = 0; i < count; i++) {
+        free(hubs[i].record_id);
+        free(hubs[i].content_preview);
+    }
+
+    free(hubs);
+}
