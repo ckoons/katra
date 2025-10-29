@@ -152,6 +152,16 @@ static int write_json_record(FILE* fp, const memory_record_t* record) {
     /* Note: connected_memory_ids array serialization would require JSON array */
     /* Deferred to graph builder module */
 
+    /* Phase 3: Pattern compression fields */
+    if (record->pattern_id) {
+        char pattern_escaped[KATRA_BUFFER_MEDIUM];
+        katra_json_escape(record->pattern_id, pattern_escaped, sizeof(pattern_escaped));
+        fprintf(fp, ",\"pattern_id\":\"%s\"", pattern_escaped);
+    }
+    fprintf(fp, ",\"pattern_frequency\":%zu", record->pattern_frequency);
+    fprintf(fp, ",\"is_pattern_outlier\":%s", record->is_pattern_outlier ? "true" : "false");
+    fprintf(fp, ",\"semantic_similarity\":%.4f", record->semantic_similarity);
+
     fprintf(fp, "}\n");
 
     return KATRA_SUCCESS;

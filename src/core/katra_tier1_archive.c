@@ -115,6 +115,108 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
     return KATRA_SUCCESS;
 }
 
+/* Helper: Calculate semantic similarity between two memories (Phase 3)
+ *
+ * Simple keyword-based similarity for pattern detection.
+ * Returns score 0.0-1.0 based on shared keywords.
+ */
+static float calculate_similarity(const char* content1, const char* content2) {
+    if (!content1 || !content2) {
+        return 0.0f;
+    }
+
+    /* Convert to lowercase and count shared words (simplified) */
+    size_t shared = 0;
+    size_t total = 0;
+
+    /* Very simple keyword matching - count character overlap */
+    size_t len1 = strlen(content1);
+    size_t len2 = strlen(content2);
+
+    if (len1 == 0 || len2 == 0) {
+        return 0.0f;
+    }
+
+    /* Count matching substrings (3+ chars) */
+    for (size_t i = 0; i < len1 - 2; i++) {
+        for (size_t j = 0; j < len2 - 2; j++) {
+            if (strncasecmp(content1 + i, content2 + j, 3) == 0) {
+                shared++;
+                break;
+            }
+        }
+        total++;
+    }
+
+    return total > 0 ? (float)shared / (float)total : 0.0f;
+}
+
+/* Helper: Detect patterns in memory set (Phase 3)
+ *
+ * Thane's insight: "I debugged 50 times" → pattern + count + outliers
+ * Groups similar memories, marks patterns, preserves outliers.
+ */
+static void detect_patterns(memory_record_t** records, size_t count) {
+    const float similarity_threshold = 0.3f;  /* 30% similarity = pattern */
+    const size_t min_pattern_size = 3;        /* Need 3+ to be a pattern */
+
+    for (size_t i = 0; i < count; i++) {
+        if (records[i]->pattern_id) {
+            continue;  /* Already assigned to pattern */
+        }
+
+        /* Find similar memories */
+        size_t pattern_members[256];  /* Simplified: max 256 pattern members */
+        size_t member_count = 0;
+        pattern_members[member_count++] = i;
+
+        for (size_t j = i + 1; j < count && member_count < 256; j++) {
+            if (records[j]->pattern_id) {
+                continue;
+            }
+
+            float similarity = calculate_similarity(records[i]->content, records[j]->content);
+            if (similarity >= similarity_threshold) {
+                pattern_members[member_count++] = j;
+            }
+        }
+
+        /* If enough similar memories, create pattern */
+        if (member_count >= min_pattern_size) {
+            /* Generate pattern ID */
+            char pattern_id[64];
+            snprintf(pattern_id, sizeof(pattern_id), "pattern_%zu_%ld",
+                    i, (long)records[i]->timestamp);
+
+            /* Assign all members to pattern */
+            for (size_t m = 0; m < member_count; m++) {
+                size_t idx = pattern_members[m];
+                records[idx]->pattern_id = strdup(pattern_id);
+                records[idx]->pattern_frequency = member_count;
+                records[idx]->semantic_similarity = 1.0f;  /* Simplified */
+            }
+
+            /* Mark outliers: first, last, and highest importance */
+            records[pattern_members[0]]->is_pattern_outlier = true;  /* First */
+            records[pattern_members[member_count - 1]]->is_pattern_outlier = true;  /* Last */
+
+            /* Find highest importance */
+            size_t max_importance_idx = 0;
+            float max_importance = 0.0f;
+            for (size_t m = 0; m < member_count; m++) {
+                size_t idx = pattern_members[m];
+                if (records[idx]->importance > max_importance) {
+                    max_importance = records[idx]->importance;
+                    max_importance_idx = idx;
+                }
+            }
+            records[max_importance_idx]->is_pattern_outlier = true;  /* Most important */
+
+            LOG_DEBUG("Detected pattern %s with %zu members", pattern_id, member_count);
+        }
+    }
+}
+
 /* Helper: Get week identifier from timestamp (YYYY-Www format) */
 static void get_week_id(time_t timestamp, char* week_id, size_t size) {
     struct tm* tm_info = localtime(&timestamp);
@@ -218,6 +320,39 @@ int tier1_archive(const char* ci_id, int max_age_days) {
 
     if (record_count == 0) {
         result = 0;  /* No records to archive */
+        goto cleanup;
+    }
+
+    /* Thane's Phase 3: Detect patterns before archiving */
+    LOG_DEBUG("Detecting patterns in %zu archivable records", record_count);
+    detect_patterns(records, record_count);
+
+    /* Filter out pattern outliers (preserve them, archive the rest) */
+    size_t final_count = 0;
+    for (size_t i = 0; i < record_count; i++) {
+        if (records[i]->pattern_id && !records[i]->is_pattern_outlier) {
+            /* Part of pattern, not an outlier - archive it */
+            LOG_DEBUG("Archiving pattern member (pattern=%s, freq=%zu): %.50s...",
+                     records[i]->pattern_id, records[i]->pattern_frequency,
+                     records[i]->content);
+            records[final_count++] = records[i];
+        } else if (records[i]->is_pattern_outlier) {
+            /* Pattern outlier - preserve it */
+            LOG_DEBUG("Preserving pattern outlier (pattern=%s): %.50s...",
+                     records[i]->pattern_id, records[i]->content);
+            /* Note: In production, we'd write it back to tier1 with updated metadata */
+            /* For now, just don't archive it */
+            katra_memory_free_record(records[i]);
+        } else {
+            /* Not part of pattern - archive normally */
+            records[final_count++] = records[i];
+        }
+    }
+
+    record_count = final_count;
+
+    if (record_count == 0) {
+        result = 0;  /* All records were outliers */
         goto cleanup;
     }
 

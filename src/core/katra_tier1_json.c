@@ -191,6 +191,28 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
         rec->graph_centrality = 0.0;
     }
 
+    /* Extract Phase 3 fields - pattern compression */
+    result = katra_json_extract_string_alloc(line, "pattern_id", &rec->pattern_id,
+                                             katra_tier1_json_unescape);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
+    int pattern_freq_int = 0;
+    if (katra_json_get_int(line, "pattern_frequency", &pattern_freq_int) == KATRA_SUCCESS) {
+        rec->pattern_frequency = (size_t)pattern_freq_int;
+    } else {
+        rec->pattern_frequency = 0;
+    }
+
+    if (katra_json_get_bool(line, "is_pattern_outlier", &rec->is_pattern_outlier) != KATRA_SUCCESS) {
+        rec->is_pattern_outlier = false;
+    }
+
+    if (katra_json_get_float(line, "semantic_similarity", &rec->semantic_similarity) != KATRA_SUCCESS) {
+        rec->semantic_similarity = 0.0;
+    }
+
     *record = rec;
     return KATRA_SUCCESS;
 

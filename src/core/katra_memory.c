@@ -366,6 +366,12 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     record->connection_count = 0;        /* No connections */
     record->graph_centrality = 0.0;      /* Not yet calculated */
 
+    /* Initialize Thane's Phase 3 fields */
+    record->pattern_id = NULL;           /* Not part of pattern yet */
+    record->pattern_frequency = 0;       /* No pattern frequency */
+    record->is_pattern_outlier = false;  /* Not an outlier */
+    record->semantic_similarity = 0.0;   /* No similarity calculated */
+
     return record;
 }
 
@@ -392,6 +398,9 @@ void katra_memory_free_record(memory_record_t* record) {
         }
         free(record->connected_memory_ids);
     }
+
+    /* Free Phase 3 pattern fields */
+    free(record->pattern_id);
 
     free(record);
 }

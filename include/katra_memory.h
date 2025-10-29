@@ -75,6 +75,12 @@ typedef struct {
     char** connected_memory_ids; /* Array of record IDs this memory references */
     size_t connection_count;     /* Number of connections */
     float graph_centrality;      /* Graph centrality score (0.0-1.0) */
+
+    /* Thane's recommendations - Phase 3: Pattern compression */
+    char* pattern_id;            /* Pattern this memory belongs to (NULL if not part of pattern) */
+    size_t pattern_frequency;    /* How many times this pattern occurs */
+    bool is_pattern_outlier;     /* True if this is an outlier worth preserving */
+    float semantic_similarity;   /* Similarity score to pattern centroid (0.0-1.0) */
 } memory_record_t;
 
 /* Memory query parameters */
