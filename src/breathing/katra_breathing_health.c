@@ -17,6 +17,7 @@
 /* Project includes */
 #include "katra_breathing.h"
 #include "katra_memory.h"
+#include "katra_tier1.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -81,9 +82,10 @@ memory_health_t* get_memory_health(const char* ci_id) {
         health->consolidation_count = stats_ptr->consolidation_count;
     }
 
-    /* Check tier2 availability (for now, tier2 is not initialized by default) */
-    health->tier2_available = false;  /* Updated when tier2_init() is implemented */
-    health->tier2_enabled = false;    /* Updated when tier2_init() is implemented */
+    /* Check tier2 availability */
+    bool tier2_status = katra_memory_tier2_enabled();
+    health->tier2_available = tier2_status;
+    health->tier2_enabled = tier2_status;
 
     return health;
 }
@@ -137,6 +139,14 @@ int breathe_periodic_maintenance(void) {
         } else {
             LOG_WARN("Periodic consolidation failed: %d", result);
             stats->failed_stores++;
+        }
+
+        /* Flush tier1 to disk for crash safety */
+        int flush_result = tier1_flush(ci_id);
+        if (flush_result == KATRA_SUCCESS) {
+            LOG_DEBUG("Tier1 flushed to disk");
+        } else {
+            LOG_WARN("Tier1 flush failed: %d", flush_result);
         }
 
         return result;

@@ -98,6 +98,21 @@ int tier1_archive(const char* ci_id, int max_age_days);
  */
 int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used);
 
+/* Flush Tier 1 storage to disk
+ *
+ * Forces all pending writes to disk for crash safety.
+ * Should be called periodically (e.g., every 6 hours).
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id is NULL
+ *   E_SYSTEM_FILE if directory access fails
+ */
+int tier1_flush(const char* ci_id);
+
 /* Cleanup Tier 1 storage
  *
  * Flushes pending writes and releases resources.

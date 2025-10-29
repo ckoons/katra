@@ -29,9 +29,28 @@ int breathing_store_typed_memory(memory_type_t type,
                                  const char* importance_note,
                                  why_remember_t why_enum,
                                  const char* func_name) {
+    const char* ci_id = breathing_get_ci_id();
+
+    /* Check memory pressure and enforce limits in degraded mode */
+    memory_health_t* health = get_memory_health(ci_id);
+    if (health) {
+        if (health->degraded_mode) {
+            /* Critical memory pressure - only accept HIGH or CRITICAL importance */
+            if (importance < MEMORY_IMPORTANCE_HIGH) {
+                LOG_DEBUG("Rejecting low-importance memory in degraded mode (%.2f < %.2f)",
+                         importance, MEMORY_IMPORTANCE_HIGH);
+                free(health);
+                return E_MEMORY_TIER_FULL;  /* Signal memory pressure */
+            }
+            LOG_DEBUG("Accepting high-importance memory despite degraded mode (%.2f)",
+                     importance);
+        }
+        free(health);
+    }
+
     /* Create memory record */
     memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+        ci_id,
         type,
         content,
         importance

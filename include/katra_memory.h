@@ -209,4 +209,11 @@ void katra_memory_free_record(memory_record_t* record);
  */
 void katra_memory_free_results(memory_record_t** results, size_t count);
 
+/* Check if tier2 is enabled
+ *
+ * Returns true if tier2 initialized successfully, false otherwise.
+ * Used by health monitoring to report tier2 availability.
+ */
+bool katra_memory_tier2_enabled(void);
+
 #endif /* KATRA_MEMORY_H */

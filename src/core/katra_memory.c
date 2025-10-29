@@ -10,6 +10,7 @@
 /* Project includes */
 #include "katra_memory.h"
 #include "katra_tier1.h"
+#include "katra_tier2.h"
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
@@ -18,6 +19,7 @@
 
 /* Global state */
 static bool memory_initialized = false;
+static bool tier2_enabled = false;
 static char current_ci_id[KATRA_BUFFER_MEDIUM];
 
 /* Initialize memory subsystem */
@@ -46,7 +48,17 @@ int katra_memory_init(const char* ci_id) {
         return result;
     }
 
-    /* TODO: Initialize Tier 2 (sleep digests) - Phase 2.2 */
+    /* Initialize Tier 2 (sleep digests) */
+    result = tier2_init(ci_id);
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Tier 2 initialization failed: %d (archiving disabled)", result);
+        tier2_enabled = false;
+        /* Non-fatal - tier1 will just grow larger without archiving */
+    } else {
+        LOG_INFO("Tier 2 initialized successfully");
+        tier2_enabled = true;
+    }
+
     /* TODO: Initialize Tier 3 (pattern summaries) - Phase 2.3 */
 
     memory_initialized = true;
@@ -63,9 +75,12 @@ void katra_memory_cleanup(void) {
 
     LOG_DEBUG("Cleaning up memory subsystem");
 
-    /* Cleanup all tiers */
+    /* Cleanup all tiers in reverse order */
+    if (tier2_enabled) {
+        tier2_cleanup();
+        tier2_enabled = false;
+    }
     tier1_cleanup();
-    /* TODO: tier2_cleanup() - Phase 2.2 */
     /* TODO: tier3_cleanup() - Phase 2.3 */
 
     memory_initialized = false;
@@ -325,4 +340,9 @@ void katra_memory_free_results(memory_record_t** results, size_t count) {
     }
 
     free(results);
+}
+
+/* Check if tier2 is enabled */
+bool katra_memory_tier2_enabled(void) {
+    return tier2_enabled;
 }

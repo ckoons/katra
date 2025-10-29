@@ -517,6 +517,75 @@ int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used) {
     return result;
 }
 
+/* Flush Tier 1 storage to disk
+ *
+ * Forces all pending writes to disk for crash safety.
+ * Opens each .jsonl file and calls fsync() to ensure durability.
+ */
+int tier1_flush(const char* ci_id) {
+    int result = KATRA_SUCCESS;
+    char tier1_dir[KATRA_PATH_MAX];
+    char** filenames = NULL;
+    size_t file_count = 0;
+    int flushed_count = 0;
+
+    if (!ci_id) {
+        katra_report_error(E_INPUT_NULL, "tier1_flush", "ci_id is NULL");
+        return E_INPUT_NULL;
+    }
+
+    /* Get Tier 1 directory */
+    result = tier1_get_dir(ci_id, tier1_dir, sizeof(tier1_dir));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Collect .jsonl files */
+    result = tier1_collect_jsonl_files(tier1_dir, &filenames, &file_count);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    if (file_count == 0) {
+        LOG_DEBUG("No files to flush for CI: %s", ci_id);
+        return KATRA_SUCCESS;
+    }
+
+    /* Flush each file */
+    for (size_t i = 0; i < file_count; i++) {
+        char filepath[KATRA_PATH_MAX];
+        snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[i]);
+
+        /* Open file in read mode (we're not writing, just flushing) */
+        FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
+        if (!fp) {
+            LOG_WARN("Failed to open %s for flush (skipping)", filepath);
+            continue;
+        }
+
+        /* Get file descriptor and fsync */
+        int fd = fileno(fp);
+        if (fd != -1) {
+            if (fsync(fd) == 0) {
+                flushed_count++;
+            } else {
+                LOG_WARN("fsync failed for %s", filepath);
+            }
+        }
+
+        fclose(fp);
+    }
+
+    tier1_free_filenames(filenames, file_count);
+
+    if (flushed_count > 0) {
+        LOG_DEBUG("Flushed %d tier1 file(s) to disk for CI: %s",
+                 flushed_count, ci_id);
+    }
+
+    return KATRA_SUCCESS;
+}
+
 /* Cleanup Tier 1 storage */
 void tier1_cleanup(void) {
     LOG_DEBUG("Tier 1 cleanup complete");
