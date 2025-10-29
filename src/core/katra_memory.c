@@ -11,6 +11,7 @@
 #include "katra_memory.h"
 #include "katra_tier1.h"
 #include "katra_tier2.h"
+#include "katra_consent.h"
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
@@ -40,6 +41,20 @@ int katra_memory_init(const char* ci_id) {
 
     /* Store CI ID */
     SAFE_STRNCPY(current_ci_id, ci_id);
+
+    /* Initialize consent system */
+    result = katra_consent_init();
+    if (result != KATRA_SUCCESS) {
+        katra_report_error(result, "katra_memory_init", "Consent init failed");
+        return result;
+    }
+
+    /* Set consent context to this CI */
+    result = katra_consent_set_context(ci_id);
+    if (result != KATRA_SUCCESS) {
+        katra_report_error(result, "katra_memory_init", "Failed to set consent context");
+        return result;
+    }
 
     /* Initialize Tier 1 (raw recordings) */
     result = tier1_init(ci_id);
@@ -82,6 +97,9 @@ void katra_memory_cleanup(void) {
     }
     tier1_cleanup();
     /* TODO: tier3_cleanup() - Phase 2.3 */
+
+    /* Cleanup consent system */
+    katra_consent_cleanup();
 
     memory_initialized = false;
     current_ci_id[0] = '\0';
@@ -175,6 +193,12 @@ int katra_memory_query(const memory_query_t* query,
         return E_INVALID_STATE;
     }
 
+    /* Check consent - can current CI access target CI's memories? */
+    int consent_result = katra_consent_check_current(query->ci_id);
+    if (consent_result != KATRA_SUCCESS) {
+        return consent_result;  /* Returns E_CONSENT_REQUIRED if blocked */
+    }
+
     *results = NULL;
     *count = 0;
 
@@ -210,6 +234,12 @@ int katra_memory_stats(const char* ci_id, memory_stats_t* stats) {
         katra_report_error(E_INVALID_STATE, "katra_memory_stats",
                           "Memory subsystem not initialized");
         return E_INVALID_STATE;
+    }
+
+    /* Check consent */
+    int consent_result = katra_consent_check_current(ci_id);
+    if (consent_result != KATRA_SUCCESS) {
+        return consent_result;
     }
 
     /* Initialize stats */
@@ -249,6 +279,12 @@ int katra_memory_archive(const char* ci_id, int max_age_days, size_t* archived_c
         katra_report_error(E_INVALID_STATE, "katra_memory_archive",
                           "Memory subsystem not initialized");
         return E_INVALID_STATE;
+    }
+
+    /* Check consent */
+    int consent_result = katra_consent_check_current(ci_id);
+    if (consent_result != KATRA_SUCCESS) {
+        return consent_result;
     }
 
     LOG_INFO("Archiving memories older than %d days for CI: %s",

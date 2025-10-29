@@ -64,6 +64,7 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_tier2_json.o \
              $(BUILD_DIR)/katra_tier2_index.o \
              $(BUILD_DIR)/katra_tier2_index_mgmt.o \
+             $(BUILD_DIR)/katra_consent.o \
              $(BUILD_DIR)/katra_checkpoint.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o \
              $(BUILD_DIR)/katra_continuity.o \
