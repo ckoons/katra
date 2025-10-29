@@ -302,18 +302,29 @@ void test_pattern_detection(void) {
     size_t archived = 0;
     katra_memory_archive(CI_PATTERN, 20, &archived);
 
-    /* After */
-    memory_stats_t after;
-    katra_memory_stats(CI_PATTERN, &after);
+    /* After: Count ACTIVE records via query (excludes archived) */
+    memory_query_t query = {
+        .ci_id = CI_PATTERN,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 1000
+    };
+    memory_record_t** results = NULL;
+    size_t active_count = 0;
+    katra_memory_query(&query, &results, &active_count);
+    katra_memory_free_results(results, active_count);
 
     /* Expected: ~7 pattern members archived, 3 outliers + 3 unrelated preserved */
-    float compression = (1.0f - (float)after.tier1_records / (float)before.tier1_records) * 100.0f;
+    float compression = (1.0f - (float)active_count / (float)before.tier1_records) * 100.0f;
 
     test_assert(archived >= 5, "Pattern compression archived repetitive members");
-    test_assert(after.tier1_records <= 8, "Pattern outliers and unrelated preserved");
+    test_assert(active_count <= 8, "Pattern outliers and unrelated preserved (active)");
 
-    printf("Before: %zu memories\n", before.tier1_records);
-    printf("After: %zu memories (archived: %zu)\n", after.tier1_records, archived);
+    printf("Before: %zu memories (total in JSONL)\n", before.tier1_records);
+    printf("After: %zu active memories (archived: %zu)\n", active_count, archived);
     printf("Compression: %.1f%%\n", compression);
 
     katra_memory_cleanup();
