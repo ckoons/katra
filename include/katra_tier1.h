@@ -3,6 +3,7 @@
 #ifndef KATRA_TIER1_H
 #define KATRA_TIER1_H
 
+#include <stdio.h>
 #include "katra_memory.h"
 
 /* Tier 1: Raw Recordings
@@ -119,8 +120,9 @@ int tier1_flush(const char* ci_id);
  */
 void tier1_cleanup(void);
 
-/* JSON parsing helpers (internal) */
+/* JSON parsing/serialization helpers (internal) */
 void katra_tier1_json_unescape(const char* src, char* dst, size_t dst_size);
 int katra_tier1_parse_json_record(const char* line, memory_record_t** record);
+int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record);
 
 #endif /* KATRA_TIER1_H */

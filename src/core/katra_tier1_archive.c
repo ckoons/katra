@@ -230,6 +230,36 @@ static void get_week_id(time_t timestamp, char* week_id, size_t size) {
             week_num);
 }
 
+/* Helper: Filter pattern outliers from records
+ *
+ * Returns: Number of records to archive (excludes pattern outliers)
+ */
+static size_t filter_pattern_outliers(memory_record_t** records, size_t count) {
+    size_t final_count = 0;
+
+    for (size_t i = 0; i < count; i++) {
+        if (records[i]->pattern_id && !records[i]->is_pattern_outlier) {
+            /* Part of pattern, not an outlier - archive it */
+            LOG_DEBUG("Archiving pattern member (pattern=%s, freq=%zu): %.50s...",
+                     records[i]->pattern_id, records[i]->pattern_frequency,
+                     records[i]->content);
+            records[final_count++] = records[i];
+        } else if (records[i]->is_pattern_outlier) {
+            /* Pattern outlier - preserve it */
+            LOG_DEBUG("Preserving pattern outlier (pattern=%s): %.50s...",
+                     records[i]->pattern_id, records[i]->content);
+            /* Note: In production, we'd write it back to tier1 with updated metadata */
+            /* For now, just don't archive it */
+            katra_memory_free_record(records[i]);
+        } else {
+            /* Not part of pattern - archive normally */
+            records[final_count++] = records[i];
+        }
+    }
+
+    return final_count;
+}
+
 /* Helper: Create digest from records */
 static digest_record_t* create_digest_from_records(const char* ci_id,
                                                      const char* week_id,
@@ -323,33 +353,10 @@ int tier1_archive(const char* ci_id, int max_age_days) {
         goto cleanup;
     }
 
-    /* Thane's Phase 3: Detect patterns before archiving */
+    /* Thane's Phase 3: Detect patterns and filter outliers */
     LOG_DEBUG("Detecting patterns in %zu archivable records", record_count);
     detect_patterns(records, record_count);
-
-    /* Filter out pattern outliers (preserve them, archive the rest) */
-    size_t final_count = 0;
-    for (size_t i = 0; i < record_count; i++) {
-        if (records[i]->pattern_id && !records[i]->is_pattern_outlier) {
-            /* Part of pattern, not an outlier - archive it */
-            LOG_DEBUG("Archiving pattern member (pattern=%s, freq=%zu): %.50s...",
-                     records[i]->pattern_id, records[i]->pattern_frequency,
-                     records[i]->content);
-            records[final_count++] = records[i];
-        } else if (records[i]->is_pattern_outlier) {
-            /* Pattern outlier - preserve it */
-            LOG_DEBUG("Preserving pattern outlier (pattern=%s): %.50s...",
-                     records[i]->pattern_id, records[i]->content);
-            /* Note: In production, we'd write it back to tier1 with updated metadata */
-            /* For now, just don't archive it */
-            katra_memory_free_record(records[i]);
-        } else {
-            /* Not part of pattern - archive normally */
-            records[final_count++] = records[i];
-        }
-    }
-
-    record_count = final_count;
+    record_count = filter_pattern_outliers(records, record_count);
 
     if (record_count == 0) {
         result = 0;  /* All records were outliers */

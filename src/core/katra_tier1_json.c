@@ -13,6 +13,49 @@
 #include "katra_json_utils.h"
 #include "katra_limits.h"
 
+/* Write memory record as JSON line (exported to tier1.c) */
+int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record);
+
+/* JSON field extraction macros to reduce repetition */
+#define EXTRACT_OPTIONAL_STRING(line, field_name, rec_field) do { \
+    int _result = katra_json_extract_string_alloc(line, field_name, &rec->rec_field, \
+                                                   katra_tier1_json_unescape); \
+    if (_result != KATRA_SUCCESS) { \
+        result = _result; \
+        goto cleanup; \
+    } \
+} while(0)
+
+#define EXTRACT_LONG_WITH_DEFAULT(line, field_name, rec_field, default_val) do { \
+    long _temp = 0; \
+    if (katra_json_get_long(line, field_name, &_temp) == KATRA_SUCCESS) { \
+        rec->rec_field = (time_t)_temp; \
+    } else { \
+        rec->rec_field = default_val; \
+    } \
+} while(0)
+
+#define EXTRACT_INT_WITH_DEFAULT(line, field_name, rec_field, cast_type, default_val) do { \
+    int _temp = 0; \
+    if (katra_json_get_int(line, field_name, &_temp) == KATRA_SUCCESS) { \
+        rec->rec_field = (cast_type)_temp; \
+    } else { \
+        rec->rec_field = default_val; \
+    } \
+} while(0)
+
+#define EXTRACT_FLOAT_WITH_DEFAULT(line, field_name, rec_field, default_val) do { \
+    if (katra_json_get_float(line, field_name, &rec->rec_field) != KATRA_SUCCESS) { \
+        rec->rec_field = default_val; \
+    } \
+} while(0)
+
+#define EXTRACT_BOOL_WITH_DEFAULT(line, field_name, rec_field, default_val) do { \
+    if (katra_json_get_bool(line, field_name, &rec->rec_field) != KATRA_SUCCESS) { \
+        rec->rec_field = default_val; \
+    } \
+} while(0)
+
 /* JSON unescape string helper */
 void katra_tier1_json_unescape(const char* src, char* dst, size_t dst_size) {
     if (!src || !dst || dst_size == 0) {
@@ -79,17 +122,9 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
         rec->type = (memory_type_t)type_int;
     }
 
-    /* Extract importance */
-    if (katra_json_get_float(line, "importance", &rec->importance) != KATRA_SUCCESS) {
-        rec->importance = MEMORY_IMPORTANCE_MEDIUM;
-    }
-
-    /* Extract importance_note (optional) */
-    result = katra_json_extract_string_alloc(line, "importance_note", &rec->importance_note,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
+    /* Extract core fields */
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "importance", importance, MEMORY_IMPORTANCE_MEDIUM);
+    EXTRACT_OPTIONAL_STRING(line, "importance_note", importance_note);
 
     /* Extract content (required) */
     result = katra_json_extract_string_required(line, "content", &rec->content,
@@ -99,119 +134,34 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     }
 
     /* Extract optional string fields */
-    result = katra_json_extract_string_alloc(line, "response", &rec->response,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
+    EXTRACT_OPTIONAL_STRING(line, "response", response);
+    EXTRACT_OPTIONAL_STRING(line, "context", context);
+    EXTRACT_OPTIONAL_STRING(line, "ci_id", ci_id);
+    EXTRACT_OPTIONAL_STRING(line, "session_id", session_id);
+    EXTRACT_OPTIONAL_STRING(line, "component", component);
 
-    result = katra_json_extract_string_alloc(line, "context", &rec->context,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
-
-    result = katra_json_extract_string_alloc(line, "ci_id", &rec->ci_id,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
-
-    result = katra_json_extract_string_alloc(line, "session_id", &rec->session_id,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
-
-    result = katra_json_extract_string_alloc(line, "component", &rec->component,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
-
-    /* Extract tier */
-    int tier_int = KATRA_TIER1;
-    if (katra_json_get_int(line, "tier", &tier_int) == KATRA_SUCCESS) {
-        rec->tier = (katra_tier_t)tier_int;
-    }
-
-    /* Extract archived */
-    if (katra_json_get_bool(line, "archived", &rec->archived) != KATRA_SUCCESS) {
-        rec->archived = false;
-    }
+    /* Extract tier and archived status */
+    EXTRACT_INT_WITH_DEFAULT(line, "tier", tier, katra_tier_t, KATRA_TIER1);
+    EXTRACT_BOOL_WITH_DEFAULT(line, "archived", archived, false);
 
     /* Extract Thane's Phase 1 fields - access tracking */
-    long last_accessed_long = 0;
-    if (katra_json_get_long(line, "last_accessed", &last_accessed_long) == KATRA_SUCCESS) {
-        rec->last_accessed = (time_t)last_accessed_long;
-    } else {
-        rec->last_accessed = 0;
-    }
-
-    int access_count_int = 0;
-    if (katra_json_get_int(line, "access_count", &access_count_int) == KATRA_SUCCESS) {
-        rec->access_count = (size_t)access_count_int;
-    } else {
-        rec->access_count = 0;
-    }
-
-    /* Extract emotional salience fields */
-    if (katra_json_get_float(line, "emotion_intensity", &rec->emotion_intensity) != KATRA_SUCCESS) {
-        rec->emotion_intensity = 0.0;
-    }
-
-    result = katra_json_extract_string_alloc(line, "emotion_type", &rec->emotion_type,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
-
-    /* Extract voluntary preservation fields */
-    if (katra_json_get_bool(line, "marked_important", &rec->marked_important) != KATRA_SUCCESS) {
-        rec->marked_important = false;
-    }
-
-    if (katra_json_get_bool(line, "marked_forgettable", &rec->marked_forgettable) != KATRA_SUCCESS) {
-        rec->marked_forgettable = false;
-    }
+    EXTRACT_LONG_WITH_DEFAULT(line, "last_accessed", last_accessed, 0);
+    EXTRACT_INT_WITH_DEFAULT(line, "access_count", access_count, size_t, 0);
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "emotion_intensity", emotion_intensity, 0.0);
+    EXTRACT_OPTIONAL_STRING(line, "emotion_type", emotion_type);
+    EXTRACT_BOOL_WITH_DEFAULT(line, "marked_important", marked_important, false);
+    EXTRACT_BOOL_WITH_DEFAULT(line, "marked_forgettable", marked_forgettable, false);
 
     /* Extract Phase 2 fields - connection graph */
-    int connection_count_int = 0;
-    if (katra_json_get_int(line, "connection_count", &connection_count_int) == KATRA_SUCCESS) {
-        rec->connection_count = (size_t)connection_count_int;
-    } else {
-        rec->connection_count = 0;
-    }
-
-    /* Note: connected_memory_ids array parsing would require JSON array parsing */
-    /* For now, initialize to NULL (will be populated by graph builder) */
-    rec->connected_memory_ids = NULL;
-
-    if (katra_json_get_float(line, "graph_centrality", &rec->graph_centrality) != KATRA_SUCCESS) {
-        rec->graph_centrality = 0.0;
-    }
+    EXTRACT_INT_WITH_DEFAULT(line, "connection_count", connection_count, size_t, 0);
+    rec->connected_memory_ids = NULL;  /* Array parsing deferred to graph builder */
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "graph_centrality", graph_centrality, 0.0);
 
     /* Extract Phase 3 fields - pattern compression */
-    result = katra_json_extract_string_alloc(line, "pattern_id", &rec->pattern_id,
-                                             katra_tier1_json_unescape);
-    if (result != KATRA_SUCCESS) {
-        goto cleanup;
-    }
-
-    int pattern_freq_int = 0;
-    if (katra_json_get_int(line, "pattern_frequency", &pattern_freq_int) == KATRA_SUCCESS) {
-        rec->pattern_frequency = (size_t)pattern_freq_int;
-    } else {
-        rec->pattern_frequency = 0;
-    }
-
-    if (katra_json_get_bool(line, "is_pattern_outlier", &rec->is_pattern_outlier) != KATRA_SUCCESS) {
-        rec->is_pattern_outlier = false;
-    }
-
-    if (katra_json_get_float(line, "semantic_similarity", &rec->semantic_similarity) != KATRA_SUCCESS) {
-        rec->semantic_similarity = 0.0;
-    }
+    EXTRACT_OPTIONAL_STRING(line, "pattern_id", pattern_id);
+    EXTRACT_INT_WITH_DEFAULT(line, "pattern_frequency", pattern_frequency, size_t, 0);
+    EXTRACT_BOOL_WITH_DEFAULT(line, "is_pattern_outlier", is_pattern_outlier, false);
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "semantic_similarity", semantic_similarity, 0.0);
 
     *record = rec;
     return KATRA_SUCCESS;
@@ -221,4 +171,102 @@ cleanup:
         katra_memory_free_record(rec);
     }
     return result;
+}
+
+/* Write memory record as JSON line */
+int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record) {
+    char content_escaped[KATRA_BUFFER_LARGE];
+    char response_escaped[KATRA_BUFFER_LARGE];
+    char context_escaped[KATRA_BUFFER_LARGE];
+    char importance_note_escaped[KATRA_BUFFER_LARGE];
+
+    katra_json_escape(record->content, content_escaped, sizeof(content_escaped));
+
+    if (record->response) {
+        katra_json_escape(record->response, response_escaped, sizeof(response_escaped));
+    } else {
+        response_escaped[0] = '\0';
+    }
+
+    if (record->context) {
+        katra_json_escape(record->context, context_escaped, sizeof(context_escaped));
+    } else {
+        context_escaped[0] = '\0';
+    }
+
+    if (record->importance_note) {
+        katra_json_escape(record->importance_note, importance_note_escaped, sizeof(importance_note_escaped));
+    } else {
+        importance_note_escaped[0] = '\0';
+    }
+
+    /* Write JSON object (one line) */
+    fprintf(fp, "{");
+    fprintf(fp, "\"record_id\":\"%s\",", record->record_id ? record->record_id : "");
+    fprintf(fp, "\"timestamp\":%ld,", (long)record->timestamp);
+    fprintf(fp, "\"type\":%d,", record->type);
+    fprintf(fp, "\"importance\":%.2f,", record->importance);
+
+    if (record->importance_note) {
+        fprintf(fp, "\"importance_note\":\"%s\",", importance_note_escaped);
+    }
+
+    fprintf(fp, "\"content\":\"%s\",", content_escaped);
+
+    if (record->response) {
+        fprintf(fp, "\"response\":\"%s\",", response_escaped);
+    }
+
+    if (record->context) {
+        fprintf(fp, "\"context\":\"%s\",", context_escaped);
+    }
+
+    fprintf(fp, "\"ci_id\":\"%s\",", record->ci_id ? record->ci_id : "");
+
+    if (record->session_id) {
+        fprintf(fp, "\"session_id\":\"%s\",", record->session_id);
+    }
+
+    if (record->component) {
+        fprintf(fp, "\"component\":\"%s\",", record->component);
+    }
+
+    fprintf(fp, "\"tier\":%d,", record->tier);
+    fprintf(fp, "\"archived\":%s,", record->archived ? "true" : "false");
+
+    /* Thane's Phase 1 fields - access tracking */
+    fprintf(fp, "\"last_accessed\":%ld,", (long)record->last_accessed);
+    fprintf(fp, "\"access_count\":%zu,", record->access_count);
+
+    /* Emotional salience */
+    fprintf(fp, "\"emotion_intensity\":%.2f", record->emotion_intensity);
+    if (record->emotion_type) {
+        char emotion_escaped[KATRA_BUFFER_MEDIUM];
+        katra_json_escape(record->emotion_type, emotion_escaped, sizeof(emotion_escaped));
+        fprintf(fp, ",\"emotion_type\":\"%s\"", emotion_escaped);
+    }
+
+    /* Voluntary preservation */
+    fprintf(fp, ",\"marked_important\":%s", record->marked_important ? "true" : "false");
+    fprintf(fp, ",\"marked_forgettable\":%s", record->marked_forgettable ? "true" : "false");
+
+    /* Phase 2: Connection graph fields */
+    fprintf(fp, ",\"connection_count\":%zu", record->connection_count);
+    fprintf(fp, ",\"graph_centrality\":%.4f", record->graph_centrality);
+    /* Note: connected_memory_ids array serialization would require JSON array */
+    /* Deferred to graph builder module */
+
+    /* Phase 3: Pattern compression fields */
+    if (record->pattern_id) {
+        char pattern_escaped[KATRA_BUFFER_MEDIUM];
+        katra_json_escape(record->pattern_id, pattern_escaped, sizeof(pattern_escaped));
+        fprintf(fp, ",\"pattern_id\":\"%s\"", pattern_escaped);
+    }
+    fprintf(fp, ",\"pattern_frequency\":%zu", record->pattern_frequency);
+    fprintf(fp, ",\"is_pattern_outlier\":%s", record->is_pattern_outlier ? "true" : "false");
+    fprintf(fp, ",\"semantic_similarity\":%.4f", record->semantic_similarity);
+
+    fprintf(fp, "}\n");
+
+    return KATRA_SUCCESS;
 }

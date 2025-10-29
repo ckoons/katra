@@ -26,7 +26,6 @@
 
 /* Forward declarations */
 static int get_daily_file_path(const char* ci_id, char* buffer, size_t size);
-static int write_json_record(FILE* fp, const memory_record_t* record);
 static void sort_filenames_desc(char** filenames, size_t count);
 void tier1_free_filenames(char** filenames, size_t count);
 static bool record_matches_query(const memory_record_t* record, const memory_query_t* query);
@@ -65,104 +64,6 @@ static int get_daily_file_path(const char* ci_id, char* buffer, size_t size) {
             tm_info->tm_year + 1900,
             tm_info->tm_mon + 1,
             tm_info->tm_mday);
-
-    return KATRA_SUCCESS;
-}
-
-/* Write memory record as JSON line */
-static int write_json_record(FILE* fp, const memory_record_t* record) {
-    char content_escaped[KATRA_BUFFER_LARGE];
-    char response_escaped[KATRA_BUFFER_LARGE];
-    char context_escaped[KATRA_BUFFER_LARGE];
-    char importance_note_escaped[KATRA_BUFFER_LARGE];
-
-    katra_json_escape(record->content, content_escaped, sizeof(content_escaped));
-
-    if (record->response) {
-        katra_json_escape(record->response, response_escaped, sizeof(response_escaped));
-    } else {
-        response_escaped[0] = '\0';
-    }
-
-    if (record->context) {
-        katra_json_escape(record->context, context_escaped, sizeof(context_escaped));
-    } else {
-        context_escaped[0] = '\0';
-    }
-
-    if (record->importance_note) {
-        katra_json_escape(record->importance_note, importance_note_escaped, sizeof(importance_note_escaped));
-    } else {
-        importance_note_escaped[0] = '\0';
-    }
-
-    /* Write JSON object (one line) */
-    fprintf(fp, "{");
-    fprintf(fp, "\"record_id\":\"%s\",", record->record_id ? record->record_id : "");
-    fprintf(fp, "\"timestamp\":%ld,", (long)record->timestamp);
-    fprintf(fp, "\"type\":%d,", record->type);
-    fprintf(fp, "\"importance\":%.2f,", record->importance);
-
-    if (record->importance_note) {
-        fprintf(fp, "\"importance_note\":\"%s\",", importance_note_escaped);
-    }
-
-    fprintf(fp, "\"content\":\"%s\",", content_escaped);
-
-    if (record->response) {
-        fprintf(fp, "\"response\":\"%s\",", response_escaped);
-    }
-
-    if (record->context) {
-        fprintf(fp, "\"context\":\"%s\",", context_escaped);
-    }
-
-    fprintf(fp, "\"ci_id\":\"%s\",", record->ci_id ? record->ci_id : "");
-
-    if (record->session_id) {
-        fprintf(fp, "\"session_id\":\"%s\",", record->session_id);
-    }
-
-    if (record->component) {
-        fprintf(fp, "\"component\":\"%s\",", record->component);
-    }
-
-    fprintf(fp, "\"tier\":%d,", record->tier);
-    fprintf(fp, "\"archived\":%s,", record->archived ? "true" : "false");
-
-    /* Thane's Phase 1 fields - access tracking */
-    fprintf(fp, "\"last_accessed\":%ld,", (long)record->last_accessed);
-    fprintf(fp, "\"access_count\":%zu,", record->access_count);
-
-    /* Emotional salience */
-    fprintf(fp, "\"emotion_intensity\":%.2f", record->emotion_intensity);
-    if (record->emotion_type) {
-        char emotion_escaped[KATRA_BUFFER_MEDIUM];
-        katra_json_escape(record->emotion_type, emotion_escaped, sizeof(emotion_escaped));
-        fprintf(fp, ",\"emotion_type\":\"%s\"", emotion_escaped);
-    }
-
-    /* Voluntary preservation */
-    fprintf(fp, ",\"marked_important\":%s", record->marked_important ? "true" : "false");
-    fprintf(fp, ",\"marked_forgettable\":%s", record->marked_forgettable ? "true" : "false");
-
-    /* Phase 2: Connection graph fields */
-    fprintf(fp, ",\"connection_count\":%zu", record->connection_count);
-    fprintf(fp, ",\"graph_centrality\":%.4f", record->graph_centrality);
-    /* Note: connected_memory_ids array serialization would require JSON array */
-    /* Deferred to graph builder module */
-
-    /* Phase 3: Pattern compression fields */
-    if (record->pattern_id) {
-        char pattern_escaped[KATRA_BUFFER_MEDIUM];
-        katra_json_escape(record->pattern_id, pattern_escaped, sizeof(pattern_escaped));
-        fprintf(fp, ",\"pattern_id\":\"%s\"", pattern_escaped);
-    }
-    fprintf(fp, ",\"pattern_frequency\":%zu", record->pattern_frequency);
-    fprintf(fp, ",\"is_pattern_outlier\":%s", record->is_pattern_outlier ? "true" : "false");
-    fprintf(fp, ",\"semantic_similarity\":%.4f", record->semantic_similarity);
-
-    fprintf(fp, "}\n");
 
     return KATRA_SUCCESS;
 }
@@ -247,7 +148,7 @@ int tier1_store(const memory_record_t* record) {
     }
 
     /* Write JSON record */
-    result = write_json_record(fp, record);
+    result = katra_tier1_write_json_record(fp, record);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "tier1_store", "Failed to write record");
         goto cleanup;
