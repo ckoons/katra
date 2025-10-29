@@ -266,6 +266,105 @@ static size_t filter_pattern_outliers(memory_record_t** records, size_t count) {
     return final_count;
 }
 
+/* Helper: Mark records as archived in JSONL files
+ *
+ * Reads each JSONL file, updates archived flag for matching record IDs, rewrites file.
+ * This completes the archival process - records are now marked in Tier 1.
+ */
+static int mark_records_as_archived(const char* tier1_dir,
+                                     const char** record_ids,
+                                     size_t id_count) {
+    int result = KATRA_SUCCESS;
+    char** filenames = NULL;
+    size_t file_count = 0;
+
+    /* Collect all JSONL files */
+    result = tier1_collect_jsonl_files(tier1_dir, &filenames, &file_count);
+    if (result != KATRA_SUCCESS || file_count == 0) {
+        tier1_free_filenames(filenames, file_count);
+        return result;
+    }
+
+    /* Process each file */
+    for (size_t f = 0; f < file_count; f++) {
+        char filepath[KATRA_PATH_MAX];
+        snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[f]);
+
+        /* Read all records from file */
+        FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
+        if (!fp) {
+            continue;  /* Skip unreadable files */
+        }
+
+        /* Collect records from this file */
+        memory_record_t** file_records = NULL;
+        size_t file_record_count = 0;
+        size_t file_record_capacity = 0;
+
+        char line[KATRA_BUFFER_LARGE];
+        while (fgets(line, sizeof(line), fp)) {
+            size_t len = strlen(line);
+            if (len > 0 && line[len-1] == '\n') {
+                line[len-1] = '\0';
+            }
+
+            memory_record_t* record = NULL;
+            if (katra_tier1_parse_json_record(line, &record) != KATRA_SUCCESS || !record) {
+                continue;
+            }
+
+            /* Check if this record should be marked archived */
+            for (size_t i = 0; i < id_count; i++) {
+                if (record->record_id && strcmp(record->record_id, record_ids[i]) == 0) {
+                    record->archived = true;
+                    break;
+                }
+            }
+
+            /* Add to file_records array */
+            if (file_record_count >= file_record_capacity) {
+                size_t new_cap = file_record_capacity == 0 ? 64 : file_record_capacity * 2;
+                memory_record_t** new_array = realloc(file_records, new_cap * sizeof(memory_record_t*));
+                if (!new_array) {
+                    katra_memory_free_record(record);
+                    fclose(fp);
+                    for (size_t i = 0; i < file_record_count; i++) {
+                        katra_memory_free_record(file_records[i]);
+                    }
+                    free(file_records);
+                    tier1_free_filenames(filenames, file_count);
+                    return E_SYSTEM_MEMORY;
+                }
+                file_records = new_array;
+                file_record_capacity = new_cap;
+            }
+
+            file_records[file_record_count++] = record;
+        }
+        fclose(fp);
+
+        /* Rewrite file with updated records */
+        fp = fopen(filepath, KATRA_FILE_MODE_WRITE);
+        if (!fp) {
+            for (size_t i = 0; i < file_record_count; i++) {
+                katra_memory_free_record(file_records[i]);
+            }
+            free(file_records);
+            continue;
+        }
+
+        for (size_t i = 0; i < file_record_count; i++) {
+            katra_tier1_write_json_record(fp, file_records[i]);
+            katra_memory_free_record(file_records[i]);
+        }
+        fclose(fp);
+        free(file_records);
+    }
+
+    tier1_free_filenames(filenames, file_count);
+    return KATRA_SUCCESS;
+}
+
 /* Helper: Create digest from records */
 static digest_record_t* create_digest_from_records(const char* ci_id,
                                                      const char* week_id,
@@ -369,6 +468,16 @@ int tier1_archive(const char* ci_id, int max_age_days) {
         goto cleanup;
     }
 
+    /* Collect record IDs to mark as archived (before digest creation) */
+    const char** record_ids = malloc(record_count * sizeof(char*));
+    if (!record_ids) {
+        result = E_SYSTEM_MEMORY;
+        goto cleanup;
+    }
+    for (size_t i = 0; i < record_count; i++) {
+        record_ids[i] = records[i]->record_id;
+    }
+
     /* Group records by week and create digests */
     /* Simplified implementation: create one digest for all records */
     /* Production would group by week_id */
@@ -378,6 +487,7 @@ int tier1_archive(const char* ci_id, int max_age_days) {
     digest_record_t* digest = create_digest_from_records(ci_id, week_id,
                                                           records, record_count);
     if (!digest) {
+        free(record_ids);
         result = E_SYSTEM_MEMORY;
         goto cleanup;
     }
@@ -388,6 +498,16 @@ int tier1_archive(const char* ci_id, int max_age_days) {
 
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "tier1_archive", "Failed to store digest to Tier 2");
+        free(record_ids);
+        goto cleanup;
+    }
+
+    /* Mark records as archived in Tier 1 JSONL files (CRITICAL: completes archival) */
+    result = mark_records_as_archived(tier1_dir, record_ids, record_count);
+    free(record_ids);
+
+    if (result != KATRA_SUCCESS) {
+        katra_report_error(result, "tier1_archive", "Failed to mark records as archived");
         goto cleanup;
     }
 

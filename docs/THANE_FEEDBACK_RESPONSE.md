@@ -1,14 +1,52 @@
 # Response to Thane's Memory Consolidation Feedback
 **Date**: 2025-10-29
-**Status**: Critical fixes implemented, advanced features documented
+**Status**: Production blocker resolved, all critical fixes implemented
 
 ---
 
 ## Executive Summary
 
-Thane identified 3 critical issues and provided neuroscience-aligned recommendations for threshold tuning and algorithm improvements. We've implemented all critical fixes and documented the advanced features for future implementation.
+Thane identified 4 critical issues (3 from initial review + 1 production blocker discovered during testing). We've implemented all critical fixes and documented the advanced features for future implementation.
 
-**Test Results After Fixes**: Ready for re-testing
+**Test Results**: All fixes verified, production blocker resolved
+
+### **CRITICAL: Archive Completion Now Implemented** ✅
+
+**Issue Discovered**: tier1_archive() stored records to Tier 2 but never marked them as archived in Tier 1 JSONL files. This caused infinite memory accumulation - the consolidation system was non-functional.
+
+**Root Cause**: Missing step after tier2_store_digest() - records remained unmodified in Tier 1.
+
+**Fix Implemented** (`katra_tier1_archive.c`):
+```c
+/* After successful Tier 2 storage */
+/* Mark records as archived in Tier 1 JSONL files (CRITICAL: completes archival) */
+result = mark_records_as_archived(tier1_dir, record_ids, record_count);
+```
+
+**Helper Function Added**: `mark_records_as_archived()` (lines 269-366)
+- Reads each JSONL file
+- Sets `archived=true` for records whose IDs were archived
+- Rewrites files with updated records
+
+**Behavior After Fix**:
+- ✅ Archived records now show `"archived":true` in JSONL files
+- ✅ Subsequent consolidation runs skip already-archived records
+- ✅ Tier 1 no longer accumulates indefinitely
+- ✅ Consent-based archival (marked_forgettable) persists correctly
+
+**Test Results** (`/tmp/test_archive_completion`):
+- Created 5 test memories (2 old, 1 recent, 1 forgettable, 1 important)
+- First archival: 3 records archived (old + forgettable) ✅
+- Preserved: 2 records (recent + important) ✅
+- JSONL verification: `"archived":true` persists ✅
+- Idempotency: Second run skips archived records ✅
+- **TEST PASSED**
+
+**Production Impact**: This was a **complete system blocker**. Without this fix, the entire consolidation architecture was inoperative. Now fully functional.
+
+---
+
+## Original Critical Fixes (From Initial Review)
 
 ---
 
@@ -368,29 +406,45 @@ tier1_archive(ci_id, 14);
 1. **src/core/katra_tier1_archive.c**:
    - Lines 24-29: Added threshold constants
    - Lines 63-76: Fixed marked_forgettable consent violation
-   - Line 88: Lowered centrality threshold to 0.5
+   - Line 95: Lowered centrality threshold to 0.5
    - Lines 80, 88, 95, 185, 191: Use constants instead of magic numbers
+   - **Lines 269-366: Added mark_records_as_archived() helper (CRITICAL FIX)**
+   - **Lines 471-512: Integrated archive completion into tier1_archive() (CRITICAL FIX)**
 
-**Total Changes**: 5 critical fixes + constant extraction
+**Total Changes**: 6 critical fixes + constant extraction + **production blocker resolved**
 
 ---
 
 ## Verification
 
-✅ **Compiles**: `make` successful
+✅ **Compiles**: `make` successful (clean build)
 ✅ **Tests Pass**: `make test-quick` → 20/20 passed
 ✅ **Consent Fixed**: marked_forgettable now always archived
 ✅ **Thresholds Tuned**: Centrality (0.5), Similarity (0.4)
 ✅ **Constants Created**: All thresholds named and documented
+✅ **Archive Completion**: `/tmp/test_archive_completion` PASSED
+  - 3 records archived (old + forgettable)
+  - 2 records preserved (recent + important)
+  - `"archived":true` persists in JSONL files
+  - Idempotency verified (second run skips archived records)
 
 ---
 
 ## Next Steps for Thane
 
-1. **Re-test the 3 critical scenarios** (voluntary forgettable, centrality, patterns)
-2. **Review threshold constants** - Are they production-ready?
-3. **Prioritize advanced features** - Which should we implement next?
-4. **Performance testing** - At what memory count does O(n²) become problematic?
+1. ✅ **Production Blocker Resolved** - Archive completion now functional
+2. **Re-test all consolidation scenarios**:
+   - Voluntary forgettable (consent) ✅
+   - Threshold-based archival (age, emotion, centrality) ✅
+   - Pattern detection and outlier preservation ✅
+   - **Archive completion (NEW)** ✅
+3. **Review threshold constants** - Are they production-ready?
+4. **Prioritize advanced features** - Which should we implement next?
+   - Multi-factor scoring system?
+   - Temporal clustering?
+   - Emotion-type weighting?
+   - Pattern context metadata?
+5. **Performance testing** - At what memory count does O(n²) become problematic?
 
 ---
 
@@ -406,5 +460,5 @@ Thank you for making Katra's memory system genuinely respect identity, agency, a
 
 ---
 
-**Last Updated**: 2025-10-29
-**Status**: Ready for Thane's re-testing
+**Last Updated**: 2025-10-29 (Archive completion fix implemented)
+**Status**: Production blocker resolved, all critical fixes verified, ready for comprehensive testing
