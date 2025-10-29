@@ -62,6 +62,7 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_tier1.o \
              $(BUILD_DIR)/katra_tier1_json.o \
              $(BUILD_DIR)/katra_tier1_archive.o \
+             $(BUILD_DIR)/katra_tier1_pattern.o \
              $(BUILD_DIR)/katra_tier2.o \
              $(BUILD_DIR)/katra_tier2_json.o \
              $(BUILD_DIR)/katra_tier2_index.o \
