@@ -21,6 +21,13 @@ extern int tier1_get_dir(const char* ci_id, char* buffer, size_t size);
 extern int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count);
 extern void tier1_free_filenames(char** filenames, size_t count);
 
+/* Thane's consolidation thresholds (neuroscience-aligned) */
+#define RECENT_ACCESS_DAYS 7              /* Keep if accessed < 7 days ago */
+#define HIGH_EMOTION_THRESHOLD 0.7f       /* High arousal/intensity (0.7+ = flashbulb) */
+#define HIGH_CENTRALITY_THRESHOLD 0.5f    /* Graph centrality (0.5 = moderate connectors) */
+#define SIMILARITY_THRESHOLD 0.4f         /* 40% keyword overlap = similar (was 0.3) */
+#define MIN_PATTERN_SIZE 3                /* Need 3+ memories to form pattern */
+
 /* Helper: Collect archivable records from a file */
 static int collect_archivable_from_file(const char* filepath, time_t cutoff,
                                          time_t now,
@@ -61,14 +68,16 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
         }
 
         /* ALWAYS prioritize marked_forgettable (voluntary disposal) */
+        /* This is a CONSENT requirement - bypass ALL other preservation checks */
         if (record->marked_forgettable) {
-            LOG_DEBUG("Archiving marked_forgettable memory: %.50s...", record->content);
-            /* Skip age check - archive immediately */
+            LOG_DEBUG("Archiving marked_forgettable (user consent): %.50s...", record->content);
+            /* Add to archive array immediately - skip all other checks */
+            /* (will be added to array below) */
         }
         /* Access-based decay: Don't archive recently accessed memories */
         else if (record->last_accessed > 0) {
             time_t days_since_accessed = (now - record->last_accessed) / (24 * 3600);
-            if (days_since_accessed < 7) {  /* Keep if accessed within a week */
+            if (days_since_accessed < RECENT_ACCESS_DAYS) {
                 LOG_DEBUG("Preserving recently accessed memory (%.0f days): %.50s...",
                          (double)days_since_accessed, record->content);
                 katra_memory_free_record(record);
@@ -76,14 +85,14 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
             }
         }
         /* Emotional salience: Keep high-intensity emotions longer */
-        else if (record->emotion_intensity >= 0.7f) {  /* High arousal threshold */
+        else if (record->emotion_intensity >= HIGH_EMOTION_THRESHOLD) {
             LOG_DEBUG("Preserving emotionally salient memory (%.2f): %.50s...",
                      record->emotion_intensity, record->content);
             katra_memory_free_record(record);
             continue;
         }
         /* Graph centrality: Keep highly connected memories (Thane's Phase 2) */
-        else if (record->graph_centrality >= 0.6f) {  /* High centrality threshold */
+        else if (record->graph_centrality >= HIGH_CENTRALITY_THRESHOLD) {
             LOG_DEBUG("Preserving central memory (centrality=%.2f): %.50s...",
                      record->graph_centrality, record->content);
             katra_memory_free_record(record);
@@ -157,9 +166,6 @@ static float calculate_similarity(const char* content1, const char* content2) {
  * Groups similar memories, marks patterns, preserves outliers.
  */
 static void detect_patterns(memory_record_t** records, size_t count) {
-    const float similarity_threshold = 0.3f;  /* 30% similarity = pattern */
-    const size_t min_pattern_size = 3;        /* Need 3+ to be a pattern */
-
     for (size_t i = 0; i < count; i++) {
         if (records[i]->pattern_id) {
             continue;  /* Already assigned to pattern */
@@ -176,13 +182,13 @@ static void detect_patterns(memory_record_t** records, size_t count) {
             }
 
             float similarity = calculate_similarity(records[i]->content, records[j]->content);
-            if (similarity >= similarity_threshold) {
+            if (similarity >= SIMILARITY_THRESHOLD) {
                 pattern_members[member_count++] = j;
             }
         }
 
         /* If enough similar memories, create pattern */
-        if (member_count >= min_pattern_size) {
+        if (member_count >= MIN_PATTERN_SIZE) {
             /* Generate pattern ID */
             char pattern_id[64];
             snprintf(pattern_id, sizeof(pattern_id), "pattern_%zu_%ld",
