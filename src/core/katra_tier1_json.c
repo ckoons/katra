@@ -140,6 +140,41 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
         rec->archived = false;
     }
 
+    /* Extract Thane's Phase 1 fields - access tracking */
+    long last_accessed_long = 0;
+    if (katra_json_get_long(line, "last_accessed", &last_accessed_long) == KATRA_SUCCESS) {
+        rec->last_accessed = (time_t)last_accessed_long;
+    } else {
+        rec->last_accessed = 0;
+    }
+
+    int access_count_int = 0;
+    if (katra_json_get_int(line, "access_count", &access_count_int) == KATRA_SUCCESS) {
+        rec->access_count = (size_t)access_count_int;
+    } else {
+        rec->access_count = 0;
+    }
+
+    /* Extract emotional salience fields */
+    if (katra_json_get_float(line, "emotion_intensity", &rec->emotion_intensity) != KATRA_SUCCESS) {
+        rec->emotion_intensity = 0.0;
+    }
+
+    result = katra_json_extract_string_alloc(line, "emotion_type", &rec->emotion_type,
+                                             katra_tier1_json_unescape);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
+    /* Extract voluntary preservation fields */
+    if (katra_json_get_bool(line, "marked_important", &rec->marked_important) != KATRA_SUCCESS) {
+        rec->marked_important = false;
+    }
+
+    if (katra_json_get_bool(line, "marked_forgettable", &rec->marked_forgettable) != KATRA_SUCCESS) {
+        rec->marked_forgettable = false;
+    }
+
     *record = rec;
     return KATRA_SUCCESS;
 

@@ -62,6 +62,14 @@ typedef struct {
 
     katra_tier_t tier;         /* Which tier this memory is stored in */
     bool archived;             /* Has this been moved to higher tier? */
+
+    /* Thane's recommendations - Phase 1: Context-aware consolidation */
+    time_t last_accessed;      /* Access-based decay: when last queried */
+    size_t access_count;       /* Access-based decay: query frequency */
+    float emotion_intensity;   /* Emotional salience: 0.0-1.0 */
+    char* emotion_type;        /* Emotional salience: joy/surprise/confusion */
+    bool marked_important;     /* Voluntary consent: "remember forever" */
+    bool marked_forgettable;   /* Voluntary consent: "okay to forget" */
 } memory_record_t;
 
 /* Memory query parameters */

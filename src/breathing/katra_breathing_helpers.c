@@ -18,6 +18,7 @@
 #include "katra_log.h"
 #include "katra_breathing_internal.h"
 #include "katra_breathing_helpers.h"
+#include "katra_experience.h"
 
 /* ============================================================================
  * MEMORY FORMATION HELPERS
@@ -68,6 +69,23 @@ int breathing_store_typed_memory(memory_type_t type,
             katra_memory_free_record(record);
             return E_SYSTEM_MEMORY;
         }
+    }
+
+    /* Detect emotion from content (Thane's Phase 1 - emotional salience) */
+    emotional_tag_t emotion;
+    int emotion_result = katra_detect_emotion(content, &emotion);
+    if (emotion_result == KATRA_SUCCESS) {
+        /* Map emotional_tag_t to memory_record_t fields */
+        record->emotion_intensity = emotion.arousal;  /* Arousal = intensity (0-1) */
+        if (emotion.emotion[0] != '\0') {
+            record->emotion_type = strdup(emotion.emotion);
+            if (!record->emotion_type) {
+                katra_memory_free_record(record);
+                return E_SYSTEM_MEMORY;
+            }
+        }
+        LOG_DEBUG("Detected emotion for memory: %s (intensity=%.2f)",
+                 emotion.emotion, emotion.arousal);
     }
 
     /* Attach session ID */

@@ -113,6 +113,28 @@ int decide(const char* decision, const char* reasoning);
 int notice_pattern(const char* pattern);
 
 /**
+ * remember_forever() - Mark memory as critical preservation (Thane's Phase 1)
+ *
+ * Gives CI explicit control: "I want to remember this forever."
+ * Sets marked_important flag for consolidation priority.
+ *
+ * Example:
+ *   remember_forever("Casey taught me about goto cleanup patterns");
+ */
+int remember_forever(const char* thought);
+
+/**
+ * ok_to_forget() - Mark memory as disposable (Thane's Phase 1)
+ *
+ * Gives CI agency: "This is okay to forget if needed."
+ * Sets marked_forgettable flag for consolidation depriority.
+ *
+ * Example:
+ *   ok_to_forget("Typo in comment - fixed it");
+ */
+int ok_to_forget(const char* thought);
+
+/**
  * remember_semantic() - Store with natural language importance
  *
  * Accepts semantic importance strings like:

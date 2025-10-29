@@ -193,3 +193,103 @@ int notice_pattern(const char* pattern) {
         "notice_pattern"
     );
 }
+
+int remember_forever(const char* thought) {
+    const char* ci_id = breathing_get_ci_id();
+
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "remember_forever",
+                          "Breathing layer not initialized - call breathe_init()");
+        return E_INVALID_STATE;
+    }
+
+    if (!thought) {
+        katra_report_error(E_INPUT_NULL, "remember_forever", "thought is NULL");
+        return E_INPUT_NULL;
+    }
+
+    LOG_DEBUG("Marking for permanent preservation: %s", thought);
+
+    /* Create memory record with CRITICAL importance */
+    memory_record_t* record = katra_memory_create_record(
+        ci_id,
+        MEMORY_TYPE_EXPERIENCE,
+        thought,
+        MEMORY_IMPORTANCE_CRITICAL  /* User requested preservation */
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "remember_forever", "Failed to create record");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Set voluntary preservation flag (Thane's Phase 1) */
+    record->marked_important = true;
+
+    /* Attach session */
+    int result = breathing_attach_session(record);
+    if (result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return result;
+    }
+
+    /* Store memory */
+    result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, WHY_CRITICAL);
+    }
+
+    return result;
+}
+
+int ok_to_forget(const char* thought) {
+    const char* ci_id = breathing_get_ci_id();
+
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "ok_to_forget",
+                          "Breathing layer not initialized - call breathe_init()");
+        return E_INVALID_STATE;
+    }
+
+    if (!thought) {
+        katra_report_error(E_INPUT_NULL, "ok_to_forget", "thought is NULL");
+        return E_INPUT_NULL;
+    }
+
+    LOG_DEBUG("Marking as forgettable: %s", thought);
+
+    /* Create memory record with LOW importance */
+    memory_record_t* record = katra_memory_create_record(
+        ci_id,
+        MEMORY_TYPE_EXPERIENCE,
+        thought,
+        MEMORY_IMPORTANCE_LOW  /* User indicated disposable */
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "ok_to_forget", "Failed to create record");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Set voluntary preservation flag (Thane's Phase 1) */
+    record->marked_forgettable = true;
+
+    /* Attach session */
+    int result = breathing_attach_session(record);
+    if (result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return result;
+    }
+
+    /* Store memory */
+    result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, WHY_TRIVIAL);
+    }
+
+    return result;
+}

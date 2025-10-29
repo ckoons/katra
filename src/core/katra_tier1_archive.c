@@ -23,6 +23,7 @@ extern void tier1_free_filenames(char** filenames, size_t count);
 
 /* Helper: Collect archivable records from a file */
 static int collect_archivable_from_file(const char* filepath, time_t cutoff,
+                                         time_t now,
                                          memory_record_t*** records,
                                          size_t* count, size_t* capacity) {
     FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
@@ -44,8 +45,45 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
             continue;
         }
 
-        /* Check if old enough to archive */
-        if (record->timestamp >= cutoff || record->archived) {
+        /* Check if already archived */
+        if (record->archived) {
+            katra_memory_free_record(record);
+            continue;
+        }
+
+        /* Thane's Phase 1: Context-aware consolidation heuristics */
+
+        /* NEVER archive marked_important (voluntary preservation) */
+        if (record->marked_important) {
+            LOG_DEBUG("Preserving marked_important memory: %.50s...", record->content);
+            katra_memory_free_record(record);
+            continue;
+        }
+
+        /* ALWAYS prioritize marked_forgettable (voluntary disposal) */
+        if (record->marked_forgettable) {
+            LOG_DEBUG("Archiving marked_forgettable memory: %.50s...", record->content);
+            /* Skip age check - archive immediately */
+        }
+        /* Access-based decay: Don't archive recently accessed memories */
+        else if (record->last_accessed > 0) {
+            time_t days_since_accessed = (now - record->last_accessed) / (24 * 3600);
+            if (days_since_accessed < 7) {  /* Keep if accessed within a week */
+                LOG_DEBUG("Preserving recently accessed memory (%.0f days): %.50s...",
+                         (double)days_since_accessed, record->content);
+                katra_memory_free_record(record);
+                continue;
+            }
+        }
+        /* Emotional salience: Keep high-intensity emotions longer */
+        else if (record->emotion_intensity >= 0.7f) {  /* High arousal threshold */
+            LOG_DEBUG("Preserving emotionally salient memory (%.2f): %.50s...",
+                     record->emotion_intensity, record->content);
+            katra_memory_free_record(record);
+            continue;
+        }
+        /* Age-based: Standard archival for old memories */
+        else if (record->timestamp >= cutoff) {
             katra_memory_free_record(record);
             continue;
         }
@@ -164,7 +202,7 @@ int tier1_archive(const char* ci_id, int max_age_days) {
     for (size_t f = 0; f < file_count; f++) {
         char filepath[KATRA_PATH_MAX];
         snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[f]);
-        result = collect_archivable_from_file(filepath, cutoff, &records,
+        result = collect_archivable_from_file(filepath, cutoff, now, &records,
                                                &record_count, &record_capacity);
         if (result != KATRA_SUCCESS) {
             goto cleanup;

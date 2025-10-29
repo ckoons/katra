@@ -128,7 +128,24 @@ static int write_json_record(FILE* fp, const memory_record_t* record) {
     }
 
     fprintf(fp, "\"tier\":%d,", record->tier);
-    fprintf(fp, "\"archived\":%s", record->archived ? "true" : "false");
+    fprintf(fp, "\"archived\":%s,", record->archived ? "true" : "false");
+
+    /* Thane's Phase 1 fields - access tracking */
+    fprintf(fp, "\"last_accessed\":%ld,", (long)record->last_accessed);
+    fprintf(fp, "\"access_count\":%zu,", record->access_count);
+
+    /* Emotional salience */
+    fprintf(fp, "\"emotion_intensity\":%.2f", record->emotion_intensity);
+    if (record->emotion_type) {
+        char emotion_escaped[KATRA_BUFFER_MEDIUM];
+        katra_json_escape(record->emotion_type, emotion_escaped, sizeof(emotion_escaped));
+        fprintf(fp, ",\"emotion_type\":\"%s\"", emotion_escaped);
+    }
+
+    /* Voluntary preservation */
+    fprintf(fp, ",\"marked_important\":%s", record->marked_important ? "true" : "false");
+    fprintf(fp, ",\"marked_forgettable\":%s", record->marked_forgettable ? "true" : "false");
+
     fprintf(fp, "}\n");
 
     return KATRA_SUCCESS;

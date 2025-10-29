@@ -218,6 +218,15 @@ int katra_memory_query(const memory_query_t* query,
     /* TODO: Query Tier 2 if requested - Phase 2.2 */
     /* TODO: Query Tier 3 if requested - Phase 2.3 */
 
+    /* Update access tracking for all retrieved memories (Thane's reconsolidation) */
+    time_t now = time(NULL);
+    for (size_t i = 0; i < *count; i++) {
+        if ((*results)[i]) {
+            (*results)[i]->last_accessed = now;
+            (*results)[i]->access_count++;
+        }
+    }
+
     LOG_DEBUG("Query returned %zu results", *count);
     return KATRA_SUCCESS;
 }
@@ -344,6 +353,14 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     record->tier = KATRA_TIER1;  /* Default to Tier 1 */
     record->archived = false;
 
+    /* Initialize Thane's Phase 1 fields */
+    record->last_accessed = 0;          /* Not yet accessed */
+    record->access_count = 0;           /* No accesses yet */
+    record->emotion_intensity = 0.0;    /* No emotion detected yet */
+    record->emotion_type = NULL;        /* No emotion type */
+    record->marked_important = false;   /* Not marked important */
+    record->marked_forgettable = false; /* Not marked forgettable */
+
     return record;
 }
 
@@ -361,6 +378,7 @@ void katra_memory_free_record(memory_record_t* record) {
     free(record->session_id);
     free(record->component);
     free(record->importance_note);
+    free(record->emotion_type);
 
     free(record);
 }
