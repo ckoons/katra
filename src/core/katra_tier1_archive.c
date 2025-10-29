@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 /* Project includes */
 #include "katra_tier1.h"
@@ -27,6 +28,7 @@ extern void tier1_free_filenames(char** filenames, size_t count);
 #define HIGH_CENTRALITY_THRESHOLD 0.5f    /* Graph centrality (0.5 = moderate connectors) */
 #define SIMILARITY_THRESHOLD 0.4f         /* 40% keyword overlap = similar (was 0.3) */
 #define MIN_PATTERN_SIZE 3                /* Need 3+ memories to form pattern */
+#define MIN_KEYWORD_LENGTH 4              /* Minimum keyword length for pattern matching */
 
 /* Helper: Collect archivable records from a file */
 static int collect_archivable_from_file(const char* filepath, time_t cutoff,
@@ -124,9 +126,124 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
     return KATRA_SUCCESS;
 }
 
+/* Helper: Free keyword array (Phase 3) */
+static void free_keywords_pattern(char** keywords, size_t count) {
+    if (!keywords) {
+        return;
+    }
+    for (size_t i = 0; i < count; i++) {
+        free(keywords[i]);
+    }
+    free(keywords);
+}
+
+/* Helper: Check if word is a common stop word (Phase 3) */
+static bool is_stop_word_pattern(const char* word) {
+    static const char* stop_words[] = {
+        "the", "this", "that", "these", "those",
+        "with", "from", "have", "has", "been",
+        "will", "would", "could", "should",
+        "what", "when", "where", "which", "while",
+        "your", "their", "there", "here",
+        NULL
+    };
+
+    for (int i = 0; stop_words[i] != NULL; i++) {
+        if (strcmp(word, stop_words[i]) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/* Helper: Extract keywords from text (Phase 3)
+ *
+ * Same approach as Phase 2 connection building:
+ * - Split on whitespace and punctuation
+ * - Keep words >= MIN_KEYWORD_LENGTH
+ * - Convert to lowercase
+ * - Remove stop words
+ */
+static int extract_keywords_pattern(const char* text, char*** keywords, size_t* count) {
+    if (!text || !keywords || !count) {
+        return E_INPUT_NULL;
+    }
+
+    *keywords = NULL;
+    *count = 0;
+
+    /* Allocate space for keywords (max: one per 5 characters) */
+    size_t text_len = strlen(text);
+    size_t max_keywords = (text_len / MIN_KEYWORD_LENGTH) + 1;
+    char** kw_array = calloc(max_keywords, sizeof(char*));
+    if (!kw_array) {
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Copy text for tokenization */
+    char* text_copy = strdup(text);
+    if (!text_copy) {
+        free(kw_array);
+        return E_SYSTEM_MEMORY;
+    }
+
+    size_t kw_count = 0;
+    char* token = strtok(text_copy, " \t\n\r.,;:!?()[]{}\"'");
+
+    while (token && kw_count < max_keywords) {
+        /* Check length */
+        if (strlen(token) < MIN_KEYWORD_LENGTH) {
+            token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+            continue;
+        }
+
+        /* Convert to lowercase */
+        char lowercase[KATRA_BUFFER_MEDIUM];
+        size_t i;
+        for (i = 0; i < strlen(token) && i < sizeof(lowercase) - 1; i++) {
+            lowercase[i] = tolower((unsigned char)token[i]);
+        }
+        lowercase[i] = '\0';
+
+        /* Skip stop words */
+        if (is_stop_word_pattern(lowercase)) {
+            token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+            continue;
+        }
+
+        /* Skip duplicates */
+        bool duplicate = false;
+        for (size_t j = 0; j < kw_count; j++) {
+            if (strcmp(kw_array[j], lowercase) == 0) {
+                duplicate = true;
+                break;
+            }
+        }
+
+        if (!duplicate) {
+            kw_array[kw_count] = strdup(lowercase);
+            if (!kw_array[kw_count]) {
+                free_keywords_pattern(kw_array, kw_count);
+                free(text_copy);
+                return E_SYSTEM_MEMORY;
+            }
+            kw_count++;
+        }
+
+        token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+    }
+
+    free(text_copy);
+
+    *keywords = kw_array;
+    *count = kw_count;
+    return KATRA_SUCCESS;
+}
+
 /* Helper: Calculate semantic similarity between two memories (Phase 3)
  *
- * Simple keyword-based similarity for pattern detection.
+ * Enhanced keyword-based similarity for pattern detection.
+ * Uses same approach as Phase 2 connection building for consistency.
  * Returns score 0.0-1.0 based on shared keywords.
  */
 static float calculate_similarity(const char* content1, const char* content2) {
@@ -134,30 +251,39 @@ static float calculate_similarity(const char* content1, const char* content2) {
         return 0.0f;
     }
 
-    /* Convert to lowercase and count shared words (simplified) */
-    size_t shared = 0;
-    size_t total = 0;
+    /* Extract keywords from both memories */
+    char** keywords1 = NULL;
+    size_t count1 = 0;
+    char** keywords2 = NULL;
+    size_t count2 = 0;
 
-    /* Very simple keyword matching - count character overlap */
-    size_t len1 = strlen(content1);
-    size_t len2 = strlen(content2);
-
-    if (len1 == 0 || len2 == 0) {
+    if (extract_keywords_pattern(content1, &keywords1, &count1) != KATRA_SUCCESS || count1 == 0) {
         return 0.0f;
     }
 
-    /* Count matching substrings (3+ chars) */
-    for (size_t i = 0; i < len1 - 2; i++) {
-        for (size_t j = 0; j < len2 - 2; j++) {
-            if (strncasecmp(content1 + i, content2 + j, 3) == 0) {
+    if (extract_keywords_pattern(content2, &keywords2, &count2) != KATRA_SUCCESS || count2 == 0) {
+        free_keywords_pattern(keywords1, count1);
+        return 0.0f;
+    }
+
+    /* Count shared keywords */
+    size_t shared = 0;
+    for (size_t i = 0; i < count1; i++) {
+        for (size_t j = 0; j < count2; j++) {
+            if (strcmp(keywords1[i], keywords2[j]) == 0) {
                 shared++;
                 break;
             }
         }
-        total++;
     }
 
-    return total > 0 ? (float)shared / (float)total : 0.0f;
+    free_keywords_pattern(keywords1, count1);
+    free_keywords_pattern(keywords2, count2);
+
+    /* Calculate similarity: shared / max(count1, count2)
+     * This gives score 0.0-1.0 where 1.0 = all keywords match */
+    size_t max_count = count1 > count2 ? count1 : count2;
+    return max_count > 0 ? (float)shared / (float)max_count : 0.0f;
 }
 
 /* Helper: Detect patterns in memory set (Phase 3)
