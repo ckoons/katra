@@ -121,6 +121,7 @@ graph_node_t* katra_graph_get_or_create_node(graph_store_t* store,
     node->outgoing_count = 0;
     node->incoming_count = 0;
     node->last_accessed = time(NULL);
+    node->centrality = 0.0f;  /* Thane's Phase 2 - calculated later */
 
     /* Add to store */
     store->nodes[store->node_count] = node;
@@ -398,6 +399,86 @@ static void free_edge_list(graph_edge_t* head) {
         free(current);
         current = next;
     }
+}
+
+/* Calculate graph centrality for all nodes (simplified PageRank)
+ *
+ * Thane's Phase 2: "A memory referenced by 10 other memories is more central
+ * to your identity than an isolated memory with the same importance score."
+ *
+ * Algorithm: Iterative centrality calculation based on incoming connections
+ * - Nodes with more incoming edges get higher centrality
+ * - Nodes referenced by high-centrality nodes get higher centrality
+ * - Normalized to 0.0-1.0 range
+ */
+int katra_graph_calculate_centrality(graph_store_t* store) {
+    if (!store || store->node_count == 0) {
+        return KATRA_SUCCESS;
+    }
+
+    const int iterations = 10;      /* PageRank iterations */
+    const float damping = 0.85f;    /* Damping factor */
+
+    /* Initialize all nodes with equal centrality */
+    float initial_score = 1.0f / store->node_count;
+    for (size_t i = 0; i < store->node_count; i++) {
+        store->nodes[i]->centrality = initial_score;
+    }
+
+    /* Iterate to convergence */
+    for (int iter = 0; iter < iterations; iter++) {
+        /* Calculate new centrality scores */
+        for (size_t i = 0; i < store->node_count; i++) {
+            graph_node_t* node = store->nodes[i];
+            float new_score = (1.0f - damping) / store->node_count;
+
+            /* Add contributions from incoming edges */
+            graph_edge_t* incoming = node->incoming;
+            while (incoming) {
+                /* Find source node */
+                graph_node_t* source = find_node(store, incoming->from_id);
+                if (source && source->outgoing_count > 0) {
+                    new_score += damping * (source->centrality / source->outgoing_count) * incoming->strength;
+                }
+                incoming = incoming->next;
+            }
+
+            node->centrality = new_score;
+        }
+    }
+
+    /* Normalize to 0.0-1.0 range */
+    float max_centrality = 0.0f;
+    for (size_t i = 0; i < store->node_count; i++) {
+        if (store->nodes[i]->centrality > max_centrality) {
+            max_centrality = store->nodes[i]->centrality;
+        }
+    }
+
+    if (max_centrality > 0.0f) {
+        for (size_t i = 0; i < store->node_count; i++) {
+            store->nodes[i]->centrality /= max_centrality;
+        }
+    }
+
+    LOG_INFO("Calculated centrality for %zu nodes (max: %.4f)",
+             store->node_count, max_centrality);
+
+    return KATRA_SUCCESS;
+}
+
+/* Get centrality score for a specific memory */
+float katra_graph_get_centrality(graph_store_t* store, const char* record_id) {
+    if (!store || !record_id) {
+        return 0.0f;
+    }
+
+    graph_node_t* node = find_node(store, record_id);
+    if (!node) {
+        return 0.0f;
+    }
+
+    return node->centrality;
 }
 
 /* Cleanup graph store */

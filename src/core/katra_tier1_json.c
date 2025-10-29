@@ -175,6 +175,22 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
         rec->marked_forgettable = false;
     }
 
+    /* Extract Phase 2 fields - connection graph */
+    int connection_count_int = 0;
+    if (katra_json_get_int(line, "connection_count", &connection_count_int) == KATRA_SUCCESS) {
+        rec->connection_count = (size_t)connection_count_int;
+    } else {
+        rec->connection_count = 0;
+    }
+
+    /* Note: connected_memory_ids array parsing would require JSON array parsing */
+    /* For now, initialize to NULL (will be populated by graph builder) */
+    rec->connected_memory_ids = NULL;
+
+    if (katra_json_get_float(line, "graph_centrality", &rec->graph_centrality) != KATRA_SUCCESS) {
+        rec->graph_centrality = 0.0;
+    }
+
     *record = rec;
     return KATRA_SUCCESS;
 

@@ -361,6 +361,11 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     record->marked_important = false;   /* Not marked important */
     record->marked_forgettable = false; /* Not marked forgettable */
 
+    /* Initialize Thane's Phase 2 fields */
+    record->connected_memory_ids = NULL; /* No connections yet */
+    record->connection_count = 0;        /* No connections */
+    record->graph_centrality = 0.0;      /* Not yet calculated */
+
     return record;
 }
 
@@ -379,6 +384,14 @@ void katra_memory_free_record(memory_record_t* record) {
     free(record->component);
     free(record->importance_note);
     free(record->emotion_type);
+
+    /* Free Phase 2 connection array */
+    if (record->connected_memory_ids) {
+        for (size_t i = 0; i < record->connection_count; i++) {
+            free(record->connected_memory_ids[i]);
+        }
+        free(record->connected_memory_ids);
+    }
 
     free(record);
 }

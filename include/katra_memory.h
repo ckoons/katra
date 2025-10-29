@@ -70,6 +70,11 @@ typedef struct {
     char* emotion_type;        /* Emotional salience: joy/surprise/confusion */
     bool marked_important;     /* Voluntary consent: "remember forever" */
     bool marked_forgettable;   /* Voluntary consent: "okay to forget" */
+
+    /* Thane's recommendations - Phase 2: Connection graph */
+    char** connected_memory_ids; /* Array of record IDs this memory references */
+    size_t connection_count;     /* Number of connections */
+    float graph_centrality;      /* Graph centrality score (0.0-1.0) */
 } memory_record_t;
 
 /* Memory query parameters */

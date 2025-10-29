@@ -82,6 +82,13 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
             katra_memory_free_record(record);
             continue;
         }
+        /* Graph centrality: Keep highly connected memories (Thane's Phase 2) */
+        else if (record->graph_centrality >= 0.6f) {  /* High centrality threshold */
+            LOG_DEBUG("Preserving central memory (centrality=%.2f): %.50s...",
+                     record->graph_centrality, record->content);
+            katra_memory_free_record(record);
+            continue;
+        }
         /* Age-based: Standard archival for old memories */
         else if (record->timestamp >= cutoff) {
             katra_memory_free_record(record);

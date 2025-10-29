@@ -40,6 +40,7 @@ typedef struct graph_node {
     size_t outgoing_count;      /* Number of outgoing edges */
     size_t incoming_count;      /* Number of incoming edges */
     time_t last_accessed;       /* Access tracking */
+    float centrality;           /* Graph centrality score (0.0-1.0) - Thane's Phase 2 */
 } graph_node_t;
 
 /* Graph store context */
@@ -128,5 +129,11 @@ void katra_graph_cleanup(graph_store_t* store);
 
 /* Helper: Get relationship type name */
 const char* katra_graph_relationship_name(relationship_type_t type);
+
+/* Calculate graph centrality for all nodes (Thane's Phase 2) */
+int katra_graph_calculate_centrality(graph_store_t* store);
+
+/* Get centrality score for a specific memory */
+float katra_graph_get_centrality(graph_store_t* store, const char* record_id);
 
 #endif /* KATRA_GRAPH_H */

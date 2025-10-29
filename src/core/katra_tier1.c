@@ -146,6 +146,12 @@ static int write_json_record(FILE* fp, const memory_record_t* record) {
     fprintf(fp, ",\"marked_important\":%s", record->marked_important ? "true" : "false");
     fprintf(fp, ",\"marked_forgettable\":%s", record->marked_forgettable ? "true" : "false");
 
+    /* Phase 2: Connection graph fields */
+    fprintf(fp, ",\"connection_count\":%zu", record->connection_count);
+    fprintf(fp, ",\"graph_centrality\":%.4f", record->graph_centrality);
+    /* Note: connected_memory_ids array serialization would require JSON array */
+    /* Deferred to graph builder module */
+
     fprintf(fp, "}\n");
 
     return KATRA_SUCCESS;
