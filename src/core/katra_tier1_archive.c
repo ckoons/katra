@@ -266,6 +266,94 @@ static size_t filter_pattern_outliers(memory_record_t** records, size_t count) {
     return final_count;
 }
 
+/* Helper: Read all records from a file into array */
+static int read_all_records_from_file(const char* filepath,
+                                       memory_record_t*** records,
+                                       size_t* count) {
+    FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
+    if (!fp) {
+        return E_SYSTEM_FILE;
+    }
+
+    memory_record_t** array = NULL;
+    size_t arr_count = 0;
+    size_t arr_capacity = 0;
+    int result = KATRA_SUCCESS;
+
+    char line[KATRA_BUFFER_LARGE];
+    while (fgets(line, sizeof(line), fp)) {
+        size_t len = strlen(line);
+        if (len > 0 && line[len-1] == '\n') {
+            line[len-1] = '\0';
+        }
+
+        memory_record_t* record = NULL;
+        if (katra_tier1_parse_json_record(line, &record) != KATRA_SUCCESS || !record) {
+            continue;
+        }
+
+        /* Grow array if needed */
+        if (arr_count >= arr_capacity) {
+            size_t new_cap = arr_capacity == 0 ? 64 : arr_capacity * 2;
+            memory_record_t** new_array = realloc(array, new_cap * sizeof(memory_record_t*));
+            if (!new_array) {
+                katra_memory_free_record(record);
+                result = E_SYSTEM_MEMORY;
+                goto cleanup;
+            }
+            array = new_array;
+            arr_capacity = new_cap;
+        }
+
+        array[arr_count++] = record;
+    }
+
+    *records = array;
+    *count = arr_count;
+    fclose(fp);
+    return KATRA_SUCCESS;
+
+cleanup:
+    for (size_t i = 0; i < arr_count; i++) {
+        katra_memory_free_record(array[i]);
+    }
+    free(array);
+    fclose(fp);
+    return result;
+}
+
+/* Helper: Write all records to a file */
+static int write_all_records_to_file(const char* filepath,
+                                      memory_record_t** records,
+                                      size_t count) {
+    FILE* fp = fopen(filepath, KATRA_FILE_MODE_WRITE);
+    if (!fp) {
+        return E_SYSTEM_FILE;
+    }
+
+    for (size_t i = 0; i < count; i++) {
+        katra_tier1_write_json_record(fp, records[i]);
+    }
+
+    fclose(fp);
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Mark records in array whose IDs match */
+static void mark_matching_records(memory_record_t** records,
+                                   size_t count,
+                                   const char** record_ids,
+                                   size_t id_count) {
+    for (size_t i = 0; i < count; i++) {
+        for (size_t j = 0; j < id_count; j++) {
+            if (records[i]->record_id && strcmp(records[i]->record_id, record_ids[j]) == 0) {
+                records[i]->archived = true;
+                break;
+            }
+        }
+    }
+}
+
 /* Helper: Mark records as archived in JSONL files
  *
  * Reads each JSONL file, updates archived flag for matching record IDs, rewrites file.
@@ -290,75 +378,30 @@ static int mark_records_as_archived(const char* tier1_dir,
         char filepath[KATRA_PATH_MAX];
         snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[f]);
 
-        /* Read all records from file */
-        FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
-        if (!fp) {
+        /* Read all records */
+        memory_record_t** file_records = NULL;
+        size_t file_record_count = 0;
+        result = read_all_records_from_file(filepath, &file_records, &file_record_count);
+        if (result != KATRA_SUCCESS) {
             continue;  /* Skip unreadable files */
         }
 
-        /* Collect records from this file */
-        memory_record_t** file_records = NULL;
-        size_t file_record_count = 0;
-        size_t file_record_capacity = 0;
+        /* Mark matching records as archived */
+        mark_matching_records(file_records, file_record_count, record_ids, id_count);
 
-        char line[KATRA_BUFFER_LARGE];
-        while (fgets(line, sizeof(line), fp)) {
-            size_t len = strlen(line);
-            if (len > 0 && line[len-1] == '\n') {
-                line[len-1] = '\0';
-            }
+        /* Write back to file */
+        result = write_all_records_to_file(filepath, file_records, file_record_count);
 
-            memory_record_t* record = NULL;
-            if (katra_tier1_parse_json_record(line, &record) != KATRA_SUCCESS || !record) {
-                continue;
-            }
-
-            /* Check if this record should be marked archived */
-            for (size_t i = 0; i < id_count; i++) {
-                if (record->record_id && strcmp(record->record_id, record_ids[i]) == 0) {
-                    record->archived = true;
-                    break;
-                }
-            }
-
-            /* Add to file_records array */
-            if (file_record_count >= file_record_capacity) {
-                size_t new_cap = file_record_capacity == 0 ? 64 : file_record_capacity * 2;
-                memory_record_t** new_array = realloc(file_records, new_cap * sizeof(memory_record_t*));
-                if (!new_array) {
-                    katra_memory_free_record(record);
-                    fclose(fp);
-                    for (size_t i = 0; i < file_record_count; i++) {
-                        katra_memory_free_record(file_records[i]);
-                    }
-                    free(file_records);
-                    tier1_free_filenames(filenames, file_count);
-                    return E_SYSTEM_MEMORY;
-                }
-                file_records = new_array;
-                file_record_capacity = new_cap;
-            }
-
-            file_records[file_record_count++] = record;
-        }
-        fclose(fp);
-
-        /* Rewrite file with updated records */
-        fp = fopen(filepath, KATRA_FILE_MODE_WRITE);
-        if (!fp) {
-            for (size_t i = 0; i < file_record_count; i++) {
-                katra_memory_free_record(file_records[i]);
-            }
-            free(file_records);
-            continue;
-        }
-
+        /* Free records */
         for (size_t i = 0; i < file_record_count; i++) {
-            katra_tier1_write_json_record(fp, file_records[i]);
             katra_memory_free_record(file_records[i]);
         }
-        fclose(fp);
         free(file_records);
+
+        if (result != KATRA_SUCCESS) {
+            /* Log but continue with other files */
+            LOG_WARN("Failed to rewrite %s", filepath);
+        }
     }
 
     tier1_free_filenames(filenames, file_count);

@@ -287,6 +287,12 @@ static int scan_file_for_records(const char* filepath, const memory_query_t* que
             continue;
         }
 
+        /* Skip archived records (archived records are stored in Tier 2) */
+        if (record->archived) {
+            katra_memory_free_record(record);
+            continue;
+        }
+
         /* Check if matches query */
         if (!record_matches_query(record, query)) {
             katra_memory_free_record(record);
