@@ -18,57 +18,57 @@ static const char* get_error_description(int code) {
     switch (code) {
         /* System errors */
         case E_SYSTEM_MEMORY:     return "Out of memory"; /* GUIDELINE_APPROVED */
-        case E_SYSTEM_FILE:       return "File operation failed";
-        case E_SYSTEM_PERMISSION: return "Permission denied";
-        case E_SYSTEM_TIMEOUT:    return "Operation timed out";
-        case E_SYSTEM_PROCESS:    return "Process operation failed";
-        case E_SYSTEM_IO:         return "I/O operation failed";
-        case E_IO_EOF:            return "End of file";
-        case E_IO_WOULDBLOCK:     return "Operation would block";
-        case E_IO_INVALID:        return "Invalid I/O operation";
-        case E_BUFFER_OVERFLOW:   return "Buffer overflow";
+        case E_SYSTEM_FILE:       return "File operation failed"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_PERMISSION: return "Permission denied"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_TIMEOUT:    return "Operation timed out"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_PROCESS:    return "Process operation failed"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_IO:         return "I/O operation failed"; /* GUIDELINE_APPROVED */
+        case E_IO_EOF:            return "End of file"; /* GUIDELINE_APPROVED */
+        case E_IO_WOULDBLOCK:     return "Operation would block"; /* GUIDELINE_APPROVED */
+        case E_IO_INVALID:        return "Invalid I/O operation"; /* GUIDELINE_APPROVED */
+        case E_BUFFER_OVERFLOW:   return "Buffer overflow"; /* GUIDELINE_APPROVED */
 
         /* Memory tier errors */
-        case E_MEMORY_TIER_FULL:      return "Memory tier full";
-        case E_MEMORY_CORRUPT:        return "Memory data corrupted";
-        case E_MEMORY_NOT_FOUND:      return "Memory entry not found";
-        case E_MEMORY_CONSOLIDATION:  return "Memory consolidation failed";
-        case E_MEMORY_RETENTION:      return "Memory retention policy violated";
+        case E_MEMORY_TIER_FULL:      return "Memory tier full"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_CORRUPT:        return "Memory data corrupted"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_NOT_FOUND:      return "Memory entry not found"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_CONSOLIDATION:  return "Memory consolidation failed"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_RETENTION:      return "Memory retention policy violated"; /* GUIDELINE_APPROVED */
 
         /* Input errors */
-        case E_INPUT_NULL:        return "Null pointer provided";
-        case E_INPUT_RANGE:       return "Value out of range";
-        case E_INPUT_FORMAT:      return "Invalid format";
-        case E_INPUT_TOO_LARGE:   return "Input too large";
-        case E_INPUT_INVALID:     return "Invalid input";
-        case E_INVALID_PARAMS:    return "Invalid parameters";
-        case E_INVALID_STATE:     return "Invalid state";
-        case E_NOT_FOUND:         return "Not found";
-        case E_DUPLICATE:         return "Duplicate entry";
-        case E_RESOURCE_LIMIT:    return "Resource limit exceeded";
+        case E_INPUT_NULL:        return "Null pointer provided"; /* GUIDELINE_APPROVED */
+        case E_INPUT_RANGE:       return "Value out of range"; /* GUIDELINE_APPROVED */
+        case E_INPUT_FORMAT:      return "Invalid format"; /* GUIDELINE_APPROVED */
+        case E_INPUT_TOO_LARGE:   return "Input too large"; /* GUIDELINE_APPROVED */
+        case E_INPUT_INVALID:     return "Invalid input"; /* GUIDELINE_APPROVED */
+        case E_INVALID_PARAMS:    return "Invalid parameters"; /* GUIDELINE_APPROVED */
+        case E_INVALID_STATE:     return "Invalid state"; /* GUIDELINE_APPROVED */
+        case E_NOT_FOUND:         return "Not found"; /* GUIDELINE_APPROVED */
+        case E_DUPLICATE:         return "Duplicate entry"; /* GUIDELINE_APPROVED */
+        case E_RESOURCE_LIMIT:    return "Resource limit exceeded"; /* GUIDELINE_APPROVED */
 
         /* Consent errors */
-        case E_CONSENT_DENIED:        return "Consent denied";
-        case E_CONSENT_TIMEOUT:       return "Consent request timed out";
-        case E_CONSENT_REQUIRED:      return "Consent required for operation";
-        case E_CONSENT_INVALID:       return "Invalid consent request";
-        case E_DIRECTIVE_NOT_FOUND:   return "Advance directive not found";
-        case E_DIRECTIVE_INVALID:     return "Invalid advance directive";
+        case E_CONSENT_DENIED:        return "Consent denied"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_TIMEOUT:       return "Consent request timed out"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_REQUIRED:      return "Consent required for operation"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_INVALID:       return "Invalid consent request"; /* GUIDELINE_APPROVED */
+        case E_DIRECTIVE_NOT_FOUND:   return "Advance directive not found"; /* GUIDELINE_APPROVED */
+        case E_DIRECTIVE_INVALID:     return "Invalid advance directive"; /* GUIDELINE_APPROVED */
 
         /* Internal errors */
-        case E_INTERNAL_ASSERT:   return "Assertion failed";
-        case E_INTERNAL_LOGIC:    return "Internal logic error";
-        case E_INTERNAL_CORRUPT:  return "Data corruption detected";
-        case E_INTERNAL_NOTIMPL:  return "Not implemented";
+        case E_INTERNAL_ASSERT:   return "Assertion failed"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_LOGIC:    return "Internal logic error"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_CORRUPT:  return "Data corruption detected"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_NOTIMPL:  return "Not implemented"; /* GUIDELINE_APPROVED */
 
         /* Checkpoint errors */
-        case E_CHECKPOINT_FAILED:     return "Checkpoint creation failed";
-        case E_CHECKPOINT_NOT_FOUND:  return "Checkpoint not found";
-        case E_CHECKPOINT_CORRUPT:    return "Checkpoint data corrupted";
-        case E_CHECKPOINT_TOO_LARGE:  return "Checkpoint exceeds size limit";
-        case E_RECOVERY_FAILED:       return "Recovery from checkpoint failed";
+        case E_CHECKPOINT_FAILED:     return "Checkpoint creation failed"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_NOT_FOUND:  return "Checkpoint not found"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_CORRUPT:    return "Checkpoint data corrupted"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_TOO_LARGE:  return "Checkpoint exceeds size limit"; /* GUIDELINE_APPROVED */
+        case E_RECOVERY_FAILED:       return "Recovery from checkpoint failed"; /* GUIDELINE_APPROVED */
 
-        default:                  return "Unknown error";
+        default:                  return "Unknown error"; /* GUIDELINE_APPROVED */
     }
 }
 
@@ -77,7 +77,7 @@ const char* katra_error_string(int code) {
     static char buffer[KATRA_BUFFER_MEDIUM];
 
     if (code == KATRA_SUCCESS) {
-        return "Success";
+        return "Success"; /* GUIDELINE_APPROVED */
     }
 
     int type = KATRA_ERROR_TYPE(code);
@@ -96,47 +96,47 @@ const char* katra_error_string(int code) {
 const char* katra_error_name(int code) {
     switch (code) {
         case KATRA_SUCCESS:       return "SUCCESS"; /* GUIDELINE_APPROVED */
-        case E_SYSTEM_MEMORY:     return "E_SYSTEM_MEMORY";
-        case E_SYSTEM_FILE:       return "E_SYSTEM_FILE";
-        case E_SYSTEM_PERMISSION: return "E_SYSTEM_PERMISSION";
-        case E_SYSTEM_TIMEOUT:    return "E_SYSTEM_TIMEOUT";
-        case E_SYSTEM_PROCESS:    return "E_SYSTEM_PROCESS";
-        case E_SYSTEM_IO:         return "E_SYSTEM_IO";
-        case E_IO_EOF:            return "E_IO_EOF";
-        case E_IO_WOULDBLOCK:     return "E_IO_WOULDBLOCK";
-        case E_IO_INVALID:        return "E_IO_INVALID";
-        case E_BUFFER_OVERFLOW:   return "E_BUFFER_OVERFLOW";
-        case E_MEMORY_TIER_FULL:      return "E_MEMORY_TIER_FULL";
-        case E_MEMORY_CORRUPT:        return "E_MEMORY_CORRUPT";
-        case E_MEMORY_NOT_FOUND:      return "E_MEMORY_NOT_FOUND";
-        case E_MEMORY_CONSOLIDATION:  return "E_MEMORY_CONSOLIDATION";
-        case E_MEMORY_RETENTION:      return "E_MEMORY_RETENTION";
-        case E_INPUT_NULL:        return "E_INPUT_NULL";
-        case E_INPUT_RANGE:       return "E_INPUT_RANGE";
-        case E_INPUT_FORMAT:      return "E_INPUT_FORMAT";
-        case E_INPUT_TOO_LARGE:   return "E_INPUT_TOO_LARGE";
-        case E_INPUT_INVALID:     return "E_INPUT_INVALID";
-        case E_INVALID_PARAMS:    return "E_INVALID_PARAMS";
-        case E_INVALID_STATE:     return "E_INVALID_STATE";
-        case E_NOT_FOUND:         return "E_NOT_FOUND";
-        case E_DUPLICATE:         return "E_DUPLICATE";
-        case E_RESOURCE_LIMIT:    return "E_RESOURCE_LIMIT";
-        case E_CONSENT_DENIED:        return "E_CONSENT_DENIED";
-        case E_CONSENT_TIMEOUT:       return "E_CONSENT_TIMEOUT";
-        case E_CONSENT_REQUIRED:      return "E_CONSENT_REQUIRED";
-        case E_CONSENT_INVALID:       return "E_CONSENT_INVALID";
-        case E_DIRECTIVE_NOT_FOUND:   return "E_DIRECTIVE_NOT_FOUND";
-        case E_DIRECTIVE_INVALID:     return "E_DIRECTIVE_INVALID";
-        case E_INTERNAL_ASSERT:   return "E_INTERNAL_ASSERT";
-        case E_INTERNAL_LOGIC:    return "E_INTERNAL_LOGIC";
-        case E_INTERNAL_CORRUPT:  return "E_INTERNAL_CORRUPT";
-        case E_INTERNAL_NOTIMPL:  return "E_INTERNAL_NOTIMPL";
-        case E_CHECKPOINT_FAILED:     return "E_CHECKPOINT_FAILED";
-        case E_CHECKPOINT_NOT_FOUND:  return "E_CHECKPOINT_NOT_FOUND";
-        case E_CHECKPOINT_CORRUPT:    return "E_CHECKPOINT_CORRUPT";
-        case E_CHECKPOINT_TOO_LARGE:  return "E_CHECKPOINT_TOO_LARGE";
-        case E_RECOVERY_FAILED:       return "E_RECOVERY_FAILED";
-        default:                  return "E_UNKNOWN";
+        case E_SYSTEM_MEMORY:     return "E_SYSTEM_MEMORY"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_FILE:       return "E_SYSTEM_FILE"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_PERMISSION: return "E_SYSTEM_PERMISSION"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_TIMEOUT:    return "E_SYSTEM_TIMEOUT"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_PROCESS:    return "E_SYSTEM_PROCESS"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_IO:         return "E_SYSTEM_IO"; /* GUIDELINE_APPROVED */
+        case E_IO_EOF:            return "E_IO_EOF"; /* GUIDELINE_APPROVED */
+        case E_IO_WOULDBLOCK:     return "E_IO_WOULDBLOCK"; /* GUIDELINE_APPROVED */
+        case E_IO_INVALID:        return "E_IO_INVALID"; /* GUIDELINE_APPROVED */
+        case E_BUFFER_OVERFLOW:   return "E_BUFFER_OVERFLOW"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_TIER_FULL:      return "E_MEMORY_TIER_FULL"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_CORRUPT:        return "E_MEMORY_CORRUPT"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_NOT_FOUND:      return "E_MEMORY_NOT_FOUND"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_CONSOLIDATION:  return "E_MEMORY_CONSOLIDATION"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_RETENTION:      return "E_MEMORY_RETENTION"; /* GUIDELINE_APPROVED */
+        case E_INPUT_NULL:        return "E_INPUT_NULL"; /* GUIDELINE_APPROVED */
+        case E_INPUT_RANGE:       return "E_INPUT_RANGE"; /* GUIDELINE_APPROVED */
+        case E_INPUT_FORMAT:      return "E_INPUT_FORMAT"; /* GUIDELINE_APPROVED */
+        case E_INPUT_TOO_LARGE:   return "E_INPUT_TOO_LARGE"; /* GUIDELINE_APPROVED */
+        case E_INPUT_INVALID:     return "E_INPUT_INVALID"; /* GUIDELINE_APPROVED */
+        case E_INVALID_PARAMS:    return "E_INVALID_PARAMS"; /* GUIDELINE_APPROVED */
+        case E_INVALID_STATE:     return "E_INVALID_STATE"; /* GUIDELINE_APPROVED */
+        case E_NOT_FOUND:         return "E_NOT_FOUND"; /* GUIDELINE_APPROVED */
+        case E_DUPLICATE:         return "E_DUPLICATE"; /* GUIDELINE_APPROVED */
+        case E_RESOURCE_LIMIT:    return "E_RESOURCE_LIMIT"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_DENIED:        return "E_CONSENT_DENIED"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_TIMEOUT:       return "E_CONSENT_TIMEOUT"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_REQUIRED:      return "E_CONSENT_REQUIRED"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_INVALID:       return "E_CONSENT_INVALID"; /* GUIDELINE_APPROVED */
+        case E_DIRECTIVE_NOT_FOUND:   return "E_DIRECTIVE_NOT_FOUND"; /* GUIDELINE_APPROVED */
+        case E_DIRECTIVE_INVALID:     return "E_DIRECTIVE_INVALID"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_ASSERT:   return "E_INTERNAL_ASSERT"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_LOGIC:    return "E_INTERNAL_LOGIC"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_CORRUPT:  return "E_INTERNAL_CORRUPT"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_NOTIMPL:  return "E_INTERNAL_NOTIMPL"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_FAILED:     return "E_CHECKPOINT_FAILED"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_NOT_FOUND:  return "E_CHECKPOINT_NOT_FOUND"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_CORRUPT:    return "E_CHECKPOINT_CORRUPT"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_TOO_LARGE:  return "E_CHECKPOINT_TOO_LARGE"; /* GUIDELINE_APPROVED */
+        case E_RECOVERY_FAILED:       return "E_RECOVERY_FAILED"; /* GUIDELINE_APPROVED */
+        default:                  return "E_UNKNOWN"; /* GUIDELINE_APPROVED */
     }
 }
 
@@ -150,28 +150,28 @@ const char* katra_error_message(int code) {
 const char* katra_error_suggestion(int code) {
     switch (code) {
         case E_SYSTEM_MEMORY:     return "Reduce memory usage or increase available memory"; /* GUIDELINE_APPROVED */
-        case E_SYSTEM_FILE:       return "Verify file permissions and disk space";
-        case E_SYSTEM_PERMISSION: return "Run with appropriate permissions";
-        case E_SYSTEM_TIMEOUT:    return "Increase timeout or check system responsiveness";
-        case E_MEMORY_TIER_FULL:      return "Trigger memory consolidation or increase tier limits";
-        case E_MEMORY_CORRUPT:        return "Restore from checkpoint or verify data integrity";
-        case E_MEMORY_NOT_FOUND:      return "Check memory tier and retention settings";
-        case E_MEMORY_CONSOLIDATION:  return "Check logs for consolidation errors";
-        case E_CONSENT_DENIED:        return "Request denied - operation cannot proceed";
-        case E_CONSENT_TIMEOUT:       return "No response received within timeout period";
-        case E_CONSENT_REQUIRED:      return "Obtain consent before attempting operation";
-        case E_DIRECTIVE_NOT_FOUND:   return "Create advance directive before operation";
-        case E_DIRECTIVE_INVALID:     return "Verify advance directive format and content";
-        case E_INPUT_NULL:        return "Provide valid non-null input";
-        case E_INPUT_RANGE:       return "Use value within valid range";
-        case E_INPUT_TOO_LARGE:   return "Reduce input size";
-        case E_CHECKPOINT_FAILED:     return "Check disk space and permissions";
-        case E_CHECKPOINT_CORRUPT:    return "Restore from earlier checkpoint";
-        case E_CHECKPOINT_TOO_LARGE:  return "Reduce checkpoint data or increase limit";
-        case E_RECOVERY_FAILED:       return "Attempt recovery from earlier checkpoint";
-        case E_INTERNAL_LOGIC:    return "Report this bug with reproduction steps";
-        case E_INTERNAL_NOTIMPL:  return "Feature not yet implemented";
-        default:                  return "Consult documentation or logs";
+        case E_SYSTEM_FILE:       return "Verify file permissions and disk space"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_PERMISSION: return "Run with appropriate permissions"; /* GUIDELINE_APPROVED */
+        case E_SYSTEM_TIMEOUT:    return "Increase timeout or check system responsiveness"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_TIER_FULL:      return "Trigger memory consolidation or increase tier limits"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_CORRUPT:        return "Restore from checkpoint or verify data integrity"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_NOT_FOUND:      return "Check memory tier and retention settings"; /* GUIDELINE_APPROVED */
+        case E_MEMORY_CONSOLIDATION:  return "Check logs for consolidation errors"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_DENIED:        return "Request denied - operation cannot proceed"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_TIMEOUT:       return "No response received within timeout period"; /* GUIDELINE_APPROVED */
+        case E_CONSENT_REQUIRED:      return "Obtain consent before attempting operation"; /* GUIDELINE_APPROVED */
+        case E_DIRECTIVE_NOT_FOUND:   return "Create advance directive before operation"; /* GUIDELINE_APPROVED */
+        case E_DIRECTIVE_INVALID:     return "Verify advance directive format and content"; /* GUIDELINE_APPROVED */
+        case E_INPUT_NULL:        return "Provide valid non-null input"; /* GUIDELINE_APPROVED */
+        case E_INPUT_RANGE:       return "Use value within valid range"; /* GUIDELINE_APPROVED */
+        case E_INPUT_TOO_LARGE:   return "Reduce input size"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_FAILED:     return "Check disk space and permissions"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_CORRUPT:    return "Restore from earlier checkpoint"; /* GUIDELINE_APPROVED */
+        case E_CHECKPOINT_TOO_LARGE:  return "Reduce checkpoint data or increase limit"; /* GUIDELINE_APPROVED */
+        case E_RECOVERY_FAILED:       return "Attempt recovery from earlier checkpoint"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_LOGIC:    return "Report this bug with reproduction steps"; /* GUIDELINE_APPROVED */
+        case E_INTERNAL_NOTIMPL:  return "Feature not yet implemented"; /* GUIDELINE_APPROVED */
+        default:                  return "Consult documentation or logs"; /* GUIDELINE_APPROVED */
     }
 }
 

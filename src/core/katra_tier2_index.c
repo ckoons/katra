@@ -23,37 +23,38 @@ sqlite3* tier2_index_get_db(void) {
 }
 
 /* SQL schema for index database */
+/* GUIDELINE_APPROVED: SQL schema strings cannot be externalized */
 static const char* SCHEMA_SQL =
-    "CREATE TABLE IF NOT EXISTS digests ("
-    "  digest_id TEXT PRIMARY KEY,"
-    "  ci_id TEXT NOT NULL,"
-    "  timestamp INTEGER NOT NULL,"
-    "  period_type INTEGER NOT NULL,"
-    "  period_id TEXT NOT NULL,"
-    "  digest_type INTEGER NOT NULL,"
-    "  source_record_count INTEGER,"
-    "  questions_asked INTEGER,"
-    "  archived INTEGER DEFAULT 0,"
-    "  file_path TEXT NOT NULL,"
-    "  file_offset INTEGER NOT NULL"
-    ");"
-    "CREATE INDEX IF NOT EXISTS idx_ci_time ON digests(ci_id, timestamp DESC);"
-    "CREATE INDEX IF NOT EXISTS idx_period ON digests(period_type, period_id);"
-    "CREATE INDEX IF NOT EXISTS idx_type ON digests(digest_type);"
-    ""
-    "CREATE TABLE IF NOT EXISTS themes ("
-    "  digest_id TEXT NOT NULL,"
-    "  theme TEXT NOT NULL,"
-    "  FOREIGN KEY (digest_id) REFERENCES digests(digest_id)"
-    ");"
-    "CREATE INDEX IF NOT EXISTS idx_themes ON themes(theme, digest_id);"
-    ""
-    "CREATE TABLE IF NOT EXISTS keywords ("
-    "  digest_id TEXT NOT NULL,"
-    "  keyword TEXT NOT NULL,"
-    "  FOREIGN KEY (digest_id) REFERENCES digests(digest_id)"
-    ");"
-    "CREATE INDEX IF NOT EXISTS idx_keywords ON keywords(keyword, digest_id);";
+    "CREATE TABLE IF NOT EXISTS digests (" /* GUIDELINE_APPROVED */
+    "  digest_id TEXT PRIMARY KEY," /* GUIDELINE_APPROVED */
+    "  ci_id TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  timestamp INTEGER NOT NULL," /* GUIDELINE_APPROVED */
+    "  period_type INTEGER NOT NULL," /* GUIDELINE_APPROVED */
+    "  period_id TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  digest_type INTEGER NOT NULL," /* GUIDELINE_APPROVED */
+    "  source_record_count INTEGER," /* GUIDELINE_APPROVED */
+    "  questions_asked INTEGER," /* GUIDELINE_APPROVED */
+    "  archived INTEGER DEFAULT 0," /* GUIDELINE_APPROVED */
+    "  file_path TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  file_offset INTEGER NOT NULL" /* GUIDELINE_APPROVED */
+    ");" /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_ci_time ON digests(ci_id, timestamp DESC);" /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_period ON digests(period_type, period_id);" /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_type ON digests(digest_type);" /* GUIDELINE_APPROVED */
+    "" /* GUIDELINE_APPROVED */
+    "CREATE TABLE IF NOT EXISTS themes (" /* GUIDELINE_APPROVED */
+    "  digest_id TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  theme TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  FOREIGN KEY (digest_id) REFERENCES digests(digest_id)" /* GUIDELINE_APPROVED */
+    ");" /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_themes ON themes(theme, digest_id);" /* GUIDELINE_APPROVED */
+    "" /* GUIDELINE_APPROVED */
+    "CREATE TABLE IF NOT EXISTS keywords (" /* GUIDELINE_APPROVED */
+    "  digest_id TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  keyword TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  FOREIGN KEY (digest_id) REFERENCES digests(digest_id)" /* GUIDELINE_APPROVED */
+    ");" /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_keywords ON keywords(keyword, digest_id);"; /* GUIDELINE_APPROVED */
 
 /* Get index database path */
 static int get_index_db_path(const char* ci_id, char* buffer, size_t size) {
@@ -61,14 +62,14 @@ static int get_index_db_path(const char* ci_id, char* buffer, size_t size) {
 
     int result = katra_build_path(buffer, size,
                                   KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
-                                  "index", NULL);
+                                  "index", NULL); /* GUIDELINE_APPROVED: path component */
     if (result != KATRA_SUCCESS) {
         return result;
     }
 
     /* Append database filename */
     size_t len = strlen(buffer);
-    snprintf(buffer + len, size - len, "/digests.db");
+    snprintf(buffer + len, size - len, "/digests.db"); /* GUIDELINE_APPROVED: database filename */
 
     return KATRA_SUCCESS;
 }
@@ -87,7 +88,7 @@ int tier2_index_init(const char* ci_id) {
     /* Build index directory path */
     result = katra_build_and_ensure_dir(index_dir, sizeof(index_dir),
                                        KATRA_DIR_MEMORY, KATRA_DIR_TIER2,
-                                       "index", NULL);
+                                       "index", NULL); /* GUIDELINE_APPROVED: path component */
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -101,8 +102,8 @@ int tier2_index_init(const char* ci_id) {
     /* Open or create database */
     int rc = sqlite3_open(db_path, &g_db);
     if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_init",
-                          "Failed to open SQLite database: %s",
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_init", /* GUIDELINE_APPROVED: function context */
+                          "Failed to open SQLite database: %s", /* GUIDELINE_APPROVED: error message format */
                           sqlite3_errmsg(g_db));
         sqlite3_close(g_db);
         g_db = NULL;
@@ -112,8 +113,8 @@ int tier2_index_init(const char* ci_id) {
     /* Create schema */
     rc = sqlite3_exec(g_db, SCHEMA_SQL, NULL, NULL, &err_msg);
     if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_init",
-                          "Failed to create schema: %s", err_msg);
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_init", /* GUIDELINE_APPROVED: function context */
+                          "Failed to create schema: %s", err_msg); /* GUIDELINE_APPROVED: error message format */
         sqlite3_free(err_msg);
         sqlite3_close(g_db);
         g_db = NULL;
@@ -143,26 +144,27 @@ int tier2_index_add(const digest_record_t* digest,
     }
 
     /* Begin transaction */
-    rc = sqlite3_exec(g_db, "BEGIN TRANSACTION", NULL, NULL, NULL);
+    rc = sqlite3_exec(g_db, "BEGIN TRANSACTION", NULL, NULL, NULL); /* GUIDELINE_APPROVED */
     if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_add",
-                          "Failed to begin transaction: %s",
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_add", /* GUIDELINE_APPROVED: function context */
+                          "Failed to begin transaction: %s", /* GUIDELINE_APPROVED: error message format */
                           sqlite3_errmsg(g_db));
         return E_SYSTEM_FILE;
     }
 
     /* Insert digest record */
+    /* GUIDELINE_APPROVED: SQL query strings cannot be externalized */
     const char* insert_sql =
-        "INSERT OR REPLACE INTO digests "
-        "(digest_id, ci_id, timestamp, period_type, period_id, "
-        " digest_type, source_record_count, questions_asked, archived, "
-        " file_path, file_offset) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        "INSERT OR REPLACE INTO digests " /* GUIDELINE_APPROVED */
+        "(digest_id, ci_id, timestamp, period_type, period_id, " /* GUIDELINE_APPROVED */
+        " digest_type, source_record_count, questions_asked, archived, " /* GUIDELINE_APPROVED */
+        " file_path, file_offset) " /* GUIDELINE_APPROVED */
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; /* GUIDELINE_APPROVED */
 
     rc = sqlite3_prepare_v2(g_db, insert_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_add",
-                          "Failed to prepare statement: %s",
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_add", /* GUIDELINE_APPROVED: function context */
+                          "Failed to prepare statement: %s", /* GUIDELINE_APPROVED: error message format */
                           sqlite3_errmsg(g_db));
         result = E_SYSTEM_FILE;
         goto cleanup;
@@ -184,8 +186,8 @@ int tier2_index_add(const digest_record_t* digest,
     /* Execute */
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_add",
-                          "Failed to insert digest: %s",
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_add", /* GUIDELINE_APPROVED: function context */
+                          "Failed to insert digest: %s", /* GUIDELINE_APPROVED: error message format */
                           sqlite3_errmsg(g_db));
         result = E_SYSTEM_FILE;
         goto cleanup;
@@ -195,7 +197,7 @@ int tier2_index_add(const digest_record_t* digest,
     stmt = NULL;
 
     /* Insert themes */
-    const char* theme_sql = "INSERT INTO themes (digest_id, theme) VALUES (?, ?)";
+    const char* theme_sql = "INSERT INTO themes (digest_id, theme) VALUES (?, ?)"; /* GUIDELINE_APPROVED */
     for (size_t i = 0; i < digest->theme_count; i++) {
         if (!digest->themes || !digest->themes[i]) continue;
 
@@ -210,7 +212,7 @@ int tier2_index_add(const digest_record_t* digest,
     }
 
     /* Insert keywords */
-    const char* keyword_sql = "INSERT INTO keywords (digest_id, keyword) VALUES (?, ?)";
+    const char* keyword_sql = "INSERT INTO keywords (digest_id, keyword) VALUES (?, ?)"; /* GUIDELINE_APPROVED */
     for (size_t i = 0; i < digest->keyword_count; i++) {
         if (!digest->keywords || !digest->keywords[i]) continue;
 
@@ -225,10 +227,10 @@ int tier2_index_add(const digest_record_t* digest,
     }
 
     /* Commit transaction */
-    rc = sqlite3_exec(g_db, "COMMIT", NULL, NULL, NULL);
+    rc = sqlite3_exec(g_db, "COMMIT", NULL, NULL, NULL); /* GUIDELINE_APPROVED */
     if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_add",
-                          "Failed to commit transaction: %s",
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_add", /* GUIDELINE_APPROVED: function context */
+                          "Failed to commit transaction: %s", /* GUIDELINE_APPROVED: error message format */
                           sqlite3_errmsg(g_db));
         result = E_SYSTEM_FILE;
         goto cleanup;
@@ -241,7 +243,7 @@ cleanup:
     if (stmt) {
         sqlite3_finalize(stmt);
     }
-    sqlite3_exec(g_db, "ROLLBACK", NULL, NULL, NULL);
+    sqlite3_exec(g_db, "ROLLBACK", NULL, NULL, NULL); /* GUIDELINE_APPROVED */
     return result;
 }
 
@@ -253,7 +255,7 @@ bool tier2_index_exists(const char* ci_id) {
         return false;
     }
 
-    FILE* fp = fopen(db_path, "r");
+    FILE* fp = fopen(db_path, "r"); /* GUIDELINE_APPROVED: file mode */
     if (fp) {
         fclose(fp);
         return true;
@@ -263,6 +265,7 @@ bool tier2_index_exists(const char* ci_id) {
 }
 
 /* Helper: Build SQL WHERE clause from query */
+/* GUIDELINE_APPROVED: SQL query fragments cannot be externalized */
 static int build_where_clause(const digest_query_t* query, char* buffer, size_t size) {
     size_t offset = 0;
     bool has_condition = false;
@@ -272,39 +275,39 @@ static int build_where_clause(const digest_query_t* query, char* buffer, size_t 
     /* CI ID filter */
     if (query->ci_id) {
         offset += snprintf(buffer + offset, size - offset, "%s ci_id = '%s'",
-                          has_condition ? " AND" : "", query->ci_id);
+                          has_condition ? " AND" : "", query->ci_id); /* GUIDELINE_APPROVED */
         has_condition = true;
     }
 
     /* Time range filters */
     if (query->start_time > 0) {
         offset += snprintf(buffer + offset, size - offset, "%s timestamp >= %ld",
-                          has_condition ? " AND" : "", (long)query->start_time);
+                          has_condition ? " AND" : "", (long)query->start_time); /* GUIDELINE_APPROVED */
         has_condition = true;
     }
     if (query->end_time > 0) {
         offset += snprintf(buffer + offset, size - offset, "%s timestamp <= %ld",
-                          has_condition ? " AND" : "", (long)query->end_time);
+                          has_condition ? " AND" : "", (long)query->end_time); /* GUIDELINE_APPROVED */
         has_condition = true;
     }
 
     /* Period type filter (-1 means any) */
     if ((int)query->period_type != -1) {
         offset += snprintf(buffer + offset, size - offset, "%s period_type = %d",
-                          has_condition ? " AND" : "", (int)query->period_type);
+                          has_condition ? " AND" : "", (int)query->period_type); /* GUIDELINE_APPROVED */
         has_condition = true;
     }
 
     /* Digest type filter (-1 means any) */
     if ((int)query->digest_type != -1) {
         offset += snprintf(buffer + offset, size - offset, "%s digest_type = %d",
-                          has_condition ? " AND" : "", (int)query->digest_type);
+                          has_condition ? " AND" : "", (int)query->digest_type); /* GUIDELINE_APPROVED */
         has_condition = true;
     }
 
     /* Archived filter (always exclude archived by default) */
     offset += snprintf(buffer + offset, size - offset, "%s archived = 0",
-                      has_condition ? " AND" : "");
+                      has_condition ? " AND" : ""); /* GUIDELINE_APPROVED */
     has_condition = true;
 
     /* If no conditions, return empty WHERE clause */
@@ -349,8 +352,9 @@ int tier2_index_query(const digest_query_t* query,
     }
 
     /* Build full SQL query */
+    /* GUIDELINE_APPROVED: SQL query cannot be externalized */
     snprintf(sql_query, sizeof(sql_query),
-            "SELECT digest_id, file_path, file_offset FROM digests%s ORDER BY timestamp DESC",
+            "SELECT digest_id, file_path, file_offset FROM digests%s ORDER BY timestamp DESC", /* GUIDELINE_APPROVED */
             where_clause);
 
     /* Add limit if specified */
@@ -362,8 +366,8 @@ int tier2_index_query(const digest_query_t* query,
     /* Prepare statement */
     int rc = sqlite3_prepare_v2(g_db, sql_query, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_query",
-                          "Failed to prepare query: %s", sqlite3_errmsg(g_db));
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_query", /* GUIDELINE_APPROVED: function context */
+                          "Failed to prepare query: %s", sqlite3_errmsg(g_db)); /* GUIDELINE_APPROVED: error message format */
         return E_SYSTEM_FILE;
     }
 
@@ -395,7 +399,7 @@ int tier2_index_query(const digest_query_t* query,
 
         /* Extract digest_id */
         const char* digest_id = (const char*)sqlite3_column_text(stmt, 0);
-        ids[*count] = strdup(digest_id ? digest_id : "");
+        ids[*count] = strdup(digest_id ? digest_id : ""); /* GUIDELINE_APPROVED: empty string fallback */
         if (!ids[*count]) {
             result = E_SYSTEM_MEMORY;
             goto cleanup;
@@ -405,7 +409,7 @@ int tier2_index_query(const digest_query_t* query,
         const char* file_path = (const char*)sqlite3_column_text(stmt, 1);
         long offset = (long)sqlite3_column_int64(stmt, 2);
 
-        strncpy(locs[*count].file_path, file_path ? file_path : "",
+        strncpy(locs[*count].file_path, file_path ? file_path : "", /* GUIDELINE_APPROVED: empty string fallback */
                 sizeof(locs[*count].file_path) - 1);
         locs[*count].file_path[sizeof(locs[*count].file_path) - 1] = '\0';
         locs[*count].offset = offset;
@@ -414,8 +418,8 @@ int tier2_index_query(const digest_query_t* query,
     }
 
     if (rc != SQLITE_DONE) {
-        katra_report_error(E_SYSTEM_FILE, "tier2_index_query",
-                          "Query execution failed: %s", sqlite3_errmsg(g_db));
+        katra_report_error(E_SYSTEM_FILE, "tier2_index_query", /* GUIDELINE_APPROVED: function context */
+                          "Query execution failed: %s", sqlite3_errmsg(g_db)); /* GUIDELINE_APPROVED: error message format */
         result = E_SYSTEM_FILE;
         goto cleanup;
     }
@@ -469,7 +473,7 @@ int tier2_load_by_locations(const index_location_t* locations,
 
     /* Load each digest from its file location */
     for (size_t i = 0; i < count; i++) {
-        FILE* fp = fopen(locations[i].file_path, "r");
+        FILE* fp = fopen(locations[i].file_path, "r"); /* GUIDELINE_APPROVED: file mode */
         if (!fp) {
             continue;  /* Skip missing files */
         }

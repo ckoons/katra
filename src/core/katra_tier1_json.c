@@ -73,7 +73,7 @@ void katra_tier1_json_unescape(const char* src, char* dst, size_t dst_size) {
                 case 'n':  dst[dst_idx++] = '\n'; break;
                 case 'r':  dst[dst_idx++] = '\r'; break;
                 case 't':  dst[dst_idx++] = '\t'; break;
-                case '"':  dst[dst_idx++] = '"';  break;
+                case '"':  dst[dst_idx++] = '"';  break; /* GUIDELINE_APPROVED: escape character */
                 case '\\': dst[dst_idx++] = '\\'; break;
                 default:   dst[dst_idx++] = *p;   break;
             }
@@ -89,6 +89,7 @@ void katra_tier1_json_unescape(const char* src, char* dst, size_t dst_size) {
  * from katra_json_utils.h */
 
 /* Parse JSON record from line */
+/* GUIDELINE_APPROVED: JSON field names are part of the data format and cannot be externalized */
 int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     int result = KATRA_SUCCESS;
     memory_record_t* rec = NULL;
@@ -102,7 +103,7 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     ALLOC_OR_GOTO(rec, memory_record_t, cleanup);
 
     /* Extract record_id */
-    if (katra_json_get_string(line, "record_id", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) {
+    if (katra_json_get_string(line, "record_id", temp_buffer, sizeof(temp_buffer)) == KATRA_SUCCESS) { /* GUIDELINE_APPROVED */
         rec->record_id = strdup(temp_buffer);
         if (!rec->record_id) {
             result = E_SYSTEM_MEMORY;
@@ -112,62 +113,62 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
 
     /* Extract timestamp */
     long timestamp_long = 0;
-    if (katra_json_get_long(line, "timestamp", &timestamp_long) == KATRA_SUCCESS) {
+    if (katra_json_get_long(line, "timestamp", &timestamp_long) == KATRA_SUCCESS) { /* GUIDELINE_APPROVED */
         rec->timestamp = (time_t)timestamp_long;
     }
 
     /* Extract type */
     int type_int = 0;
-    if (katra_json_get_int(line, "type", &type_int) == KATRA_SUCCESS) {
+    if (katra_json_get_int(line, "type", &type_int) == KATRA_SUCCESS) { /* GUIDELINE_APPROVED */
         rec->type = (memory_type_t)type_int;
     }
 
     /* Extract core fields */
-    EXTRACT_FLOAT_WITH_DEFAULT(line, "importance", importance, MEMORY_IMPORTANCE_MEDIUM);
-    EXTRACT_OPTIONAL_STRING(line, "importance_note", importance_note);
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "importance", importance, MEMORY_IMPORTANCE_MEDIUM); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "importance_note", importance_note); /* GUIDELINE_APPROVED */
 
     /* Extract content (required) */
-    result = katra_json_extract_string_required(line, "content", &rec->content,
+    result = katra_json_extract_string_required(line, "content", &rec->content, /* GUIDELINE_APPROVED */
                                                 katra_tier1_json_unescape);
     if (result != KATRA_SUCCESS) {
         goto cleanup;
     }
 
     /* Extract optional string fields */
-    EXTRACT_OPTIONAL_STRING(line, "response", response);
-    EXTRACT_OPTIONAL_STRING(line, "context", context);
-    EXTRACT_OPTIONAL_STRING(line, "ci_id", ci_id);
-    EXTRACT_OPTIONAL_STRING(line, "session_id", session_id);
-    EXTRACT_OPTIONAL_STRING(line, "component", component);
+    EXTRACT_OPTIONAL_STRING(line, "response", response); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "context", context); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "ci_id", ci_id); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "session_id", session_id); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "component", component); /* GUIDELINE_APPROVED */
 
     /* Extract tier and archived status */
-    EXTRACT_INT_WITH_DEFAULT(line, "tier", tier, katra_tier_t, KATRA_TIER1);
-    EXTRACT_BOOL_WITH_DEFAULT(line, "archived", archived, false);
+    EXTRACT_INT_WITH_DEFAULT(line, "tier", tier, katra_tier_t, KATRA_TIER1); /* GUIDELINE_APPROVED */
+    EXTRACT_BOOL_WITH_DEFAULT(line, "archived", archived, false); /* GUIDELINE_APPROVED */
 
     /* Extract Thane's Phase 1 fields - access tracking */
-    EXTRACT_LONG_WITH_DEFAULT(line, "last_accessed", last_accessed, 0);
-    EXTRACT_INT_WITH_DEFAULT(line, "access_count", access_count, size_t, 0);
-    EXTRACT_FLOAT_WITH_DEFAULT(line, "emotion_intensity", emotion_intensity, 0.0);
-    EXTRACT_OPTIONAL_STRING(line, "emotion_type", emotion_type);
-    EXTRACT_BOOL_WITH_DEFAULT(line, "marked_important", marked_important, false);
-    EXTRACT_BOOL_WITH_DEFAULT(line, "marked_forgettable", marked_forgettable, false);
+    EXTRACT_LONG_WITH_DEFAULT(line, "last_accessed", last_accessed, 0); /* GUIDELINE_APPROVED */
+    EXTRACT_INT_WITH_DEFAULT(line, "access_count", access_count, size_t, 0); /* GUIDELINE_APPROVED */
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "emotion_intensity", emotion_intensity, 0.0); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "emotion_type", emotion_type); /* GUIDELINE_APPROVED */
+    EXTRACT_BOOL_WITH_DEFAULT(line, "marked_important", marked_important, false); /* GUIDELINE_APPROVED */
+    EXTRACT_BOOL_WITH_DEFAULT(line, "marked_forgettable", marked_forgettable, false); /* GUIDELINE_APPROVED */
 
     /* Extract Phase 2 fields - connection graph */
-    EXTRACT_INT_WITH_DEFAULT(line, "connection_count", connection_count, size_t, 0);
+    EXTRACT_INT_WITH_DEFAULT(line, "connection_count", connection_count, size_t, 0); /* GUIDELINE_APPROVED */
     rec->connected_memory_ids = NULL;  /* Array parsing deferred to graph builder */
-    EXTRACT_FLOAT_WITH_DEFAULT(line, "graph_centrality", graph_centrality, 0.0);
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "graph_centrality", graph_centrality, 0.0); /* GUIDELINE_APPROVED */
 
     /* Extract Phase 3 fields - pattern compression */
-    EXTRACT_OPTIONAL_STRING(line, "pattern_id", pattern_id);
-    EXTRACT_INT_WITH_DEFAULT(line, "pattern_frequency", pattern_frequency, size_t, 0);
-    EXTRACT_BOOL_WITH_DEFAULT(line, "is_pattern_outlier", is_pattern_outlier, false);
-    EXTRACT_FLOAT_WITH_DEFAULT(line, "semantic_similarity", semantic_similarity, 0.0);
+    EXTRACT_OPTIONAL_STRING(line, "pattern_id", pattern_id); /* GUIDELINE_APPROVED */
+    EXTRACT_INT_WITH_DEFAULT(line, "pattern_frequency", pattern_frequency, size_t, 0); /* GUIDELINE_APPROVED */
+    EXTRACT_BOOL_WITH_DEFAULT(line, "is_pattern_outlier", is_pattern_outlier, false); /* GUIDELINE_APPROVED */
+    EXTRACT_FLOAT_WITH_DEFAULT(line, "semantic_similarity", semantic_similarity, 0.0); /* GUIDELINE_APPROVED */
 
     /* Extract Phase 4 fields - formation context (Thane's active sense-making) */
-    EXTRACT_OPTIONAL_STRING(line, "context_question", context_question);
-    EXTRACT_OPTIONAL_STRING(line, "context_resolution", context_resolution);
-    EXTRACT_OPTIONAL_STRING(line, "context_uncertainty", context_uncertainty);
-    EXTRACT_OPTIONAL_STRING(line, "related_to", related_to);
+    EXTRACT_OPTIONAL_STRING(line, "context_question", context_question); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "context_resolution", context_resolution); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "context_uncertainty", context_uncertainty); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "related_to", related_to); /* GUIDELINE_APPROVED */
 
     *record = rec;
     return KATRA_SUCCESS;
