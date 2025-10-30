@@ -321,6 +321,72 @@ static digest_record_t* create_digest_from_records(const char* ci_id,
     return digest;
 }
 
+/* Helper: Process archivable records and store to Tier 2 */
+static int process_and_store_archivable_records(const char* ci_id,
+                                                 const char* tier1_dir,
+                                                 memory_record_t** records,
+                                                 size_t* record_count) {
+    int result = KATRA_SUCCESS;
+
+    /* Thane's Phase 2: Calculate graph centrality */
+    LOG_DEBUG("Calculating graph centrality for %zu records", *record_count);
+    result = katra_memory_calculate_centrality_for_records(records, *record_count);
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Failed to calculate centrality, continuing without it");
+    }
+
+    /* Thane's Phase 3: Detect patterns and filter outliers */
+    LOG_DEBUG("Detecting patterns in %zu archivable records", *record_count);
+    katra_tier1_detect_patterns(records, *record_count);
+    *record_count = katra_tier1_filter_pattern_outliers(records, *record_count);
+
+    if (*record_count == 0) {
+        return 0;  /* All records were outliers */
+    }
+
+    /* Prepare record IDs array */
+    const char** record_ids = malloc(*record_count * sizeof(char*));
+    if (!record_ids) {
+        return E_SYSTEM_MEMORY;
+    }
+    for (size_t i = 0; i < *record_count; i++) {
+        record_ids[i] = records[i]->record_id;
+    }
+
+    /* Get week_id and create digest */
+    char week_id[32];
+    get_week_id(records[0]->timestamp, week_id, sizeof(week_id));
+    digest_record_t* digest = create_digest_from_records(ci_id, week_id,
+                                                          records, *record_count);
+    if (!digest) {
+        free(record_ids);
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Store digest to Tier 2 */
+    result = tier2_store_digest(digest);
+    katra_digest_free(digest);
+    if (result != KATRA_SUCCESS) {
+        katra_report_error(result, "process_and_store_archivable_records",
+                          "Failed to store digest to Tier 2");
+        free(record_ids);
+        return result;
+    }
+
+    /* Mark records as archived in Tier 1 */
+    result = mark_records_as_archived(tier1_dir, record_ids, *record_count);
+    if (result != KATRA_SUCCESS) {
+        katra_report_error(result, "process_and_store_archivable_records",
+                          "Failed to mark records as archived");
+        free(record_ids);
+        return result;
+    }
+
+    LOG_INFO("Archived %zu Tier 1 records to Tier 2 digest %s", *record_count, week_id);
+    free(record_ids);
+    return (int)*record_count;
+}
+
 /* Archive old Tier 1 recordings */
 int tier1_archive(const char* ci_id, int max_age_days) {
     int result = KATRA_SUCCESS;
@@ -372,69 +438,8 @@ int tier1_archive(const char* ci_id, int max_age_days) {
         goto cleanup;
     }
 
-    /* Thane's Phase 2: Calculate graph centrality for connection-aware consolidation */
-    LOG_DEBUG("Calculating graph centrality for %zu records", record_count);
-    result = katra_memory_calculate_centrality_for_records(records, record_count);
-    if (result != KATRA_SUCCESS) {
-        LOG_WARN("Failed to calculate centrality, continuing without it");
-        /* Non-fatal - continue with archival */
-    }
-
-    /* Thane's Phase 3: Detect patterns and filter outliers */
-    LOG_DEBUG("Detecting patterns in %zu archivable records", record_count);
-    katra_tier1_detect_patterns(records, record_count);
-    record_count = katra_tier1_filter_pattern_outliers(records, record_count);
-
-    if (record_count == 0) {
-        result = 0;  /* All records were outliers */
-        goto cleanup;
-    }
-
-    /* Collect record IDs to mark as archived (before digest creation) */
-    const char** record_ids = malloc(record_count * sizeof(char*));
-    if (!record_ids) {
-        result = E_SYSTEM_MEMORY;
-        goto cleanup;
-    }
-    for (size_t i = 0; i < record_count; i++) {
-        record_ids[i] = records[i]->record_id;
-    }
-
-    /* Group records by week and create digests */
-    /* Simplified implementation: create one digest for all records */
-    /* Production would group by week_id */
-    char week_id[32];
-    get_week_id(records[0]->timestamp, week_id, sizeof(week_id));
-
-    digest_record_t* digest = create_digest_from_records(ci_id, week_id,
-                                                          records, record_count);
-    if (!digest) {
-        free(record_ids);
-        result = E_SYSTEM_MEMORY;
-        goto cleanup;
-    }
-
-    /* Store digest to Tier 2 */
-    result = tier2_store_digest(digest);
-    katra_digest_free(digest);
-
-    if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "tier1_archive", "Failed to store digest to Tier 2");
-        free(record_ids);
-        goto cleanup;
-    }
-
-    /* Mark records as archived in Tier 1 JSONL files (CRITICAL: completes archival) */
-    result = mark_records_as_archived(tier1_dir, record_ids, record_count);
-    free(record_ids);
-
-    if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "tier1_archive", "Failed to mark records as archived");
-        goto cleanup;
-    }
-
-    LOG_INFO("Archived %zu Tier 1 records to Tier 2 digest %s", record_count, week_id);
-    result = (int)record_count;
+    /* Process records and store to Tier 2 */
+    result = process_and_store_archivable_records(ci_id, tier1_dir, records, &record_count);
 
 cleanup:
     if (records) {

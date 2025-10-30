@@ -58,6 +58,7 @@ FOUNDATION_OBJS := $(BUILD_DIR)/katra_error.o \
 # Memory/Core object files
 CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_memory_metacognitive.o \
+             $(BUILD_DIR)/katra_memory_related.o \
              $(BUILD_DIR)/katra_memory_graph.o \
              $(BUILD_DIR)/katra_tier1.o \
              $(BUILD_DIR)/katra_tier1_json.o \

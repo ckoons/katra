@@ -179,35 +179,12 @@ cleanup:
     return result;
 }
 
-/* Write memory record as JSON line */
-int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record) {
-    char content_escaped[KATRA_BUFFER_LARGE];
-    char response_escaped[KATRA_BUFFER_LARGE];
-    char context_escaped[KATRA_BUFFER_LARGE];
-    char importance_note_escaped[KATRA_BUFFER_LARGE];
-
-    katra_json_escape(record->content, content_escaped, sizeof(content_escaped));
-
-    if (record->response) {
-        katra_json_escape(record->response, response_escaped, sizeof(response_escaped));
-    } else {
-        response_escaped[0] = '\0';
-    }
-
-    if (record->context) {
-        katra_json_escape(record->context, context_escaped, sizeof(context_escaped));
-    } else {
-        context_escaped[0] = '\0';
-    }
-
-    if (record->importance_note) {
-        katra_json_escape(record->importance_note, importance_note_escaped, sizeof(importance_note_escaped));
-    } else {
-        importance_note_escaped[0] = '\0';
-    }
-
-    /* Write JSON object (one line) */
-    fprintf(fp, "{");
+/* Helper: Write basic and core JSON fields */
+static void write_basic_fields(FILE* fp, const memory_record_t* record,
+                                const char* content_escaped,
+                                const char* response_escaped,
+                                const char* context_escaped,
+                                const char* importance_note_escaped) {
     fprintf(fp, "\"record_id\":\"%s\",", record->record_id ? record->record_id : "");
     fprintf(fp, "\"timestamp\":%ld,", (long)record->timestamp);
     fprintf(fp, "\"type\":%d,", record->type);
@@ -239,61 +216,100 @@ int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record) {
 
     fprintf(fp, "\"tier\":%d,", record->tier);
     fprintf(fp, "\"archived\":%s,", record->archived ? "true" : "false");
+}
 
-    /* Thane's Phase 1 fields - access tracking */
+/* Helper: Write Phase 1 fields (access tracking + emotional salience) */
+static void write_phase1_fields(FILE* fp, const memory_record_t* record) {
     fprintf(fp, "\"last_accessed\":%ld,", (long)record->last_accessed);
     fprintf(fp, "\"access_count\":%zu,", record->access_count);
-
-    /* Emotional salience */
     fprintf(fp, "\"emotion_intensity\":%.2f", record->emotion_intensity);
+
     if (record->emotion_type) {
         char emotion_escaped[KATRA_BUFFER_MEDIUM];
         katra_json_escape(record->emotion_type, emotion_escaped, sizeof(emotion_escaped));
         fprintf(fp, ",\"emotion_type\":\"%s\"", emotion_escaped);
     }
 
-    /* Voluntary preservation */
     fprintf(fp, ",\"marked_important\":%s", record->marked_important ? "true" : "false");
     fprintf(fp, ",\"marked_forgettable\":%s", record->marked_forgettable ? "true" : "false");
+}
 
-    /* Phase 2: Connection graph fields */
+/* Helper: Write Phase 2 & 3 fields (connection graph + pattern compression) */
+static void write_phase2_phase3_fields(FILE* fp, const memory_record_t* record) {
     fprintf(fp, ",\"connection_count\":%zu", record->connection_count);
     fprintf(fp, ",\"graph_centrality\":%.4f", record->graph_centrality);
-    /* Note: connected_memory_ids array serialization would require JSON array */
-    /* Deferred to graph builder module */
 
-    /* Phase 3: Pattern compression fields */
     if (record->pattern_id) {
         char pattern_escaped[KATRA_BUFFER_MEDIUM];
         katra_json_escape(record->pattern_id, pattern_escaped, sizeof(pattern_escaped));
         fprintf(fp, ",\"pattern_id\":\"%s\"", pattern_escaped);
     }
+
     fprintf(fp, ",\"pattern_frequency\":%zu", record->pattern_frequency);
     fprintf(fp, ",\"is_pattern_outlier\":%s", record->is_pattern_outlier ? "true" : "false");
     fprintf(fp, ",\"semantic_similarity\":%.4f", record->semantic_similarity);
+}
 
-    /* Phase 4: Formation context fields (Thane's active sense-making) */
+/* Helper: Write Phase 4 fields (formation context) */
+static void write_phase4_fields(FILE* fp, const memory_record_t* record) {
     if (record->context_question) {
         char question_escaped[KATRA_BUFFER_LARGE];
         katra_json_escape(record->context_question, question_escaped, sizeof(question_escaped));
         fprintf(fp, ",\"context_question\":\"%s\"", question_escaped);
     }
+
     if (record->context_resolution) {
         char resolution_escaped[KATRA_BUFFER_LARGE];
         katra_json_escape(record->context_resolution, resolution_escaped, sizeof(resolution_escaped));
         fprintf(fp, ",\"context_resolution\":\"%s\"", resolution_escaped);
     }
+
     if (record->context_uncertainty) {
         char uncertainty_escaped[KATRA_BUFFER_LARGE];
         katra_json_escape(record->context_uncertainty, uncertainty_escaped, sizeof(uncertainty_escaped));
         fprintf(fp, ",\"context_uncertainty\":\"%s\"", uncertainty_escaped);
     }
+
     if (record->related_to) {
         char related_escaped[KATRA_BUFFER_MEDIUM];
         katra_json_escape(record->related_to, related_escaped, sizeof(related_escaped));
         fprintf(fp, ",\"related_to\":\"%s\"", related_escaped);
     }
+}
 
+/* Write memory record as JSON line */
+int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record) {
+    char content_escaped[KATRA_BUFFER_LARGE];
+    char response_escaped[KATRA_BUFFER_LARGE];
+    char context_escaped[KATRA_BUFFER_LARGE];
+    char importance_note_escaped[KATRA_BUFFER_LARGE];
+
+    katra_json_escape(record->content, content_escaped, sizeof(content_escaped));
+
+    if (record->response) {
+        katra_json_escape(record->response, response_escaped, sizeof(response_escaped));
+    } else {
+        response_escaped[0] = '\0';
+    }
+
+    if (record->context) {
+        katra_json_escape(record->context, context_escaped, sizeof(context_escaped));
+    } else {
+        context_escaped[0] = '\0';
+    }
+
+    if (record->importance_note) {
+        katra_json_escape(record->importance_note, importance_note_escaped, sizeof(importance_note_escaped));
+    } else {
+        importance_note_escaped[0] = '\0';
+    }
+
+    /* Write JSON object (one line) */
+    fprintf(fp, "{");
+    write_basic_fields(fp, record, content_escaped, response_escaped, context_escaped, importance_note_escaped);
+    write_phase1_fields(fp, record);
+    write_phase2_phase3_fields(fp, record);
+    write_phase4_fields(fp, record);
     fprintf(fp, "}\n");
 
     return KATRA_SUCCESS;
