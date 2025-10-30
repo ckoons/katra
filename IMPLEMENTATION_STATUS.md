@@ -2,8 +2,8 @@
 
 © 2025 Casey Koons. All rights reserved.
 
-**Last Updated:** 2025-10-29
-**Version:** 1.0 (Foundation Layer)
+**Last Updated:** 2025-10-30
+**Version:** 1.0 (Foundation Layer - Phase 4 Complete)
 
 ---
 
@@ -20,7 +20,7 @@ Katra's **philosophy** is aspirational: memory as identity substrate, ethical AI
 - ✅ **Memory safety** - 108% NULL check coverage, zero unsafe string functions
 - ✅ **File safety** - goto cleanup patterns, proper resource management
 - ✅ **Code quality** - 39/39 programming guidelines passing
-- ✅ **Line budget** - 6,676/10,000 lines (66% used)
+- ✅ **Line budget** - 8,169/10,000 lines (81% used, 1,831 remaining)
 
 ### Memory Persistence
 - ✅ **Tier1 storage** - JSONL format, daily files, persistence across restarts
@@ -37,6 +37,8 @@ Katra's **philosophy** is aspirational: memory as identity substrate, ethical AI
 - ✅ **notice_pattern()** - Record pattern observations
 - ✅ **Semantic parsing** - WHY_CRITICAL, WHY_SIGNIFICANT, etc.
 - ✅ **Context queries** - relevant_memories(), recent_thoughts(), recall_about()
+- ✅ **Phase 4 enhancements** - Pattern context metadata (Thane's Priority 1)
+- ✅ **Semantic recall** - recall_about(), what_do_i_know() topic search
 
 ### Memory Health & Consolidation
 - ✅ **Memory pressure detection** - Soft (90%) and hard (100%) limits
@@ -60,10 +62,12 @@ Katra's **philosophy** is aspirational: memory as identity substrate, ethical AI
 - ✅ **Session management** - session_start(), session_end()
 
 ### Testing
-- ✅ **196/196 tests passing** - All foundation tests
-- ✅ **Identity recovery tests** - 4/4 passing (NEW)
+- ✅ **52/52 tests passing** - All foundation tests (including Phase 4)
+- ✅ **Identity recovery tests** - 4/4 passing
 - ✅ **Corruption recovery** - Graceful degradation
 - ✅ **Mock CI integration** - 12/12 tests
+- ✅ **Pattern metadata tests** - Pattern summary generation verified
+- ✅ **Semantic recall tests** - recall_about() comprehensive testing
 
 ---
 
@@ -136,12 +140,14 @@ Katra's **philosophy** is aspirational: memory as identity substrate, ethical AI
 
 ## 🎯 Roadmap
 
-### v1.0 SHIPPED ✅ (Oct 29, 2025)
+### v1.0 SHIPPED ✅ (Oct 30, 2025)
 - ✅ **Tier2 initialization** - Consolidation works
 - ✅ **Crash safety** - Periodic fsync every 6 hours
 - ✅ **Memory pressure enforcement** - Degraded mode
 - ✅ **Identity recovery tests** - 4/4 passing
 - ✅ **Consent enforcement** - Cross-CI access blocked
+- ✅ **Phase 4 complete** - Pattern context metadata (Thane's Priority 1)
+- ✅ **Semantic recall** - recall_about() fully functional and documented
 
 ### v1.1 (Scale & Polish) - 2-3 weeks
 - **P1:** Scale to 100K memories (currently tested to 10K)
@@ -190,12 +196,13 @@ Katra's **philosophy** is aspirational: memory as identity substrate, ethical AI
 
 ## Testing Coverage
 
-### Unit Tests (196/196 passing)
+### Unit Tests (52/52 passing)
 - ✅ Foundation layer (11 test suites)
 - ✅ Memory lifecycle (tier1, tier2, checkpoints)
-- ✅ Breathing layer (primitives, semantic, context)
+- ✅ Breathing layer (primitives, semantic, context, enhancements)
 - ✅ Continuity (sunrise/sunset)
-- ✅ Identity recovery (NEW - 4/4 tests)
+- ✅ Identity recovery (4/4 tests)
+- ✅ Phase 4 features (pattern context, semantic recall)
 
 ### Integration Tests
 - ✅ Mock CI daily workflow
