@@ -113,6 +113,58 @@ int decide(const char* decision, const char* reasoning);
 int notice_pattern(const char* pattern);
 
 /**
+ * thinking() - Stream of consciousness reflection
+ *
+ * Natural wrapper for reflect() that feels more like thinking aloud.
+ * Auto-stores as a reflection without explicit categorization.
+ *
+ * Example:
+ *   thinking("I notice the tests are all passing...");
+ *   thinking("This pattern seems familiar...");
+ */
+int thinking(const char* thought);
+
+/**
+ * wondering() - Store a question or uncertainty
+ *
+ * Captures the formation context of wondering/questioning.
+ * Automatically creates formation_context with uncertainty field.
+ *
+ * Example:
+ *   wondering("Why isn't the consolidation running?");
+ *   // ... investigation ...
+ *   figured_out("Because tier1 wasn't at threshold yet");
+ */
+int wondering(const char* question);
+
+/**
+ * figured_out() - Store the resolution to a question
+ *
+ * Captures the "aha!" moment when uncertainty resolves.
+ * Automatically creates formation_context with resolution field.
+ *
+ * Example:
+ *   wondering("Why are tests failing?");
+ *   // ... debugging ...
+ *   figured_out("Forgot to initialize the breathing layer");
+ */
+int figured_out(const char* resolution);
+
+/**
+ * in_response_to() - Store thought linked to previous memory
+ *
+ * Creates explicit conversation flow by linking new thought to previous memory.
+ * Uses the related_to field to track conversation continuity.
+ *
+ * Example:
+ *   char* id1 = remember("Casey asked about Phase 4", WHY_SIGNIFICANT);
+ *   in_response_to(id1, "Explained semantic embeddings and ONNX runtime");
+ *
+ * Returns: Memory ID of new thought (caller must free), or NULL on error
+ */
+char* in_response_to(const char* prev_mem_id, const char* thought);
+
+/**
  * remember_forever() - Mark memory as critical preservation (Thane's Phase 1)
  *
  * Gives CI explicit control: "I want to remember this forever."
@@ -212,6 +264,23 @@ char** recent_thoughts(size_t limit, size_t* count);
  * Returns: Array of strings (caller owns), or NULL on error/no matches
  */
 char** recall_about(const char* topic, size_t* count);
+
+/**
+ * what_do_i_know() - Find knowledge about a concept
+ *
+ * Like recall_about(), but filters for MEMORY_TYPE_KNOWLEDGE only.
+ * Returns facts, skills, and understanding you've learned.
+ *
+ * Example:
+ *   char** knowledge = what_do_i_know("consolidation", &count);
+ *   // Use knowledge...
+ *   free_memory_list(knowledge, count);
+ *
+ * Memory ownership: Caller must call free_memory_list() when done.
+ *
+ * Returns: Array of strings (caller owns), or NULL on error/no matches
+ */
+char** what_do_i_know(const char* concept, size_t* count);
 
 /**
  * free_memory_list() - Free memory list returned by context functions

@@ -404,6 +404,43 @@ int katra_memory_get_connection_hubs(const char* ci_id, float min_centrality,
 /* Free connection hubs array */
 void katra_memory_free_connection_hubs(memory_connection_hub_t* hubs, size_t count);
 
+/* Related memory information (Quick Win #2) */
+typedef struct {
+    char* record_id;               /* Related memory ID */
+    char* content_preview;         /* First 100 chars of content */
+    float similarity_score;        /* Similarity to target (0.0-1.0) */
+    bool explicit_link;            /* True if related_to link */
+} related_memory_t;
+
+/* Get memories related to a specific record
+ *
+ * Finds memories similar to a target memory based on:
+ * - Keyword similarity (using Phase 2/3 keyword matching)
+ * - Explicit related_to links
+ *
+ * Results are sorted by similarity score (highest first).
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   record_id - Target memory to find relations for
+ *   max_results - Maximum number of results (0 = no limit)
+ *   min_similarity - Minimum similarity threshold (0.0-1.0, recommend 0.3)
+ *   related - Array of related memories (caller must free)
+ *   count - Number of related memories found
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id, record_id, related, or count is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ *   E_NOT_FOUND if target record_id doesn't exist
+ */
+int katra_memory_get_related(const char* ci_id, const char* record_id,
+                              size_t max_results, float min_similarity,
+                              related_memory_t** related, size_t* count);
+
+/* Free related memories array */
+void katra_memory_free_related(related_memory_t* related, size_t count);
+
 /* ============================================================================
  * Connection Graph API (Thane's Phase 2)
  * ============================================================================

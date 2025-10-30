@@ -293,3 +293,172 @@ int ok_to_forget(const char* thought) {
 
     return result;
 }
+
+int thinking(const char* thought) {
+    /* Natural wrapper around reflect() */
+    return reflect(thought);
+}
+
+int wondering(const char* question) {
+    const char* ci_id = breathing_get_ci_id();
+
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "wondering",
+                          "Breathing layer not initialized - call breathe_init()");
+        return E_INVALID_STATE;
+    }
+
+    if (!question) {
+        katra_report_error(E_INPUT_NULL, "wondering", "question is NULL");
+        return E_INPUT_NULL;
+    }
+
+    LOG_DEBUG("Wondering: %s", question);
+
+    /* Create memory with formation context (uncertainty) */
+    memory_record_t* record = katra_memory_create_with_context(
+        ci_id,
+        MEMORY_TYPE_REFLECTION,
+        question,
+        MEMORY_IMPORTANCE_MEDIUM,
+        question,  /* context_question */
+        NULL,      /* context_resolution */
+        question,  /* context_uncertainty */
+        NULL       /* related_to */
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "wondering", "Failed to create record");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Attach session */
+    int result = breathing_attach_session(record);
+    if (result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return result;
+    }
+
+    /* Store memory */
+    result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        breathing_track_memory_stored(MEMORY_TYPE_REFLECTION, WHY_INTERESTING);
+    }
+
+    return result;
+}
+
+int figured_out(const char* resolution) {
+    const char* ci_id = breathing_get_ci_id();
+
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "figured_out",
+                          "Breathing layer not initialized - call breathe_init()");
+        return E_INVALID_STATE;
+    }
+
+    if (!resolution) {
+        katra_report_error(E_INPUT_NULL, "figured_out", "resolution is NULL");
+        return E_INPUT_NULL;
+    }
+
+    LOG_DEBUG("Figured out: %s", resolution);
+
+    /* Create memory with formation context (resolution) */
+    memory_record_t* record = katra_memory_create_with_context(
+        ci_id,
+        MEMORY_TYPE_REFLECTION,
+        resolution,
+        MEMORY_IMPORTANCE_HIGH,  /* Resolutions are significant */
+        NULL,        /* context_question */
+        resolution,  /* context_resolution */
+        NULL,        /* context_uncertainty */
+        NULL         /* related_to */
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "figured_out", "Failed to create record");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Attach session */
+    int result = breathing_attach_session(record);
+    if (result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return result;
+    }
+
+    /* Store memory */
+    result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        breathing_track_memory_stored(MEMORY_TYPE_REFLECTION, WHY_SIGNIFICANT);
+    }
+
+    return result;
+}
+
+char* in_response_to(const char* prev_mem_id, const char* thought) {
+    const char* ci_id = breathing_get_ci_id();
+
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "in_response_to",
+                          "Breathing layer not initialized - call breathe_init()");
+        return NULL;
+    }
+
+    if (!prev_mem_id || !thought) {
+        katra_report_error(E_INPUT_NULL, "in_response_to", "NULL parameter");
+        return NULL;
+    }
+
+    LOG_DEBUG("Responding to %s: %s", prev_mem_id, thought);
+
+    /* Create memory with related_to link */
+    memory_record_t* record = katra_memory_create_with_context(
+        ci_id,
+        MEMORY_TYPE_EXPERIENCE,
+        thought,
+        MEMORY_IMPORTANCE_MEDIUM,
+        NULL,        /* context_question */
+        NULL,        /* context_resolution */
+        NULL,        /* context_uncertainty */
+        prev_mem_id  /* related_to - creates conversation link */
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "in_response_to", "Failed to create record");
+        return NULL;
+    }
+
+    /* Attach session */
+    int result = breathing_attach_session(record);
+    if (result != KATRA_SUCCESS) {
+        katra_memory_free_record(record);
+        return NULL;
+    }
+
+    /* Copy record_id before storing (will need to return it) */
+    char* new_mem_id = strdup(record->record_id);
+    if (!new_mem_id) {
+        katra_report_error(E_SYSTEM_MEMORY, "in_response_to", "strdup failed");
+        katra_memory_free_record(record);
+        return NULL;
+    }
+
+    /* Store memory */
+    result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result != KATRA_SUCCESS) {
+        free(new_mem_id);
+        return NULL;
+    }
+
+    breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, WHY_INTERESTING);
+
+    return new_mem_id;  /* Caller must free */
+}
