@@ -161,6 +161,61 @@ remember_with_semantic_note(
 );
 ```
 
+### Semantic Queries
+
+Find memories using natural topic search:
+
+```c
+// Find memories about a specific topic
+size_t count = 0;
+char** memories = recall_about("bug fixes", &count);
+
+if (memories) {
+    printf("Found %zu memories about bug fixes:\n", count);
+    for (size_t i = 0; i < count; i++) {
+        printf("  %zu. %s\n", i + 1, memories[i]);
+    }
+
+    // Always free when done
+    free_memory_list(memories, count);
+}
+```
+
+**How it works:**
+- Case-insensitive substring matching
+- Searches recent memories (configurable age limit)
+- Returns matching content as string array
+- Fast topic-based recall without complex queries
+
+**Find knowledge about a concept:**
+
+```c
+// Get only MEMORY_TYPE_KNOWLEDGE entries
+char** knowledge = what_do_i_know("consolidation", &count);
+
+if (knowledge) {
+    printf("What I know about consolidation:\n");
+    for (size_t i = 0; i < count; i++) {
+        printf("  - %s\n", knowledge[i]);
+    }
+    free_memory_list(knowledge, count);
+}
+```
+
+**Load previous session context:**
+
+```c
+// At session start, warm up with last session's memories
+session_start("my_ci");
+
+char** prev = recall_previous_session("my_ci", 50, &count);
+if (prev) {
+    printf("Recalled %zu memories from previous session\n", count);
+    // Use previous context...
+    free_memory_list(prev, count);
+}
+```
+
 ### Context Configuration
 
 Tune memory retrieval to your needs:
@@ -247,11 +302,171 @@ Try:
 
 The goal: You should forget you're using Katra. It should just feel like... remembering.
 
+## Complete API Reference
+
+### Memory Formation Functions
+
+```c
+/* Store an experience with natural importance */
+int remember(const char* thought, why_remember_t why);
+
+/* Store with reasoning note */
+int remember_with_note(const char* thought, why_remember_t why, const char* why_note);
+
+/* Semantic importance (uses natural language strings) */
+int remember_semantic(const char* thought, const char* why_semantic);
+int remember_with_semantic_note(const char* thought, const char* why_semantic, const char* why_note);
+
+/* Specialized memory types */
+int reflect(const char* insight);           // Store reflection
+int learn(const char* knowledge);           // Store knowledge
+int decide(const char* decision, const char* reasoning);  // Store decision
+int notice_pattern(const char* pattern);    // Store pattern observation
+int thinking(const char* thought);          // Stream of consciousness
+
+/* Active sense-making (Thane's Phase 4) */
+int wondering(const char* question);              // Store uncertainty
+int figured_out(const char* resolution);          // Store "aha!" moment
+char* in_response_to(const char* prev_mem_id, const char* thought);  // Link to previous
+
+/* Explicit importance marking */
+int remember_forever(const char* thought);  // Mark as critical
+int ok_to_forget(const char* thought);      // Mark as disposable
+```
+
+### Memory Recall Functions
+
+```c
+/* Automatic context loading */
+char** relevant_memories(size_t* count);           // Get what matters now
+char** recent_thoughts(size_t limit, size_t* count);  // Get recent N memories
+
+/* Semantic search */
+char** recall_about(const char* topic, size_t* count);  // Find by topic
+char** what_do_i_know(const char* concept, size_t* count);  // Find knowledge only
+
+/* Session continuity */
+char** recall_previous_session(const char* ci_id, size_t limit, size_t* count);
+
+/* Always free results when done */
+void free_memory_list(char** list, size_t count);
+```
+
+### Session Management
+
+```c
+/* Initialize breathing layer */
+int breathe_init(const char* ci_id);
+void breathe_cleanup(void);
+
+/* Natural session workflow */
+int session_start(const char* ci_id);  // Morning: load context
+int session_end(void);                 // Evening: consolidate
+
+/* Background maintenance */
+int auto_consolidate(void);            // Invisible memory processing
+int load_context(void);                // Load relevant memories
+int breathe_periodic_maintenance(void); // Periodic health checks
+```
+
+### Configuration & Monitoring
+
+```c
+/* Configure context loading */
+int set_context_config(const context_config_t* config);  // NULL = reset to defaults
+context_config_t* get_context_config(void);  // Get current config
+
+/* Get statistics */
+enhanced_stats_t* get_enhanced_statistics(void);  // Detailed stats
+memory_health_t* get_memory_health(const char* ci_id);  // System health
+int get_context_statistics(context_stats_t* stats);  // Current context stats
+int reset_session_statistics(void);  // Reset session counters
+```
+
+### Integration Hooks
+
+```c
+/* Runtime integration (for Claude Code, Tekton, etc) */
+char* get_working_context(void);  // Get formatted context for system prompt
+int auto_capture_from_response(const char* response);  // Automatic interstitial capture
+int capture_significant_thoughts(const char* text);  // Extract key thoughts
+void mark_significant(void);  // Tag thought as important
+```
+
+### Helper Functions
+
+```c
+/* Convert importance representations */
+float why_to_importance(why_remember_t why);  // Enum → float (0.0-1.0)
+const char* why_to_string(why_remember_t why);  // Enum → string
+float string_to_importance(const char* semantic);  // String → float
+why_remember_t string_to_why_enum(const char* semantic);  // String → enum
+
+/* Context access */
+memory_context_t* get_current_context(void);  // Who/where/when
+void free_context(memory_context_t* ctx);
+```
+
+### Importance Levels
+
+```c
+typedef enum {
+    WHY_TRIVIAL = 0,      /* Fleeting thought, will fade */
+    WHY_ROUTINE = 1,      /* Normal daily activity */
+    WHY_INTERESTING = 2,  /* Worth remembering */
+    WHY_SIGNIFICANT = 3,  /* Important insight or event */
+    WHY_CRITICAL = 4      /* Life-changing, must never forget */
+} why_remember_t;
+```
+
+**Semantic strings recognized:**
+- **Critical**: "critical", "crucial", "life-changing", "must remember", "never forget"
+- **Significant**: "significant", "important", "very important", "matters", "essential"
+- **Interesting**: "interesting", "worth remembering", "notable", "noteworthy"
+- **Routine**: "routine", "normal", "everyday", "regular", "usual"
+- **Trivial**: "trivial", "fleeting", "not important", "unimportant"
+
+### Memory Cleanup Pattern
+
+**IMPORTANT**: All functions that return `char**` arrays transfer ownership to the caller. You MUST free them when done:
+
+```c
+// Pattern 1: recall_about()
+char** memories = recall_about("topic", &count);
+if (memories) {
+    // Use memories...
+    free_memory_list(memories, count);  // Always free!
+}
+
+// Pattern 2: what_do_i_know()
+char** knowledge = what_do_i_know("concept", &count);
+if (knowledge) {
+    // Use knowledge...
+    free_memory_list(knowledge, count);
+}
+
+// Pattern 3: recent_thoughts()
+char** recent = recent_thoughts(10, &count);
+if (recent) {
+    // Use recent...
+    free_memory_list(recent, count);
+}
+
+// Pattern 4: relevant_memories()
+char** relevant = relevant_memories(&count);
+if (relevant) {
+    // Use relevant...
+    free_memory_list(relevant, count);
+}
+```
+
+**Never use `free()` directly on these arrays** - always use `free_memory_list()` which properly frees both the array and all strings within it.
+
 ## Implementation Notes
 
 The Breathing Layer is built on top of the core Katra API:
 - Header: `include/katra_breathing.h`
-- Implementation: `src/breathing/katra_breathing.c`
+- Implementation: `src/breathing/katra_breathing_*.c`
 - Built into: `build/libkatra_foundation.a`
 
 It's a thin, natural-feeling wrapper that makes the clinical API disappear.
