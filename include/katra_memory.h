@@ -91,6 +91,7 @@ typedef struct {
     size_t pattern_frequency;    /* How many times this pattern occurs */
     bool is_pattern_outlier;     /* True if this is an outlier worth preserving */
     float semantic_similarity;   /* Similarity score to pattern centroid (0.0-1.0) */
+    char* pattern_summary;       /* Context about archived pattern (NULL if not pattern outlier) */
 
     /* Thane's active sense-making - Phase 4: Formation context */
     char* context_question;      /* Why did I remember this? What problem/question? */

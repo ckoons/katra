@@ -163,6 +163,7 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     EXTRACT_INT_WITH_DEFAULT(line, "pattern_frequency", pattern_frequency, size_t, 0); /* GUIDELINE_APPROVED */
     EXTRACT_BOOL_WITH_DEFAULT(line, "is_pattern_outlier", is_pattern_outlier, false); /* GUIDELINE_APPROVED */
     EXTRACT_FLOAT_WITH_DEFAULT(line, "semantic_similarity", semantic_similarity, 0.0); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "pattern_summary", pattern_summary); /* GUIDELINE_APPROVED */
 
     /* Extract Phase 4 fields - formation context (Thane's active sense-making) */
     EXTRACT_OPTIONAL_STRING(line, "context_question", context_question); /* GUIDELINE_APPROVED */
@@ -249,6 +250,12 @@ static void write_phase2_phase3_fields(FILE* fp, const memory_record_t* record) 
     fprintf(fp, ",\"pattern_frequency\":%zu", record->pattern_frequency);
     fprintf(fp, ",\"is_pattern_outlier\":%s", record->is_pattern_outlier ? "true" : "false");
     fprintf(fp, ",\"semantic_similarity\":%.4f", record->semantic_similarity);
+
+    if (record->pattern_summary) {
+        char summary_escaped[KATRA_BUFFER_LARGE];
+        katra_json_escape(record->pattern_summary, summary_escaped, sizeof(summary_escaped));
+        fprintf(fp, ",\"pattern_summary\":\"%s\"", summary_escaped);
+    }
 }
 
 /* Helper: Write Phase 4 fields (formation context) */

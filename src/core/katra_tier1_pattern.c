@@ -242,6 +242,25 @@ void katra_tier1_detect_patterns(memory_record_t** records, size_t count) {
             }
             records[max_importance_idx]->is_pattern_outlier = true;  /* Most important */
 
+            /* Add pattern context summary for outliers (Thane's Priority 1) */
+            size_t archived_count = member_count - 3;  /* All non-outliers will be archived */
+            char summary[KATRA_BUFFER_LARGE];
+            snprintf(summary, sizeof(summary),
+                    "Pattern: %zu occurrences (%zu archived, 3 preserved as outliers)",
+                    member_count, archived_count);
+
+            /* Set summary for each outlier */
+            for (size_t m = 0; m < member_count; m++) {
+                size_t idx = pattern_members[m];
+                if (records[idx]->is_pattern_outlier) {
+                    records[idx]->pattern_summary = strdup(summary);
+                    if (!records[idx]->pattern_summary) {
+                        LOG_WARN("Failed to allocate pattern_summary for record %s",
+                                records[idx]->record_id);
+                    }
+                }
+            }
+
             LOG_DEBUG("Detected pattern %s with %zu members", pattern_id, member_count);
         }
     }

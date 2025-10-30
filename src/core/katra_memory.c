@@ -371,6 +371,7 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     record->pattern_frequency = 0;       /* No pattern frequency */
     record->is_pattern_outlier = false;  /* Not an outlier */
     record->semantic_similarity = 0.0;   /* No similarity calculated */
+    record->pattern_summary = NULL;      /* No pattern context yet */
 
     /* Initialize Thane's Phase 4 fields - formation context */
     record->context_question = NULL;     /* No formation question */
@@ -468,6 +469,7 @@ void katra_memory_free_record(memory_record_t* record) {
 
     /* Free Phase 3 pattern fields */
     free(record->pattern_id);
+    free(record->pattern_summary);
 
     /* Free Phase 4 formation context fields */
     free(record->context_question);
