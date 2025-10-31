@@ -21,7 +21,10 @@ static json_t* execute_phase5_query(const char* query_text, query_type_t type, c
         return mcp_tool_error("Missing required argument", "'query' is required");
     }
 
-    pthread_mutex_lock(&g_katra_api_lock);
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+    }
 
     composition_query_t* query = katra_phase5_create_query(query_text, type);
     if (!query) {

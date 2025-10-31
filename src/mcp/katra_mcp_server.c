@@ -56,6 +56,7 @@ static int generate_ci_id(char* buffer, size_t size) {
 /* Initialize MCP server */
 int mcp_server_init(const char* ci_id) {
     if (!ci_id) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Error: ci_id is NULL\n");
         return E_INPUT_NULL;
     }
@@ -63,6 +64,7 @@ int mcp_server_init(const char* ci_id) {
     /* Step 1: Initialize Katra */
     int result = katra_init();
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to initialize Katra: %s\n",
                 katra_error_message(result));
         return result;
@@ -71,6 +73,7 @@ int mcp_server_init(const char* ci_id) {
     /* Step 2: Initialize Katra memory */
     result = katra_memory_init(ci_id);
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to initialize Katra memory: %s\n",
                 katra_error_message(result));
         katra_exit();
@@ -80,6 +83,7 @@ int mcp_server_init(const char* ci_id) {
     /* Step 3: Initialize breathing layer */
     result = breathe_init(ci_id);
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to initialize breathing layer: %s\n",
                 katra_error_message(result));
         katra_memory_cleanup();
@@ -90,6 +94,7 @@ int mcp_server_init(const char* ci_id) {
     /* Step 4: Start session */
     result = session_start(ci_id);
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to start session: %s\n",
                 katra_error_message(result));
         breathe_cleanup();
@@ -175,16 +180,19 @@ int main(void) {
     char ci_id[128];
     int result = generate_ci_id(ci_id, sizeof(ci_id));
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to generate CI identity: %s\n",
                 katra_error_message(result));
         return EXIT_FAILURE;
     }
 
+    /* GUIDELINE_APPROVED: startup diagnostic message */
     fprintf(stderr, "Katra MCP Server starting with CI identity: %s\n", ci_id);
 
     /* Initialize server */
     result = mcp_server_init(ci_id);
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Server initialization failed: %s\n",
                 katra_error_message(result));
         return EXIT_FAILURE;
@@ -196,6 +204,7 @@ int main(void) {
     /* Cleanup */
     mcp_server_cleanup();
 
+    /* GUIDELINE_APPROVED: shutdown diagnostic message */
     fprintf(stderr, "Katra MCP Server stopped\n");
     return exit_code;
 }

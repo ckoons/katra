@@ -18,7 +18,13 @@ extern pthread_mutex_t g_katra_api_lock;
 
 /* Resource: working-context */
 json_t* mcp_resource_working_context(json_t* id) {
-    pthread_mutex_lock(&g_katra_api_lock);
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 "Internal error",
+                                 "Failed to acquire mutex lock");
+    }
+
     char* context = get_working_context();
     pthread_mutex_unlock(&g_katra_api_lock);
 
@@ -51,7 +57,13 @@ json_t* mcp_resource_working_context(json_t* id) {
 json_t* mcp_resource_session_info(json_t* id) {
     katra_session_info_t info;
 
-    pthread_mutex_lock(&g_katra_api_lock);
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 "Internal error",
+                                 "Failed to acquire mutex lock");
+    }
+
     int katra_result = katra_get_session_info(&info);
     pthread_mutex_unlock(&g_katra_api_lock);
 

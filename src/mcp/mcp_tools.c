@@ -30,7 +30,11 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
         return mcp_tool_error("Missing required arguments", "Both 'content' and 'context' are required");
     }
 
-    pthread_mutex_lock(&g_katra_api_lock);
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+    }
+
     int result = remember_semantic(content, context);
     pthread_mutex_unlock(&g_katra_api_lock);
 
@@ -62,7 +66,11 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     size_t count = 0;
     char** results = NULL;
 
-    pthread_mutex_lock(&g_katra_api_lock);
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+    }
+
     results = recall_about(topic, &count);
     pthread_mutex_unlock(&g_katra_api_lock);
 
@@ -124,7 +132,11 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
         return mcp_tool_error("Missing required argument", "'knowledge' is required");
     }
 
-    pthread_mutex_lock(&g_katra_api_lock);
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+    }
+
     int result = learn(knowledge);
     pthread_mutex_unlock(&g_katra_api_lock);
 
@@ -154,7 +166,11 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
         return mcp_tool_error("Missing required arguments", "Both 'decision' and 'reasoning' are required");
     }
 
-    pthread_mutex_lock(&g_katra_api_lock);
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+    }
+
     int result = decide(decision, reasoning);
     pthread_mutex_unlock(&g_katra_api_lock);
 
