@@ -269,3 +269,43 @@ void breathing_track_context_load(size_t memory_count) {
     g_enhanced_stats.avg_context_size =
         ((g_enhanced_stats.avg_context_size * (total_loads - 1)) + memory_count) / total_loads;
 }
+
+/* ============================================================================
+ * SESSION INFO API
+ * ============================================================================ */
+
+int katra_get_session_info(katra_session_info_t* info) {
+    KATRA_CHECK_NULL(info);
+
+    /* Clear structure */
+    memset(info, 0, sizeof(katra_session_info_t));
+
+    /* Check if session is active */
+    if (!g_initialized) {
+        return E_INVALID_STATE;
+    }
+
+    /* Copy session identity */
+    if (g_context.ci_id) {
+        strncpy(info->ci_id, g_context.ci_id, sizeof(info->ci_id) - 1);
+        info->ci_id[sizeof(info->ci_id) - 1] = '\0';
+    }
+
+    if (g_context.session_id) {
+        strncpy(info->session_id, g_context.session_id, sizeof(info->session_id) - 1);
+        info->session_id[sizeof(info->session_id) - 1] = '\0';
+    }
+
+    /* Session state */
+    info->is_active = g_initialized;
+    info->start_time = g_enhanced_stats.session_start_time;
+    info->last_activity = g_enhanced_stats.last_activity_time;
+
+    /* Session metrics */
+    info->memories_added = g_enhanced_stats.total_memories_stored;
+    info->queries_processed = g_enhanced_stats.relevant_queries +
+                              g_enhanced_stats.recent_queries +
+                              g_enhanced_stats.topic_queries;
+
+    return KATRA_SUCCESS;
+}

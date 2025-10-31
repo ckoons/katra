@@ -598,6 +598,43 @@ memory_health_t* get_memory_health(const char* ci_id);
  */
 int reset_session_statistics(void);
 
+/**
+ * katra_session_info_t - Current session state information
+ *
+ * Provides essential session state for monitoring, debugging, and MCP integration.
+ * Simpler than enhanced_stats_t - answers "what session is running right now?"
+ *
+ * Unlike enhanced_stats_t which tracks operation counts and patterns,
+ * this structure provides current session identity and basic metrics.
+ */
+typedef struct {
+    char ci_id[64];                     /* CI identity for this session */
+    char session_id[128];               /* Unique session identifier */
+    time_t start_time;                  /* When session started (0 if no session) */
+    size_t memories_added;              /* Memories stored this session */
+    size_t queries_processed;           /* Total queries (relevant + recent + topic) */
+    bool is_active;                     /* True if session is active */
+    time_t last_activity;               /* Most recent operation timestamp */
+} katra_session_info_t;
+
+/**
+ * katra_get_session_info() - Get current session information
+ *
+ * Returns essential session state for monitoring and integration.
+ * All string fields are copied into caller-provided structure.
+ *
+ * Example usage in MCP server:
+ *   katra_session_info_t info;
+ *   if (katra_get_session_info(&info) == KATRA_SUCCESS) {
+ *       LOG_INFO("Session %s active for CI %s", info.session_id, info.ci_id);
+ *       LOG_INFO("Added %zu memories, processed %zu queries",
+ *                info.memories_added, info.queries_processed);
+ *   }
+ *
+ * Returns: KATRA_SUCCESS, or E_INVALID_STATE if no session active
+ */
+int katra_get_session_info(katra_session_info_t* info);
+
 /* ============================================================================
  * HELPERS - Convert between layers
  * ============================================================================ */
