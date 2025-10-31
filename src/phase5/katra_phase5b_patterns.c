@@ -10,7 +10,7 @@
 #include "katra_log.h"
 
 /* Maximum patterns we'll track */
-#define MAX_PATTERNS 256
+#define MAX_PATTERNS PHASE5_MAX_PATTERNS
 
 /* Pattern storage */
 static struct {
@@ -20,14 +20,12 @@ static struct {
     size_t next_id;                  /* For generating pattern IDs */
 } g_pattern_store = {0};
 
-/* Helper: Generate unique pattern ID */
-static void generate_pattern_id(char* buffer, size_t size, pattern_type_t type) {
+/* Pattern type names for ID generation */
+static const char* pattern_type_name(pattern_type_t type) {
     const char* type_names[] = {
         "naming", "org", "error", "memory", "api", "test", "doc"
     };
-
-    snprintf(buffer, size, "pattern_%s_%zu",
-             type_names[type], g_pattern_store.next_id++);
+    return type < 7 ? type_names[type] : "unknown";
 }
 
 /* Helper: Calculate pattern confidence */
@@ -42,15 +40,15 @@ static float calculate_pattern_confidence(learned_pattern_t* pattern) {
         (float)pattern->example_count / (float)total : 0.0f;
 
     /* Factor 2: Usage count (more observations = higher confidence) */
-    float usage_confidence = fminf(1.0f, pattern->usage_count / 10.0f);
+    float usage_confidence = fminf(1.0f, pattern->usage_count / PHASE5_USAGE_SATURATION);
 
     /* Factor 3: Recommendation accuracy */
     float rec_confidence = pattern->recommendation_accuracy;
 
     /* Factor 4: Age/stability (patterns seen longer are more trusted) */
     time_t now = time(NULL);
-    float age_days = (float)(now - pattern->created) / (24.0f * 3600.0f);
-    float age_confidence = fminf(1.0f, age_days / 30.0f);  /* 30 days to full trust */
+    float age_days = (float)(now - pattern->created) / (PHASE5_HOURS_PER_DAY * PHASE5_SECONDS_PER_HOUR);
+    float age_confidence = fminf(1.0f, age_days / PHASE5_DAYS_TO_TRUST);
 
     /* Combined confidence (weighted) */
     pattern->confidence =
@@ -140,18 +138,37 @@ int katra_phase5b_learn_pattern(
         return E_SYSTEM_MEMORY;
     }
 
-    /* Generate ID */
-    generate_pattern_id(pattern->pattern_id, sizeof(pattern->pattern_id), type);
+    /* Generate ID using common utility */
+    char prefix[PHASE5_SMALL_BUFFER];
+    snprintf(prefix, sizeof(prefix), "pattern_%s", pattern_type_name(type));
+    char* id = phase5_generate_id(prefix, &g_pattern_store.next_id);
+    if (!id) {
+        katra_phase5b_free_pattern(pattern);
+        return E_SYSTEM_MEMORY;
+    }
+    strncpy(pattern->pattern_id, id, sizeof(pattern->pattern_id) - 1);
+    pattern->pattern_id[sizeof(pattern->pattern_id) - 1] = '\0';
+    free(id);
 
     /* Set fields */
     pattern->type = type;
-    pattern->name = strdup(name);
-    pattern->description = strdup(description);
-    pattern->rationale = rationale ? strdup(rationale) : NULL;
 
-    if (!pattern->name || !pattern->description) {
+    int result = phase5_safe_strdup(&pattern->name, name);
+    if (result != KATRA_SUCCESS) {
         katra_phase5b_free_pattern(pattern);
-        return E_SYSTEM_MEMORY;
+        return result;
+    }
+
+    result = phase5_safe_strdup(&pattern->description, description);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5b_free_pattern(pattern);
+        return result;
+    }
+
+    result = phase5_safe_strdup(&pattern->rationale, rationale);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5b_free_pattern(pattern);
+        return result;
     }
 
     /* Initialize metrics */
@@ -207,13 +224,19 @@ int katra_phase5b_add_example(
     pattern->examples = new_examples;
     pattern_example_t* example = &pattern->examples[pattern->example_count];
 
-    example->location = strdup(location);
-    example->code_snippet = strdup(code_snippet);
-    example->discovered = time(NULL);
-
-    if (!example->location || !example->code_snippet) {
-        return E_SYSTEM_MEMORY;
+    int result = phase5_safe_strdup(&example->location, location);
+    if (result != KATRA_SUCCESS) {
+        return result;
     }
+
+    result = phase5_safe_strdup(&example->code_snippet, code_snippet);
+    if (result != KATRA_SUCCESS) {
+        free(example->location);
+        example->location = NULL;
+        return result;
+    }
+
+    example->discovered = time(NULL);
 
     pattern->example_count++;
     pattern->usage_count++;
@@ -258,15 +281,29 @@ int katra_phase5b_add_exception(
     pattern->exceptions = new_exceptions;
     pattern_exception_t* exception = &pattern->exceptions[pattern->exception_count];
 
-    exception->location = strdup(location);
-    exception->code_snippet = strdup(code_snippet);
-    exception->reason = reason ? strdup(reason) : NULL;
+    int result = phase5_safe_strdup(&exception->location, location);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    result = phase5_safe_strdup(&exception->code_snippet, code_snippet);
+    if (result != KATRA_SUCCESS) {
+        free(exception->location);
+        exception->location = NULL;
+        return result;
+    }
+
+    result = phase5_safe_strdup(&exception->reason, reason);
+    if (result != KATRA_SUCCESS) {
+        free(exception->location);
+        free(exception->code_snippet);
+        exception->location = NULL;
+        exception->code_snippet = NULL;
+        return result;
+    }
+
     exception->discovered = time(NULL);
     exception->justified = justified;
-
-    if (!exception->location || !exception->code_snippet) {
-        return E_SYSTEM_MEMORY;
-    }
 
     pattern->exception_count++;
     pattern->last_seen = time(NULL);
@@ -409,7 +446,7 @@ int katra_phase5b_record_outcome(const char* pattern_id, bool accepted) {
 
     LOG_DEBUG("Pattern %s: %zu/%zu accepted (%.1f%%)",
               pattern_id, pattern->accepted_count, pattern->recommended_count,
-              pattern->recommendation_accuracy * 100.0f);
+              pattern->recommendation_accuracy * PHASE5_PERCENT_MULTIPLIER);
 
     return KATRA_SUCCESS;
 }

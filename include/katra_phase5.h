@@ -20,6 +20,61 @@
  * - Always include alternatives
  */
 
+/* Phase 5 Constants */
+
+/* Buffer sizes */
+#define PHASE5_QUERY_ID_SIZE 64
+#define PHASE5_SMALL_BUFFER 256
+#define PHASE5_MEDIUM_BUFFER 512
+#define PHASE5_LARGE_BUFFER 1024
+#define PHASE5_PATTERN_ID_SIZE 64
+#define PHASE5_CHAIN_ID_SIZE 64
+#define PHASE5_CHANGE_ID_SIZE 64
+#define PHASE5_PRACTICE_ID_SIZE 64
+
+/* Capacity limits */
+#define PHASE5_MAX_PATTERNS 256
+#define PHASE5_MAX_REASONING_CHAINS 128
+#define PHASE5_MAX_INFERENCE_RULES 64
+#define PHASE5_MAX_DEPENDENCIES 1024
+#define PHASE5_MAX_CHANGE_RECORDS 256
+#define PHASE5_MAX_PRACTICES 256
+#define PHASE5_MAX_ANTIPATTERNS 128
+
+/* Confidence calculation constants */
+#define PHASE5_USAGE_SATURATION 10.0f        /* Observations needed for full confidence */
+#define PHASE5_IMPACT_SCALE 20.0f             /* Scale factor for impact calculation */
+#define PHASE5_DEPENDENCY_SCALE 10.0f         /* Scale factor for dependency risk */
+
+/* Time constants */
+#define PHASE5_HOURS_PER_DAY 24.0f
+#define PHASE5_SECONDS_PER_HOUR 3600.0f
+#define PHASE5_DAYS_TO_TRUST 30.0f            /* Days until pattern fully trusted */
+#define PHASE5_DECAY_HALFLIFE 90.0f           /* Temporal decay half-life in days */
+
+/* Display constants */
+#define PHASE5_PERCENT_MULTIPLIER 100.0f
+
+/* Phase 5 Common Utilities API */
+
+/* Generate unique ID with prefix (caller must free) */
+char* phase5_generate_id(const char* prefix, size_t* counter);
+
+/* Calculate weighted confidence from factors */
+typedef struct {
+    float factors[5];      /* Up to 5 confidence factors */
+    float weights[5];      /* Weights for each factor */
+    size_t factor_count;   /* Number of factors used */
+} phase5_confidence_calc_t;
+
+float phase5_calculate_confidence(const phase5_confidence_calc_t* calc);
+
+/* Safe strdup with NULL check (returns error code) */
+int phase5_safe_strdup(char** dest, const char* src);
+
+/* Free string array utility */
+void phase5_free_string_array(char** array, size_t count);
+
 /* Query types */
 typedef enum {
     QUERY_TYPE_PLACEMENT,      /* "Where should this function go?" */
@@ -177,7 +232,7 @@ typedef struct {
 
 /* Learned pattern */
 typedef struct {
-    char pattern_id[64];         /* Unique pattern identifier */
+    char pattern_id[PHASE5_PATTERN_ID_SIZE];         /* Unique pattern identifier */
     pattern_type_t type;         /* Type of pattern */
     char* name;                  /* Human-readable name */
     char* description;           /* What this pattern represents */
@@ -311,7 +366,7 @@ typedef struct {
 
 /* Historical change record */
 typedef struct {
-    char change_id[64];          /* Unique change identifier */
+    char change_id[PHASE5_CHANGE_ID_SIZE];          /* Unique change identifier */
     char* description;           /* What was changed */
     time_t timestamp;            /* When change occurred */
 
@@ -403,7 +458,7 @@ typedef struct {
 
 /* Reasoning chain (multi-step inference) */
 typedef struct {
-    char chain_id[64];           /* Unique chain identifier */
+    char chain_id[PHASE5_CHAIN_ID_SIZE];           /* Unique chain identifier */
     char* goal;                  /* What we're trying to conclude */
 
     inference_step_t* steps;     /* Chain of inference steps */
@@ -438,7 +493,7 @@ typedef struct {
 
 /* Best practice record */
 typedef struct {
-    char practice_id[64];        /* Unique identifier */
+    char practice_id[PHASE5_PRACTICE_ID_SIZE];        /* Unique identifier */
     char* name;                  /* Practice name */
     char* description;           /* What this practice is */
     char* rationale;             /* Why it's a best practice */
@@ -455,7 +510,7 @@ typedef struct {
 
 /* Anti-pattern record */
 typedef struct {
-    char antipattern_id[64];     /* Unique identifier */
+    char antipattern_id[PHASE5_PRACTICE_ID_SIZE];     /* Unique identifier */
     char* name;                  /* Anti-pattern name */
     char* description;           /* What to avoid */
     char* why_bad;               /* Why it's problematic */

@@ -10,8 +10,8 @@
 #include "katra_log.h"
 
 /* Maximum dependencies and changes to track */
-#define MAX_DEPENDENCIES 1024
-#define MAX_CHANGE_RECORDS 256
+#define MAX_DEPENDENCIES PHASE5_MAX_DEPENDENCIES
+#define MAX_CHANGE_RECORDS PHASE5_MAX_CHANGE_RECORDS
 
 /* Impact analysis state */
 static struct {
@@ -67,7 +67,7 @@ static float calculate_risk_score(const char* target, size_t affected_count) {
     (void)target;  /* Unused in simplified Phase 5C */
 
     /* Factor 1: Number of dependencies (more = higher risk) */
-    float dependency_risk = fminf(1.0f, affected_count / 10.0f);
+    float dependency_risk = fminf(1.0f, affected_count / PHASE5_DEPENDENCY_SCALE);
 
     /* Factor 2: Historical failure rate for similar changes */
     size_t similar_failed = 0;
@@ -221,7 +221,7 @@ impact_prediction_t* katra_phase5c_predict_impact(const char* change_target) {
         prediction->severity = IMPACT_LOW;
     } else if (affected_count <= 5) {
         prediction->severity = IMPACT_MEDIUM;
-    } else if (affected_count <= 10) {
+    } else if (affected_count <= (size_t)PHASE5_DEPENDENCY_SCALE) {
         prediction->severity = IMPACT_HIGH;
     } else {
         prediction->severity = IMPACT_CRITICAL;
@@ -248,7 +248,7 @@ impact_prediction_t* katra_phase5c_predict_impact(const char* change_target) {
     }
 
     /* Generate risk explanation */
-    char explanation[512];
+    char explanation[PHASE5_MEDIUM_BUFFER];
     const char* severity_str = prediction->severity == IMPACT_NONE ? "none" :
                                prediction->severity == IMPACT_LOW ? "low" :
                                prediction->severity == IMPACT_MEDIUM ? "medium" :
@@ -258,7 +258,7 @@ impact_prediction_t* katra_phase5c_predict_impact(const char* change_target) {
             "Predicted impact: %s (%zu affected items). "
             "Risk score: %.0f%%. Based on %zu historical changes.",
             severity_str, affected_count,
-            prediction->risk_score * 100,
+            prediction->risk_score * PHASE5_PERCENT_MULTIPLIER,
             prediction->similar_changes);
 
     prediction->risk_explanation = strdup(explanation);
@@ -304,7 +304,7 @@ int katra_phase5c_record_change(
 
     /* Calculate actual impact based on scope */
     float scope_factor = fminf(1.0f,
-        (files_changed + functions_affected) / 20.0f);
+        (files_changed + functions_affected) / PHASE5_IMPACT_SCALE);
     change->actual_impact = successful ?
         scope_factor * 0.5f : scope_factor;  /* Failed changes have higher impact */
 

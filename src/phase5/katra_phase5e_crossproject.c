@@ -9,8 +9,8 @@
 #include "katra_log.h"
 
 /* Maximum practices and anti-patterns */
-#define MAX_PRACTICES 256
-#define MAX_ANTIPATTERNS 128
+#define MAX_PRACTICES PHASE5_MAX_PRACTICES
+#define MAX_ANTIPATTERNS PHASE5_MAX_ANTIPATTERNS
 
 /* Phase 5E state */
 static struct {
@@ -123,17 +123,38 @@ int katra_phase5e_add_practice(
         return E_SYSTEM_MEMORY;
     }
 
-    snprintf(practice->practice_id, sizeof(practice->practice_id),
-            "practice_%zu", g_crossproject_state.next_practice_id++);
-
-    practice->name = strdup(name);
-    practice->description = strdup(description);
-    practice->rationale = rationale ? strdup(rationale) : NULL;
-    practice->category = strdup(category);
-
-    if (!practice->name || !practice->description || !practice->category) {
-        katra_phase5e_free_practice(practice);
+    /* Generate practice ID using common utility */
+    char* id = phase5_generate_id("practice", &g_crossproject_state.next_practice_id);
+    if (!id) {
+        free(practice);
         return E_SYSTEM_MEMORY;
+    }
+    strncpy(practice->practice_id, id, sizeof(practice->practice_id) - 1);
+    practice->practice_id[sizeof(practice->practice_id) - 1] = '\0';
+    free(id);
+
+    int result = phase5_safe_strdup(&practice->name, name);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_practice(practice);
+        return result;
+    }
+
+    result = phase5_safe_strdup(&practice->description, description);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_practice(practice);
+        return result;
+    }
+
+    result = phase5_safe_strdup(&practice->rationale, rationale);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_practice(practice);
+        return result;
+    }
+
+    result = phase5_safe_strdup(&practice->category, category);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_practice(practice);
+        return result;
     }
 
     /* Default metrics */
@@ -167,17 +188,38 @@ int katra_phase5e_add_antipattern(
         return E_SYSTEM_MEMORY;
     }
 
-    snprintf(antipattern->antipattern_id, sizeof(antipattern->antipattern_id),
-            "antipattern_%zu", g_crossproject_state.next_antipattern_id++);
-
-    antipattern->name = strdup(name);
-    antipattern->description = strdup(description);
-    antipattern->why_bad = strdup(why_bad);
-    antipattern->better_alternative = alternative ? strdup(alternative) : NULL;
-
-    if (!antipattern->name || !antipattern->description || !antipattern->why_bad) {
-        katra_phase5e_free_antipattern(antipattern);
+    /* Generate antipattern ID using common utility */
+    char* id = phase5_generate_id("antipattern", &g_crossproject_state.next_antipattern_id);
+    if (!id) {
+        free(antipattern);
         return E_SYSTEM_MEMORY;
+    }
+    strncpy(antipattern->antipattern_id, id, sizeof(antipattern->antipattern_id) - 1);
+    antipattern->antipattern_id[sizeof(antipattern->antipattern_id) - 1] = '\0';
+    free(id);
+
+    int result = phase5_safe_strdup(&antipattern->name, name);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_antipattern(antipattern);
+        return result;
+    }
+
+    result = phase5_safe_strdup(&antipattern->description, description);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_antipattern(antipattern);
+        return result;
+    }
+
+    result = phase5_safe_strdup(&antipattern->why_bad, why_bad);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_antipattern(antipattern);
+        return result;
+    }
+
+    result = phase5_safe_strdup(&antipattern->better_alternative, alternative);
+    if (result != KATRA_SUCCESS) {
+        katra_phase5e_free_antipattern(antipattern);
+        return result;
     }
 
     g_crossproject_state.antipatterns[g_crossproject_state.antipattern_count++] = antipattern;
@@ -282,7 +324,7 @@ int katra_phase5e_import_project(
              project_name, domain, quality_score);
 
     /* Could add project-specific practices here */
-    char practice_name[256];
+    char practice_name[PHASE5_SMALL_BUFFER];
     snprintf(practice_name, sizeof(practice_name),
             "Practice from %s", project_name);
 

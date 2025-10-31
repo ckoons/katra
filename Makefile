@@ -101,7 +101,8 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_health.o
 
 # Phase 5 object files (Memory-Augmented Reasoning)
-PHASE5_OBJS := $(BUILD_DIR)/katra_phase5_compose.o \
+PHASE5_OBJS := $(BUILD_DIR)/katra_phase5_common.o \
+               $(BUILD_DIR)/katra_phase5_compose.o \
                $(BUILD_DIR)/katra_phase5b_patterns.o \
                $(BUILD_DIR)/katra_phase5c_impact.o \
                $(BUILD_DIR)/katra_phase5d_reasoning.o \

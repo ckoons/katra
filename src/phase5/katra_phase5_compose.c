@@ -35,15 +35,8 @@ typedef struct {
 
 static phase5_state_t g_phase5_state = {0};
 
-/* Helper: Generate unique query ID */
-static char* generate_query_id(void) {
-    static size_t query_counter = 0;
-    char* id = malloc(64);
-    if (!id) return NULL;
-
-    snprintf(id, 64, "q5_%ld_%zu", (long)time(NULL), query_counter++);
-    return id;
-}
+/* Query ID counter */
+static size_t g_query_counter = 0;
 
 /* Helper: Get query type name */
 static const char* query_type_name(query_type_t type) {
@@ -167,7 +160,10 @@ composition_query_t* katra_phase5_create_query(
         return NULL;
     }
 
-    query->query_id = generate_query_id();
+    /* Generate unique query ID */
+    char temp_prefix[PHASE5_SMALL_BUFFER];
+    snprintf(temp_prefix, sizeof(temp_prefix), "q5_%ld", (long)time(NULL));
+    query->query_id = phase5_generate_id(temp_prefix, &g_query_counter);
     query->query_text = strdup(query_text);
     query->type = type;
 
@@ -223,9 +219,9 @@ static confidence_breakdown_t calculate_confidence(
     /* Factor 5: Temporal Recency */
     if (oldest_source > 0) {
         time_t now = time(NULL);
-        float age_days = (float)(now - oldest_source) / (24.0f * 3600.0f);
+        float age_days = (float)(now - oldest_source) / (PHASE5_HOURS_PER_DAY * PHASE5_SECONDS_PER_HOUR);
         /* Exponential decay with 90-day half-life */
-        conf.temporal_recency = expf(-age_days / 90.0f);
+        conf.temporal_recency = expf(-age_days / PHASE5_DECAY_HALFLIFE);
     } else {
         conf.temporal_recency = 0.5f;
     }
@@ -254,11 +250,11 @@ static confidence_breakdown_t calculate_confidence(
             "  Historical accuracy: %.0f%%\n"
             "  Query simplicity: %.0f%%\n"
             "  Temporal recency: %.0f%%",
-            conf.source_agreement * 100,
-            conf.evidence_quality * 100,
-            conf.historical_accuracy * 100,
-            (1.0f - conf.query_complexity) * 100,
-            conf.temporal_recency * 100);
+            conf.source_agreement * PHASE5_PERCENT_MULTIPLIER,
+            conf.evidence_quality * PHASE5_PERCENT_MULTIPLIER,
+            conf.historical_accuracy * PHASE5_PERCENT_MULTIPLIER,
+            (1.0f - conf.query_complexity) * PHASE5_PERCENT_MULTIPLIER,
+            conf.temporal_recency * PHASE5_PERCENT_MULTIPLIER);
 
     conf.explanation = strdup(explanation);
 
@@ -475,7 +471,7 @@ int katra_phase5_submit_feedback(phase5_feedback_t* feedback) {
 
         LOG_DEBUG("Updated accuracy for %s queries: %.2f%% (%zu/%zu accepted)",
                  query_type_name(feedback->query_type),
-                 g_phase5_state.accuracy[idx].accuracy * 100,
+                 g_phase5_state.accuracy[idx].accuracy * PHASE5_PERCENT_MULTIPLIER,
                  g_phase5_state.accuracy[idx].accepted,
                  g_phase5_state.accuracy[idx].total_queries);
     }
