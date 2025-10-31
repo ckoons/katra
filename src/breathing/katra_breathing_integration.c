@@ -78,7 +78,7 @@ char* get_working_context(void) {
         .type = 0,
         .min_importance = MEMORY_IMPORTANCE_HIGH,
         .tier = KATRA_TIER1,
-        .limit = 10
+        .limit = KATRA_INITIAL_CAPACITY_SMALL
     };
 
     memory_record_t** results = NULL;
@@ -114,7 +114,7 @@ char* get_working_context(void) {
             offset += snprintf(context + offset, buffer_size - offset, "\n");
 
             /* Safety check - stop if buffer nearly full */
-            if (offset >= buffer_size - 1024) {
+            if (offset >= buffer_size - KATRA_BUFFER_GROWTH_THRESHOLD) {
                 offset += snprintf(context + offset, buffer_size - offset,
                                   "... (truncated)\n");
                 break;
@@ -127,7 +127,7 @@ char* get_working_context(void) {
     /* Active goals and decisions */
     memory_query_t goal_query = {
         .ci_id = ci_id,
-        .start_time = time(NULL) - (7 * 24 * 60 * 60),  /* Last 7 days */
+        .start_time = time(NULL) - (CONTEXT_WINDOW_DAYS * SECONDS_PER_DAY),  /* Last 7 days */
         .end_time = 0,
         .type = MEMORY_TYPE_GOAL,
         .min_importance = MEMORY_IMPORTANCE_MEDIUM,
@@ -231,7 +231,7 @@ int get_context_statistics(context_stats_t* stats) {
     /* Query all recent memories */
     memory_query_t query = {
         .ci_id = ci_id,
-        .start_time = time(NULL) - (7 * 24 * 60 * 60),  /* Last 7 days */
+        .start_time = time(NULL) - (CONTEXT_WINDOW_DAYS * SECONDS_PER_DAY),  /* Last 7 days */
         .end_time = 0,
         .type = 0,
         .min_importance = 0.0,

@@ -152,21 +152,21 @@ static int read_checkpoint_header(FILE* fp, checkpoint_metadata_t* metadata) {
 
         /* Parse key-value pairs (simplified) */
         if (strstr(line, KATRA_JSON_FIELD_CHECKPOINT_ID)) {
-            sscanf(line, "  \"checkpoint_id\": \"%255[^\"]\"", metadata->checkpoint_id);
+            sscanf(line, "  \"checkpoint_id\": \"" SSCANF_FMT_MEDIUM "\"", metadata->checkpoint_id);
         } else if (strstr(line, KATRA_JSON_FIELD_CI_ID)) {
-            sscanf(line, "  \"ci_id\": \"%255[^\"]\"", metadata->ci_id);
+            sscanf(line, "  \"ci_id\": \"" SSCANF_FMT_MEDIUM "\"", metadata->ci_id);
         } else if (strstr(line, KATRA_JSON_FIELD_TIMESTAMP)) {
             long ts;
             sscanf(line, "  \"timestamp\": %ld", &ts);
             metadata->timestamp = (time_t)ts;
         } else if (strstr(line, KATRA_JSON_FIELD_VERSION)) {
-            sscanf(line, "  \"version\": \"%63[^\"]\"", metadata->version);
+            sscanf(line, "  \"version\": \"" SSCANF_FMT_SMALL "\"", metadata->version);
         } else if (strstr(line, KATRA_JSON_FIELD_RECORD_COUNT)) {
             sscanf(line, "  \"record_count\": %zu", &metadata->record_count);
         } else if (strstr(line, KATRA_JSON_FIELD_TIER1_RECORDS)) {
             sscanf(line, "  \"tier1_records\": %zu", &metadata->tier1_records);
         } else if (strstr(line, KATRA_JSON_FIELD_NOTES)) {
-            sscanf(line, "  \"notes\": \"%511[^\"]\"", metadata->notes);
+            sscanf(line, "  \"notes\": \"" SSCANF_FMT_NOTES "\"", metadata->notes);
         }
     }
 

@@ -11,10 +11,11 @@
 #include "katra_tier2_index.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* SQLite backend context */
 typedef struct {
-    char ci_id[256];
+    char ci_id[KATRA_BUFFER_MEDIUM];
     bool index_initialized;
     sqlite3* db;  /* Direct DB handle for custom queries */
 } sqlite_context_t;

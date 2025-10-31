@@ -22,6 +22,9 @@
 #define KATRA_BUFFER_STANDARD 4096
 #define KATRA_BUFFER_LARGE 16384
 
+/* Growth buffer for streaming operations */
+#define KATRA_BUFFER_GROWTH_THRESHOLD 1024  /* Reserve 1KB margin when growing buffers */
+
 /* ===== Memory Tier Sizes ===== */
 
 /* Tier 1: Raw recordings */
@@ -35,6 +38,18 @@
 /* Tier 3: Pattern summaries */
 #define TIER3_SUMMARY_MAX_SIZE (1024 * 1024)  /* 1MB per summary */
 #define TIER3_MAX_SUMMARIES 120               /* 10 years of monthly summaries */
+
+/* ===== Dynamic Array Initial Capacities ===== */
+
+/* Initial capacities for dynamically-growing arrays */
+#define KATRA_INITIAL_CAPACITY_SMALL 10   /* Small collections (< 100 items expected) */
+#define KATRA_INITIAL_CAPACITY_MEDIUM 16  /* Medium collections (100-1000 items) */
+#define KATRA_INITIAL_CAPACITY_STANDARD 32  /* Standard collections (1000+ items) */
+#define KATRA_INITIAL_CAPACITY_LARGE 64   /* Large collections (10000+ items) */
+#define KATRA_INITIAL_CAPACITY_GRAPH 100  /* Graph structures */
+
+/* Maximum pattern members in tier1 pattern detection */
+#define TIER1_MAX_PATTERN_MEMBERS 256     /* Maximum members per pattern */
 
 /* ===== Checkpoint Limits ===== */
 
@@ -116,11 +131,45 @@
 #define MINUTES_PER_HOUR 60
 #define HOURS_PER_DAY 24
 #define SECONDS_PER_DAY (HOURS_PER_DAY * MINUTES_PER_HOUR * SECONDS_PER_MINUTE)
+#define DAYS_PER_WEEK 7
+#define WEEKS_PER_MONTH 4
+#define WEEKS_PER_YEAR 52
+
+/* Time period thresholds */
+#define RECENT_ACCESS_THRESHOLD_DAYS 21   /* Consider access "recent" if < 21 days */
+#define CONTEXT_WINDOW_DAYS 7             /* Default context window for queries */
+
+/* Time component values */
+#define END_OF_DAY_HOUR 23
+#define END_OF_DAY_MINUTE 59
+#define END_OF_DAY_SECOND 59
+#define TM_YEAR_OFFSET 1900  /* struct tm year offset from 1900 */
 
 /* Data size conversions */
 #define BYTES_PER_KILOBYTE 1024
 #define KILOBYTES_PER_MEGABYTE 1024
 #define BYTES_PER_MEGABYTE (BYTES_PER_KILOBYTE * KILOBYTES_PER_MEGABYTE)
+
+/* ===== Memory Preservation and Archival ===== */
+
+/* Voluntary marking scores (absolute preservation/archival) */
+#define PRESERVATION_SCORE_ABSOLUTE 100.0f   /* Voluntary preserve: always keep */
+#define ARCHIVAL_SCORE_ABSOLUTE -100.0f      /* Voluntary archive: always remove */
+
+/* Percentage multiplier for displaying ratios */
+#define PERCENTAGE_MULTIPLIER 100.0f
+
+/* ===== Algorithm Parameters ===== */
+
+/* Cognitive workflow detection */
+#define HEDGE_KEYWORD_COUNT 7               /* Number of hedge keywords to check */
+#define MIN_HEDGE_DETECTION_LENGTH 10       /* Minimum content length for hedge detection */
+
+/* Graph algorithms */
+#define PAGERANK_ITERATION_COUNT 10         /* Number of PageRank iterations */
+
+/* JSON string parsing */
+#define JSON_ARCHIVED_PREFIX_LENGTH 11      /* Length of "\"archived\":" prefix */
 
 /* ===== String Parsing ===== */
 
@@ -129,11 +178,15 @@
 
 /* sscanf buffer size limits (buffer_size - 1 for null terminator) */
 #define SSCANF_FMT_BUFFER_NAME_SIZE 127   /* KATRA_BUFFER_NAME - 1 */
+#define SSCANF_FMT_BUFFER_MEDIUM_SIZE 255 /* KATRA_BUFFER_MEDIUM - 1 */
+#define SSCANF_FMT_BUFFER_NOTES_SIZE 511  /* For 512-byte notes buffer */
 #define SSCANF_FMT_BUFFER_SMALL_SIZE 63   /* KATRA_BUFFER_SMALL - 1 */
 #define SSCANF_FMT_BUFFER_TINY_SIZE 31    /* KATRA_BUFFER_TINY - 1 */
 
 /* sscanf format string helpers */
 #define SSCANF_FMT_NAME "%127[^\"]"
+#define SSCANF_FMT_MEDIUM "%255[^\"]"
+#define SSCANF_FMT_NOTES "%511[^\"]"
 #define SSCANF_FMT_SMALL "%63[^\"]"
 #define SSCANF_FMT_TINY "%31[^\"]"
 

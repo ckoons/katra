@@ -10,10 +10,11 @@
 #include "katra_tier1.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* JSONL backend context */
 typedef struct {
-    char ci_id[256];
+    char ci_id[KATRA_BUFFER_MEDIUM];
     bool tier1_initialized;
 } jsonl_context_t;
 

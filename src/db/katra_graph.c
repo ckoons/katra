@@ -11,6 +11,7 @@
 #include "katra_engram_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* Initial capacity for graph nodes */
 #define INITIAL_NODE_CAPACITY 100
@@ -289,7 +290,7 @@ int katra_graph_traverse(graph_store_t* store,
     }
 
     /* Simple BFS traversal (limited depth) */
-    size_t capacity = 100;
+    size_t capacity = KATRA_INITIAL_CAPACITY_GRAPH;
     graph_path_node_t** nodes = calloc(capacity, sizeof(graph_path_node_t*));
     if (!nodes) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
@@ -416,7 +417,7 @@ int katra_graph_calculate_centrality(graph_store_t* store) {
         return KATRA_SUCCESS;
     }
 
-    const int iterations = 10;      /* PageRank iterations */
+    const int iterations = PAGERANK_ITERATION_COUNT;      /* PageRank iterations */
     const float damping = 0.85f;    /* Damping factor */
 
     /* Initialize all nodes with equal centrality */

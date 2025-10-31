@@ -112,7 +112,7 @@ int tier2_store_digest(const digest_record_t* digest) {
     /* Check file size before writing */
     struct stat st;
     if (stat(filepath, &st) == 0) {
-        size_t size_mb = st.st_size / (1024 * 1024);
+        size_t size_mb = st.st_size / BYTES_PER_MEGABYTE;
         if (size_mb >= TIER2_MAX_FILE_SIZE_MB) {
             katra_report_error(E_MEMORY_TIER_FULL, "tier2_store_digest",
                               "Digest file exceeds %d MB", TIER2_MAX_FILE_SIZE_MB);
@@ -237,7 +237,7 @@ static int scan_digest_file(const char* filepath,
         if (digest_matches_query(digest, query)) {
             /* Grow results array if needed */
             if (*count >= *capacity) {
-                size_t new_capacity = (*capacity == 0) ? 16 : (*capacity * 2);
+                size_t new_capacity = (*capacity == 0) ? KATRA_INITIAL_CAPACITY_MEDIUM : (*capacity * 2);
                 digest_record_t** new_results = realloc(*results,
                     new_capacity * sizeof(digest_record_t*));
                 if (!new_results) {

@@ -112,7 +112,7 @@ int katra_tier2_write_json_digest(FILE* fp, const digest_record_t* digest) {
 /* Helper: Extract string field from JSON */
 static int extract_json_string(const char* line, const char* field,
                                 char* buffer, size_t buffer_size) {
-    char search_str[128];
+    char search_str[KATRA_BUFFER_NAME];
     snprintf(search_str, sizeof(search_str), "\"%s\":\"", field);
 
     const char* start = strstr(line, search_str);
@@ -140,7 +140,7 @@ static int extract_json_string(const char* line, const char* field,
 
 /* Helper: Extract int field from JSON */
 static int extract_json_int(const char* line, const char* field, int* value) {
-    char search_str[128];
+    char search_str[KATRA_BUFFER_NAME];
     snprintf(search_str, sizeof(search_str), "\"%s\":", field);
 
     const char* start = strstr(line, search_str);
@@ -154,7 +154,7 @@ static int extract_json_int(const char* line, const char* field, int* value) {
 
 /* Helper: Extract long field from JSON */
 static int extract_json_long(const char* line, const char* field, long* value) {
-    char search_str[128];
+    char search_str[KATRA_BUFFER_NAME];
     snprintf(search_str, sizeof(search_str), "\"%s\":", field);
 
     const char* start = strstr(line, search_str);
@@ -177,9 +177,9 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
     ALLOC_OR_RETURN(d, digest_record_t);
 
     /* Extract basic fields */
-    char digest_id[256] = {0};
-    char period_id[64] = {0};
-    char ci_id[256] = {0};
+    char digest_id[KATRA_BUFFER_MEDIUM] = {0};
+    char period_id[KATRA_BUFFER_SMALL] = {0};
+    char ci_id[KATRA_BUFFER_MEDIUM] = {0};
     long timestamp = 0;
     int period_type = 0;
     int source_tier = 0;
@@ -206,7 +206,7 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
     /* Parse archived boolean */
     const char* archived_start = strstr(line, "\"archived\":");
     if (archived_start) {
-        archived_start += 11;
+        archived_start += JSON_ARCHIVED_PREFIX_LENGTH;
         archived = (strncmp(archived_start, "true", 4) == 0) ? 1 : 0;
     }
 

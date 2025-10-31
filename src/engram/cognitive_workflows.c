@@ -14,6 +14,7 @@
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* Thought type names for logging */
 static const char* thought_type_names[] = {
@@ -102,7 +103,7 @@ thought_type_t katra_detect_thought_type(const char* content) {
         "maybe", "perhaps", "might", "could be", "possibly",
         "probably", "i think"
     };
-    if (!katra_str_contains_any(content, hedge_keywords, 7) && len > 10) {
+    if (!katra_str_contains_any(content, hedge_keywords, HEDGE_KEYWORD_COUNT) && len > MIN_HEDGE_DETECTION_LENGTH) {
         return THOUGHT_TYPE_FACT;
     }
 

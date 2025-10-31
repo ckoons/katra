@@ -61,7 +61,7 @@ static int get_daily_file_path(const char* ci_id, char* buffer, size_t size) {
 
     snprintf(buffer, size, "%s/%04d-%02d-%02d.jsonl",
             tier1_dir,
-            tm_info->tm_year + 1900,
+            tm_info->tm_year + TM_YEAR_OFFSET,
             tm_info->tm_mon + 1,
             tm_info->tm_mday);
 
@@ -129,7 +129,7 @@ int tier1_store(const memory_record_t* record) {
     /* Check file size before writing */
     struct stat st;
     if (stat(filepath, &st) == 0) {
-        size_t size_mb = st.st_size / (1024 * 1024);
+        size_t size_mb = st.st_size / BYTES_PER_MEGABYTE;
         if (size_mb >= TIER1_MAX_FILE_SIZE_MB) {
             katra_report_error(E_MEMORY_TIER_FULL, "tier1_store",
                               "Daily file exceeds %d MB", TIER1_MAX_FILE_SIZE_MB);
@@ -184,7 +184,7 @@ int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* 
         }
 
         if (file_count >= capacity) {
-            size_t new_cap = capacity == 0 ? 32 : capacity * 2;
+            size_t new_cap = capacity == 0 ? KATRA_INITIAL_CAPACITY_STANDARD : capacity * 2;
             char** new_array = realloc(files, new_cap * sizeof(char*));
             if (!new_array) {
                 tier1_free_filenames(files, file_count);

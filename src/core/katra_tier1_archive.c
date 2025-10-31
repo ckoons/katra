@@ -90,20 +90,20 @@ static float calculate_preservation_score(memory_record_t* rec, time_t now) {
 
     /* Voluntary marking (absolute) */
     if (rec->marked_important) {
-        return 100.0f;  /* Always preserve */
+        return PRESERVATION_SCORE_ABSOLUTE;  /* Always preserve */
     }
     if (rec->marked_forgettable) {
-        return -100.0f;  /* Always archive (consent requirement) */
+        return ARCHIVAL_SCORE_ABSOLUTE;  /* Always archive (consent requirement) */
     }
 
     /* Recent access (0-30 points) with frequency scaling (Priority 6) */
     if (rec->last_accessed > 0) {
-        float days_since = (float)(now - rec->last_accessed) / (24.0f * 3600.0f);
+        float days_since = (float)(now - rec->last_accessed) / (float)SECONDS_PER_DAY;
 
         /* Access-count weighting: frequent access extends "warm" period */
         float access_threshold = RECENT_ACCESS_DAYS + (rec->access_count * 2);
-        if (access_threshold > 21) {
-            access_threshold = 21;  /* Cap at 21 days */
+        if (access_threshold > RECENT_ACCESS_THRESHOLD_DAYS) {
+            access_threshold = RECENT_ACCESS_THRESHOLD_DAYS;  /* Cap at 21 days */
         }
 
         /* Linear decay from max points to 0 over threshold period */
@@ -137,7 +137,7 @@ static float calculate_preservation_score(memory_record_t* rec, time_t now) {
     score += rec->importance * WEIGHT_IMPORTANCE;
 
     /* Age penalty (subtract 1 per day older than 14 days) */
-    float age_days = (float)(now - rec->timestamp) / (24.0f * 3600.0f);
+    float age_days = (float)(now - rec->timestamp) / (float)SECONDS_PER_DAY;
     if (age_days > AGE_PENALTY_START_DAYS) {
         score -= (age_days - AGE_PENALTY_START_DAYS) * AGE_PENALTY_PER_DAY;
     }
@@ -195,7 +195,7 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
         if (score < PRESERVATION_SCORE_THRESHOLD || record->timestamp < cutoff) {
             LOG_DEBUG("Archiving memory (score=%.1f, age=%ld days): %.50s...",
                      score,
-                     (now - record->timestamp) / (24 * 3600),
+                     (now - record->timestamp) / SECONDS_PER_DAY,
                      record->content);
             /* Will be added to archive array below */
         } else {
@@ -206,7 +206,7 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
 
         /* Add to array */
         if (*count >= *capacity) {
-            size_t new_cap = *capacity == 0 ? 64 : *capacity * 2;
+            size_t new_cap = *capacity == 0 ? KATRA_INITIAL_CAPACITY_LARGE : *capacity * 2;
             memory_record_t** new_array = realloc(*records, new_cap * sizeof(memory_record_t*));
             if (!new_array) {
                 katra_memory_free_record(record);
@@ -230,10 +230,10 @@ static void get_week_id(time_t timestamp, char* week_id, size_t size) {
 
     /* Calculate ISO week number (simplified - proper implementation would handle edge cases) */
     int day_of_year = tm_info->tm_yday;
-    int week_num = (day_of_year / 7) + 1;
+    int week_num = (day_of_year / DAYS_PER_WEEK) + 1;
 
     snprintf(week_id, size, "%04d-W%02d",
-            tm_info->tm_year + 1900,
+            tm_info->tm_year + TM_YEAR_OFFSET,
             week_num);
 }
 
@@ -265,7 +265,7 @@ static int read_all_records_from_file(const char* filepath,
 
         /* Grow array if needed */
         if (arr_count >= arr_capacity) {
-            size_t new_cap = arr_capacity == 0 ? 64 : arr_capacity * 2;
+            size_t new_cap = arr_capacity == 0 ? KATRA_INITIAL_CAPACITY_LARGE : arr_capacity * 2;
             memory_record_t** new_array = realloc(array, new_cap * sizeof(memory_record_t*));
             if (!new_array) {
                 katra_memory_free_record(record);
@@ -454,7 +454,7 @@ static int process_and_store_archivable_records(const char* ci_id,
     }
 
     /* Get week_id and create digest */
-    char week_id[32];
+    char week_id[KATRA_BUFFER_TINY];
     get_week_id(records[0]->timestamp, week_id, sizeof(week_id));
     digest_record_t* digest = create_digest_from_records(ci_id, week_id,
                                                           records, *record_count);
@@ -513,7 +513,7 @@ int tier1_archive(const char* ci_id, int max_age_days) {
 
     /* Calculate cutoff time */
     time_t now = time(NULL);
-    time_t cutoff = now - (max_age_days * 24 * 3600);
+    time_t cutoff = now - (max_age_days * SECONDS_PER_DAY);
 
     /* Collect filenames */
     result = tier1_collect_jsonl_files(tier1_dir, &filenames, &file_count);

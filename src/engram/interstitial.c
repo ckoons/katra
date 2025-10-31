@@ -17,6 +17,7 @@
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* Boundary type names */
 static const char* boundary_type_names[] = {
@@ -278,7 +279,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
     size_t idx = 0;
     for (int i = 0; i < THOUGHT_TYPE_COUNT; i++) {
         if (thought_type_counts[i] > (int)threshold) {
-            char pattern[256];
+            char pattern[KATRA_BUFFER_MEDIUM];
             snprintf(pattern, sizeof(pattern),
                     "Frequent %s thoughts (%d/%zu)",
                     katra_thought_type_name((thought_type_t)i),

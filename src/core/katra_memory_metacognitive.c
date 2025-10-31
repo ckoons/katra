@@ -100,7 +100,7 @@ int katra_memory_get_consolidation_health(const char* ci_id, memory_consolidatio
 
     LOG_DEBUG("Memory health: total=%zu, active=%zu, archived=%zu, compression=%.1f%%, status=%s",
               health->total_memories, health->active_memories, health->archived_memories,
-              health->compression_ratio * 100.0, health->health_status);
+              health->compression_ratio * PERCENTAGE_MULTIPLIER, health->health_status);
 
     return KATRA_SUCCESS;
 }

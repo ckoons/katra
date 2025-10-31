@@ -372,7 +372,7 @@ int tier2_index_query(const digest_query_t* query,
     }
 
     /* Execute query and collect results */
-    capacity = 10;
+    capacity = KATRA_INITIAL_CAPACITY_SMALL;
     ids = calloc(capacity, sizeof(char*));
     locs = calloc(capacity, sizeof(index_location_t));
 

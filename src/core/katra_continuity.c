@@ -12,6 +12,7 @@
 #include "katra_tier2.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* Constants */
 #define SUMMARY_BUFFER_SIZE 2048
@@ -32,9 +33,9 @@ static time_t get_day_start(time_t when) {
 static time_t get_day_end(time_t when) {
     struct tm tm_time;
     localtime_r(&when, &tm_time);
-    tm_time.tm_hour = 23;
-    tm_time.tm_min = 59;
-    tm_time.tm_sec = 59;
+    tm_time.tm_hour = END_OF_DAY_HOUR;
+    tm_time.tm_min = END_OF_DAY_MINUTE;
+    tm_time.tm_sec = END_OF_DAY_SECOND;
     return mktime(&tm_time);
 }
 
@@ -43,7 +44,7 @@ static void format_date(time_t timestamp, char* buffer, size_t size) {
     struct tm tm_time;
     localtime_r(&timestamp, &tm_time);
     snprintf(buffer, size, "%04d-%02d-%02d",
-             tm_time.tm_year + 1900,
+             tm_time.tm_year + TM_YEAR_OFFSET,
              tm_time.tm_mon + 1,
              tm_time.tm_mday);
 }
@@ -120,7 +121,7 @@ int katra_sundown_basic(const char* ci_id, const char* summary) {
     int result = KATRA_SUCCESS;
     digest_record_t* digest = NULL;
     daily_stats_t stats;
-    char date_str[32];
+    char date_str[KATRA_BUFFER_TINY];
     char auto_summary[SUMMARY_BUFFER_SIZE];
 
     if (!ci_id) {
@@ -196,7 +197,7 @@ int katra_sunrise_basic(const char* ci_id, digest_record_t** digest) {
     digest_record_t** results = NULL;
     size_t count = 0;
     time_t now = time(NULL);
-    time_t yesterday = now - (24 * 60 * 60);
+    time_t yesterday = now - SECONDS_PER_DAY;
 
     if (!ci_id || !digest) {
         katra_report_error(E_INPUT_NULL, "katra_sunrise_basic",

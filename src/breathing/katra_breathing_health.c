@@ -51,7 +51,7 @@ memory_health_t* get_memory_health(const char* ci_id) {
         /* Calculate fill percentage */
         if (TIER1_MAX_ENTRIES > 0) {
             health->tier1_fill_percentage =
-                ((float)health->tier1_records / (float)TIER1_MAX_ENTRIES) * 100.0f;
+                ((float)health->tier1_records / (float)TIER1_MAX_ENTRIES) * PERCENTAGE_MULTIPLIER;
         } else {
             health->tier1_fill_percentage = 0.0f;
         }
