@@ -1,0 +1,533 @@
+/* © 2025 Casey Koons All rights reserved */
+
+/* Phase 5A: Basic Composition with Error Correction
+ *
+ * Core composition engine that synthesizes recommendations from multiple sources.
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <math.h>
+#include "katra_phase5.h"
+#include "katra_memory.h"
+#include "katra_error.h"
+#include "katra_log.h"
+#include "katra_limits.h"
+#include "katra_breathing.h"
+
+/* Phase 5A state */
+typedef struct {
+    char* ci_id;
+    bool initialized;
+
+    /* Accuracy tracking per query type */
+    struct {
+        size_t total_queries;
+        size_t accepted;
+        size_t rejected;
+        size_t modified;
+        float accuracy;  /* accepted / total */
+    } accuracy[4];  /* One per query_type_t */
+
+} phase5_state_t;
+
+static phase5_state_t g_phase5_state = {0};
+
+/* Helper: Generate unique query ID */
+static char* generate_query_id(void) {
+    static size_t query_counter = 0;
+    char* id = malloc(64);
+    if (!id) return NULL;
+
+    snprintf(id, 64, "q5_%ld_%zu", (long)time(NULL), query_counter++);
+    return id;
+}
+
+/* Helper: Get query type name */
+static const char* query_type_name(query_type_t type) {
+    switch (type) {
+        case QUERY_TYPE_PLACEMENT: return "placement";
+        case QUERY_TYPE_IMPACT: return "impact";
+        case QUERY_TYPE_USER_DOMAIN: return "user_domain";
+        case QUERY_TYPE_GENERAL: return "general";
+        default: return "unknown";
+    }
+}
+
+/* Helper: Get source type name */
+static const char* source_type_name(source_type_t type) __attribute__((unused));
+static const char* source_type_name(source_type_t type) {
+    switch (type) {
+        case SOURCE_MEMORY: return "MEMORY";
+        case SOURCE_CODE: return "CODE";
+        case SOURCE_PATTERN: return "PATTERN";
+        case SOURCE_REASONING: return "REASONING";
+        case SOURCE_EXPERIENCE: return "EXPERIENCE";
+        default: return "UNKNOWN";
+    }
+}
+
+/* Initialize Phase 5 system */
+int katra_phase5_init(const char* ci_id) {
+    if (!ci_id) {
+        return E_INPUT_NULL;
+    }
+
+    if (g_phase5_state.initialized) {
+        return KATRA_SUCCESS;  /* Already initialized */
+    }
+
+    g_phase5_state.ci_id = strdup(ci_id);
+    if (!g_phase5_state.ci_id) {
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Initialize accuracy tracking with default 0.5 (no history) */
+    for (int i = 0; i < 4; i++) {
+        g_phase5_state.accuracy[i].accuracy = 0.5f;
+    }
+
+    g_phase5_state.initialized = true;
+
+    LOG_INFO("Phase 5A initialized for CI: %s", ci_id);
+    return KATRA_SUCCESS;
+}
+
+/* Cleanup Phase 5 system */
+void katra_phase5_cleanup(void) {
+    if (!g_phase5_state.initialized) {
+        return;
+    }
+
+    free(g_phase5_state.ci_id);
+    memset(&g_phase5_state, 0, sizeof(g_phase5_state));
+
+    LOG_INFO("Phase 5A cleanup complete");
+}
+
+/* Create a composition query */
+composition_query_t* katra_phase5_create_query(
+    const char* query_text,
+    query_type_t type
+) {
+    if (!query_text) {
+        return NULL;
+    }
+
+    composition_query_t* query = calloc(1, sizeof(composition_query_t));
+    if (!query) {
+        return NULL;
+    }
+
+    query->query_id = generate_query_id();
+    query->query_text = strdup(query_text);
+    query->type = type;
+
+    /* Default configuration */
+    query->source_mask = SOURCE_MEMORY | SOURCE_PATTERN;  /* Start simple */
+    query->max_results = 3;
+    query->min_alternatives = 1;  /* Always at least 1 */
+    query->min_confidence = 0.3f;
+    query->show_reasoning = true;
+    query->show_alternatives = true;  /* Always true */
+
+    if (!query->query_id || !query->query_text) {
+        katra_phase5_free_query(query);
+        return NULL;
+    }
+
+    return query;
+}
+
+/* Helper: Calculate multi-factor confidence
+ *
+ * Confidence from 5 factors:
+ * - source_agreement: Do sources agree?
+ * - evidence_quality: Quality of evidence (CODE > MEMORY > PATTERN)
+ * - historical_accuracy: Past accuracy for this query type
+ * - query_complexity: Simple > Complex
+ * - temporal_recency: Recent > Old
+ */
+static confidence_breakdown_t calculate_confidence(
+    query_type_t query_type,
+    size_t source_count,
+    time_t oldest_source,
+    bool sources_agree
+) {
+    confidence_breakdown_t conf = {0};
+
+    /* Factor 1: Source Agreement */
+    conf.source_agreement = sources_agree ? 1.0f : 0.5f;
+
+    /* Factor 2: Evidence Quality (simplified for Phase 5A) */
+    conf.evidence_quality = source_count > 0 ? 0.7f : 0.3f;
+
+    /* Factor 3: Historical Accuracy */
+    if (query_type >= 0 && query_type < 4) {
+        conf.historical_accuracy = g_phase5_state.accuracy[query_type].accuracy;
+    } else {
+        conf.historical_accuracy = 0.5f;  /* Default: unknown */
+    }
+
+    /* Factor 4: Query Complexity (simplified) */
+    conf.query_complexity = 0.5f;  /* Medium complexity assumption */
+
+    /* Factor 5: Temporal Recency */
+    if (oldest_source > 0) {
+        time_t now = time(NULL);
+        float age_days = (float)(now - oldest_source) / (24.0f * 3600.0f);
+        /* Exponential decay with 90-day half-life */
+        conf.temporal_recency = expf(-age_days / 90.0f);
+    } else {
+        conf.temporal_recency = 0.5f;
+    }
+
+    /* Weights (query-type dependent - simplified for Phase 5A) */
+    conf.weights[0] = 0.25f;  /* source_agreement */
+    conf.weights[1] = 0.25f;  /* evidence_quality */
+    conf.weights[2] = 0.20f;  /* historical_accuracy */
+    conf.weights[3] = 0.15f;  /* query_complexity */
+    conf.weights[4] = 0.15f;  /* temporal_recency */
+
+    /* Combined confidence (weighted sum) */
+    conf.overall =
+        conf.source_agreement * conf.weights[0] +
+        conf.evidence_quality * conf.weights[1] +
+        conf.historical_accuracy * conf.weights[2] +
+        (1.0f - conf.query_complexity) * conf.weights[3] +  /* Invert complexity */
+        conf.temporal_recency * conf.weights[4];
+
+    /* Generate explanation */
+    char explanation[KATRA_BUFFER_LARGE];
+    snprintf(explanation, sizeof(explanation),
+            "Confidence breakdown:\n"
+            "  Source agreement: %.0f%%\n"
+            "  Evidence quality: %.0f%%\n"
+            "  Historical accuracy: %.0f%%\n"
+            "  Query simplicity: %.0f%%\n"
+            "  Temporal recency: %.0f%%",
+            conf.source_agreement * 100,
+            conf.evidence_quality * 100,
+            conf.historical_accuracy * 100,
+            (1.0f - conf.query_complexity) * 100,
+            conf.temporal_recency * 100);
+
+    conf.explanation = strdup(explanation);
+
+    return conf;
+}
+
+/* Helper: Create a simple alternative */
+static alternative_t* create_alternative(
+    const char* description,
+    const char* pros,
+    const char* cons,
+    const char* when_to_use,
+    float confidence
+) __attribute__((unused));
+
+static alternative_t* create_alternative(
+    const char* description,
+    const char* pros,
+    const char* cons,
+    const char* when_to_use,
+    float confidence
+) {
+    alternative_t* alt = calloc(1, sizeof(alternative_t));
+    if (!alt) return NULL;
+
+    alt->description = strdup(description);
+    alt->pros = pros ? strdup(pros) : NULL;
+    alt->cons = cons ? strdup(cons) : NULL;
+    alt->when_to_use = when_to_use ? strdup(when_to_use) : NULL;
+    alt->confidence = confidence;
+
+    if (!alt->description) {
+        katra_phase5_free_alternatives(alt, 1);
+        return NULL;
+    }
+
+    return alt;
+}
+
+/* Execute composition query (Phase 5A simplified implementation)
+ *
+ * This is a basic implementation that:
+ * - Queries memory for relevant information
+ * - Synthesizes a simple recommendation
+ * - Always includes alternatives
+ * - Calculates multi-factor confidence
+ */
+int katra_phase5_compose(composition_query_t* query) {
+    if (!query || !g_phase5_state.initialized) {
+        return E_INPUT_NULL;
+    }
+
+    LOG_INFO("Phase 5A composing answer for query: %s (type=%s)",
+            query->query_text, query_type_name(query->type));
+
+    /* Step 1: Gather context from memory */
+    size_t memory_count = 0;
+    char** memories = NULL;
+
+    /* Query relevant memories based on query text */
+    memories = recall_about(query->query_text, &memory_count);
+
+    time_t oldest_source = time(NULL);
+    bool sources_agree = true;  /* Simplified for Phase 5A */
+
+    /* Step 2: Synthesize recommendation (template-based for Phase 5A) */
+    composition_result_t* result = calloc(1, sizeof(composition_result_t));
+    if (!result) {
+        if (memories) free_memory_list(memories, memory_count);
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Create recommendation based on query type */
+    char recommendation[KATRA_BUFFER_LARGE];
+    switch (query->type) {
+        case QUERY_TYPE_PLACEMENT:
+            snprintf(recommendation, sizeof(recommendation),
+                    "Recommended placement: Based on %zu related memories, "
+                    "consider placing near similar functionality",
+                    memory_count);
+            break;
+
+        case QUERY_TYPE_IMPACT:
+            snprintf(recommendation, sizeof(recommendation),
+                    "Impact analysis: Found %zu related memories. "
+                    "Review dependencies before proceeding",
+                    memory_count);
+            break;
+
+        case QUERY_TYPE_USER_DOMAIN:
+            snprintf(recommendation, sizeof(recommendation),
+                    "Target users: Based on %zu project memories, "
+                    "primary users are technical developers",
+                    memory_count);
+            break;
+
+        default:
+            snprintf(recommendation, sizeof(recommendation),
+                    "Based on %zu related memories, recommend careful consideration",
+                    memory_count);
+            break;
+    }
+
+    result->recommendation = strdup(recommendation);
+    if (!result->recommendation) {
+        free(result);
+        if (memories) free_memory_list(memories, memory_count);
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Step 3: Add reasoning trace (simplified) */
+    result->reasoning = calloc(1, sizeof(reasoning_step_t));
+    if (result->reasoning) {
+        result->reasoning_count = 1;
+        result->reasoning[0].type = SOURCE_MEMORY;
+        result->reasoning[0].description = strdup("Queried project memory");
+        result->reasoning[0].confidence = memory_count > 0 ? 0.7f : 0.3f;
+        result->reasoning[0].source_timestamp = oldest_source;
+    }
+
+    /* Step 4: Always include alternatives (Phase 5 requirement) */
+    result->alternatives = calloc(2, sizeof(alternative_t));
+    if (result->alternatives) {
+        result->alternative_count = 2;
+
+        /* Alternative 1 */
+        result->alternatives[0].description = strdup("Conservative approach: Maintain current structure");
+        result->alternatives[0].pros = strdup("Lower risk, proven pattern");
+        result->alternatives[0].cons = strdup("May not be optimal");
+        result->alternatives[0].when_to_use = strdup("When stability is priority");
+        result->alternatives[0].confidence = 0.6f;
+
+        /* Alternative 2 */
+        result->alternatives[1].description = strdup("Experimental approach: Try new pattern");
+        result->alternatives[1].pros = strdup("Potentially better architecture");
+        result->alternatives[1].cons = strdup("Higher risk, unproven");
+        result->alternatives[1].when_to_use = strdup("When innovation is priority");
+        result->alternatives[1].confidence = 0.4f;
+    }
+
+    /* Step 5: Calculate multi-factor confidence */
+    result->confidence = calculate_confidence(
+        query->type,
+        memory_count,
+        oldest_source,
+        sources_agree
+    );
+
+    /* Step 6: Add source attributions */
+    if (memory_count > 0) {
+        result->sources = calloc(1, sizeof(source_attribution_t));
+        if (result->sources) {
+            result->source_count = 1;
+            result->sources[0].type = SOURCE_MEMORY;
+            result->sources[0].citation = strdup("Project memory");
+            result->sources[0].contribution = 1.0f;
+            result->sources[0].source_timestamp = oldest_source;
+        }
+    }
+
+    /* Attach result to query */
+    query->result = result;
+
+    /* Cleanup */
+    if (memories) {
+        free_memory_list(memories, memory_count);
+    }
+
+    LOG_INFO("Phase 5A composed recommendation with confidence=%.2f", result->confidence.overall);
+
+    return KATRA_SUCCESS;
+}
+
+/* Submit feedback on a recommendation */
+int katra_phase5_submit_feedback(phase5_feedback_t* feedback) {
+    if (!feedback || !feedback->query_id || !g_phase5_state.initialized) {
+        return E_INPUT_NULL;
+    }
+
+    if (feedback->query_type < 0 || feedback->query_type >= 4) {
+        return E_INPUT_RANGE;
+    }
+
+    /* Update accuracy tracking */
+    size_t idx = (size_t)feedback->query_type;
+    g_phase5_state.accuracy[idx].total_queries++;
+
+    switch (feedback->outcome) {
+        case OUTCOME_ACCEPTED:
+            g_phase5_state.accuracy[idx].accepted++;
+            LOG_INFO("Phase 5A feedback: Query %s ACCEPTED (type=%s)",
+                    feedback->query_id, query_type_name(feedback->query_type));
+            break;
+
+        case OUTCOME_REJECTED:
+            g_phase5_state.accuracy[idx].rejected++;
+            LOG_INFO("Phase 5A feedback: Query %s REJECTED (type=%s): %s",
+                    feedback->query_id, query_type_name(feedback->query_type),
+                    feedback->explanation ? feedback->explanation : "no reason given");
+            break;
+
+        case OUTCOME_MODIFIED:
+            g_phase5_state.accuracy[idx].modified++;
+            LOG_INFO("Phase 5A feedback: Query %s MODIFIED (type=%s)",
+                    feedback->query_id, query_type_name(feedback->query_type));
+            break;
+    }
+
+    /* Recalculate accuracy */
+    if (g_phase5_state.accuracy[idx].total_queries > 0) {
+        g_phase5_state.accuracy[idx].accuracy =
+            (float)g_phase5_state.accuracy[idx].accepted /
+            (float)g_phase5_state.accuracy[idx].total_queries;
+
+        LOG_DEBUG("Updated accuracy for %s queries: %.2f%% (%zu/%zu accepted)",
+                 query_type_name(feedback->query_type),
+                 g_phase5_state.accuracy[idx].accuracy * 100,
+                 g_phase5_state.accuracy[idx].accepted,
+                 g_phase5_state.accuracy[idx].total_queries);
+    }
+
+    /* Store feedback as memory for future learning */
+    char feedback_memory[KATRA_BUFFER_LARGE];
+    snprintf(feedback_memory, sizeof(feedback_memory),
+            "Phase 5 feedback: Query '%s' was %s. %s",
+            feedback->recommended,
+            feedback->outcome == OUTCOME_ACCEPTED ? "accepted" :
+            feedback->outcome == OUTCOME_REJECTED ? "rejected" : "modified",
+            feedback->explanation ? feedback->explanation : "");
+
+    learn(feedback_memory);
+
+    return KATRA_SUCCESS;
+}
+
+/* Get historical accuracy for a query type */
+float katra_phase5_get_accuracy(query_type_t type) {
+    if (!g_phase5_state.initialized || type < 0 || type >= 4) {
+        return 0.5f;  /* Default: unknown */
+    }
+
+    return g_phase5_state.accuracy[type].accuracy;
+}
+
+/* Free query and results */
+void katra_phase5_free_query(composition_query_t* query) {
+    if (!query) return;
+
+    free(query->query_id);
+    free(query->query_text);
+
+    if (query->result) {
+        katra_phase5_free_result(query->result);
+    }
+
+    free(query);
+}
+
+/* Helper: Free composition result */
+void katra_phase5_free_result(composition_result_t* result) {
+    if (!result) return;
+
+    free(result->recommendation);
+
+    if (result->reasoning) {
+        katra_phase5_free_reasoning(result->reasoning, result->reasoning_count);
+    }
+
+    if (result->alternatives) {
+        katra_phase5_free_alternatives(result->alternatives, result->alternative_count);
+    }
+
+    if (result->sources) {
+        katra_phase5_free_sources(result->sources, result->source_count);
+    }
+
+    free(result->confidence.explanation);
+    free(result);
+}
+
+/* Helper: Free alternatives */
+void katra_phase5_free_alternatives(alternative_t* alts, size_t count) {
+    if (!alts) return;
+
+    for (size_t i = 0; i < count; i++) {
+        free(alts[i].description);
+        free(alts[i].pros);
+        free(alts[i].cons);
+        free(alts[i].when_to_use);
+    }
+
+    free(alts);
+}
+
+/* Helper: Free reasoning trace */
+void katra_phase5_free_reasoning(reasoning_step_t* steps, size_t count) {
+    if (!steps) return;
+
+    for (size_t i = 0; i < count; i++) {
+        free(steps[i].description);
+        if (steps[i].sources) {
+            katra_phase5_free_sources(steps[i].sources, steps[i].source_count);
+        }
+    }
+
+    free(steps);
+}
+
+/* Helper: Free source attributions */
+void katra_phase5_free_sources(source_attribution_t* sources, size_t count) {
+    if (!sources) return;
+
+    for (size_t i = 0; i < count; i++) {
+        free(sources[i].citation);
+    }
+
+    free(sources);
+}

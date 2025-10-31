@@ -100,11 +100,14 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_helpers.o \
                   $(BUILD_DIR)/katra_breathing_health.o
 
+# Phase 5 object files (Memory-Augmented Reasoning)
+PHASE5_OBJS := $(BUILD_DIR)/katra_phase5_compose.o
+
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
 
 # All object files (for dependency tracking)
-ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS)
+ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(PHASE5_OBJS)
 
 # Auto-generated dependency files
 DEP_FILES := $(ALL_OBJS:.o=.d)
@@ -156,7 +159,7 @@ $(BUILD_DIR):
 
 # Build foundation library
 # Note: Delete library first to ensure deterministic rebuild
-$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS)
+$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(PHASE5_OBJS)
 	@echo "Creating foundation library: $@"
 	@rm -f $@
 	@ar rcs $@ $^
@@ -191,6 +194,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/engram/%.c | $(BUILD_DIR)
 
 # Compile breathing layer sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/breathing/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile Phase 5 sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/phase5/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
