@@ -25,8 +25,7 @@ void mcp_signal_handler(int signum) {
     g_shutdown_requested = 1;
 
     /* Write to stderr (async-signal-safe) */
-    const char* msg = "Shutdown requested\n";
-    ssize_t result = write(STDERR_FILENO, msg, strlen(msg));
+    ssize_t result = write(STDERR_FILENO, MCP_MSG_SHUTDOWN, strlen(MCP_MSG_SHUTDOWN));
     (void)result;  /* Suppress unused result warning */
 }
 
@@ -36,15 +35,15 @@ static int generate_ci_id(char* buffer, size_t size) {
         return E_INPUT_NULL;
     }
 
-    const char* user = getenv("USER");
+    const char* user = getenv(MCP_ENV_USER);
     if (!user) {
-        user = "unknown";
+        user = MCP_CI_ID_UNKNOWN_USER;
     }
 
     pid_t pid = getpid();
     time_t now = time(NULL);
 
-    int written = snprintf(buffer, size, "mcp_%s_%d_%ld", user, pid, (long)now);
+    int written = snprintf(buffer, size, MCP_CI_ID_FMT, MCP_CI_ID_PREFIX, user, pid, (long)now);
 
     if (written < 0 || (size_t)written >= size) {
         return E_BUFFER_OVERFLOW;
@@ -128,7 +127,7 @@ void mcp_main_loop(void) {
 
     while (!g_shutdown_requested && fgets(buffer, sizeof(buffer), stdin)) {
         /* Remove trailing newline */
-        buffer[strcspn(buffer, "\n")] = '\0';
+        buffer[strcspn(buffer, MCP_CHAR_NEWLINE)] = '\0';
 
         /* Skip empty lines */
         if (strlen(buffer) == 0) {
@@ -143,8 +142,8 @@ void mcp_main_loop(void) {
         if (!request) {
             /* Parse error */
             json_t* error_response = mcp_error_response(NULL, MCP_ERROR_PARSE,
-                                                       "Parse error",
-                                                       "Invalid JSON-RPC 2.0 request");
+                                                       MCP_ERR_PARSE_ERROR,
+                                                       MCP_ERR_INVALID_REQUEST);
             mcp_send_response(error_response);
             json_decref(error_response);
             continue;

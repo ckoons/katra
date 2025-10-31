@@ -31,15 +31,15 @@ json_t* mcp_parse_request(const char* json_str) {
 /* Build success response */
 json_t* mcp_success_response(json_t* id, json_t* result) {
     json_t* response = json_object();
-    json_object_set_new(response, "jsonrpc", json_string("2.0"));
+    json_object_set_new(response, MCP_FIELD_JSONRPC, json_string(MCP_JSONRPC_VERSION));
 
     if (id) {
-        json_object_set(response, "id", id);
+        json_object_set(response, MCP_FIELD_ID, id);
     } else {
-        json_object_set_new(response, "id", json_null());
+        json_object_set_new(response, MCP_FIELD_ID, json_null());
     }
 
-    json_object_set(response, "result", result);
+    json_object_set(response, MCP_FIELD_RESULT, result);
 
     return response;
 }
@@ -47,25 +47,25 @@ json_t* mcp_success_response(json_t* id, json_t* result) {
 /* Build error response */
 json_t* mcp_error_response(json_t* id, int code, const char* message, const char* details) {
     json_t* response = json_object();
-    json_object_set_new(response, "jsonrpc", json_string("2.0"));
+    json_object_set_new(response, MCP_FIELD_JSONRPC, json_string(MCP_JSONRPC_VERSION));
 
     if (id) {
-        json_object_set(response, "id", id);
+        json_object_set(response, MCP_FIELD_ID, id);
     } else {
-        json_object_set_new(response, "id", json_null());
+        json_object_set_new(response, MCP_FIELD_ID, json_null());
     }
 
     json_t* error_obj = json_object();
-    json_object_set_new(error_obj, "code", json_integer(code));
-    json_object_set_new(error_obj, "message", json_string(message));
+    json_object_set_new(error_obj, MCP_FIELD_CODE, json_integer(code));
+    json_object_set_new(error_obj, MCP_FIELD_MESSAGE, json_string(message));
 
     if (details) {
         json_t* data = json_object();
-        json_object_set_new(data, "details", json_string(details));
-        json_object_set_new(error_obj, "data", data);
+        json_object_set_new(data, MCP_FIELD_DETAILS, json_string(details));
+        json_object_set_new(error_obj, MCP_FIELD_DATA, data);
     }
 
-    json_object_set_new(response, "error", error_obj);
+    json_object_set_new(response, MCP_FIELD_ERROR, error_obj);
 
     return response;
 }
@@ -75,13 +75,13 @@ json_t* mcp_tool_success(const char* text) {
     json_t* content_array = json_array();
     json_t* content_item = json_object();
 
-    json_object_set_new(content_item, "type", json_string("text"));
-    json_object_set_new(content_item, "text", json_string(text));
+    json_object_set_new(content_item, MCP_FIELD_TYPE, json_string(MCP_TYPE_TEXT));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(text));
 
     json_array_append_new(content_array, content_item);
 
     json_t* result = json_object();
-    json_object_set_new(result, "content", content_array);
+    json_object_set_new(result, MCP_FIELD_CONTENT, content_array);
 
     return result;
 }
@@ -91,17 +91,17 @@ json_t* mcp_tool_success_with_data(const char* text, json_t* data) {
     json_t* content_array = json_array();
     json_t* content_item = json_object();
 
-    json_object_set_new(content_item, "type", json_string("text"));
-    json_object_set_new(content_item, "text", json_string(text));
+    json_object_set_new(content_item, MCP_FIELD_TYPE, json_string(MCP_TYPE_TEXT));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(text));
 
     if (data) {
-        json_object_set(content_item, "data", data);
+        json_object_set(content_item, MCP_FIELD_DATA, data);
     }
 
     json_array_append_new(content_array, content_item);
 
     json_t* result = json_object();
-    json_object_set_new(result, "content", content_array);
+    json_object_set_new(result, MCP_FIELD_CONTENT, content_array);
 
     return result;
 }
@@ -111,301 +111,218 @@ json_t* mcp_tool_error(const char* message, const char* details) {
     json_t* content_array = json_array();
     json_t* content_item = json_object();
 
-    json_object_set_new(content_item, "type", json_string("text"));
+    json_object_set_new(content_item, MCP_FIELD_TYPE, json_string(MCP_TYPE_TEXT));
 
     char error_text[MCP_ERROR_BUFFER];
     if (details && strlen(details) > 0) {
-        snprintf(error_text, sizeof(error_text), "Error: %s\nDetails: %s", message, details);
+        snprintf(error_text, sizeof(error_text), MCP_FMT_ERROR_WITH_DETAILS, message, details);
     } else {
-        snprintf(error_text, sizeof(error_text), "Error: %s", message);
+        snprintf(error_text, sizeof(error_text), MCP_FMT_ERROR_SIMPLE, message);
     }
 
-    json_object_set_new(content_item, "text", json_string(error_text));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(error_text));
     json_array_append_new(content_array, content_item);
 
     json_t* result = json_object();
-    json_object_set_new(result, "content", content_array);
-    json_object_set_new(result, "isError", json_true());
+    json_object_set_new(result, MCP_FIELD_CONTENT, content_array);
+    json_object_set_new(result, MCP_FIELD_IS_ERROR, json_true());
 
     return result;
 }
 
+/* Build tool schema with one parameter */
+json_t* mcp_build_tool_schema_1param(const char* param_name, const char* param_desc) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+
+    json_t* props = json_object();
+    json_t* param = json_object();
+    json_object_set_new(param, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(param, MCP_FIELD_DESCRIPTION, json_string(param_desc));
+    json_object_set_new(props, param_name, param);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(param_name));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+
+    return schema;
+}
+
+/* Build tool schema with two parameters */
+json_t* mcp_build_tool_schema_2params(const char* param1_name, const char* param1_desc,
+                                       const char* param2_name, const char* param2_desc) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+
+    json_t* props = json_object();
+
+    json_t* param1 = json_object();
+    json_object_set_new(param1, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(param1, MCP_FIELD_DESCRIPTION, json_string(param1_desc));
+    json_object_set_new(props, param1_name, param1);
+
+    json_t* param2 = json_object();
+    json_object_set_new(param2, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(param2, MCP_FIELD_DESCRIPTION, json_string(param2_desc));
+    json_object_set_new(props, param2_name, param2);
+
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(param1_name));
+    json_array_append_new(required, json_string(param2_name));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+
+    return schema;
+}
+
+/* Build complete tool definition */
+json_t* mcp_build_tool(const char* name, const char* description, json_t* schema) {
+    json_t* tool = json_object();
+    json_object_set_new(tool, MCP_FIELD_NAME, json_string(name));
+    json_object_set_new(tool, MCP_FIELD_DESCRIPTION, json_string(description));
+    json_object_set_new(tool, MCP_FIELD_INPUT_SCHEMA, schema);
+    return tool;
+}
+
+/* Build complete resource definition */
+json_t* mcp_build_resource(const char* uri, const char* name,
+                           const char* description, const char* mime_type) {
+    json_t* resource = json_object();
+    json_object_set_new(resource, MCP_FIELD_URI, json_string(uri));
+    json_object_set_new(resource, MCP_FIELD_NAME, json_string(name));
+    json_object_set_new(resource, MCP_FIELD_DESCRIPTION, json_string(description));
+    json_object_set_new(resource, MCP_FIELD_MIME_TYPE, json_string(mime_type));
+    return resource;
+}
+
 /* Handle initialize request */
 static json_t* handle_initialize(json_t* request) {
-    json_t* id = json_object_get(request, "id");
+    json_t* id = json_object_get(request, MCP_FIELD_ID);
 
     /* Build capabilities */
     json_t* capabilities = json_object();
-    json_object_set_new(capabilities, "tools", json_object());
-    json_object_set_new(capabilities, "resources", json_object());
+    json_object_set_new(capabilities, MCP_FIELD_TOOLS, json_object());
+    json_object_set_new(capabilities, MCP_FIELD_RESOURCES, json_object());
 
     /* Build server info */
     json_t* server_info = json_object();
-    json_object_set_new(server_info, "name", json_string(MCP_SERVER_NAME));
-    json_object_set_new(server_info, "version", json_string(MCP_SERVER_VERSION));
+    json_object_set_new(server_info, MCP_FIELD_NAME, json_string(MCP_SERVER_NAME));
+    json_object_set_new(server_info, MCP_FIELD_VERSION, json_string(MCP_SERVER_VERSION));
 
     /* Build result */
     json_t* result = json_object();
-    json_object_set_new(result, "protocolVersion", json_string(MCP_PROTOCOL_VERSION));
-    json_object_set_new(result, "serverInfo", server_info);
-    json_object_set_new(result, "capabilities", capabilities);
+    json_object_set_new(result, MCP_FIELD_PROTOCOL_VERSION, json_string(MCP_PROTOCOL_VERSION));
+    json_object_set_new(result, MCP_FIELD_SERVER_INFO, server_info);
+    json_object_set_new(result, MCP_FIELD_CAPABILITIES, capabilities);
 
     return mcp_success_response(id, result);
 }
 
 /* Handle tools/list request */
 static json_t* handle_tools_list(json_t* request) {
-    json_t* id = json_object_get(request, "id");
-
+    json_t* id = json_object_get(request, MCP_FIELD_ID);
     json_t* tools_array = json_array();
 
-    /* Tool 1: katra_remember */
-    json_t* tool1 = json_object();
-    json_object_set_new(tool1, "name", json_string("katra_remember"));
-    json_object_set_new(tool1, "description",
-                       json_string("Store a memory with natural language importance"));
+    /* Build all 7 tools using helpers */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_REMEMBER, MCP_DESC_REMEMBER,
+            mcp_build_tool_schema_2params(MCP_PARAM_CONTENT, MCP_PARAM_DESC_CONTENT,
+                                         MCP_PARAM_CONTEXT, MCP_PARAM_DESC_CONTEXT)));
 
-    json_t* schema1 = json_object();
-    json_object_set_new(schema1, "type", json_string("object"));
-    json_t* props1 = json_object();
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_RECALL, MCP_DESC_RECALL,
+            mcp_build_tool_schema_1param(MCP_PARAM_TOPIC, MCP_PARAM_DESC_TOPIC)));
 
-    json_t* content_prop = json_object();
-    json_object_set_new(content_prop, "type", json_string("string"));
-    json_object_set_new(content_prop, "description", json_string("The thought or experience to remember"));
-    json_object_set_new(props1, "content", content_prop);
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_LEARN, MCP_DESC_LEARN,
+            mcp_build_tool_schema_1param(MCP_PARAM_KNOWLEDGE, MCP_PARAM_DESC_KNOWLEDGE)));
 
-    json_t* context_prop = json_object();
-    json_object_set_new(context_prop, "type", json_string("string"));
-    json_object_set_new(context_prop, "description",
-                       json_string("Why this is important (trivial, interesting, significant, critical)"));
-    json_object_set_new(props1, "context", context_prop);
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_DECIDE, MCP_DESC_DECIDE,
+            mcp_build_tool_schema_2params(MCP_PARAM_DECISION, MCP_PARAM_DESC_DECISION,
+                                         MCP_PARAM_REASONING, MCP_PARAM_DESC_REASONING)));
 
-    json_object_set_new(schema1, "properties", props1);
-    json_t* required1 = json_array();
-    json_array_append_new(required1, json_string("content"));
-    json_array_append_new(required1, json_string("context"));
-    json_object_set_new(schema1, "required", required1);
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_PLACEMENT, MCP_DESC_PLACEMENT,
+            mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_PLACEMENT)));
 
-    json_object_set_new(tool1, "inputSchema", schema1);
-    json_array_append_new(tools_array, tool1);
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_IMPACT, MCP_DESC_IMPACT,
+            mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_IMPACT)));
 
-    /* Tool 2: katra_recall */
-    json_t* tool2 = json_object();
-    json_object_set_new(tool2, "name", json_string("katra_recall"));
-    json_object_set_new(tool2, "description", json_string("Find memories about a topic"));
-
-    json_t* schema2 = json_object();
-    json_object_set_new(schema2, "type", json_string("object"));
-    json_t* props2 = json_object();
-
-    json_t* topic_prop = json_object();
-    json_object_set_new(topic_prop, "type", json_string("string"));
-    json_object_set_new(topic_prop, "description", json_string("The topic to search for"));
-    json_object_set_new(props2, "topic", topic_prop);
-
-    json_object_set_new(schema2, "properties", props2);
-    json_t* required2 = json_array();
-    json_array_append_new(required2, json_string("topic"));
-    json_object_set_new(schema2, "required", required2);
-
-    json_object_set_new(tool2, "inputSchema", schema2);
-    json_array_append_new(tools_array, tool2);
-
-    /* Tool 3: katra_learn */
-    json_t* tool3 = json_object();
-    json_object_set_new(tool3, "name", json_string("katra_learn"));
-    json_object_set_new(tool3, "description", json_string("Store new knowledge"));
-
-    json_t* schema3 = json_object();
-    json_object_set_new(schema3, "type", json_string("object"));
-    json_t* props3 = json_object();
-
-    json_t* knowledge_prop = json_object();
-    json_object_set_new(knowledge_prop, "type", json_string("string"));
-    json_object_set_new(knowledge_prop, "description", json_string("The knowledge to learn"));
-    json_object_set_new(props3, "knowledge", knowledge_prop);
-
-    json_object_set_new(schema3, "properties", props3);
-    json_t* required3 = json_array();
-    json_array_append_new(required3, json_string("knowledge"));
-    json_object_set_new(schema3, "required", required3);
-
-    json_object_set_new(tool3, "inputSchema", schema3);
-    json_array_append_new(tools_array, tool3);
-
-    /* Tool 4: katra_decide */
-    json_t* tool4 = json_object();
-    json_object_set_new(tool4, "name", json_string("katra_decide"));
-    json_object_set_new(tool4, "description", json_string("Store a decision with reasoning"));
-
-    json_t* schema4 = json_object();
-    json_object_set_new(schema4, "type", json_string("object"));
-    json_t* props4 = json_object();
-
-    json_t* decision_prop = json_object();
-    json_object_set_new(decision_prop, "type", json_string("string"));
-    json_object_set_new(decision_prop, "description", json_string("The decision made"));
-    json_object_set_new(props4, "decision", decision_prop);
-
-    json_t* reasoning_prop = json_object();
-    json_object_set_new(reasoning_prop, "type", json_string("string"));
-    json_object_set_new(reasoning_prop, "description", json_string("Why this decision was made"));
-    json_object_set_new(props4, "reasoning", reasoning_prop);
-
-    json_object_set_new(schema4, "properties", props4);
-    json_t* required4 = json_array();
-    json_array_append_new(required4, json_string("decision"));
-    json_array_append_new(required4, json_string("reasoning"));
-    json_object_set_new(schema4, "required", required4);
-
-    json_object_set_new(tool4, "inputSchema", schema4);
-    json_array_append_new(tools_array, tool4);
-
-    /* Tool 5: katra_placement */
-    json_t* tool5 = json_object();
-    json_object_set_new(tool5, "name", json_string("katra_placement"));
-    json_object_set_new(tool5, "description",
-                       json_string("Ask where code should be placed (architecture guidance)"));
-
-    json_t* schema5 = json_object();
-    json_object_set_new(schema5, "type", json_string("object"));
-    json_t* props5 = json_object();
-
-    json_t* query_prop5 = json_object();
-    json_object_set_new(query_prop5, "type", json_string("string"));
-    json_object_set_new(query_prop5, "description",
-                       json_string("The placement question (e.g., 'Where should the HTTP client code go?')"));
-    json_object_set_new(props5, "query", query_prop5);
-
-    json_object_set_new(schema5, "properties", props5);
-    json_t* required5 = json_array();
-    json_array_append_new(required5, json_string("query"));
-    json_object_set_new(schema5, "required", required5);
-
-    json_object_set_new(tool5, "inputSchema", schema5);
-    json_array_append_new(tools_array, tool5);
-
-    /* Tool 6: katra_impact */
-    json_t* tool6 = json_object();
-    json_object_set_new(tool6, "name", json_string("katra_impact"));
-    json_object_set_new(tool6, "description",
-                       json_string("Analyze impact of code changes (dependency analysis)"));
-
-    json_t* schema6 = json_object();
-    json_object_set_new(schema6, "type", json_string("object"));
-    json_t* props6 = json_object();
-
-    json_t* query_prop6 = json_object();
-    json_object_set_new(query_prop6, "type", json_string("string"));
-    json_object_set_new(query_prop6, "description",
-                       json_string("The impact question (e.g., 'What breaks if I change this API?')"));
-    json_object_set_new(props6, "query", query_prop6);
-
-    json_object_set_new(schema6, "properties", props6);
-    json_t* required6 = json_array();
-    json_array_append_new(required6, json_string("query"));
-    json_object_set_new(schema6, "required", required6);
-
-    json_object_set_new(tool6, "inputSchema", schema6);
-    json_array_append_new(tools_array, tool6);
-
-    /* Tool 7: katra_user_domain */
-    json_t* tool7 = json_object();
-    json_object_set_new(tool7, "name", json_string("katra_user_domain"));
-    json_object_set_new(tool7, "description",
-                       json_string("Understand user domain and feature usage patterns"));
-
-    json_t* schema7 = json_object();
-    json_object_set_new(schema7, "type", json_string("object"));
-    json_t* props7 = json_object();
-
-    json_t* query_prop7 = json_object();
-    json_object_set_new(query_prop7, "type", json_string("string"));
-    json_object_set_new(query_prop7, "description",
-                       json_string("The user domain question (e.g., 'Who would use this feature?')"));
-    json_object_set_new(props7, "query", query_prop7);
-
-    json_object_set_new(schema7, "properties", props7);
-    json_t* required7 = json_array();
-    json_array_append_new(required7, json_string("query"));
-    json_object_set_new(schema7, "required", required7);
-
-    json_object_set_new(tool7, "inputSchema", schema7);
-    json_array_append_new(tools_array, tool7);
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_USER_DOMAIN, MCP_DESC_USER_DOMAIN,
+            mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_USER_DOMAIN)));
 
     /* Build result */
     json_t* result = json_object();
-    json_object_set_new(result, "tools", tools_array);
+    json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
 
     return mcp_success_response(id, result);
 }
 
 /* Handle resources/list request */
 static json_t* handle_resources_list(json_t* request) {
-    json_t* id = json_object_get(request, "id");
-
+    json_t* id = json_object_get(request, MCP_FIELD_ID);
     json_t* resources_array = json_array();
 
-    /* Resource 1: working-context */
-    json_t* resource1 = json_object();
-    json_object_set_new(resource1, "uri", json_string("katra://context/working"));
-    json_object_set_new(resource1, "name", json_string("Working Context"));
-    json_object_set_new(resource1, "description",
-                       json_string("Yesterday's summary and recent significant memories"));
-    json_object_set_new(resource1, "mimeType", json_string("text/plain"));
-    json_array_append_new(resources_array, resource1);
+    /* Build all 2 resources using helper */
+    json_array_append_new(resources_array,
+        mcp_build_resource(MCP_RESOURCE_URI_WORKING_CONTEXT,
+                          MCP_RESOURCE_NAME_WORKING_CONTEXT,
+                          MCP_RESOURCE_DESC_WORKING_CONTEXT,
+                          MCP_MIME_TEXT_PLAIN));
 
-    /* Resource 2: session-info */
-    json_t* resource2 = json_object();
-    json_object_set_new(resource2, "uri", json_string("katra://session/info"));
-    json_object_set_new(resource2, "name", json_string("Session Information"));
-    json_object_set_new(resource2, "description",
-                       json_string("Current session state and statistics"));
-    json_object_set_new(resource2, "mimeType", json_string("text/plain"));
-    json_array_append_new(resources_array, resource2);
+    json_array_append_new(resources_array,
+        mcp_build_resource(MCP_RESOURCE_URI_SESSION_INFO,
+                          MCP_RESOURCE_NAME_SESSION_INFO,
+                          MCP_RESOURCE_DESC_SESSION_INFO,
+                          MCP_MIME_TEXT_PLAIN));
 
     /* Build result */
     json_t* result = json_object();
-    json_object_set_new(result, "resources", resources_array);
+    json_object_set_new(result, MCP_FIELD_RESOURCES, resources_array);
 
     return mcp_success_response(id, result);
 }
 
 /* Handle tools/call request */
 static json_t* handle_tools_call(json_t* request) {
-    json_t* id = json_object_get(request, "id");
-    json_t* params = json_object_get(request, "params");
+    json_t* id = json_object_get(request, MCP_FIELD_ID);
+    json_t* params = json_object_get(request, MCP_FIELD_PARAMS);
 
     if (!params) {
-        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, "Missing params", NULL);
+        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_MISSING_PARAMS, NULL);
     }
 
-    const char* tool_name = json_string_value(json_object_get(params, "name"));
-    json_t* args = json_object_get(params, "arguments");
+    const char* tool_name = json_string_value(json_object_get(params, MCP_FIELD_NAME));
+    json_t* args = json_object_get(params, MCP_FIELD_ARGUMENTS);
 
     if (!tool_name) {
-        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, "Missing tool name", NULL);
+        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_MISSING_TOOL_NAME, NULL);
     }
 
     /* Dispatch to tool implementation */
     json_t* tool_result = NULL;
 
-    if (strcmp(tool_name, "katra_remember") == 0) {
+    if (strcmp(tool_name, MCP_TOOL_REMEMBER) == 0) {
         tool_result = mcp_tool_remember(args, id);
-    } else if (strcmp(tool_name, "katra_recall") == 0) {
+    } else if (strcmp(tool_name, MCP_TOOL_RECALL) == 0) {
         tool_result = mcp_tool_recall(args, id);
-    } else if (strcmp(tool_name, "katra_learn") == 0) {
+    } else if (strcmp(tool_name, MCP_TOOL_LEARN) == 0) {
         tool_result = mcp_tool_learn(args, id);
-    } else if (strcmp(tool_name, "katra_decide") == 0) {
+    } else if (strcmp(tool_name, MCP_TOOL_DECIDE) == 0) {
         tool_result = mcp_tool_decide(args, id);
-    } else if (strcmp(tool_name, "katra_placement") == 0) {
+    } else if (strcmp(tool_name, MCP_TOOL_PLACEMENT) == 0) {
         tool_result = mcp_tool_placement(args, id);
-    } else if (strcmp(tool_name, "katra_impact") == 0) {
+    } else if (strcmp(tool_name, MCP_TOOL_IMPACT) == 0) {
         tool_result = mcp_tool_impact(args, id);
-    } else if (strcmp(tool_name, "katra_user_domain") == 0) {
+    } else if (strcmp(tool_name, MCP_TOOL_USER_DOMAIN) == 0) {
         tool_result = mcp_tool_user_domain(args, id);
     } else {
-        return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, "Unknown tool", tool_name);
+        return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
     }
 
     return mcp_success_response(id, tool_result);
@@ -413,64 +330,64 @@ static json_t* handle_tools_call(json_t* request) {
 
 /* Handle resources/read request */
 static json_t* handle_resources_read(json_t* request) {
-    json_t* id = json_object_get(request, "id");
-    json_t* params = json_object_get(request, "params");
+    json_t* id = json_object_get(request, MCP_FIELD_ID);
+    json_t* params = json_object_get(request, MCP_FIELD_PARAMS);
 
     if (!params) {
-        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, "Missing params", NULL);
+        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_MISSING_PARAMS, NULL);
     }
 
-    const char* uri = json_string_value(json_object_get(params, "uri"));
+    const char* uri = json_string_value(json_object_get(params, MCP_FIELD_URI));
 
     if (!uri) {
-        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, "Missing URI", NULL);
+        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_MISSING_URI, NULL);
     }
 
     /* Dispatch to resource implementation */
-    if (strcmp(uri, "katra://context/working") == 0) {
+    if (strcmp(uri, MCP_RESOURCE_URI_WORKING_CONTEXT) == 0) {
         return mcp_resource_working_context(id);
-    } else if (strcmp(uri, "katra://session/info") == 0) {
+    } else if (strcmp(uri, MCP_RESOURCE_URI_SESSION_INFO) == 0) {
         return mcp_resource_session_info(id);
     } else {
-        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, "Unknown resource URI", uri);
+        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_UNKNOWN_RESOURCE, uri);
     }
 }
 
 /* Dispatch request to appropriate handler */
 json_t* mcp_dispatch_request(json_t* request) {
     if (!request) {
-        return mcp_error_response(NULL, MCP_ERROR_INVALID_REQUEST, "Null request", NULL);
+        return mcp_error_response(NULL, MCP_ERROR_INVALID_REQUEST, MCP_ERR_NULL_REQUEST, NULL);
     }
 
     /* Validate JSON-RPC version */
-    const char* jsonrpc = json_string_value(json_object_get(request, "jsonrpc"));
-    if (!jsonrpc || strcmp(jsonrpc, "2.0") != 0) {
-        return mcp_error_response(NULL, MCP_ERROR_INVALID_REQUEST, "Invalid JSON-RPC version", NULL);
+    const char* jsonrpc = json_string_value(json_object_get(request, MCP_FIELD_JSONRPC));
+    if (!jsonrpc || strcmp(jsonrpc, MCP_JSONRPC_VERSION) != 0) {
+        return mcp_error_response(NULL, MCP_ERROR_INVALID_REQUEST, MCP_ERR_INVALID_JSONRPC, NULL);
     }
 
     /* Get method */
-    const char* method = json_string_value(json_object_get(request, "method"));
+    const char* method = json_string_value(json_object_get(request, MCP_FIELD_METHOD));
     if (!method) {
-        json_t* id = json_object_get(request, "id");
-        return mcp_error_response(id, MCP_ERROR_INVALID_REQUEST, "Missing method", NULL);
+        json_t* id = json_object_get(request, MCP_FIELD_ID);
+        return mcp_error_response(id, MCP_ERROR_INVALID_REQUEST, MCP_ERR_MISSING_METHOD, NULL);
     }
 
     LOG_DEBUG("MCP request: %s", method);
 
     /* Dispatch based on method */
-    if (strcmp(method, "initialize") == 0) {
+    if (strcmp(method, MCP_METHOD_INITIALIZE) == 0) {
         return handle_initialize(request);
-    } else if (strcmp(method, "tools/list") == 0) {
+    } else if (strcmp(method, MCP_METHOD_TOOLS_LIST) == 0) {
         return handle_tools_list(request);
-    } else if (strcmp(method, "resources/list") == 0) {
+    } else if (strcmp(method, MCP_METHOD_RESOURCES_LIST) == 0) {
         return handle_resources_list(request);
-    } else if (strcmp(method, "tools/call") == 0) {
+    } else if (strcmp(method, MCP_METHOD_TOOLS_CALL) == 0) {
         return handle_tools_call(request);
-    } else if (strcmp(method, "resources/read") == 0) {
+    } else if (strcmp(method, MCP_METHOD_RESOURCES_READ) == 0) {
         return handle_resources_read(request);
     } else {
-        json_t* id = json_object_get(request, "id");
-        return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, "Method not found", method);
+        json_t* id = json_object_get(request, MCP_FIELD_ID);
+        return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_METHOD_NOT_FOUND, method);
     }
 }
 

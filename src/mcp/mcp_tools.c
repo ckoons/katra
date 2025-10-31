@@ -20,19 +20,19 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
     if (!args) {
-        return mcp_tool_error("Missing required arguments", "");
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
     }
 
-    const char* content = json_string_value(json_object_get(args, "content"));
-    const char* context = json_string_value(json_object_get(args, "context"));
+    const char* content = json_string_value(json_object_get(args, MCP_PARAM_CONTENT));
+    const char* context = json_string_value(json_object_get(args, MCP_PARAM_CONTEXT));
 
     if (!content || !context) {
-        return mcp_tool_error("Missing required arguments", "Both 'content' and 'context' are required");
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, MCP_ERR_BOTH_REQUIRED);
     }
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
-        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
     int result = remember_semantic(content, context);
@@ -42,11 +42,11 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
         const char* msg = katra_error_message(result);
         const char* suggestion = katra_error_suggestion(result);
         char details[MCP_ERROR_BUFFER];
-        snprintf(details, sizeof(details), "%s. %s", msg, suggestion);
-        return mcp_tool_error("Failed to store memory", details);
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error(MCP_ERR_STORE_MEMORY_FAILED, details);
     }
 
-    return mcp_tool_success("Memory stored successfully");
+    return mcp_tool_success(MCP_MSG_MEMORY_STORED);
 }
 
 /* Tool: katra_recall */
@@ -54,13 +54,13 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
     if (!args) {
-        return mcp_tool_error("Missing required arguments", "");
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
     }
 
-    const char* topic = json_string_value(json_object_get(args, "topic"));
+    const char* topic = json_string_value(json_object_get(args, MCP_PARAM_TOPIC));
 
     if (!topic) {
-        return mcp_tool_error("Missing required argument", "'topic' is required");
+        return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_TOPIC_REQUIRED);
     }
 
     size_t count = 0;
@@ -68,14 +68,14 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
-        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
     results = recall_about(topic, &count);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (!results || count == 0) {
-        return mcp_tool_success("No memories found for topic");
+        return mcp_tool_success(MCP_MSG_NO_MEMORIES);
     }
 
     /* Truncate large result sets */
@@ -89,12 +89,10 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     /* Build response text */
     char response[MCP_RESPONSE_BUFFER];
     if (truncated) {
-        snprintf(response, sizeof(response),
-                "Found %zu memories (showing first %d):\n",
+        snprintf(response, sizeof(response), MCP_FMT_FOUND_MEMORIES_TRUNCATED,
                 original_count, MCP_MAX_RECALL_RESULTS);
     } else {
-        snprintf(response, sizeof(response),
-                "Found %zu memories:\n", count);
+        snprintf(response, sizeof(response), MCP_FMT_FOUND_MEMORIES, count);
     }
 
     size_t offset = strlen(response);
@@ -102,12 +100,11 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     for (size_t i = 0; i < count; i++) {
         if (results[i]) {
             offset += snprintf(response + offset, sizeof(response) - offset,
-                             "\n%zu. %s", i + 1, results[i]);
+                             MCP_FMT_MEMORY_ITEM, i + 1, results[i]);
 
             /* Safety check - stop if buffer nearly full */
             if (offset >= sizeof(response) - 100) {
-                snprintf(response + offset, sizeof(response) - offset,
-                        "\n... (truncated for display)");
+                snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
                 break;
             }
         }
@@ -123,18 +120,18 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
     if (!args) {
-        return mcp_tool_error("Missing required arguments", "");
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
     }
 
-    const char* knowledge = json_string_value(json_object_get(args, "knowledge"));
+    const char* knowledge = json_string_value(json_object_get(args, MCP_PARAM_KNOWLEDGE));
 
     if (!knowledge) {
-        return mcp_tool_error("Missing required argument", "'knowledge' is required");
+        return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_KNOWLEDGE_REQUIRED);
     }
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
-        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
     int result = learn(knowledge);
@@ -144,11 +141,11 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
         const char* msg = katra_error_message(result);
         const char* suggestion = katra_error_suggestion(result);
         char details[MCP_ERROR_BUFFER];
-        snprintf(details, sizeof(details), "%s. %s", msg, suggestion);
-        return mcp_tool_error("Failed to store knowledge", details);
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error(MCP_ERR_STORE_KNOWLEDGE_FAILED, details);
     }
 
-    return mcp_tool_success("Knowledge stored successfully");
+    return mcp_tool_success(MCP_MSG_KNOWLEDGE_STORED);
 }
 
 /* Tool: katra_decide */
@@ -156,19 +153,19 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
     if (!args) {
-        return mcp_tool_error("Missing required arguments", "");
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
     }
 
-    const char* decision = json_string_value(json_object_get(args, "decision"));
-    const char* reasoning = json_string_value(json_object_get(args, "reasoning"));
+    const char* decision = json_string_value(json_object_get(args, MCP_PARAM_DECISION));
+    const char* reasoning = json_string_value(json_object_get(args, MCP_PARAM_REASONING));
 
     if (!decision || !reasoning) {
-        return mcp_tool_error("Missing required arguments", "Both 'decision' and 'reasoning' are required");
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, MCP_ERR_DECISION_REASONING_REQUIRED);
     }
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
-        return mcp_tool_error("Internal error", "Failed to acquire mutex lock");
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
     int result = decide(decision, reasoning);
@@ -178,9 +175,9 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
         const char* msg = katra_error_message(result);
         const char* suggestion = katra_error_suggestion(result);
         char details[MCP_ERROR_BUFFER];
-        snprintf(details, sizeof(details), "%s. %s", msg, suggestion);
-        return mcp_tool_error("Failed to store decision", details);
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error(MCP_ERR_STORE_DECISION_FAILED, details);
     }
 
-    return mcp_tool_success("Decision stored successfully");
+    return mcp_tool_success(MCP_MSG_DECISION_STORED);
 }

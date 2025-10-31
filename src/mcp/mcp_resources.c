@@ -21,8 +21,8 @@ json_t* mcp_resource_working_context(json_t* id) {
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_error_response(id, MCP_ERROR_INTERNAL,
-                                 "Internal error",
-                                 "Failed to acquire mutex lock");
+                                 MCP_ERR_INTERNAL,
+                                 MCP_ERR_MUTEX_LOCK);
     }
 
     char* context = get_working_context();
@@ -30,22 +30,22 @@ json_t* mcp_resource_working_context(json_t* id) {
 
     if (!context) {
         return mcp_error_response(id, MCP_ERROR_INTERNAL,
-                                 "Failed to get working context",
-                                 "Memory allocation failed or session not active");
+                                 MCP_ERR_GET_CONTEXT_FAILED,
+                                 MCP_ERR_CONTEXT_DETAILS);
     }
 
     /* Build resource response */
     json_t* contents_array = json_array();
     json_t* content_item = json_object();
 
-    json_object_set_new(content_item, "uri", json_string("katra://context/working"));
-    json_object_set_new(content_item, "mimeType", json_string("text/plain"));
-    json_object_set_new(content_item, "text", json_string(context));
+    json_object_set_new(content_item, MCP_FIELD_URI, json_string(MCP_RESOURCE_URI_WORKING_CONTEXT));
+    json_object_set_new(content_item, MCP_FIELD_MIME_TYPE, json_string(MCP_MIME_TEXT_PLAIN));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(context));
 
     json_array_append_new(contents_array, content_item);
 
     json_t* result = json_object();
-    json_object_set_new(result, "contents", contents_array);
+    json_object_set_new(result, MCP_FIELD_CONTENT, contents_array);
 
     /* CRITICAL: Free malloc'd string from get_working_context() */
     free(context);
@@ -60,8 +60,8 @@ json_t* mcp_resource_session_info(json_t* id) {
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_error_response(id, MCP_ERROR_INTERNAL,
-                                 "Internal error",
-                                 "Failed to acquire mutex lock");
+                                 MCP_ERR_INTERNAL,
+                                 MCP_ERR_MUTEX_LOCK);
     }
 
     int katra_result = katra_get_session_info(&info);
@@ -70,7 +70,7 @@ json_t* mcp_resource_session_info(json_t* id) {
     if (katra_result != KATRA_SUCCESS) {
         const char* msg = katra_error_message(katra_result);
         return mcp_error_response(id, MCP_ERROR_INTERNAL,
-                                 "Failed to get session info", msg);
+                                 MCP_ERR_GET_SESSION_FAILED, msg);
     }
 
     /* Format session info as text */
@@ -78,19 +78,24 @@ json_t* mcp_resource_session_info(json_t* id) {
     char start_time_str[64];
     char last_activity_str[64];
 
+    /* GUIDELINE_APPROVED: time format string for strftime */
+    const char* time_fmt = "%Y-%m-%d %H:%M:%S";
+    /* GUIDELINE_APPROVED: fallback string for invalid timestamps */
+    const char* unknown_str = "unknown";
+
     /* Format timestamps */
     struct tm* tm_info = localtime(&info.start_time);
     if (tm_info) {
-        strftime(start_time_str, sizeof(start_time_str), "%Y-%m-%d %H:%M:%S", tm_info);
+        strftime(start_time_str, sizeof(start_time_str), time_fmt, tm_info);
     } else {
-        strncpy(start_time_str, "unknown", sizeof(start_time_str) - 1);
+        strncpy(start_time_str, unknown_str, sizeof(start_time_str) - 1);
     }
 
     tm_info = localtime(&info.last_activity);
     if (tm_info) {
-        strftime(last_activity_str, sizeof(last_activity_str), "%Y-%m-%d %H:%M:%S", tm_info);
+        strftime(last_activity_str, sizeof(last_activity_str), time_fmt, tm_info);
     } else {
-        strncpy(last_activity_str, "unknown", sizeof(last_activity_str) - 1);
+        strncpy(last_activity_str, unknown_str, sizeof(last_activity_str) - 1);
     }
 
     /* Calculate session duration */
@@ -99,6 +104,7 @@ json_t* mcp_resource_session_info(json_t* id) {
     long duration_minutes = duration_seconds / 60;
     long duration_hours = duration_minutes / 60;
 
+    /* GUIDELINE_APPROVED: session info format template */
     snprintf(session_text, sizeof(session_text),
             "Katra Session Information\n"
             "========================\n\n"
@@ -127,14 +133,14 @@ json_t* mcp_resource_session_info(json_t* id) {
     json_t* contents_array = json_array();
     json_t* content_item = json_object();
 
-    json_object_set_new(content_item, "uri", json_string("katra://session/info"));
-    json_object_set_new(content_item, "mimeType", json_string("text/plain"));
-    json_object_set_new(content_item, "text", json_string(session_text));
+    json_object_set_new(content_item, MCP_FIELD_URI, json_string(MCP_RESOURCE_URI_SESSION_INFO));
+    json_object_set_new(content_item, MCP_FIELD_MIME_TYPE, json_string(MCP_MIME_TEXT_PLAIN));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(session_text));
 
     json_array_append_new(contents_array, content_item);
 
     json_t* result = json_object();
-    json_object_set_new(result, "contents", contents_array);
+    json_object_set_new(result, MCP_FIELD_CONTENT, contents_array);
 
     return mcp_success_response(id, result);
 }
