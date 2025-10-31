@@ -74,18 +74,3 @@ int phase5_safe_strdup(char** dest, const char* src) {
     return KATRA_SUCCESS;
 }
 
-/* Free string array utility
- *
- * Frees each string in array, then frees array itself.
- * Safe to call with NULL array or count=0.
- */
-void phase5_free_string_array(char** array, size_t count) {
-    if (!array) {
-        return;
-    }
-
-    for (size_t i = 0; i < count; i++) {
-        free(array[i]);
-    }
-    free(array);
-}

@@ -72,9 +72,6 @@ float phase5_calculate_confidence(const phase5_confidence_calc_t* calc);
 /* Safe strdup with NULL check (returns error code) */
 int phase5_safe_strdup(char** dest, const char* src);
 
-/* Free string array utility */
-void phase5_free_string_array(char** array, size_t count);
-
 /* Query types */
 typedef enum {
     QUERY_TYPE_PLACEMENT,      /* "Where should this function go?" */

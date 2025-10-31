@@ -19,6 +19,7 @@
 #include "katra_json_utils.h"
 #include "katra_file_utils.h"
 #include "katra_strings.h"
+#include "katra_core_common.h"
 
 /* File path for Tier 1 storage: ~/.katra/memory/tier1/ */
 #define TIER1_DIR_FORMAT "%s/.katra/memory/tier1"
@@ -27,7 +28,6 @@
 /* Forward declarations */
 static int get_daily_file_path(const char* ci_id, char* buffer, size_t size);
 static void sort_filenames_desc(char** filenames, size_t count);
-void tier1_free_filenames(char** filenames, size_t count);
 static bool record_matches_query(const memory_record_t* record, const memory_query_t* query);
 static int scan_file_for_records(const char* filepath, const memory_query_t* query,
                                   memory_record_t*** result_array, size_t* result_count,
@@ -187,7 +187,7 @@ int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* 
             size_t new_cap = capacity == 0 ? KATRA_INITIAL_CAPACITY_STANDARD : capacity * 2;
             char** new_array = realloc(files, new_cap * sizeof(char*));
             if (!new_array) {
-                tier1_free_filenames(files, file_count);
+                katra_free_string_array(files, file_count);
                 closedir(dir);
                 return E_SYSTEM_MEMORY;
             }
@@ -197,7 +197,7 @@ int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* 
 
         files[file_count] = strdup(entry->d_name);
         if (!files[file_count]) {
-            tier1_free_filenames(files, file_count);
+            katra_free_string_array(files, file_count);
             closedir(dir);
             return E_SYSTEM_MEMORY;
         }
@@ -221,15 +221,6 @@ static void sort_filenames_desc(char** filenames, size_t count) {
             }
         }
     }
-}
-
-/* Free filename array (exported for archive module) */
-void tier1_free_filenames(char** filenames, size_t count) {
-    if (!filenames) return;
-    for (size_t i = 0; i < count; i++) {
-        free(filenames[i]);
-    }
-    free(filenames);
 }
 
 /* Helper: Check if record matches query */
@@ -380,7 +371,7 @@ int tier1_query(const memory_query_t* query,
         }
     }
 
-    tier1_free_filenames(filenames, file_count);
+    katra_free_string_array(filenames, file_count);
     *results = result_array;
     *count = result_count;
     LOG_DEBUG("Tier 1 query returned %zu results", result_count);
@@ -393,7 +384,7 @@ cleanup:
         }
         free(result_array);
     }
-    tier1_free_filenames(filenames, file_count);
+    katra_free_string_array(filenames, file_count);
     return result;
 }
 
@@ -516,7 +507,7 @@ int tier1_flush(const char* ci_id) {
         fclose(fp);
     }
 
-    tier1_free_filenames(filenames, file_count);
+    katra_free_string_array(filenames, file_count);
 
     if (flushed_count > 0) {
         LOG_DEBUG("Flushed %d tier1 file(s) to disk for CI: %s",

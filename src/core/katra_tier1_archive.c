@@ -17,11 +17,11 @@
 #include "katra_path_utils.h"
 #include "katra_memory.h"
 #include "katra_strings.h"
+#include "katra_core_common.h"
 
 /* External helper from tier1.c */
 extern int tier1_get_dir(const char* ci_id, char* buffer, size_t size);
 extern int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count);
-extern void tier1_free_filenames(char** filenames, size_t count);
 
 /* Thane's consolidation thresholds (neuroscience-aligned) */
 #define RECENT_ACCESS_DAYS 7              /* Keep if accessed < 7 days ago */
@@ -340,7 +340,7 @@ static int mark_records_as_archived(const char* tier1_dir,
     /* Collect all JSONL files */
     result = tier1_collect_jsonl_files(tier1_dir, &filenames, &file_count);
     if (result != KATRA_SUCCESS || file_count == 0) {
-        tier1_free_filenames(filenames, file_count);
+        katra_free_string_array(filenames, file_count);
         return result;
     }
 
@@ -375,7 +375,7 @@ static int mark_records_as_archived(const char* tier1_dir,
         }
     }
 
-    tier1_free_filenames(filenames, file_count);
+    katra_free_string_array(filenames, file_count);
     return KATRA_SUCCESS;
 }
 
@@ -518,7 +518,7 @@ int tier1_archive(const char* ci_id, int max_age_days) {
     /* Collect filenames */
     result = tier1_collect_jsonl_files(tier1_dir, &filenames, &file_count);
     if (result != KATRA_SUCCESS || file_count == 0) {
-        tier1_free_filenames(filenames, file_count);
+        katra_free_string_array(filenames, file_count);
         return 0;  /* No files to archive */
     }
 
@@ -548,7 +548,7 @@ cleanup:
         }
         free(records);
     }
-    tier1_free_filenames(filenames, file_count);
+    katra_free_string_array(filenames, file_count);
 
     return result;
 }
