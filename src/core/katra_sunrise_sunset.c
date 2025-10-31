@@ -410,15 +410,8 @@ void katra_sundown_free(sundown_context_t* context) {
     katra_threads_free(context->threads, context->thread_count);
     katra_insights_free(context->insights, context->insight_count);
 
-    for (size_t i = 0; i < context->question_count; i++) {
-        free(context->open_questions[i]);
-    }
-    free(context->open_questions);
-
-    for (size_t i = 0; i < context->intention_count; i++) {
-        free(context->intentions[i]);
-    }
-    free(context->intentions);
+    katra_free_string_array(context->open_questions, context->question_count);
+    katra_free_string_array(context->intentions, context->intention_count);
 
     free(context);
 }
@@ -429,25 +422,10 @@ void katra_sunrise_free(sunrise_context_t* context) {
 
     katra_sundown_free(context->yesterday);
 
-    for (size_t i = 0; i < context->theme_count; i++) {
-        free(context->recurring_themes[i]);
-    }
-    free(context->recurring_themes);
-
-    for (size_t i = 0; i < context->pending_count; i++) {
-        free(context->pending_questions[i]);
-    }
-    free(context->pending_questions);
-
-    for (size_t i = 0; i < context->carry_count; i++) {
-        free(context->carry_forward[i]);
-    }
-    free(context->carry_forward);
-
-    for (size_t i = 0; i < context->familiar_count; i++) {
-        free(context->familiar_topics[i]);
-    }
-    free(context->familiar_topics);
+    katra_free_string_array(context->recurring_themes, context->theme_count);
+    katra_free_string_array(context->pending_questions, context->pending_count);
+    katra_free_string_array(context->carry_forward, context->carry_count);
+    katra_free_string_array(context->familiar_topics, context->familiar_count);
 
     free(context);
 }

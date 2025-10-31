@@ -18,6 +18,7 @@
 #include "katra_path_utils.h"
 #include "katra_json_utils.h"
 #include "katra_strings.h"
+#include "katra_core_common.h"
 
 /* Tier 2 directory names */
 #define TIER2_DIR_WEEKLY  "weekly"
@@ -357,10 +358,7 @@ int tier2_query(const digest_query_t* query,
     LOG_DEBUG("Tier 2 query returned %zu results (indexed)", result_count);
 
     /* Free index query results */
-    for (size_t i = 0; i < location_count; i++) {
-        free(digest_ids[i]);
-    }
-    free(digest_ids);
+    katra_free_string_array(digest_ids, location_count);
     free(locations);
 
     return KATRA_SUCCESS;
@@ -413,10 +411,7 @@ fallback_scan:
     }
 
 cleanup:
-    for (size_t i = 0; i < location_count; i++) {
-        free(digest_ids[i]);
-    }
-    free(digest_ids);
+    katra_free_string_array(digest_ids, location_count);
     free(locations);
 
     if (result_array) {
@@ -518,41 +513,15 @@ void katra_digest_free(digest_record_t* digest) {
     free(digest->summary);
 
     /* Free arrays */
-    for (size_t i = 0; i < digest->theme_count; i++) {
-        free(digest->themes[i]);
-    }
-    free(digest->themes);
-
-    for (size_t i = 0; i < digest->keyword_count; i++) {
-        free(digest->keywords[i]);
-    }
-    free(digest->keywords);
-
-    for (size_t i = 0; i < digest->insight_count; i++) {
-        free(digest->key_insights[i]);
-    }
-    free(digest->key_insights);
-
-    for (size_t i = 0; i < digest->decision_count; i++) {
-        free(digest->decisions_made[i]);
-    }
-    free(digest->decisions_made);
+    katra_free_string_array(digest->themes, digest->theme_count);
+    katra_free_string_array(digest->keywords, digest->keyword_count);
+    katra_free_string_array(digest->key_insights, digest->insight_count);
+    katra_free_string_array(digest->decisions_made, digest->decision_count);
 
     /* Free entities */
-    for (size_t i = 0; i < digest->entities.file_count; i++) {
-        free(digest->entities.files[i]);
-    }
-    free(digest->entities.files);
-
-    for (size_t i = 0; i < digest->entities.concept_count; i++) {
-        free(digest->entities.concepts[i]);
-    }
-    free(digest->entities.concepts);
-
-    for (size_t i = 0; i < digest->entities.people_count; i++) {
-        free(digest->entities.people[i]);
-    }
-    free(digest->entities.people);
+    katra_free_string_array(digest->entities.files, digest->entities.file_count);
+    katra_free_string_array(digest->entities.concepts, digest->entities.concept_count);
+    katra_free_string_array(digest->entities.people, digest->entities.people_count);
 
     free(digest);
 }

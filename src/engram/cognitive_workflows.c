@@ -351,12 +351,7 @@ void katra_cognitive_free_record(cognitive_record_t* record) {
     free(record->component);
 
     /* Free related IDs */
-    if (record->related_ids) {
-        for (size_t i = 0; i < record->related_count; i++) {
-            free(record->related_ids[i]);
-        }
-        free(record->related_ids);
-    }
+    katra_free_string_array(record->related_ids, record->related_count);
 
     free(record);
 }

@@ -460,12 +460,7 @@ void katra_memory_free_record(memory_record_t* record) {
     free(record->emotion_type);
 
     /* Free Phase 2 connection array */
-    if (record->connected_memory_ids) {
-        for (size_t i = 0; i < record->connection_count; i++) {
-            free(record->connected_memory_ids[i]);
-        }
-        free(record->connected_memory_ids);
-    }
+    katra_free_string_array(record->connected_memory_ids, record->connection_count);
 
     /* Free Phase 3 pattern fields */
     free(record->pattern_id);
