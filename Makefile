@@ -108,11 +108,28 @@ PHASE5_OBJS := $(BUILD_DIR)/katra_phase5_common.o \
                $(BUILD_DIR)/katra_phase5d_reasoning.o \
                $(BUILD_DIR)/katra_phase5e_crossproject.o
 
+# MCP library object files (without server main)
+MCP_LIB_OBJS := $(BUILD_DIR)/mcp_protocol.o \
+                $(BUILD_DIR)/mcp_tools.o \
+                $(BUILD_DIR)/mcp_phase5.o \
+                $(BUILD_DIR)/mcp_resources.o
+
+# MCP Server object files (includes server main)
+MCP_OBJS := $(MCP_LIB_OBJS) \
+            $(BUILD_DIR)/katra_mcp_server.o
+
 # Foundation library
 LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
 
+# MCP Server binary
+MCP_SERVER := $(BIN_DIR)/katra_mcp_server
+
+# Jansson library flags (for MCP server JSON-RPC)
+JANSSON_CFLAGS := -I/opt/homebrew/Cellar/jansson/2.14.1/include
+JANSSON_LDFLAGS := -L/opt/homebrew/Cellar/jansson/2.14.1/lib -ljansson
+
 # All object files (for dependency tracking)
-ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(PHASE5_OBJS)
+ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(PHASE5_OBJS) $(MCP_OBJS)
 
 # Auto-generated dependency files
 DEP_FILES := $(ALL_OBJS:.o=.d)
@@ -124,25 +141,30 @@ DEP_FILES := $(ALL_OBJS:.o=.d)
 .PHONY: all clean clean-all distclean test help
 .PHONY: count-report programming-guidelines check
 .PHONY: improvement-scan benchmark check-ready
-.PHONY: directories
+.PHONY: directories mcp-server
 .PHONY: test-quick test-env test-config test-error test-log test-init test-memory
 .PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
 .PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
 .PHONY: test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives
-.PHONY: test-breathing-enhancements
+.PHONY: test-breathing-enhancements test-session-info test-mcp
 
 # ==============================================================================
 # DEFAULT TARGET
 # ==============================================================================
 
-all: directories $(LIBKATRA_FOUNDATION)
+all: directories $(LIBKATRA_FOUNDATION) $(MCP_SERVER)
 	@echo ""
 	@echo "========================================"
-	@echo "Katra foundation build complete!"
+	@echo "Katra build complete!"
 	@echo "========================================"
+	@echo ""
+	@echo "Built targets:"
+	@echo "  Foundation library: $(LIBKATRA_FOUNDATION)"
+	@echo "  MCP Server:         $(MCP_SERVER)"
 	@echo ""
 	@echo "Available targets:"
-	@echo "  make test-quick             - Run foundation unit tests"
+	@echo "  make test-quick             - Run all tests (including MCP)"
+	@echo "  make mcp-server             - Build MCP server only"
 	@echo "  make count-report           - Run line count (diet-aware)"
 	@echo "  make programming-guidelines - Run code discipline checks"
 	@echo "  make check                  - Run both reports"
@@ -207,6 +229,24 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/phase5/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+# Compile MCP sources (requires jansson headers)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/mcp/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+# ==============================================================================
+# MCP SERVER BUILD
+# ==============================================================================
+
+# Build MCP server binary
+$(MCP_SERVER): $(MCP_OBJS) $(LIBKATRA_FOUNDATION) | $(BIN_DIR)
+	@echo "Building MCP server: $@"
+	@$(CC) -o $@ $(MCP_OBJS) -L$(BUILD_DIR) -lkatra_foundation $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
+	@echo "MCP server built successfully"
+
+# Convenience target
+mcp-server: $(MCP_SERVER)
+
 # ==============================================================================
 # AUTOMATIC DEPENDENCY INCLUSION
 # ==============================================================================
@@ -246,12 +286,14 @@ TEST_MOCK_CI := $(BIN_DIR)/tests/test_mock_ci
 TEST_BREATHING_PHASE2 := $(BIN_DIR)/tests/test_breathing_phase2
 TEST_BREATHING_PRIMITIVES := $(BIN_DIR)/tests/test_breathing_primitives
 TEST_BREATHING_ENHANCEMENTS := $(BIN_DIR)/tests/test_breathing_enhancements
+TEST_SESSION_INFO := $(BIN_DIR)/tests/test_session_info
+TEST_MCP := $(BIN_DIR)/tests/test_mcp
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-mcp
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -346,6 +388,14 @@ test-breathing-enhancements: $(TEST_BREATHING_ENHANCEMENTS)
 	@echo "Running breathing enhancements unit tests..."
 	@$(TEST_BREATHING_ENHANCEMENTS)
 
+test-session-info: $(TEST_SESSION_INFO)
+	@echo "Running session info API tests..."
+	@$(TEST_SESSION_INFO)
+
+test-mcp: $(TEST_MCP)
+	@echo "Running MCP server tests..."
+	@$(TEST_MCP)
+
 # CI readiness check
 check-ready: directories $(LIBKATRA_FOUNDATION)
 	@echo "Checking Katra readiness for CI testing..."
@@ -435,6 +485,14 @@ $(TEST_BREATHING_PRIMITIVES): $(TEST_DIR)/test_breathing_primitives.c $(LIBKATRA
 $(TEST_BREATHING_ENHANCEMENTS): $(TEST_DIR)/test_breathing_enhancements.c $(LIBKATRA_FOUNDATION)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_SESSION_INFO): $(TEST_DIR)/test_session_info.c $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+
+$(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(LIBKATRA_FOUNDATION)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_foundation $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
 
 # Benchmark executables
 $(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_FOUNDATION)

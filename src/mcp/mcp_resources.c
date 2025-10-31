@@ -45,7 +45,7 @@ json_t* mcp_resource_working_context(json_t* id) {
     json_array_append_new(contents_array, content_item);
 
     json_t* result = json_object();
-    json_object_set_new(result, MCP_FIELD_CONTENT, contents_array);
+    json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
 
     /* CRITICAL: Free malloc'd string from get_working_context() */
     free(context);
@@ -140,7 +140,7 @@ json_t* mcp_resource_session_info(json_t* id) {
     json_array_append_new(contents_array, content_item);
 
     json_t* result = json_object();
-    json_object_set_new(result, MCP_FIELD_CONTENT, contents_array);
+    json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
 
     return mcp_success_response(id, result);
 }

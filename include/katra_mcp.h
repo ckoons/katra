@@ -46,6 +46,7 @@
 #define MCP_FIELD_TYPE "type"
 #define MCP_FIELD_TEXT "text"
 #define MCP_FIELD_CONTENT "content"
+#define MCP_FIELD_CONTENTS "contents"
 #define MCP_FIELD_IS_ERROR "isError"
 
 /* Tool Schema Fields */
