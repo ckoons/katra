@@ -27,6 +27,123 @@ extern void tier1_free_filenames(char** filenames, size_t count);
 #define RECENT_ACCESS_DAYS 7              /* Keep if accessed < 7 days ago */
 #define HIGH_EMOTION_THRESHOLD 0.7f       /* High arousal/intensity (0.7+ = flashbulb) */
 #define HIGH_CENTRALITY_THRESHOLD 0.5f    /* Graph centrality (0.5 = moderate connectors) */
+#define PRESERVATION_SCORE_THRESHOLD 25.0f  /* Preserve if score >= 25 (multi-factor) */
+
+/* Thane's Phase 4: Multi-factor scoring weights */
+#define WEIGHT_RECENT_ACCESS 30.0f        /* Recent access contribution (0-30 points) */
+#define WEIGHT_EMOTION 25.0f              /* Emotional salience (0-25 points) */
+#define WEIGHT_CENTRALITY 20.0f           /* Graph centrality (0-20 points) */
+#define WEIGHT_PATTERN_OUTLIER 15.0f      /* Pattern outlier bonus (15 points) */
+#define WEIGHT_IMPORTANCE 10.0f           /* Base importance (0-10 points) */
+#define AGE_PENALTY_START_DAYS 14         /* Start age penalty after 14 days */
+#define AGE_PENALTY_PER_DAY 1.0f          /* Subtract 1 point per day > 14 days */
+
+/* Helper: Get emotion type multiplier (Thane's Phase 4 Priority 2)
+ *
+ * Neuroscience rationale:
+ * - Surprise: Novelty detection signal (enhanced consolidation)
+ * - Fear: Threat relevance (survival priority)
+ * - Satisfaction: Goal achieved (reduced need to remember)
+ */
+static float get_emotion_multiplier(const char* emotion_type) {
+    if (!emotion_type) {
+        return 1.0f;  /* Neutral */
+    }
+
+    /* Case-insensitive matching */
+    char lower[KATRA_BUFFER_SMALL];
+    size_t i;
+    for (i = 0; emotion_type[i] && i < sizeof(lower) - 1; i++) {
+        lower[i] = tolower((unsigned char)emotion_type[i]);
+    }
+    lower[i] = '\0';
+
+    /* Emotion-specific multipliers */
+    if (strcmp(lower, "surprise") == 0) {
+        return 1.3f;  /* Novelty bonus */
+    } else if (strcmp(lower, "fear") == 0) {
+        return 1.5f;  /* Threat-relevance boost */
+    } else if (strcmp(lower, "satisfaction") == 0) {
+        return 0.8f;  /* Less consolidation needed */
+    }
+
+    return 1.0f;  /* Default for other emotions */
+}
+
+/* Helper: Calculate preservation score (Thane's Phase 4 Priority 3)
+ *
+ * Multi-factor scoring system replaces sequential if-else logic.
+ * Memories "warm on multiple dimensions" can survive even if no single
+ * factor is strong.
+ *
+ * Score breakdown:
+ * - Voluntary marking: Absolute (±100)
+ * - Recent access: 0-30 points (scaled by access count - Priority 6)
+ * - Emotional salience: 0-25 points (type-weighted - Priority 2)
+ * - Graph centrality: 0-20 points
+ * - Pattern outlier: 15 points
+ * - Base importance: 0-10 points
+ * - Age penalty: -1 per day after 14 days
+ */
+static float calculate_preservation_score(memory_record_t* rec, time_t now) {
+    float score = 0.0f;
+
+    /* Voluntary marking (absolute) */
+    if (rec->marked_important) {
+        return 100.0f;  /* Always preserve */
+    }
+    if (rec->marked_forgettable) {
+        return -100.0f;  /* Always archive (consent requirement) */
+    }
+
+    /* Recent access (0-30 points) with frequency scaling (Priority 6) */
+    if (rec->last_accessed > 0) {
+        float days_since = (float)(now - rec->last_accessed) / (24.0f * 3600.0f);
+
+        /* Access-count weighting: frequent access extends "warm" period */
+        float access_threshold = RECENT_ACCESS_DAYS + (rec->access_count * 2);
+        if (access_threshold > 21) {
+            access_threshold = 21;  /* Cap at 21 days */
+        }
+
+        /* Linear decay from max points to 0 over threshold period */
+        if (days_since < access_threshold) {
+            score += WEIGHT_RECENT_ACCESS * (1.0f - (days_since / access_threshold));
+        }
+    }
+
+    /* Emotional salience (0-25 points) with type weighting (Priority 2) */
+    if (rec->emotion_intensity > 0.0f) {
+        float emotion_multiplier = get_emotion_multiplier(rec->emotion_type);
+        float adjusted_intensity = rec->emotion_intensity * emotion_multiplier;
+
+        /* Cap at 1.0 to prevent overflow */
+        if (adjusted_intensity > 1.0f) {
+            adjusted_intensity = 1.0f;
+        }
+
+        score += adjusted_intensity * WEIGHT_EMOTION;
+    }
+
+    /* Graph centrality (0-20 points) */
+    score += rec->graph_centrality * WEIGHT_CENTRALITY;
+
+    /* Pattern outlier (15 points) */
+    if (rec->is_pattern_outlier) {
+        score += WEIGHT_PATTERN_OUTLIER;
+    }
+
+    /* Base importance (0-10 points) */
+    score += rec->importance * WEIGHT_IMPORTANCE;
+
+    /* Age penalty (subtract 1 per day older than 14 days) */
+    float age_days = (float)(now - rec->timestamp) / (24.0f * 3600.0f);
+    if (age_days > AGE_PENALTY_START_DAYS) {
+        score -= (age_days - AGE_PENALTY_START_DAYS) * AGE_PENALTY_PER_DAY;
+    }
+
+    return score;
+}
 
 /* Helper: Collect archivable records from a file */
 static int collect_archivable_from_file(const char* filepath, time_t cutoff,
@@ -58,48 +175,31 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
             continue;
         }
 
-        /* Thane's Phase 1: Context-aware consolidation heuristics */
+        /* Thane's Phase 4: Multi-factor scoring system
+         *
+         * Replaces sequential if-else logic with weighted scoring.
+         * Memories "warm on multiple dimensions" can survive even if
+         * no single factor is strong.
+         */
+        float score = calculate_preservation_score(record, now);
 
-        /* NEVER archive marked_important (voluntary preservation) */
-        if (record->marked_important) {
-            LOG_DEBUG("Preserving marked_important memory: %.50s...", record->content);
+        /* Decision threshold */
+        if (score >= PRESERVATION_SCORE_THRESHOLD) {
+            /* Preserve this memory */
+            LOG_DEBUG("Preserving memory (score=%.1f): %.50s...", score, record->content);
             katra_memory_free_record(record);
             continue;
         }
 
-        /* ALWAYS prioritize marked_forgettable (voluntary disposal) */
-        /* This is a CONSENT requirement - bypass ALL other preservation checks */
-        if (record->marked_forgettable) {
-            LOG_DEBUG("Archiving marked_forgettable (user consent): %.50s...", record->content);
-            /* Add to archive array immediately - skip all other checks */
-            /* (will be added to array below) */
-        }
-        /* Access-based decay: Don't archive recently accessed memories */
-        else if (record->last_accessed > 0) {
-            time_t days_since_accessed = (now - record->last_accessed) / (24 * 3600);
-            if (days_since_accessed < RECENT_ACCESS_DAYS) {
-                LOG_DEBUG("Preserving recently accessed memory (%.0f days): %.50s...",
-                         (double)days_since_accessed, record->content);
-                katra_memory_free_record(record);
-                continue;
-            }
-        }
-        /* Emotional salience: Keep high-intensity emotions longer */
-        else if (record->emotion_intensity >= HIGH_EMOTION_THRESHOLD) {
-            LOG_DEBUG("Preserving emotionally salient memory (%.2f): %.50s...",
-                     record->emotion_intensity, record->content);
-            katra_memory_free_record(record);
-            continue;
-        }
-        /* Graph centrality: Keep highly connected memories (Thane's Phase 2) */
-        else if (record->graph_centrality >= HIGH_CENTRALITY_THRESHOLD) {
-            LOG_DEBUG("Preserving central memory (centrality=%.2f): %.50s...",
-                     record->graph_centrality, record->content);
-            katra_memory_free_record(record);
-            continue;
-        }
-        /* Age-based: Standard archival for old memories */
-        else if (record->timestamp >= cutoff) {
+        /* Archive if below threshold (or very old for safety) */
+        if (score < PRESERVATION_SCORE_THRESHOLD || record->timestamp < cutoff) {
+            LOG_DEBUG("Archiving memory (score=%.1f, age=%ld days): %.50s...",
+                     score,
+                     (now - record->timestamp) / (24 * 3600),
+                     record->content);
+            /* Will be added to archive array below */
+        } else {
+            /* Edge case: preserve borderline memories that are not very old */
             katra_memory_free_record(record);
             continue;
         }

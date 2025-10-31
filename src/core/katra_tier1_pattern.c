@@ -18,6 +18,11 @@
 #define MIN_PATTERN_SIZE 3                /* Need 3+ memories to form pattern */
 #define MIN_KEYWORD_LENGTH 4              /* Minimum keyword length for pattern matching */
 
+/* Thane's Phase 4 Priority 4: Temporal clustering */
+#define TEMPORAL_CLUSTER_RECENT_DAYS 30   /* "Recent" pattern = < 30 days old */
+#define TEMPORAL_WINDOW_RECENT 7          /* Recent patterns: cluster within 7 days */
+#define TEMPORAL_WINDOW_OLD 30            /* Old patterns: cluster within 30 days */
+
 /* Static helper functions */
 static void free_keywords_pattern(char** keywords, size_t count);
 static bool is_stop_word_pattern(const char* word);
@@ -184,6 +189,40 @@ static float calculate_similarity(const char* content1, const char* content2) {
     return max_count > 0 ? (float)shared / (float)max_count : 0.0f;
 }
 
+/* Helper: Check if two memories should cluster (Thane's Phase 4 Priority 4)
+ *
+ * Prevents clustering "debugging from 6 months ago" with "debugging from yesterday".
+ * Different episodes should remain separate patterns.
+ *
+ * Recent patterns (< 30 days old): Tight temporal clustering (7 days)
+ * Old patterns (> 30 days old): Looser temporal clustering (30 days)
+ */
+static bool should_cluster(memory_record_t* m1, memory_record_t* m2, float similarity) {
+    if (similarity < SIMILARITY_THRESHOLD) {
+        return false;  /* Not semantically similar enough */
+    }
+
+    /* Calculate time difference */
+    time_t time_diff = m1->timestamp > m2->timestamp ?
+                       m1->timestamp - m2->timestamp :
+                       m2->timestamp - m1->timestamp;
+
+    time_t days_diff = time_diff / (24 * 3600);
+
+    /* Determine if pattern is recent (< 30 days from now) */
+    time_t now = time(NULL);
+    time_t newer_timestamp = m1->timestamp > m2->timestamp ? m1->timestamp : m2->timestamp;
+    time_t age_days = (now - newer_timestamp) / (24 * 3600);
+
+    /* Recent patterns: strict temporal clustering (7 days) */
+    if (age_days < TEMPORAL_CLUSTER_RECENT_DAYS) {
+        return days_diff < TEMPORAL_WINDOW_RECENT;
+    }
+
+    /* Old patterns: looser temporal clustering (30 days) */
+    return days_diff < TEMPORAL_WINDOW_OLD;
+}
+
 /* Detect patterns in memory set (Phase 3)
  *
  * Thane's insight: "I debugged 50 times" → pattern + count + outliers
@@ -206,7 +245,9 @@ void katra_tier1_detect_patterns(memory_record_t** records, size_t count) {
             }
 
             float similarity = calculate_similarity(records[i]->content, records[j]->content);
-            if (similarity >= SIMILARITY_THRESHOLD) {
+
+            /* Thane's Phase 4 Priority 4: Temporal clustering */
+            if (should_cluster(records[i], records[j], similarity)) {
                 pattern_members[member_count++] = j;
             }
         }
@@ -226,7 +267,7 @@ void katra_tier1_detect_patterns(memory_record_t** records, size_t count) {
                 records[idx]->semantic_similarity = 1.0f;  /* Simplified */
             }
 
-            /* Mark outliers: first, last, and highest importance */
+            /* Mark outliers: first, last, highest importance, and emotional outlier */
             records[pattern_members[0]]->is_pattern_outlier = true;  /* First */
             records[pattern_members[member_count - 1]]->is_pattern_outlier = true;  /* Last */
 
@@ -242,12 +283,66 @@ void katra_tier1_detect_patterns(memory_record_t** records, size_t count) {
             }
             records[max_importance_idx]->is_pattern_outlier = true;  /* Most important */
 
+            /* Thane's Phase 4 Priority 5: Enhanced outlier selection
+             * Add 4th outlier: most emotionally distinct member
+             *
+             * Example: 50 debugging sessions with frustration (0.4),
+             * one breakthrough with joy (0.9) - keep the breakthrough!
+             */
+            float avg_emotion = 0.0f;
+            size_t emotion_count = 0;
+
+            /* Calculate average emotion intensity for pattern */
+            for (size_t m = 0; m < member_count; m++) {
+                size_t idx = pattern_members[m];
+                if (records[idx]->emotion_intensity > 0.0f) {
+                    avg_emotion += records[idx]->emotion_intensity;
+                    emotion_count++;
+                }
+            }
+
+            if (emotion_count > 0) {
+                avg_emotion /= emotion_count;
+
+                /* Find member with maximum emotional distance from average */
+                float max_emotion_distance = 0.0f;
+                size_t max_emotion_idx = 0;
+
+                for (size_t m = 0; m < member_count; m++) {
+                    size_t idx = pattern_members[m];
+                    float distance = records[idx]->emotion_intensity > avg_emotion ?
+                                     records[idx]->emotion_intensity - avg_emotion :
+                                     avg_emotion - records[idx]->emotion_intensity;
+
+                    if (distance > max_emotion_distance) {
+                        max_emotion_distance = distance;
+                        max_emotion_idx = idx;
+                    }
+                }
+
+                /* Mark emotional outlier (if distinct enough from average) */
+                if (max_emotion_distance > 0.2f) {  /* Significant emotional difference */
+                    records[max_emotion_idx]->is_pattern_outlier = true;  /* Emotional outlier */
+                    LOG_DEBUG("Marked emotional outlier (distance=%.2f from avg=%.2f): %.50s...",
+                             max_emotion_distance, avg_emotion, records[max_emotion_idx]->content);
+                }
+            }
+
             /* Add pattern context summary for outliers (Thane's Priority 1) */
-            size_t archived_count = member_count - 3;  /* All non-outliers will be archived */
+            /* Count outliers (3-4 depending on emotional outlier) */
+            size_t outlier_count = 0;
+            for (size_t m = 0; m < member_count; m++) {
+                size_t idx = pattern_members[m];
+                if (records[idx]->is_pattern_outlier) {
+                    outlier_count++;
+                }
+            }
+
+            size_t archived_count = member_count - outlier_count;
             char summary[KATRA_BUFFER_LARGE];
             snprintf(summary, sizeof(summary),
-                    "Pattern: %zu occurrences (%zu archived, 3 preserved as outliers)",
-                    member_count, archived_count);
+                    "Pattern: %zu occurrences (%zu archived, %zu preserved as outliers)",
+                    member_count, archived_count, outlier_count);
 
             /* Set summary for each outlier */
             for (size_t m = 0; m < member_count; m++) {
