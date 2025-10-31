@@ -1,7 +1,5 @@
 /* © 2025 Casey Koons All rights reserved */
-
 /* Phase 5A: Basic Composition with Error Correction
- *
  * Core composition engine that synthesizes recommendations from multiple sources.
  */
 
@@ -22,7 +20,6 @@
 typedef struct {
     char* ci_id;
     bool initialized;
-
     /* Accuracy tracking per query type */
     struct {
         size_t total_queries;
@@ -31,7 +28,6 @@ typedef struct {
         size_t modified;
         float accuracy;  /* accepted / total */
     } accuracy[4];  /* One per query_type_t */
-
 } phase5_state_t;
 
 static phase5_state_t g_phase5_state = {0};
@@ -185,7 +181,6 @@ composition_query_t* katra_phase5_create_query(
 }
 
 /* Helper: Calculate multi-factor confidence
- *
  * Confidence from 5 factors:
  * - source_agreement: Do sources agree?
  * - evidence_quality: Quality of evidence (CODE > MEMORY > PATTERN)
@@ -390,7 +385,6 @@ static alternative_t* create_alternative(
 }
 
 /* Execute composition query (Phase 5A simplified implementation)
- *
  * This is a basic implementation that:
  * - Queries memory for relevant information
  * - Synthesizes a simple recommendation
