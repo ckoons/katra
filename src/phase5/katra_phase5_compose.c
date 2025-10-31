@@ -89,6 +89,40 @@ int katra_phase5_init(const char* ci_id) {
         g_phase5_state.accuracy[i].accuracy = 0.5f;
     }
 
+    /* Initialize Phase 5B pattern learning */
+    int result = katra_phase5b_init();
+    if (result != KATRA_SUCCESS) {
+        free(g_phase5_state.ci_id);
+        return result;
+    }
+
+    /* Initialize Phase 5C impact analysis */
+    result = katra_phase5c_init();
+    if (result != KATRA_SUCCESS) {
+        katra_phase5b_cleanup();
+        free(g_phase5_state.ci_id);
+        return result;
+    }
+
+    /* Initialize Phase 5D advanced reasoning */
+    result = katra_phase5d_init();
+    if (result != KATRA_SUCCESS) {
+        katra_phase5c_cleanup();
+        katra_phase5b_cleanup();
+        free(g_phase5_state.ci_id);
+        return result;
+    }
+
+    /* Initialize Phase 5E cross-project learning */
+    result = katra_phase5e_init();
+    if (result != KATRA_SUCCESS) {
+        katra_phase5d_cleanup();
+        katra_phase5c_cleanup();
+        katra_phase5b_cleanup();
+        free(g_phase5_state.ci_id);
+        return result;
+    }
+
     g_phase5_state.initialized = true;
 
     LOG_INFO("Phase 5A initialized for CI: %s", ci_id);
@@ -100,6 +134,18 @@ void katra_phase5_cleanup(void) {
     if (!g_phase5_state.initialized) {
         return;
     }
+
+    /* Cleanup Phase 5E cross-project learning */
+    katra_phase5e_cleanup();
+
+    /* Cleanup Phase 5D advanced reasoning */
+    katra_phase5d_cleanup();
+
+    /* Cleanup Phase 5C impact analysis */
+    katra_phase5c_cleanup();
+
+    /* Cleanup Phase 5B pattern learning */
+    katra_phase5b_cleanup();
 
     free(g_phase5_state.ci_id);
     memset(&g_phase5_state, 0, sizeof(g_phase5_state));
