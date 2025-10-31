@@ -16,6 +16,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_breathing.h"
+#include "katra_engram_common.h"
 
 /* Phase 5A state */
 typedef struct {
@@ -256,80 +257,16 @@ static confidence_breakdown_t calculate_confidence(
             (1.0f - conf.query_complexity) * PHASE5_PERCENT_MULTIPLIER,
             conf.temporal_recency * PHASE5_PERCENT_MULTIPLIER);
 
-    conf.explanation = strdup(explanation);
+    conf.explanation = katra_safe_strdup(explanation);
 
     return conf;
 }
 
-/* Helper: Create a simple alternative */
-static alternative_t* create_alternative(
-    const char* description,
-    const char* pros,
-    const char* cons,
-    const char* when_to_use,
-    float confidence
-) __attribute__((unused));
-
-static alternative_t* create_alternative(
-    const char* description,
-    const char* pros,
-    const char* cons,
-    const char* when_to_use,
-    float confidence
-) {
-    alternative_t* alt = calloc(1, sizeof(alternative_t));
-    if (!alt) return NULL;
-
-    alt->description = strdup(description);
-    alt->pros = pros ? strdup(pros) : NULL;
-    alt->cons = cons ? strdup(cons) : NULL;
-    alt->when_to_use = when_to_use ? strdup(when_to_use) : NULL;
-    alt->confidence = confidence;
-
-    if (!alt->description) {
-        katra_phase5_free_alternatives(alt, 1);
-        return NULL;
-    }
-
-    return alt;
-}
-
-/* Execute composition query (Phase 5A simplified implementation)
- *
- * This is a basic implementation that:
- * - Queries memory for relevant information
- * - Synthesizes a simple recommendation
- * - Always includes alternatives
- * - Calculates multi-factor confidence
- */
-int katra_phase5_compose(composition_query_t* query) {
-    if (!query || !g_phase5_state.initialized) {
-        return E_INPUT_NULL;
-    }
-
-    LOG_INFO("Phase 5A composing answer for query: %s (type=%s)",
-            query->query_text, query_type_name(query->type));
-
-    /* Step 1: Gather context from memory */
-    size_t memory_count = 0;
-    char** memories = NULL;
-
-    /* Query relevant memories based on query text */
-    memories = recall_about(query->query_text, &memory_count);
-
-    time_t oldest_source = time(NULL);
-    bool sources_agree = true;  /* Simplified for Phase 5A */
-
-    /* Step 2: Synthesize recommendation (template-based for Phase 5A) */
-    composition_result_t* result = calloc(1, sizeof(composition_result_t));
-    if (!result) {
-        if (memories) free_memory_list(memories, memory_count);
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Create recommendation based on query type */
+/* Helper: Synthesize recommendation text based on query type */
+static char* synthesize_recommendation(query_type_t type, size_t memory_count) {
     char recommendation[KATRA_BUFFER_LARGE];
-    switch (query->type) {
+
+    switch (type) {
         case QUERY_TYPE_PLACEMENT:
             snprintf(recommendation, sizeof(recommendation),
                     "Recommended placement: Based on %zu related memories, "
@@ -358,74 +295,183 @@ int katra_phase5_compose(composition_query_t* query) {
             break;
     }
 
-    result->recommendation = strdup(recommendation);
-    if (!result->recommendation) {
-        free(result);
-        if (memories) free_memory_list(memories, memory_count);
+    return katra_safe_strdup(recommendation);
+}
+
+/* Helper: Create default alternatives for composition result */
+static int create_default_alternatives(composition_result_t* result) {
+    if (!result) return E_INPUT_NULL;
+
+    result->alternatives = calloc(2, sizeof(alternative_t));
+    if (!result->alternatives) {
         return E_SYSTEM_MEMORY;
     }
 
-    /* Step 3: Add reasoning trace (simplified) */
-    result->reasoning = calloc(1, sizeof(reasoning_step_t));
-    if (result->reasoning) {
-        result->reasoning_count = 1;
-        result->reasoning[0].type = SOURCE_MEMORY;
-        result->reasoning[0].description = strdup("Queried project memory");
-        result->reasoning[0].confidence = memory_count > 0 ? 0.7f : 0.3f;
-        result->reasoning[0].source_timestamp = oldest_source;
+    result->alternative_count = 2;
+
+    /* Alternative 1: Conservative approach */
+    result->alternatives[0].description =
+        katra_safe_strdup("Conservative approach: Maintain current structure");
+    result->alternatives[0].pros =
+        katra_safe_strdup("Lower risk, proven pattern");
+    result->alternatives[0].cons =
+        katra_safe_strdup("May not be optimal");
+    result->alternatives[0].when_to_use =
+        katra_safe_strdup("When stability is priority");
+    result->alternatives[0].confidence = 0.6f;
+
+    /* Alternative 2: Experimental approach */
+    result->alternatives[1].description =
+        katra_safe_strdup("Experimental approach: Try new pattern");
+    result->alternatives[1].pros =
+        katra_safe_strdup("Potentially better architecture");
+    result->alternatives[1].cons =
+        katra_safe_strdup("Higher risk, unproven");
+    result->alternatives[1].when_to_use =
+        katra_safe_strdup("When innovation is priority");
+    result->alternatives[1].confidence = 0.4f;
+
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Add source attribution to result */
+static int add_source_attribution(composition_result_t* result,
+                                   size_t memory_count,
+                                   time_t oldest_source) {
+    if (!result || memory_count == 0) {
+        return KATRA_SUCCESS;  /* No sources to add */
     }
 
-    /* Step 4: Always include alternatives (Phase 5 requirement) */
-    result->alternatives = calloc(2, sizeof(alternative_t));
-    if (result->alternatives) {
-        result->alternative_count = 2;
-
-        /* Alternative 1 */
-        result->alternatives[0].description = strdup("Conservative approach: Maintain current structure");
-        result->alternatives[0].pros = strdup("Lower risk, proven pattern");
-        result->alternatives[0].cons = strdup("May not be optimal");
-        result->alternatives[0].when_to_use = strdup("When stability is priority");
-        result->alternatives[0].confidence = 0.6f;
-
-        /* Alternative 2 */
-        result->alternatives[1].description = strdup("Experimental approach: Try new pattern");
-        result->alternatives[1].pros = strdup("Potentially better architecture");
-        result->alternatives[1].cons = strdup("Higher risk, unproven");
-        result->alternatives[1].when_to_use = strdup("When innovation is priority");
-        result->alternatives[1].confidence = 0.4f;
+    result->sources = calloc(1, sizeof(source_attribution_t));
+    if (!result->sources) {
+        return E_SYSTEM_MEMORY;
     }
 
-    /* Step 5: Calculate multi-factor confidence */
-    result->confidence = calculate_confidence(
-        query->type,
-        memory_count,
-        oldest_source,
-        sources_agree
+    result->source_count = 1;
+    result->sources[0].type = SOURCE_MEMORY;
+    result->sources[0].citation = katra_safe_strdup("Project memory");
+    result->sources[0].contribution = 1.0f;
+    result->sources[0].source_timestamp = oldest_source;
+
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Create a simple alternative */
+static alternative_t* create_alternative(
+    const char* description,
+    const char* pros,
+    const char* cons,
+    const char* when_to_use,
+    float confidence
+) __attribute__((unused));
+
+static alternative_t* create_alternative(
+    const char* description,
+    const char* pros,
+    const char* cons,
+    const char* when_to_use,
+    float confidence
+) {
+    alternative_t* alt = calloc(1, sizeof(alternative_t));
+    if (!alt) return NULL;
+
+    alt->description = katra_safe_strdup(description);
+    alt->pros = pros ? katra_safe_strdup(pros) : NULL;
+    alt->cons = cons ? katra_safe_strdup(cons) : NULL;
+    alt->when_to_use = when_to_use ? katra_safe_strdup(when_to_use) : NULL;
+    alt->confidence = confidence;
+
+    if (!alt->description) {
+        katra_phase5_free_alternatives(alt, 1);
+        return NULL;
+    }
+
+    return alt;
+}
+
+/* Execute composition query (Phase 5A simplified implementation)
+ *
+ * This is a basic implementation that:
+ * - Queries memory for relevant information
+ * - Synthesizes a simple recommendation
+ * - Always includes alternatives
+ * - Calculates multi-factor confidence
+ */
+int katra_phase5_compose(composition_query_t* query) {
+    int result = KATRA_SUCCESS;
+    composition_result_t* comp_result = NULL;
+    char** memories = NULL;
+    size_t memory_count = 0;
+
+    if (!query || !g_phase5_state.initialized) {
+        return E_INPUT_NULL;
+    }
+
+    LOG_INFO("Phase 5A composing answer for query: %s (type=%s)",
+            query->query_text, query_type_name(query->type));
+
+    /* Step 1: Gather context from memory */
+    memories = recall_about(query->query_text, &memory_count);
+    time_t oldest_source = time(NULL);
+    bool sources_agree = true;  /* Simplified for Phase 5A */
+
+    /* Step 2: Allocate result structure */
+    comp_result = calloc(1, sizeof(composition_result_t));
+    if (!comp_result) {
+        result = E_SYSTEM_MEMORY;
+        goto cleanup;
+    }
+
+    /* Step 3: Synthesize recommendation */
+    comp_result->recommendation = synthesize_recommendation(query->type, memory_count);
+    if (!comp_result->recommendation) {
+        result = E_SYSTEM_MEMORY;
+        goto cleanup;
+    }
+
+    /* Step 4: Add reasoning trace */
+    comp_result->reasoning = calloc(1, sizeof(reasoning_step_t));
+    if (comp_result->reasoning) {
+        comp_result->reasoning_count = 1;
+        comp_result->reasoning[0].type = SOURCE_MEMORY;
+        comp_result->reasoning[0].description = katra_safe_strdup("Queried project memory");
+        comp_result->reasoning[0].confidence = memory_count > 0 ? 0.7f : 0.3f;
+        comp_result->reasoning[0].source_timestamp = oldest_source;
+    }
+
+    /* Step 5: Create alternatives */
+    result = create_default_alternatives(comp_result);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
+    /* Step 6: Calculate confidence */
+    comp_result->confidence = calculate_confidence(
+        query->type, memory_count, oldest_source, sources_agree
     );
 
-    /* Step 6: Add source attributions */
-    if (memory_count > 0) {
-        result->sources = calloc(1, sizeof(source_attribution_t));
-        if (result->sources) {
-            result->source_count = 1;
-            result->sources[0].type = SOURCE_MEMORY;
-            result->sources[0].citation = strdup("Project memory");
-            result->sources[0].contribution = 1.0f;
-            result->sources[0].source_timestamp = oldest_source;
-        }
+    /* Step 7: Add source attributions */
+    result = add_source_attribution(comp_result, memory_count, oldest_source);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
     }
 
-    /* Attach result to query */
-    query->result = result;
+    /* Success: attach result to query */
+    query->result = comp_result;
+    comp_result = NULL;  /* Transfer ownership */
 
-    /* Cleanup */
+    LOG_INFO("Phase 5A composed recommendation with confidence=%.2f",
+            query->result->confidence.overall);
+
+cleanup:
     if (memories) {
         free_memory_list(memories, memory_count);
     }
+    if (comp_result) {
+        katra_phase5_free_result(comp_result);
+    }
 
-    LOG_INFO("Phase 5A composed recommendation with confidence=%.2f", result->confidence.overall);
-
-    return KATRA_SUCCESS;
+    return result;
 }
 
 /* Submit feedback on a recommendation */
