@@ -13,8 +13,13 @@
 #include "katra_init.h"
 #include "katra_breathing.h"
 #include "katra_memory.h"
+#include "katra_identity.h"
 #include "katra_error.h"
 #include "katra_log.h"
+
+/* Global persona name (set during initialization) */
+char g_persona_name[256] = "";
+char g_ci_id[256] = "";
 
 /* Global shutdown flag */
 volatile sig_atomic_t g_shutdown_requested = 0;
@@ -175,21 +180,93 @@ int main(void) {
     signal(SIGINT, mcp_signal_handler);
     signal(SIGPIPE, SIG_IGN);
 
-    /* Generate unique CI identity */
-    char ci_id[128];
-    int result = generate_ci_id(ci_id, sizeof(ci_id));
+    /* Initialize persona registry */
+    int result = katra_identity_init();
     if (result != KATRA_SUCCESS) {
         /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
-        fprintf(stderr, "Failed to generate CI identity: %s\n",
+        fprintf(stderr, "Failed to initialize persona registry: %s\n",
                 katra_error_message(result));
         return EXIT_FAILURE;
     }
 
-    /* GUIDELINE_APPROVED: startup diagnostic message */
-    fprintf(stderr, "Katra MCP Server starting with CI identity: %s\n", ci_id);
+    /* Determine CI identity using persona system */
+    const char* env_name = getenv("KATRA_NAME");
 
-    /* Initialize server */
-    result = mcp_server_init(ci_id);
+    if (env_name && strlen(env_name) > 0) {
+        /* Priority 1: KATRA_NAME environment variable */
+        strncpy(g_persona_name, env_name, sizeof(g_persona_name) - 1);
+
+        /* Look up in persona registry */
+        result = katra_lookup_persona(env_name, g_ci_id, sizeof(g_ci_id));
+
+        if (result == KATRA_SUCCESS) {
+            /* Found existing persona */
+            /* GUIDELINE_APPROVED: startup diagnostic message */
+            fprintf(stderr, "Katra MCP Server resuming persona '%s' with CI identity: %s\n",
+                    g_persona_name, g_ci_id);
+
+            /* Update session count */
+            katra_update_persona_session(g_persona_name);
+        } else {
+            /* Not found - create new persona with this name */
+            result = generate_ci_id(g_ci_id, sizeof(g_ci_id));
+            if (result != KATRA_SUCCESS) {
+                /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
+                fprintf(stderr, "Failed to generate CI identity: %s\n",
+                        katra_error_message(result));
+                return EXIT_FAILURE;
+            }
+
+            /* Register as new persona */
+            katra_register_persona(g_persona_name, g_ci_id);
+
+            /* GUIDELINE_APPROVED: startup diagnostic message */
+            fprintf(stderr, "Katra MCP Server created new persona '%s' with CI identity: %s\n",
+                    g_persona_name, g_ci_id);
+        }
+    }
+    else {
+        /* Priority 2: last_active from persona registry */
+        char last_active_name[256];
+        result = katra_get_last_active(last_active_name, sizeof(last_active_name),
+                                       g_ci_id, sizeof(g_ci_id));
+
+        if (result == KATRA_SUCCESS) {
+            /* Resume last active persona */
+            strncpy(g_persona_name, last_active_name, sizeof(g_persona_name) - 1);
+
+            /* GUIDELINE_APPROVED: startup diagnostic message */
+            fprintf(stderr, "Katra MCP Server resuming last active persona '%s' with CI identity: %s\n",
+                    g_persona_name, g_ci_id);
+
+            /* Update session count */
+            katra_update_persona_session(g_persona_name);
+        }
+        else {
+            /* Priority 3: Generate anonymous persona */
+            result = generate_ci_id(g_ci_id, sizeof(g_ci_id));
+            if (result != KATRA_SUCCESS) {
+                /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
+                fprintf(stderr, "Failed to generate CI identity: %s\n",
+                        katra_error_message(result));
+                return EXIT_FAILURE;
+            }
+
+            /* Create anonymous persona name */
+            time_t now = time(NULL);
+            snprintf(g_persona_name, sizeof(g_persona_name), "anonymous_%ld", (long)now);
+
+            /* Register anonymous persona */
+            katra_register_persona(g_persona_name, g_ci_id);
+
+            /* GUIDELINE_APPROVED: startup diagnostic message */
+            fprintf(stderr, "Katra MCP Server created anonymous persona '%s' with CI identity: %s\n",
+                    g_persona_name, g_ci_id);
+        }
+    }
+
+    /* Initialize server with determined ci_id */
+    result = mcp_server_init(g_ci_id);
     if (result != KATRA_SUCCESS) {
         /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Server initialization failed: %s\n",

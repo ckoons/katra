@@ -256,6 +256,14 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_USER_DOMAIN, MCP_DESC_USER_DOMAIN,
             mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_USER_DOMAIN)));
 
+    json_array_append_new(tools_array,
+        mcp_build_tool("katra_my_name_is", "Associate current session with a persona name",
+            mcp_build_tool_schema_1param("name", "Persona name (e.g. 'Bob', 'Alice')")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool("katra_list_personas", "List all registered personas",
+            json_object()));  /* No parameters */
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
@@ -321,6 +329,10 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_impact(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_USER_DOMAIN) == 0) {
         tool_result = mcp_tool_user_domain(args, id);
+    } else if (strcmp(tool_name, "katra_my_name_is") == 0) {
+        tool_result = mcp_tool_my_name_is(args, id);
+    } else if (strcmp(tool_name, "katra_list_personas") == 0) {
+        tool_result = mcp_tool_list_personas(args, id);
     } else {
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
     }

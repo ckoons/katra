@@ -72,7 +72,8 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_checkpoint.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o \
              $(BUILD_DIR)/katra_continuity.o \
-             $(BUILD_DIR)/katra_sunrise_sunset.o
+             $(BUILD_DIR)/katra_sunrise_sunset.o \
+             $(BUILD_DIR)/katra_identity.o
 
 # Database backend object files
 DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
@@ -208,6 +209,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/foundation/%.c | $(BUILD_DIR)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/core/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Exception: katra_identity.c uses jansson
+$(BUILD_DIR)/katra_identity.o: $(SRC_DIR)/core/katra_identity.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 
 # Compile DB backend sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/db/%.c | $(BUILD_DIR)

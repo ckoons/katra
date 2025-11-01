@@ -223,6 +223,10 @@ json_t* mcp_tool_placement(json_t* args, json_t* id);
 json_t* mcp_tool_impact(json_t* args, json_t* id);
 json_t* mcp_tool_user_domain(json_t* args, json_t* id);
 
+/* Persona Tool Implementations */
+json_t* mcp_tool_my_name_is(json_t* args, json_t* id);
+json_t* mcp_tool_list_personas(json_t* args, json_t* id);
+
 /* Resource Implementations */
 json_t* mcp_resource_working_context(json_t* id);
 json_t* mcp_resource_session_info(json_t* id);
