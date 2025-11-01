@@ -14,6 +14,10 @@
 
 #define TEST_CI_ID "test_mcp_ci"
 
+/* Mock globals for MCP tools (normally defined in katra_mcp_server.c) */
+char g_persona_name[256] = "test_persona";
+char g_ci_id[256] = TEST_CI_ID;
+
 /* Test counters */
 static int tests_run = 0;
 static int tests_passed = 0;
@@ -123,8 +127,8 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    if (tool_count != 7) {
-        printf("  ✗ Expected 7 tools, got %zu\n", tool_count);
+    if (tool_count != 9) {
+        printf("  ✗ Expected 9 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }
@@ -143,7 +147,7 @@ static int test_tools_list(void) {
 
     json_decref(response);
     tests_passed++;
-    printf("  ✓ tools/list returns 7 tools\n");
+    printf("  ✓ tools/list returns 9 tools\n");
     return 0;
 }
 

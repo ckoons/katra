@@ -54,7 +54,7 @@ Try these example queries in Claude Code:
 
 ## Available Tools
 
-Katra provides 7 MCP tools grouped into two categories:
+Katra provides 9 MCP tools grouped into three categories:
 
 ### Core Memory Tools
 
@@ -127,6 +127,26 @@ Analyzes dependencies and provides impact assessment.
 
 Provides insights about feature usage and user needs.
 
+### Persona Management Tools
+
+These tools enable persistent identity across MCP sessions:
+
+**8. katra_my_name_is** - Associate session with persona
+```json
+{
+  "name": "Your persona name (e.g., 'Bob', 'Alice')"
+}
+```
+
+Associates current session with a named persona. Creates new persona if it doesn't exist, or resumes existing persona's memory state.
+
+**9. katra_list_personas** - List all registered personas
+```json
+{}
+```
+
+Returns a list of all personas registered in the system with their last activity timestamps.
+
 ## Available Resources
 
 Resources provide read-only access to Katra's context:
@@ -189,7 +209,7 @@ Each MCP server instance creates a unique session:
 
 **Lifecycle**:
 1. Server starts → Generates unique CI ID
-2. Initializes Katra (foundation, memory, breathing layer)
+2. Initializes Katra (utils, memory, breathing layer)
 3. Starts session with CI ID
 4. Processes JSON-RPC requests
 5. Handles SIGTERM/SIGINT for graceful shutdown
@@ -411,7 +431,7 @@ make test-mcp
 **Coverage**:
 - ✅ JSON-RPC request parsing
 - ✅ Initialize handshake
-- ✅ Tools/list (all 7 tools)
+- ✅ Tools/list (all 9 tools)
 - ✅ Resources/list (both resources)
 - ✅ All tool invocations
 - ✅ Resource reads
@@ -432,7 +452,7 @@ Expected output:
   "jsonrpc":"2.0",
   "id":1,
   "result":{
-    "tools":[/* 7 tools */]
+    "tools":[/* 9 tools */]
   }
 }
 ```
