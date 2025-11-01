@@ -393,7 +393,7 @@ gcc -Wall -Wextra -std=c11 \
     -I/path/to/katra/include \
     -o my_ci my_ci.c \
     -L/path/to/katra/build \
-    -lkatra_foundation \
+    -lkatra_utils \
     -lsqlite3 \
     -lpthread \
     -lm
@@ -401,7 +401,7 @@ gcc -Wall -Wextra -std=c11 \
 
 ### Required Libraries
 
-- **libkatra_foundation.a**: Core Katra library
+- **libkatra_utils.a**: Core Katra library
 - **libsqlite3**: Database backend
 - **libpthread**: Threading support
 - **libm**: Math functions

@@ -8,7 +8,7 @@
 
 /* Project includes */
 #include "katra_graph.h"
-#include "katra_engram_common.h"
+#include "katra_psyche_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"

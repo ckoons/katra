@@ -9,7 +9,7 @@
 
 /* Project includes */
 #include "katra_vector.h"
-#include "katra_engram_common.h"
+#include "katra_psyche_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 

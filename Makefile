@@ -102,17 +102,17 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_health.o
 
 # Phase 5 object files (Memory-Augmented Reasoning)
-PHASE5_OBJS := $(BUILD_DIR)/katra_phase5_common.o \
-               $(BUILD_DIR)/katra_phase5_compose.o \
-               $(BUILD_DIR)/katra_phase5b_patterns.o \
-               $(BUILD_DIR)/katra_phase5c_impact.o \
-               $(BUILD_DIR)/katra_phase5d_reasoning.o \
-               $(BUILD_DIR)/katra_phase5e_crossproject.o
+NOUS_OBJS := $(BUILD_DIR)/katra_nous_common.o \
+               $(BUILD_DIR)/katra_nous_compose.o \
+               $(BUILD_DIR)/katra_nous_patterns.o \
+               $(BUILD_DIR)/katra_nous_impact.o \
+               $(BUILD_DIR)/katra_nous_reasoning.o \
+               $(BUILD_DIR)/katra_nous_crossproject.o
 
 # MCP library object files (without server main)
 MCP_LIB_OBJS := $(BUILD_DIR)/mcp_protocol.o \
                 $(BUILD_DIR)/mcp_tools.o \
-                $(BUILD_DIR)/mcp_phase5.o \
+                $(BUILD_DIR)/mcp_nous.o \
                 $(BUILD_DIR)/mcp_resources.o
 
 # MCP Server object files (includes server main)
@@ -120,7 +120,7 @@ MCP_OBJS := $(MCP_LIB_OBJS) \
             $(BUILD_DIR)/katra_mcp_server.o
 
 # Foundation library
-LIBKATRA_FOUNDATION := $(BUILD_DIR)/libkatra_foundation.a
+LIBKATRA_UTILS := $(BUILD_DIR)/libkatra_utils.a
 
 # MCP Server binary
 MCP_SERVER := $(BIN_DIR)/katra_mcp_server
@@ -130,7 +130,7 @@ JANSSON_CFLAGS := -I/opt/homebrew/Cellar/jansson/2.14.1/include
 JANSSON_LDFLAGS := -L/opt/homebrew/Cellar/jansson/2.14.1/lib -ljansson
 
 # All object files (for dependency tracking)
-ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(PHASE5_OBJS) $(MCP_OBJS)
+ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(NOUS_OBJS) $(MCP_OBJS)
 
 # Auto-generated dependency files
 DEP_FILES := $(ALL_OBJS:.o=.d)
@@ -153,14 +153,14 @@ DEP_FILES := $(ALL_OBJS:.o=.d)
 # DEFAULT TARGET
 # ==============================================================================
 
-all: directories $(LIBKATRA_FOUNDATION) $(MCP_SERVER)
+all: directories $(LIBKATRA_UTILS) $(MCP_SERVER)
 	@echo ""
 	@echo "========================================"
 	@echo "Katra build complete!"
 	@echo "========================================"
 	@echo ""
 	@echo "Built targets:"
-	@echo "  Foundation library: $(LIBKATRA_FOUNDATION)"
+	@echo "  Foundation library: $(LIBKATRA_UTILS)"
 	@echo "  MCP Server:         $(MCP_SERVER)"
 	@echo ""
 	@echo "Available targets:"
@@ -185,10 +185,10 @@ directories:
 $(BUILD_DIR):
 	@$(MKDIR_P) $@
 
-# Build foundation library
+# Build utils library
 # Note: Delete library first to ensure deterministic rebuild
-$(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(PHASE5_OBJS)
-	@echo "Creating foundation library: $@"
+$(LIBKATRA_UTILS): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(NOUS_OBJS)
+	@echo "Creating utils library: $@"
 	@rm -f $@
 	@ar rcs $@ $^
 	@echo "Library created successfully"
@@ -201,7 +201,7 @@ $(LIBKATRA_FOUNDATION): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS
 # triggering rebuilds when dir timestamp changes
 
 # Compile foundation sources
-$(BUILD_DIR)/%.o: $(SRC_DIR)/foundation/%.c | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/utils/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
@@ -221,7 +221,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/db/%.c | $(BUILD_DIR)
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 # Compile engram sources
-$(BUILD_DIR)/%.o: $(SRC_DIR)/engram/%.c | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/psyche/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
@@ -231,7 +231,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/breathing/%.c | $(BUILD_DIR)
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 # Compile Phase 5 sources
-$(BUILD_DIR)/%.o: $(SRC_DIR)/phase5/%.c | $(BUILD_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/nous/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
@@ -245,9 +245,9 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/mcp/%.c | $(BUILD_DIR)
 # ==============================================================================
 
 # Build MCP server binary
-$(MCP_SERVER): $(MCP_OBJS) $(LIBKATRA_FOUNDATION) | $(BIN_DIR)
+$(MCP_SERVER): $(MCP_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)
 	@echo "Building MCP server: $@"
-	@$(CC) -o $@ $(MCP_OBJS) -L$(BUILD_DIR) -lkatra_foundation $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
+	@$(CC) -o $@ $(MCP_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
 	@echo "MCP server built successfully"
 
 # Convenience target
@@ -403,107 +403,107 @@ test-mcp: $(TEST_MCP)
 	@$(TEST_MCP)
 
 # CI readiness check
-check-ready: directories $(LIBKATRA_FOUNDATION)
+check-ready: directories $(LIBKATRA_UTILS)
 	@echo "Checking Katra readiness for CI testing..."
 	@./scripts/check_ready.sh
 
 # Build test executables
-$(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_FOUNDATION)
+$(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_CONFIG): $(TEST_DIR)/unit/test_config.c $(LIBKATRA_FOUNDATION)
+$(TEST_CONFIG): $(TEST_DIR)/unit/test_config.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_ERROR): $(TEST_DIR)/unit/test_error.c $(LIBKATRA_FOUNDATION)
+$(TEST_ERROR): $(TEST_DIR)/unit/test_error.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_LOG): $(TEST_DIR)/unit/test_log.c $(LIBKATRA_FOUNDATION)
+$(TEST_LOG): $(TEST_DIR)/unit/test_log.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_INIT): $(TEST_DIR)/unit/test_init.c $(LIBKATRA_FOUNDATION)
+$(TEST_INIT): $(TEST_DIR)/unit/test_init.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_MEMORY): $(TEST_DIR)/unit/test_memory.c $(LIBKATRA_FOUNDATION)
+$(TEST_MEMORY): $(TEST_DIR)/unit/test_memory.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_TIER1): $(TEST_DIR)/unit/test_tier1.c $(LIBKATRA_FOUNDATION)
+$(TEST_TIER1): $(TEST_DIR)/unit/test_tier1.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_TIER2): $(TEST_DIR)/unit/test_tier2.c $(LIBKATRA_FOUNDATION)
+$(TEST_TIER2): $(TEST_DIR)/unit/test_tier2.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_TIER2_INDEX): $(TEST_DIR)/unit/test_tier2_index.c $(LIBKATRA_FOUNDATION)
+$(TEST_TIER2_INDEX): $(TEST_DIR)/unit/test_tier2_index.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_CHECKPOINT): $(TEST_DIR)/unit/test_checkpoint.c $(LIBKATRA_FOUNDATION)
+$(TEST_CHECKPOINT): $(TEST_DIR)/unit/test_checkpoint.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_CONTINUITY): $(TEST_DIR)/unit/test_continuity.c $(LIBKATRA_FOUNDATION)
+$(TEST_CONTINUITY): $(TEST_DIR)/unit/test_continuity.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_VECTOR): $(TEST_DIR)/unit/test_vector.c $(LIBKATRA_FOUNDATION)
+$(TEST_VECTOR): $(TEST_DIR)/unit/test_vector.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm
 
-$(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_FOUNDATION)
+$(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_SUNRISE_SUNSET): $(TEST_DIR)/unit/test_sunrise_sunset.c $(LIBKATRA_FOUNDATION)
+$(TEST_SUNRISE_SUNSET): $(TEST_DIR)/unit/test_sunrise_sunset.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm
 
-$(TEST_CONSENT): $(TEST_DIR)/ethical/test_consent_enforcement.c $(LIBKATRA_FOUNDATION)
+$(TEST_CONSENT): $(TEST_DIR)/ethical/test_consent_enforcement.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_CORRUPTION): $(TEST_DIR)/failure/test_corruption_recovery.c $(LIBKATRA_FOUNDATION)
+$(TEST_CORRUPTION): $(TEST_DIR)/failure/test_corruption_recovery.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_LIFECYCLE): $(TEST_DIR)/integration/test_memory_lifecycle.c $(LIBKATRA_FOUNDATION)
+$(TEST_LIFECYCLE): $(TEST_DIR)/integration/test_memory_lifecycle.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm
 
-$(TEST_MOCK_CI): $(TEST_DIR)/integration/test_mock_ci.c $(LIBKATRA_FOUNDATION)
+$(TEST_MOCK_CI): $(TEST_DIR)/integration/test_mock_ci.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm
 
-$(TEST_BREATHING_PHASE2): $(TEST_DIR)/test_breathing_phase2.c $(LIBKATRA_FOUNDATION)
+$(TEST_BREATHING_PHASE2): $(TEST_DIR)/test_breathing_phase2.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_BREATHING_PRIMITIVES): $(TEST_DIR)/test_breathing_primitives.c $(LIBKATRA_FOUNDATION)
+$(TEST_BREATHING_PRIMITIVES): $(TEST_DIR)/test_breathing_primitives.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_BREATHING_ENHANCEMENTS): $(TEST_DIR)/test_breathing_enhancements.c $(LIBKATRA_FOUNDATION)
+$(TEST_BREATHING_ENHANCEMENTS): $(TEST_DIR)/test_breathing_enhancements.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_SESSION_INFO): $(TEST_DIR)/test_session_info.c $(LIBKATRA_FOUNDATION)
+$(TEST_SESSION_INFO): $(TEST_DIR)/test_session_info.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
-$(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(LIBKATRA_FOUNDATION)
+$(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_foundation $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
 
 # Benchmark executables
-$(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_FOUNDATION)
+$(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_UTILS)
 	@echo "Building benchmark: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_foundation -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
 # Benchmark targets
 benchmark: $(BENCHMARK_TIER2_QUERY)
@@ -592,7 +592,7 @@ help:
 	@echo "======================"
 	@echo ""
 	@echo "Build Targets:"
-	@echo "  make           - Build katra foundation library"
+	@echo "  make           - Build katra utils library"
 	@echo "  make all       - Same as 'make' (default target)"
 	@echo "  make directories - Create build directories"
 	@echo ""

@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "katra_phase5.h"
+#include "katra_nous.h"
 #include "katra_error.h"
 
 /* Generate unique ID with prefix
@@ -18,17 +18,17 @@
  * Creates IDs like "pattern_naming_123" or "query_456"
  * Caller must free returned string.
  */
-char* phase5_generate_id(const char* prefix, size_t* counter) {
+char* nous_generate_id(const char* prefix, size_t* counter) {
     if (!prefix || !counter) {
         return NULL;
     }
 
-    char* id = malloc(PHASE5_QUERY_ID_SIZE);
+    char* id = malloc(NOUS_QUERY_ID_SIZE);
     if (!id) {
         return NULL;
     }
 
-    snprintf(id, PHASE5_QUERY_ID_SIZE, "%s_%zu", prefix, (*counter)++);
+    snprintf(id, NOUS_QUERY_ID_SIZE, "%s_%zu", prefix, (*counter)++);
     return id;
 }
 
@@ -37,7 +37,7 @@ char* phase5_generate_id(const char* prefix, size_t* counter) {
  * Takes up to 5 factors with weights and computes weighted average.
  * All weights should sum to 1.0 for normalized output.
  */
-float phase5_calculate_confidence(const phase5_confidence_calc_t* calc) {
+float nous_calculate_confidence(const nous_confidence_calc_t* calc) {
     if (!calc || calc->factor_count == 0 || calc->factor_count > 5) {
         return 0.5f;  /* Default: unknown */
     }
@@ -56,7 +56,7 @@ float phase5_calculate_confidence(const phase5_confidence_calc_t* calc) {
  * Returns KATRA_SUCCESS or E_SYSTEM_MEMORY.
  * Sets *dest to NULL on failure.
  */
-int phase5_safe_strdup(char** dest, const char* src) {
+int nous_safe_strdup(char** dest, const char* src) {
     if (!dest) {
         return E_INPUT_NULL;
     }

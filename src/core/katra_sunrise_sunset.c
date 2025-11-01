@@ -11,7 +11,7 @@
 #include "katra_sunrise_sunset.h"
 #include "katra_memory.h"
 #include "katra_tier1.h"
-#include "katra_engram_common.h"
+#include "katra_psyche_common.h"
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"

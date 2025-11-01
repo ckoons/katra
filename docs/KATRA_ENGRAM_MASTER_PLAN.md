@@ -64,7 +64,7 @@ Every memory is stored simultaneously across multiple database backends:
 ```
 katra/
 ├── src/
-│   ├── foundation/          # ✅ Already complete
+│   ├── utils/          # ✅ Already complete
 │   │   ├── katra_error.c
 │   │   ├── katra_log.c
 │   │   ├── katra_config.c
@@ -78,7 +78,7 @@ katra/
 │   │   ├── katra_tier2_index.c   # ⚠️ In progress
 │   │   └── katra_checkpoint.c
 │   │
-│   ├── engram/              # 🎯 NEW: Memory services
+│   ├── psyche/              # 🎯 NEW: Memory services
 │   │   ├── cognitive_workflows.c
 │   │   ├── universal_encoder.c
 │   │   ├── experience_layer.c
@@ -109,7 +109,7 @@ katra/
 │   ├── katra_tier1.h        # ✅ Done
 │   ├── katra_tier2.h        # ✅ Done
 │   ├── katra_tier2_index.h  # ✅ Done
-│   ├── katra_engram.h       # 🎯 NEW: Engram API
+│   ├── katra_psyche.h       # 🎯 NEW: Engram API
 │   ├── katra_cognitive.h    # 🎯 NEW: Workflows
 │   ├── katra_experience.h   # 🎯 NEW: Experience layer
 │   ├── katra_sundown.h      # 🎯 NEW: Sunset protocol
@@ -333,7 +333,7 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 - `include/katra_db.h` - Backend interface
 - `src/db/jsonl/tier1_backend.c` - JSONL wrapper
 - `src/db/sqlite/index_backend.c` - SQLite wrapper
-- `src/engram/universal_encoder.c` - Multi-backend storage
+- `src/psyche/universal_encoder.c` - Multi-backend storage
 
 **Timeline:** 2 sessions
 
@@ -348,7 +348,7 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 
 **Deliverables:**
 - `include/katra_cognitive.h`
-- `src/engram/cognitive_workflows.c`
+- `src/psyche/cognitive_workflows.c`
 - Thought type detection heuristics
 - Tests for cognitive operations
 
@@ -365,7 +365,7 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 
 **Deliverables:**
 - `include/katra_experience.h`
-- `src/engram/emotional_context.c`
+- `src/psyche/emotional_context.c`
 - Sentiment analysis heuristics
 - Mood tracking and summaries
 
@@ -381,7 +381,7 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 4. Working memory → long-term transfer
 
 **Deliverables:**
-- `src/engram/working_memory.c`
+- `src/psyche/working_memory.c`
 - Consolidation logic
 - Tests for capacity limits
 - Integration with universal encoder
@@ -398,7 +398,7 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 4. Pattern extraction
 
 **Deliverables:**
-- `src/engram/interstitial.c`
+- `src/psyche/interstitial.c`
 - Boundary detection algorithms
 - Per-boundary consolidation logic
 - Association graph building
@@ -451,8 +451,8 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 **Deliverables:**
 - `include/katra_sundown.h`
 - `include/katra_sunrise.h`
-- `src/engram/sundown.c`
-- `src/engram/sunrise.c`
+- `src/psyche/sundown.c`
+- `src/psyche/sunrise.c`
 - Emotional arc analysis
 - Intention planning
 
@@ -468,7 +468,7 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 4. Non-blocking API
 
 **Deliverables:**
-- `src/engram/memory_promises.c`
+- `src/psyche/memory_promises.c`
 - Thread pool implementation
 - Promise-based API
 - Async tests
@@ -481,7 +481,7 @@ int universal_encoder_recall(universal_encoder_t* encoder,
 
 ```c
 /* Initialize Engram system */
-int katra_engram_init(const char* ci_id);
+int katra_psyche_init(const char* ci_id);
 
 /* Store an experience (thought + emotion + context) */
 int katra_store_thought(const char* ci_id,
@@ -534,7 +534,7 @@ int katra_get_metabolism_status(const char* ci_id,
                                 float* average_confidence);
 
 /* Cleanup */
-void katra_engram_cleanup(void);
+void katra_psyche_cleanup(void);
 ```
 
 ## Configuration

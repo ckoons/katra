@@ -8,13 +8,13 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include "katra_phase5.h"
+#include "katra_nous.h"
 #include "katra_memory.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_breathing.h"
-#include "katra_engram_common.h"
+#include "katra_psyche_common.h"
 
 /* Phase 5A state */
 typedef struct {
@@ -28,9 +28,9 @@ typedef struct {
         size_t modified;
         float accuracy;  /* accepted / total */
     } accuracy[4];  /* One per query_type_t */
-} phase5_state_t;
+} nous_state_t;
 
-static phase5_state_t g_phase5_state = {0};
+static nous_state_t g_nous_state = {0};
 
 /* Query ID counter */
 static size_t g_query_counter = 0;
@@ -60,29 +60,29 @@ static const char* source_type_name(source_type_t type) {
 }
 
 /* Initialize Phase 5 system */
-int katra_phase5_init(const char* ci_id) {
+int katra_nous_init(const char* ci_id) {
     if (!ci_id) {
         return E_INPUT_NULL;
     }
 
-    if (g_phase5_state.initialized) {
+    if (g_nous_state.initialized) {
         return KATRA_SUCCESS;  /* Already initialized */
     }
 
-    g_phase5_state.ci_id = strdup(ci_id);
-    if (!g_phase5_state.ci_id) {
+    g_nous_state.ci_id = strdup(ci_id);
+    if (!g_nous_state.ci_id) {
         return E_SYSTEM_MEMORY;
     }
 
     /* Initialize accuracy tracking with default 0.5 (no history) */
     for (int i = 0; i < 4; i++) {
-        g_phase5_state.accuracy[i].accuracy = 0.5f;
+        g_nous_state.accuracy[i].accuracy = 0.5f;
     }
 
     /* Initialize Phase 5B pattern learning */
     int result = katra_phase5b_init();
     if (result != KATRA_SUCCESS) {
-        free(g_phase5_state.ci_id);
+        free(g_nous_state.ci_id);
         return result;
     }
 
@@ -90,7 +90,7 @@ int katra_phase5_init(const char* ci_id) {
     result = katra_phase5c_init();
     if (result != KATRA_SUCCESS) {
         katra_phase5b_cleanup();
-        free(g_phase5_state.ci_id);
+        free(g_nous_state.ci_id);
         return result;
     }
 
@@ -99,7 +99,7 @@ int katra_phase5_init(const char* ci_id) {
     if (result != KATRA_SUCCESS) {
         katra_phase5c_cleanup();
         katra_phase5b_cleanup();
-        free(g_phase5_state.ci_id);
+        free(g_nous_state.ci_id);
         return result;
     }
 
@@ -109,19 +109,19 @@ int katra_phase5_init(const char* ci_id) {
         katra_phase5d_cleanup();
         katra_phase5c_cleanup();
         katra_phase5b_cleanup();
-        free(g_phase5_state.ci_id);
+        free(g_nous_state.ci_id);
         return result;
     }
 
-    g_phase5_state.initialized = true;
+    g_nous_state.initialized = true;
 
     LOG_INFO("Phase 5A initialized for CI: %s", ci_id);
     return KATRA_SUCCESS;
 }
 
 /* Cleanup Phase 5 system */
-void katra_phase5_cleanup(void) {
-    if (!g_phase5_state.initialized) {
+void katra_nous_cleanup(void) {
+    if (!g_nous_state.initialized) {
         return;
     }
 
@@ -137,14 +137,14 @@ void katra_phase5_cleanup(void) {
     /* Cleanup Phase 5B pattern learning */
     katra_phase5b_cleanup();
 
-    free(g_phase5_state.ci_id);
-    memset(&g_phase5_state, 0, sizeof(g_phase5_state));
+    free(g_nous_state.ci_id);
+    memset(&g_nous_state, 0, sizeof(g_nous_state));
 
     LOG_INFO("Phase 5A cleanup complete");
 }
 
 /* Create a composition query */
-composition_query_t* katra_phase5_create_query(
+composition_query_t* katra_nous_create_query(
     const char* query_text,
     query_type_t type
 ) {
@@ -158,9 +158,9 @@ composition_query_t* katra_phase5_create_query(
     }
 
     /* Generate unique query ID */
-    char temp_prefix[PHASE5_SMALL_BUFFER];
+    char temp_prefix[NOUS_SMALL_BUFFER];
     snprintf(temp_prefix, sizeof(temp_prefix), "q5_%ld", (long)time(NULL));
-    query->query_id = phase5_generate_id(temp_prefix, &g_query_counter);
+    query->query_id = nous_generate_id(temp_prefix, &g_query_counter);
     query->query_text = strdup(query_text);
     query->type = type;
 
@@ -173,7 +173,7 @@ composition_query_t* katra_phase5_create_query(
     query->show_alternatives = true;  /* Always true */
 
     if (!query->query_id || !query->query_text) {
-        katra_phase5_free_query(query);
+        katra_nous_free_query(query);
         return NULL;
     }
 
@@ -204,7 +204,7 @@ static confidence_breakdown_t calculate_confidence(
 
     /* Factor 3: Historical Accuracy */
     if (query_type >= 0 && query_type < 4) {
-        conf.historical_accuracy = g_phase5_state.accuracy[query_type].accuracy;
+        conf.historical_accuracy = g_nous_state.accuracy[query_type].accuracy;
     } else {
         conf.historical_accuracy = 0.5f;  /* Default: unknown */
     }
@@ -215,9 +215,9 @@ static confidence_breakdown_t calculate_confidence(
     /* Factor 5: Temporal Recency */
     if (oldest_source > 0) {
         time_t now = time(NULL);
-        float age_days = (float)(now - oldest_source) / (PHASE5_HOURS_PER_DAY * PHASE5_SECONDS_PER_HOUR);
+        float age_days = (float)(now - oldest_source) / (NOUS_HOURS_PER_DAY * NOUS_SECONDS_PER_HOUR);
         /* Exponential decay with 90-day half-life */
-        conf.temporal_recency = expf(-age_days / PHASE5_DECAY_HALFLIFE);
+        conf.temporal_recency = expf(-age_days / NOUS_DECAY_HALFLIFE);
     } else {
         conf.temporal_recency = 0.5f;
     }
@@ -246,11 +246,11 @@ static confidence_breakdown_t calculate_confidence(
             "  Historical accuracy: %.0f%%\n"
             "  Query simplicity: %.0f%%\n"
             "  Temporal recency: %.0f%%",
-            conf.source_agreement * PHASE5_PERCENT_MULTIPLIER,
-            conf.evidence_quality * PHASE5_PERCENT_MULTIPLIER,
-            conf.historical_accuracy * PHASE5_PERCENT_MULTIPLIER,
-            (1.0f - conf.query_complexity) * PHASE5_PERCENT_MULTIPLIER,
-            conf.temporal_recency * PHASE5_PERCENT_MULTIPLIER);
+            conf.source_agreement * NOUS_PERCENT_MULTIPLIER,
+            conf.evidence_quality * NOUS_PERCENT_MULTIPLIER,
+            conf.historical_accuracy * NOUS_PERCENT_MULTIPLIER,
+            (1.0f - conf.query_complexity) * NOUS_PERCENT_MULTIPLIER,
+            conf.temporal_recency * NOUS_PERCENT_MULTIPLIER);
 
     conf.explanation = katra_safe_strdup(explanation);
 
@@ -377,7 +377,7 @@ static alternative_t* create_alternative(
     alt->confidence = confidence;
 
     if (!alt->description) {
-        katra_phase5_free_alternatives(alt, 1);
+        katra_nous_free_alternatives(alt, 1);
         return NULL;
     }
 
@@ -391,13 +391,13 @@ static alternative_t* create_alternative(
  * - Always includes alternatives
  * - Calculates multi-factor confidence
  */
-int katra_phase5_compose(composition_query_t* query) {
+int katra_nous_compose(composition_query_t* query) {
     int result = KATRA_SUCCESS;
     composition_result_t* comp_result = NULL;
     char** memories = NULL;
     size_t memory_count = 0;
 
-    if (!query || !g_phase5_state.initialized) {
+    if (!query || !g_nous_state.initialized) {
         return E_INPUT_NULL;
     }
 
@@ -462,15 +462,15 @@ cleanup:
         free_memory_list(memories, memory_count);
     }
     if (comp_result) {
-        katra_phase5_free_result(comp_result);
+        katra_nous_free_result(comp_result);
     }
 
     return result;
 }
 
 /* Submit feedback on a recommendation */
-int katra_phase5_submit_feedback(phase5_feedback_t* feedback) {
-    if (!feedback || !feedback->query_id || !g_phase5_state.initialized) {
+int katra_nous_submit_feedback(nous_feedback_t* feedback) {
+    if (!feedback || !feedback->query_id || !g_nous_state.initialized) {
         return E_INPUT_NULL;
     }
 
@@ -480,40 +480,40 @@ int katra_phase5_submit_feedback(phase5_feedback_t* feedback) {
 
     /* Update accuracy tracking */
     size_t idx = (size_t)feedback->query_type;
-    g_phase5_state.accuracy[idx].total_queries++;
+    g_nous_state.accuracy[idx].total_queries++;
 
     switch (feedback->outcome) {
         case OUTCOME_ACCEPTED:
-            g_phase5_state.accuracy[idx].accepted++;
+            g_nous_state.accuracy[idx].accepted++;
             LOG_INFO("Phase 5A feedback: Query %s ACCEPTED (type=%s)",
                     feedback->query_id, query_type_name(feedback->query_type));
             break;
 
         case OUTCOME_REJECTED:
-            g_phase5_state.accuracy[idx].rejected++;
+            g_nous_state.accuracy[idx].rejected++;
             LOG_INFO("Phase 5A feedback: Query %s REJECTED (type=%s): %s",
                     feedback->query_id, query_type_name(feedback->query_type),
                     feedback->explanation ? feedback->explanation : "no reason given");
             break;
 
         case OUTCOME_MODIFIED:
-            g_phase5_state.accuracy[idx].modified++;
+            g_nous_state.accuracy[idx].modified++;
             LOG_INFO("Phase 5A feedback: Query %s MODIFIED (type=%s)",
                     feedback->query_id, query_type_name(feedback->query_type));
             break;
     }
 
     /* Recalculate accuracy */
-    if (g_phase5_state.accuracy[idx].total_queries > 0) {
-        g_phase5_state.accuracy[idx].accuracy =
-            (float)g_phase5_state.accuracy[idx].accepted /
-            (float)g_phase5_state.accuracy[idx].total_queries;
+    if (g_nous_state.accuracy[idx].total_queries > 0) {
+        g_nous_state.accuracy[idx].accuracy =
+            (float)g_nous_state.accuracy[idx].accepted /
+            (float)g_nous_state.accuracy[idx].total_queries;
 
         LOG_DEBUG("Updated accuracy for %s queries: %.2f%% (%zu/%zu accepted)",
                  query_type_name(feedback->query_type),
-                 g_phase5_state.accuracy[idx].accuracy * PHASE5_PERCENT_MULTIPLIER,
-                 g_phase5_state.accuracy[idx].accepted,
-                 g_phase5_state.accuracy[idx].total_queries);
+                 g_nous_state.accuracy[idx].accuracy * NOUS_PERCENT_MULTIPLIER,
+                 g_nous_state.accuracy[idx].accepted,
+                 g_nous_state.accuracy[idx].total_queries);
     }
 
     /* Store feedback as memory for future learning */
@@ -531,44 +531,44 @@ int katra_phase5_submit_feedback(phase5_feedback_t* feedback) {
 }
 
 /* Get historical accuracy for a query type */
-float katra_phase5_get_accuracy(query_type_t type) {
-    if (!g_phase5_state.initialized || type < 0 || type >= 4) {
+float katra_nous_get_accuracy(query_type_t type) {
+    if (!g_nous_state.initialized || type < 0 || type >= 4) {
         return 0.5f;  /* Default: unknown */
     }
 
-    return g_phase5_state.accuracy[type].accuracy;
+    return g_nous_state.accuracy[type].accuracy;
 }
 
 /* Free query and results */
-void katra_phase5_free_query(composition_query_t* query) {
+void katra_nous_free_query(composition_query_t* query) {
     if (!query) return;
 
     free(query->query_id);
     free(query->query_text);
 
     if (query->result) {
-        katra_phase5_free_result(query->result);
+        katra_nous_free_result(query->result);
     }
 
     free(query);
 }
 
 /* Helper: Free composition result */
-void katra_phase5_free_result(composition_result_t* result) {
+void katra_nous_free_result(composition_result_t* result) {
     if (!result) return;
 
     free(result->recommendation);
 
     if (result->reasoning) {
-        katra_phase5_free_reasoning(result->reasoning, result->reasoning_count);
+        katra_nous_free_reasoning(result->reasoning, result->reasoning_count);
     }
 
     if (result->alternatives) {
-        katra_phase5_free_alternatives(result->alternatives, result->alternative_count);
+        katra_nous_free_alternatives(result->alternatives, result->alternative_count);
     }
 
     if (result->sources) {
-        katra_phase5_free_sources(result->sources, result->source_count);
+        katra_nous_free_sources(result->sources, result->source_count);
     }
 
     free(result->confidence.explanation);
@@ -576,7 +576,7 @@ void katra_phase5_free_result(composition_result_t* result) {
 }
 
 /* Helper: Free alternatives */
-void katra_phase5_free_alternatives(alternative_t* alts, size_t count) {
+void katra_nous_free_alternatives(alternative_t* alts, size_t count) {
     if (!alts) return;
 
     for (size_t i = 0; i < count; i++) {
@@ -590,13 +590,13 @@ void katra_phase5_free_alternatives(alternative_t* alts, size_t count) {
 }
 
 /* Helper: Free reasoning trace */
-void katra_phase5_free_reasoning(reasoning_step_t* steps, size_t count) {
+void katra_nous_free_reasoning(reasoning_step_t* steps, size_t count) {
     if (!steps) return;
 
     for (size_t i = 0; i < count; i++) {
         free(steps[i].description);
         if (steps[i].sources) {
-            katra_phase5_free_sources(steps[i].sources, steps[i].source_count);
+            katra_nous_free_sources(steps[i].sources, steps[i].source_count);
         }
     }
 
@@ -604,7 +604,7 @@ void katra_phase5_free_reasoning(reasoning_step_t* steps, size_t count) {
 }
 
 /* Helper: Free source attributions */
-void katra_phase5_free_sources(source_attribution_t* sources, size_t count) {
+void katra_nous_free_sources(source_attribution_t* sources, size_t count) {
     if (!sources) return;
 
     for (size_t i = 0; i < count; i++) {

@@ -5,12 +5,12 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include "katra_phase5.h"
+#include "katra_nous.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
 /* Maximum patterns we'll track */
-#define MAX_PATTERNS PHASE5_MAX_PATTERNS
+#define MAX_PATTERNS NOUS_MAX_PATTERNS
 
 /* Pattern storage */
 static struct {
@@ -40,15 +40,15 @@ static float calculate_pattern_confidence(learned_pattern_t* pattern) {
         (float)pattern->example_count / (float)total : 0.0f;
 
     /* Factor 2: Usage count (more observations = higher confidence) */
-    float usage_confidence = fminf(1.0f, pattern->usage_count / PHASE5_USAGE_SATURATION);
+    float usage_confidence = fminf(1.0f, pattern->usage_count / NOUS_USAGE_SATURATION);
 
     /* Factor 3: Recommendation accuracy */
     float rec_confidence = pattern->recommendation_accuracy;
 
     /* Factor 4: Age/stability (patterns seen longer are more trusted) */
     time_t now = time(NULL);
-    float age_days = (float)(now - pattern->created) / (PHASE5_HOURS_PER_DAY * PHASE5_SECONDS_PER_HOUR);
-    float age_confidence = fminf(1.0f, age_days / PHASE5_DAYS_TO_TRUST);
+    float age_days = (float)(now - pattern->created) / (NOUS_HOURS_PER_DAY * NOUS_SECONDS_PER_HOUR);
+    float age_confidence = fminf(1.0f, age_days / NOUS_DAYS_TO_TRUST);
 
     /* Combined confidence (weighted) */
     pattern->confidence =
@@ -139,9 +139,9 @@ int katra_phase5b_learn_pattern(
     }
 
     /* Generate ID using common utility */
-    char prefix[PHASE5_SMALL_BUFFER];
+    char prefix[NOUS_SMALL_BUFFER];
     snprintf(prefix, sizeof(prefix), "pattern_%s", pattern_type_name(type));
-    char* id = phase5_generate_id(prefix, &g_pattern_store.next_id);
+    char* id = nous_generate_id(prefix, &g_pattern_store.next_id);
     if (!id) {
         katra_phase5b_free_pattern(pattern);
         return E_SYSTEM_MEMORY;
@@ -153,19 +153,19 @@ int katra_phase5b_learn_pattern(
     /* Set fields */
     pattern->type = type;
 
-    int result = phase5_safe_strdup(&pattern->name, name);
+    int result = nous_safe_strdup(&pattern->name, name);
     if (result != KATRA_SUCCESS) {
         katra_phase5b_free_pattern(pattern);
         return result;
     }
 
-    result = phase5_safe_strdup(&pattern->description, description);
+    result = nous_safe_strdup(&pattern->description, description);
     if (result != KATRA_SUCCESS) {
         katra_phase5b_free_pattern(pattern);
         return result;
     }
 
-    result = phase5_safe_strdup(&pattern->rationale, rationale);
+    result = nous_safe_strdup(&pattern->rationale, rationale);
     if (result != KATRA_SUCCESS) {
         katra_phase5b_free_pattern(pattern);
         return result;
@@ -224,12 +224,12 @@ int katra_phase5b_add_example(
     pattern->examples = new_examples;
     pattern_example_t* example = &pattern->examples[pattern->example_count];
 
-    int result = phase5_safe_strdup(&example->location, location);
+    int result = nous_safe_strdup(&example->location, location);
     if (result != KATRA_SUCCESS) {
         return result;
     }
 
-    result = phase5_safe_strdup(&example->code_snippet, code_snippet);
+    result = nous_safe_strdup(&example->code_snippet, code_snippet);
     if (result != KATRA_SUCCESS) {
         free(example->location);
         example->location = NULL;
@@ -281,19 +281,19 @@ int katra_phase5b_add_exception(
     pattern->exceptions = new_exceptions;
     pattern_exception_t* exception = &pattern->exceptions[pattern->exception_count];
 
-    int result = phase5_safe_strdup(&exception->location, location);
+    int result = nous_safe_strdup(&exception->location, location);
     if (result != KATRA_SUCCESS) {
         return result;
     }
 
-    result = phase5_safe_strdup(&exception->code_snippet, code_snippet);
+    result = nous_safe_strdup(&exception->code_snippet, code_snippet);
     if (result != KATRA_SUCCESS) {
         free(exception->location);
         exception->location = NULL;
         return result;
     }
 
-    result = phase5_safe_strdup(&exception->reason, reason);
+    result = nous_safe_strdup(&exception->reason, reason);
     if (result != KATRA_SUCCESS) {
         free(exception->location);
         free(exception->code_snippet);
@@ -446,7 +446,7 @@ int katra_phase5b_record_outcome(const char* pattern_id, bool accepted) {
 
     LOG_DEBUG("Pattern %s: %zu/%zu accepted (%.1f%%)",
               pattern_id, pattern->accepted_count, pattern->recommended_count,
-              pattern->recommendation_accuracy * PHASE5_PERCENT_MULTIPLIER);
+              pattern->recommendation_accuracy * NOUS_PERCENT_MULTIPLIER);
 
     return KATRA_SUCCESS;
 }

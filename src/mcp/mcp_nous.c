@@ -8,7 +8,7 @@
 #include <pthread.h>
 #include <jansson.h>
 #include "katra_mcp.h"
-#include "katra_phase5.h"
+#include "katra_nous.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -16,7 +16,7 @@
 extern pthread_mutex_t g_katra_api_lock;
 
 /* Helper: Execute Phase 5 query with specified type */
-static json_t* execute_phase5_query(const char* query_text, query_type_t type, const char* type_name) {
+static json_t* execute_nous_query(const char* query_text, query_type_t type, const char* type_name) {
     if (!query_text) {
         return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_QUERY_REQUIRED);
     }
@@ -26,13 +26,13 @@ static json_t* execute_phase5_query(const char* query_text, query_type_t type, c
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    composition_query_t* query = katra_phase5_create_query(query_text, type);
+    composition_query_t* query = katra_nous_create_query(query_text, type);
     if (!query) {
         pthread_mutex_unlock(&g_katra_api_lock);
         return mcp_tool_error(MCP_ERR_CREATE_QUERY, MCP_ERR_CREATE_QUERY_DETAILS);
     }
 
-    int result = katra_phase5_compose(query);
+    int result = katra_nous_compose(query);
 
     char* response_text = NULL;
     float confidence = 0.0f;
@@ -44,7 +44,7 @@ static json_t* execute_phase5_query(const char* query_text, query_type_t type, c
         confidence = query->result->confidence.overall;
     }
 
-    katra_phase5_free_query(query);
+    katra_nous_free_query(query);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS) {
@@ -81,7 +81,7 @@ json_t* mcp_tool_placement(json_t* args, json_t* id) {
 
     const char* query_text = json_string_value(json_object_get(args, MCP_PARAM_QUERY));
     /* GUIDELINE_APPROVED: type name for user-facing messages */
-    return execute_phase5_query(query_text, QUERY_TYPE_PLACEMENT, "placement");
+    return execute_nous_query(query_text, QUERY_TYPE_PLACEMENT, "placement");
 }
 
 /* Tool: katra_impact */
@@ -94,7 +94,7 @@ json_t* mcp_tool_impact(json_t* args, json_t* id) {
 
     const char* query_text = json_string_value(json_object_get(args, MCP_PARAM_QUERY));
     /* GUIDELINE_APPROVED: type name for user-facing messages */
-    return execute_phase5_query(query_text, QUERY_TYPE_IMPACT, "impact");
+    return execute_nous_query(query_text, QUERY_TYPE_IMPACT, "impact");
 }
 
 /* Tool: katra_user_domain */
@@ -107,5 +107,5 @@ json_t* mcp_tool_user_domain(json_t* args, json_t* id) {
 
     const char* query_text = json_string_value(json_object_get(args, MCP_PARAM_QUERY));
     /* GUIDELINE_APPROVED: type name for user-facing messages */
-    return execute_phase5_query(query_text, QUERY_TYPE_USER_DOMAIN, "user domain");
+    return execute_nous_query(query_text, QUERY_TYPE_USER_DOMAIN, "user domain");
 }

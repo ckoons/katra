@@ -237,10 +237,13 @@ Then discuss with Casey or implement yourself if you want.
 ```
 katra/
 ├── src/               # Source code
-│   ├── foundation/    # Error, log, config, init
-│   ├── core/          # Memory tiers, checkpoints
+│   ├── utils/         # Error, log, config, init
+│   ├── core/          # Memory tiers, checkpoints, identity
+│   ├── db/            # Vector, graph, backends
+│   ├── psyche/        # Cognitive workflows, emotions
 │   ├── breathing/     # Natural memory primitives (Level 2 & 3)
-│   └── continuity/    # Sunrise/sunset protocols
+│   ├── nous/          # High-level reasoning & synthesis
+│   └── mcp/           # MCP protocol server
 ├── include/           # Header files (public API)
 ├── tests/             # Test suite
 ├── examples/          # Example programs

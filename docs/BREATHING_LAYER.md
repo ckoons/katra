@@ -284,9 +284,9 @@ See `examples/breathing_example.c` for a working demonstration.
 
 Run it:
 ```bash
-make build/libkatra_foundation.a
+make build/libkatra_utils.a
 gcc -I include -o bin/breathing_example examples/breathing_example.c \
-    -L build -lkatra_foundation -lsqlite3 -lpthread -lm
+    -L build -lkatra_utils -lsqlite3 -lpthread -lm
 ./bin/breathing_example
 ```
 
@@ -467,7 +467,7 @@ if (relevant) {
 The Breathing Layer is built on top of the core Katra API:
 - Header: `include/katra_breathing.h`
 - Implementation: `src/breathing/katra_breathing_*.c`
-- Built into: `build/libkatra_foundation.a`
+- Built into: `build/libkatra_utils.a`
 
 It's a thin, natural-feeling wrapper that makes the clinical API disappear.
 

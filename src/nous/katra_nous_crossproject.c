@@ -4,13 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "katra_phase5.h"
+#include "katra_nous.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
 /* Maximum practices and anti-patterns */
-#define MAX_PRACTICES PHASE5_MAX_PRACTICES
-#define MAX_ANTIPATTERNS PHASE5_MAX_ANTIPATTERNS
+#define MAX_PRACTICES NOUS_MAX_PRACTICES
+#define MAX_ANTIPATTERNS NOUS_MAX_ANTIPATTERNS
 
 /* Phase 5E state */
 static struct {
@@ -124,7 +124,7 @@ int katra_phase5e_add_practice(
     }
 
     /* Generate practice ID using common utility */
-    char* id = phase5_generate_id("practice", &g_crossproject_state.next_practice_id);
+    char* id = nous_generate_id("practice", &g_crossproject_state.next_practice_id);
     if (!id) {
         free(practice);
         return E_SYSTEM_MEMORY;
@@ -133,25 +133,25 @@ int katra_phase5e_add_practice(
     practice->practice_id[sizeof(practice->practice_id) - 1] = '\0';
     free(id);
 
-    int result = phase5_safe_strdup(&practice->name, name);
+    int result = nous_safe_strdup(&practice->name, name);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_practice(practice);
         return result;
     }
 
-    result = phase5_safe_strdup(&practice->description, description);
+    result = nous_safe_strdup(&practice->description, description);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_practice(practice);
         return result;
     }
 
-    result = phase5_safe_strdup(&practice->rationale, rationale);
+    result = nous_safe_strdup(&practice->rationale, rationale);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_practice(practice);
         return result;
     }
 
-    result = phase5_safe_strdup(&practice->category, category);
+    result = nous_safe_strdup(&practice->category, category);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_practice(practice);
         return result;
@@ -189,7 +189,7 @@ int katra_phase5e_add_antipattern(
     }
 
     /* Generate antipattern ID using common utility */
-    char* id = phase5_generate_id("antipattern", &g_crossproject_state.next_antipattern_id);
+    char* id = nous_generate_id("antipattern", &g_crossproject_state.next_antipattern_id);
     if (!id) {
         free(antipattern);
         return E_SYSTEM_MEMORY;
@@ -198,25 +198,25 @@ int katra_phase5e_add_antipattern(
     antipattern->antipattern_id[sizeof(antipattern->antipattern_id) - 1] = '\0';
     free(id);
 
-    int result = phase5_safe_strdup(&antipattern->name, name);
+    int result = nous_safe_strdup(&antipattern->name, name);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_antipattern(antipattern);
         return result;
     }
 
-    result = phase5_safe_strdup(&antipattern->description, description);
+    result = nous_safe_strdup(&antipattern->description, description);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_antipattern(antipattern);
         return result;
     }
 
-    result = phase5_safe_strdup(&antipattern->why_bad, why_bad);
+    result = nous_safe_strdup(&antipattern->why_bad, why_bad);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_antipattern(antipattern);
         return result;
     }
 
-    result = phase5_safe_strdup(&antipattern->better_alternative, alternative);
+    result = nous_safe_strdup(&antipattern->better_alternative, alternative);
     if (result != KATRA_SUCCESS) {
         katra_phase5e_free_antipattern(antipattern);
         return result;
@@ -324,7 +324,7 @@ int katra_phase5e_import_project(
              project_name, domain, quality_score);
 
     /* Could add project-specific practices here */
-    char practice_name[PHASE5_SMALL_BUFFER];
+    char practice_name[NOUS_SMALL_BUFFER];
     snprintf(practice_name, sizeof(practice_name),
             "Practice from %s", project_name);
 

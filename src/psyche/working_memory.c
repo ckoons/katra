@@ -11,7 +11,7 @@
 #include "katra_working_memory.h"
 #include "katra_experience.h"
 #include "katra_cognitive.h"
-#include "katra_engram_common.h"
+#include "katra_psyche_common.h"
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"

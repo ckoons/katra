@@ -5,13 +5,13 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include "katra_phase5.h"
+#include "katra_nous.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
 /* Reasoning state capacity limits */
-#define MAX_REASONING_CHAINS PHASE5_MAX_REASONING_CHAINS
-#define MAX_INFERENCE_RULES PHASE5_MAX_INFERENCE_RULES
+#define MAX_REASONING_CHAINS NOUS_MAX_REASONING_CHAINS
+#define MAX_INFERENCE_RULES NOUS_MAX_INFERENCE_RULES
 
 /* Inference rule */
 typedef struct {
@@ -87,13 +87,13 @@ int katra_phase5d_add_rule(const char* rule_name, const char* pattern) {
         return E_SYSTEM_MEMORY;
     }
 
-    int result = phase5_safe_strdup(&rule->name, rule_name);
+    int result = nous_safe_strdup(&rule->name, rule_name);
     if (result != KATRA_SUCCESS) {
         free(rule);
         return result;
     }
 
-    result = phase5_safe_strdup(&rule->pattern, pattern);
+    result = nous_safe_strdup(&rule->pattern, pattern);
     if (result != KATRA_SUCCESS) {
         free(rule->name);
         free(rule);
@@ -120,7 +120,7 @@ reasoning_chain_t* katra_phase5d_build_chain(const char* goal) {
     }
 
     /* Generate chain ID using common utility */
-    char* id = phase5_generate_id("chain", &g_reasoning_state.next_chain_id);
+    char* id = nous_generate_id("chain", &g_reasoning_state.next_chain_id);
     if (!id) {
         free(chain);
         return NULL;
@@ -129,7 +129,7 @@ reasoning_chain_t* katra_phase5d_build_chain(const char* goal) {
     chain->chain_id[sizeof(chain->chain_id) - 1] = '\0';
     free(id);
 
-    if (phase5_safe_strdup(&chain->goal, goal) != KATRA_SUCCESS) {
+    if (nous_safe_strdup(&chain->goal, goal) != KATRA_SUCCESS) {
         free(chain);
         return NULL;
     }
@@ -168,10 +168,10 @@ reasoning_chain_t* katra_phase5d_build_chain(const char* goal) {
     }
 
     /* Generate final conclusion */
-    char conclusion[PHASE5_MEDIUM_BUFFER];
+    char conclusion[NOUS_MEDIUM_BUFFER];
     snprintf(conclusion, sizeof(conclusion),
             "Through %zu-step reasoning (confidence: %.0f%%), conclude: %s",
-            chain->step_count, chain->overall_confidence * PHASE5_PERCENT_MULTIPLIER, goal);
+            chain->step_count, chain->overall_confidence * NOUS_PERCENT_MULTIPLIER, goal);
 
     chain->final_conclusion = strdup(conclusion);
     chain->valid = true;
@@ -196,12 +196,12 @@ analogy_t* katra_phase5d_find_analogy(
         return NULL;
     }
 
-    if (phase5_safe_strdup(&analogy->source_domain, source_domain) != KATRA_SUCCESS) {
+    if (nous_safe_strdup(&analogy->source_domain, source_domain) != KATRA_SUCCESS) {
         free(analogy);
         return NULL;
     }
 
-    if (phase5_safe_strdup(&analogy->target_domain, target_domain) != KATRA_SUCCESS) {
+    if (nous_safe_strdup(&analogy->target_domain, target_domain) != KATRA_SUCCESS) {
         free(analogy->source_domain);
         free(analogy);
         return NULL;
@@ -227,12 +227,12 @@ analogy_t* katra_phase5d_find_analogy(
         (float)(analogy->similarity_count + analogy->difference_count);
 
     /* Generate inference from analogy */
-    char inference[PHASE5_MEDIUM_BUFFER];
+    char inference[NOUS_MEDIUM_BUFFER];
     snprintf(inference, sizeof(inference),
             "Since %s succeeded with approach X, and %s is similar "
             "(%.0f%% similarity), approach X may work for %s",
             source_domain, target_domain,
-            analogy->analogy_strength * PHASE5_PERCENT_MULTIPLIER, target_domain);
+            analogy->analogy_strength * NOUS_PERCENT_MULTIPLIER, target_domain);
 
     analogy->inference = strdup(inference);
     analogy->inference_confidence = analogy->analogy_strength * 0.7f;

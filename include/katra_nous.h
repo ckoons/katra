@@ -1,7 +1,7 @@
 /* © 2025 Casey Koons All rights reserved */
 
-#ifndef KATRA_PHASE5_H
-#define KATRA_PHASE5_H
+#ifndef KATRA_NOUS_H
+#define KATRA_NOUS_H
 
 #include <time.h>
 #include <stdbool.h>
@@ -23,54 +23,54 @@
 /* Phase 5 Constants */
 
 /* Buffer sizes */
-#define PHASE5_QUERY_ID_SIZE 64
-#define PHASE5_SMALL_BUFFER 256
-#define PHASE5_MEDIUM_BUFFER 512
-#define PHASE5_LARGE_BUFFER 1024
-#define PHASE5_PATTERN_ID_SIZE 64
-#define PHASE5_CHAIN_ID_SIZE 64
-#define PHASE5_CHANGE_ID_SIZE 64
-#define PHASE5_PRACTICE_ID_SIZE 64
+#define NOUS_QUERY_ID_SIZE 64
+#define NOUS_SMALL_BUFFER 256
+#define NOUS_MEDIUM_BUFFER 512
+#define NOUS_LARGE_BUFFER 1024
+#define NOUS_PATTERN_ID_SIZE 64
+#define NOUS_CHAIN_ID_SIZE 64
+#define NOUS_CHANGE_ID_SIZE 64
+#define NOUS_PRACTICE_ID_SIZE 64
 
 /* Capacity limits */
-#define PHASE5_MAX_PATTERNS 256
-#define PHASE5_MAX_REASONING_CHAINS 128
-#define PHASE5_MAX_INFERENCE_RULES 64
-#define PHASE5_MAX_DEPENDENCIES 1024
-#define PHASE5_MAX_CHANGE_RECORDS 256
-#define PHASE5_MAX_PRACTICES 256
-#define PHASE5_MAX_ANTIPATTERNS 128
+#define NOUS_MAX_PATTERNS 256
+#define NOUS_MAX_REASONING_CHAINS 128
+#define NOUS_MAX_INFERENCE_RULES 64
+#define NOUS_MAX_DEPENDENCIES 1024
+#define NOUS_MAX_CHANGE_RECORDS 256
+#define NOUS_MAX_PRACTICES 256
+#define NOUS_MAX_ANTIPATTERNS 128
 
 /* Confidence calculation constants */
-#define PHASE5_USAGE_SATURATION 10.0f        /* Observations needed for full confidence */
-#define PHASE5_IMPACT_SCALE 20.0f             /* Scale factor for impact calculation */
-#define PHASE5_DEPENDENCY_SCALE 10.0f         /* Scale factor for dependency risk */
+#define NOUS_USAGE_SATURATION 10.0f        /* Observations needed for full confidence */
+#define NOUS_IMPACT_SCALE 20.0f             /* Scale factor for impact calculation */
+#define NOUS_DEPENDENCY_SCALE 10.0f         /* Scale factor for dependency risk */
 
 /* Time constants */
-#define PHASE5_HOURS_PER_DAY 24.0f
-#define PHASE5_SECONDS_PER_HOUR 3600.0f
-#define PHASE5_DAYS_TO_TRUST 30.0f            /* Days until pattern fully trusted */
-#define PHASE5_DECAY_HALFLIFE 90.0f           /* Temporal decay half-life in days */
+#define NOUS_HOURS_PER_DAY 24.0f
+#define NOUS_SECONDS_PER_HOUR 3600.0f
+#define NOUS_DAYS_TO_TRUST 30.0f            /* Days until pattern fully trusted */
+#define NOUS_DECAY_HALFLIFE 90.0f           /* Temporal decay half-life in days */
 
 /* Display constants */
-#define PHASE5_PERCENT_MULTIPLIER 100.0f
+#define NOUS_PERCENT_MULTIPLIER 100.0f
 
 /* Phase 5 Common Utilities API */
 
 /* Generate unique ID with prefix (caller must free) */
-char* phase5_generate_id(const char* prefix, size_t* counter);
+char* nous_generate_id(const char* prefix, size_t* counter);
 
 /* Calculate weighted confidence from factors */
 typedef struct {
     float factors[5];      /* Up to 5 confidence factors */
     float weights[5];      /* Weights for each factor */
     size_t factor_count;   /* Number of factors used */
-} phase5_confidence_calc_t;
+} nous_confidence_calc_t;
 
-float phase5_calculate_confidence(const phase5_confidence_calc_t* calc);
+float nous_calculate_confidence(const nous_confidence_calc_t* calc);
 
 /* Safe strdup with NULL check (returns error code) */
-int phase5_safe_strdup(char** dest, const char* src);
+int nous_safe_strdup(char** dest, const char* src);
 
 /* Query types */
 typedef enum {
@@ -184,7 +184,7 @@ typedef struct {
     time_t timestamp;
     char* ci_id;                 /* Who provided feedback */
     query_type_t query_type;     /* Type of query for accuracy tracking */
-} phase5_feedback_t;
+} nous_feedback_t;
 
 /* Temporal validity tracking */
 typedef struct {
@@ -229,7 +229,7 @@ typedef struct {
 
 /* Learned pattern */
 typedef struct {
-    char pattern_id[PHASE5_PATTERN_ID_SIZE];         /* Unique pattern identifier */
+    char pattern_id[NOUS_PATTERN_ID_SIZE];         /* Unique pattern identifier */
     pattern_type_t type;         /* Type of pattern */
     char* name;                  /* Human-readable name */
     char* description;           /* What this pattern represents */
@@ -269,43 +269,43 @@ typedef struct {
 /* Phase 5A API Functions */
 
 /* Initialize Phase 5 system */
-int katra_phase5_init(const char* ci_id);
+int katra_nous_init(const char* ci_id);
 
 /* Cleanup Phase 5 system */
-void katra_phase5_cleanup(void);
+void katra_nous_cleanup(void);
 
 /* Create a composition query */
-composition_query_t* katra_phase5_create_query(
+composition_query_t* katra_nous_create_query(
     const char* query_text,
     query_type_t type
 );
 
 /* Execute composition query (main reasoning function) */
-int katra_phase5_compose(composition_query_t* query);
+int katra_nous_compose(composition_query_t* query);
 
 /* Free query and results */
-void katra_phase5_free_query(composition_query_t* query);
+void katra_nous_free_query(composition_query_t* query);
 
 /* Submit feedback on a recommendation */
-int katra_phase5_submit_feedback(phase5_feedback_t* feedback);
+int katra_nous_submit_feedback(nous_feedback_t* feedback);
 
 /* Get historical accuracy for a query type */
-float katra_phase5_get_accuracy(query_type_t type);
+float katra_nous_get_accuracy(query_type_t type);
 
 /* Helper: Free confidence breakdown */
-void katra_phase5_free_confidence(confidence_breakdown_t* conf);
+void katra_nous_free_confidence(confidence_breakdown_t* conf);
 
 /* Helper: Free composition result */
-void katra_phase5_free_result(composition_result_t* result);
+void katra_nous_free_result(composition_result_t* result);
 
 /* Helper: Free alternatives */
-void katra_phase5_free_alternatives(alternative_t* alts, size_t count);
+void katra_nous_free_alternatives(alternative_t* alts, size_t count);
 
 /* Helper: Free reasoning trace */
-void katra_phase5_free_reasoning(reasoning_step_t* steps, size_t count);
+void katra_nous_free_reasoning(reasoning_step_t* steps, size_t count);
 
 /* Helper: Free source attributions */
-void katra_phase5_free_sources(source_attribution_t* sources, size_t count);
+void katra_nous_free_sources(source_attribution_t* sources, size_t count);
 
 /* Phase 5C: Impact Analysis
  *
@@ -363,7 +363,7 @@ typedef struct {
 
 /* Historical change record */
 typedef struct {
-    char change_id[PHASE5_CHANGE_ID_SIZE];          /* Unique change identifier */
+    char change_id[NOUS_CHANGE_ID_SIZE];          /* Unique change identifier */
     char* description;           /* What was changed */
     time_t timestamp;            /* When change occurred */
 
@@ -455,7 +455,7 @@ typedef struct {
 
 /* Reasoning chain (multi-step inference) */
 typedef struct {
-    char chain_id[PHASE5_CHAIN_ID_SIZE];           /* Unique chain identifier */
+    char chain_id[NOUS_CHAIN_ID_SIZE];           /* Unique chain identifier */
     char* goal;                  /* What we're trying to conclude */
 
     inference_step_t* steps;     /* Chain of inference steps */
@@ -490,7 +490,7 @@ typedef struct {
 
 /* Best practice record */
 typedef struct {
-    char practice_id[PHASE5_PRACTICE_ID_SIZE];        /* Unique identifier */
+    char practice_id[NOUS_PRACTICE_ID_SIZE];        /* Unique identifier */
     char* name;                  /* Practice name */
     char* description;           /* What this practice is */
     char* rationale;             /* Why it's a best practice */
@@ -507,7 +507,7 @@ typedef struct {
 
 /* Anti-pattern record */
 typedef struct {
-    char antipattern_id[PHASE5_PRACTICE_ID_SIZE];     /* Unique identifier */
+    char antipattern_id[NOUS_PRACTICE_ID_SIZE];     /* Unique identifier */
     char* name;                  /* Anti-pattern name */
     char* description;           /* What to avoid */
     char* why_bad;               /* Why it's problematic */
@@ -654,4 +654,4 @@ void katra_phase5e_free_antipattern(antipattern_t* antipattern);
 /* Free anti-patterns array */
 void katra_phase5e_free_antipatterns(antipattern_t** antipatterns, size_t count);
 
-#endif /* KATRA_PHASE5_H */
+#endif /* KATRA_NOUS_H */

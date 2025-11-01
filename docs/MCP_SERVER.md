@@ -305,8 +305,8 @@ User: Where should I put the new HTTP client code?
 
 Claude: [Uses katra_placement]
         Based on your project structure:
-        - Create src/foundation/http_client.c
-        - This follows your pattern of foundation utilities
+        - Create src/utils/http_client.c
+        - This follows your pattern of utils
         - Confidence: 87%
 ```
 
@@ -338,7 +338,7 @@ Claude: [Uses katra_impact]
 src/mcp/
 ├── mcp_protocol.c       - JSON-RPC 2.0 protocol handlers (411 lines)
 ├── mcp_tools.c          - Core tools (remember, recall, learn, decide)
-├── mcp_phase5.c         - Phase 5 tools (placement, impact, user_domain)
+├── mcp_nous.c         - Phase 5 tools (placement, impact, user_domain)
 ├── mcp_resources.c      - Resources (working-context, session-info)
 └── katra_mcp_server.c   - Main server entry point
 
