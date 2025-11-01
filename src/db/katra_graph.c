@@ -154,7 +154,7 @@ int katra_graph_add_edge(graph_store_t* store,
                          relationship_type_t type,
                          const char* label,
                          float strength) {
-    ENGRAM_CHECK_PARAMS_3(store, from_id, to_id);
+    PSYCHE_CHECK_PARAMS_3(store, from_id, to_id);
 
     /* Get or create nodes */
     graph_node_t* from_node = katra_graph_get_or_create_node(store, from_id);
@@ -225,7 +225,7 @@ int katra_graph_get_related(graph_store_t* store,
                             relationship_type_t filter_type,
                             graph_edge_t*** edges_out,
                             size_t* count_out) {
-    ENGRAM_CHECK_PARAMS_3(store, record_id, edges_out);
+    PSYCHE_CHECK_PARAMS_3(store, record_id, edges_out);
 
     graph_node_t* node = find_node(store, record_id);
     if (!node) {
@@ -280,7 +280,7 @@ int katra_graph_traverse(graph_store_t* store,
                          size_t max_depth,
                          graph_path_node_t*** path_out,
                          size_t* count_out) {
-    ENGRAM_CHECK_PARAMS_4(store, start_id, path_out, count_out);
+    PSYCHE_CHECK_PARAMS_4(store, start_id, path_out, count_out);
 
     graph_node_t* start = find_node(store, start_id);
     if (!start) {
@@ -354,7 +354,7 @@ int katra_graph_stats(graph_store_t* store,
                       size_t* node_count,
                       size_t* edge_count,
                       float* avg_degree) {
-    ENGRAM_CHECK_PARAMS_4(store, node_count, edge_count, avg_degree);
+    PSYCHE_CHECK_PARAMS_4(store, node_count, edge_count, avg_degree);
 
     *node_count = store->node_count;
     *edge_count = store->total_edges;

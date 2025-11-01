@@ -1,16 +1,16 @@
 /* © 2025 Casey Koons All rights reserved */
 
-#ifndef KATRA_ENGRAM_COMMON_H
-#define KATRA_ENGRAM_COMMON_H
+#ifndef KATRA_PSYCHE_COMMON_H
+#define KATRA_PSYCHE_COMMON_H
 
 #include "katra_error.h"
 #include <stdbool.h>
 #include <stddef.h>
 
-/* Error checking macros for engram modules */
+/* Error checking macros for psyche modules */
 
 /* Check single parameter for NULL */
-#define ENGRAM_CHECK_NULL(ptr) \
+#define PSYCHE_CHECK_NULL(ptr) \
     do { \
         if (!(ptr)) { \
             katra_report_error(E_INPUT_NULL, __func__, #ptr " is NULL"); \
@@ -19,7 +19,7 @@
     } while(0)
 
 /* Check single parameter for NULL (void return) */
-#define ENGRAM_CHECK_NULL_VOID(ptr) \
+#define PSYCHE_CHECK_NULL_VOID(ptr) \
     do { \
         if (!(ptr)) { \
             katra_report_error(E_INPUT_NULL, __func__, #ptr " is NULL"); \
@@ -28,7 +28,7 @@
     } while(0)
 
 /* Check multiple parameters for NULL */
-#define ENGRAM_CHECK_PARAMS_2(p1, p2) \
+#define PSYCHE_CHECK_PARAMS_2(p1, p2) \
     do { \
         if (!(p1) || !(p2)) { \
             katra_report_error(E_INPUT_NULL, __func__, "NULL parameter"); \
@@ -36,7 +36,7 @@
         } \
     } while(0)
 
-#define ENGRAM_CHECK_PARAMS_3(p1, p2, p3) \
+#define PSYCHE_CHECK_PARAMS_3(p1, p2, p3) \
     do { \
         if (!(p1) || !(p2) || !(p3)) { \
             katra_report_error(E_INPUT_NULL, __func__, "NULL parameter"); \
@@ -44,7 +44,7 @@
         } \
     } while(0)
 
-#define ENGRAM_CHECK_PARAMS_4(p1, p2, p3, p4) \
+#define PSYCHE_CHECK_PARAMS_4(p1, p2, p3, p4) \
     do { \
         if (!(p1) || !(p2) || !(p3) || !(p4)) { \
             katra_report_error(E_INPUT_NULL, __func__, "NULL parameter"); \
@@ -52,7 +52,7 @@
         } \
     } while(0)
 
-/* String utilities for engram modules */
+/* String utilities for psyche modules */
 
 /* Case-insensitive keyword matching */
 bool katra_str_contains_any(const char* text, const char** keywords, size_t count);
@@ -83,4 +83,4 @@ char* katra_safe_strdup(const char* str);
         } \
     } while(0)
 
-#endif /* KATRA_ENGRAM_COMMON_H */
+#endif /* KATRA_PSYCHE_COMMON_H */

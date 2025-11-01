@@ -239,7 +239,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
                            size_t count,
                            char*** patterns,
                            size_t* pattern_count) {
-    ENGRAM_CHECK_PARAMS_4(processor, experiences, patterns, pattern_count);
+    PSYCHE_CHECK_PARAMS_4(processor, experiences, patterns, pattern_count);
 
     /* Simple pattern detection: repeated thought types */
     int thought_type_counts[THOUGHT_TYPE_COUNT] = {0};
@@ -302,7 +302,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
 int katra_process_boundary(interstitial_processor_t* processor,
                            boundary_event_t* boundary,
                            working_memory_t* wm) {
-    ENGRAM_CHECK_PARAMS_3(processor, boundary, wm);
+    PSYCHE_CHECK_PARAMS_3(processor, boundary, wm);
 
     if (boundary->type == BOUNDARY_NONE) {
         return KATRA_SUCCESS;

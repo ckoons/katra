@@ -165,7 +165,7 @@ float katra_calculate_confidence(const char* content, thought_type_t thought_typ
 /* Store a thought (auto-detect type and confidence) */
 int katra_store_thought(const char* ci_id, const char* content,
                         float importance, const char* context) {
-    ENGRAM_CHECK_PARAMS_2(ci_id, content);
+    PSYCHE_CHECK_PARAMS_2(ci_id, content);
 
     /* Detect thought type and confidence */
     thought_type_t thought_type = katra_detect_thought_type(content);
@@ -182,7 +182,7 @@ int katra_store_thought(const char* ci_id, const char* content,
 int katra_store_thought_typed(const char* ci_id, const char* content,
                               thought_type_t thought_type, float confidence,
                               float importance, const char* context) {
-    ENGRAM_CHECK_PARAMS_2(ci_id, content);
+    PSYCHE_CHECK_PARAMS_2(ci_id, content);
 
     /* Create base memory record */
     memory_record_t* record = katra_memory_create_record(
@@ -220,7 +220,7 @@ int katra_store_thought_typed(const char* ci_id, const char* content,
 int katra_recall_experience(const char* ci_id, const char* query_text,
                             float min_confidence, size_t limit,
                             cognitive_record_t*** results, size_t* count) {
-    ENGRAM_CHECK_PARAMS_3(ci_id, results, count);
+    PSYCHE_CHECK_PARAMS_3(ci_id, results, count);
 
     (void)query_text;  /* Not yet used - for semantic search in future */
 
@@ -371,7 +371,7 @@ void katra_cognitive_free_results(cognitive_record_t** results, size_t count) {
 /* Create association (placeholder for Phase 8: Graph Database) */
 int katra_create_association(const char* ci_id, const char* memory_id_1,
                               const char* memory_id_2, const char* relationship) {
-    ENGRAM_CHECK_PARAMS_3(ci_id, memory_id_1, memory_id_2);
+    PSYCHE_CHECK_PARAMS_3(ci_id, memory_id_1, memory_id_2);
 
     /* Placeholder - will be implemented in Phase 8 */
     LOG_DEBUG("Association created: %s <-> %s (relationship: %s)",
@@ -383,7 +383,7 @@ int katra_create_association(const char* ci_id, const char* memory_id_1,
 
 /* Record access (placeholder for memory metabolism) */
 int katra_record_access(const char* ci_id, const char* record_id) {
-    ENGRAM_CHECK_PARAMS_2(ci_id, record_id);
+    PSYCHE_CHECK_PARAMS_2(ci_id, record_id);
 
     /* Placeholder - will be implemented with access tracking persistence */
     LOG_DEBUG("Access recorded for memory: %s", record_id);

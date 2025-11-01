@@ -27,7 +27,7 @@ int katra_extract_topics(const char* ci_id,
                          vector_store_t* vectors,
                          topic_cluster_t*** clusters_out,
                          size_t* count_out) {
-    ENGRAM_CHECK_PARAMS_3(ci_id, vectors, clusters_out);
+    PSYCHE_CHECK_PARAMS_3(ci_id, vectors, clusters_out);
 
     /* Query today's memories */
     memory_query_t query = {
@@ -134,7 +134,7 @@ int katra_trace_threads(const char* ci_id,
                         graph_store_t* graph,
                         conversation_thread_t*** threads_out,
                         size_t* count_out) {
-    ENGRAM_CHECK_PARAMS_3(ci_id, graph, threads_out);
+    PSYCHE_CHECK_PARAMS_3(ci_id, graph, threads_out);
 
     /* Query today's memories */
     memory_query_t query = {
@@ -211,7 +211,7 @@ int katra_trace_threads(const char* ci_id,
 int katra_build_emotional_arc(const char* ci_id,
                               emotional_tag_t** arc_out,
                               size_t* count_out) {
-    ENGRAM_CHECK_PARAMS_3(ci_id, arc_out, count_out);
+    PSYCHE_CHECK_PARAMS_3(ci_id, arc_out, count_out);
 
     /* Query today's memories */
     memory_query_t query = {
@@ -274,7 +274,7 @@ int katra_detect_insights(const char* ci_id,
                           size_t thread_count,
                           daily_insight_t*** insights_out,
                           size_t* count_out) {
-    ENGRAM_CHECK_PARAMS_2(ci_id, insights_out);
+    PSYCHE_CHECK_PARAMS_2(ci_id, insights_out);
 
     /* Use topics and threads for insight detection */
     (void)topics;  /* Used below */
@@ -324,7 +324,7 @@ int katra_sundown(const char* ci_id,
                   vector_store_t* vectors,
                   graph_store_t* graph,
                   sundown_context_t** context_out) {
-    ENGRAM_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
+    PSYCHE_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
 
     sundown_context_t* context;
     ALLOC_OR_RETURN(context, sundown_context_t);
@@ -377,7 +377,7 @@ int katra_sunrise(const char* ci_id,
                   vector_store_t* vectors,
                   graph_store_t* graph,
                   sunrise_context_t** context_out) {
-    ENGRAM_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
+    PSYCHE_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
 
     sunrise_context_t* context;
     ALLOC_OR_RETURN(context, sunrise_context_t);

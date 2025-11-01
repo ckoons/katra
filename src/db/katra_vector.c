@@ -102,7 +102,7 @@ static void hash_text_to_vector(const char* text, float* vector,
 /* Create embedding from text */
 int katra_vector_create_embedding(const char* text,
                                   vector_embedding_t** embedding_out) {
-    ENGRAM_CHECK_PARAMS_2(text, embedding_out);
+    PSYCHE_CHECK_PARAMS_2(text, embedding_out);
 
     vector_embedding_t* embedding = calloc(1, sizeof(vector_embedding_t));
     if (!embedding) {
@@ -138,7 +138,7 @@ int katra_vector_create_embedding(const char* text,
 int katra_vector_store(vector_store_t* store,
                       const char* record_id,
                       const char* text) {
-    ENGRAM_CHECK_PARAMS_3(store, record_id, text);
+    PSYCHE_CHECK_PARAMS_3(store, record_id, text);
 
     /* Check if we need to expand capacity */
     if (store->count >= store->capacity) {
@@ -225,7 +225,7 @@ int katra_vector_search(vector_store_t* store,
                         size_t limit,
                         vector_match_t*** matches_out,
                         size_t* count_out) {
-    ENGRAM_CHECK_PARAMS_4(store, query_text, matches_out, count_out);
+    PSYCHE_CHECK_PARAMS_4(store, query_text, matches_out, count_out);
 
     if (store->count == 0) {
         *matches_out = NULL;
@@ -309,7 +309,7 @@ vector_embedding_t* katra_vector_get(vector_store_t* store,
 
 /* Delete embedding */
 int katra_vector_delete(vector_store_t* store, const char* record_id) {
-    ENGRAM_CHECK_PARAMS_2(store, record_id);
+    PSYCHE_CHECK_PARAMS_2(store, record_id);
 
     for (size_t i = 0; i < store->count; i++) {
         if (strcmp(store->embeddings[i]->record_id, record_id) == 0) {

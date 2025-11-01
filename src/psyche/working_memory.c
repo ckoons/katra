@@ -114,7 +114,7 @@ static int evict_item(working_memory_t* wm, size_t index) {
 int katra_working_memory_add(working_memory_t* wm,
                               experience_t* experience,
                               float attention_score) {
-    ENGRAM_CHECK_PARAMS_2(wm, experience);
+    PSYCHE_CHECK_PARAMS_2(wm, experience);
 
     /* Clamp attention score */
     if (attention_score < 0.0f) attention_score = 0.0f;
@@ -336,7 +336,7 @@ int katra_working_memory_stats(working_memory_t* wm,
                                 size_t* current_count,
                                 float* avg_attention,
                                 time_t* time_since_consolidation) {
-    ENGRAM_CHECK_PARAMS_4(wm, current_count, avg_attention, time_since_consolidation);
+    PSYCHE_CHECK_PARAMS_4(wm, current_count, avg_attention, time_since_consolidation);
 
     *current_count = wm->count;
 

@@ -19,7 +19,7 @@
 
 /* Detect emotion from content */
 int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
-    ENGRAM_CHECK_PARAMS_2(content, emotion_out);
+    PSYCHE_CHECK_PARAMS_2(content, emotion_out);
 
     /* Initialize to neutral */
     emotion_out->valence = 0.0f;
@@ -151,7 +151,7 @@ int katra_store_experience(const char* ci_id,
                            const char* content,
                            float importance,
                            const emotional_tag_t* emotion) {
-    ENGRAM_CHECK_PARAMS_2(ci_id, content);
+    PSYCHE_CHECK_PARAMS_2(ci_id, content);
 
     /* Detect emotion if not provided */
     emotional_tag_t detected_emotion;
@@ -182,7 +182,7 @@ int katra_recall_emotional_experiences(const char* ci_id,
                                        size_t limit,
                                        experience_t*** results,
                                        size_t* count) {
-    ENGRAM_CHECK_PARAMS_3(ci_id, results, count);
+    PSYCHE_CHECK_PARAMS_3(ci_id, results, count);
 
     /* Query cognitive records */
     cognitive_record_t** cog_results = NULL;
@@ -255,7 +255,7 @@ int katra_recall_emotional_experiences(const char* ci_id,
 int katra_get_mood_summary(const char* ci_id,
                            int hours_back,
                            emotional_tag_t* mood_out) {
-    ENGRAM_CHECK_PARAMS_2(ci_id, mood_out);
+    PSYCHE_CHECK_PARAMS_2(ci_id, mood_out);
 
     /* Query recent experiences */
     experience_t** experiences = NULL;
@@ -321,7 +321,7 @@ int katra_track_emotional_arc(const char* ci_id,
                               time_t end_time,
                               emotional_tag_t** arc,
                               size_t* count) {
-    ENGRAM_CHECK_PARAMS_3(ci_id, arc, count);
+    PSYCHE_CHECK_PARAMS_3(ci_id, arc, count);
 
     /* Note: start_time, end_time not yet used (will filter by time range) */
     (void)start_time;
