@@ -119,7 +119,7 @@ MCP_LIB_OBJS := $(BUILD_DIR)/mcp_protocol.o \
 MCP_OBJS := $(MCP_LIB_OBJS) \
             $(BUILD_DIR)/katra_mcp_server.o
 
-# Foundation library
+# Utils library
 LIBKATRA_UTILS := $(BUILD_DIR)/libkatra_utils.a
 
 # MCP Server binary
@@ -160,8 +160,8 @@ all: directories $(LIBKATRA_UTILS) $(MCP_SERVER)
 	@echo "========================================"
 	@echo ""
 	@echo "Built targets:"
-	@echo "  Foundation library: $(LIBKATRA_UTILS)"
-	@echo "  MCP Server:         $(MCP_SERVER)"
+	@echo "  Utils library: $(LIBKATRA_UTILS)"
+	@echo "  MCP Server:    $(MCP_SERVER)"
 	@echo ""
 	@echo "Available targets:"
 	@echo "  make test-quick             - Run all tests (including MCP)"
