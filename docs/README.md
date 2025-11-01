@@ -100,7 +100,7 @@ Key references:
 |------|---------|--------|
 | `CI_INTEGRATION.md` | Complete integration guide for CIs | ✅ Complete |
 | `ERROR_HANDLING.md` | Production error handling patterns | ✅ Complete |
-| `PHASE5_USAGE.md` | AI-assisted code composition and recommendations | ⏳ Planned |
+| `NOUS_USAGE.md` | AI-assisted code composition and recommendations | ⏳ Planned |
 | `ARCHITECTURE.md` | System design and memory tiers | ⏳ Planned |
 | `GETTING_STARTED.md` | Build, install, first use | ⏳ Planned |
 | `MEMORY_OPERATIONS.md` | Safe memory manipulation | ⏳ Planned |

@@ -62,10 +62,10 @@ fi
 # Check 2: Build artifacts exist
 echo ""
 echo "Checking build artifacts..."
-if [ -f "build/libkatra_foundation.a" ]; then
-    check_pass "Foundation library exists"
+if [ -f "build/libkatra_utils.a" ]; then
+    check_pass "Utils library exists"
 else
-    check_warn "Foundation library not built (run 'make')"
+    check_warn "Utils library not built (run 'make')"
 fi
 
 # Check 3: Source structure

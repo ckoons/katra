@@ -33,8 +33,8 @@ echo "========================================"
 echo ""
 
 # Check if Katra is built
-if [ ! -f "$PROJECT_ROOT/build/libkatra_foundation.a" ]; then
-    echo -e "${RED}✗ Katra foundation library not found${NC}"
+if [ ! -f "$PROJECT_ROOT/build/libkatra_utils.a" ]; then
+    echo -e "${RED}✗ Katra utils library not found${NC}"
     echo ""
     echo "Please build Katra first:"
     echo "  cd $PROJECT_ROOT"
@@ -43,7 +43,7 @@ if [ ! -f "$PROJECT_ROOT/build/libkatra_foundation.a" ]; then
     exit 1
 fi
 
-echo -e "${GREEN}✓${NC} Katra foundation library found"
+echo -e "${GREEN}✓${NC} Katra utils library found"
 
 # Check if examples/minimal_ci exists and is executable
 if [ ! -x "$PROJECT_ROOT/examples/minimal_ci" ]; then

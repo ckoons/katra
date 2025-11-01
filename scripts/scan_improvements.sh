@@ -23,7 +23,7 @@ cd "$PROJECT_ROOT"
 
 # Source directories
 SRC_CORE="src/core"
-SRC_FOUNDATION="src/foundation"
+SRC_FOUNDATION="src/utils"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "1. FILE SIZE ANALYSIS"
