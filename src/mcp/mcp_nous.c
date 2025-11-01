@@ -1,6 +1,6 @@
 /* © 2025 Casey Koons All rights reserved */
 
-/* MCP Phase 5 Tools - placement, impact, user_domain */
+/* MCP Nous Tools - placement, impact, user_domain */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +15,7 @@
 /* External mutex from mcp_tools.c */
 extern pthread_mutex_t g_katra_api_lock;
 
-/* Helper: Execute Phase 5 query with specified type */
+/* Helper: Execute Nous query with specified type */
 static json_t* execute_nous_query(const char* query_text, query_type_t type, const char* type_name) {
     if (!query_text) {
         return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_QUERY_REQUIRED);

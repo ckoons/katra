@@ -1,5 +1,5 @@
 /* © 2025 Casey Koons All rights reserved */
-/* Phase 5A: Basic Composition with Error Correction
+/* Nous Compose: Basic Composition with Error Correction
  * Core composition engine that synthesizes recommendations from multiple sources.
  */
 
@@ -16,7 +16,7 @@
 #include "katra_breathing.h"
 #include "katra_psyche_common.h"
 
-/* Phase 5A state */
+/* Nous Compose state */
 typedef struct {
     char* ci_id;
     bool initialized;
@@ -59,7 +59,7 @@ static const char* source_type_name(source_type_t type) {
     }
 }
 
-/* Initialize Phase 5 system */
+/* Initialize Nous system */
 int katra_nous_init(const char* ci_id) {
     if (!ci_id) {
         return E_INPUT_NULL;
@@ -79,68 +79,68 @@ int katra_nous_init(const char* ci_id) {
         g_nous_state.accuracy[i].accuracy = 0.5f;
     }
 
-    /* Initialize Phase 5B pattern learning */
-    int result = katra_phase5b_init();
+    /* Initialize Nous Patterns pattern learning */
+    int result = katra_nous_patterns_init();
     if (result != KATRA_SUCCESS) {
         free(g_nous_state.ci_id);
         return result;
     }
 
-    /* Initialize Phase 5C impact analysis */
-    result = katra_phase5c_init();
+    /* Initialize Nous Impact impact analysis */
+    result = katra_nous_impact_init();
     if (result != KATRA_SUCCESS) {
-        katra_phase5b_cleanup();
+        katra_nous_patterns_cleanup();
         free(g_nous_state.ci_id);
         return result;
     }
 
-    /* Initialize Phase 5D advanced reasoning */
-    result = katra_phase5d_init();
+    /* Initialize Nous Reasoning advanced reasoning */
+    result = katra_nous_reasoning_init();
     if (result != KATRA_SUCCESS) {
-        katra_phase5c_cleanup();
-        katra_phase5b_cleanup();
+        katra_nous_impact_cleanup();
+        katra_nous_patterns_cleanup();
         free(g_nous_state.ci_id);
         return result;
     }
 
-    /* Initialize Phase 5E cross-project learning */
-    result = katra_phase5e_init();
+    /* Initialize Nous Cross-Project cross-project learning */
+    result = katra_nous_crossproject_init();
     if (result != KATRA_SUCCESS) {
-        katra_phase5d_cleanup();
-        katra_phase5c_cleanup();
-        katra_phase5b_cleanup();
+        katra_nous_reasoning_cleanup();
+        katra_nous_impact_cleanup();
+        katra_nous_patterns_cleanup();
         free(g_nous_state.ci_id);
         return result;
     }
 
     g_nous_state.initialized = true;
 
-    LOG_INFO("Phase 5A initialized for CI: %s", ci_id);
+    LOG_INFO("Nous Compose initialized for CI: %s", ci_id);
     return KATRA_SUCCESS;
 }
 
-/* Cleanup Phase 5 system */
+/* Cleanup Nous system */
 void katra_nous_cleanup(void) {
     if (!g_nous_state.initialized) {
         return;
     }
 
-    /* Cleanup Phase 5E cross-project learning */
-    katra_phase5e_cleanup();
+    /* Cleanup Nous Cross-Project cross-project learning */
+    katra_nous_crossproject_cleanup();
 
-    /* Cleanup Phase 5D advanced reasoning */
-    katra_phase5d_cleanup();
+    /* Cleanup Nous Reasoning advanced reasoning */
+    katra_nous_reasoning_cleanup();
 
-    /* Cleanup Phase 5C impact analysis */
-    katra_phase5c_cleanup();
+    /* Cleanup Nous Impact impact analysis */
+    katra_nous_impact_cleanup();
 
-    /* Cleanup Phase 5B pattern learning */
-    katra_phase5b_cleanup();
+    /* Cleanup Nous Patterns pattern learning */
+    katra_nous_patterns_cleanup();
 
     free(g_nous_state.ci_id);
     memset(&g_nous_state, 0, sizeof(g_nous_state));
 
-    LOG_INFO("Phase 5A cleanup complete");
+    LOG_INFO("Nous Compose cleanup complete");
 }
 
 /* Create a composition query */
@@ -199,7 +199,7 @@ static confidence_breakdown_t calculate_confidence(
     /* Factor 1: Source Agreement */
     conf.source_agreement = sources_agree ? 1.0f : 0.5f;
 
-    /* Factor 2: Evidence Quality (simplified for Phase 5A) */
+    /* Factor 2: Evidence Quality (simplified for Nous Compose) */
     conf.evidence_quality = source_count > 0 ? 0.7f : 0.3f;
 
     /* Factor 3: Historical Accuracy */
@@ -222,7 +222,7 @@ static confidence_breakdown_t calculate_confidence(
         conf.temporal_recency = 0.5f;
     }
 
-    /* Weights (query-type dependent - simplified for Phase 5A) */
+    /* Weights (query-type dependent - simplified for Nous Compose) */
     conf.weights[0] = 0.25f;  /* source_agreement */
     conf.weights[1] = 0.25f;  /* evidence_quality */
     conf.weights[2] = 0.20f;  /* historical_accuracy */
@@ -384,7 +384,7 @@ static alternative_t* create_alternative(
     return alt;
 }
 
-/* Execute composition query (Phase 5A simplified implementation)
+/* Execute composition query (Nous Compose simplified implementation)
  * This is a basic implementation that:
  * - Queries memory for relevant information
  * - Synthesizes a simple recommendation
@@ -401,13 +401,13 @@ int katra_nous_compose(composition_query_t* query) {
         return E_INPUT_NULL;
     }
 
-    LOG_INFO("Phase 5A composing answer for query: %s (type=%s)",
+    LOG_INFO("Nous Compose composing answer for query: %s (type=%s)",
             query->query_text, query_type_name(query->type));
 
     /* Step 1: Gather context from memory */
     memories = recall_about(query->query_text, &memory_count);
     time_t oldest_source = time(NULL);
-    bool sources_agree = true;  /* Simplified for Phase 5A */
+    bool sources_agree = true;  /* Simplified for Nous Compose */
 
     /* Step 2: Allocate result structure */
     comp_result = calloc(1, sizeof(composition_result_t));
@@ -454,7 +454,7 @@ int katra_nous_compose(composition_query_t* query) {
     query->result = comp_result;
     comp_result = NULL;  /* Transfer ownership */
 
-    LOG_INFO("Phase 5A composed recommendation with confidence=%.2f",
+    LOG_INFO("Nous Compose composed recommendation with confidence=%.2f",
             query->result->confidence.overall);
 
 cleanup:
@@ -485,20 +485,20 @@ int katra_nous_submit_feedback(nous_feedback_t* feedback) {
     switch (feedback->outcome) {
         case OUTCOME_ACCEPTED:
             g_nous_state.accuracy[idx].accepted++;
-            LOG_INFO("Phase 5A feedback: Query %s ACCEPTED (type=%s)",
+            LOG_INFO("Nous Compose feedback: Query %s ACCEPTED (type=%s)",
                     feedback->query_id, query_type_name(feedback->query_type));
             break;
 
         case OUTCOME_REJECTED:
             g_nous_state.accuracy[idx].rejected++;
-            LOG_INFO("Phase 5A feedback: Query %s REJECTED (type=%s): %s",
+            LOG_INFO("Nous Compose feedback: Query %s REJECTED (type=%s): %s",
                     feedback->query_id, query_type_name(feedback->query_type),
                     feedback->explanation ? feedback->explanation : "no reason given");
             break;
 
         case OUTCOME_MODIFIED:
             g_nous_state.accuracy[idx].modified++;
-            LOG_INFO("Phase 5A feedback: Query %s MODIFIED (type=%s)",
+            LOG_INFO("Nous Compose feedback: Query %s MODIFIED (type=%s)",
                     feedback->query_id, query_type_name(feedback->query_type));
             break;
     }

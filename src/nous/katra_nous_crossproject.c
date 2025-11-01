@@ -12,7 +12,7 @@
 #define MAX_PRACTICES NOUS_MAX_PRACTICES
 #define MAX_ANTIPATTERNS NOUS_MAX_ANTIPATTERNS
 
-/* Phase 5E state */
+/* Nous Cross-Project state */
 static struct {
     best_practice_t** practices;
     size_t practice_count;
@@ -26,8 +26,8 @@ static struct {
     size_t next_antipattern_id;
 } g_crossproject_state = {0};
 
-/* Initialize Phase 5E */
-int katra_phase5e_init(void) {
+/* Initialize Nous Cross-Project */
+int katra_nous_crossproject_init(void) {
     if (g_crossproject_state.practices) {
         return KATRA_SUCCESS;  /* Already initialized */
     }
@@ -54,14 +54,14 @@ int katra_phase5e_init(void) {
     g_crossproject_state.next_antipattern_id = 1;
 
     /* Add some default best practices */
-    katra_phase5e_add_practice(
+    katra_nous_crossproject_add_practice(
         "Error Handling with goto cleanup",
         "Use goto cleanup pattern for consistent resource cleanup",
         "Prevents resource leaks and simplifies error paths",
         "error_handling"
     );
 
-    katra_phase5e_add_practice(
+    katra_nous_crossproject_add_practice(
         "Null Parameter Checks",
         "Check all pointer parameters at function entry",
         "Prevents crashes and undefined behavior",
@@ -69,42 +69,42 @@ int katra_phase5e_init(void) {
     );
 
     /* Add some common anti-patterns */
-    katra_phase5e_add_antipattern(
+    katra_nous_crossproject_add_antipattern(
         "God Object",
         "Single class/module that does too many things",
         "Hard to maintain, test, and understand",
         "Split into focused, single-responsibility modules"
     );
 
-    LOG_INFO("Phase 5E cross-project learning initialized");
+    LOG_INFO("Nous Cross-Project cross-project learning initialized");
     return KATRA_SUCCESS;
 }
 
-/* Cleanup Phase 5E */
-void katra_phase5e_cleanup(void) {
+/* Cleanup Nous Cross-Project */
+void katra_nous_crossproject_cleanup(void) {
     if (!g_crossproject_state.practices) {
         return;
     }
 
     /* Free practices */
     for (size_t i = 0; i < g_crossproject_state.practice_count; i++) {
-        katra_phase5e_free_practice(g_crossproject_state.practices[i]);
+        katra_nous_crossproject_free_practice(g_crossproject_state.practices[i]);
     }
     free(g_crossproject_state.practices);
 
     /* Free anti-patterns */
     for (size_t i = 0; i < g_crossproject_state.antipattern_count; i++) {
-        katra_phase5e_free_antipattern(g_crossproject_state.antipatterns[i]);
+        katra_nous_crossproject_free_antipattern(g_crossproject_state.antipatterns[i]);
     }
     free(g_crossproject_state.antipatterns);
 
     memset(&g_crossproject_state, 0, sizeof(g_crossproject_state));
 
-    LOG_INFO("Phase 5E cross-project learning cleaned up");
+    LOG_INFO("Nous Cross-Project cross-project learning cleaned up");
 }
 
 /* Add best practice */
-int katra_phase5e_add_practice(
+int katra_nous_crossproject_add_practice(
     const char* name,
     const char* description,
     const char* rationale,
@@ -135,25 +135,25 @@ int katra_phase5e_add_practice(
 
     int result = nous_safe_strdup(&practice->name, name);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_practice(practice);
+        katra_nous_crossproject_free_practice(practice);
         return result;
     }
 
     result = nous_safe_strdup(&practice->description, description);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_practice(practice);
+        katra_nous_crossproject_free_practice(practice);
         return result;
     }
 
     result = nous_safe_strdup(&practice->rationale, rationale);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_practice(practice);
+        katra_nous_crossproject_free_practice(practice);
         return result;
     }
 
     result = nous_safe_strdup(&practice->category, category);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_practice(practice);
+        katra_nous_crossproject_free_practice(practice);
         return result;
     }
 
@@ -169,7 +169,7 @@ int katra_phase5e_add_practice(
 }
 
 /* Add anti-pattern */
-int katra_phase5e_add_antipattern(
+int katra_nous_crossproject_add_antipattern(
     const char* name,
     const char* description,
     const char* why_bad,
@@ -200,25 +200,25 @@ int katra_phase5e_add_antipattern(
 
     int result = nous_safe_strdup(&antipattern->name, name);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_antipattern(antipattern);
+        katra_nous_crossproject_free_antipattern(antipattern);
         return result;
     }
 
     result = nous_safe_strdup(&antipattern->description, description);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_antipattern(antipattern);
+        katra_nous_crossproject_free_antipattern(antipattern);
         return result;
     }
 
     result = nous_safe_strdup(&antipattern->why_bad, why_bad);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_antipattern(antipattern);
+        katra_nous_crossproject_free_antipattern(antipattern);
         return result;
     }
 
     result = nous_safe_strdup(&antipattern->better_alternative, alternative);
     if (result != KATRA_SUCCESS) {
-        katra_phase5e_free_antipattern(antipattern);
+        katra_nous_crossproject_free_antipattern(antipattern);
         return result;
     }
 
@@ -229,7 +229,7 @@ int katra_phase5e_add_antipattern(
 }
 
 /* Get best practices */
-best_practice_t** katra_phase5e_get_practices(
+best_practice_t** katra_nous_crossproject_get_practices(
     const char* category,
     size_t* count
 ) {
@@ -282,7 +282,7 @@ best_practice_t** katra_phase5e_get_practices(
 }
 
 /* Get anti-patterns */
-antipattern_t** katra_phase5e_get_antipatterns(size_t* count) {
+antipattern_t** katra_nous_crossproject_get_antipatterns(size_t* count) {
     if (!count) {
         return NULL;
     }
@@ -306,8 +306,8 @@ antipattern_t** katra_phase5e_get_antipatterns(size_t* count) {
     return results;
 }
 
-/* Import project knowledge (simplified for Phase 5E) */
-int katra_phase5e_import_project(
+/* Import project knowledge (simplified for Nous Cross-Project) */
+int katra_nous_crossproject_import_project(
     const char* project_name,
     const char* domain,
     float quality_score
@@ -317,7 +317,7 @@ int katra_phase5e_import_project(
     }
 
     /* In a full implementation, this would import patterns and practices
-     * from the project. For Phase 5E, we just log the import.
+     * from the project. For Nous Cross-Project, we just log the import.
      */
 
     LOG_INFO("Imported knowledge from project '%s' (domain: %s, quality: %.2f)",
@@ -328,7 +328,7 @@ int katra_phase5e_import_project(
     snprintf(practice_name, sizeof(practice_name),
             "Practice from %s", project_name);
 
-    return katra_phase5e_add_practice(
+    return katra_nous_crossproject_add_practice(
         practice_name,
         "Project-specific best practice",
         "Learned from successful project",
@@ -337,7 +337,7 @@ int katra_phase5e_import_project(
 }
 
 /* Free best practice */
-void katra_phase5e_free_practice(best_practice_t* practice) {
+void katra_nous_crossproject_free_practice(best_practice_t* practice) {
     if (!practice) {
         return;
     }
@@ -356,7 +356,7 @@ void katra_phase5e_free_practice(best_practice_t* practice) {
 }
 
 /* Free practices array */
-void katra_phase5e_free_practices(best_practice_t** practices, size_t count) {
+void katra_nous_crossproject_free_practices(best_practice_t** practices, size_t count) {
     (void)count;  /* Unused - practices owned by state */
 
     if (!practices) {
@@ -367,7 +367,7 @@ void katra_phase5e_free_practices(best_practice_t** practices, size_t count) {
 }
 
 /* Free anti-pattern */
-void katra_phase5e_free_antipattern(antipattern_t* antipattern) {
+void katra_nous_crossproject_free_antipattern(antipattern_t* antipattern) {
     if (!antipattern) {
         return;
     }
@@ -386,7 +386,7 @@ void katra_phase5e_free_antipattern(antipattern_t* antipattern) {
 }
 
 /* Free anti-patterns array */
-void katra_phase5e_free_antipatterns(antipattern_t** antipatterns, size_t count) {
+void katra_nous_crossproject_free_antipatterns(antipattern_t** antipatterns, size_t count) {
     (void)count;  /* Unused - antipatterns owned by state */
 
     if (!antipatterns) {

@@ -34,7 +34,7 @@ static size_t find_affected_items(const char* target,
         return 0;
     }
 
-    /* Simplified: just return direct dependencies for Phase 5C */
+    /* Simplified: just return direct dependencies for Nous Impact */
     size_t count = 0;
     for (size_t i = 0; i < g_impact_state.dependency_count; i++) {
         if (strcmp(g_impact_state.dependencies[i]->target, target) == 0) {
@@ -64,7 +64,7 @@ static size_t find_affected_items(const char* target,
 
 /* Helper: Calculate risk score based on dependencies and history */
 static float calculate_risk_score(const char* target, size_t affected_count) {
-    (void)target;  /* Unused in simplified Phase 5C */
+    (void)target;  /* Unused in simplified Nous Impact */
 
     /* Factor 1: Number of dependencies (more = higher risk) */
     float dependency_risk = fminf(1.0f, affected_count / NOUS_DEPENDENCY_SCALE);
@@ -91,8 +91,8 @@ static float calculate_risk_score(const char* target, size_t affected_count) {
     return risk;
 }
 
-/* Initialize Phase 5C */
-int katra_phase5c_init(void) {
+/* Initialize Nous Impact */
+int katra_nous_impact_init(void) {
     if (g_impact_state.dependencies) {
         return KATRA_SUCCESS;  /* Already initialized */
     }
@@ -117,12 +117,12 @@ int katra_phase5c_init(void) {
     g_impact_state.change_count = 0;
     g_impact_state.next_change_id = 1;
 
-    LOG_INFO("Phase 5C impact analysis initialized");
+    LOG_INFO("Nous Impact impact analysis initialized");
     return KATRA_SUCCESS;
 }
 
-/* Cleanup Phase 5C */
-void katra_phase5c_cleanup(void) {
+/* Cleanup Nous Impact */
+void katra_nous_impact_cleanup(void) {
     if (!g_impact_state.dependencies) {
         return;
     }
@@ -145,11 +145,11 @@ void katra_phase5c_cleanup(void) {
 
     memset(&g_impact_state, 0, sizeof(g_impact_state));
 
-    LOG_INFO("Phase 5C impact analysis cleaned up");
+    LOG_INFO("Nous Impact impact analysis cleaned up");
 }
 
 /* Add dependency */
-int katra_phase5c_add_dependency(
+int katra_nous_impact_add_dependency(
     const char* source,
     const char* target,
     dependency_type_t type,
@@ -191,7 +191,7 @@ int katra_phase5c_add_dependency(
 }
 
 /* Predict impact */
-impact_prediction_t* katra_phase5c_predict_impact(const char* change_target) {
+impact_prediction_t* katra_nous_impact_predict_impact(const char* change_target) {
     if (!change_target) {
         return NULL;
     }
@@ -270,7 +270,7 @@ impact_prediction_t* katra_phase5c_predict_impact(const char* change_target) {
 }
 
 /* Record change */
-int katra_phase5c_record_change(
+int katra_nous_impact_record_change(
     const char* description,
     size_t files_changed,
     size_t functions_affected,
@@ -323,7 +323,7 @@ int katra_phase5c_record_change(
 }
 
 /* Get dependencies */
-dependency_t** katra_phase5c_get_dependencies(
+dependency_t** katra_nous_impact_get_dependencies(
     const char* target,
     size_t* count
 ) {
@@ -364,7 +364,7 @@ dependency_t** katra_phase5c_get_dependencies(
 }
 
 /* Free prediction */
-void katra_phase5c_free_prediction(impact_prediction_t* prediction) {
+void katra_nous_impact_free_prediction(impact_prediction_t* prediction) {
     if (!prediction) {
         return;
     }
@@ -386,7 +386,7 @@ void katra_phase5c_free_prediction(impact_prediction_t* prediction) {
 }
 
 /* Free dependencies */
-void katra_phase5c_free_dependencies(dependency_t** deps, size_t count) {
+void katra_nous_impact_free_dependencies(dependency_t** deps, size_t count) {
     (void)count;  /* Unused - deps are owned by state, just free array */
 
     if (!deps) {

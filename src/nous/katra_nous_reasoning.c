@@ -20,7 +20,7 @@ typedef struct {
     float confidence;
 } inference_rule_t;
 
-/* Phase 5D state */
+/* Nous Reasoning state */
 static struct {
     inference_rule_t** rules;
     size_t rule_count;
@@ -29,8 +29,8 @@ static struct {
     size_t next_chain_id;
 } g_reasoning_state = {0};
 
-/* Initialize Phase 5D */
-int katra_phase5d_init(void) {
+/* Initialize Nous Reasoning */
+int katra_nous_reasoning_init(void) {
     if (g_reasoning_state.rules) {
         return KATRA_SUCCESS;  /* Already initialized */
     }
@@ -46,16 +46,16 @@ int katra_phase5d_init(void) {
     g_reasoning_state.next_chain_id = 1;
 
     /* Add some default inference rules */
-    katra_phase5d_add_rule("modus_ponens", "If A implies B, and A is true, then B is true");
-    katra_phase5d_add_rule("transitive", "If A relates to B, and B relates to C, then A relates to C");
-    katra_phase5d_add_rule("similar_context", "Similar contexts suggest similar outcomes");
+    katra_nous_reasoning_add_rule("modus_ponens", "If A implies B, and A is true, then B is true");
+    katra_nous_reasoning_add_rule("transitive", "If A relates to B, and B relates to C, then A relates to C");
+    katra_nous_reasoning_add_rule("similar_context", "Similar contexts suggest similar outcomes");
 
-    LOG_INFO("Phase 5D advanced reasoning initialized");
+    LOG_INFO("Nous Reasoning advanced reasoning initialized");
     return KATRA_SUCCESS;
 }
 
-/* Cleanup Phase 5D */
-void katra_phase5d_cleanup(void) {
+/* Cleanup Nous Reasoning */
+void katra_nous_reasoning_cleanup(void) {
     if (!g_reasoning_state.rules) {
         return;
     }
@@ -69,11 +69,11 @@ void katra_phase5d_cleanup(void) {
 
     memset(&g_reasoning_state, 0, sizeof(g_reasoning_state));
 
-    LOG_INFO("Phase 5D advanced reasoning cleaned up");
+    LOG_INFO("Nous Reasoning advanced reasoning cleaned up");
 }
 
 /* Add inference rule */
-int katra_phase5d_add_rule(const char* rule_name, const char* pattern) {
+int katra_nous_reasoning_add_rule(const char* rule_name, const char* pattern) {
     if (!rule_name || !pattern) {
         return E_INPUT_NULL;
     }
@@ -108,8 +108,8 @@ int katra_phase5d_add_rule(const char* rule_name, const char* pattern) {
     return KATRA_SUCCESS;
 }
 
-/* Build reasoning chain (simplified for Phase 5D) */
-reasoning_chain_t* katra_phase5d_build_chain(const char* goal) {
+/* Build reasoning chain (simplified for Nous Reasoning) */
+reasoning_chain_t* katra_nous_reasoning_build_chain(const char* goal) {
     if (!goal) {
         return NULL;
     }
@@ -182,8 +182,8 @@ reasoning_chain_t* katra_phase5d_build_chain(const char* goal) {
     return chain;
 }
 
-/* Find analogy (simplified for Phase 5D) */
-analogy_t* katra_phase5d_find_analogy(
+/* Find analogy (simplified for Nous Reasoning) */
+analogy_t* katra_nous_reasoning_find_analogy(
     const char* source_domain,
     const char* target_domain
 ) {
@@ -244,7 +244,7 @@ analogy_t* katra_phase5d_find_analogy(
 }
 
 /* Free reasoning chain */
-void katra_phase5d_free_chain(reasoning_chain_t* chain) {
+void katra_nous_reasoning_free_chain(reasoning_chain_t* chain) {
     if (!chain) {
         return;
     }
@@ -268,7 +268,7 @@ void katra_phase5d_free_chain(reasoning_chain_t* chain) {
 }
 
 /* Free analogy */
-void katra_phase5d_free_analogy(analogy_t* analogy) {
+void katra_nous_reasoning_free_analogy(analogy_t* analogy) {
     if (!analogy) {
         return;
     }

@@ -1,6 +1,6 @@
 /* © 2025 Casey Koons All rights reserved */
 
-/* Manual test for foundation layer edge cases */
+/* Manual test for utils layer edge cases */
 
 /* System includes */
 #include <stdio.h>
@@ -264,7 +264,7 @@ void test_special_characters(void) {
 
 int main(void) {
     printf("=========================================\n");
-    printf("Foundation Layer Edge Case Tests\n");
+    printf("Utils Layer Edge Case Tests\n");
     printf("=========================================\n");
 
     test_error_handling();

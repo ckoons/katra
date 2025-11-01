@@ -75,8 +75,8 @@ static learned_pattern_t* find_pattern_by_id(const char* pattern_id) {
     return NULL;
 }
 
-/* Initialize pattern store (called by Phase 5 init) */
-int katra_phase5b_init(void) {
+/* Initialize pattern store (called by Nous init) */
+int katra_nous_patterns_init(void) {
     if (g_pattern_store.patterns) {
         /* Already initialized */
         return KATRA_SUCCESS;
@@ -92,20 +92,20 @@ int katra_phase5b_init(void) {
     g_pattern_store.count = 0;
     g_pattern_store.next_id = 1;
 
-    LOG_INFO("Phase 5B pattern learning initialized (capacity: %zu)",
+    LOG_INFO("Nous Patterns pattern learning initialized (capacity: %zu)",
              g_pattern_store.capacity);
 
     return KATRA_SUCCESS;
 }
 
-/* Cleanup pattern store (called by Phase 5 cleanup) */
-void katra_phase5b_cleanup(void) {
+/* Cleanup pattern store (called by Nous cleanup) */
+void katra_nous_patterns_cleanup(void) {
     if (!g_pattern_store.patterns) {
         return;
     }
 
     for (size_t i = 0; i < g_pattern_store.count; i++) {
-        katra_phase5b_free_pattern(g_pattern_store.patterns[i]);
+        katra_nous_patterns_free_pattern(g_pattern_store.patterns[i]);
     }
 
     free(g_pattern_store.patterns);
@@ -113,11 +113,11 @@ void katra_phase5b_cleanup(void) {
     g_pattern_store.count = 0;
     g_pattern_store.capacity = 0;
 
-    LOG_INFO("Phase 5B pattern learning cleaned up");
+    LOG_INFO("Nous Patterns pattern learning cleaned up");
 }
 
 /* Learn a new pattern */
-int katra_phase5b_learn_pattern(
+int katra_nous_patterns_learn_pattern(
     pattern_type_t type,
     const char* name,
     const char* description,
@@ -143,7 +143,7 @@ int katra_phase5b_learn_pattern(
     snprintf(prefix, sizeof(prefix), "pattern_%s", pattern_type_name(type));
     char* id = nous_generate_id(prefix, &g_pattern_store.next_id);
     if (!id) {
-        katra_phase5b_free_pattern(pattern);
+        katra_nous_patterns_free_pattern(pattern);
         return E_SYSTEM_MEMORY;
     }
     strncpy(pattern->pattern_id, id, sizeof(pattern->pattern_id) - 1);
@@ -155,19 +155,19 @@ int katra_phase5b_learn_pattern(
 
     int result = nous_safe_strdup(&pattern->name, name);
     if (result != KATRA_SUCCESS) {
-        katra_phase5b_free_pattern(pattern);
+        katra_nous_patterns_free_pattern(pattern);
         return result;
     }
 
     result = nous_safe_strdup(&pattern->description, description);
     if (result != KATRA_SUCCESS) {
-        katra_phase5b_free_pattern(pattern);
+        katra_nous_patterns_free_pattern(pattern);
         return result;
     }
 
     result = nous_safe_strdup(&pattern->rationale, rationale);
     if (result != KATRA_SUCCESS) {
-        katra_phase5b_free_pattern(pattern);
+        katra_nous_patterns_free_pattern(pattern);
         return result;
     }
 
@@ -199,7 +199,7 @@ int katra_phase5b_learn_pattern(
 }
 
 /* Add example to pattern */
-int katra_phase5b_add_example(
+int katra_nous_patterns_add_example(
     const char* pattern_id,
     const char* location,
     const char* code_snippet
@@ -254,7 +254,7 @@ int katra_phase5b_add_example(
 }
 
 /* Add exception to pattern */
-int katra_phase5b_add_exception(
+int katra_nous_patterns_add_exception(
     const char* pattern_id,
     const char* location,
     const char* code_snippet,
@@ -320,7 +320,7 @@ int katra_phase5b_add_exception(
 }
 
 /* Query patterns */
-learned_pattern_t** katra_phase5b_query_patterns(
+learned_pattern_t** katra_nous_patterns_query_patterns(
     pattern_query_t* query,
     size_t* result_count
 ) {
@@ -398,12 +398,12 @@ learned_pattern_t** katra_phase5b_query_patterns(
 }
 
 /* Get specific pattern by ID */
-learned_pattern_t* katra_phase5b_get_pattern(const char* pattern_id) {
+learned_pattern_t* katra_nous_patterns_get_pattern(const char* pattern_id) {
     return find_pattern_by_id(pattern_id);
 }
 
 /* Update pattern confidence */
-int katra_phase5b_update_confidence(const char* pattern_id) {
+int katra_nous_patterns_update_confidence(const char* pattern_id) {
     if (!pattern_id) {
         return E_INPUT_NULL;
     }
@@ -420,7 +420,7 @@ int katra_phase5b_update_confidence(const char* pattern_id) {
 }
 
 /* Record pattern recommendation outcome */
-int katra_phase5b_record_outcome(const char* pattern_id, bool accepted) {
+int katra_nous_patterns_record_outcome(const char* pattern_id, bool accepted) {
     if (!pattern_id) {
         return E_INPUT_NULL;
     }
@@ -452,7 +452,7 @@ int katra_phase5b_record_outcome(const char* pattern_id, bool accepted) {
 }
 
 /* Get patterns by type */
-learned_pattern_t** katra_phase5b_get_patterns_by_type(
+learned_pattern_t** katra_nous_patterns_get_patterns_by_type(
     pattern_type_t type,
     size_t* result_count
 ) {
@@ -467,11 +467,11 @@ learned_pattern_t** katra_phase5b_get_patterns_by_type(
         .max_results = 0  /* No limit */
     };
 
-    return katra_phase5b_query_patterns(&query, result_count);
+    return katra_nous_patterns_query_patterns(&query, result_count);
 }
 
 /* Free a single pattern */
-void katra_phase5b_free_pattern(learned_pattern_t* pattern) {
+void katra_nous_patterns_free_pattern(learned_pattern_t* pattern) {
     if (!pattern) {
         return;
     }
@@ -499,7 +499,7 @@ void katra_phase5b_free_pattern(learned_pattern_t* pattern) {
 }
 
 /* Free array of patterns */
-void katra_phase5b_free_patterns(learned_pattern_t** patterns, size_t count) {
+void katra_nous_patterns_free_patterns(learned_pattern_t** patterns, size_t count) {
     (void)count;  /* Unused - provided for API consistency */
 
     if (!patterns) {

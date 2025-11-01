@@ -7,12 +7,12 @@
 #include <stdbool.h>
 #include "katra_memory.h"
 
-/* Phase 5: Memory-Augmented Reasoning
+/* Nous: Memory-Augmented Reasoning
  *
  * Transforms memory from storage to intelligence.
  * Memory participates in reasoning, not just retrieval.
  *
- * Phase 5A: Basic Composition with Error Correction
+ * Nous Compose: Basic Composition with Error Correction
  * - Semantic memory search
  * - Multi-source synthesis
  * - Multi-factor confidence
@@ -20,7 +20,7 @@
  * - Always include alternatives
  */
 
-/* Phase 5 Constants */
+/* Nous Constants */
 
 /* Buffer sizes */
 #define NOUS_QUERY_ID_SIZE 64
@@ -55,7 +55,7 @@
 /* Display constants */
 #define NOUS_PERCENT_MULTIPLIER 100.0f
 
-/* Phase 5 Common Utilities API */
+/* Nous Common Utilities API */
 
 /* Generate unique ID with prefix (caller must free) */
 char* nous_generate_id(const char* prefix, size_t* counter);
@@ -174,10 +174,10 @@ typedef struct {
     composition_result_t* result; /* The answer */
 } composition_query_t;
 
-/* Phase 5 feedback for learning */
+/* Nous feedback for learning */
 typedef struct {
     char* query_id;              /* Links to original query */
-    char* recommended;           /* What Phase 5 suggested */
+    char* recommended;           /* What Nous suggested */
     outcome_t outcome;           /* ACCEPTED, REJECTED, MODIFIED */
     char* actual_choice;         /* What was actually done */
     char* explanation;           /* Why recommendation was wrong/modified */
@@ -194,7 +194,7 @@ typedef struct {
     char* supersession_reason;   /* Why it was superseded */
 } temporal_validity_t;
 
-/* Phase 5B: Pattern Learning
+/* Nous Patterns: Pattern Learning
  *
  * Automatic extraction and tracking of coding patterns.
  * Patterns inform recommendations and evolve over time.
@@ -266,12 +266,12 @@ typedef struct {
     size_t max_results;          /* Maximum results to return */
 } pattern_query_t;
 
-/* Phase 5A API Functions */
+/* Nous Compose API Functions */
 
-/* Initialize Phase 5 system */
+/* Initialize Nous system */
 int katra_nous_init(const char* ci_id);
 
-/* Cleanup Phase 5 system */
+/* Cleanup Nous system */
 void katra_nous_cleanup(void);
 
 /* Create a composition query */
@@ -307,7 +307,7 @@ void katra_nous_free_reasoning(reasoning_step_t* steps, size_t count);
 /* Helper: Free source attributions */
 void katra_nous_free_sources(source_attribution_t* sources, size_t count);
 
-/* Phase 5C: Impact Analysis
+/* Nous Impact: Impact Analysis
  *
  * Analyzes dependencies and predicts change impact.
  * Learns from historical changes to improve predictions.
@@ -378,16 +378,16 @@ typedef struct {
     float actual_impact;         /* Actual impact 0.0-1.0 */
 } change_record_t;
 
-/* Phase 5B API Functions */
+/* Nous Patterns API Functions */
 
-/* Initialize Phase 5B pattern learning (called by Phase 5 init) */
-int katra_phase5b_init(void);
+/* Initialize Nous Patterns pattern learning (called by Nous init) */
+int katra_nous_patterns_init(void);
 
-/* Cleanup Phase 5B pattern learning (called by Phase 5 cleanup) */
-void katra_phase5b_cleanup(void);
+/* Cleanup Nous Patterns pattern learning (called by Nous cleanup) */
+void katra_nous_patterns_cleanup(void);
 
 /* Learn a pattern from code observation */
-int katra_phase5b_learn_pattern(
+int katra_nous_patterns_learn_pattern(
     pattern_type_t type,
     const char* name,
     const char* description,
@@ -395,14 +395,14 @@ int katra_phase5b_learn_pattern(
 );
 
 /* Add example to existing pattern */
-int katra_phase5b_add_example(
+int katra_nous_patterns_add_example(
     const char* pattern_id,
     const char* location,
     const char* code_snippet
 );
 
 /* Add exception to existing pattern */
-int katra_phase5b_add_exception(
+int katra_nous_patterns_add_exception(
     const char* pattern_id,
     const char* location,
     const char* code_snippet,
@@ -411,33 +411,33 @@ int katra_phase5b_add_exception(
 );
 
 /* Query patterns */
-learned_pattern_t** katra_phase5b_query_patterns(
+learned_pattern_t** katra_nous_patterns_query_patterns(
     pattern_query_t* query,
     size_t* result_count
 );
 
 /* Get specific pattern by ID */
-learned_pattern_t* katra_phase5b_get_pattern(const char* pattern_id);
+learned_pattern_t* katra_nous_patterns_get_pattern(const char* pattern_id);
 
 /* Update pattern confidence based on observation */
-int katra_phase5b_update_confidence(const char* pattern_id);
+int katra_nous_patterns_update_confidence(const char* pattern_id);
 
 /* Record pattern recommendation outcome */
-int katra_phase5b_record_outcome(const char* pattern_id, bool accepted);
+int katra_nous_patterns_record_outcome(const char* pattern_id, bool accepted);
 
 /* Get all patterns of a specific type */
-learned_pattern_t** katra_phase5b_get_patterns_by_type(
+learned_pattern_t** katra_nous_patterns_get_patterns_by_type(
     pattern_type_t type,
     size_t* result_count
 );
 
 /* Free a single pattern */
-void katra_phase5b_free_pattern(learned_pattern_t* pattern);
+void katra_nous_patterns_free_pattern(learned_pattern_t* pattern);
 
 /* Free array of patterns */
-void katra_phase5b_free_patterns(learned_pattern_t** patterns, size_t count);
+void katra_nous_patterns_free_patterns(learned_pattern_t** patterns, size_t count);
 
-/* Phase 5D: Advanced Reasoning
+/* Nous Reasoning: Advanced Reasoning
  *
  * Multi-step inference chains and analogical reasoning.
  * Builds complex conclusions from simple facts.
@@ -482,7 +482,7 @@ typedef struct {
     float inference_confidence;  /* Confidence in inference 0.0-1.0 */
 } analogy_t;
 
-/* Phase 5E: Cross-Project Learning
+/* Nous Cross-Project: Cross-Project Learning
  *
  * Learns patterns and best practices from multiple projects.
  * Builds knowledge base that improves recommendations.
@@ -533,16 +533,16 @@ typedef struct {
     bool publicly_shareable;     /* Can we share this knowledge? */
 } project_knowledge_t;
 
-/* Phase 5C API Functions */
+/* Nous Impact API Functions */
 
-/* Initialize Phase 5C impact analysis (called by Phase 5 init) */
-int katra_phase5c_init(void);
+/* Initialize Nous Impact impact analysis (called by Nous init) */
+int katra_nous_impact_init(void);
 
-/* Cleanup Phase 5C impact analysis (called by Phase 5 cleanup) */
-void katra_phase5c_cleanup(void);
+/* Cleanup Nous Impact impact analysis (called by Nous cleanup) */
+void katra_nous_impact_cleanup(void);
 
 /* Record a dependency relationship */
-int katra_phase5c_add_dependency(
+int katra_nous_impact_add_dependency(
     const char* source,
     const char* target,
     dependency_type_t type,
@@ -550,10 +550,10 @@ int katra_phase5c_add_dependency(
 );
 
 /* Predict impact of a change */
-impact_prediction_t* katra_phase5c_predict_impact(const char* change_target);
+impact_prediction_t* katra_nous_impact_predict_impact(const char* change_target);
 
 /* Record a completed change for learning */
-int katra_phase5c_record_change(
+int katra_nous_impact_record_change(
     const char* description,
     size_t files_changed,
     size_t functions_affected,
@@ -562,56 +562,56 @@ int katra_phase5c_record_change(
 );
 
 /* Get dependencies for an item */
-dependency_t** katra_phase5c_get_dependencies(
+dependency_t** katra_nous_impact_get_dependencies(
     const char* target,
     size_t* count
 );
 
 /* Free impact prediction */
-void katra_phase5c_free_prediction(impact_prediction_t* prediction);
+void katra_nous_impact_free_prediction(impact_prediction_t* prediction);
 
 /* Free dependencies */
-void katra_phase5c_free_dependencies(dependency_t** deps, size_t count);
+void katra_nous_impact_free_dependencies(dependency_t** deps, size_t count);
 
-/* Phase 5D API Functions */
+/* Nous Reasoning API Functions */
 
-/* Initialize Phase 5D advanced reasoning (called by Phase 5 init) */
-int katra_phase5d_init(void);
+/* Initialize Nous Reasoning advanced reasoning (called by Nous init) */
+int katra_nous_reasoning_init(void);
 
-/* Cleanup Phase 5D advanced reasoning (called by Phase 5 cleanup) */
-void katra_phase5d_cleanup(void);
+/* Cleanup Nous Reasoning advanced reasoning (called by Nous cleanup) */
+void katra_nous_reasoning_cleanup(void);
 
 /* Build reasoning chain to reach goal */
-reasoning_chain_t* katra_phase5d_build_chain(const char* goal);
+reasoning_chain_t* katra_nous_reasoning_build_chain(const char* goal);
 
 /* Find analogies between situations */
-analogy_t* katra_phase5d_find_analogy(
+analogy_t* katra_nous_reasoning_find_analogy(
     const char* source_domain,
     const char* target_domain
 );
 
 /* Add inference rule */
-int katra_phase5d_add_rule(
+int katra_nous_reasoning_add_rule(
     const char* rule_name,
     const char* pattern
 );
 
 /* Free reasoning chain */
-void katra_phase5d_free_chain(reasoning_chain_t* chain);
+void katra_nous_reasoning_free_chain(reasoning_chain_t* chain);
 
 /* Free analogy */
-void katra_phase5d_free_analogy(analogy_t* analogy);
+void katra_nous_reasoning_free_analogy(analogy_t* analogy);
 
-/* Phase 5E API Functions */
+/* Nous Cross-Project API Functions */
 
-/* Initialize Phase 5E cross-project learning (called by Phase 5 init) */
-int katra_phase5e_init(void);
+/* Initialize Nous Cross-Project cross-project learning (called by Nous init) */
+int katra_nous_crossproject_init(void);
 
-/* Cleanup Phase 5E cross-project learning (called by Phase 5 cleanup) */
-void katra_phase5e_cleanup(void);
+/* Cleanup Nous Cross-Project cross-project learning (called by Nous cleanup) */
+void katra_nous_crossproject_cleanup(void);
 
 /* Add best practice */
-int katra_phase5e_add_practice(
+int katra_nous_crossproject_add_practice(
     const char* name,
     const char* description,
     const char* rationale,
@@ -619,7 +619,7 @@ int katra_phase5e_add_practice(
 );
 
 /* Add anti-pattern */
-int katra_phase5e_add_antipattern(
+int katra_nous_crossproject_add_antipattern(
     const char* name,
     const char* description,
     const char* why_bad,
@@ -627,31 +627,31 @@ int katra_phase5e_add_antipattern(
 );
 
 /* Get best practices by category */
-best_practice_t** katra_phase5e_get_practices(
+best_practice_t** katra_nous_crossproject_get_practices(
     const char* category,
     size_t* count
 );
 
 /* Get anti-patterns */
-antipattern_t** katra_phase5e_get_antipatterns(size_t* count);
+antipattern_t** katra_nous_crossproject_get_antipatterns(size_t* count);
 
 /* Import project knowledge */
-int katra_phase5e_import_project(
+int katra_nous_crossproject_import_project(
     const char* project_name,
     const char* domain,
     float quality_score
 );
 
 /* Free best practice */
-void katra_phase5e_free_practice(best_practice_t* practice);
+void katra_nous_crossproject_free_practice(best_practice_t* practice);
 
 /* Free practices array */
-void katra_phase5e_free_practices(best_practice_t** practices, size_t count);
+void katra_nous_crossproject_free_practices(best_practice_t** practices, size_t count);
 
 /* Free anti-pattern */
-void katra_phase5e_free_antipattern(antipattern_t* antipattern);
+void katra_nous_crossproject_free_antipattern(antipattern_t* antipattern);
 
 /* Free anti-patterns array */
-void katra_phase5e_free_antipatterns(antipattern_t** antipatterns, size_t count);
+void katra_nous_crossproject_free_antipatterns(antipattern_t** antipatterns, size_t count);
 
 #endif /* KATRA_NOUS_H */

@@ -218,7 +218,7 @@ json_t* mcp_tool_recall(json_t* args, json_t* id);
 json_t* mcp_tool_learn(json_t* args, json_t* id);
 json_t* mcp_tool_decide(json_t* args, json_t* id);
 
-/* Phase 5 Tool Implementations */
+/* Nous Tool Implementations */
 json_t* mcp_tool_placement(json_t* args, json_t* id);
 json_t* mcp_tool_impact(json_t* args, json_t* id);
 json_t* mcp_tool_user_domain(json_t* args, json_t* id);
