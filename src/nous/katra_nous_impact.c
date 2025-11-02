@@ -8,6 +8,7 @@
 #include "katra_nous.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_psyche_common.h"
 
 /* Maximum dependencies and changes to track */
 #define MAX_DEPENDENCIES NOUS_MAX_DEPENDENCIES
@@ -54,7 +55,16 @@ static size_t find_affected_items(const char* target,
     size_t idx = 0;
     for (size_t i = 0; i < g_impact_state.dependency_count; i++) {
         if (strcmp(g_impact_state.dependencies[i]->target, target) == 0) {
-            affected[idx++] = strdup(g_impact_state.dependencies[i]->source);
+            affected[idx] = katra_safe_strdup(g_impact_state.dependencies[i]->source);
+            if (!affected[idx]) {
+                /* Cleanup already allocated strings */
+                for (size_t j = 0; j < idx; j++) {
+                    free(affected[j]);
+                }
+                free(affected);
+                return 0;
+            }
+            idx++;
         }
     }
 
@@ -261,7 +271,11 @@ impact_prediction_t* katra_nous_impact_predict_impact(const char* change_target)
             prediction->risk_score * NOUS_PERCENT_MULTIPLIER,
             prediction->similar_changes);
 
-    prediction->risk_explanation = strdup(explanation);
+    prediction->risk_explanation = katra_safe_strdup(explanation);
+    if (!prediction->risk_explanation) {
+        katra_nous_impact_free_prediction(prediction);
+        return NULL;
+    }
 
     LOG_INFO("Predicted impact for '%s': severity=%s, risk=%.2f, affected=%zu",
              change_target, severity_str, prediction->risk_score, affected_count);
@@ -294,13 +308,13 @@ int katra_nous_impact_record_change(
     snprintf(change->change_id, sizeof(change->change_id),
             "change_%zu", g_impact_state.next_change_id++);
 
-    change->description = strdup(description);
+    change->description = katra_safe_strdup(description);
     change->timestamp = time(NULL);
     change->files_changed = files_changed;
     change->functions_affected = functions_affected;
     change->successful = successful;
     change->caused_issues = (issues != NULL);
-    change->issues_description = issues ? strdup(issues) : NULL;
+    change->issues_description = issues ? katra_safe_strdup(issues) : NULL;
 
     /* Calculate actual impact based on scope */
     float scope_factor = fminf(1.0f,
@@ -308,7 +322,9 @@ int katra_nous_impact_record_change(
     change->actual_impact = successful ?
         scope_factor * 0.5f : scope_factor;  /* Failed changes have higher impact */
 
-    if (!change->description) {
+    if (!change->description || (issues && !change->issues_description)) {
+        free(change->description);
+        free(change->issues_description);
         free(change);
         return E_SYSTEM_MEMORY;
     }

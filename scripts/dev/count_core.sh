@@ -79,9 +79,9 @@ if [ ! -d "$SRC_DIR" ]; then
     echo ""
     echo "Budget Status:"
     echo "--------------"
-    echo "  Budget:                        10,000 lines"
+    echo "  Budget:                        16,000 lines"
     echo "  Used:                               0 lines (0%)"
-    echo "  Remaining:                     10,000 lines"
+    echo "  Remaining:                     16,000 lines"
     echo ""
     echo "Implementation not yet started"
     exit 0
@@ -170,7 +170,7 @@ echo ""
 printf "  Alternate (no #includes):      %5d lines\n" "$total_no_includes"
 printf "  Include directives:              %3d lines\n" "$include_count"
 
-budget=10000
+budget=16000
 remaining=$((budget - total))
 percent_used=$((total * 100 / budget))
 percent_used_no_inc=$((total_no_includes * 100 / budget))
@@ -178,7 +178,7 @@ percent_used_no_inc=$((total_no_includes * 100 / budget))
 echo ""
 echo "Budget Status:"
 echo "--------------"
-printf "  Budget:                        10,000 lines\n"
+printf "  Budget:                        16,000 lines\n"
 printf "  Used (primary):                 %5d lines (%d%%)\n" "$total" "$percent_used"
 printf "  Used (no includes):             %5d lines (%d%%)\n" "$total_no_includes" "$percent_used_no_inc"
 

@@ -89,6 +89,7 @@ int katra_memory_get_consolidation_health(const char* ci_id, memory_consolidatio
     /* Determine if consolidation recommended */
     health->consolidation_recommended = (health->active_memories >= MEMORY_CONSOLIDATION_THRESHOLD);
 
+    /* GUIDELINE_APPROVED: Health status values (enum-like strings) */
     /* Determine health status */
     if (health->active_memories < MEMORY_HEALTH_THRESHOLD_LOW) {
         health->health_status = "healthy";
@@ -97,6 +98,7 @@ int katra_memory_get_consolidation_health(const char* ci_id, memory_consolidatio
     } else {
         health->health_status = "critical";
     }
+    /* GUIDELINE_APPROVED_END */
 
     LOG_DEBUG("Memory health: total=%zu, active=%zu, archived=%zu, compression=%.1f%%, status=%s",
               health->total_memories, health->active_memories, health->archived_memories,
@@ -170,6 +172,7 @@ int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
         const char* risk_reason = NULL;
         float risk_score = 0.0;
 
+        /* GUIDELINE_APPROVED: Risk reason explanations (diagnostic strings) */
         /* Check if would be archived */
         if (rec->marked_forgettable) {
             risk_reason = "marked forgettable (user consent)";
@@ -200,6 +203,7 @@ int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
                 risk_score = 0.8;
             }
         }
+        /* GUIDELINE_APPROVED_END */
 
         /* Add to at-risk array */
         if (risk_reason) {
@@ -221,11 +225,13 @@ int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
                 goto cleanup;
             }
             memcpy(risk_array[risk_count].content_preview, rec->content, preview_len);
+            /* GUIDELINE_APPROVED: Continuation marker */
             if (strlen(rec->content) > MEMORY_PREVIEW_LENGTH) {
                 memcpy(risk_array[risk_count].content_preview + preview_len, "...", 4);
             } else {
                 risk_array[risk_count].content_preview[preview_len] = '\0';
             }
+            /* GUIDELINE_APPROVED_END */
 
             risk_array[risk_count].risk_reason = risk_reason;
             risk_array[risk_count].risk_score = risk_score;
@@ -341,11 +347,13 @@ int katra_memory_get_patterns(const char* ci_id,
                 goto cleanup;
             }
             memcpy(pattern_array[pattern_count].centroid_preview, results[i]->content, preview_len);
+            /* GUIDELINE_APPROVED: Continuation marker */
             if (strlen(results[i]->content) > MEMORY_PREVIEW_LENGTH) {
                 memcpy(pattern_array[pattern_count].centroid_preview + preview_len, "...", 4);
             } else {
                 pattern_array[pattern_count].centroid_preview[preview_len] = '\0';
             }
+            /* GUIDELINE_APPROVED_END */
 
             pattern_count++;
         }

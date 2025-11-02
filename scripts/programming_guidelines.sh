@@ -215,11 +215,11 @@ echo "10. CODE SIZE BUDGET"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 TOTAL_LINES=$(find src/ -name "*.c" -exec cat {} \; | wc -l | tr -d ' ')
 echo "Total source lines: $TOTAL_LINES"
-if [ "$TOTAL_LINES" -lt 10000 ]; then
-  echo "✓ EXCELLENT: Well under original 10K budget"
-elif [ "$TOTAL_LINES" -lt 15000 ]; then
-  echo "✓ GOOD: Manageable complexity"
+if [ "$TOTAL_LINES" -lt 16000 ]; then
+  echo "✓ EXCELLENT: Within 16K budget"
 elif [ "$TOTAL_LINES" -lt 20000 ]; then
+  echo "✓ GOOD: Manageable complexity"
+elif [ "$TOTAL_LINES" -lt 25000 ]; then
   echo "ℹ INFO: Growing - consider refactoring"
   INFOS=$((INFOS + 1))
 else

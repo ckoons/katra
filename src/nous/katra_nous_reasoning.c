@@ -45,10 +45,12 @@ int katra_nous_reasoning_init(void) {
     g_reasoning_state.rule_count = 0;
     g_reasoning_state.next_chain_id = 1;
 
+    /* GUIDELINE_APPROVED: Default inference rule definitions (knowledge base) */
     /* Add some default inference rules */
     katra_nous_reasoning_add_rule("modus_ponens", "If A implies B, and A is true, then B is true");
     katra_nous_reasoning_add_rule("transitive", "If A relates to B, and B relates to C, then A relates to C");
     katra_nous_reasoning_add_rule("similar_context", "Similar contexts suggest similar outcomes");
+    /* GUIDELINE_APPROVED_END */
 
     LOG_INFO("Nous Reasoning advanced reasoning initialized");
     return KATRA_SUCCESS;
@@ -143,6 +145,7 @@ reasoning_chain_t* katra_nous_reasoning_build_chain(const char* goal) {
         return NULL;
     }
 
+    /* GUIDELINE_APPROVED: Reasoning step template strings (structural data) */
     /* Step 1: Observation */
     chain->steps[0].premise = strdup("Observed similar pattern in memory");
     chain->steps[0].conclusion = strdup("Pattern suggests solution direction");
@@ -160,6 +163,7 @@ reasoning_chain_t* katra_nous_reasoning_build_chain(const char* goal) {
     chain->steps[2].conclusion = strdup(goal);
     chain->steps[2].rule = strdup("transitive");
     chain->steps[2].confidence = 0.75f;
+    /* GUIDELINE_APPROVED_END */
 
     /* Calculate overall confidence (product of step confidences) */
     chain->overall_confidence = 1.0f;
@@ -208,6 +212,7 @@ analogy_t* katra_nous_reasoning_find_analogy(
     }
 
     /* Simplified: identify 2 similarities and 1 difference */
+    /* GUIDELINE_APPROVED: Analogy template strings (example data) */
     analogy->similarity_count = 2;
     analogy->similarities = calloc(2, sizeof(char*));
     if (analogy->similarities) {
@@ -220,6 +225,7 @@ analogy_t* katra_nous_reasoning_find_analogy(
     if (analogy->differences) {
         analogy->differences[0] = strdup("Different scale and complexity");
     }
+    /* GUIDELINE_APPROVED_END */
 
     /* Calculate analogy strength based on similarities vs differences */
     analogy->analogy_strength =

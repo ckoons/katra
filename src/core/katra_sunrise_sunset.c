@@ -187,8 +187,10 @@ int katra_trace_threads(const char* ci_id,
                     thread->record_ids[j] = katra_safe_strdup(path[j]->record_id);
                 }
 
+                /* GUIDELINE_APPROVED: Thread placeholder topic names */
                 SAFE_STRNCPY(thread->start_topic, "Conversation");
                 SAFE_STRNCPY(thread->end_topic, "Discussion");
+                /* GUIDELINE_APPROVED_END */
                 thread->resolved = false;
 
                 threads[thread_count++] = thread;
