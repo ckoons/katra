@@ -205,6 +205,7 @@ json_t* mcp_tool_success_with_data(const char* text, json_t* data);
 json_t* mcp_tool_error(const char* message, const char* details);
 
 /* Schema Builders */
+json_t* mcp_build_tool_schema_0params(void);
 json_t* mcp_build_tool_schema_1param(const char* param_name, const char* param_desc);
 json_t* mcp_build_tool_schema_2params(const char* param1_name, const char* param1_desc,
                                        const char* param2_name, const char* param2_desc);

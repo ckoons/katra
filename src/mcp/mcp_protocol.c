@@ -130,6 +130,14 @@ json_t* mcp_tool_error(const char* message, const char* details) {
     return result;
 }
 
+/* Build tool schema with no parameters */
+json_t* mcp_build_tool_schema_0params(void) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, json_object());
+    return schema;
+}
+
 /* Build tool schema with one parameter */
 json_t* mcp_build_tool_schema_1param(const char* param_name, const char* param_desc) {
     json_t* schema = json_object();
@@ -262,7 +270,7 @@ static json_t* handle_tools_list(json_t* request) {
 
     json_array_append_new(tools_array,
         mcp_build_tool("katra_list_personas", "List all registered personas",
-            json_object()));  /* No parameters */
+            mcp_build_tool_schema_0params()));
 
     /* Build result */
     json_t* result = json_object();

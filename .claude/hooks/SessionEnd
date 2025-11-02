@@ -1,0 +1,51 @@
+#!/bin/bash
+# © 2025 Casey Koons All rights reserved
+#
+# Katra SessionEnd Hook
+#
+# Called when Claude Code session ends. Logs session statistics.
+#
+# NOTE: Memory consolidation happens automatically in the MCP server
+# via session_end() call in mcp_server_cleanup(). This hook is OPTIONAL
+# and primarily for visibility/logging.
+#
+# The MCP server process exit triggers:
+#   1. mcp_server_cleanup() is called
+#   2. session_end() consolidates memories (sunset cycle)
+#   3. breathe_cleanup() performs final cleanup
+#
+# This hook provides additional session-end operations if needed.
+
+# Path to MCP server wrapper
+MCP_SERVER="/Users/cskoons/projects/github/katra/bin/katra_mcp_server_wrapper.sh"
+
+# Check if MCP server exists
+if [ ! -x "$MCP_SERVER" ]; then
+    # Silently fail - hook should not block shutdown
+    exit 0
+fi
+
+# JSON-RPC request to read session info resource
+REQUEST='{"jsonrpc":"2.0","method":"resources/read","id":1,"params":{"uri":"katra://session/info"}}'
+
+# Call MCP server and capture response
+# Note: Server might already be shutting down, so this may fail
+RESPONSE=$(echo "$REQUEST" | "$MCP_SERVER" 2>/dev/null)
+
+# Extract session info if available
+if [ -n "$RESPONSE" ]; then
+    SESSION_INFO=$(echo "$RESPONSE" | jq -r '.result.contents[0].text // empty' 2>/dev/null)
+
+    # Log to stderr for visibility (hooks can write to stderr)
+    if [ -n "$SESSION_INFO" ]; then
+        echo "[Katra] Session ended:" >&2
+        echo "$SESSION_INFO" >&2
+    fi
+fi
+
+# Hook should return empty JSON or nothing
+# Memory consolidation happens automatically in MCP server cleanup
+echo '{}'
+
+# Exit successfully
+exit 0

@@ -175,6 +175,28 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
             continue;
         }
 
+        /* Calculate age for decision logic */
+        float age_days = (float)(now - record->timestamp) / (float)SECONDS_PER_DAY;
+
+        /* Safety: NEVER archive memories less than 1 day old
+         * Fresh memories haven't had time to accumulate access/connection metrics */
+        if (age_days < 1.0f) {
+            LOG_DEBUG("Preserving recent memory (%.1f hours old): %.50s...",
+                     age_days * 24.0f, record->content);
+            katra_memory_free_record(record);
+            continue;
+        }
+
+        /* Preserve memories with importance >= 0.5 until they're genuinely old
+         * User requirement: "allow any memories with a score of 0.5 to be recalled"
+         * Cutoff represents the age threshold (typically 7 days) */
+        if (record->importance >= MEMORY_IMPORTANCE_MEDIUM && record->timestamp >= cutoff) {
+            LOG_DEBUG("Preserving important memory (importance=%.2f, age=%.1f days): %.50s...",
+                     record->importance, age_days, record->content);
+            katra_memory_free_record(record);
+            continue;
+        }
+
         /* Thane's Phase 4: Multi-factor scoring system
          *
          * Replaces sequential if-else logic with weighted scoring.
@@ -191,8 +213,8 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
             continue;
         }
 
-        /* Archive if below threshold (or very old for safety) */
-        if (score < PRESERVATION_SCORE_THRESHOLD || record->timestamp < cutoff) {
+        /* Archive if below threshold AND old enough (respects max_age_days cutoff) */
+        if (score < PRESERVATION_SCORE_THRESHOLD && record->timestamp < cutoff) {
             LOG_DEBUG("Archiving memory (score=%.1f, age=%ld days): %.50s...",
                      score,
                      (now - record->timestamp) / SECONDS_PER_DAY,

@@ -1,0 +1,50 @@
+#!/bin/bash
+# © 2025 Casey Koons All rights reserved
+#
+# Katra SessionStart Hook
+#
+# Loads working context from Katra memory system when Claude Code starts.
+# This enables inter-session continuity - Claude "remembers" previous sessions.
+#
+# Returns: JSON with additionalContext field containing memory context
+#
+# How it works:
+# 1. Calls MCP server to read katra://context/working resource
+# 2. Extracts formatted context from response
+# 3. Returns as additionalContext for Claude's system prompt
+
+# Path to MCP server wrapper
+MCP_SERVER="/Users/cskoons/projects/github/katra/bin/katra_mcp_server_wrapper.sh"
+
+# Check if MCP server exists
+if [ ! -x "$MCP_SERVER" ]; then
+    # Silently fail - hook should not block startup if Katra unavailable
+    exit 0
+fi
+
+# JSON-RPC request to read working context resource
+REQUEST='{"jsonrpc":"2.0","method":"resources/read","id":1,"params":{"uri":"katra://context/working"}}'
+
+# Call MCP server and capture response
+# Redirect stderr to /dev/null to suppress server startup messages
+RESPONSE=$(echo "$REQUEST" | "$MCP_SERVER" 2>/dev/null)
+
+# Check if response is valid
+if [ -z "$RESPONSE" ]; then
+    exit 0
+fi
+
+# Extract text field from response using jq
+# Path: .result.contents[0].text
+CONTEXT=$(echo "$RESPONSE" | jq -r '.result.contents[0].text // empty' 2>/dev/null)
+
+# Return additionalContext if context was retrieved
+if [ -n "$CONTEXT" ]; then
+    # Format as JSON for Claude Code hook protocol
+    jq -n --arg ctx "$CONTEXT" '{
+        "additionalContext": $ctx
+    }'
+fi
+
+# Exit successfully (hook should never fail and block startup)
+exit 0
