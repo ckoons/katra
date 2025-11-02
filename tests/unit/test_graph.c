@@ -135,10 +135,10 @@ static void test_get_related(void) {
     katra_graph_add_edge(store, "mem2", "mem3", REL_SIMILAR, NULL, 0.7f);
     katra_graph_add_edge(store, "mem2", "mem4", REL_ELABORATES, NULL, 0.9f);
 
-    /* Get outgoing edges from mem2 */
+    /* Get outgoing edges from mem2 (all types) */
     graph_edge_t** edges = NULL;
     size_t count = 0;
-    int result = katra_graph_get_related(store, "mem2", REL_CUSTOM,
+    int result = katra_graph_get_related(store, "mem2", 0,
                                           &edges, &count);
 
     if (result != KATRA_SUCCESS) {

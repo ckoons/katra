@@ -73,7 +73,9 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_checkpoint_mgmt.o \
              $(BUILD_DIR)/katra_continuity.o \
              $(BUILD_DIR)/katra_sunrise_sunset.o \
-             $(BUILD_DIR)/katra_identity.o
+             $(BUILD_DIR)/katra_identity.o \
+             $(BUILD_DIR)/katra_convergence.o \
+             $(BUILD_DIR)/katra_consolidation.o
 
 # Database backend object files
 DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
@@ -81,7 +83,9 @@ DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
            $(BUILD_DIR)/katra_db_sqlite.o \
            $(BUILD_DIR)/katra_encoder.o \
            $(BUILD_DIR)/katra_vector.o \
-           $(BUILD_DIR)/katra_graph.o
+           $(BUILD_DIR)/katra_graph.o \
+           $(BUILD_DIR)/katra_tier1_index.o \
+           $(BUILD_DIR)/katra_tier1_index_mgmt.o
 
 # Engram/cognitive object files
 ENGRAM_OBJS := $(BUILD_DIR)/cognitive_workflows.o \
