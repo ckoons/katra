@@ -640,6 +640,14 @@ int katra_get_session_info(katra_session_info_t* info);
  * ============================================================================ */
 
 /**
+ * Turn state - tracks whether CI is in an active turn
+ */
+typedef enum {
+    TURN_STATE_IDLE = 0,     /* No active turn */
+    TURN_STATE_ACTIVE = 1    /* Turn in progress */
+} turn_state_t;
+
+/**
  * begin_turn() - Start a new turn (explicit boundary)
  *
  * Call this to mark the start of a new interaction turn.
@@ -650,11 +658,38 @@ int katra_get_session_info(katra_session_info_t* info);
 int begin_turn(void);
 
 /**
+ * end_turn() - End the current turn
+ *
+ * Marks end of interaction turn. Turn memories remain available
+ * until next begin_turn() call.
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int end_turn(void);
+
+/**
  * get_current_turn() - Get current turn number
  *
  * Returns: Current turn number (0 if no session active)
  */
 int get_current_turn(void);
+
+/**
+ * get_turn_state() - Get current turn state
+ *
+ * Returns: TURN_STATE_IDLE or TURN_STATE_ACTIVE
+ */
+turn_state_t get_turn_state(void);
+
+/**
+ * get_current_turn_id() - Get current turn ID as string
+ *
+ * Returns string representation of current turn number.
+ * Caller must NOT free the returned pointer (static buffer).
+ *
+ * Returns: Turn ID string, or empty string if no active turn
+ */
+const char* get_current_turn_id(void);
 
 /**
  * get_memories_this_turn() - Get memory IDs from current turn

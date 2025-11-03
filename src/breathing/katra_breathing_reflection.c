@@ -34,6 +34,9 @@ extern char** g_turn_memory_ids;
 extern size_t g_turn_memory_count;
 extern size_t g_turn_memory_capacity;
 
+/* Turn state tracking (internal) */
+static turn_state_t g_turn_state = TURN_STATE_IDLE;
+
 /* ============================================================================
  * TURN TRACKING HELPERS (Internal)
  * ============================================================================ */
@@ -111,10 +114,30 @@ int begin_turn(void) {
     /* Clear previous turn's memories */
     clear_turn_memories();
 
-    /* Increment turn counter */
+    /* Increment turn counter and activate turn */
     g_current_turn++;
+    g_turn_state = TURN_STATE_ACTIVE;
 
     LOG_INFO("Turn %d started", g_current_turn);
+    return KATRA_SUCCESS;
+}
+
+/**
+ * end_turn() - End the current turn
+ *
+ * Marks end of interaction turn and clears turn memory list.
+ * After this call, get_memories_this_turn() returns empty.
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int end_turn(void) {
+    if (!breathing_get_initialized()) {
+        return E_INVALID_STATE;
+    }
+
+    g_turn_state = TURN_STATE_IDLE;
+    clear_turn_memories();
+    LOG_INFO("Turn %d ended", g_current_turn);
     return KATRA_SUCCESS;
 }
 
@@ -125,6 +148,34 @@ int begin_turn(void) {
  */
 int get_current_turn(void) {
     return g_current_turn;
+}
+
+/**
+ * get_turn_state() - Get current turn state
+ *
+ * Returns: TURN_STATE_IDLE or TURN_STATE_ACTIVE
+ */
+turn_state_t get_turn_state(void) {
+    return g_turn_state;
+}
+
+/**
+ * get_current_turn_id() - Get current turn ID as string
+ *
+ * Returns string representation of current turn number.
+ * Caller must NOT free the returned pointer (static buffer).
+ *
+ * Returns: Turn ID string, or empty string if no active turn
+ */
+const char* get_current_turn_id(void) {
+    static char turn_id_buffer[32];
+
+    if (g_turn_state == TURN_STATE_IDLE || g_current_turn == 0) {
+        return "";
+    }
+
+    snprintf(turn_id_buffer, sizeof(turn_id_buffer), "turn_%d", g_current_turn);
+    return turn_id_buffer;
 }
 
 /* ============================================================================
@@ -363,6 +414,13 @@ int update_memory_metadata(const char* record_id,
 
     if (!breathing_get_initialized()) {
         return E_INVALID_STATE;
+    }
+
+    /* Validate at least one metadata field is provided */
+    if (!personal && !not_to_archive && !collection) {
+        katra_report_error(E_INPUT_NULL, "update_memory_metadata",
+                         "At least one metadata field must be provided");
+        return E_INPUT_NULL;
     }
 
     /* Load the memory record */
