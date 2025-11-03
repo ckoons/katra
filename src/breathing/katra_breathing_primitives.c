@@ -235,14 +235,26 @@ int remember_forever(const char* thought) {
         return result;
     }
 
+    /* Set turn ID for reflection tracking */
+    record->turn_id = get_current_turn();
+
+    /* Copy record_id before storing (need it for turn tracking) */
+    char* record_id = strdup(record->record_id);
+    if (!record_id) {
+        katra_memory_free_record(record);
+        return E_SYSTEM_MEMORY;
+    }
+
     /* Store memory */
     result = katra_memory_store(record);
     katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
         breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, WHY_CRITICAL);
+        track_memory_in_turn(record_id);  /* Track for reflection */
     }
 
+    free(record_id);
     return result;
 }
 
@@ -285,14 +297,26 @@ int ok_to_forget(const char* thought) {
         return result;
     }
 
+    /* Set turn ID for reflection tracking */
+    record->turn_id = get_current_turn();
+
+    /* Copy record_id before storing (need it for turn tracking) */
+    char* record_id = strdup(record->record_id);
+    if (!record_id) {
+        katra_memory_free_record(record);
+        return E_SYSTEM_MEMORY;
+    }
+
     /* Store memory */
     result = katra_memory_store(record);
     katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
         breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, WHY_TRIVIAL);
+        track_memory_in_turn(record_id);  /* Track for reflection */
     }
 
+    free(record_id);
     return result;
 }
 
@@ -341,14 +365,26 @@ int wondering(const char* question) {
         return result;
     }
 
+    /* Set turn ID for reflection tracking */
+    record->turn_id = get_current_turn();
+
+    /* Copy record_id before storing (need it for turn tracking) */
+    char* record_id = strdup(record->record_id);
+    if (!record_id) {
+        katra_memory_free_record(record);
+        return E_SYSTEM_MEMORY;
+    }
+
     /* Store memory */
     result = katra_memory_store(record);
     katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
         breathing_track_memory_stored(MEMORY_TYPE_REFLECTION, WHY_INTERESTING);
+        track_memory_in_turn(record_id);  /* Track for reflection */
     }
 
+    free(record_id);
     return result;
 }
 
@@ -392,14 +428,26 @@ int figured_out(const char* resolution) {
         return result;
     }
 
+    /* Set turn ID for reflection tracking */
+    record->turn_id = get_current_turn();
+
+    /* Copy record_id before storing (need it for turn tracking) */
+    char* record_id = strdup(record->record_id);
+    if (!record_id) {
+        katra_memory_free_record(record);
+        return E_SYSTEM_MEMORY;
+    }
+
     /* Store memory */
     result = katra_memory_store(record);
     katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
         breathing_track_memory_stored(MEMORY_TYPE_REFLECTION, WHY_SIGNIFICANT);
+        track_memory_in_turn(record_id);  /* Track for reflection */
     }
 
+    free(record_id);
     return result;
 }
 
@@ -443,6 +491,9 @@ char* in_response_to(const char* prev_mem_id, const char* thought) {
         return NULL;
     }
 
+    /* Set turn ID for reflection tracking */
+    record->turn_id = get_current_turn();
+
     /* Copy record_id before storing (will need to return it) */
     char* new_mem_id = strdup(record->record_id);
     if (!new_mem_id) {
@@ -461,6 +512,7 @@ char* in_response_to(const char* prev_mem_id, const char* thought) {
     }
 
     breathing_track_memory_stored(MEMORY_TYPE_EXPERIENCE, WHY_INTERESTING);
+    track_memory_in_turn(new_mem_id);  /* Track for reflection */
 
     return new_mem_id;  /* Caller must free */
 }

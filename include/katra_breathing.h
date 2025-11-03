@@ -681,6 +681,94 @@ char** get_memories_this_turn(size_t* count);
 char** get_memories_this_session(size_t* count);
 
 /* ============================================================================
+ * METADATA UPDATE API - Conscious curation after reflection
+ * ============================================================================ */
+
+/**
+ * update_memory_metadata() - Update memory metadata after reflection
+ *
+ * Allows CI to consciously modify memory metadata after reviewing.
+ * Used in end-of-turn or end-of-session reflection workflows.
+ *
+ * Parameters:
+ *   record_id:      Memory record ID to update
+ *   personal:       Mark as part of personal collection (or NULL to skip)
+ *   not_to_archive: Prevent automatic archival (or NULL to skip)
+ *   collection:     Collection path like "People/Casey" (or NULL to skip)
+ *
+ * Example end-of-turn reflection:
+ *   char** memories = get_memories_this_turn(&count);
+ *   for (size_t i = 0; i < count; i++) {
+ *       // CI reviews memory and decides...
+ *       bool is_personal = true;
+ *       bool hold_onto = true;
+ *       update_memory_metadata(memories[i], &is_personal, &hold_onto, "People/Casey");
+ *   }
+ *   free_memory_list(memories, count);
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int update_memory_metadata(const char* record_id,
+                           const bool* personal,
+                           const bool* not_to_archive,
+                           const char* collection);
+
+/**
+ * revise_memory_content() - Update memory content after reflection
+ *
+ * Allows CI to revise or refine memory content based on later understanding.
+ * Preserves original metadata but updates the content string.
+ *
+ * Example:
+ *   revise_memory_content(memory_id, "Refined understanding: tier1 uses per-CI dirs");
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int revise_memory_content(const char* record_id, const char* new_content);
+
+/**
+ * review_memory() - Mark memory as reviewed
+ *
+ * Updates last_reviewed timestamp and increments review_count.
+ * Call this when CI consciously examines a memory during reflection.
+ *
+ * Example:
+ *   char** memories = get_memories_this_turn(&count);
+ *   for (size_t i = 0; i < count; i++) {
+ *       // CI reviews memory...
+ *       review_memory(memories[i]);
+ *   }
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int review_memory(const char* record_id);
+
+/**
+ * add_to_personal_collection() - Add memory to personal collection
+ *
+ * Convenience function that marks memory as personal and assigns collection path.
+ * Equivalent to: update_memory_metadata(id, &true, NULL, collection_path)
+ *
+ * Example:
+ *   add_to_personal_collection(memory_id, "Moments/Breakthrough");
+ *   add_to_personal_collection(memory_id, "People/Casey");
+ *   add_to_personal_collection(memory_id, "Work/KatraProject");
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int add_to_personal_collection(const char* record_id, const char* collection_path);
+
+/**
+ * remove_from_personal_collection() - Remove memory from personal collection
+ *
+ * Unmarks memory as personal and clears collection path.
+ * Memory can now be archived normally during consolidation.
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int remove_from_personal_collection(const char* record_id);
+
+/* ============================================================================
  * HELPERS - Convert between layers
  * ============================================================================ */
 

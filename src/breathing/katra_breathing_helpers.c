@@ -95,15 +95,27 @@ int breathing_store_typed_memory(memory_type_t type,
         return session_result;
     }
 
+    /* Set turn ID for reflection tracking */
+    record->turn_id = get_current_turn();
+
+    /* Copy record_id before storing (need it for turn tracking) */
+    char* record_id = strdup(record->record_id);
+    if (!record_id) {
+        katra_memory_free_record(record);
+        return E_SYSTEM_MEMORY;
+    }
+
     /* Store memory */
     int result = katra_memory_store(record);
     katra_memory_free_record(record);
 
-    /* Track stats on success */
+    /* Track stats and turn on success */
     if (result == KATRA_SUCCESS) {
         breathing_track_memory_stored(type, why_enum);
+        track_memory_in_turn(record_id);  /* Track for end-of-turn reflection */
     }
 
+    free(record_id);
     return result;
 }
 

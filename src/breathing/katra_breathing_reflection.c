@@ -269,6 +269,263 @@ char** get_memories_this_session(size_t* count) {
 }
 
 /* ============================================================================
+ * METADATA UPDATE API
+ * ============================================================================ */
+
+/**
+ * Helper: Load a single memory record by record_id
+ *
+ * Queries all memories and finds the matching record_id.
+ * Caller must free the returned record with katra_memory_free_record().
+ */
+static memory_record_t* load_memory_by_id(const char* record_id) {
+    if (!record_id) {
+        return NULL;
+    }
+
+    const char* ci_id = breathing_get_ci_id();
+    if (!ci_id) {
+        return NULL;
+    }
+
+    /* Query all memories for this CI */
+    memory_query_t query = {
+        .ci_id = ci_id,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 0
+    };
+
+    memory_record_t** results = NULL;
+    size_t count = 0;
+
+    int result = katra_memory_query(&query, &results, &count);
+    if (result != KATRA_SUCCESS) {
+        return NULL;
+    }
+
+    /* Find matching record_id */
+    memory_record_t* found = NULL;
+    for (size_t i = 0; i < count; i++) {
+        if (strcmp(results[i]->record_id, record_id) == 0) {
+            /* Found it - copy the record */
+            found = katra_memory_create_record(
+                results[i]->ci_id,
+                results[i]->type,
+                results[i]->content,
+                results[i]->importance
+            );
+
+            if (found) {
+                /* Copy all fields */
+                found->timestamp = results[i]->timestamp;
+                found->tier = results[i]->tier;
+                found->archived = results[i]->archived;
+                found->turn_id = results[i]->turn_id;
+                found->personal = results[i]->personal;
+                found->not_to_archive = results[i]->not_to_archive;
+                found->last_reviewed = results[i]->last_reviewed;
+                found->review_count = results[i]->review_count;
+
+                /* Copy optional string fields */
+                if (results[i]->collection) {
+                    found->collection = strdup(results[i]->collection);
+                }
+                if (results[i]->session_id) {
+                    free(found->session_id);
+                    found->session_id = strdup(results[i]->session_id);
+                }
+                if (results[i]->importance_note) {
+                    found->importance_note = strdup(results[i]->importance_note);
+                }
+            }
+            break;
+        }
+    }
+
+    katra_memory_free_results(results, count);
+    return found;
+}
+
+/**
+ * update_memory_metadata() - Update memory metadata after reflection
+ */
+int update_memory_metadata(const char* record_id,
+                           const bool* personal,
+                           const bool* not_to_archive,
+                           const char* collection) {
+    if (!record_id) {
+        return E_INPUT_NULL;
+    }
+
+    if (!breathing_get_initialized()) {
+        return E_INVALID_STATE;
+    }
+
+    /* Load the memory record */
+    memory_record_t* record = load_memory_by_id(record_id);
+    if (!record) {
+        katra_report_error(E_NOT_FOUND, "update_memory_metadata",
+                         "Memory record not found");
+        return E_NOT_FOUND;
+    }
+
+    /* Update metadata fields if provided */
+    if (personal) {
+        record->personal = *personal;
+    }
+
+    if (not_to_archive) {
+        record->not_to_archive = *not_to_archive;
+    }
+
+    if (collection) {
+        free(record->collection);
+        record->collection = strdup(collection);
+        if (!record->collection) {
+            katra_memory_free_record(record);
+            return E_SYSTEM_MEMORY;
+        }
+    }
+
+    /* Store updated record */
+    int result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Updated metadata for memory %s", record_id);
+    }
+
+    return result;
+}
+
+/**
+ * revise_memory_content() - Update memory content after reflection
+ */
+int revise_memory_content(const char* record_id, const char* new_content) {
+    if (!record_id || !new_content) {
+        return E_INPUT_NULL;
+    }
+
+    if (!breathing_get_initialized()) {
+        return E_INVALID_STATE;
+    }
+
+    /* Load the memory record */
+    memory_record_t* record = load_memory_by_id(record_id);
+    if (!record) {
+        katra_report_error(E_NOT_FOUND, "revise_memory_content",
+                         "Memory record not found");
+        return E_NOT_FOUND;
+    }
+
+    /* Update content */
+    free(record->content);
+    record->content = strdup(new_content);
+    if (!record->content) {
+        katra_memory_free_record(record);
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Store updated record */
+    int result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Revised content for memory %s", record_id);
+    }
+
+    return result;
+}
+
+/**
+ * review_memory() - Mark memory as reviewed
+ */
+int review_memory(const char* record_id) {
+    if (!record_id) {
+        return E_INPUT_NULL;
+    }
+
+    if (!breathing_get_initialized()) {
+        return E_INVALID_STATE;
+    }
+
+    /* Load the memory record */
+    memory_record_t* record = load_memory_by_id(record_id);
+    if (!record) {
+        katra_report_error(E_NOT_FOUND, "review_memory",
+                         "Memory record not found");
+        return E_NOT_FOUND;
+    }
+
+    /* Update review metadata */
+    record->last_reviewed = time(NULL);
+    record->review_count++;
+
+    /* Store updated record */
+    int result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Reviewed memory %s (count: %d)", record_id, record->review_count);
+    }
+
+    return result;
+}
+
+/**
+ * add_to_personal_collection() - Add memory to personal collection
+ */
+int add_to_personal_collection(const char* record_id, const char* collection_path) {
+    if (!record_id || !collection_path) {
+        return E_INPUT_NULL;
+    }
+
+    bool is_personal = true;
+    return update_memory_metadata(record_id, &is_personal, NULL, collection_path);
+}
+
+/**
+ * remove_from_personal_collection() - Remove memory from personal collection
+ */
+int remove_from_personal_collection(const char* record_id) {
+    if (!record_id) {
+        return E_INPUT_NULL;
+    }
+
+    if (!breathing_get_initialized()) {
+        return E_INVALID_STATE;
+    }
+
+    /* Load the memory record */
+    memory_record_t* record = load_memory_by_id(record_id);
+    if (!record) {
+        katra_report_error(E_NOT_FOUND, "remove_from_personal_collection",
+                         "Memory record not found");
+        return E_NOT_FOUND;
+    }
+
+    /* Clear personal metadata */
+    record->personal = false;
+    record->not_to_archive = false;
+    free(record->collection);
+    record->collection = NULL;
+
+    /* Store updated record */
+    int result = katra_memory_store(record);
+    katra_memory_free_record(record);
+
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Removed memory %s from personal collection", record_id);
+    }
+
+    return result;
+}
+
+/* ============================================================================
  * CLEANUP
  * ============================================================================ */
 

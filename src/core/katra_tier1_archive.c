@@ -175,6 +175,24 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
             continue;
         }
 
+        /* Respect personal collection and CI curation (conscious consent)
+         * Personal memories: Part of CI's working self, should not be archived
+         * not_to_archive: CI explicitly holding onto this memory */
+        if (record->personal) {
+            LOG_DEBUG("Preserving personal memory (collection='%s'): %.50s...",
+                     record->collection ? record->collection : "none",
+                     record->content);
+            katra_memory_free_record(record);
+            continue;
+        }
+
+        if (record->not_to_archive) {
+            LOG_DEBUG("Preserving memory marked not_to_archive: %.50s...",
+                     record->content);
+            katra_memory_free_record(record);
+            continue;
+        }
+
         /* Calculate age for decision logic */
         float age_days = (float)(now - record->timestamp) / (float)SECONDS_PER_DAY;
 
