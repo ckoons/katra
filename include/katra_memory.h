@@ -81,6 +81,14 @@ typedef struct {
     bool marked_important;     /* Voluntary consent: "remember forever" */
     bool marked_forgettable;   /* Voluntary consent: "okay to forget" */
 
+    /* Personal memory collections - Active curation metadata */
+    bool personal;             /* Part of personal collection (working self) */
+    bool not_to_archive;       /* CI holding onto this, don't auto-archive */
+    char* collection;          /* Collection path: "People/Casey", "Moments/Breakthrough" */
+    time_t last_reviewed;      /* When CI last reflected on this memory */
+    int review_count;          /* How many times CI has reviewed this */
+    int turn_id;               /* Which turn this memory was created in (for reflection) */
+
     /* Thane's recommendations - Phase 2: Connection graph */
     char** connected_memory_ids; /* Array of record IDs this memory references */
     size_t connection_count;     /* Number of connections */
@@ -109,6 +117,13 @@ typedef struct {
     float min_importance;      /* Minimum importance (0.0 = all) */
     katra_tier_t tier;         /* Which tier to search (0 = all tiers) */
     size_t limit;              /* Maximum results (0 = no limit) */
+
+    /* Personal collection filters */
+    bool filter_personal;      /* If true, filter by personal field */
+    bool personal_value;       /* Value to match if filter_personal=true */
+    const char* collection_prefix; /* Filter by collection prefix (NULL = no filter) */
+    bool filter_not_to_archive; /* If true, filter by not_to_archive field */
+    bool not_to_archive_value; /* Value to match if filter_not_to_archive=true */
 } memory_query_t;
 
 /* Memory statistics */

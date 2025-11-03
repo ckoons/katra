@@ -361,6 +361,14 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     record->marked_important = false;   /* Not marked important */
     record->marked_forgettable = false; /* Not marked forgettable */
 
+    /* Initialize personal collection metadata */
+    record->personal = false;           /* Not personal by default */
+    record->not_to_archive = false;     /* Can be archived by default */
+    record->collection = NULL;          /* Not in any collection */
+    record->last_reviewed = 0;          /* Not yet reviewed */
+    record->review_count = 0;           /* No reviews yet */
+    record->turn_id = 0;                /* No turn ID yet (set by breathing layer) */
+
     /* Initialize Thane's Phase 2 fields */
     record->connected_memory_ids = NULL; /* No connections yet */
     record->connection_count = 0;        /* No connections */
@@ -458,6 +466,9 @@ void katra_memory_free_record(memory_record_t* record) {
     free(record->component);
     free(record->importance_note);
     free(record->emotion_type);
+
+    /* Free personal collection metadata */
+    free(record->collection);
 
     /* Free Phase 2 connection array */
     katra_free_string_array(record->connected_memory_ids, record->connection_count);

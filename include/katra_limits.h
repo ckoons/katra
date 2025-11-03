@@ -253,4 +253,8 @@
 #define BREATHING_TIER1_SOFT_LIMIT 7500               /* Soft limit for tier1 entries */
 #define BREATHING_TIER1_HARD_LIMIT 9000               /* Hard limit before forcing consolidation */
 
+/* Turn tracking for end-of-turn reflection */
+#define BREATHING_DEFAULT_TURN_CAPACITY 16            /* Initial turn memory tracking capacity */
+#define BREATHING_GROWTH_FACTOR 2                     /* Array growth factor */
+
 #endif /* KATRA_LIMITS_H */

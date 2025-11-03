@@ -25,6 +25,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_breathing_internal.h"
 
 /* ============================================================================
  * GLOBAL STATE - Shared across breathing layer files
@@ -34,6 +35,12 @@
 static memory_context_t g_context = {0};
 static bool g_initialized = false;
 static char* g_current_thought = NULL;  /* For mark_significant() */
+
+/* Turn tracking for end-of-turn reflection (shared with katra_breathing_reflection.c) */
+int g_current_turn = 0;          /* Current turn number */
+char** g_turn_memory_ids = NULL;  /* Memory IDs from current turn */
+size_t g_turn_memory_count = 0;   /* Count of memories this turn */
+size_t g_turn_memory_capacity = 0; /* Capacity of array */
 
 /* Global context configuration (defaults) */
 static context_config_t g_context_config = {
@@ -117,6 +124,7 @@ void breathe_cleanup(void) {
     free(g_context.ci_id);
     free(g_context.session_id);
     free(g_current_thought);
+    cleanup_turn_tracking();  /* Clean up turn tracking */
 
     memset(&g_context, 0, sizeof(g_context));
     g_current_thought = NULL;
@@ -147,6 +155,9 @@ int session_start(const char* ci_id) {
 
     /* Reset session statistics */
     reset_session_statistics();
+
+    /* Start first turn */
+    begin_turn();
 
     LOG_INFO("Session started: %s", g_context.session_id);
 

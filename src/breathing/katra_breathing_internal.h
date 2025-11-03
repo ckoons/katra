@@ -67,4 +67,14 @@ void breathing_track_topic_query(size_t match_count);
  */
 void breathing_track_context_load(size_t memory_count);
 
+/**
+ * Track memory in current turn (for reflection API)
+ */
+int track_memory_in_turn(const char* record_id);
+
+/**
+ * Cleanup turn tracking (called during breathe_cleanup)
+ */
+void cleanup_turn_tracking(void);
+
 #endif /* KATRA_BREATHING_INTERNAL_H */

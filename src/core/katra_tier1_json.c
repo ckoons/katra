@@ -153,6 +153,14 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     EXTRACT_BOOL_WITH_DEFAULT(line, "marked_important", marked_important, false); /* GUIDELINE_APPROVED */
     EXTRACT_BOOL_WITH_DEFAULT(line, "marked_forgettable", marked_forgettable, false); /* GUIDELINE_APPROVED */
 
+    /* Extract personal collection metadata */
+    EXTRACT_BOOL_WITH_DEFAULT(line, "personal", personal, false); /* GUIDELINE_APPROVED */
+    EXTRACT_BOOL_WITH_DEFAULT(line, "not_to_archive", not_to_archive, false); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "collection", collection); /* GUIDELINE_APPROVED */
+    EXTRACT_LONG_WITH_DEFAULT(line, "last_reviewed", last_reviewed, 0); /* GUIDELINE_APPROVED */
+    EXTRACT_INT_WITH_DEFAULT(line, "review_count", review_count, int, 0); /* GUIDELINE_APPROVED */
+    EXTRACT_INT_WITH_DEFAULT(line, "turn_id", turn_id, int, 0); /* GUIDELINE_APPROVED */
+
     /* Extract Phase 2 fields - connection graph */
     EXTRACT_INT_WITH_DEFAULT(line, "connection_count", connection_count, size_t, 0); /* GUIDELINE_APPROVED */
     rec->connected_memory_ids = NULL;  /* Array parsing deferred to graph builder */
@@ -237,6 +245,20 @@ static void write_phase1_fields(FILE* fp, const memory_record_t* record) {
 
     fprintf(fp, ",\"marked_important\":%s", record->marked_important ? "true" : "false"); /* GUIDELINE_APPROVED */
     fprintf(fp, ",\"marked_forgettable\":%s", record->marked_forgettable ? "true" : "false"); /* GUIDELINE_APPROVED */
+
+    /* Personal collection metadata */
+    fprintf(fp, ",\"personal\":%s", record->personal ? "true" : "false"); /* GUIDELINE_APPROVED */
+    fprintf(fp, ",\"not_to_archive\":%s", record->not_to_archive ? "true" : "false"); /* GUIDELINE_APPROVED */
+
+    if (record->collection) {
+        char collection_escaped[KATRA_BUFFER_MEDIUM];
+        katra_json_escape(record->collection, collection_escaped, sizeof(collection_escaped));
+        fprintf(fp, ",\"collection\":\"%s\"", collection_escaped); /* GUIDELINE_APPROVED */
+    }
+
+    fprintf(fp, ",\"last_reviewed\":%ld", (long)record->last_reviewed); /* GUIDELINE_APPROVED */
+    fprintf(fp, ",\"review_count\":%d", record->review_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, ",\"turn_id\":%d", record->turn_id); /* GUIDELINE_APPROVED */
 }
 /* GUIDELINE_APPROVED_END */
 

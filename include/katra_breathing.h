@@ -636,6 +636,51 @@ typedef struct {
 int katra_get_session_info(katra_session_info_t* info);
 
 /* ============================================================================
+ * REFLECTION API - End-of-turn and end-of-session conscious curation
+ * ============================================================================ */
+
+/**
+ * begin_turn() - Start a new turn (explicit boundary)
+ *
+ * Call this to mark the start of a new interaction turn.
+ * Increments turn counter and clears previous turn's memory list.
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int begin_turn(void);
+
+/**
+ * get_current_turn() - Get current turn number
+ *
+ * Returns: Current turn number (0 if no session active)
+ */
+int get_current_turn(void);
+
+/**
+ * get_memories_this_turn() - Get memory IDs from current turn
+ *
+ * Returns array of record IDs for memories created this turn.
+ * CI can review these and decide about importance/personal/collection.
+ *
+ * Memory ownership: Caller must call free_memory_list() when done.
+ *
+ * Returns: Array of strings (caller owns), or NULL if no memories
+ */
+char** get_memories_this_turn(size_t* count);
+
+/**
+ * get_memories_this_session() - Get all memory IDs from current session
+ *
+ * Returns array of record IDs for all memories created this session.
+ * CI can review the full session at session_end().
+ *
+ * Memory ownership: Caller must call free_memory_list() when done.
+ *
+ * Returns: Array of strings (caller owns), or NULL if no memories
+ */
+char** get_memories_this_session(size_t* count);
+
+/* ============================================================================
  * HELPERS - Convert between layers
  * ============================================================================ */
 
