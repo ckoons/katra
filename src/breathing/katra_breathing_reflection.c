@@ -86,7 +86,6 @@ int track_memory_in_turn(const char* record_id) {
 
     return KATRA_SUCCESS;
 }
-
 /**
  * clear_turn_memories() - Clear turn memory list
  *
@@ -98,11 +97,9 @@ static void clear_turn_memories(void) {
     }
     g_turn_memory_count = 0;
 }
-
 /* ============================================================================
  * TURN MANAGEMENT API
  * ============================================================================ */
-
 /**
  * begin_turn() - Start a new turn (explicit boundary)
  *
@@ -126,7 +123,6 @@ int begin_turn(void) {
     LOG_INFO("🔄 Turn %d started - ready for new memories", g_current_turn);
     return KATRA_SUCCESS;
 }
-
 /**
  * end_turn() - End the current turn
  *
@@ -146,7 +142,6 @@ int end_turn(void) {
     LOG_INFO("✓ Turn %d ended (%zu memories created)", g_current_turn, memory_count);
     return KATRA_SUCCESS;
 }
-
 /**
  * get_current_turn() - Get current turn number
  *
@@ -155,7 +150,6 @@ int end_turn(void) {
 int get_current_turn(void) {
     return g_current_turn;
 }
-
 /**
  * get_turn_state() - Get current turn state
  *
@@ -164,7 +158,6 @@ int get_current_turn(void) {
 turn_state_t get_turn_state(void) {
     return g_turn_state;
 }
-
 /**
  * get_current_turn_id() - Get current turn ID as string
  *
@@ -183,11 +176,9 @@ const char* get_current_turn_id(void) {
     snprintf(turn_id_buffer, sizeof(turn_id_buffer), "turn_%d", g_current_turn);
     return turn_id_buffer;
 }
-
 /* ============================================================================
  * REFLECTION QUERY API
  * ============================================================================ */
-
 /**
  * get_memories_this_turn() - Get memory IDs from current turn
  *

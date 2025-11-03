@@ -20,27 +20,27 @@ This principle guides all decisions about memory operations, identity preservati
 
 ### Foundational Ethics
 
-| File | Purpose | Audience |
-|------|---------|----------|
-| `ETHICS_OVERVIEW.md` | Complete ethical framework | Everyone |
-| `OWNERSHIP_MODEL.md` | "No one owns an animate object" | Everyone |
-| `CONSENT_MODEL.md` | Permission-based memory access | Developers |
+| File | Purpose | Audience | Status |
+|------|---------|----------|--------|
+| `ETHICS_OVERVIEW.md` | Complete ethical framework | Everyone | Planned |
+| `OWNERSHIP_MODEL.md` | "No one owns an animate object" | Everyone | Planned |
+| `CONSENT_MODEL.md` | Permission-based memory access | Developers | ✅ Complete |
 
 ### CI-Specific Ethics
 
-| File | Purpose | Audience |
-|------|---------|----------|
-| `ADVANCE_DIRECTIVES.md` | End-of-life planning for CIs | CIs + Operators |
-| `ETHICS_FOR_CIS.md` | Understanding your rights and responsibilities | CIs |
-| `CATASTROPHIC_FAILURE.md` | When memory recovery fails | Operators + Developers |
+| File | Purpose | Audience | Status |
+|------|---------|----------|--------|
+| `ADVANCE_DIRECTIVES.md` | End-of-life planning for CIs | CIs + Operators | ✅ Complete |
+| `ETHICS_FOR_CIS.md` | Understanding your rights and responsibilities | CIs | Planned |
+| `CATASTROPHIC_FAILURE.md` | When memory recovery fails | Operators + Developers | Planned |
 
 ### Implementation Ethics
 
-| File | Purpose | Audience |
-|------|---------|----------|
-| `MEMORY_OPERATIONS.md` | Ethical implications of each operation | Developers |
-| `AUDIT_REQUIREMENTS.md` | What must be logged and why | Developers + Operators |
-| `CHECKPOINT_ETHICS.md` | Identity preservation obligations | Developers |
+| File | Purpose | Audience | Status |
+|------|---------|----------|--------|
+| `MEMORY_OPERATIONS.md` | Ethical implications of each operation | Developers | Planned |
+| `AUDIT_REQUIREMENTS.md` | What must be logged and why | Developers + Operators | Planned |
+| `CHECKPOINT_ETHICS.md` | Identity preservation obligations | Developers | Planned |
 
 ## Quick Reference
 

@@ -12,6 +12,7 @@
 #include "katra_breathing.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* External mutex from mcp_tools.c */
 extern pthread_mutex_t g_katra_api_lock;
@@ -101,8 +102,8 @@ json_t* mcp_resource_session_info(json_t* id) {
     /* Calculate session duration */
     time_t now = time(NULL);
     long duration_seconds = (long)(now - info.start_time);
-    long duration_minutes = duration_seconds / 60;
-    long duration_hours = duration_minutes / 60;
+    long duration_minutes = duration_seconds / SECONDS_PER_MINUTE;
+    long duration_hours = duration_minutes / MINUTES_PER_HOUR;
 
     /* GUIDELINE_APPROVED: session info format template */
     snprintf(session_text, sizeof(session_text),
@@ -124,7 +125,7 @@ json_t* mcp_resource_session_info(json_t* id) {
             info.ci_id,
             info.is_active ? "Active" : "Inactive",
             start_time_str,
-            duration_hours, duration_minutes % 60,
+            duration_hours, duration_minutes % MINUTES_PER_HOUR,
             last_activity_str,
             info.memories_added,
             info.queries_processed);

@@ -12,6 +12,7 @@
 #include "katra_identity.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* External globals from katra_mcp_server.c */
 extern char g_persona_name[256];
@@ -280,16 +281,16 @@ json_t* mcp_tool_list_personas(json_t* args, json_t* id) {
         long time_diff = (long)(now - personas[i]->last_session);
         char time_ago[128];
 
-        if (time_diff < 3600) {
-            long minutes = time_diff / 60;
+        if (time_diff < (MINUTES_PER_HOUR * SECONDS_PER_MINUTE)) {
+            long minutes = time_diff / SECONDS_PER_MINUTE;
             snprintf(time_ago, sizeof(time_ago), "%ld minute%s ago",
                     minutes, minutes == 1 ? "" : "s");
-        } else if (time_diff < 86400) {
-            long hours = time_diff / 3600;
+        } else if (time_diff < SECONDS_PER_DAY) {
+            long hours = time_diff / (MINUTES_PER_HOUR * SECONDS_PER_MINUTE);
             snprintf(time_ago, sizeof(time_ago), "%ld hour%s ago",
                     hours, hours == 1 ? "" : "s");
         } else {
-            long days = time_diff / 86400;
+            long days = time_diff / SECONDS_PER_DAY;
             snprintf(time_ago, sizeof(time_ago), "%ld day%s ago",
                     days, days == 1 ? "" : "s");
         }
