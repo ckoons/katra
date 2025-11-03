@@ -28,14 +28,14 @@ consolidation_context_t* katra_consolidation_init(const char* ci_id) {
 
     if (!ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_consolidation_init",
-                          "ci_id is NULL");
+                          "ci_id is NULL"); /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 
     ctx = calloc(1, sizeof(consolidation_context_t));
     if (!ctx) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_consolidation_init",
-                          "Failed to allocate context");
+                          "Failed to allocate context"); /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 

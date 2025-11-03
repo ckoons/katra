@@ -17,6 +17,43 @@
 #include "katra_error.h"
 #include "katra_log.h"
 
+/* ============================================================================
+ * KEYWORD ARRAYS - Pattern detection for VAD emotion analysis
+ * ============================================================================ */
+
+/* GUIDELINE_APPROVED: Pattern detection keywords for VAD emotion analysis */
+const char* const EMOTION_POSITIVE_KEYWORDS[] = {
+    "happy", "great", "excellent", "wonderful", "love", "joy", /* GUIDELINE_APPROVED */
+    "excited", "amazing", "awesome", "fantastic", "good", "nice", /* GUIDELINE_APPROVED */
+    "thank", "appreciate", "glad", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const EMOTION_NEGATIVE_KEYWORDS[] = {
+    "sad", "angry", "hate", "terrible", "awful", "bad", "horrible", /* GUIDELINE_APPROVED */
+    "frustrated", "annoyed", "disappointed", "upset", "worried", /* GUIDELINE_APPROVED */
+    "afraid", "fear", "angry", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const EMOTION_DOMINANCE_KEYWORDS[] = {
+    "must", "need to", "have to", "should", "will", "going to", /* GUIDELINE_APPROVED */
+    "definitely", "certainly", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const EMOTION_SUBMISSIVE_KEYWORDS[] = {
+    "maybe", "perhaps", "i don't know", "not sure", "might", /* GUIDELINE_APPROVED */
+    "could be", "possibly", NULL /* GUIDELINE_APPROVED */
+};
+/* GUIDELINE_APPROVED_END */
+
+/* Helper to count NULL-terminated array */
+static size_t count_keywords(const char* const* keywords) {
+    size_t count = 0;
+    while (keywords[count] != NULL) {
+        count++;
+    }
+    return count;
+}
+
 /* Detect emotion from content */
 int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
     PSYCHE_CHECK_PARAMS_2(content, emotion_out);
@@ -53,40 +90,26 @@ int katra_detect_emotion(const char* content, emotional_tag_t* emotion_out) {
     }
 
     /* Positive valence keywords */
-    const char* positive_keywords[] = {
-        "happy", "great", "excellent", "wonderful", "love", "joy",
-        "excited", "amazing", "awesome", "fantastic", "good", "nice",
-        "thank", "appreciate", "glad"
-    };
-    if (katra_str_contains_any(content, positive_keywords, EMOTION_KEYWORD_COUNT_POSITIVE)) {
+    if (katra_str_contains_any(content, EMOTION_POSITIVE_KEYWORDS,
+                               count_keywords(EMOTION_POSITIVE_KEYWORDS))) {
         emotion_out->valence += 0.6f;
     }
 
     /* Negative valence keywords */
-    const char* negative_keywords[] = {
-        "sad", "angry", "hate", "terrible", "awful", "bad", "horrible",
-        "frustrated", "annoyed", "disappointed", "upset", "worried",
-        "afraid", "fear", "angry"
-    };
-    if (katra_str_contains_any(content, negative_keywords, EMOTION_KEYWORD_COUNT_NEGATIVE)) {
+    if (katra_str_contains_any(content, EMOTION_NEGATIVE_KEYWORDS,
+                               count_keywords(EMOTION_NEGATIVE_KEYWORDS))) {
         emotion_out->valence -= 0.6f;
     }
 
     /* High dominance - imperative language */
-    const char* dominance_keywords[] = {
-        "must", "need to", "have to", "should", "will", "going to",
-        "definitely", "certainly"
-    };
-    if (katra_str_contains_any(content, dominance_keywords, EMOTION_KEYWORD_COUNT_DOMINANCE)) {
+    if (katra_str_contains_any(content, EMOTION_DOMINANCE_KEYWORDS,
+                               count_keywords(EMOTION_DOMINANCE_KEYWORDS))) {
         emotion_out->dominance = 0.8f;
     }
 
     /* Low dominance - uncertain language */
-    const char* submissive_keywords[] = {
-        "maybe", "perhaps", "i don't know", "not sure", "might",
-        "could be", "possibly"
-    };
-    if (katra_str_contains_any(content, submissive_keywords, EMOTION_KEYWORD_COUNT_SUBMISSIVE)) {
+    if (katra_str_contains_any(content, EMOTION_SUBMISSIVE_KEYWORDS,
+                               count_keywords(EMOTION_SUBMISSIVE_KEYWORDS))) {
         emotion_out->dominance = 0.2f;
     }
 
@@ -198,8 +221,8 @@ int katra_recall_emotional_experiences(const char* ci_id,
     experience_t** exp_results = calloc(cog_count, sizeof(experience_t*));
     if (!exp_results) {
         katra_cognitive_free_results(cog_results, cog_count);
-        katra_report_error(E_SYSTEM_MEMORY, "katra_recall_emotional_experiences",
-                          "Failed to allocate experience results");
+        katra_report_error(E_SYSTEM_MEMORY, "katra_recall_emotional_experiences", /* GUIDELINE_APPROVED: function name */
+                          "Failed to allocate experience results"); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 

@@ -26,17 +26,19 @@
 #define CONVERGENCE_MIN_GRAPH_CENTRALITY 0.4f
 
 /* Pattern detection keywords */
+/* GUIDELINE_APPROVED: Pattern detection keywords for convergence analysis */
 static const char* DECISION_KEYWORDS[] = {
-    "decide", "chose", "will use", "going with", "selected", NULL
+    "decide", "chose", "will use", "going with", "selected", NULL /* GUIDELINE_APPROVED */
 };
 
 static const char* QUESTION_KEYWORDS[] = {
-    "?", "how", "what", "why", "when", "where", "who", NULL
+    "?", "how", "what", "why", "when", "where", "who", NULL /* GUIDELINE_APPROVED */
 };
 
 static const char* KNOWLEDGE_KEYWORDS[] = {
-    "learned", "understand", "realize", "discovered", "found out", NULL
+    "learned", "understand", "realize", "discovered", "found out", NULL /* GUIDELINE_APPROVED */
 };
+/* GUIDELINE_APPROVED_END */
 
 /* Initialize convergence detector */
 convergence_detector_t* katra_convergence_init(const char* ci_id) {
@@ -163,16 +165,18 @@ int katra_analyze_conversation(convergence_detector_t* detector,
         user_candidate->knowledge_shared = contains_keyword(user_input, KNOWLEDGE_KEYWORDS);
 
         /* Build rationale */
+        /* GUIDELINE_APPROVED: Memory rationale strings for automatic memory formation */
         char rationale[256] = {0};
         if (user_candidate->decision_made) {
-            strncat(rationale, "Decision made; ", sizeof(rationale) - strlen(rationale) - 1);
+            strncat(rationale, "Decision made; ", sizeof(rationale) - strlen(rationale) - 1); /* GUIDELINE_APPROVED */
         }
         if (user_candidate->question_asked) {
-            strncat(rationale, "Question asked; ", sizeof(rationale) - strlen(rationale) - 1);
+            strncat(rationale, "Question asked; ", sizeof(rationale) - strlen(rationale) - 1); /* GUIDELINE_APPROVED */
         }
         if (user_candidate->knowledge_shared) {
-            strncat(rationale, "Knowledge shared; ", sizeof(rationale) - strlen(rationale) - 1);
+            strncat(rationale, "Knowledge shared; ", sizeof(rationale) - strlen(rationale) - 1); /* GUIDELINE_APPROVED */
         }
+        /* GUIDELINE_APPROVED_END */
 
         if (strlen(rationale) > 0) {
             user_candidate->reason = strdup(rationale);
@@ -197,13 +201,15 @@ int katra_analyze_conversation(convergence_detector_t* detector,
         ci_candidate->knowledge_shared = contains_keyword(ci_response, KNOWLEDGE_KEYWORDS);
 
         /* Build rationale */
+        /* GUIDELINE_APPROVED: Memory rationale strings for automatic memory formation */
         char rationale[256] = {0};
         if (ci_candidate->decision_made) {
-            strncat(rationale, "CI decision; ", sizeof(rationale) - strlen(rationale) - 1);
+            strncat(rationale, "CI decision; ", sizeof(rationale) - strlen(rationale) - 1); /* GUIDELINE_APPROVED */
         }
         if (ci_candidate->knowledge_shared) {
-            strncat(rationale, "CI insight; ", sizeof(rationale) - strlen(rationale) - 1);
+            strncat(rationale, "CI insight; ", sizeof(rationale) - strlen(rationale) - 1); /* GUIDELINE_APPROVED */
         }
+        /* GUIDELINE_APPROVED_END */
 
         if (strlen(rationale) > 0) {
             ci_candidate->reason = strdup(rationale);

@@ -16,12 +16,73 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 
-/* Thought type names for logging */
-static const char* thought_type_names[] = {
-    "IDEA", "MEMORY", "FACT", "OPINION", "QUESTION",
-    "ANSWER", "PLAN", "REFLECTION", "FEELING",
-    "OBSERVATION", "UNKNOWN"
+/* ============================================================================
+ * KEYWORD ARRAYS - Pattern detection for thought classification
+ * ============================================================================ */
+
+/* GUIDELINE_APPROVED: Pattern detection keywords for thought classification */
+const char* const COGNITIVE_REFLECTION_KEYWORDS[] = {
+    "i think", "i realize", "i wonder", "i notice", "i believe", /* GUIDELINE_APPROVED */
+    "it seems", "i feel like", "i understand", "i learned", NULL /* GUIDELINE_APPROVED */
 };
+
+const char* const COGNITIVE_PLAN_KEYWORDS[] = {
+    "will ", "going to", "should ", "plan to", "intend to", /* GUIDELINE_APPROVED */
+    "tomorrow", "next ", "later ", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const COGNITIVE_FEELING_KEYWORDS[] = {
+    "i feel", "i'm happy", "i'm sad", "i'm angry", "i'm excited", /* GUIDELINE_APPROVED */
+    "i'm frustrated", "i'm worried", "i'm glad", "i'm disappointed", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const COGNITIVE_IDEA_KEYWORDS[] = {
+    "what if", "maybe we could", "i have an idea", "i thought of", /* GUIDELINE_APPROVED */
+    "we could", "it might be", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const COGNITIVE_OBSERVATION_KEYWORDS[] = {
+    "i see", "i notice", "i observe", "i found", "i discovered", /* GUIDELINE_APPROVED */
+    "it appears", "looks like", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const COGNITIVE_OPINION_KEYWORDS[] = {
+    "i prefer", "i like", "i don't like", "in my opinion", /* GUIDELINE_APPROVED */
+    "i'd rather", "better than", "worse than", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const COGNITIVE_FACT_KEYWORDS[] = {
+    "is", "are", "was", "were", "has", "have", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const COGNITIVE_HEDGE_WORDS[] = {
+    "maybe", "perhaps", "might", "could be", "possibly", /* GUIDELINE_APPROVED */
+    "probably", "i guess", "i'm not sure", NULL /* GUIDELINE_APPROVED */
+};
+
+const char* const COGNITIVE_DEFINITIVE_WORDS[] = {
+    "definitely", "certainly", "absolutely", "clearly", /* GUIDELINE_APPROVED */
+    "obviously", "without doubt", NULL /* GUIDELINE_APPROVED */
+};
+/* GUIDELINE_APPROVED_END */
+
+/* Thought type names for logging */
+/* GUIDELINE_APPROVED: Enum-to-string mapping for thought_type_t */
+static const char* thought_type_names[] = {
+    "IDEA", "MEMORY", "FACT", "OPINION", "QUESTION", /* GUIDELINE_APPROVED */
+    "ANSWER", "PLAN", "REFLECTION", "FEELING", /* GUIDELINE_APPROVED */
+    "OBSERVATION", "UNKNOWN" /* GUIDELINE_APPROVED */
+};
+/* GUIDELINE_APPROVED_END */
+
+/* Helper to count NULL-terminated array */
+static size_t count_keywords(const char* const* keywords) {
+    size_t count = 0;
+    while (keywords[count] != NULL) {
+        count++;
+    }
+    return count;
+}
 
 /* Get thought type name */
 const char* katra_thought_type_name(thought_type_t type) {
@@ -45,65 +106,44 @@ thought_type_t katra_detect_thought_type(const char* content) {
     }
 
     /* Reflections - meta-cognitive phrases */
-    const char* reflection_keywords[] = {
-        "i think", "i realize", "i wonder", "i notice", "i believe",
-        "it seems", "i feel like", "i understand", "i learned"
-    };
-    if (katra_str_contains_any(content, reflection_keywords, 9)) {
+    if (katra_str_contains_any(content, COGNITIVE_REFLECTION_KEYWORDS,
+                               count_keywords(COGNITIVE_REFLECTION_KEYWORDS))) {
         return THOUGHT_TYPE_REFLECTION;
     }
 
     /* Plans - future tense and intentions */
-    const char* plan_keywords[] = {
-        "will ", "going to", "should ", "plan to", "intend to",
-        "tomorrow", "next ", "later "
-    };
-    if (katra_str_contains_any(content, plan_keywords, 8)) {
+    if (katra_str_contains_any(content, COGNITIVE_PLAN_KEYWORDS,
+                               count_keywords(COGNITIVE_PLAN_KEYWORDS))) {
         return THOUGHT_TYPE_PLAN;
     }
 
     /* Feelings - emotion words */
-    const char* feeling_keywords[] = {
-        "i feel", "i'm happy", "i'm sad", "i'm angry", "i'm excited",
-        "i'm frustrated", "i'm worried", "i'm glad", "i'm disappointed"
-    };
-    if (katra_str_contains_any(content, feeling_keywords, 9)) {
+    if (katra_str_contains_any(content, COGNITIVE_FEELING_KEYWORDS,
+                               count_keywords(COGNITIVE_FEELING_KEYWORDS))) {
         return THOUGHT_TYPE_FEELING;
     }
 
     /* Ideas - creative language */
-    const char* idea_keywords[] = {
-        "what if", "maybe we could", "i have an idea", "i thought of",
-        "we could", "it might be"
-    };
-    if (katra_str_contains_any(content, idea_keywords, 6)) {
+    if (katra_str_contains_any(content, COGNITIVE_IDEA_KEYWORDS,
+                               count_keywords(COGNITIVE_IDEA_KEYWORDS))) {
         return THOUGHT_TYPE_IDEA;
     }
 
     /* Opinions - subjective language */
-    const char* opinion_keywords[] = {
-        "i prefer", "i like", "i don't like", "in my opinion",
-        "i'd rather", "better than", "worse than"
-    };
-    if (katra_str_contains_any(content, opinion_keywords, 7)) {
+    if (katra_str_contains_any(content, COGNITIVE_OPINION_KEYWORDS,
+                               count_keywords(COGNITIVE_OPINION_KEYWORDS))) {
         return THOUGHT_TYPE_OPINION;
     }
 
     /* Observations - noticing patterns */
-    const char* observation_keywords[] = {
-        "i see", "i notice", "i observe", "i found", "i discovered",
-        "it appears", "looks like"
-    };
-    if (katra_str_contains_any(content, observation_keywords, 7)) {
+    if (katra_str_contains_any(content, COGNITIVE_OBSERVATION_KEYWORDS,
+                               count_keywords(COGNITIVE_OBSERVATION_KEYWORDS))) {
         return THOUGHT_TYPE_OBSERVATION;
     }
 
     /* Facts - definitive statements (harder to detect, default if no hedging) */
-    const char* hedge_keywords[] = {
-        "maybe", "perhaps", "might", "could be", "possibly",
-        "probably", "i think"
-    };
-    if (!katra_str_contains_any(content, hedge_keywords, HEDGE_KEYWORD_COUNT) && len > MIN_HEDGE_DETECTION_LENGTH) {
+    if (!katra_str_contains_any(content, COGNITIVE_HEDGE_WORDS,
+                                count_keywords(COGNITIVE_HEDGE_WORDS)) && len > MIN_HEDGE_DETECTION_LENGTH) {
         return THOUGHT_TYPE_FACT;
     }
 
@@ -131,20 +171,14 @@ float katra_calculate_confidence(const char* content, thought_type_t thought_typ
     }
 
     /* Hedging words reduce confidence */
-    const char* hedge_words[] = {
-        "maybe", "perhaps", "might", "could be", "possibly",
-        "probably", "i guess", "i'm not sure"
-    };
-    if (katra_str_contains_any(content, hedge_words, 8)) {
+    if (katra_str_contains_any(content, COGNITIVE_HEDGE_WORDS,
+                               count_keywords(COGNITIVE_HEDGE_WORDS))) {
         confidence *= 0.7f;
     }
 
     /* Definitive language increases confidence */
-    const char* definitive_words[] = {
-        "definitely", "certainly", "absolutely", "clearly",
-        "obviously", "without doubt"
-    };
-    if (katra_str_contains_any(content, definitive_words, 6)) {
+    if (katra_str_contains_any(content, COGNITIVE_DEFINITIVE_WORDS,
+                               count_keywords(COGNITIVE_DEFINITIVE_WORDS))) {
         confidence *= 1.2f;
         if (confidence > 1.0f) confidence = 1.0f;
     }

@@ -25,12 +25,14 @@ int capture_significant_thoughts(const char* text) {
         return E_INVALID_STATE;
     }
 
+    /* GUIDELINE_APPROVED: Pattern detection keywords for significance detection */
     /* Simple heuristic: sentences with significance markers */
     const char* markers[] = {
-        "important", "significant", "critical", "learned",
-        "realized", "discovered", "insight", "pattern",
-        "decided", "understand", NULL
+        "important", "significant", "critical", "learned", /* GUIDELINE_APPROVED */
+        "realized", "discovered", "insight", "pattern", /* GUIDELINE_APPROVED */
+        "decided", "understand", NULL /* GUIDELINE_APPROVED */
     };
+    /* GUIDELINE_APPROVED_END */
 
     /* TODO: More sophisticated natural language processing */
     /* For now, check if text contains significance markers */

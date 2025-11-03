@@ -245,4 +245,35 @@ void katra_cognitive_free_results(cognitive_record_t** results, size_t count);
 /* Get thought type name (for logging/display) */
 const char* katra_thought_type_name(thought_type_t type);
 
+/* ============================================================================
+ * KEYWORD ARRAYS - Pattern detection for thought classification
+ * ============================================================================ */
+
+/* Reflection keywords */
+extern const char* const COGNITIVE_REFLECTION_KEYWORDS[];
+
+/* Plan keywords */
+extern const char* const COGNITIVE_PLAN_KEYWORDS[];
+
+/* Feeling keywords */
+extern const char* const COGNITIVE_FEELING_KEYWORDS[];
+
+/* Idea keywords */
+extern const char* const COGNITIVE_IDEA_KEYWORDS[];
+
+/* Observation keywords */
+extern const char* const COGNITIVE_OBSERVATION_KEYWORDS[];
+
+/* Opinion keywords */
+extern const char* const COGNITIVE_OPINION_KEYWORDS[];
+
+/* Fact keywords */
+extern const char* const COGNITIVE_FACT_KEYWORDS[];
+
+/* Hedge words (reduce confidence) */
+extern const char* const COGNITIVE_HEDGE_WORDS[];
+
+/* Definitive words (increase confidence) */
+extern const char* const COGNITIVE_DEFINITIVE_WORDS[];
+
 #endif /* KATRA_COGNITIVE_H */

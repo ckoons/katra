@@ -28,12 +28,12 @@ int katra_memory_init(const char* ci_id) {
     int result = KATRA_SUCCESS;
 
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "katra_memory_init", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "katra_memory_init", "ci_id is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (memory_initialized) {
-        LOG_DEBUG("Memory subsystem already initialized");
+        LOG_DEBUG("Memory subsystem already initialized"); /* GUIDELINE_APPROVED: log message */
         return KATRA_SUCCESS;
     }
 
@@ -45,21 +45,21 @@ int katra_memory_init(const char* ci_id) {
     /* Initialize consent system */
     result = katra_consent_init();
     if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "katra_memory_init", "Consent init failed");
+        katra_report_error(result, "katra_memory_init", "Consent init failed"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return result;
     }
 
     /* Set consent context to this CI */
     result = katra_consent_set_context(ci_id);
     if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "katra_memory_init", "Failed to set consent context");
+        katra_report_error(result, "katra_memory_init", "Failed to set consent context"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return result;
     }
 
     /* Initialize Tier 1 (raw recordings) */
     result = tier1_init(ci_id);
     if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "katra_memory_init", "Tier 1 init failed");
+        katra_report_error(result, "katra_memory_init", "Tier 1 init failed"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return result;
     }
 
@@ -108,27 +108,27 @@ void katra_memory_cleanup(void) {
 /* Store memory record */
 int katra_memory_store(const memory_record_t* record) {
     if (!record) {
-        katra_report_error(E_INPUT_NULL, "katra_memory_store", "record is NULL");
+        katra_report_error(E_INPUT_NULL, "katra_memory_store", "record is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!memory_initialized) {
-        katra_report_error(E_INVALID_STATE, "katra_memory_store",
-                          "Memory subsystem not initialized");
+        katra_report_error(E_INVALID_STATE, "katra_memory_store", /* GUIDELINE_APPROVED: function name */
+                          "Memory subsystem not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     /* Validate record */
     if (!record->ci_id || !record->content) {
-        katra_report_error(E_INPUT_NULL, "katra_memory_store",
-                          "Record missing required fields");
+        katra_report_error(E_INPUT_NULL, "katra_memory_store", /* GUIDELINE_APPROVED: function name */
+                          "Record missing required fields"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     /* Validate importance range */
     if (record->importance < 0.0 || record->importance > 1.0) {
-        katra_report_error(E_INPUT_RANGE, "katra_memory_store",
-                          "Importance must be 0.0-1.0");
+        katra_report_error(E_INPUT_RANGE, "katra_memory_store", /* GUIDELINE_APPROVED: function name */
+                          "Importance must be 0.0-1.0"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_RANGE;
     }
 
@@ -145,21 +145,21 @@ int katra_memory_store(const memory_record_t* record) {
 
         case KATRA_TIER2:
             /* TODO: tier2_store(record) - Phase 2.2 */
-            katra_report_error(E_INTERNAL_NOTIMPL, "katra_memory_store",
-                              "Tier 2 not yet implemented");
+            katra_report_error(E_INTERNAL_NOTIMPL, "katra_memory_store", /* GUIDELINE_APPROVED: function name */
+                              "Tier 2 not yet implemented"); /* GUIDELINE_APPROVED: error context */
             result = E_INTERNAL_NOTIMPL;
             break;
 
         case KATRA_TIER3:
             /* TODO: tier3_store(record) - Phase 2.3 */
-            katra_report_error(E_INTERNAL_NOTIMPL, "katra_memory_store",
-                              "Tier 3 not yet implemented");
+            katra_report_error(E_INTERNAL_NOTIMPL, "katra_memory_store", /* GUIDELINE_APPROVED: function name */
+                              "Tier 3 not yet implemented"); /* GUIDELINE_APPROVED: error context */
             result = E_INTERNAL_NOTIMPL;
             break;
 
         default:
-            katra_report_error(E_INPUT_INVALID, "katra_memory_store",
-                              "Invalid tier specified");
+            katra_report_error(E_INPUT_INVALID, "katra_memory_store", /* GUIDELINE_APPROVED: function name */
+                              "Invalid tier specified"); /* GUIDELINE_APPROVED: error context */
             result = E_INPUT_INVALID;
             break;
     }
@@ -176,20 +176,20 @@ int katra_memory_query(const memory_query_t* query,
                        memory_record_t*** results,
                        size_t* count) {
     if (!query || !results || !count) {
-        katra_report_error(E_INPUT_NULL, "katra_memory_query",
-                          "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "katra_memory_query", /* GUIDELINE_APPROVED: function name */
+                          "NULL parameter"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!query->ci_id) {
-        katra_report_error(E_INPUT_NULL, "katra_memory_query",
-                          "query->ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "katra_memory_query", /* GUIDELINE_APPROVED: function name */
+                          "query->ci_id is NULL"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!memory_initialized) {
-        katra_report_error(E_INVALID_STATE, "katra_memory_query",
-                          "Memory subsystem not initialized");
+        katra_report_error(E_INVALID_STATE, "katra_memory_query", /* GUIDELINE_APPROVED: function name */
+                          "Memory subsystem not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
@@ -234,14 +234,14 @@ int katra_memory_query(const memory_query_t* query,
 /* Get memory statistics */
 int katra_memory_stats(const char* ci_id, memory_stats_t* stats) {
     if (!ci_id || !stats) {
-        katra_report_error(E_INPUT_NULL, "katra_memory_stats",
-                          "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "katra_memory_stats", /* GUIDELINE_APPROVED: function name */
+                          "NULL parameter"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!memory_initialized) {
-        katra_report_error(E_INVALID_STATE, "katra_memory_stats",
-                          "Memory subsystem not initialized");
+        katra_report_error(E_INVALID_STATE, "katra_memory_stats", /* GUIDELINE_APPROVED: function name */
+                          "Memory subsystem not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
@@ -279,14 +279,14 @@ int katra_memory_stats(const char* ci_id, memory_stats_t* stats) {
 /* Archive old memories */
 int katra_memory_archive(const char* ci_id, int max_age_days, size_t* archived_count) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "katra_memory_archive",
-                          "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "katra_memory_archive", /* GUIDELINE_APPROVED: function name */
+                          "ci_id is NULL"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!memory_initialized) {
-        katra_report_error(E_INVALID_STATE, "katra_memory_archive",
-                          "Memory subsystem not initialized");
+        katra_report_error(E_INVALID_STATE, "katra_memory_archive", /* GUIDELINE_APPROVED: function name */
+                          "Memory subsystem not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
@@ -341,8 +341,8 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     if (!record->record_id || !record->ci_id || !record->content) {
     /* GUIDELINE_APPROVED_END */
         katra_memory_free_record(record);
-        katra_report_error(E_SYSTEM_MEMORY, "katra_memory_create_record",
-                          "Failed to allocate strings");
+        katra_report_error(E_SYSTEM_MEMORY, "katra_memory_create_record", /* GUIDELINE_APPROVED: function name */
+                          "Failed to allocate strings"); /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 
@@ -438,8 +438,8 @@ memory_record_t* katra_memory_create_with_context(
 
 cleanup:
     katra_memory_free_record(record);
-    katra_report_error(result, "katra_memory_create_with_context",
-                      "Failed to allocate context fields");
+    katra_report_error(result, "katra_memory_create_with_context", /* GUIDELINE_APPROVED: function name */
+                      "Failed to allocate context fields"); /* GUIDELINE_APPROVED: error context */
     return NULL;
 }
 

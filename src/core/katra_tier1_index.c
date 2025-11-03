@@ -121,7 +121,7 @@ int tier1_index_init(const char* ci_id) {
     int rc = sqlite3_open(db_path, &g_memory_db);
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_init",
-                          "Failed to open SQLite database");
+                          "Failed to open SQLite database"); /* GUIDELINE_APPROVED: error context */
         sqlite3_close(g_memory_db);
         g_memory_db = NULL;
         return E_SYSTEM_FILE;
@@ -131,7 +131,7 @@ int tier1_index_init(const char* ci_id) {
     rc = sqlite3_exec(g_memory_db, MEMORY_SCHEMA_SQL, NULL, NULL, &err_msg);
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_init",
-                          "Failed to create schema");
+                          "Failed to create schema"); /* GUIDELINE_APPROVED: error context */
         sqlite3_free(err_msg);
         sqlite3_close(g_memory_db);
         g_memory_db = NULL;
@@ -163,7 +163,7 @@ int tier1_index_add(const memory_record_t* record,
     rc = sqlite3_exec(g_memory_db, "BEGIN TRANSACTION", NULL, NULL, NULL); /* GUIDELINE_APPROVED */
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_add",
-                          "Failed to begin transaction");
+                          "Failed to begin transaction"); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_FILE;
     }
 
@@ -180,7 +180,7 @@ int tier1_index_add(const memory_record_t* record,
     rc = sqlite3_prepare_v2(g_memory_db, insert_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_add",
-                          "Failed to prepare statement");
+                          "Failed to prepare statement"); /* GUIDELINE_APPROVED: error context */
         result = E_SYSTEM_FILE;
         goto cleanup;
     }
@@ -206,7 +206,7 @@ int tier1_index_add(const memory_record_t* record,
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_DONE) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_add",
-                          "Failed to insert memory");
+                          "Failed to insert memory"); /* GUIDELINE_APPROVED: error context */
         result = E_SYSTEM_FILE;
         goto cleanup;
     }
@@ -232,7 +232,7 @@ int tier1_index_add(const memory_record_t* record,
     rc = sqlite3_exec(g_memory_db, "COMMIT", NULL, NULL, NULL); /* GUIDELINE_APPROVED */
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_add",
-                          "Failed to commit transaction");
+                          "Failed to commit transaction"); /* GUIDELINE_APPROVED: error context */
         result = E_SYSTEM_FILE;
         goto cleanup;
     }
@@ -365,7 +365,7 @@ int tier1_index_query(const memory_query_t* query,
     int rc = sqlite3_prepare_v2(g_memory_db, sql_query, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_query",
-                          "Failed to prepare query");
+                          "Failed to prepare query"); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_FILE;
     }
 
@@ -417,7 +417,7 @@ int tier1_index_query(const memory_query_t* query,
 
     if (rc != SQLITE_DONE) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_query",
-                          "Query execution failed");
+                          "Query execution failed"); /* GUIDELINE_APPROVED: error context */
         result = E_SYSTEM_FILE;
         goto cleanup;
     }
@@ -500,7 +500,7 @@ int tier1_index_find_similar(const char* content,
     int rc = sqlite3_prepare_v2(g_memory_db, sql_query, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier1_index_find_similar",
-                          "Failed to prepare query");
+                          "Failed to prepare query"); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_FILE;
     }
 

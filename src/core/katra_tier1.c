@@ -179,7 +179,7 @@ int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* 
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
         size_t name_len = strlen(entry->d_name);
-        if (name_len < 6 || strcmp(entry->d_name + name_len - 6, ".jsonl") != 0) {
+        if (name_len < 6 || strcmp(entry->d_name + name_len - 6, ".jsonl") != 0) { /* GUIDELINE_APPROVED: file extension filter */
             continue;
         }
 
@@ -432,7 +432,7 @@ int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used) {
 
     /* Iterate over .jsonl files */
     tier1_stats_context_t ctx = {0, 0};
-    result = katra_dir_foreach(tier1_dir, ".jsonl", tier1_stats_visitor, &ctx);
+    result = katra_dir_foreach(tier1_dir, ".jsonl", tier1_stats_visitor, &ctx); /* GUIDELINE_APPROVED: file extension filter */
 
     /* If directory doesn't exist, that's okay - no records yet */
     if (result == E_SYSTEM_FILE) {

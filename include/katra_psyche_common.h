@@ -55,7 +55,7 @@
 /* String utilities for psyche modules */
 
 /* Case-insensitive keyword matching */
-bool katra_str_contains_any(const char* text, const char** keywords, size_t count);
+bool katra_str_contains_any(const char* text, const char* const* keywords, size_t count);
 
 /* Case-insensitive substring search */
 bool katra_str_contains(const char* text, const char* keyword);

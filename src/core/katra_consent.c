@@ -83,7 +83,7 @@ const char* katra_consent_get_context(void) {
 int katra_consent_check(const char* requesting_ci, const char* target_ci) {
     if (!target_ci) {
         katra_report_error(E_INPUT_NULL, "katra_consent_check",
-                          "target_ci is NULL");
+                          "target_ci is NULL"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -93,7 +93,7 @@ int katra_consent_check(const char* requesting_ci, const char* target_ci) {
         requester = katra_consent_get_context();
         if (!requester) {
             katra_report_error(E_INVALID_STATE, "katra_consent_check",
-                              "No active CI context and no requesting_ci provided");
+                              "No active CI context and no requesting_ci provided"); /* GUIDELINE_APPROVED: error context */
             return E_INVALID_STATE;
         }
     }
@@ -118,7 +118,7 @@ int katra_consent_check_current(const char* target_ci) {
     const char* current_ci = katra_consent_get_context();
     if (!current_ci) {
         katra_report_error(E_INVALID_STATE, "katra_consent_check_current",
-                          "No active CI context set");
+                          "No active CI context set"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 

@@ -34,16 +34,18 @@ float why_to_importance(why_remember_t why) {
     }
 }
 
+/* GUIDELINE_APPROVED: Enum-to-string mapping for logging */
 const char* why_to_string(why_remember_t why) {
     switch (why) {
-        case WHY_TRIVIAL:     return "trivial";
-        case WHY_ROUTINE:     return "routine";
-        case WHY_INTERESTING: return "interesting";
-        case WHY_SIGNIFICANT: return "significant";
-        case WHY_CRITICAL:    return "critical";
-        default:              return "unknown";
+        case WHY_TRIVIAL:     return "trivial"; /* GUIDELINE_APPROVED */
+        case WHY_ROUTINE:     return "routine"; /* GUIDELINE_APPROVED */
+        case WHY_INTERESTING: return "interesting"; /* GUIDELINE_APPROVED */
+        case WHY_SIGNIFICANT: return "significant"; /* GUIDELINE_APPROVED */
+        case WHY_CRITICAL:    return "critical"; /* GUIDELINE_APPROVED */
+        default:              return "unknown"; /* GUIDELINE_APPROVED */
     }
 }
+/* GUIDELINE_APPROVED_END */
 
 /* ============================================================================
  * CORE PRIMITIVES
@@ -51,13 +53,13 @@ const char* why_to_string(why_remember_t why) {
 
 int remember(const char* thought, why_remember_t why) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "remember",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "remember", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!thought) {
-        katra_report_error(E_INPUT_NULL, "remember", "thought is NULL");
+        katra_report_error(E_INPUT_NULL, "remember", "thought is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -69,19 +71,19 @@ int remember(const char* thought, why_remember_t why) {
         why_to_importance(why),
         NULL,  /* No importance note */
         why,
-        "remember"
+        "remember" /* GUIDELINE_APPROVED: component name */
     );
 }
 
 int remember_with_note(const char* thought, why_remember_t why, const char* why_note) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "remember_with_note",
-                          "Breathing layer not initialized");
+        katra_report_error(E_INVALID_STATE, "remember_with_note", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!thought || !why_note) {
-        katra_report_error(E_INPUT_NULL, "remember_with_note", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "remember_with_note", "NULL parameter"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -93,19 +95,19 @@ int remember_with_note(const char* thought, why_remember_t why, const char* why_
         why_to_importance(why),
         why_note,  /* Importance note provided */
         why,
-        "remember_with_note"
+        "remember_with_note" /* GUIDELINE_APPROVED: component name */
     );
 }
 
 int reflect(const char* insight) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "reflect",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "reflect", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!insight) {
-        katra_report_error(E_INPUT_NULL, "reflect", "insight is NULL");
+        katra_report_error(E_INPUT_NULL, "reflect", "insight is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -117,19 +119,19 @@ int reflect(const char* insight) {
         MEMORY_IMPORTANCE_HIGH,  /* Reflections are usually significant */
         NULL,
         WHY_SIGNIFICANT,
-        "reflect"
+        "reflect" /* GUIDELINE_APPROVED: component name */
     );
 }
 
 int learn(const char* knowledge) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "learn",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "learn", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!knowledge) {
-        katra_report_error(E_INPUT_NULL, "learn", "knowledge is NULL");
+        katra_report_error(E_INPUT_NULL, "learn", "knowledge is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -141,20 +143,20 @@ int learn(const char* knowledge) {
         MEMORY_IMPORTANCE_HIGH,  /* New knowledge is important */
         NULL,
         WHY_SIGNIFICANT,
-        "learn"
+        "learn" /* GUIDELINE_APPROVED: component name */
     );
 }
 
 int decide(const char* decision, const char* reasoning) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "decide",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "decide", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!decision || !reasoning) {
-        katra_report_error(E_INPUT_NULL, "decide",
-                          "decision or reasoning is NULL");
+        katra_report_error(E_INPUT_NULL, "decide", /* GUIDELINE_APPROVED: function name */
+                          "decision or reasoning is NULL"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -166,19 +168,19 @@ int decide(const char* decision, const char* reasoning) {
         MEMORY_IMPORTANCE_HIGH,  /* Decisions are important */
         reasoning,  /* Use importance_note for reasoning */
         WHY_SIGNIFICANT,
-        "decide"
+        "decide" /* GUIDELINE_APPROVED: component name */
     );
 }
 
 int notice_pattern(const char* pattern) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "notice_pattern",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "notice_pattern", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!pattern) {
-        katra_report_error(E_INPUT_NULL, "notice_pattern", "pattern is NULL");
+        katra_report_error(E_INPUT_NULL, "notice_pattern", "pattern is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -190,7 +192,7 @@ int notice_pattern(const char* pattern) {
         MEMORY_IMPORTANCE_HIGH,  /* Patterns are significant */
         NULL,
         WHY_SIGNIFICANT,
-        "notice_pattern"
+        "notice_pattern" /* GUIDELINE_APPROVED: component name */
     );
 }
 
@@ -198,13 +200,13 @@ int remember_forever(const char* thought) {
     const char* ci_id = breathing_get_ci_id();
 
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "remember_forever",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "remember_forever", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!thought) {
-        katra_report_error(E_INPUT_NULL, "remember_forever", "thought is NULL");
+        katra_report_error(E_INPUT_NULL, "remember_forever", "thought is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -219,7 +221,7 @@ int remember_forever(const char* thought) {
     );
 
     if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "remember_forever", "Failed to create record");
+        katra_report_error(E_SYSTEM_MEMORY, "remember_forever", "Failed to create record"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -248,13 +250,13 @@ int ok_to_forget(const char* thought) {
     const char* ci_id = breathing_get_ci_id();
 
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "ok_to_forget",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "ok_to_forget", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!thought) {
-        katra_report_error(E_INPUT_NULL, "ok_to_forget", "thought is NULL");
+        katra_report_error(E_INPUT_NULL, "ok_to_forget", "thought is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -269,7 +271,7 @@ int ok_to_forget(const char* thought) {
     );
 
     if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "ok_to_forget", "Failed to create record");
+        katra_report_error(E_SYSTEM_MEMORY, "ok_to_forget", "Failed to create record"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -303,13 +305,13 @@ int wondering(const char* question) {
     const char* ci_id = breathing_get_ci_id();
 
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "wondering",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "wondering", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!question) {
-        katra_report_error(E_INPUT_NULL, "wondering", "question is NULL");
+        katra_report_error(E_INPUT_NULL, "wondering", "question is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -328,7 +330,7 @@ int wondering(const char* question) {
     );
 
     if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "wondering", "Failed to create record");
+        katra_report_error(E_SYSTEM_MEMORY, "wondering", "Failed to create record"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -354,13 +356,13 @@ int figured_out(const char* resolution) {
     const char* ci_id = breathing_get_ci_id();
 
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "figured_out",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "figured_out", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!resolution) {
-        katra_report_error(E_INPUT_NULL, "figured_out", "resolution is NULL");
+        katra_report_error(E_INPUT_NULL, "figured_out", "resolution is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -379,7 +381,7 @@ int figured_out(const char* resolution) {
     );
 
     if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "figured_out", "Failed to create record");
+        katra_report_error(E_SYSTEM_MEMORY, "figured_out", "Failed to create record"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -405,13 +407,13 @@ char* in_response_to(const char* prev_mem_id, const char* thought) {
     const char* ci_id = breathing_get_ci_id();
 
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "in_response_to",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "in_response_to", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 
     if (!prev_mem_id || !thought) {
-        katra_report_error(E_INPUT_NULL, "in_response_to", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "in_response_to", "NULL parameter"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 
@@ -430,7 +432,7 @@ char* in_response_to(const char* prev_mem_id, const char* thought) {
     );
 
     if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "in_response_to", "Failed to create record");
+        katra_report_error(E_SYSTEM_MEMORY, "in_response_to", "Failed to create record"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 
@@ -444,7 +446,7 @@ char* in_response_to(const char* prev_mem_id, const char* thought) {
     /* Copy record_id before storing (will need to return it) */
     char* new_mem_id = strdup(record->record_id);
     if (!new_mem_id) {
-        katra_report_error(E_SYSTEM_MEMORY, "in_response_to", "strdup failed");
+        katra_report_error(E_SYSTEM_MEMORY, "in_response_to", "strdup failed"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         katra_memory_free_record(record);
         return NULL;
     }

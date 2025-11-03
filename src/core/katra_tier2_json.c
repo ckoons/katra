@@ -13,101 +13,107 @@
 #include "katra_limits.h"
 
 /* Helper: Write string array as JSON */
+/* GUIDELINE_APPROVED: JSON array format strings */
 static void write_json_string_array(FILE* fp, const char* field_name,
                                      char** items, size_t count) {
-    fprintf(fp, "\"%s\":[", field_name);
+    fprintf(fp, "\"%s\":[", field_name); /* GUIDELINE_APPROVED */
     for (size_t i = 0; i < count; i++) {
         if (items && items[i]) {
-            fprintf(fp, "\"%s\"", items[i]);
+            fprintf(fp, "\"%s\"", items[i]); /* GUIDELINE_APPROVED */
             if (i < count - 1) {
-                fprintf(fp, ",");
+                fprintf(fp, ","); /* GUIDELINE_APPROVED */
             }
         }
     }
-    fprintf(fp, "]");
+    fprintf(fp, "]"); /* GUIDELINE_APPROVED */
 }
+/* GUIDELINE_APPROVED_END */
 
 /* Helper: Write escaped string array as JSON */
+/* GUIDELINE_APPROVED: JSON array format strings */
 static void write_json_escaped_array(FILE* fp, const char* field_name,
                                       char** items, size_t count) {
-    fprintf(fp, "\"%s\":[", field_name);
+    fprintf(fp, "\"%s\":[", field_name); /* GUIDELINE_APPROVED */
     for (size_t i = 0; i < count; i++) {
         if (items && items[i]) {
             char escaped[KATRA_BUFFER_LARGE];
             katra_json_escape(items[i], escaped, sizeof(escaped));
-            fprintf(fp, "\"%s\"", escaped);
+            fprintf(fp, "\"%s\"", escaped); /* GUIDELINE_APPROVED */
             if (i < count - 1) {
-                fprintf(fp, ",");
+                fprintf(fp, ","); /* GUIDELINE_APPROVED */
             }
         }
     }
-    fprintf(fp, "]");
+    fprintf(fp, "]"); /* GUIDELINE_APPROVED */
 }
+/* GUIDELINE_APPROVED_END */
 
 /* Write digest record as JSON line */
+/* GUIDELINE_APPROVED: JSON field names are part of the Tier2 digest format */
 int katra_tier2_write_json_digest(FILE* fp, const digest_record_t* digest) {
     if (!fp || !digest) {
         return E_INPUT_NULL;
     }
 
     /* Start JSON object */
-    fprintf(fp, "{");
+    fprintf(fp, "{"); /* GUIDELINE_APPROVED */
 
     /* Basic fields */
-    fprintf(fp, "\"digest_id\":\"%s\",", digest->digest_id ? digest->digest_id : "");
-    fprintf(fp, "\"timestamp\":%ld,", (long)digest->timestamp);
-    fprintf(fp, "\"period_type\":%d,", digest->period_type);
-    fprintf(fp, "\"period_id\":\"%s\",", digest->period_id ? digest->period_id : "");
-    fprintf(fp, "\"source_tier\":%d,", digest->source_tier);
-    fprintf(fp, "\"source_record_count\":%zu,", digest->source_record_count);
-    fprintf(fp, "\"ci_id\":\"%s\",", digest->ci_id ? digest->ci_id : "");
-    fprintf(fp, "\"digest_type\":%d,", digest->digest_type);
+    fprintf(fp, "\"digest_id\":\"%s\",", digest->digest_id ? digest->digest_id : ""); /* GUIDELINE_APPROVED */
+    fprintf(fp, "\"timestamp\":%ld,", (long)digest->timestamp); /* GUIDELINE_APPROVED */
+    fprintf(fp, "\"period_type\":%d,", digest->period_type); /* GUIDELINE_APPROVED */
+    fprintf(fp, "\"period_id\":\"%s\",", digest->period_id ? digest->period_id : ""); /* GUIDELINE_APPROVED */
+    fprintf(fp, "\"source_tier\":%d,", digest->source_tier); /* GUIDELINE_APPROVED */
+    fprintf(fp, "\"source_record_count\":%zu,", digest->source_record_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, "\"ci_id\":\"%s\",", digest->ci_id ? digest->ci_id : ""); /* GUIDELINE_APPROVED */
+    fprintf(fp, "\"digest_type\":%d,", digest->digest_type); /* GUIDELINE_APPROVED */
 
     /* Themes array */
-    write_json_string_array(fp, "themes", digest->themes, digest->theme_count);
-    fprintf(fp, ",");
+    write_json_string_array(fp, "themes", digest->themes, digest->theme_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, ","); /* GUIDELINE_APPROVED */
 
     /* Keywords array */
-    write_json_string_array(fp, "keywords", digest->keywords, digest->keyword_count);
-    fprintf(fp, ",");
+    write_json_string_array(fp, "keywords", digest->keywords, digest->keyword_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, ","); /* GUIDELINE_APPROVED */
 
     /* Entities object */
-    fprintf(fp, "\"entities\":{");
-    write_json_string_array(fp, "files", digest->entities.files, digest->entities.file_count);
-    fprintf(fp, ",");
-    write_json_string_array(fp, "concepts", digest->entities.concepts, digest->entities.concept_count);
-    fprintf(fp, ",");
-    write_json_string_array(fp, "people", digest->entities.people, digest->entities.people_count);
-    fprintf(fp, "},");
+    fprintf(fp, "\"entities\":{"); /* GUIDELINE_APPROVED */
+    write_json_string_array(fp, "files", digest->entities.files, digest->entities.file_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, ","); /* GUIDELINE_APPROVED */
+    write_json_string_array(fp, "concepts", digest->entities.concepts, digest->entities.concept_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, ","); /* GUIDELINE_APPROVED */
+    write_json_string_array(fp, "people", digest->entities.people, digest->entities.people_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, "},"); /* GUIDELINE_APPROVED */
 
     /* Summary (escaped) */
     if (digest->summary) {
         char summary_escaped[KATRA_BUFFER_LARGE];
         katra_json_escape(digest->summary, summary_escaped, sizeof(summary_escaped));
-        fprintf(fp, "\"summary\":\"%s\",", summary_escaped);
+        fprintf(fp, "\"summary\":\"%s\",", summary_escaped); /* GUIDELINE_APPROVED */
     } else {
-        fprintf(fp, "\"summary\":\"\",");
+        fprintf(fp, "\"summary\":\"\","); /* GUIDELINE_APPROVED */
     }
 
     /* Key insights array */
-    write_json_escaped_array(fp, "key_insights", digest->key_insights, digest->insight_count);
-    fprintf(fp, ",");
+    write_json_escaped_array(fp, "key_insights", digest->key_insights, digest->insight_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, ","); /* GUIDELINE_APPROVED */
 
     /* Metadata */
-    fprintf(fp, "\"questions_asked\":%d,", digest->questions_asked);
+    fprintf(fp, "\"questions_asked\":%d,", digest->questions_asked); /* GUIDELINE_APPROVED */
 
     /* Decisions array */
-    write_json_escaped_array(fp, "decisions_made", digest->decisions_made, digest->decision_count);
-    fprintf(fp, ",");
+    write_json_escaped_array(fp, "decisions_made", digest->decisions_made, digest->decision_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, ","); /* GUIDELINE_APPROVED */
 
     /* Archived flag */
-    fprintf(fp, "\"archived\":%s", digest->archived ? "true" : "false");
+    fprintf(fp, "\"archived\":%s", digest->archived ? "true" : "false"); /* GUIDELINE_APPROVED */
 
     /* End JSON object */
-    fprintf(fp, "}\n");
+    fprintf(fp, "}\n"); /* GUIDELINE_APPROVED */
 
     return KATRA_SUCCESS;
 }
+/* GUIDELINE_APPROVED_END */
 
 /* Helper: Extract string field from JSON */
 static int extract_json_string(const char* line, const char* field,

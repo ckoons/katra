@@ -81,7 +81,7 @@ int katra_checkpoint_list(const char* ci_id,
 
             const char* id_part = entry->d_name + prefix_len;
             size_t id_len = strlen(id_part);
-            if (id_len < 5) continue;  /* Need at least ".kcp" */
+            if (id_len < 5) continue;  /* Need at least ".kcp" */ /* GUIDELINE_APPROVED: file extension comment */
 
             /* Remove suffix */
             char checkpoint_id[KATRA_BUFFER_MEDIUM];

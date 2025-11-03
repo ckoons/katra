@@ -490,7 +490,7 @@ static int process_and_store_archivable_records(const char* ci_id,
     katra_digest_free(digest);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "process_and_store_archivable_records",
-                          "Failed to store digest to Tier 2");
+                          "Failed to store digest to Tier 2"); /* GUIDELINE_APPROVED: error context */
         free(record_ids);
         return result;
     }
@@ -499,7 +499,7 @@ static int process_and_store_archivable_records(const char* ci_id,
     result = mark_records_as_archived(tier1_dir, record_ids, *record_count);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "process_and_store_archivable_records",
-                          "Failed to mark records as archived");
+                          "Failed to mark records as archived"); /* GUIDELINE_APPROVED: error context */
         free(record_ids);
         return result;
     }

@@ -30,13 +30,13 @@ extern bool katra_memory_is_initialized(void);
 int katra_memory_get_consolidation_health(const char* ci_id, memory_consolidation_health_t* health) {
     if (!ci_id || !health) {
         katra_report_error(E_INPUT_NULL, "katra_memory_get_consolidation_health",
-                          "NULL parameter");
+                          "NULL parameter"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!katra_memory_is_initialized()) {
         katra_report_error(E_INVALID_STATE, "katra_memory_get_consolidation_health",
-                          "Memory subsystem not initialized");
+                          "Memory subsystem not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
@@ -112,13 +112,13 @@ int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
                              memory_at_risk_t** at_risk, size_t* count) {
     if (!ci_id || !at_risk || !count) {
         katra_report_error(E_INPUT_NULL, "katra_memory_get_at_risk",
-                          "NULL parameter");
+                          "NULL parameter"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!katra_memory_is_initialized()) {
         katra_report_error(E_INVALID_STATE, "katra_memory_get_at_risk",
-                          "Memory subsystem not initialized");
+                          "Memory subsystem not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
@@ -154,7 +154,7 @@ int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
     if (!risk_array) {
         katra_memory_free_results(results, result_count);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_get_at_risk",
-                          "Failed to allocate at-risk array");
+                          "Failed to allocate at-risk array"); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -227,7 +227,7 @@ int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
             memcpy(risk_array[risk_count].content_preview, rec->content, preview_len);
             /* GUIDELINE_APPROVED: Continuation marker */
             if (strlen(rec->content) > MEMORY_PREVIEW_LENGTH) {
-                memcpy(risk_array[risk_count].content_preview + preview_len, "...", 4);
+                memcpy(risk_array[risk_count].content_preview + preview_len, "...", 4); /* GUIDELINE_APPROVED */
             } else {
                 risk_array[risk_count].content_preview[preview_len] = '\0';
             }
@@ -263,13 +263,13 @@ int katra_memory_get_patterns(const char* ci_id,
                               size_t* count) {
     if (!ci_id || !patterns || !count) {
         katra_report_error(E_INPUT_NULL, "katra_memory_get_patterns",
-                          "NULL parameter");
+                          "NULL parameter"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
     if (!katra_memory_is_initialized()) {
         katra_report_error(E_INVALID_STATE, "katra_memory_get_patterns",
-                          "Memory subsystem not initialized");
+                          "Memory subsystem not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
@@ -301,7 +301,7 @@ int katra_memory_get_patterns(const char* ci_id,
     if (!pattern_array) {
         katra_memory_free_results(results, result_count);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_get_patterns",
-                          "Failed to allocate pattern array");
+                          "Failed to allocate pattern array"); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -349,7 +349,7 @@ int katra_memory_get_patterns(const char* ci_id,
             memcpy(pattern_array[pattern_count].centroid_preview, results[i]->content, preview_len);
             /* GUIDELINE_APPROVED: Continuation marker */
             if (strlen(results[i]->content) > MEMORY_PREVIEW_LENGTH) {
-                memcpy(pattern_array[pattern_count].centroid_preview + preview_len, "...", 4);
+                memcpy(pattern_array[pattern_count].centroid_preview + preview_len, "...", 4); /* GUIDELINE_APPROVED */
             } else {
                 pattern_array[pattern_count].centroid_preview[preview_len] = '\0';
             }

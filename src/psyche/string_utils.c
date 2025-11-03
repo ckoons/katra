@@ -46,7 +46,7 @@ bool katra_str_contains(const char* text, const char* keyword) {
 }
 
 /* Case-insensitive keyword matching (any of keywords) */
-bool katra_str_contains_any(const char* text, const char** keywords, size_t count) {
+bool katra_str_contains_any(const char* text, const char* const* keywords, size_t count) {
     if (!text || !keywords) {
         return false;
     }

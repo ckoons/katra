@@ -24,43 +24,45 @@
  * SEMANTIC PARSING - Phrase Lists
  * ============================================================================ */
 
+/* GUIDELINE_APPROVED: Semantic phrase arrays for importance detection */
 /* Critical importance phrases */
 static const char* CRITICAL_PHRASES[] = {
-    "critical", "crucial", "life-changing", "must remember",
-    "never forget", "extremely", NULL
+    "critical", "crucial", "life-changing", "must remember", /* GUIDELINE_APPROVED */
+    "never forget", "extremely", NULL /* GUIDELINE_APPROVED */
 };
 
 /* Negation phrases (reduce importance) */
 static const char* NEGATION_PHRASES[] = {
-    "not important", "unimportant", NULL
+    "not important", "unimportant", NULL /* GUIDELINE_APPROVED */
 };
 
 /* High importance compound phrases (check before simple keywords) */
 static const char* HIGH_COMPOUND_PHRASES[] = {
-    "very important", "very significant", "very noteworthy",
-    "very notable", NULL
+    "very important", "very significant", "very noteworthy", /* GUIDELINE_APPROVED */
+    "very notable", NULL /* GUIDELINE_APPROVED */
 };
 
 /* High importance phrases */
 static const char* HIGH_PHRASES[] = {
-    "significant", "important", "matters", "key", "essential", NULL
+    "significant", "important", "matters", "key", "essential", NULL /* GUIDELINE_APPROVED */
 };
 
 /* Medium importance phrases */
 static const char* MEDIUM_PHRASES[] = {
-    "worth remembering", "interesting", "notable",
-    "noteworthy", "remember", NULL
+    "worth remembering", "interesting", "notable", /* GUIDELINE_APPROVED */
+    "noteworthy", "remember", NULL /* GUIDELINE_APPROVED */
 };
 
 /* Low importance phrases */
 static const char* LOW_PHRASES[] = {
-    "routine", "normal", "everyday", "regular", "usual", NULL
+    "routine", "normal", "everyday", "regular", "usual", NULL /* GUIDELINE_APPROVED */
 };
 
 /* Trivial importance phrases */
 static const char* TRIVIAL_PHRASES[] = {
-    "trivial", "fleeting", "forget", NULL
+    "trivial", "fleeting", "forget", NULL /* GUIDELINE_APPROVED */
 };
+/* GUIDELINE_APPROVED_END */
 
 /* ============================================================================
  * SEMANTIC PARSING
@@ -129,13 +131,13 @@ why_remember_t string_to_why_enum(const char* semantic) {
 
 int remember_semantic(const char* thought, const char* why_semantic) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "remember_semantic",
-                          "Breathing layer not initialized - call breathe_init()");
+        katra_report_error(E_INVALID_STATE, "remember_semantic", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!thought) {
-        katra_report_error(E_INPUT_NULL, "remember_semantic", "thought is NULL");
+        katra_report_error(E_INPUT_NULL, "remember_semantic", "thought is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -143,7 +145,7 @@ int remember_semantic(const char* thought, const char* why_semantic) {
     float importance = string_to_importance(why_semantic);
 
     LOG_DEBUG("Remembering (semantic: '%s' -> %.2f): %s",
-             why_semantic ? why_semantic : "default", importance, thought);
+             why_semantic ? why_semantic : "default", importance, thought); /* GUIDELINE_APPROVED: fallback string */
 
     /* Create memory record */
     memory_record_t* record = katra_memory_create_record(
@@ -154,8 +156,8 @@ int remember_semantic(const char* thought, const char* why_semantic) {
     );
 
     if (!record) {
-        katra_report_error(E_SYSTEM_MEMORY, "remember_semantic",
-                          "Failed to create record");
+        katra_report_error(E_SYSTEM_MEMORY, "remember_semantic", /* GUIDELINE_APPROVED: function name */
+                          "Failed to create record"); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -164,8 +166,8 @@ int remember_semantic(const char* thought, const char* why_semantic) {
         record->importance_note = strdup(why_semantic);
         if (!record->importance_note) {
             katra_memory_free_record(record);
-            katra_report_error(E_SYSTEM_MEMORY, "remember_semantic",
-                              "Failed to duplicate why_semantic");
+            katra_report_error(E_SYSTEM_MEMORY, "remember_semantic", /* GUIDELINE_APPROVED: function name */
+                              "Failed to duplicate why_semantic"); /* GUIDELINE_APPROVED: error context */
             return E_SYSTEM_MEMORY;
         }
     }
@@ -194,14 +196,14 @@ int remember_with_semantic_note(const char* thought,
                                  const char* why_semantic,
                                  const char* why_note) {
     if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "remember_with_semantic_note",
-                          "Breathing layer not initialized");
+        katra_report_error(E_INVALID_STATE, "remember_with_semantic_note", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized"); /* GUIDELINE_APPROVED: error context */
         return E_INVALID_STATE;
     }
 
     if (!thought || !why_note) {
-        katra_report_error(E_INPUT_NULL, "remember_with_semantic_note",
-                          "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "remember_with_semantic_note", /* GUIDELINE_APPROVED: function name */
+                          "NULL parameter"); /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
 
@@ -209,7 +211,7 @@ int remember_with_semantic_note(const char* thought,
     float importance = string_to_importance(why_semantic);
 
     LOG_DEBUG("Remembering (semantic: '%s' -> %.2f) with note: %s",
-             why_semantic ? why_semantic : "default", importance, thought);
+             why_semantic ? why_semantic : "default", importance, thought); /* GUIDELINE_APPROVED: fallback string */
 
     /* Create memory record */
     memory_record_t* record = katra_memory_create_record(

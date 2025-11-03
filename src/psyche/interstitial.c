@@ -20,15 +20,17 @@
 #include "katra_limits.h"
 
 /* Boundary type names */
+/* GUIDELINE_APPROVED: Enum-to-string mapping for boundary_type_t */
 static const char* boundary_type_names[] = {
-    "TOPIC_SHIFT",
-    "TEMPORAL_GAP",
-    "CONTEXT_SWITCH",
-    "EMOTIONAL_PEAK",
-    "CAPACITY_LIMIT",
-    "SESSION_END",
-    "NONE"
+    "TOPIC_SHIFT", /* GUIDELINE_APPROVED */
+    "TEMPORAL_GAP", /* GUIDELINE_APPROVED */
+    "CONTEXT_SWITCH", /* GUIDELINE_APPROVED */
+    "EMOTIONAL_PEAK", /* GUIDELINE_APPROVED */
+    "CAPACITY_LIMIT", /* GUIDELINE_APPROVED */
+    "SESSION_END", /* GUIDELINE_APPROVED */
+    "NONE" /* GUIDELINE_APPROVED */
 };
+/* GUIDELINE_APPROVED_END */
 
 /* Get boundary type name */
 const char* katra_boundary_type_name(boundary_type_t type) {

@@ -17,6 +17,22 @@
 #define EMOTION_MOOD_SUMMARY_LIMIT 100      /* Max experiences for mood summary */
 #define SECONDS_PER_HOUR 3600               /* Time conversion constant */
 
+/* ============================================================================
+ * KEYWORD ARRAYS - Pattern detection for VAD emotion analysis
+ * ============================================================================ */
+
+/* Positive valence keywords */
+extern const char* const EMOTION_POSITIVE_KEYWORDS[];
+
+/* Negative valence keywords */
+extern const char* const EMOTION_NEGATIVE_KEYWORDS[];
+
+/* High dominance (imperative) keywords */
+extern const char* const EMOTION_DOMINANCE_KEYWORDS[];
+
+/* Low dominance (uncertain) keywords */
+extern const char* const EMOTION_SUBMISSIVE_KEYWORDS[];
+
 /* Emotional dimensions (VAD model: Valence, Arousal, Dominance) */
 typedef struct {
     float valence;      /* -1.0 (negative) to +1.0 (positive) */

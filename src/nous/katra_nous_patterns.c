@@ -22,10 +22,12 @@ static struct {
 
 /* Pattern type names for ID generation */
 static const char* pattern_type_name(pattern_type_t type) {
+    /* GUIDELINE_APPROVED: Enum-to-string mapping for pattern_type_t */
     const char* type_names[] = {
-        "naming", "org", "error", "memory", "api", "test", "doc"
+        "naming", "org", "error", "memory", "api", "test", "doc" /* GUIDELINE_APPROVED */
     };
-    return type < 7 ? type_names[type] : "unknown";
+    /* GUIDELINE_APPROVED_END */
+    return type < 7 ? type_names[type] : "unknown"; /* GUIDELINE_APPROVED: fallback string */
 }
 
 /* Helper: Calculate pattern confidence */

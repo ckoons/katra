@@ -92,6 +92,7 @@ static int generate_checkpoint_id(const char* ci_id, char* buffer, size_t size) 
 }
 
 /* Write checkpoint header as JSON */
+/* GUIDELINE_APPROVED: JSON field names are part of checkpoint file format */
 static int write_checkpoint_header(FILE* fp, const checkpoint_metadata_t* metadata) {
     if (!fp || !metadata) {
         return E_INPUT_NULL;
@@ -101,22 +102,23 @@ static int write_checkpoint_header(FILE* fp, const checkpoint_metadata_t* metada
     fprintf(fp, "%s\n", KATRA_CHECKPOINT_MAGIC);
 
     /* Write metadata as JSON */
-    fprintf(fp, "{\n");
-    fprintf(fp, "  \"checkpoint_id\": \"%s\",\n", metadata->checkpoint_id);
-    fprintf(fp, "  \"ci_id\": \"%s\",\n", metadata->ci_id);
-    fprintf(fp, "  \"timestamp\": %ld,\n", (long)metadata->timestamp);
-    fprintf(fp, "  \"version\": \"%s\",\n", metadata->version);
-    fprintf(fp, "  \"record_count\": %zu,\n", metadata->record_count);
-    fprintf(fp, "  \"tier1_records\": %zu,\n", metadata->tier1_records);
-    fprintf(fp, "  \"tier2_records\": %zu,\n", metadata->tier2_records);
-    fprintf(fp, "  \"tier3_records\": %zu,\n", metadata->tier3_records);
-    fprintf(fp, "  \"compressed\": %s,\n", metadata->compressed ? "true" : "false");
-    fprintf(fp, "  \"notes\": \"%s\"\n", metadata->notes);
-    fprintf(fp, "}\n");
+    fprintf(fp, "{\n"); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"checkpoint_id\": \"%s\",\n", metadata->checkpoint_id); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"ci_id\": \"%s\",\n", metadata->ci_id); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"timestamp\": %ld,\n", (long)metadata->timestamp); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"version\": \"%s\",\n", metadata->version); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"record_count\": %zu,\n", metadata->record_count); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"tier1_records\": %zu,\n", metadata->tier1_records); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"tier2_records\": %zu,\n", metadata->tier2_records); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"tier3_records\": %zu,\n", metadata->tier3_records); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"compressed\": %s,\n", metadata->compressed ? "true" : "false"); /* GUIDELINE_APPROVED */
+    fprintf(fp, "  \"notes\": \"%s\"\n", metadata->notes); /* GUIDELINE_APPROVED */
+    fprintf(fp, "}\n"); /* GUIDELINE_APPROVED */
     fprintf(fp, "%s\n", KATRA_CHECKPOINT_RECORD_SEPARATOR);
 
     return KATRA_SUCCESS;
 }
+/* GUIDELINE_APPROVED_END */
 
 /* Read checkpoint header */
 static int read_checkpoint_header(FILE* fp, checkpoint_metadata_t* metadata) {
