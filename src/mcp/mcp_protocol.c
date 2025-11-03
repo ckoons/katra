@@ -329,7 +329,7 @@ static json_t* handle_resources_list(json_t* request) {
     json_t* id = json_object_get(request, MCP_FIELD_ID);
     json_t* resources_array = json_array();
 
-    /* Build all 2 resources using helper */
+    /* Build all resources using helper */
     json_array_append_new(resources_array,
         mcp_build_resource(MCP_RESOURCE_URI_WORKING_CONTEXT,
                           MCP_RESOURCE_NAME_WORKING_CONTEXT,
@@ -340,6 +340,18 @@ static json_t* handle_resources_list(json_t* request) {
         mcp_build_resource(MCP_RESOURCE_URI_SESSION_INFO,
                           MCP_RESOURCE_NAME_SESSION_INFO,
                           MCP_RESOURCE_DESC_SESSION_INFO,
+                          MCP_MIME_TEXT_PLAIN));
+
+    json_array_append_new(resources_array,
+        mcp_build_resource(MCP_RESOURCE_URI_MEMORIES_THIS_TURN,
+                          MCP_RESOURCE_NAME_MEMORIES_THIS_TURN,
+                          MCP_RESOURCE_DESC_MEMORIES_THIS_TURN,
+                          MCP_MIME_TEXT_PLAIN));
+
+    json_array_append_new(resources_array,
+        mcp_build_resource(MCP_RESOURCE_URI_MEMORIES_THIS_SESSION,
+                          MCP_RESOURCE_NAME_MEMORIES_THIS_SESSION,
+                          MCP_RESOURCE_DESC_MEMORIES_THIS_SESSION,
                           MCP_MIME_TEXT_PLAIN));
 
     /* Build result */
@@ -417,6 +429,10 @@ static json_t* handle_resources_read(json_t* request) {
         return mcp_resource_working_context(id);
     } else if (strcmp(uri, MCP_RESOURCE_URI_SESSION_INFO) == 0) {
         return mcp_resource_session_info(id);
+    } else if (strcmp(uri, MCP_RESOURCE_URI_MEMORIES_THIS_TURN) == 0) {
+        return mcp_resource_memories_this_turn(id);
+    } else if (strcmp(uri, MCP_RESOURCE_URI_MEMORIES_THIS_SESSION) == 0) {
+        return mcp_resource_memories_this_session(id);
     } else {
         return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_UNKNOWN_RESOURCE, uri);
     }

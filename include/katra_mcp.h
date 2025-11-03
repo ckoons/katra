@@ -126,14 +126,20 @@
 /* Resource URIs */
 #define MCP_RESOURCE_URI_WORKING_CONTEXT "katra://context/working"
 #define MCP_RESOURCE_URI_SESSION_INFO "katra://session/info"
+#define MCP_RESOURCE_URI_MEMORIES_THIS_TURN "katra://memories/this-turn"
+#define MCP_RESOURCE_URI_MEMORIES_THIS_SESSION "katra://memories/this-session"
 
 /* Resource Names */
 #define MCP_RESOURCE_NAME_WORKING_CONTEXT "Working Context"
 #define MCP_RESOURCE_NAME_SESSION_INFO "Session Information"
+#define MCP_RESOURCE_NAME_MEMORIES_THIS_TURN "Memories From This Turn"
+#define MCP_RESOURCE_NAME_MEMORIES_THIS_SESSION "Memories From This Session"
 
 /* Resource Descriptions */
 #define MCP_RESOURCE_DESC_WORKING_CONTEXT "Yesterday's summary and recent significant memories"
 #define MCP_RESOURCE_DESC_SESSION_INFO "Current session state and statistics"
+#define MCP_RESOURCE_DESC_MEMORIES_THIS_TURN "All memories created during the current turn (for reflection)"
+#define MCP_RESOURCE_DESC_MEMORIES_THIS_SESSION "All memories created during the current session"
 
 /* Error Messages */
 #define MCP_ERR_MISSING_PARAMS "Missing params"
@@ -247,6 +253,8 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id);
 /* Resource Implementations */
 json_t* mcp_resource_working_context(json_t* id);
 json_t* mcp_resource_session_info(json_t* id);
+json_t* mcp_resource_memories_this_turn(json_t* id);
+json_t* mcp_resource_memories_this_session(json_t* id);
 
 /* Server Lifecycle */
 int mcp_server_init(const char* ci_id);

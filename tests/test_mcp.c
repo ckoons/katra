@@ -177,15 +177,15 @@ static int test_resources_list(void) {
     }
 
     size_t resource_count = json_array_size(resources);
-    if (resource_count != 2) {
-        printf("  ✗ Expected 2 resources, got %zu\n", resource_count);
+    if (resource_count != 4) {
+        printf("  ✗ Expected 4 resources, got %zu\n", resource_count);
         json_decref(response);
         return 1;
     }
 
     json_decref(response);
     tests_passed++;
-    printf("  ✓ resources/list returns 2 resources\n");
+    printf("  ✓ resources/list returns 4 resources\n");
     return 0;
 }
 

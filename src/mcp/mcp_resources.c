@@ -144,3 +144,151 @@ json_t* mcp_resource_session_info(json_t* id) {
 
     return mcp_success_response(id, result);
 }
+
+/* Resource: memories/this-turn */
+json_t* mcp_resource_memories_this_turn(json_t* id) {
+    size_t count = 0;
+    char** memories = NULL;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 MCP_ERR_INTERNAL,
+                                 MCP_ERR_MUTEX_LOCK);
+    }
+
+    memories = get_memories_this_turn(&count);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (!memories || count == 0) {
+        /* Build empty response */
+        json_t* contents_array = json_array();
+        json_t* content_item = json_object();
+
+        json_object_set_new(content_item, MCP_FIELD_URI,
+                           json_string(MCP_RESOURCE_URI_MEMORIES_THIS_TURN));
+        json_object_set_new(content_item, MCP_FIELD_MIME_TYPE,
+                           json_string(MCP_MIME_TEXT_PLAIN));
+        json_object_set_new(content_item, MCP_FIELD_TEXT,
+                           json_string("No memories created this turn yet"));
+
+        json_array_append_new(contents_array, content_item);
+
+        json_t* result = json_object();
+        json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+        return mcp_success_response(id, result);
+    }
+
+    /* Build response text */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Memories from this turn (%zu):\n\n", count);
+    size_t offset = strlen(response);
+
+    for (size_t i = 0; i < count; i++) {
+        if (!memories[i]) continue;
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "%zu. Memory ID: %s\n", i + 1, memories[i]);
+
+        /* Safety check */
+        if (offset >= sizeof(response) - 200) {
+            snprintf(response + offset, sizeof(response) - offset,
+                    "... (list truncated)\n");
+            break;
+        }
+    }
+
+    free_memory_list(memories, count);
+
+    /* Build resource response */
+    json_t* contents_array = json_array();
+    json_t* content_item = json_object();
+
+    json_object_set_new(content_item, MCP_FIELD_URI,
+                       json_string(MCP_RESOURCE_URI_MEMORIES_THIS_TURN));
+    json_object_set_new(content_item, MCP_FIELD_MIME_TYPE,
+                       json_string(MCP_MIME_TEXT_PLAIN));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(response));
+
+    json_array_append_new(contents_array, content_item);
+
+    json_t* result = json_object();
+    json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+    return mcp_success_response(id, result);
+}
+
+/* Resource: memories/this-session */
+json_t* mcp_resource_memories_this_session(json_t* id) {
+    size_t count = 0;
+    char** memories = NULL;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 MCP_ERR_INTERNAL,
+                                 MCP_ERR_MUTEX_LOCK);
+    }
+
+    memories = get_memories_this_session(&count);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (!memories || count == 0) {
+        /* Build empty response */
+        json_t* contents_array = json_array();
+        json_t* content_item = json_object();
+
+        json_object_set_new(content_item, MCP_FIELD_URI,
+                           json_string(MCP_RESOURCE_URI_MEMORIES_THIS_SESSION));
+        json_object_set_new(content_item, MCP_FIELD_MIME_TYPE,
+                           json_string(MCP_MIME_TEXT_PLAIN));
+        json_object_set_new(content_item, MCP_FIELD_TEXT,
+                           json_string("No memories created this session yet"));
+
+        json_array_append_new(contents_array, content_item);
+
+        json_t* result = json_object();
+        json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+        return mcp_success_response(id, result);
+    }
+
+    /* Build response text */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Memories from this session (%zu):\n\n", count);
+    size_t offset = strlen(response);
+
+    for (size_t i = 0; i < count; i++) {
+        if (!memories[i]) continue;
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "%zu. Memory ID: %s\n", i + 1, memories[i]);
+
+        /* Safety check */
+        if (offset >= sizeof(response) - 200) {
+            snprintf(response + offset, sizeof(response) - offset,
+                    "... (list truncated)\n");
+            break;
+        }
+    }
+
+    free_memory_list(memories, count);
+
+    /* Build resource response */
+    json_t* contents_array = json_array();
+    json_t* content_item = json_object();
+
+    json_object_set_new(content_item, MCP_FIELD_URI,
+                       json_string(MCP_RESOURCE_URI_MEMORIES_THIS_SESSION));
+    json_object_set_new(content_item, MCP_FIELD_MIME_TYPE,
+                       json_string(MCP_MIME_TEXT_PLAIN));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(response));
+
+    json_array_append_new(contents_array, content_item);
+
+    json_t* result = json_object();
+    json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+    return mcp_success_response(id, result);
+}
