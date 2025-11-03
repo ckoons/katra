@@ -233,7 +233,7 @@ static json_t* handle_tools_list(json_t* request) {
     json_t* id = json_object_get(request, MCP_FIELD_ID);
     json_t* tools_array = json_array();
 
-    /* Build all 7 tools using helpers */
+    /* Build all tools using helpers */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_REMEMBER, MCP_DESC_REMEMBER,
             mcp_build_tool_schema_2params(MCP_PARAM_CONTENT, MCP_PARAM_DESC_CONTENT,
@@ -271,6 +271,51 @@ static json_t* handle_tools_list(json_t* request) {
     json_array_append_new(tools_array,
         mcp_build_tool("katra_list_personas", "List all registered personas",
             mcp_build_tool_schema_0params()));
+
+    /* katra_review_turn - No parameters */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_REVIEW_TURN, MCP_DESC_REVIEW_TURN,
+            mcp_build_tool_schema_0params()));
+
+    /* katra_update_metadata - 1 required, 3 optional parameters */
+    json_t* metadata_schema = json_object();
+    json_object_set_new(metadata_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+
+    json_t* metadata_props = json_object();
+
+    /* Required: memory_id */
+    json_t* memory_id_prop = json_object();
+    json_object_set_new(memory_id_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(memory_id_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_MEMORY_ID));
+    json_object_set_new(metadata_props, MCP_PARAM_MEMORY_ID, memory_id_prop);
+
+    /* Optional: personal */
+    json_t* personal_prop = json_object();
+    json_object_set_new(personal_prop, MCP_FIELD_TYPE, json_string("boolean"));
+    json_object_set_new(personal_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_PERSONAL));
+    json_object_set_new(metadata_props, MCP_PARAM_PERSONAL, personal_prop);
+
+    /* Optional: not_to_archive */
+    json_t* not_to_archive_prop = json_object();
+    json_object_set_new(not_to_archive_prop, MCP_FIELD_TYPE, json_string("boolean"));
+    json_object_set_new(not_to_archive_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_NOT_TO_ARCHIVE));
+    json_object_set_new(metadata_props, MCP_PARAM_NOT_TO_ARCHIVE, not_to_archive_prop);
+
+    /* Optional: collection */
+    json_t* collection_prop = json_object();
+    json_object_set_new(collection_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(collection_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_COLLECTION));
+    json_object_set_new(metadata_props, MCP_PARAM_COLLECTION, collection_prop);
+
+    json_object_set_new(metadata_schema, MCP_FIELD_PROPERTIES, metadata_props);
+
+    /* Only memory_id is required */
+    json_t* metadata_required = json_array();
+    json_array_append_new(metadata_required, json_string(MCP_PARAM_MEMORY_ID));
+    json_object_set_new(metadata_schema, MCP_FIELD_REQUIRED, metadata_required);
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_UPDATE_METADATA, MCP_DESC_UPDATE_METADATA, metadata_schema));
 
     /* Build result */
     json_t* result = json_object();
@@ -341,6 +386,10 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_my_name_is(args, id);
     } else if (strcmp(tool_name, "katra_list_personas") == 0) {
         tool_result = mcp_tool_list_personas(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_REVIEW_TURN) == 0) {
+        tool_result = mcp_tool_review_turn(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_UPDATE_METADATA) == 0) {
+        tool_result = mcp_tool_update_metadata(args, id);
     } else {
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
     }

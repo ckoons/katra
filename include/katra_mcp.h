@@ -81,6 +81,8 @@
 #define MCP_TOOL_PLACEMENT "katra_placement"
 #define MCP_TOOL_IMPACT "katra_impact"
 #define MCP_TOOL_USER_DOMAIN "katra_user_domain"
+#define MCP_TOOL_REVIEW_TURN "katra_review_turn"
+#define MCP_TOOL_UPDATE_METADATA "katra_update_metadata"
 
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
@@ -90,6 +92,8 @@
 #define MCP_DESC_PLACEMENT "Ask where code should be placed (architecture guidance)"
 #define MCP_DESC_IMPACT "Analyze impact of code changes (dependency analysis)"
 #define MCP_DESC_USER_DOMAIN "Understand user domain and feature usage patterns"
+#define MCP_DESC_REVIEW_TURN "Get memories created this turn for conscious reflection"
+#define MCP_DESC_UPDATE_METADATA "Update memory metadata (personal, collection, archival flags)"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -99,6 +103,10 @@
 #define MCP_PARAM_DECISION "decision"
 #define MCP_PARAM_REASONING "reasoning"
 #define MCP_PARAM_QUERY "query"
+#define MCP_PARAM_MEMORY_ID "memory_id"
+#define MCP_PARAM_PERSONAL "personal"
+#define MCP_PARAM_NOT_TO_ARCHIVE "not_to_archive"
+#define MCP_PARAM_COLLECTION "collection"
 
 /* Tool Parameter Descriptions */
 #define MCP_PARAM_DESC_CONTENT "The thought or experience to remember"
@@ -110,6 +118,10 @@
 #define MCP_PARAM_DESC_QUERY_PLACEMENT "The placement question (e.g., 'Where should the HTTP client code go?')"
 #define MCP_PARAM_DESC_QUERY_IMPACT "The impact question (e.g., 'What breaks if I change this API?')"
 #define MCP_PARAM_DESC_QUERY_USER_DOMAIN "The user domain question (e.g., 'Who would use this feature?')"
+#define MCP_PARAM_DESC_MEMORY_ID "Memory record ID to update"
+#define MCP_PARAM_DESC_PERSONAL "Mark as personal collection memory (true/false, optional)"
+#define MCP_PARAM_DESC_NOT_TO_ARCHIVE "Prevent automatic archival (true/false, optional)"
+#define MCP_PARAM_DESC_COLLECTION "Collection path like 'People/Casey' or 'Moments/Breakthrough' (optional)"
 
 /* Resource URIs */
 #define MCP_RESOURCE_URI_WORKING_CONTEXT "katra://context/working"
@@ -227,6 +239,10 @@ json_t* mcp_tool_user_domain(json_t* args, json_t* id);
 /* Persona Tool Implementations */
 json_t* mcp_tool_my_name_is(json_t* args, json_t* id);
 json_t* mcp_tool_list_personas(json_t* args, json_t* id);
+
+/* Reflection Tool Implementations */
+json_t* mcp_tool_review_turn(json_t* args, json_t* id);
+json_t* mcp_tool_update_metadata(json_t* args, json_t* id);
 
 /* Resource Implementations */
 json_t* mcp_resource_working_context(json_t* id);

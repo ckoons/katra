@@ -314,3 +314,115 @@ json_t* mcp_tool_list_personas(json_t* args, json_t* id) {
 
     return mcp_tool_success(response);
 }
+
+/* Tool: katra_review_turn */
+json_t* mcp_tool_review_turn(json_t* args, json_t* id) {
+    (void)args;  /* No arguments */
+    (void)id;    /* Unused - id handled by caller */
+
+    size_t count = 0;
+    char** memories = NULL;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    memories = get_memories_this_turn(&count);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (!memories || count == 0) {
+        return mcp_tool_success("No memories created this turn yet");
+    }
+
+    /* Build response text */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Memories from this turn (%zu):\n", count);
+    size_t offset = strlen(response);
+
+    for (size_t i = 0; i < count; i++) {
+        if (!memories[i]) continue;
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "\n%zu. Memory ID: %s", i + 1, memories[i]);
+
+        /* Safety check - stop if buffer nearly full */
+        if (offset >= sizeof(response) - 200) {
+            snprintf(response + offset, sizeof(response) - offset,
+                    "\n...(list truncated)\n");
+            break;
+        }
+    }
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "\n\nUse katra_update_metadata with these memory IDs to mark as personal, "
+                      "add to collections, or prevent archival.");
+
+    free_memory_list(memories, count);
+
+    return mcp_tool_success(response);
+}
+
+/* Tool: katra_update_metadata */
+json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
+    (void)id;  /* Unused - id handled by caller */
+
+    if (!args) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
+    }
+
+    const char* memory_id = json_string_value(json_object_get(args, MCP_PARAM_MEMORY_ID));
+
+    if (!memory_id) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "memory_id is required");
+    }
+
+    /* Extract optional parameters */
+    json_t* personal_json = json_object_get(args, MCP_PARAM_PERSONAL);
+    json_t* not_to_archive_json = json_object_get(args, MCP_PARAM_NOT_TO_ARCHIVE);
+    const char* collection = json_string_value(json_object_get(args, MCP_PARAM_COLLECTION));
+
+    /* Convert JSON booleans to C booleans */
+    bool personal_value = false;
+    bool not_to_archive_value = false;
+    const bool* personal_ptr = NULL;
+    const bool* not_to_archive_ptr = NULL;
+
+    if (personal_json && json_is_boolean(personal_json)) {
+        personal_value = json_is_true(personal_json);
+        personal_ptr = &personal_value;
+    }
+
+    if (not_to_archive_json && json_is_boolean(not_to_archive_json)) {
+        not_to_archive_value = json_is_true(not_to_archive_json);
+        not_to_archive_ptr = &not_to_archive_value;
+    }
+
+    /* If no metadata provided, return error */
+    if (!personal_ptr && !not_to_archive_ptr && !collection) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS,
+                            "At least one metadata field must be provided (personal, not_to_archive, or collection)");
+    }
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    int result = update_memory_metadata(memory_id, personal_ptr, not_to_archive_ptr, collection);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (result != KATRA_SUCCESS) {
+        const char* msg = katra_error_message(result);
+        const char* suggestion = katra_error_suggestion(result);
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error("Failed to update metadata", details);
+    }
+
+    /* Build success response */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Updated metadata for memory %s", memory_id);
+
+    return mcp_tool_success(response);
+}
