@@ -79,6 +79,11 @@ int track_memory_in_turn(const char* record_id) {
     }
 
     g_turn_memory_count++;
+
+    /* Visible reflection logging */
+    LOG_INFO("📝 Memory tracked in turn %d (%zu total this turn)",
+             g_current_turn, g_turn_memory_count);
+
     return KATRA_SUCCESS;
 }
 
@@ -118,7 +123,7 @@ int begin_turn(void) {
     g_current_turn++;
     g_turn_state = TURN_STATE_ACTIVE;
 
-    LOG_INFO("Turn %d started", g_current_turn);
+    LOG_INFO("🔄 Turn %d started - ready for new memories", g_current_turn);
     return KATRA_SUCCESS;
 }
 
@@ -135,9 +140,10 @@ int end_turn(void) {
         return E_INVALID_STATE;
     }
 
+    size_t memory_count = g_turn_memory_count;
     g_turn_state = TURN_STATE_IDLE;
     clear_turn_memories();
-    LOG_INFO("Turn %d ended", g_current_turn);
+    LOG_INFO("✓ Turn %d ended (%zu memories created)", g_current_turn, memory_count);
     return KATRA_SUCCESS;
 }
 
@@ -168,7 +174,7 @@ turn_state_t get_turn_state(void) {
  * Returns: Turn ID string, or empty string if no active turn
  */
 const char* get_current_turn_id(void) {
-    static char turn_id_buffer[32];
+    static char turn_id_buffer[KATRA_BUFFER_TINY];
 
     if (g_turn_state == TURN_STATE_IDLE || g_current_turn == 0) {
         return "";
@@ -232,7 +238,7 @@ char** get_memories_this_turn(size_t* count) {
         }
     }
 
-    LOG_INFO("Retrieved %zu memories from turn %d", *count, g_current_turn);
+    LOG_INFO("🔍 Retrieved %zu memories from turn %d for reflection", *count, g_current_turn);
     return result;
 }
 
@@ -314,7 +320,8 @@ char** get_memories_this_session(size_t* count) {
     katra_memory_free_results(records, record_count);
 
     *count = match_count;
-    LOG_INFO("Retrieved %zu memories from session %s", match_count, session_id);
+    LOG_INFO("🔍 Retrieved %zu memories from session for end-of-session reflection",
+             match_count);
 
     return memory_ids;
 }
@@ -451,12 +458,28 @@ int update_memory_metadata(const char* record_id,
 
     /* Store updated record */
     int result = katra_memory_store(record);
-    katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
-        LOG_DEBUG("Updated metadata for memory %s", record_id);
+        /* Build description of what changed */
+        char changes[KATRA_BUFFER_MEDIUM] = {0};
+        size_t offset = 0;
+
+        if (personal && *personal) {
+            offset += snprintf(changes + offset, sizeof(changes) - offset, "personal=true");
+        }
+        if (not_to_archive && *not_to_archive) {
+            if (offset > 0) offset += snprintf(changes + offset, sizeof(changes) - offset, ", ");
+            offset += snprintf(changes + offset, sizeof(changes) - offset, "not_to_archive=true");
+        }
+        if (collection) {
+            if (offset > 0) offset += snprintf(changes + offset, sizeof(changes) - offset, ", ");
+            offset += snprintf(changes + offset, sizeof(changes) - offset, "collection=%s", collection);
+        }
+
+        LOG_INFO("🏷️  Updated metadata: %s", changes);
     }
 
+    katra_memory_free_record(record);
     return result;
 }
 
@@ -493,7 +516,7 @@ int revise_memory_content(const char* record_id, const char* new_content) {
     katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
-        LOG_DEBUG("Revised content for memory %s", record_id);
+        LOG_INFO("✏️  Revised memory content (%.40s...)", new_content);
     }
 
     return result;
@@ -525,12 +548,12 @@ int review_memory(const char* record_id) {
 
     /* Store updated record */
     int result = katra_memory_store(record);
-    katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
-        LOG_DEBUG("Reviewed memory %s (count: %d)", record_id, record->review_count);
+        LOG_INFO("👁️  Reviewed memory (review count: %d)", record->review_count);
     }
 
+    katra_memory_free_record(record);
     return result;
 }
 
@@ -542,6 +565,7 @@ int add_to_personal_collection(const char* record_id, const char* collection_pat
         return E_INPUT_NULL;
     }
 
+    LOG_INFO("💎 Adding to personal collection: %s", collection_path);
     bool is_personal = true;
     return update_memory_metadata(record_id, &is_personal, NULL, collection_path);
 }
@@ -574,12 +598,12 @@ int remove_from_personal_collection(const char* record_id) {
 
     /* Store updated record */
     int result = katra_memory_store(record);
-    katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
-        LOG_DEBUG("Removed memory %s from personal collection", record_id);
+        LOG_INFO("🗑️  Removed from personal collection");
     }
 
+    katra_memory_free_record(record);
     return result;
 }
 
