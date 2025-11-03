@@ -146,7 +146,7 @@ DEP_FILES := $(ALL_OBJS:.o=.d)
 
 .PHONY: all clean clean-all distclean test help
 .PHONY: count-report programming-guidelines check
-.PHONY: improvement-scan benchmark check-ready
+.PHONY: improvement-scan benchmark benchmark-reflection check-ready
 .PHONY: directories mcp-server
 .PHONY: test-quick test-env test-config test-error test-log test-init test-memory
 .PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
@@ -305,6 +305,7 @@ TEST_REFLECTION_INTEGRATION := $(BIN_DIR)/tests/test_reflection_integration
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
+BENCHMARK_REFLECTION := $(BIN_DIR)/tests/benchmark_reflection
 
 # Test targets
 test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-mcp test-turn-tracking test-reflection-integration
@@ -529,11 +530,20 @@ $(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBK
 	@echo "Building benchmark: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
+$(BENCHMARK_REFLECTION): $(TEST_DIR)/benchmark_reflection.c $(LIBKATRA_UTILS)
+	@echo "Building benchmark: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
+
 # Benchmark targets
 benchmark: $(BENCHMARK_TIER2_QUERY)
 	@echo ""
 	@echo "Running Tier 2 query performance benchmark..."
 	@$(BENCHMARK_TIER2_QUERY)
+
+benchmark-reflection: $(BENCHMARK_REFLECTION)
+	@echo ""
+	@echo "Running reflection system performance benchmark..."
+	@$(BENCHMARK_REFLECTION)
 
 # ==============================================================================
 # CODE DISCIPLINE TARGETS
