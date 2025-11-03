@@ -19,8 +19,11 @@ docs/
 ├── CI_ONBOARDING.md             # New CI onboarding with prompt ✅
 ├── KATRA_ENGRAM_MASTER_PLAN.md  # Long-term vision and architecture
 ├── BREATHING_LAYER.md           # Level 2 abstraction documentation
+├── REFLECTION_SYSTEM.md         # Memory reflection & personal collections ✅
 ├── LEVEL3_INTEGRATION.md        # Level 3 invisible memory
 ├── TIER2_INDEXING_DESIGN.md     # Tier 2 memory design
+├── MCP_SERVER.md                # MCP integration guide ✅
+├── MCP_TOOLS.md                 # MCP tool reference ✅
 ├── guide/                       # Implementation guides
 │   ├── CI_INTEGRATION.md        # Complete integration guide ✅
 │   ├── ERROR_HANDLING.md        # Error patterns ✅
@@ -49,6 +52,8 @@ Essential reading:
 Essential reading:
 - **Getting Started**: Complete guide for CIs [`GETTING_STARTED.md`](GETTING_STARTED.md) ✅
 - **CI Onboarding**: Your first week with Katra [`CI_ONBOARDING.md`](CI_ONBOARDING.md) ✅
+- **Reflection System**: Conscious identity formation [`REFLECTION_SYSTEM.md`](REFLECTION_SYSTEM.md) ✅
+- **MCP Integration**: Model Context Protocol tools [`MCP_SERVER.md`](MCP_SERVER.md) ✅
 - **CI Integration**: Runtime integration patterns [`guide/CI_INTEGRATION.md`](guide/CI_INTEGRATION.md) ✅
 - **Error Handling**: Error patterns [`guide/ERROR_HANDLING.md`](guide/ERROR_HANDLING.md) ✅
 - **Examples**: `./bin/breathing_example` and `./bin/level3_demo`
@@ -214,7 +219,8 @@ Documentation clearly indicates intended audience:
 1. Architecture: [`KATRA_ENGRAM_MASTER_PLAN.md`](KATRA_ENGRAM_MASTER_PLAN.md) ✅
 2. Level 2 (Breathing): [`BREATHING_LAYER.md`](BREATHING_LAYER.md) ✅
 3. Level 3 (Integration): [`LEVEL3_INTEGRATION.md`](LEVEL3_INTEGRATION.md) ✅
-4. Tier 2 Design: [`TIER2_INDEXING_DESIGN.md`](TIER2_INDEXING_DESIGN.md) ✅
+4. Reflection System: [`REFLECTION_SYSTEM.md`](REFLECTION_SYSTEM.md) ✅
+5. Tier 2 Design: [`TIER2_INDEXING_DESIGN.md`](TIER2_INDEXING_DESIGN.md) ✅
 
 ## Project Status
 
