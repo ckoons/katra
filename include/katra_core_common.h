@@ -154,4 +154,14 @@ void katra_free_string_array(char** strings, size_t count);
 typedef void (*katra_free_fn_t)(void*);
 void katra_free_array(void** items, size_t count, katra_free_fn_t free_fn);
 
+/* ===== NLP Stop Words ===== */
+
+/* GUIDELINE_APPROVED: NLP stop words for keyword extraction */
+extern const char* const KATRA_STOP_WORDS[];
+
+/* ===== NLP Tokenization ===== */
+
+/* GUIDELINE_APPROVED: Standard tokenization delimiters for keyword extraction */
+#define KATRA_TOKENIZE_DELIMITERS " \t\n\r.,;:!?()[]{}\"'"
+
 #endif /* KATRA_CORE_COMMON_H */

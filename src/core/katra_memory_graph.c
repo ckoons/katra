@@ -144,12 +144,12 @@ static int extract_keywords(const char* text, char*** keywords, size_t* count) {
     }
 
     size_t kw_count = 0;
-    char* token = strtok(text_copy, " \t\n\r.,;:!?()[]{}\"'");
+    char* token = strtok(text_copy, KATRA_TOKENIZE_DELIMITERS);
 
     while (token && kw_count < max_keywords) {
         /* Check length */
         if (strlen(token) < MIN_KEYWORD_LENGTH) {
-            token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+            token = strtok(NULL, KATRA_TOKENIZE_DELIMITERS);
             continue;
         }
 
@@ -163,7 +163,7 @@ static int extract_keywords(const char* text, char*** keywords, size_t* count) {
 
         /* Skip stop words */
         if (is_stop_word(lowercase)) {
-            token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+            token = strtok(NULL, KATRA_TOKENIZE_DELIMITERS);
             continue;
         }
 
@@ -186,7 +186,7 @@ static int extract_keywords(const char* text, char*** keywords, size_t* count) {
             kw_count++;
         }
 
-        token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+        token = strtok(NULL, KATRA_TOKENIZE_DELIMITERS);
     }
 
     free(text_copy);
@@ -198,17 +198,8 @@ static int extract_keywords(const char* text, char*** keywords, size_t* count) {
 
 /* Check if word is a common stop word */
 static bool is_stop_word(const char* word) {
-    static const char* stop_words[] = {
-        "the", "this", "that", "these", "those",
-        "with", "from", "have", "has", "been",
-        "will", "would", "could", "should",
-        "what", "when", "where", "which", "while",
-        "your", "their", "there", "here",
-        NULL
-    };
-
-    for (int i = 0; stop_words[i] != NULL; i++) {
-        if (strcmp(word, stop_words[i]) == 0) {
+    for (int i = 0; KATRA_STOP_WORDS[i] != NULL; i++) {
+        if (strcmp(word, KATRA_STOP_WORDS[i]) == 0) {
             return true;
         }
     }

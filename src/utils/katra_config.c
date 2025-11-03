@@ -44,27 +44,27 @@ static void create_directory_structure(void) {
     char dir_path[KATRA_PATH_MAX];
 
     /* Create ~/.katra/config */
-    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "config", NULL) != KATRA_SUCCESS) {
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), KATRA_DIR_CONFIG, NULL) != KATRA_SUCCESS) {
         LOG_WARN("Failed to create config directory");
     }
 
     /* Create ~/.katra/logs */
-    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "logs", NULL) != KATRA_SUCCESS) {
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), KATRA_DIR_LOGS, NULL) != KATRA_SUCCESS) {
         LOG_WARN("Failed to create logs directory");
     }
 
     /* Create ~/.katra/memory */
-    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "memory", NULL) != KATRA_SUCCESS) {
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), KATRA_DIR_MEMORY, NULL) != KATRA_SUCCESS) {
         LOG_WARN("Failed to create memory directory");
     }
 
     /* Create ~/.katra/checkpoints */
-    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "checkpoints", NULL) != KATRA_SUCCESS) {
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), KATRA_DIR_CHECKPOINTS, NULL) != KATRA_SUCCESS) {
         LOG_WARN("Failed to create checkpoints directory");
     }
 
     /* Create ~/.katra/audit */
-    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "audit", NULL) != KATRA_SUCCESS) {
+    if (katra_build_and_ensure_dir(dir_path, sizeof(dir_path), KATRA_DIR_AUDIT, NULL) != KATRA_SUCCESS) {
         LOG_WARN("Failed to create audit directory");
     }
 
@@ -329,7 +329,7 @@ int katra_config(void) {
     char config_dir[KATRA_PATH_MAX];
 
     /* 1. Load ~/.katra/config/ directory */
-    if (katra_build_path(config_dir, sizeof(config_dir), "config", NULL) == KATRA_SUCCESS) {
+    if (katra_build_path(config_dir, sizeof(config_dir), KATRA_DIR_CONFIG, NULL) == KATRA_SUCCESS) {
         load_config_directory(config_dir);
     }
 

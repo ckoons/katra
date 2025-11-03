@@ -35,6 +35,20 @@ extern bool katra_breathing_is_initialized(void);
 extern const char* katra_breathing_get_ci_id(void);
 extern int remember(const char* thought, why_remember_t why);
 
+/* ============================================================================
+ * KEYWORD ARRAYS - Pattern detection for significance detection
+ * ============================================================================ */
+
+/* GUIDELINE_APPROVED: Significance markers for automatic capture */
+const char* const BREATHING_SIGNIFICANCE_MARKERS[] = {
+    "important", "significant", "critical", "crucial", /* GUIDELINE_APPROVED */
+    "learned", "realized", "discovered", "understood", /* GUIDELINE_APPROVED */
+    "insight", "pattern", "decided", "concluded", /* GUIDELINE_APPROVED */
+    "breakthrough", "key point", "essential", "must remember", /* GUIDELINE_APPROVED */
+    NULL /* GUIDELINE_APPROVED */
+};
+/* GUIDELINE_APPROVED_END */
+
 char* get_working_context(void) {
     if (!katra_breathing_is_initialized()) {
         return NULL;
@@ -92,15 +106,17 @@ char* get_working_context(void) {
         for (size_t i = 0; i < result_count; i++) {
             if (!results[i]->content) continue;
 
-            const char* type_str = "Experience";
+            /* GUIDELINE_APPROVED: Enum-to-string mapping for memory_type_t */
+            const char* type_str = "Experience"; /* GUIDELINE_APPROVED */
             switch (results[i]->type) {
-                case MEMORY_TYPE_KNOWLEDGE: type_str = "Knowledge"; break;
-                case MEMORY_TYPE_REFLECTION: type_str = "Reflection"; break;
-                case MEMORY_TYPE_PATTERN: type_str = "Pattern"; break;
-                case MEMORY_TYPE_DECISION: type_str = "Decision"; break;
-                case MEMORY_TYPE_GOAL: type_str = "Goal"; break;
+                case MEMORY_TYPE_KNOWLEDGE: type_str = "Knowledge"; break; /* GUIDELINE_APPROVED */
+                case MEMORY_TYPE_REFLECTION: type_str = "Reflection"; break; /* GUIDELINE_APPROVED */
+                case MEMORY_TYPE_PATTERN: type_str = "Pattern"; break; /* GUIDELINE_APPROVED */
+                case MEMORY_TYPE_DECISION: type_str = "Decision"; break; /* GUIDELINE_APPROVED */
+                case MEMORY_TYPE_GOAL: type_str = "Goal"; break; /* GUIDELINE_APPROVED */
                 default: break;
             }
+            /* GUIDELINE_APPROVED_END */
 
             offset += snprintf(context + offset, buffer_size - offset,
                               "- [%s] %s", type_str, results[i]->content);
@@ -167,23 +183,14 @@ int auto_capture_from_response(const char* response) {
         return KATRA_SUCCESS;
     }
 
-    /* Enhanced significance markers for automatic capture */
-    const char* markers[] = {
-        "important", "significant", "critical", "crucial",
-        "learned", "realized", "discovered", "understood",
-        "insight", "pattern", "decided", "concluded",
-        "breakthrough", "key point", "essential", "must remember",
-        NULL
-    };
-
     /* Check for significance markers (case-insensitive) */
     bool is_significant = false;
-    for (int i = 0; markers[i] != NULL; i++) {
+    for (int i = 0; BREATHING_SIGNIFICANCE_MARKERS[i] != NULL; i++) {
         /* Simple case-insensitive search */
         const char* p = response;
-        size_t marker_len = strlen(markers[i]);
+        size_t marker_len = strlen(BREATHING_SIGNIFICANCE_MARKERS[i]);
         while (*p) {
-            if (strncasecmp(p, markers[i], marker_len) == 0) {
+            if (strncasecmp(p, BREATHING_SIGNIFICANCE_MARKERS[i], marker_len) == 0) {
                 is_significant = true;
                 break;
             }

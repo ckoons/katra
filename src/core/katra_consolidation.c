@@ -99,9 +99,11 @@ int katra_wake_capture(consolidation_context_t* ctx,
         }
     }
 
+    /* GUIDELINE_APPROVED: Enum-to-string for memory_pathway_t */
     LOG_DEBUG("WAKE: Captured memory %s via %s pathway",
              record->record_id,
-             pathway == PATHWAY_CONSCIOUS ? "conscious" : "subconscious");
+             pathway == PATHWAY_CONSCIOUS ? "conscious" : "subconscious"); /* GUIDELINE_APPROVED */
+    /* GUIDELINE_APPROVED_END */
 
     return KATRA_SUCCESS;
 }

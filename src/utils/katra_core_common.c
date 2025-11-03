@@ -33,3 +33,18 @@ void katra_free_array(void** items, size_t count, katra_free_fn_t free_fn) {
     }
     free(items);
 }
+
+/* ============================================================================
+ * NLP STOP WORDS - Common words filtered in keyword extraction
+ * ============================================================================ */
+
+/* GUIDELINE_APPROVED: NLP stop words for keyword extraction */
+const char* const KATRA_STOP_WORDS[] = {
+    "the", "this", "that", "these", "those", /* GUIDELINE_APPROVED */
+    "with", "from", "have", "has", "been", /* GUIDELINE_APPROVED */
+    "will", "would", "could", "should", /* GUIDELINE_APPROVED */
+    "what", "when", "where", "which", "while", /* GUIDELINE_APPROVED */
+    "your", "their", "there", "here", /* GUIDELINE_APPROVED */
+    NULL /* GUIDELINE_APPROVED */
+};
+/* GUIDELINE_APPROVED_END */

@@ -193,27 +193,28 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
     int questions_asked = 0;
     int archived = 0;
 
+    /* GUIDELINE_APPROVED: JSON field names for Tier2 digest parsing */
     /* Parse fields using helpers */
-    extract_json_string(line, "digest_id", digest_id, sizeof(digest_id));
-    extract_json_long(line, "timestamp", &timestamp);
-    extract_json_int(line, "period_type", &period_type);
-    extract_json_string(line, "period_id", period_id, sizeof(period_id));
-    extract_json_int(line, "source_tier", &source_tier);
-    extract_json_string(line, "ci_id", ci_id, sizeof(ci_id));
-    extract_json_int(line, "digest_type", &digest_type);
-    extract_json_int(line, "questions_asked", &questions_asked);
+    extract_json_string(line, "digest_id", digest_id, sizeof(digest_id)); /* GUIDELINE_APPROVED */
+    extract_json_long(line, "timestamp", &timestamp); /* GUIDELINE_APPROVED */
+    extract_json_int(line, "period_type", &period_type); /* GUIDELINE_APPROVED */
+    extract_json_string(line, "period_id", period_id, sizeof(period_id)); /* GUIDELINE_APPROVED */
+    extract_json_int(line, "source_tier", &source_tier); /* GUIDELINE_APPROVED */
+    extract_json_string(line, "ci_id", ci_id, sizeof(ci_id)); /* GUIDELINE_APPROVED */
+    extract_json_int(line, "digest_type", &digest_type); /* GUIDELINE_APPROVED */
+    extract_json_int(line, "questions_asked", &questions_asked); /* GUIDELINE_APPROVED */
 
     /* Parse source_record_count */
-    const char* src_count_start = strstr(line, "\"source_record_count\":");
+    const char* src_count_start = strstr(line, "\"source_record_count\":"); /* GUIDELINE_APPROVED */
     if (src_count_start) {
-        sscanf(src_count_start, "\"source_record_count\":%zu", &d->source_record_count);
+        sscanf(src_count_start, "\"source_record_count\":%zu", &d->source_record_count); /* GUIDELINE_APPROVED */
     }
 
     /* Parse archived boolean */
-    const char* archived_start = strstr(line, "\"archived\":");
+    const char* archived_start = strstr(line, "\"archived\":"); /* GUIDELINE_APPROVED */
     if (archived_start) {
         archived_start += JSON_ARCHIVED_PREFIX_LENGTH;
-        archived = (strncmp(archived_start, "true", 4) == 0) ? 1 : 0;
+        archived = (strncmp(archived_start, "true", 4) == 0) ? 1 : 0; /* GUIDELINE_APPROVED */
     }
 
     /* Allocate and copy string fields */
@@ -235,10 +236,11 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
 
     /* Parse summary field */
     char summary_buf[KATRA_BUFFER_LARGE];
-    extract_json_string(line, "summary", summary_buf, sizeof(summary_buf));
+    extract_json_string(line, "summary", summary_buf, sizeof(summary_buf)); /* GUIDELINE_APPROVED */
     if (summary_buf[0] != '\0') {
         d->summary = strdup(summary_buf);
     }
+    /* GUIDELINE_APPROVED_END */
 
     /* Note: Arrays (themes, keywords, entities, etc.) not fully parsed in this simplified version */
     /* Production would use a proper JSON library like cJSON or jsmn */

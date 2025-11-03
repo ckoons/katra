@@ -12,6 +12,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_core_common.h"
 
 /* Pattern detection thresholds */
 #define SIMILARITY_THRESHOLD 0.4f         /* 40% keyword overlap = similar */
@@ -50,17 +51,8 @@ static void free_keywords_pattern(char** keywords, size_t count) {
 
 /* Helper: Check if word is a common stop word (Phase 3) */
 static bool is_stop_word_pattern(const char* word) {
-    static const char* stop_words[] = {
-        "the", "this", "that", "these", "those",
-        "with", "from", "have", "has", "been",
-        "will", "would", "could", "should",
-        "what", "when", "where", "which", "while",
-        "your", "their", "there", "here",
-        NULL
-    };
-
-    for (int i = 0; stop_words[i] != NULL; i++) {
-        if (strcmp(word, stop_words[i]) == 0) {
+    for (int i = 0; KATRA_STOP_WORDS[i] != NULL; i++) {
+        if (strcmp(word, KATRA_STOP_WORDS[i]) == 0) {
             return true;
         }
     }
@@ -99,12 +91,12 @@ static int extract_keywords_pattern(const char* text, char*** keywords, size_t* 
     }
 
     size_t kw_count = 0;
-    char* token = strtok(text_copy, " \t\n\r.,;:!?()[]{}\"'");
+    char* token = strtok(text_copy, KATRA_TOKENIZE_DELIMITERS);
 
     while (token && kw_count < max_keywords) {
         /* Check length */
         if (strlen(token) < MIN_KEYWORD_LENGTH) {
-            token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+            token = strtok(NULL, KATRA_TOKENIZE_DELIMITERS);
             continue;
         }
 
@@ -118,7 +110,7 @@ static int extract_keywords_pattern(const char* text, char*** keywords, size_t* 
 
         /* Skip stop words */
         if (is_stop_word_pattern(lowercase)) {
-            token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+            token = strtok(NULL, KATRA_TOKENIZE_DELIMITERS);
             continue;
         }
 
@@ -141,7 +133,7 @@ static int extract_keywords_pattern(const char* text, char*** keywords, size_t* 
             kw_count++;
         }
 
-        token = strtok(NULL, " \t\n\r.,;:!?()[]{}\"'");
+        token = strtok(NULL, KATRA_TOKENIZE_DELIMITERS);
     }
 
     free(text_copy);

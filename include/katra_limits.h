@@ -106,6 +106,13 @@
 /* File permissions for Katra-created files */
 #define KATRA_FILE_PERMISSIONS 0644
 
+/* Directory names for Katra standard directories */
+#define KATRA_DIR_CONFIG "config"
+#define KATRA_DIR_LOGS "logs"
+#define KATRA_DIR_MEMORY "memory"
+#define KATRA_DIR_CHECKPOINTS "checkpoints"
+#define KATRA_DIR_AUDIT "audit"
+
 /* File mode strings */
 #define FILE_MODE_READ "r"
 #define FILE_MODE_WRITE "w"

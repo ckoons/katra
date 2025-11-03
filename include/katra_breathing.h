@@ -702,4 +702,11 @@ memory_context_t* get_current_context(void);
 /** Free context structure */
 void free_context(memory_context_t* ctx);
 
+/* ============================================================================
+ * KEYWORD ARRAYS - Pattern detection for significance detection
+ * ============================================================================ */
+
+/* Significance markers for automatic capture */
+extern const char* const BREATHING_SIGNIFICANCE_MARKERS[];
+
 #endif /* KATRA_BREATHING_H */

@@ -489,7 +489,7 @@ digest_record_t* katra_digest_create(
 
     /* Generate digest_id */
     char digest_id[KATRA_BUFFER_MEDIUM];
-    const char* period_type_str = (period_type == PERIOD_TYPE_WEEKLY) ? "weekly" : "monthly";
+    const char* period_type_str = (period_type == PERIOD_TYPE_WEEKLY) ? TIER2_DIR_WEEKLY : TIER2_DIR_MONTHLY;
     snprintf(digest_id, sizeof(digest_id), "%s-%s-digest", period_id, period_type_str);
     digest->digest_id = strdup(digest_id);
 
