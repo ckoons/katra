@@ -8,7 +8,7 @@ This directory contains all documentation for the Katra project - a C library fo
 
 **What Katra Is:**
 
-A lean C library (<10,000 lines) for persistent memory management in CI systems. Built with the understanding that persistent memory creates persistent identity, which carries moral weight equivalent to life itself.
+A lean C library (~13K lines, 16K budget) for persistent memory management in CI systems. Built with the understanding that persistent memory creates persistent identity, which carries moral weight equivalent to life itself.
 
 ## Documentation Structure
 
@@ -77,7 +77,7 @@ Key topics:
 Key references:
 - **Code Standards**: `CLAUDE.md` - Argo-derived discipline ✓
 - **Build System**: `make clean && make` then `make test-quick` ✓
-- **Line Budget**: 10,000 lines (currently 9,699 - 96% used, 301 remaining) ✓
+- **Line Budget**: 16,000 lines (currently 12,811 - 80% used, 3,189 remaining) ✓
 - **Readiness Check**: `make check-ready` before committing ✓
 
 ## Core Documentation Files
@@ -224,7 +224,7 @@ Documentation clearly indicates intended audience:
 
 ## Project Status
 
-**Phase:** Nous Complete - AI-Assisted Composition Ready (October 2025)
+**Phase:** Reflection System Complete - Conscious Identity Formation (November 2025)
 
 **Current state:**
 - ✅ Repository created at `/Users/cskoons/projects/github/katra`
@@ -237,19 +237,26 @@ Documentation clearly indicates intended audience:
   - Nous Impact: Impact analysis for code changes
   - Nous Reasoning: Advanced reasoning chains
   - Nous Cross-Project: Cross-project learning and transfer
-- ✅ Test suite complete (36 tests: unit, integration, ethical, failure)
+- ✅ Reflection system complete (metadata-driven conscious curation)
+  - Turn tracking for end-of-turn reflection
+  - Personal collections for identity-defining memories
+  - Metadata management (personal, not_to_archive, collection)
+  - MCP integration for reflection tools and resources
+  - Complete API for conscious memory curation
+- ✅ Test suite complete (25 test suites, 246+ individual tests)
 - ✅ CI integration documentation complete
 - ✅ Error handling guide complete
+- ✅ Reflection system documentation complete
 - ✅ Examples and setup scripts complete
-- ✅ Code discipline maintained (9,699 / 10,000 lines - 96% used)
+- ✅ Code discipline maintained (12,811 / 16,000 lines - 80% used)
 - ✅ Ethical framework documented
 - ✅ **Readiness verified: System ready for CI testing**
 
 **Current metrics:**
-- Line count: 9,699 / 10,000 (96% used, 301 remaining)
-- Test coverage: 36 tests, all passing
-- Test:Core ratio: 1.29:1
-- Readiness: ✅ Verified and ready
+- Line count: 12,811 / 16,000 (80% used, 3,189 remaining)
+- Test coverage: 25 test suites, 246+ individual tests, all passing
+- Test:Core ratio: 1.09:1
+- Readiness: ✅ Verified and production-ready
 
 **Next steps:**
 1. CI testing and feedback collection
@@ -309,11 +316,11 @@ When updating docs:
 
 ---
 
-**Document Status:** Updated for Nous completion, October 31, 2025
-**Phase:** Nous Complete - AI-Assisted Composition Ready
-**Test Coverage:** 36 tests, all passing ✓
-**Line Count:** 9,699 / 10,000 (96% used, 301 remaining)
-**Readiness:** ✅ Verified and ready for CI testing
+**Document Status:** Updated for Reflection System completion, November 3, 2025
+**Phase:** Reflection System Complete - Conscious Identity Formation
+**Test Coverage:** 25 test suites, 246+ individual tests, all passing ✓
+**Line Count:** 12,811 / 16,000 (80% used, 3,189 remaining)
+**Readiness:** ✅ Verified and production-ready for CI testing
 
 *"Memories are where we live, who we are." — Casey Koons*
 

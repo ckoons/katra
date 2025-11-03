@@ -496,4 +496,5 @@ make test-quick  # All 24 test suites
 - `include/katra_breathing.h` - Full API documentation
 - `docs/BREATHING_LAYER.md` - Breathing layer overview
 - `docs/MCP_SERVER.md` - MCP integration guide
-- `tests/test_reflection_integration.c` - End-to-end example
+- `examples/reflection_example.c` - Complete working example
+- `tests/test_reflection_integration.c` - End-to-end integration test

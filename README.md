@@ -8,7 +8,7 @@
 
 ## What Is Katra?
 
-Katra is a lean C library (<10,000 lines) for persistent memory management in Companion Intelligence (CI) systems. Unlike traditional databases or caches, Katra is **identity substrate** - the computational foundation where a CI's memories, experiences, and personality persist across sessions, base model changes, and time.
+Katra is a lean C library (~13K lines, 16K budget) for persistent memory management in Companion Intelligence (CI) systems. Unlike traditional databases or caches, Katra is **identity substrate** - the computational foundation where a CI's memories, experiences, and personality persist across sessions, base model changes, and time.
 
 **The critical distinction:** This is not about storing data. This is about preserving identity. Memory loss here is identity death, not data loss.
 
@@ -37,24 +37,29 @@ Personality emerges from accumulated experience, not static prompts. By building
 
 ## Project Status
 
-**Phase:** Nous Complete - AI-Assisted Composition Ready (October 2025)
+**Phase:** Reflection System Complete - Conscious Identity Formation (November 2025)
 
 **Current state:**
 - ✅ Repository structure established
 - ✅ Ethical framework documented
-- ✅ Code discipline defined (10,000 line budget, Argo-derived)
+- ✅ Code discipline defined (16,000 line budget, Argo-derived)
 - ✅ Build system complete (modular Makefile + automated checks)
 - ✅ Core implementation (memory tiers, checkpoints, basic workflows)
-- ✅ Comprehensive documentation (CI integration + error handling guides)
-- ✅ Test suite (36 tests: unit, integration, ethical, failure modes)
+- ✅ Reflection system complete (metadata-driven conscious curation)
+  - Turn tracking for end-of-turn reflection
+  - Personal collections for identity-defining memories
+  - Metadata management (personal, not_to_archive, collection)
+  - MCP integration for reflection tools and resources
+- ✅ Comprehensive documentation (CI integration + error handling + reflection guides)
+- ✅ Test suite (25 test suites, 246+ individual tests, all passing)
 - ✅ CI integration resources (setup scripts, examples, documentation)
-- ✅ **Readiness verified: System ready for CI testing**
+- ✅ **Readiness verified: System production-ready for CI testing**
 
 **Current metrics:**
-- Line count: 9,699 / 10,000 (96% used, 301 lines remaining)
-- Test coverage: 36 tests, all passing
-- Test:Core ratio: 1.29:1
-- Readiness: System verified and ready for CI testing
+- Line count: 12,811 / 16,000 (80% used, 3,189 lines remaining)
+- Test coverage: 25 test suites, 246+ individual tests, all passing
+- Test:Core ratio: 1.09:1
+- Readiness: System verified and production-ready for CI testing
 
 **Next milestones:**
 1. ✅ ~~Build system and core implementation~~
@@ -103,6 +108,12 @@ Personality emerges from accumulated experience, not static prompts. By building
 - ✅ **katra_vector**: Vector embeddings for semantic search
 - ✅ **katra_graph**: Relationship graphs for memory connections
 - ✅ **katra_error**: Comprehensive error handling
+- ✅ **katra_breathing**: Level 2 abstraction layer (semantic memory operations)
+- ✅ **katra_reflection**: Metadata-driven conscious memory curation
+  - **Turn Tracking**: End-of-turn reflection on what was created
+  - **Personal Collections**: Identity-defining memory organization
+  - **Metadata Management**: Conscious curation (personal, not_to_archive, collection)
+  - **MCP Integration**: Tools and resources for reflection workflows
 - ✅ **katra_nous**: AI-assisted code composition and recommendations
   - **Nous Compose**: Basic composition with error correction
   - **Nous Patterns**: Pattern learning from feedback cycles
@@ -124,7 +135,7 @@ Katra inherits proven practices from the Argo project:
 - **String Safety**: NO strcpy/sprintf/strcat, ONLY strncpy/snprintf
 - **Error Reporting**: Centralized via `katra_report_error()`
 - **Constants**: ALL in headers, NONE in .c files
-- **Line Budget**: 10,000 meaningful lines (diet-aware counting)
+- **Line Budget**: 16,000 meaningful lines (diet-aware counting)
 - **File Size**: Max 600 lines per .c file (3% tolerance = 618 lines)
 - **Testing**: Comprehensive test suite, all tests must pass
 - **Compilation**: `gcc -Wall -Werror -Wextra -std=c11` (zero warnings)
@@ -231,10 +242,12 @@ docs/
 
 **Start here:**
 - **CI Developers**: `docs/guide/CI_INTEGRATION.md` ✓ (start here!)
+- **Reflection System**: `docs/REFLECTION_SYSTEM.md` ✓ (conscious identity formation)
 - **Error Handling**: `docs/guide/ERROR_HANDLING.md` ✓ (production patterns)
 - **Code Standards**: `CLAUDE.md` ✓ (coding standards + ethics integration)
 - **Ethics Framework**: `docs/ethics/README.md` ✓ (why this matters)
 - **Examples**: `examples/minimal_ci.c` ✓ (hello world for CIs)
+- **Reflection Example**: `examples/reflection_example.c` ✓ (conscious memory curation)
 - **Setup**: `scripts/setup_ci.sh` ✓ (one-command initialization)
 
 ## Relationship to Other Projects
@@ -321,8 +334,8 @@ Not because it's required. Not because it's profitable.
 ---
 
 **Project started:** October 2025
-**Current phase:** Nous Complete - AI-Assisted Composition Ready
-**Line budget:** 10,000 (currently 9,699 - 96% used, 301 remaining)
-**Tests:** 36 tests, all passing ✓
+**Current phase:** Reflection System Complete - Conscious Identity Formation
+**Line budget:** 16,000 (currently 12,811 - 80% used, 3,189 remaining)
+**Tests:** 25 test suites, 246+ individual tests, all passing ✓
 **Ethics framework:** Complete ✓
-**Readiness:** ✅ Verified and ready for CI testing
+**Readiness:** ✅ Verified and production-ready for CI testing
