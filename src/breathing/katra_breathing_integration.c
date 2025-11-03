@@ -84,6 +84,49 @@ char* get_working_context(void) {
         katra_digest_free(yesterday);
     }
 
+    /* Personal collection memories (always included - identity-defining) */
+    memory_query_t personal_query = {
+        .ci_id = ci_id,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 0,  /* No limit - include all personal memories */
+        .filter_personal = true,
+        .personal_value = true
+    };
+
+    memory_record_t** personal_results = NULL;
+    size_t personal_count = 0;
+
+    result = katra_memory_query(&personal_query, &personal_results, &personal_count);
+    if (result == KATRA_SUCCESS && personal_count > 0) {
+        offset += snprintf(context + offset, buffer_size - offset,
+                          "## Personal Collection\n");
+
+        /* Group by collection path for better organization */
+        for (size_t i = 0; i < personal_count; i++) {
+            if (!personal_results[i]->content) continue;
+
+            const char* collection = personal_results[i]->collection ?
+                                    personal_results[i]->collection : "Uncategorized";
+
+            offset += snprintf(context + offset, buffer_size - offset,
+                              "- [%s] %s\n", collection, personal_results[i]->content);
+
+            /* Safety check - stop if buffer nearly full */
+            if (offset >= buffer_size - KATRA_BUFFER_GROWTH_THRESHOLD) {
+                offset += snprintf(context + offset, buffer_size - offset,
+                                  "... (truncated)\n");
+                break;
+            }
+        }
+
+        offset += snprintf(context + offset, buffer_size - offset, "\n");
+        katra_memory_free_results(personal_results, personal_count);
+    }
+
     /* Recent significant memories */
     memory_query_t query = {
         .ci_id = ci_id,

@@ -251,6 +251,30 @@ static bool record_matches_query(const memory_record_t* record,
         return false;
     }
 
+    /* Check personal collection filters */
+    if (query->filter_personal) {
+        if (record->personal != query->personal_value) {
+            return false;
+        }
+    }
+
+    if (query->filter_not_to_archive) {
+        if (record->not_to_archive != query->not_to_archive_value) {
+            return false;
+        }
+    }
+
+    /* Check collection prefix filter */
+    if (query->collection_prefix) {
+        if (!record->collection) {
+            return false;  /* No collection, can't match prefix */
+        }
+        size_t prefix_len = strlen(query->collection_prefix);
+        if (strncmp(record->collection, query->collection_prefix, prefix_len) != 0) {
+            return false;
+        }
+    }
+
     return true;
 }
 
