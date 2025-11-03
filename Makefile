@@ -153,6 +153,7 @@ DEP_FILES := $(ALL_OBJS:.o=.d)
 .PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
 .PHONY: test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives
 .PHONY: test-breathing-enhancements test-session-info test-mcp test-turn-tracking
+.PHONY: test-reflection-integration
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -300,12 +301,13 @@ TEST_BREATHING_ENHANCEMENTS := $(BIN_DIR)/tests/test_breathing_enhancements
 TEST_SESSION_INFO := $(BIN_DIR)/tests/test_session_info
 TEST_MCP := $(BIN_DIR)/tests/test_mcp
 TEST_TURN_TRACKING := $(BIN_DIR)/tests/test_turn_tracking
+TEST_REFLECTION_INTEGRATION := $(BIN_DIR)/tests/test_reflection_integration
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-mcp test-turn-tracking
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-mcp test-turn-tracking test-reflection-integration
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -412,6 +414,10 @@ test-turn-tracking: $(TEST_TURN_TRACKING)
 	@echo "Running turn tracking and metadata tests..."
 	@$(TEST_TURN_TRACKING)
 
+test-reflection-integration: $(TEST_REFLECTION_INTEGRATION)
+	@echo "Running reflection integration test..."
+	@$(TEST_REFLECTION_INTEGRATION)
+
 # CI readiness check
 check-ready: directories $(LIBKATRA_UTILS)
 	@echo "Checking Katra readiness for CI testing..."
@@ -511,6 +517,10 @@ $(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(LIBKATRA_UTILS)
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
 
 $(TEST_TURN_TRACKING): $(TEST_DIR)/test_turn_tracking.c $(LIBKATRA_UTILS)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
+
+$(TEST_REFLECTION_INTEGRATION): $(TEST_DIR)/test_reflection_integration.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
