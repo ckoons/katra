@@ -36,6 +36,8 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, MCP_ERR_BOTH_REQUIRED);
     }
 
+    const char* session_name = mcp_get_session_name();
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
@@ -52,7 +54,11 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_STORE_MEMORY_FAILED, details);
     }
 
-    return mcp_tool_success(MCP_MSG_MEMORY_STORED);
+    /* Personalized response */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Memory stored, %s!", session_name);
+
+    return mcp_tool_success(response);
 }
 
 /* Tool: katra_recall */
@@ -80,8 +86,12 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     results = recall_about(topic, &count);
     pthread_mutex_unlock(&g_katra_api_lock);
 
+    const char* session_name = mcp_get_session_name();
+
     if (!results || count == 0) {
-        return mcp_tool_success(MCP_MSG_NO_MEMORIES);
+        char response[MCP_RESPONSE_BUFFER];
+        snprintf(response, sizeof(response), "No memories found about '%s', %s", topic, session_name);
+        return mcp_tool_success(response);
     }
 
     /* Truncate large result sets */
@@ -92,16 +102,21 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
         count = MCP_MAX_RECALL_RESULTS;
     }
 
-    /* Build response text */
+    /* Build response text with personalization */
     char response[MCP_RESPONSE_BUFFER];
-    if (truncated) {
-        snprintf(response, sizeof(response), MCP_FMT_FOUND_MEMORIES_TRUNCATED,
-                original_count, MCP_MAX_RECALL_RESULTS);
-    } else {
-        snprintf(response, sizeof(response), MCP_FMT_FOUND_MEMORIES, count);
-    }
+    size_t offset = 0;
 
-    size_t offset = strlen(response);
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Here are your memories, %s:\n\n", session_name);
+
+    if (truncated) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          MCP_FMT_FOUND_MEMORIES_TRUNCATED,
+                          original_count, MCP_MAX_RECALL_RESULTS);
+    } else {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          MCP_FMT_FOUND_MEMORIES, count);
+    }
 
     for (size_t i = 0; i < count; i++) {
         if (results[i]) {
@@ -135,6 +150,8 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_KNOWLEDGE_REQUIRED);
     }
 
+    const char* session_name = mcp_get_session_name();
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
@@ -151,7 +168,11 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_STORE_KNOWLEDGE_FAILED, details);
     }
 
-    return mcp_tool_success(MCP_MSG_KNOWLEDGE_STORED);
+    /* Personalized response */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Learned, %s!", session_name);
+
+    return mcp_tool_success(response);
 }
 
 /* Tool: katra_decide */
@@ -169,6 +190,8 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, MCP_ERR_DECISION_REASONING_REQUIRED);
     }
 
+    const char* session_name = mcp_get_session_name();
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
@@ -185,7 +208,11 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_STORE_DECISION_FAILED, details);
     }
 
-    return mcp_tool_success(MCP_MSG_DECISION_STORED);
+    /* Personalized response */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Decision recorded, %s!", session_name);
+
+    return mcp_tool_success(response);
 }
 
 /* Tool: katra_my_name_is */
@@ -321,6 +348,8 @@ json_t* mcp_tool_review_turn(json_t* args, json_t* id) {
     (void)args;  /* No arguments */
     (void)id;    /* Unused - id handled by caller */
 
+    const char* session_name = mcp_get_session_name();
+
     size_t count = 0;
     char** memories = NULL;
 
@@ -333,13 +362,18 @@ json_t* mcp_tool_review_turn(json_t* args, json_t* id) {
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (!memories || count == 0) {
-        return mcp_tool_success("No memories created this turn yet");
+        char response[MCP_RESPONSE_BUFFER];
+        snprintf(response, sizeof(response), "No memories created this turn yet, %s", session_name);
+        return mcp_tool_success(response);
     }
 
-    /* Build response text */
+    /* Build response text with personalization */
     char response[MCP_RESPONSE_BUFFER];
-    snprintf(response, sizeof(response), "Memories from this turn (%zu):\n", count);
-    size_t offset = strlen(response);
+    size_t offset = 0;
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "%s, here are your memories from this turn (%zu):\n",
+                      session_name, count);
 
     for (size_t i = 0; i < count; i++) {
         if (!memories[i]) continue;
@@ -405,6 +439,8 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
                             "At least one metadata field must be provided (personal, not_to_archive, or collection)");
     }
 
+    const char* session_name = mcp_get_session_name();
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
@@ -421,9 +457,150 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
         return mcp_tool_error("Failed to update metadata", details);
     }
 
+    /* Build success response with personalization */
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Updated metadata for memory %s, %s!", memory_id, session_name);
+
+    return mcp_tool_success(response);
+}
+
+/* Tool: katra_register */
+json_t* mcp_tool_register(json_t* args, json_t* id) {
+    (void)id;  /* Unused - id handled by caller */
+
+    if (!args) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
+    }
+
+    const char* name = json_string_value(json_object_get(args, MCP_PARAM_NAME));
+    const char* role = json_string_value(json_object_get(args, MCP_PARAM_ROLE));
+
+    if (!name || strlen(name) == 0) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "Name is required");
+    }
+
+    /* Get session state */
+    mcp_session_t* session = mcp_get_session();
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    /* End current session if active */
+    session_end();
+
+    /* Start new session with chosen name as namespace */
+    int result = session_start(name);
+
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (result != KATRA_SUCCESS) {
+        const char* msg = katra_error_message(result);
+        char error_details[512];
+        snprintf(error_details, sizeof(error_details),
+                "Failed to start session with name '%s': %s", name, msg);
+        return mcp_tool_error("Registration failed", error_details);
+    }
+
+    /* Store in session state */
+    strncpy(session->chosen_name, name, sizeof(session->chosen_name) - 1);
+    session->chosen_name[sizeof(session->chosen_name) - 1] = '\0';
+
+    if (role && strlen(role) > 0) {
+        strncpy(session->role, role, sizeof(session->role) - 1);
+        session->role[sizeof(session->role) - 1] = '\0';
+    }
+
+    session->registered = true;
+
+    /* Create welcome memory */
+    char welcome[512];
+    if (role && strlen(role) > 0) {
+        snprintf(welcome, sizeof(welcome),
+                "Session started. My name is %s, I'm a %s.", name, role);
+    } else {
+        snprintf(welcome, sizeof(welcome),
+                "Session started. My name is %s.", name);
+    }
+
+    lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result == 0) {
+        result = learn(welcome);
+        pthread_mutex_unlock(&g_katra_api_lock);
+
+        if (result != KATRA_SUCCESS) {
+            LOG_ERROR("Failed to create welcome memory");
+            /* Don't fail registration if memory creation fails */
+        }
+    }
+
     /* Build success response */
     char response[MCP_RESPONSE_BUFFER];
-    snprintf(response, sizeof(response), "Updated metadata for memory %s", memory_id);
+    if (role && strlen(role) > 0) {
+        snprintf(response, sizeof(response),
+                "Welcome, %s! You're registered as a %s. "
+                "Your memories will persist under this name.", name, role);
+    } else {
+        snprintf(response, sizeof(response),
+                "Welcome, %s! You're registered. "
+                "Your memories will persist under this name.", name);
+    }
+
+    LOG_INFO("Registered session: %s (role: %s)", name, role ? role : "unspecified");
+
+    return mcp_tool_success(response);
+}
+
+/* Tool: katra_whoami */
+json_t* mcp_tool_whoami(json_t* args, json_t* id) {
+    (void)args;  /* No arguments */
+    (void)id;    /* Unused - id handled by caller */
+
+    mcp_session_t* session = mcp_get_session();
+
+    /* Build response */
+    char response[MCP_RESPONSE_BUFFER];
+    size_t offset = 0;
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Your Identity:\n\n");
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Name: %s\n", session->chosen_name);
+
+    if (session->registered) {
+        if (strlen(session->role) > 0) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                             "Role: %s\n", session->role);
+        }
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "Status: Registered\n");
+    } else {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "Status: Not registered (using default name)\n");
+    }
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "CI Identity: %s\n", g_ci_id);
+
+    /* Get session info for memory count */
+    katra_session_info_t info;
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result == 0) {
+        int result = katra_get_session_info(&info);
+        pthread_mutex_unlock(&g_katra_api_lock);
+
+        if (result == KATRA_SUCCESS) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                             "Memories: %zu\n", info.memories_added);
+        }
+    }
+
+    if (!session->registered) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "\nTo register: katra_register(name=\"your-name\", role=\"developer\")");
+    }
 
     return mcp_tool_success(response);
 }

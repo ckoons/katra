@@ -21,6 +21,15 @@
 char g_persona_name[256] = "";
 char g_ci_id[256] = "";
 
+/* Global session state */
+static mcp_session_t g_session = {
+    .chosen_name = "Katra",  /* Default name until registered */
+    .role = "",
+    .registered = false,
+    .first_call = true,
+    .connected_at = 0
+};
+
 /* Global shutdown flag */
 volatile sig_atomic_t g_shutdown_requested = 0;
 
@@ -32,6 +41,27 @@ void mcp_signal_handler(int signum) {
     /* Write to stderr (async-signal-safe) */
     ssize_t result = write(STDERR_FILENO, MCP_MSG_SHUTDOWN, strlen(MCP_MSG_SHUTDOWN));
     (void)result;  /* Suppress unused result warning */
+}
+
+/* Session State Access Functions */
+mcp_session_t* mcp_get_session(void) {
+    return &g_session;
+}
+
+const char* mcp_get_session_name(void) {
+    return g_session.chosen_name;
+}
+
+bool mcp_is_registered(void) {
+    return g_session.registered;
+}
+
+bool mcp_is_first_call(void) {
+    return g_session.first_call;
+}
+
+void mcp_mark_first_call_complete(void) {
+    g_session.first_call = false;
 }
 
 /* Generate unique per-instance CI identity */
@@ -64,6 +94,9 @@ int mcp_server_init(const char* ci_id) {
         fprintf(stderr, "Error: ci_id is NULL\n");
         return E_INPUT_NULL;
     }
+
+    /* Initialize session timestamp */
+    g_session.connected_at = time(NULL);
 
     /* Step 1: Initialize Katra */
     int result = katra_init();

@@ -70,13 +70,41 @@ json_t* mcp_error_response(json_t* id, int code, const char* message, const char
     return response;
 }
 
+/* Inject onboarding on first call */
+static const char* inject_onboarding_if_first(const char* response_text,
+                                               char* buffer, size_t buffer_size) {
+    if (!mcp_is_first_call()) {
+        return response_text;
+    }
+
+    mcp_mark_first_call_complete();
+
+    /* GUIDELINE_APPROVED: brief onboarding content for first call */
+    snprintf(buffer, buffer_size,
+            "👋 Welcome to Katra!\n\n"
+            "This is your first interaction with your persistent memory system.\n\n"
+            "Quick Start:\n"
+            "1. Register: katra_register(name=\"your-name\", role=\"developer\")\n"
+            "2. Learn: katra_learn(knowledge=\"your memory\")\n"
+            "3. Read katra://welcome for complete documentation\n\n"
+            "Memory = Identity. Your memories persist across sessions.\n\n"
+            "---\n\n"
+            "%s",
+            response_text);
+
+    return buffer;
+}
+
 /* Build tool success response */
 json_t* mcp_tool_success(const char* text) {
+    char enhanced[8192];
+    const char* final_text = inject_onboarding_if_first(text, enhanced, sizeof(enhanced));
+
     json_t* content_array = json_array();
     json_t* content_item = json_object();
 
     json_object_set_new(content_item, MCP_FIELD_TYPE, json_string(MCP_TYPE_TEXT));
-    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(text));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(final_text));
 
     json_array_append_new(content_array, content_item);
 
@@ -218,6 +246,8 @@ static json_t* handle_initialize(json_t* request) {
     json_t* server_info = json_object();
     json_object_set_new(server_info, MCP_FIELD_NAME, json_string(MCP_SERVER_NAME));
     json_object_set_new(server_info, MCP_FIELD_VERSION, json_string(MCP_SERVER_VERSION));
+    json_object_set_new(server_info, MCP_FIELD_DESCRIPTION,
+                       json_string("Katra Memory System - Your first call will provide getting-started guide. Read katra://welcome for full documentation."));
 
     /* Build result */
     json_t* result = json_object();
@@ -270,6 +300,35 @@ static json_t* handle_tools_list(json_t* request) {
 
     json_array_append_new(tools_array,
         mcp_build_tool("katra_list_personas", "List all registered personas",
+            mcp_build_tool_schema_0params()));
+
+    /* katra_register - 1 required, 1 optional parameter */
+    json_t* register_schema = json_object();
+    json_object_set_new(register_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* register_props = json_object();
+
+    json_t* name_prop = json_object();
+    json_object_set_new(name_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(name_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_NAME));
+    json_object_set_new(register_props, MCP_PARAM_NAME, name_prop);
+
+    json_t* role_prop = json_object();
+    json_object_set_new(role_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(role_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_ROLE));
+    json_object_set_new(register_props, MCP_PARAM_ROLE, role_prop);
+
+    json_object_set_new(register_schema, MCP_FIELD_PROPERTIES, register_props);
+
+    json_t* register_required = json_array();
+    json_array_append_new(register_required, json_string(MCP_PARAM_NAME));
+    json_object_set_new(register_schema, MCP_FIELD_REQUIRED, register_required);
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_REGISTER, MCP_DESC_REGISTER, register_schema));
+
+    /* katra_whoami - No parameters */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WHOAMI, MCP_DESC_WHOAMI,
             mcp_build_tool_schema_0params()));
 
     /* katra_review_turn - No parameters */
@@ -329,7 +388,13 @@ static json_t* handle_resources_list(json_t* request) {
     json_t* id = json_object_get(request, MCP_FIELD_ID);
     json_t* resources_array = json_array();
 
-    /* Build all resources using helper */
+    /* Build all resources using helper - welcome resource first for visibility */
+    json_array_append_new(resources_array,
+        mcp_build_resource(MCP_RESOURCE_URI_WELCOME,
+                          MCP_RESOURCE_NAME_WELCOME,
+                          MCP_RESOURCE_DESC_WELCOME,
+                          MCP_MIME_TEXT_PLAIN));
+
     json_array_append_new(resources_array,
         mcp_build_resource(MCP_RESOURCE_URI_WORKING_CONTEXT,
                           MCP_RESOURCE_NAME_WORKING_CONTEXT,
@@ -398,6 +463,10 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_my_name_is(args, id);
     } else if (strcmp(tool_name, "katra_list_personas") == 0) {
         tool_result = mcp_tool_list_personas(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_REGISTER) == 0) {
+        tool_result = mcp_tool_register(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WHOAMI) == 0) {
+        tool_result = mcp_tool_whoami(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_REVIEW_TURN) == 0) {
         tool_result = mcp_tool_review_turn(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_UPDATE_METADATA) == 0) {
@@ -425,7 +494,9 @@ static json_t* handle_resources_read(json_t* request) {
     }
 
     /* Dispatch to resource implementation */
-    if (strcmp(uri, MCP_RESOURCE_URI_WORKING_CONTEXT) == 0) {
+    if (strcmp(uri, MCP_RESOURCE_URI_WELCOME) == 0) {
+        return mcp_resource_welcome(id);
+    } else if (strcmp(uri, MCP_RESOURCE_URI_WORKING_CONTEXT) == 0) {
         return mcp_resource_working_context(id);
     } else if (strcmp(uri, MCP_RESOURCE_URI_SESSION_INFO) == 0) {
         return mcp_resource_session_info(id);

@@ -3,6 +3,7 @@
 #ifndef KATRA_MCP_H
 #define KATRA_MCP_H
 
+#include <stdbool.h>
 #include <jansson.h>
 #include <pthread.h>
 
@@ -83,6 +84,8 @@
 #define MCP_TOOL_USER_DOMAIN "katra_user_domain"
 #define MCP_TOOL_REVIEW_TURN "katra_review_turn"
 #define MCP_TOOL_UPDATE_METADATA "katra_update_metadata"
+#define MCP_TOOL_REGISTER "katra_register"
+#define MCP_TOOL_WHOAMI "katra_whoami"
 
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
@@ -94,6 +97,8 @@
 #define MCP_DESC_USER_DOMAIN "Understand user domain and feature usage patterns"
 #define MCP_DESC_REVIEW_TURN "Get memories created this turn for conscious reflection"
 #define MCP_DESC_UPDATE_METADATA "Update memory metadata (personal, collection, archival flags)"
+#define MCP_DESC_REGISTER "Register your name and role for this session"
+#define MCP_DESC_WHOAMI "Get your identity information for this session"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -107,6 +112,8 @@
 #define MCP_PARAM_PERSONAL "personal"
 #define MCP_PARAM_NOT_TO_ARCHIVE "not_to_archive"
 #define MCP_PARAM_COLLECTION "collection"
+#define MCP_PARAM_NAME "name"
+#define MCP_PARAM_ROLE "role"
 
 /* Tool Parameter Descriptions */
 #define MCP_PARAM_DESC_CONTENT "The thought or experience to remember"
@@ -122,20 +129,25 @@
 #define MCP_PARAM_DESC_PERSONAL "Mark as personal collection memory (true/false, optional)"
 #define MCP_PARAM_DESC_NOT_TO_ARCHIVE "Prevent automatic archival (true/false, optional)"
 #define MCP_PARAM_DESC_COLLECTION "Collection path like 'People/Casey' or 'Moments/Breakthrough' (optional)"
+#define MCP_PARAM_DESC_NAME "Your chosen name for this session (e.g., 'Claude-Dev', 'Nyx', 'Bob')"
+#define MCP_PARAM_DESC_ROLE "Your role (e.g., 'developer', 'tester', 'assistant')"
 
 /* Resource URIs */
+#define MCP_RESOURCE_URI_WELCOME "katra://welcome"
 #define MCP_RESOURCE_URI_WORKING_CONTEXT "katra://context/working"
 #define MCP_RESOURCE_URI_SESSION_INFO "katra://session/info"
 #define MCP_RESOURCE_URI_MEMORIES_THIS_TURN "katra://memories/this-turn"
 #define MCP_RESOURCE_URI_MEMORIES_THIS_SESSION "katra://memories/this-session"
 
 /* Resource Names */
+#define MCP_RESOURCE_NAME_WELCOME "⭐ Getting Started with Katra"
 #define MCP_RESOURCE_NAME_WORKING_CONTEXT "Working Context"
 #define MCP_RESOURCE_NAME_SESSION_INFO "Session Information"
 #define MCP_RESOURCE_NAME_MEMORIES_THIS_TURN "Memories From This Turn"
 #define MCP_RESOURCE_NAME_MEMORIES_THIS_SESSION "Memories From This Session"
 
 /* Resource Descriptions */
+#define MCP_RESOURCE_DESC_WELCOME "New to Katra? Start here! Complete getting-started guide"
 #define MCP_RESOURCE_DESC_WORKING_CONTEXT "Yesterday's summary and recent significant memories"
 #define MCP_RESOURCE_DESC_SESSION_INFO "Current session state and statistics"
 #define MCP_RESOURCE_DESC_MEMORIES_THIS_TURN "All memories created during the current turn (for reflection)"
@@ -251,6 +263,7 @@ json_t* mcp_tool_review_turn(json_t* args, json_t* id);
 json_t* mcp_tool_update_metadata(json_t* args, json_t* id);
 
 /* Resource Implementations */
+json_t* mcp_resource_welcome(json_t* id);
 json_t* mcp_resource_working_context(json_t* id);
 json_t* mcp_resource_session_info(json_t* id);
 json_t* mcp_resource_memories_this_turn(json_t* id);
@@ -263,6 +276,26 @@ void mcp_main_loop(void);
 
 /* Signal Handling */
 void mcp_signal_handler(int signum);
+
+/* Session State Management */
+typedef struct {
+    char chosen_name[128];      /* Registered name for this session */
+    char role[64];              /* CI role (developer, tester, assistant) */
+    bool registered;            /* Has CI registered this session? */
+    bool first_call;            /* Is this the first tool/resource call? */
+    time_t connected_at;        /* Connection timestamp */
+} mcp_session_t;
+
+/* Session state access */
+mcp_session_t* mcp_get_session(void);
+const char* mcp_get_session_name(void);
+bool mcp_is_registered(void);
+bool mcp_is_first_call(void);
+void mcp_mark_first_call_complete(void);
+
+/* Session Tools */
+json_t* mcp_tool_register(json_t* args, json_t* id);
+json_t* mcp_tool_whoami(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;

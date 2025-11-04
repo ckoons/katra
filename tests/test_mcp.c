@@ -18,6 +18,36 @@
 char g_persona_name[256] = "test_persona";
 char g_ci_id[256] = TEST_CI_ID;
 
+/* Mock session state for testing */
+static mcp_session_t test_session = {
+    .chosen_name = "TestUser",
+    .role = "developer",
+    .registered = true,
+    .first_call = false,
+    .connected_at = 0
+};
+
+/* Mock session state functions */
+mcp_session_t* mcp_get_session(void) {
+    return &test_session;
+}
+
+const char* mcp_get_session_name(void) {
+    return test_session.chosen_name;
+}
+
+bool mcp_is_registered(void) {
+    return test_session.registered;
+}
+
+bool mcp_is_first_call(void) {
+    return test_session.first_call;
+}
+
+void mcp_mark_first_call_complete(void) {
+    test_session.first_call = false;
+}
+
 /* Test counters */
 static int tests_run = 0;
 static int tests_passed = 0;
@@ -127,8 +157,8 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    if (tool_count != 11) {
-        printf("  ✗ Expected 11 tools, got %zu\n", tool_count);
+    if (tool_count != 13) {
+        printf("  ✗ Expected 13 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }
@@ -147,7 +177,7 @@ static int test_tools_list(void) {
 
     json_decref(response);
     tests_passed++;
-    printf("  ✓ tools/list returns 11 tools\n");
+    printf("  ✓ tools/list returns 13 tools\n");
     return 0;
 }
 
@@ -177,15 +207,15 @@ static int test_resources_list(void) {
     }
 
     size_t resource_count = json_array_size(resources);
-    if (resource_count != 4) {
-        printf("  ✗ Expected 4 resources, got %zu\n", resource_count);
+    if (resource_count != 5) {
+        printf("  ✗ Expected 5 resources, got %zu\n", resource_count);
         json_decref(response);
         return 1;
     }
 
     json_decref(response);
     tests_passed++;
-    printf("  ✓ resources/list returns 4 resources\n");
+    printf("  ✓ resources/list returns 5 resources\n");
     return 0;
 }
 
