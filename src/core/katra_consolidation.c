@@ -68,13 +68,13 @@ int katra_wake_capture(consolidation_context_t* ctx,
                        memory_pathway_t pathway) {
     if (!ctx || !record) {
         katra_report_error(E_INPUT_NULL, "katra_wake_capture",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (ctx->mode != MODE_WAKE) {
         katra_report_error(E_INVALID_STATE, "katra_wake_capture",
-                          "Not in WAKE mode");
+                          KATRA_ERR_NOT_WAKE_MODE);
         return E_INVALID_STATE;
     }
 
@@ -118,7 +118,7 @@ int katra_wake_analyze(consolidation_context_t* ctx,
 
     if (!ctx || !user_input || !ci_response) {
         katra_report_error(E_INPUT_NULL, "katra_wake_analyze",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -234,7 +234,7 @@ int katra_sleep_route_by_strength(consolidation_context_t* ctx) {
 
     if (ctx->mode != MODE_SLEEP) {
         katra_report_error(E_INVALID_STATE, "katra_sleep_route_by_strength",
-                          "Not in SLEEP mode");
+                          KATRA_ERR_NOT_SLEEP_MODE);
         return E_INVALID_STATE;
     }
 

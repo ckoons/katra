@@ -108,7 +108,7 @@ graph_node_t* katra_graph_get_or_create_node(graph_store_t* store, const char* r
     int result = KATRA_SUCCESS;
 
     if (!store || !record_id) {
-        katra_report_error(E_INPUT_NULL, "katra_graph_get_or_create_node", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "katra_graph_get_or_create_node", KATRA_ERR_NULL_PARAMETER);
         return NULL;
     }
 
@@ -188,7 +188,7 @@ int katra_graph_add_edge(graph_store_t* store,
     graph_edge_t* edge = NULL;
 
     if (!store || !from_id || !to_id) {
-        katra_report_error(E_INPUT_NULL, "katra_graph_add_edge", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "katra_graph_add_edge", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -240,7 +240,7 @@ int katra_graph_get_related(graph_store_t* store,
     size_t capacity = GRAPH_EDGE_INITIAL_CAPACITY;
 
     if (!store || !record_id || !edges_out || !count_out) {
-        katra_report_error(E_INPUT_NULL, "katra_graph_get_related", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "katra_graph_get_related", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -298,7 +298,7 @@ int katra_graph_traverse(graph_store_t* store,
     size_t visited_capacity = GRAPH_INITIAL_CAPACITY;
 
     if (!store || !start_id || !path_out || !count_out) {
-        katra_report_error(E_INPUT_NULL, "katra_graph_traverse", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "katra_graph_traverse", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 

@@ -321,7 +321,7 @@ int tier2_query(const digest_query_t* query,
     size_t result_count = 0;
 
     if (!query || !results || !count) {
-        katra_report_error(E_INPUT_NULL, "tier2_query", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "tier2_query", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 

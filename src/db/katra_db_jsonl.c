@@ -23,7 +23,7 @@ static int jsonl_init(void* ctx, const char* ci_id) {
     jsonl_context_t* jsonl = (jsonl_context_t*)ctx;
 
     if (!jsonl || !ci_id) {
-        katra_report_error(E_INPUT_NULL, "jsonl_init", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "jsonl_init", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -63,13 +63,13 @@ static int jsonl_store(void* ctx, const memory_record_t* record) {
     jsonl_context_t* jsonl = (jsonl_context_t*)ctx;
 
     if (!jsonl || !record) {
-        katra_report_error(E_INPUT_NULL, "jsonl_store", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "jsonl_store", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!jsonl->tier1_initialized) {
         katra_report_error(E_INVALID_STATE, "jsonl_store",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -89,13 +89,13 @@ static int jsonl_retrieve(void* ctx, const char* record_id,
     jsonl_context_t* jsonl = (jsonl_context_t*)ctx;
 
     if (!jsonl || !record_id || !record) {
-        katra_report_error(E_INPUT_NULL, "jsonl_retrieve", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "jsonl_retrieve", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!jsonl->tier1_initialized) {
         katra_report_error(E_INVALID_STATE, "jsonl_retrieve",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -112,13 +112,13 @@ static int jsonl_query(void* ctx, const db_query_t* query,
     jsonl_context_t* jsonl = (jsonl_context_t*)ctx;
 
     if (!jsonl || !query || !results || !count) {
-        katra_report_error(E_INPUT_NULL, "jsonl_query", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "jsonl_query", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!jsonl->tier1_initialized) {
         katra_report_error(E_INVALID_STATE, "jsonl_query",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -148,13 +148,13 @@ static int jsonl_get_stats(void* ctx, size_t* record_count, size_t* bytes_used) 
     jsonl_context_t* jsonl = (jsonl_context_t*)ctx;
 
     if (!jsonl || !record_count || !bytes_used) {
-        katra_report_error(E_INPUT_NULL, "jsonl_get_stats", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "jsonl_get_stats", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!jsonl->tier1_initialized) {
         katra_report_error(E_INVALID_STATE, "jsonl_get_stats",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 

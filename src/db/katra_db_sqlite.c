@@ -25,7 +25,7 @@ static int sqlite_init(void* ctx, const char* ci_id) {
     sqlite_context_t* sqlite_ctx = (sqlite_context_t*)ctx;
 
     if (!sqlite_ctx || !ci_id) {
-        katra_report_error(E_INPUT_NULL, "sqlite_init", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "sqlite_init", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -70,13 +70,13 @@ static int sqlite_store(void* ctx, const memory_record_t* record) {
     sqlite_context_t* sqlite_ctx = (sqlite_context_t*)ctx;
 
     if (!sqlite_ctx || !record) {
-        katra_report_error(E_INPUT_NULL, "sqlite_store", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "sqlite_store", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!sqlite_ctx->index_initialized) {
         katra_report_error(E_INVALID_STATE, "sqlite_store",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -94,13 +94,13 @@ static int sqlite_retrieve(void* ctx, const char* record_id,
     sqlite_context_t* sqlite_ctx = (sqlite_context_t*)ctx;
 
     if (!sqlite_ctx || !record_id || !record) {
-        katra_report_error(E_INPUT_NULL, "sqlite_retrieve", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "sqlite_retrieve", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!sqlite_ctx->index_initialized) {
         katra_report_error(E_INVALID_STATE, "sqlite_retrieve",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -117,13 +117,13 @@ static int sqlite_query(void* ctx, const db_query_t* query,
     sqlite_context_t* sqlite_ctx = (sqlite_context_t*)ctx;
 
     if (!sqlite_ctx || !query || !results || !count) {
-        katra_report_error(E_INPUT_NULL, "sqlite_query", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "sqlite_query", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!sqlite_ctx->index_initialized) {
         katra_report_error(E_INVALID_STATE, "sqlite_query",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -139,13 +139,13 @@ static int sqlite_get_stats(void* ctx, size_t* record_count, size_t* bytes_used)
     sqlite_context_t* sqlite_ctx = (sqlite_context_t*)ctx;
 
     if (!sqlite_ctx || !record_count || !bytes_used) {
-        katra_report_error(E_INPUT_NULL, "sqlite_get_stats", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "sqlite_get_stats", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!sqlite_ctx->index_initialized) {
         katra_report_error(E_INVALID_STATE, "sqlite_get_stats",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 

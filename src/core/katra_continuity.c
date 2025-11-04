@@ -57,7 +57,7 @@ int katra_get_daily_stats(const char* ci_id, daily_stats_t* stats) {
 
     if (!ci_id || !stats) {
         katra_report_error(E_INPUT_NULL, "katra_get_daily_stats",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -201,7 +201,7 @@ int katra_sunrise_basic(const char* ci_id, digest_record_t** digest) {
 
     if (!ci_id || !digest) {
         katra_report_error(E_INPUT_NULL, "katra_sunrise_basic",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 

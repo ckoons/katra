@@ -353,7 +353,7 @@ int tier1_query(const memory_query_t* query,
     size_t file_count = 0;
 
     if (!query || !results || !count) {
-        katra_report_error(E_INPUT_NULL, "tier1_query", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "tier1_query", KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 

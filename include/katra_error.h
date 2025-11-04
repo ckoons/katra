@@ -137,4 +137,19 @@ static inline const char* katra_error_type_string(int type) {
     }
 }
 
+/* Common error message strings (externalized for consistency) */
+#define KATRA_ERR_NULL_PARAMETER "NULL parameter"
+#define KATRA_ERR_MUTEX_LOCK_FAILED "Failed to acquire mutex"
+#define KATRA_ERR_FILE_OPEN_FAILED "Failed to open %s"
+#define KATRA_ERR_NOT_WAKE_MODE "Not in WAKE mode"
+#define KATRA_ERR_NOT_SLEEP_MODE "Not in SLEEP mode"
+#define KATRA_ERR_INDEX_NOT_INITIALIZED "Index not initialized"
+#define KATRA_ERR_INVALID_MODE "Invalid consolidation mode"
+#define KATRA_ERR_FAILED_TO_PARSE "Failed to parse %s"
+#define KATRA_ERR_FAILED_TO_CREATE "Failed to create %s"
+#define KATRA_ERR_FAILED_TO_WRITE "Failed to write %s"
+#define KATRA_ERR_FAILED_TO_READ "Failed to read %s"
+#define KATRA_ERR_MEMORY_NOT_INITIALIZED "Memory subsystem not initialized"
+#define KATRA_ERR_BACKEND_NOT_INITIALIZED "Backend not initialized"
+
 #endif /* KATRA_ERROR_H */

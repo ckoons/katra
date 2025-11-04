@@ -46,7 +46,7 @@ int katra_memory_build_connections_for_record(memory_record_t* record,
                                                 size_t memory_count) {
     if (!record || !all_memories) {
         katra_report_error(E_INPUT_NULL, "katra_memory_build_connections_for_record",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -248,7 +248,7 @@ int katra_memory_calculate_centrality_for_records(memory_record_t** memories,
                                                     size_t count) {
     if (!memories) {
         katra_report_error(E_INPUT_NULL, "katra_memory_calculate_centrality_for_records",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 

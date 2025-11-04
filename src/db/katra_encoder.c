@@ -40,7 +40,7 @@ universal_encoder_t* katra_encoder_create(const char* ci_id) {
 int katra_encoder_add_backend(universal_encoder_t* encoder, db_backend_t* backend) {
     if (!encoder || !backend) {
         katra_report_error(E_INPUT_NULL, "katra_encoder_add_backend",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -105,7 +105,7 @@ int katra_encoder_store(universal_encoder_t* encoder,
 
     if (!encoder || !record) {
         katra_report_error(E_INPUT_NULL, "katra_encoder_store",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -161,7 +161,7 @@ int katra_encoder_query(universal_encoder_t* encoder,
 
     if (!encoder || !query || !results || !count) {
         katra_report_error(E_INPUT_NULL, "katra_encoder_query",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 

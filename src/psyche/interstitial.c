@@ -114,7 +114,7 @@ float katra_emotional_delta(const experience_t* prev, const experience_t* curr) 
 boundary_event_t* katra_detect_boundary(interstitial_processor_t* processor,
                                         experience_t* experience) {
     if (!processor || !experience) {
-        katra_report_error(E_INPUT_NULL, __func__, "NULL parameter");
+        katra_report_error(E_INPUT_NULL, __func__, KATRA_ERR_NULL_PARAMETER);
         return NULL;
     }
 

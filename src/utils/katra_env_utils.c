@@ -44,7 +44,7 @@ int katra_setenv(const char* name, const char* value) {
 
     int lock_result = pthread_mutex_lock(&katra_env_mutex);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PROCESS, "katra_setenv", "Failed to acquire mutex");
+        katra_report_error(E_SYSTEM_PROCESS, "katra_setenv", KATRA_ERR_MUTEX_LOCK_FAILED);
         return E_SYSTEM_PROCESS;
     }
     int result = set_env_internal(name, value);
@@ -59,7 +59,7 @@ int katra_unsetenv(const char* name) {
 
     int lock_result = pthread_mutex_lock(&katra_env_mutex);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PROCESS, "katra_unsetenv", "Failed to acquire mutex");
+        katra_report_error(E_SYSTEM_PROCESS, "katra_unsetenv", KATRA_ERR_MUTEX_LOCK_FAILED);
         return E_SYSTEM_PROCESS;
     }
 
@@ -126,7 +126,7 @@ int katra_env_dump(const char* filepath) {
 
     int lock_result = pthread_mutex_lock(&katra_env_mutex);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PROCESS, "katra_env_dump", "Failed to acquire mutex");
+        katra_report_error(E_SYSTEM_PROCESS, "katra_env_dump", KATRA_ERR_MUTEX_LOCK_FAILED);
         return E_SYSTEM_PROCESS;
     }
 

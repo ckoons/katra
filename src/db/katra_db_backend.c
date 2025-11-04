@@ -14,7 +14,7 @@
 int katra_db_backend_init(db_backend_t* backend, const char* ci_id) {
     if (!backend || !ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_db_backend_init",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -50,13 +50,13 @@ void katra_db_backend_cleanup(db_backend_t* backend) {
 int katra_db_backend_store(db_backend_t* backend, const memory_record_t* record) {
     if (!backend || !record) {
         katra_report_error(E_INPUT_NULL, "katra_db_backend_store",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!backend->initialized) {
         katra_report_error(E_INVALID_STATE, "katra_db_backend_store",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -74,13 +74,13 @@ int katra_db_backend_retrieve(db_backend_t* backend, const char* record_id,
                                memory_record_t** record) {
     if (!backend || !record_id || !record) {
         katra_report_error(E_INPUT_NULL, "katra_db_backend_retrieve",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!backend->initialized) {
         katra_report_error(E_INVALID_STATE, "katra_db_backend_retrieve",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -98,13 +98,13 @@ int katra_db_backend_query(db_backend_t* backend, const db_query_t* query,
                             memory_record_t*** results, size_t* count) {
     if (!backend || !query || !results || !count) {
         katra_report_error(E_INPUT_NULL, "katra_db_backend_query",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!backend->initialized) {
         katra_report_error(E_INVALID_STATE, "katra_db_backend_query",
-                          "Backend not initialized");
+                          KATRA_ERR_BACKEND_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 

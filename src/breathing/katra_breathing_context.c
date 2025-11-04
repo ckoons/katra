@@ -277,7 +277,7 @@ void free_memory_list(char** list, size_t count) {
 char** recall_previous_session(const char* ci_id, size_t limit, size_t* count) {
     if (!ci_id || !count) {
         if (count) *count = 0;
-        katra_report_error(E_INPUT_NULL, "recall_previous_session", "NULL parameter");
+        katra_report_error(E_INPUT_NULL, "recall_previous_session", KATRA_ERR_NULL_PARAMETER);
         return NULL;
     }
 

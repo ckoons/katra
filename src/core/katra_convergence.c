@@ -139,7 +139,7 @@ int katra_analyze_conversation(convergence_detector_t* detector,
 
     if (!detector || !user_input || !ci_response || !candidates || !count) {
         katra_report_error(E_INPUT_NULL, "katra_analyze_conversation",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -239,7 +239,7 @@ int katra_detect_convergence(convergence_detector_t* detector,
 
     if (!detector || !candidate || !signal) {
         katra_report_error(E_INPUT_NULL, "katra_detect_convergence",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -352,7 +352,7 @@ int katra_strengthen_converged(convergence_detector_t* detector,
                                const convergence_signal_t* signal) {
     if (!detector || !signal) {
         katra_report_error(E_INPUT_NULL, "katra_strengthen_converged",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
@@ -387,7 +387,7 @@ char* katra_store_automatic_memory(convergence_detector_t* detector,
 
     if (!detector || !candidate) {
         katra_report_error(E_INPUT_NULL, "katra_store_automatic_memory",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return NULL;
     }
 

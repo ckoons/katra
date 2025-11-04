@@ -309,7 +309,7 @@ int katra_loadenv(void) {
 
     int lock_result = pthread_mutex_lock(&katra_env_mutex);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PROCESS, "katra_loadenv", "Failed to acquire mutex");
+        katra_report_error(E_SYSTEM_PROCESS, "katra_loadenv", KATRA_ERR_MUTEX_LOCK_FAILED);
         return E_SYSTEM_PROCESS;
     }
 
@@ -354,7 +354,7 @@ cleanup:
 int katra_clearenv(void) {
     int lock_result = pthread_mutex_lock(&katra_env_mutex);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PROCESS, "katra_clearenv", "Failed to acquire mutex");
+        katra_report_error(E_SYSTEM_PROCESS, "katra_clearenv", KATRA_ERR_MUTEX_LOCK_FAILED);
         return E_SYSTEM_PROCESS;
     }
 

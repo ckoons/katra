@@ -92,7 +92,7 @@ int tier2_index_rebuild(const char* ci_id) {
 
     if (!g_db) {
         katra_report_error(E_INTERNAL_LOGIC, "tier2_index_rebuild",
-                          "Index not initialized");
+                          KATRA_ERR_INDEX_NOT_INITIALIZED);
         return E_INTERNAL_LOGIC;
     }
 
@@ -100,7 +100,7 @@ int tier2_index_rebuild(const char* ci_id) {
 
     /* Clear existing index data */
     char* err_msg = NULL;
-    int rc = sqlite3_exec(g_db, "DELETE FROM digests", NULL, NULL, &err_msg);
+    int rc = sqlite3_exec(g_db, "DELETE FROM digests", NULL, NULL, &err_msg); /* GUIDELINE_APPROVED: SQL */
     if (rc != SQLITE_OK) {
         katra_report_error(E_SYSTEM_FILE, "tier2_index_rebuild",
                           "Failed to clear index: %s", err_msg);
@@ -146,7 +146,7 @@ int tier2_index_stats(const char* ci_id,
 
     if (!g_db) {
         katra_report_error(E_INTERNAL_LOGIC, "tier2_index_stats",
-                          "Index not initialized");
+                          KATRA_ERR_INDEX_NOT_INITIALIZED);
         return E_INTERNAL_LOGIC;
     }
 
@@ -155,7 +155,7 @@ int tier2_index_stats(const char* ci_id,
     *keyword_count = 0;
 
     /* Count digests */
-    const char* digest_sql = "SELECT COUNT(*) FROM digests";
+    const char* digest_sql = "SELECT COUNT(*) FROM digests"; /* GUIDELINE_APPROVED: SQL */
     rc = sqlite3_prepare_v2(g_db, digest_sql, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -165,7 +165,7 @@ int tier2_index_stats(const char* ci_id,
     }
 
     /* Count unique themes */
-    const char* theme_sql = "SELECT COUNT(DISTINCT theme) FROM themes";
+    const char* theme_sql = "SELECT COUNT(DISTINCT theme) FROM themes"; /* GUIDELINE_APPROVED: SQL */
     rc = sqlite3_prepare_v2(g_db, theme_sql, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -175,7 +175,7 @@ int tier2_index_stats(const char* ci_id,
     }
 
     /* Count unique keywords */
-    const char* keyword_sql = "SELECT COUNT(DISTINCT keyword) FROM keywords";
+    const char* keyword_sql = "SELECT COUNT(DISTINCT keyword) FROM keywords"; /* GUIDELINE_APPROVED: SQL */
     rc = sqlite3_prepare_v2(g_db, keyword_sql, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         if (sqlite3_step(stmt) == SQLITE_ROW) {

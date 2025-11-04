@@ -39,13 +39,13 @@ int katra_memory_get_connection_hubs(const char* ci_id, float min_centrality,
                                       memory_connection_hub_t** hubs, size_t* count) {
     if (!ci_id || !hubs || !count) {
         katra_report_error(E_INPUT_NULL, "katra_memory_get_connection_hubs",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!katra_memory_is_initialized()) {
         katra_report_error(E_INVALID_STATE, "katra_memory_get_connection_hubs",
-                          "Memory subsystem not initialized");
+                          KATRA_ERR_MEMORY_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -187,13 +187,13 @@ int katra_memory_get_related(const char* ci_id, const char* record_id,
                               related_memory_t** related, size_t* count) {
     if (!ci_id || !record_id || !related || !count) {
         katra_report_error(E_INPUT_NULL, "katra_memory_get_related",
-                          "NULL parameter");
+                          KATRA_ERR_NULL_PARAMETER);
         return E_INPUT_NULL;
     }
 
     if (!katra_memory_is_initialized()) {
         katra_report_error(E_INVALID_STATE, "katra_memory_get_related",
-                          "Memory subsystem not initialized");
+                          KATRA_ERR_MEMORY_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
