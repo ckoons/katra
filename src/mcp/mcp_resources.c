@@ -54,19 +54,23 @@ json_t* mcp_resource_welcome(json_t* id) {
 
         "## Available Tools\n\n"
 
-        "**Session Management:**\n"
+        "**Core Memory Operations:**\n"
+        "- `katra_remember` - Store memory with importance level\n"
+        "- `katra_recall` - Search your memories\n"
+        "- `katra_learn` - Store new knowledge\n"
+        "- `katra_decide` - Store decision with reasoning\n\n"
+
+        "**Identity:**\n"
         "- `katra_register` - Register your name and role for this session\n"
         "- `katra_whoami` - Get your identity information\n\n"
 
-        "**Memory Operations:**\n"
-        "- `katra_learn` - Store new knowledge\n"
-        "- `katra_recall` - Search your memories\n"
-        "- `katra_remember` - Store memory with importance level\n"
-        "- `katra_decide` - Store decision with reasoning\n\n"
-
         "**Reflection:**\n"
-        "- `katra_review_turn` - Review memories created this turn\n"
         "- `katra_update_metadata` - Mark memories as personal, prevent archival\n\n"
+
+        "**Advanced (Nous):**\n"
+        "- `katra_placement` - Analyze where memory fits in knowledge graph\n"
+        "- `katra_impact` - Assess impact of information on understanding\n"
+        "- `katra_user_domain` - Understand user's problem domain\n\n"
 
         "## Available Resources\n\n"
 

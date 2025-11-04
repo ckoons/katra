@@ -157,8 +157,8 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    if (tool_count != 13) {
-        printf("  ✗ Expected 13 tools, got %zu\n", tool_count);
+    if (tool_count != 10) {
+        printf("  ✗ Expected 10 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }
@@ -177,7 +177,7 @@ static int test_tools_list(void) {
 
     json_decref(response);
     tests_passed++;
-    printf("  ✓ tools/list returns 13 tools\n");
+    printf("  ✓ tools/list returns 10 tools\n");
     return 0;
 }
 

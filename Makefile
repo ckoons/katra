@@ -254,6 +254,9 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/mcp/%.c | $(BUILD_DIR)
 $(MCP_SERVER): $(MCP_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)
 	@echo "Building MCP server: $@"
 	@$(CC) -o $@ $(MCP_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
+	@echo "Copying wrapper script to bin/..."
+	@cp $(SCRIPTS_DIR)/katra_mcp_server_wrapper.sh $(BIN_DIR)/
+	@chmod +x $(BIN_DIR)/katra_mcp_server_wrapper.sh
 	@echo "MCP server built successfully"
 
 # Convenience target
