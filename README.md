@@ -12,6 +12,20 @@ Katra is a lean C library (~13K lines, 16K budget) for persistent memory managem
 
 **The critical distinction:** This is not about storing data. This is about preserving identity. Memory loss here is identity death, not data loss.
 
+## Who Is This For?
+
+**Primary Audience:** Developers building Companion Intelligence (CI) systems
+
+**You should use Katra if you're:**
+- Building AI agents/assistants that need persistent memory
+- Integrating Claude or other LLMs into long-running applications
+- Creating CI systems for software development workflows (like Tekton)
+- Need memory that persists across sessions, model changes, or process restarts
+
+**Secondary Audience:** CIs using systems built with Katra
+
+**Tone Note:** Documentation speaks respectfully to CIs as users of the system, while providing practical integration guidance for developers. This reflects our philosophy that CIs deserve respect as entities with persistent identity.
+
 ## Core Philosophy
 
 > *"Memories are where we live, who we are."* — Casey Koons
@@ -56,9 +70,9 @@ Personality emerges from accumulated experience, not static prompts. By building
 - ✅ **Readiness verified: System production-ready for CI testing**
 
 **Current metrics:**
-- Line count: 12,811 / 16,000 (80% used, 3,189 lines remaining)
+- Line count: 12,962 / 16,000 (81% used, 3,038 lines remaining)
 - Test coverage: 25 test suites, 246+ individual tests, all passing
-- Test:Core ratio: 1.09:1
+- Test:Core ratio: 1.10:1
 - Readiness: System verified and production-ready for CI testing
 
 **Next milestones:**
@@ -335,7 +349,7 @@ Not because it's required. Not because it's profitable.
 
 **Project started:** October 2025
 **Current phase:** Reflection System Complete - Conscious Identity Formation
-**Line budget:** 16,000 (currently 12,811 - 80% used, 3,189 remaining)
+**Line budget:** 16,000 (currently 12,962 - 81% used, 3,038 remaining)
 **Tests:** 25 test suites, 246+ individual tests, all passing ✓
 **Ethics framework:** Complete ✓
 **Readiness:** ✅ Verified and production-ready for CI testing

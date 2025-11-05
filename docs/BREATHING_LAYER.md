@@ -6,6 +6,18 @@
 
 Real memory isn't conscious. You don't think "I will now store this memory." You don't think "I will now query my memories." Memory formation and recall should be automatic, unconscious - like breathing.
 
+## Implementation Status
+
+**Currently Implemented:**
+- ✅ **Level 0**: Explicit shortcuts (`remember()`, `learn()`, `decide()`) - Natural language replaces clinical API
+- ✅ **Level 1**: Simple primitives with semantic importance (no more 0.75 numbers)
+- ✅ **Level 2**: Automatic context loading (`relevant_memories()`, `recall_about()`)
+
+**Future/Aspirational:**
+- ⏳ **Level 3**: Truly unconscious memory formation - Memory forms automatically from conversation flow without explicit calls
+
+**Current Reality**: You still call `remember()` explicitly. This is better than raw database operations, but not yet "like breathing." The goal is Level 3, but we're at Level 0-2 today.
+
 ## The Problem
 
 Theron's observation during Day 1 testing:
@@ -81,9 +93,11 @@ const char** relevant = relevant_memories(&count);
 // System decides what's relevant based on context
 ```
 
-### 3. Interstitial Capture (Invisible)
+### 3. Interstitial Capture (Invisible) - Level 3 (Future)
 
-Memory formation happens automatically:
+**Status**: API exists, full automation not yet implemented.
+
+Memory formation will happen automatically:
 
 ```c
 // CI generates a response
@@ -97,6 +111,8 @@ capture_significant_thoughts(response);
 // No explicit store() call needed
 // Memory formation was invisible
 ```
+
+**Current Reality**: `capture_significant_thoughts()` is implemented but requires explicit invocation. True "invisible" memory formation (Level 3) where the system automatically captures from conversation flow is future work.
 
 ## Evolution from Engram
 

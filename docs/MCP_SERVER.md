@@ -32,13 +32,18 @@ Create or edit `~/.config/Claude/claude_desktop_config.json`:
     "katra": {
       "command": "/Users/YOUR_USERNAME/projects/github/katra/bin/katra_mcp_server",
       "args": [],
-      "env": {}
+      "env": {
+        "KATRA_NAME": "your_name"
+      }
     }
   }
 }
 ```
 
-**Important**: Replace `/Users/YOUR_USERNAME/` with your actual path!
+**Important**:
+- Replace `/Users/YOUR_USERNAME/` with your actual path!
+- **Optional**: Set `KATRA_NAME` to use a persistent, readable identity instead of auto-generated IDs like `mcp_cskoons_33097_1762367296`
+- If `KATRA_NAME` is not set, the server generates a unique session ID automatically
 
 ### 3. Restart Claude Code
 
@@ -147,6 +152,42 @@ Associates current session with a named persona. Creates new persona if it doesn
 
 Returns a list of all personas registered in the system with their last activity timestamps.
 
+## MCP Tools vs Breathing Layer C API
+
+**Important distinction:** The MCP server exposes a **subset** of Katra's Breathing Layer API optimized for Claude Code integration.
+
+### Currently Exposed as MCP Tools:
+
+| Breathing Layer C Function | MCP Tool | Status |
+|----------------------------|----------|--------|
+| `remember()` | `katra_remember` | ✅ Available |
+| `learn()` | `katra_learn` | ✅ Available |
+| `decide()` | `katra_decide` | ✅ Available |
+| `recall_about()` | `katra_recall` | ✅ Available |
+| `placement query()` | `katra_placement` | ✅ Available |
+| `impact query()` | `katra_impact` | ✅ Available |
+| `user_domain query()` | `katra_user_domain` | ✅ Available |
+
+### Available Only in C API:
+
+These Breathing Layer functions are **not yet exposed** as MCP tools:
+
+- `reflect()` - Store reflections/insights
+- `notice_pattern()` - Store pattern observations
+- `thinking()` - Stream of consciousness
+- `wondering()` - Store questions/uncertainty
+- `figured_out()` - Store "aha!" moments
+- `remember_forever()` - Mark as critical importance
+- `ok_to_forget()` - Mark as disposable
+- `what_do_i_know()` - Query knowledge specifically
+- `recall_previous_session()` - Cross-session continuity
+- `relevant_memories()` - Automatic context loading
+- `recent_thoughts()` - Get recent N memories
+
+**Why the subset?** The MCP tools focus on the most common workflows for Claude Code integration. The full C API is available for developers building CI systems directly.
+
+**For C developers:** See `docs/BREATHING_LAYER.md` for complete API reference.
+
 ## Available Resources
 
 Resources provide read-only access to Katra's context:
@@ -203,12 +244,39 @@ Claude Code → stdin → [Katra MCP Server] → stdout → Claude Code
 
 Each MCP server instance creates a unique session:
 
-**CI Identity Format**: `mcp_<username>_<pid>_<timestamp>`
+**Default CI Identity Format**: `mcp_<username>_<pid>_<timestamp>`
 
 **Example**: `mcp_cskoons_42290_1761945198`
 
-**Lifecycle**:
-1. Server starts → Generates unique CI ID
+#### Using Persistent Identity
+
+For better user experience, set `KATRA_NAME` environment variable:
+
+```json
+{
+  "mcpServers": {
+    "katra": {
+      "command": "/path/to/katra_mcp_server",
+      "env": {
+        "KATRA_NAME": "Bob"
+      }
+    }
+  }
+}
+```
+
+**Benefits**:
+- ✅ Readable identity: `Bob` instead of `mcp_cskoons_42290_1761945198`
+- ✅ Persistent across sessions: All your sessions share the same memory
+- ✅ Easy to identify in logs and debugging
+- ✅ Works with persona management tools (`katra_my_name_is`)
+
+**Without `KATRA_NAME`**: Each server instance gets a unique auto-generated ID. Memories don't persist across Claude Code restarts.
+
+**With `KATRA_NAME`**: All sessions for that name share the same memory store, enabling true cross-session continuity.
+
+**Session Lifecycle**:
+1. Server starts → Reads `KATRA_NAME` or generates unique CI ID
 2. Initializes Katra (utils, memory, breathing layer)
 3. Starts session with CI ID
 4. Processes JSON-RPC requests
