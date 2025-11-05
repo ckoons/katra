@@ -26,6 +26,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
+#include "katra_breathing_context_persist.h"
 
 /* ============================================================================
  * GLOBAL STATE - Shared across breathing layer files
@@ -90,6 +91,13 @@ int breathe_init(const char* ci_id) {
     g_initialized = true;
     LOG_INFO("Breathing layer initialized for CI: %s", ci_id);
 
+    /* Initialize context persistence subsystem */
+    result = context_persist_init(ci_id);
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Context persistence init failed: %d (continuing without it)", result);
+        /* Non-fatal - continue without context persistence */
+    }
+
     return KATRA_SUCCESS;
 }
 
@@ -120,7 +128,11 @@ void breathe_cleanup(void) {
     katra_memory_cleanup();
     LOG_DEBUG("Step 4: Memory subsystem cleaned up");
 
-    /* Step 5: Free breathing layer resources */
+    /* Step 5: Cleanup context persistence */
+    context_persist_cleanup();
+    LOG_DEBUG("Step 5: Context persistence cleaned up");
+
+    /* Step 6: Free breathing layer resources */
     free(g_context.ci_id);
     free(g_context.session_id);
     free(g_current_thought);
@@ -128,7 +140,7 @@ void breathe_cleanup(void) {
 
     memset(&g_context, 0, sizeof(g_context));
     g_current_thought = NULL;
-    LOG_DEBUG("Step 5: Breathing layer resources freed");
+    LOG_DEBUG("Step 6: Breathing layer resources freed");
 
     LOG_INFO("Breathing layer cleanup complete");
 }
@@ -177,6 +189,16 @@ int session_start(const char* ci_id) {
         katra_digest_free(yesterday);
     }
 
+    /* Restore context snapshot (latent space for session startup) */
+    char* latent_space = restore_context_as_latent_space(ci_id);
+    if (latent_space) {
+        LOG_INFO("Restored context snapshot (%zu bytes latent space)", strlen(latent_space));
+        /* TODO: Integrate latent space with system prompt in future MCP enhancement */
+        free(latent_space);
+    } else {
+        LOG_DEBUG("No previous context snapshot found for %s", ci_id);
+    }
+
     /* Load relevant context */
     load_context();
 
@@ -190,8 +212,16 @@ int session_end(void) {
 
     LOG_INFO("Ending session: %s", g_context.session_id);
 
+    /* Capture context snapshot for session continuity */
+    int result = capture_context_snapshot(g_context.ci_id, NULL);
+    if (result == KATRA_SUCCESS) {
+        LOG_INFO("Context snapshot captured");
+    } else {
+        LOG_WARN("Context snapshot failed: %d (continuing shutdown)", result);
+    }
+
     /* Create daily summary (sunset) */
-    int result = katra_sundown_basic(g_context.ci_id, NULL);
+    result = katra_sundown_basic(g_context.ci_id, NULL);
     if (result == KATRA_SUCCESS) {
         LOG_INFO("Daily summary created");
     }

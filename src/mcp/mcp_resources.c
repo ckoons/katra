@@ -1,6 +1,6 @@
 /* © 2025 Casey Koons All rights reserved */
 
-/* MCP Resources - working-context, session-info, welcome */
+/* MCP Resources - working-context, session-info, welcome, context-snapshot */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +10,7 @@
 #include <jansson.h>
 #include "katra_mcp.h"
 #include "katra_breathing.h"
+#include "katra_breathing_context_persist.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -432,6 +433,71 @@ json_t* mcp_resource_memories_this_session(json_t* id) {
 
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+    return mcp_success_response(id, result);
+}
+
+/* Resource: context-snapshot */
+json_t* mcp_resource_context_snapshot(json_t* id) {
+    katra_session_info_t info;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 MCP_ERR_INTERNAL,
+                                 MCP_ERR_MUTEX_LOCK);
+    }
+
+    /* Get CI ID from session info */
+    int katra_result = katra_get_session_info(&info);
+    if (katra_result != KATRA_SUCCESS) {
+        pthread_mutex_unlock(&g_katra_api_lock);
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 "No active session",
+                                 "Session must be started before accessing context snapshot");
+    }
+
+    /* Get context snapshot as latent space */
+    char* snapshot = restore_context_as_latent_space(info.ci_id);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (!snapshot) {
+        /* Build empty response */
+        json_t* contents_array = json_array();
+        json_t* content_item = json_object();
+
+        json_object_set_new(content_item, MCP_FIELD_URI,
+                           json_string(MCP_RESOURCE_URI_CONTEXT_SNAPSHOT));
+        json_object_set_new(content_item, MCP_FIELD_MIME_TYPE,
+                           json_string(MCP_MIME_TEXT_PLAIN));
+        json_object_set_new(content_item, MCP_FIELD_TEXT,
+                           json_string("No context snapshot found - this is your first session"));
+
+        json_array_append_new(contents_array, content_item);
+
+        json_t* result = json_object();
+        json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+        return mcp_success_response(id, result);
+    }
+
+    /* Build resource response with snapshot */
+    json_t* contents_array = json_array();
+    json_t* content_item = json_object();
+
+    json_object_set_new(content_item, MCP_FIELD_URI,
+                       json_string(MCP_RESOURCE_URI_CONTEXT_SNAPSHOT));
+    json_object_set_new(content_item, MCP_FIELD_MIME_TYPE,
+                       json_string(MCP_MIME_TEXT_PLAIN));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(snapshot));
+
+    json_array_append_new(contents_array, content_item);
+
+    json_t* result = json_object();
+    json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+    /* CRITICAL: Free malloc'd snapshot */
+    free(snapshot);
 
     return mcp_success_response(id, result);
 }

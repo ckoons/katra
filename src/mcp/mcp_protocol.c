@@ -389,6 +389,12 @@ static json_t* handle_resources_list(json_t* request) {
                           MCP_MIME_TEXT_PLAIN));
 
     json_array_append_new(resources_array,
+        mcp_build_resource(MCP_RESOURCE_URI_CONTEXT_SNAPSHOT,
+                          MCP_RESOURCE_NAME_CONTEXT_SNAPSHOT,
+                          MCP_RESOURCE_DESC_CONTEXT_SNAPSHOT,
+                          MCP_MIME_TEXT_PLAIN));
+
+    json_array_append_new(resources_array,
         mcp_build_resource(MCP_RESOURCE_URI_SESSION_INFO,
                           MCP_RESOURCE_NAME_SESSION_INFO,
                           MCP_RESOURCE_DESC_SESSION_INFO,
@@ -479,6 +485,8 @@ static json_t* handle_resources_read(json_t* request) {
         return mcp_resource_welcome(id);
     } else if (strcmp(uri, MCP_RESOURCE_URI_WORKING_CONTEXT) == 0) {
         return mcp_resource_working_context(id);
+    } else if (strcmp(uri, MCP_RESOURCE_URI_CONTEXT_SNAPSHOT) == 0) {
+        return mcp_resource_context_snapshot(id);
     } else if (strcmp(uri, MCP_RESOURCE_URI_SESSION_INFO) == 0) {
         return mcp_resource_session_info(id);
     } else if (strcmp(uri, MCP_RESOURCE_URI_MEMORIES_THIS_TURN) == 0) {

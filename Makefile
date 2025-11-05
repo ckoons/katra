@@ -99,6 +99,7 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_primitives.o \
                   $(BUILD_DIR)/katra_breathing_semantic.o \
                   $(BUILD_DIR)/katra_breathing_context.o \
+                  $(BUILD_DIR)/katra_breathing_context_persist.o \
                   $(BUILD_DIR)/katra_breathing_config.o \
                   $(BUILD_DIR)/katra_breathing_interstitial.o \
                   $(BUILD_DIR)/katra_breathing_integration.o \
@@ -152,8 +153,8 @@ DEP_FILES := $(ALL_OBJS:.o=.d)
 .PHONY: test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity
 .PHONY: test-vector test-graph test-sunrise-sunset test-consent test-corruption
 .PHONY: test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives
-.PHONY: test-breathing-enhancements test-session-info test-mcp test-turn-tracking
-.PHONY: test-reflection-integration
+.PHONY: test-breathing-enhancements test-session-info test-context-persist test-mcp
+.PHONY: test-turn-tracking test-reflection-integration
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -302,6 +303,7 @@ TEST_BREATHING_PHASE2 := $(BIN_DIR)/tests/test_breathing_phase2
 TEST_BREATHING_PRIMITIVES := $(BIN_DIR)/tests/test_breathing_primitives
 TEST_BREATHING_ENHANCEMENTS := $(BIN_DIR)/tests/test_breathing_enhancements
 TEST_SESSION_INFO := $(BIN_DIR)/tests/test_session_info
+TEST_CONTEXT_PERSIST := $(BIN_DIR)/tests/test_context_persist
 TEST_MCP := $(BIN_DIR)/tests/test_mcp
 TEST_TURN_TRACKING := $(BIN_DIR)/tests/test_turn_tracking
 TEST_REFLECTION_INTEGRATION := $(BIN_DIR)/tests/test_reflection_integration
@@ -311,7 +313,7 @@ BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 BENCHMARK_REFLECTION := $(BIN_DIR)/tests/benchmark_reflection
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-mcp test-turn-tracking test-reflection-integration
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -409,6 +411,10 @@ test-breathing-enhancements: $(TEST_BREATHING_ENHANCEMENTS)
 test-session-info: $(TEST_SESSION_INFO)
 	@echo "Running session info API tests..."
 	@$(TEST_SESSION_INFO)
+
+test-context-persist: $(TEST_CONTEXT_PERSIST)
+	@echo "Running context persistence tests..."
+	@$(TEST_CONTEXT_PERSIST)
 
 test-mcp: $(TEST_MCP)
 	@echo "Running MCP server tests..."
@@ -513,6 +519,10 @@ $(TEST_BREATHING_ENHANCEMENTS): $(TEST_DIR)/test_breathing_enhancements.c $(LIBK
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
 $(TEST_SESSION_INFO): $(TEST_DIR)/test_session_info.c $(LIBKATRA_UTILS)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
+
+$(TEST_CONTEXT_PERSIST): $(TEST_DIR)/test_context_persist.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
