@@ -12,6 +12,7 @@
 #include "katra_path_utils.h"
 #include "katra_error.h"
 #include "katra_limits.h"
+#include "katra_string_literals.h"
 
 /* Get home directory path */
 int katra_get_home_dir(char* buffer, size_t size) {
@@ -169,7 +170,7 @@ int katra_path_join(char* dest, size_t dest_size,
     /* Build path */
     int written = snprintf(dest, dest_size, "%s%s%s",
                           dir,
-                          has_slash ? "" : "/",
+                          has_slash ? STR_EMPTY : STR_SLASH,
                           filename);
 
     if (written < 0 || (size_t)written >= dest_size) {
@@ -193,7 +194,7 @@ int katra_path_join_with_ext(char* dest, size_t dest_size,
     /* Build path with extension */
     int written = snprintf(dest, dest_size, "%s%s%s.%s",
                           dir,
-                          has_slash ? "" : "/",
+                          has_slash ? STR_EMPTY : STR_SLASH,
                           filename,
                           ext);
 

@@ -568,13 +568,28 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 # Exclude: #define (already in headers), format strings, log messages, GUIDELINE_APPROVED blocks, comments
 # Filter by checking content after "filename:linenum:" prefix
 
-# Create temp file excluding GUIDELINE_APPROVED blocks for counting
+# Create temp file excluding GUIDELINE_APPROVED blocks and comments for counting
 TEMP_COUNT="/tmp/argo_strings_count.txt"
 for file in $(find src/ -name "*.c" 2>/dev/null); do
   awk '
+    # Track GUIDELINE_APPROVED blocks
     /GUIDELINE_APPROVED[^_]/ && !/GUIDELINE_APPROVED_END/ { in_approved=1; next }
     /GUIDELINE_APPROVED_END/ { in_approved=0; next }
-    !in_approved { print FILENAME":"NR":"$0 }
+
+    # Track multi-line comments /* */
+    /\/\*/ && !/\*\// { in_comment=1 }
+    /\*\// { in_comment=0; next }
+
+    # Skip if in approved block or comment
+    in_approved || in_comment { next }
+
+    # Skip single-line comments and lines starting with *
+    /^[[:space:]]*\/\// { next }
+    /^[[:space:]]*\*/ { next }
+    /^[[:space:]]*\/\*.*\*\/[[:space:]]*$/ { next }
+
+    # Print everything else
+    { print FILENAME":"NR":"$0 }
   ' FILENAME="$file" "$file"
 done > "$TEMP_COUNT"
 

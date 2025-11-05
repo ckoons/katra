@@ -15,6 +15,7 @@
 #include "katra_limits.h"
 #include "katra_path_utils.h"
 #include "katra_strings.h"
+#include "katra_string_literals.h"
 #include "katra_core_common.h"
 
 /* SQLite connection (one per process) */
@@ -195,7 +196,7 @@ int tier1_index_add(const memory_record_t* record,
     sqlite3_bind_int64(stmt, 7, (sqlite3_int64)record->access_count);
     sqlite3_bind_double(stmt, 8, record->graph_centrality);
     sqlite3_bind_double(stmt, 9, record->emotion_intensity);
-    sqlite3_bind_text(stmt, 10, record->emotion_type ? record->emotion_type : "", -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 10, record->emotion_type ? record->emotion_type : STR_EMPTY, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 11, record->marked_important ? 1 : 0);
     sqlite3_bind_int(stmt, 12, record->marked_forgettable ? 1 : 0);
     sqlite3_bind_int(stmt, 13, 0);  /* Not archived yet */
@@ -397,7 +398,7 @@ int tier1_index_query(const memory_query_t* query,
 
         /* Extract record_id */
         const char* record_id = (const char*)sqlite3_column_text(stmt, 0);
-        ids[*count] = strdup(record_id ? record_id : "");
+        ids[*count] = strdup(record_id ? record_id : STR_EMPTY);
         if (!ids[*count]) {
             result = E_SYSTEM_MEMORY;
             goto cleanup;
@@ -407,7 +408,7 @@ int tier1_index_query(const memory_query_t* query,
         const char* file_path = (const char*)sqlite3_column_text(stmt, 1);
         long offset = (long)sqlite3_column_int64(stmt, 2);
 
-        strncpy(locs[*count].file_path, file_path ? file_path : "",
+        strncpy(locs[*count].file_path, file_path ? file_path : STR_EMPTY,
                 sizeof(locs[*count].file_path) - 1);
         locs[*count].file_path[sizeof(locs[*count].file_path) - 1] = '\0';
         locs[*count].offset = offset;
@@ -534,12 +535,12 @@ int tier1_index_find_similar(const char* content,
         }
 
         const char* record_id = (const char*)sqlite3_column_text(stmt, 0);
-        ids[*count] = strdup(record_id ? record_id : "");
+        ids[*count] = strdup(record_id ? record_id : STR_EMPTY);
 
         const char* file_path = (const char*)sqlite3_column_text(stmt, 1);
         long offset = (long)sqlite3_column_int64(stmt, 2);
 
-        strncpy(locs[*count].file_path, file_path ? file_path : "",
+        strncpy(locs[*count].file_path, file_path ? file_path : STR_EMPTY,
                 sizeof(locs[*count].file_path) - 1);
         locs[*count].file_path[sizeof(locs[*count].file_path) - 1] = '\0';
         locs[*count].offset = offset;
