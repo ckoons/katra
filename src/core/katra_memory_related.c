@@ -100,7 +100,7 @@ int katra_memory_get_connection_hubs(const char* ci_id, float min_centrality,
     if (!hub_array) {
         katra_memory_free_results(results, result_count);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_get_connection_hubs",
-                          "Failed to allocate hub array");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 
@@ -249,7 +249,7 @@ int katra_memory_get_related(const char* ci_id, const char* record_id,
     if (!related_array) {
         katra_memory_free_results(results, result_count);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_get_related",
-                          "Failed to allocate related array");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

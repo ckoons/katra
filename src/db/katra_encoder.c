@@ -16,14 +16,14 @@ universal_encoder_t* katra_encoder_create(const char* ci_id) {
 
     if (!ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_encoder_create",
-                          "ci_id is NULL");
+                          KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
     encoder = calloc(1, sizeof(universal_encoder_t));
     if (!encoder) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_encoder_create",
-                          "Failed to allocate encoder");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 

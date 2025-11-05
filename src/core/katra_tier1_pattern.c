@@ -323,7 +323,7 @@ static void add_pattern_summary_to_outliers(memory_record_t** records, size_t* p
         if (records[idx]->is_pattern_outlier) {
             records[idx]->pattern_summary = strdup(summary);
             if (!records[idx]->pattern_summary) {
-                LOG_WARN("Failed to allocate pattern_summary for record %s",
+                LOG_WARN(KATRA_ERR_ALLOC_FAILED,
                         records[idx]->record_id);
             }
         }

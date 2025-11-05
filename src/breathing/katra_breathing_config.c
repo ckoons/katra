@@ -103,7 +103,7 @@ context_config_t* get_context_config(void) {
     context_config_t* config = malloc(sizeof(context_config_t));
     if (!config) {
         katra_report_error(E_SYSTEM_MEMORY, "get_context_config",
-                          "Failed to allocate config");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -123,7 +123,7 @@ enhanced_stats_t* get_enhanced_statistics(void) {
     enhanced_stats_t* stats = malloc(sizeof(enhanced_stats_t));
     if (!stats) {
         katra_report_error(E_SYSTEM_MEMORY, "get_enhanced_statistics",
-                          "Failed to allocate stats");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 

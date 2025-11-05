@@ -209,7 +209,7 @@ char** get_memories_this_turn(size_t* count) {
     char** result = malloc(g_turn_memory_count * sizeof(char*));
     if (!result) {
         katra_report_error(E_SYSTEM_MEMORY, "get_memories_this_turn",
-                         "Failed to allocate result array");
+                         KATRA_ERR_ALLOC_FAILED);
         *count = 0;
         return NULL;
     }
@@ -425,7 +425,7 @@ int update_memory_metadata(const char* record_id,
     memory_record_t* record = load_memory_by_id(record_id);
     if (!record) {
         katra_report_error(E_NOT_FOUND, "update_memory_metadata",
-                         "Memory record not found");
+                         KATRA_ERR_MEMORY_NOT_FOUND);
         return E_NOT_FOUND;
     }
 
@@ -490,7 +490,7 @@ int revise_memory_content(const char* record_id, const char* new_content) {
     memory_record_t* record = load_memory_by_id(record_id);
     if (!record) {
         katra_report_error(E_NOT_FOUND, "revise_memory_content",
-                         "Memory record not found");
+                         KATRA_ERR_MEMORY_NOT_FOUND);
         return E_NOT_FOUND;
     }
 
@@ -529,7 +529,7 @@ int review_memory(const char* record_id) {
     memory_record_t* record = load_memory_by_id(record_id);
     if (!record) {
         katra_report_error(E_NOT_FOUND, "review_memory",
-                         "Memory record not found");
+                         KATRA_ERR_MEMORY_NOT_FOUND);
         return E_NOT_FOUND;
     }
 
@@ -577,7 +577,7 @@ int remove_from_personal_collection(const char* record_id) {
     memory_record_t* record = load_memory_by_id(record_id);
     if (!record) {
         katra_report_error(E_NOT_FOUND, "remove_from_personal_collection",
-                         "Memory record not found");
+                         KATRA_ERR_MEMORY_NOT_FOUND);
         return E_NOT_FOUND;
     }
 

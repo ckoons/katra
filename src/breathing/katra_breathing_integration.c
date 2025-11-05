@@ -64,7 +64,7 @@ char* get_working_context(void) {
     char* context = malloc(buffer_size);
     if (!context) {
         katra_report_error(E_SYSTEM_MEMORY, "get_working_context",
-                          "Failed to allocate context buffer");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 

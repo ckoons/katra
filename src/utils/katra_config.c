@@ -194,7 +194,7 @@ static void set_config_internal(const char* key, const char* value) {
         free(existing->value);
         existing->value = strdup(value);
         if (!existing->value) {
-            LOG_ERROR("Failed to allocate memory for config value");
+            LOG_ERROR(KATRA_ERR_ALLOC_FAILED);
             existing->value = NULL;
         }
         return;

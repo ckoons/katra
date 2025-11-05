@@ -34,14 +34,14 @@ graph_store_t* katra_graph_init(const char* ci_id) {
     graph_store_t* store = NULL;
 
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "katra_graph_init", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "katra_graph_init", KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
     /* Allocate store */
     store = calloc(1, sizeof(graph_store_t));
     if (!store) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_graph_init", "Failed to allocate store");
+        katra_report_error(E_SYSTEM_MEMORY, "katra_graph_init", KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -51,7 +51,7 @@ graph_store_t* katra_graph_init(const char* ci_id) {
     store->nodes = calloc(store->node_capacity, sizeof(graph_node_t*));
 
     if (!store->nodes) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_graph_init", "Failed to allocate nodes");
+        katra_report_error(E_SYSTEM_MEMORY, "katra_graph_init", KATRA_ERR_ALLOC_FAILED);
         free(store);
         return NULL;
     }
@@ -127,7 +127,7 @@ graph_node_t* katra_graph_get_or_create_node(graph_store_t* store, const char* r
     /* Create new node */
     node = calloc(1, sizeof(graph_node_t));
     if (!node) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_graph_get_or_create_node", "Failed to allocate node");
+        katra_report_error(E_SYSTEM_MEMORY, "katra_graph_get_or_create_node", KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 

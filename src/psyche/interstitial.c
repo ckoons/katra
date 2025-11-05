@@ -43,7 +43,7 @@ const char* katra_boundary_type_name(boundary_type_t type) {
 /* Initialize interstitial processor */
 interstitial_processor_t* katra_interstitial_init(const char* ci_id) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, __func__, "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, __func__, KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
@@ -274,7 +274,7 @@ int katra_extract_patterns(interstitial_processor_t* processor,
     *patterns = calloc(*pattern_count, sizeof(char*));
     if (!*patterns) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_extract_patterns",
-                          "Failed to allocate patterns");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

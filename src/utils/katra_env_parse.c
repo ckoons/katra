@@ -100,7 +100,7 @@ char* katra_env_expand_value(const char* value, int depth) {
         LOG_WARN("Variable expansion depth limit reached");
         char* result = strdup(value);
         if (!result) {
-            LOG_ERROR("Failed to allocate memory for value expansion");
+            LOG_ERROR(KATRA_ERR_ALLOC_FAILED);
         }
         return result;
     }
@@ -154,7 +154,7 @@ char* katra_env_expand_value(const char* value, int depth) {
     result[result_len] = '\0';
     char* final_result = strdup(result);
     if (!final_result) {
-        LOG_ERROR("Failed to allocate memory for expanded value");
+        LOG_ERROR(KATRA_ERR_ALLOC_FAILED);
     }
     return final_result;
 }

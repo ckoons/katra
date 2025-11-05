@@ -45,14 +45,14 @@ convergence_detector_t* katra_convergence_init(const char* ci_id) {
     convergence_detector_t* detector = NULL;
 
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "katra_convergence_init", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "katra_convergence_init", KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
     detector = calloc(1, sizeof(convergence_detector_t));
     if (!detector) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_convergence_init",
-                          "Failed to allocate detector");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 

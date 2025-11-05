@@ -36,7 +36,7 @@ static int scan_file_for_records(const char* filepath, const memory_query_t* que
 /* Get Tier 1 directory path (exported for archive module) */
 int tier1_get_dir(const char* ci_id, char* buffer, size_t size) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "tier1_get_dir", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "tier1_get_dir", KATRA_ERR_CI_ID_NULL);
         return E_INPUT_NULL;
     }
 
@@ -49,7 +49,7 @@ static int get_daily_file_path(const char* ci_id, char* buffer, size_t size) {
     struct tm* tm_info = localtime(&now);
 
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "get_daily_file_path", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "get_daily_file_path", KATRA_ERR_CI_ID_NULL);
         return E_INPUT_NULL;
     }
 
@@ -74,7 +74,7 @@ int tier1_init(const char* ci_id) {
     char tier1_dir[KATRA_PATH_MAX];
 
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "tier1_init", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "tier1_init", KATRA_ERR_CI_ID_NULL);
         return E_INPUT_NULL;
     }
 
@@ -485,7 +485,7 @@ int tier1_flush(const char* ci_id) {
     int flushed_count = 0;
 
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "tier1_flush", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "tier1_flush", KATRA_ERR_CI_ID_NULL);
         return E_INPUT_NULL;
     }
 

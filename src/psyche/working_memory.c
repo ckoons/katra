@@ -20,7 +20,7 @@
 working_memory_t* katra_working_memory_init(const char* ci_id, size_t capacity) {
     if (!ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_working_memory_init",
-                          "ci_id is NULL");
+                          KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
@@ -161,7 +161,7 @@ int katra_working_memory_access(working_memory_t* wm,
                                  float attention_boost) {
     if (!wm) {
         katra_report_error(E_INPUT_NULL, "katra_working_memory_access",
-                          "wm is NULL");
+                          KATRA_ERR_WM_NULL);
         return E_INPUT_NULL;
     }
 
@@ -207,7 +207,7 @@ experience_t* katra_working_memory_get(working_memory_t* wm, size_t index) {
 int katra_working_memory_decay(working_memory_t* wm, float decay_rate) {
     if (!wm) {
         katra_report_error(E_INPUT_NULL, "katra_working_memory_decay",
-                          "wm is NULL");
+                          KATRA_ERR_WM_NULL);
         return E_INPUT_NULL;
     }
 
@@ -253,7 +253,7 @@ bool katra_working_memory_needs_consolidation(working_memory_t* wm) {
 int katra_working_memory_consolidate(working_memory_t* wm) {
     if (!wm) {
         katra_report_error(E_INPUT_NULL, "katra_working_memory_consolidate",
-                          "wm is NULL");
+                          KATRA_ERR_WM_NULL);
         return E_INPUT_NULL;
     }
 
@@ -307,7 +307,7 @@ int katra_working_memory_consolidate(working_memory_t* wm) {
 int katra_working_memory_clear(working_memory_t* wm, bool consolidate_first) {
     if (!wm) {
         katra_report_error(E_INPUT_NULL, "katra_working_memory_clear",
-                          "wm is NULL");
+                          KATRA_ERR_WM_NULL);
         return E_INPUT_NULL;
     }
 

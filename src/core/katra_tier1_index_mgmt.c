@@ -164,7 +164,7 @@ int tier1_index_rebuild(const char* ci_id) {
     sqlite3* db = tier1_index_get_db();
     if (!db) {
         katra_report_error(E_INTERNAL_LOGIC, "tier1_index_rebuild",
-                          "Index not initialized");
+                          KATRA_ERR_INDEX_NOT_INITIALIZED);
         return E_INTERNAL_LOGIC;
     }
 

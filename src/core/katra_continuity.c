@@ -126,7 +126,7 @@ int katra_sundown_basic(const char* ci_id, const char* summary) {
 
     if (!ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_sundown_basic",
-                          "ci_id is NULL");
+                          KATRA_ERR_CI_ID_NULL);
         return E_INPUT_NULL;
     }
 
@@ -166,7 +166,7 @@ int katra_sundown_basic(const char* ci_id, const char* summary) {
     if (!digest->summary) {
         katra_digest_free(digest);
         katra_report_error(E_SYSTEM_MEMORY, "katra_sundown_basic",
-                          "Failed to allocate summary");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

@@ -278,7 +278,7 @@ int katra_recall_experience(const char* ci_id, const char* query_text,
     if (!cog_results) {
         katra_memory_free_results(base_results, base_count);
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate cognitive results");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

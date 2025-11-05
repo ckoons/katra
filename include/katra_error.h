@@ -151,5 +151,14 @@ static inline const char* katra_error_type_string(int type) {
 #define KATRA_ERR_FAILED_TO_READ "Failed to read %s"
 #define KATRA_ERR_MEMORY_NOT_INITIALIZED "Memory subsystem not initialized"
 #define KATRA_ERR_BACKEND_NOT_INITIALIZED "Backend not initialized"
+#define KATRA_ERR_CI_ID_NULL "ci_id is NULL"
+#define KATRA_ERR_WM_NULL "wm is NULL"
+#define KATRA_ERR_MEMORY_NOT_FOUND "Memory record not found"
+#define KATRA_ERR_ALLOC_FAILED "Memory allocation failed"
+#define KATRA_ERR_OPTIONS_OR_CHECKPOINT_ID_NULL "options or checkpoint_id is NULL"
+#define KATRA_ERR_CHECKPOINT_ID_OR_CI_ID_NULL "checkpoint_id or ci_id is NULL"
+
+/* Common default/fallback values */
+#define KATRA_DEFAULT_NONE "none"
 
 #endif /* KATRA_ERROR_H */

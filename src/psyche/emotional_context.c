@@ -222,7 +222,7 @@ int katra_recall_emotional_experiences(const char* ci_id,
     if (!exp_results) {
         katra_cognitive_free_results(cog_results, cog_count);
         katra_report_error(E_SYSTEM_MEMORY, "katra_recall_emotional_experiences", /* GUIDELINE_APPROVED: function name */
-                          "Failed to allocate experience results"); /* GUIDELINE_APPROVED: error context */
+                          KATRA_ERR_ALLOC_FAILED); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 

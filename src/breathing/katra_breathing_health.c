@@ -29,7 +29,7 @@
 
 memory_health_t* get_memory_health(const char* ci_id) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "get_memory_health", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "get_memory_health", KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
@@ -37,7 +37,7 @@ memory_health_t* get_memory_health(const char* ci_id) {
     memory_health_t* health = calloc(1, sizeof(memory_health_t));
     if (!health) {
         katra_report_error(E_SYSTEM_MEMORY, "get_memory_health",
-                          "Failed to allocate health structure");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 

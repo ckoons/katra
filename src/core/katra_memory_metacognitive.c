@@ -154,7 +154,7 @@ int katra_memory_get_at_risk(const char* ci_id, int max_age_days,
     if (!risk_array) {
         katra_memory_free_results(results, result_count);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_get_at_risk",
-                          "Failed to allocate at-risk array"); /* GUIDELINE_APPROVED: error context */
+                          KATRA_ERR_ALLOC_FAILED); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 
@@ -301,7 +301,7 @@ int katra_memory_get_patterns(const char* ci_id,
     if (!pattern_array) {
         katra_memory_free_results(results, result_count);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_get_patterns",
-                          "Failed to allocate pattern array"); /* GUIDELINE_APPROVED: error context */
+                          KATRA_ERR_ALLOC_FAILED); /* GUIDELINE_APPROVED: error context */
         return E_SYSTEM_MEMORY;
     }
 

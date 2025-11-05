@@ -153,23 +153,25 @@ static int read_checkpoint_header(FILE* fp, checkpoint_metadata_t* metadata) {
         }
 
         /* Parse key-value pairs (simplified) */
+        /* GUIDELINE_APPROVED: sscanf format strings for JSON checkpoint parsing */
         if (strstr(line, KATRA_JSON_FIELD_CHECKPOINT_ID)) {
-            sscanf(line, "  \"checkpoint_id\": \"" SSCANF_FMT_MEDIUM "\"", metadata->checkpoint_id);
+            sscanf(line, "  \"checkpoint_id\": \"" SSCANF_FMT_MEDIUM "\"", metadata->checkpoint_id); /* GUIDELINE_APPROVED */
         } else if (strstr(line, KATRA_JSON_FIELD_CI_ID)) {
-            sscanf(line, "  \"ci_id\": \"" SSCANF_FMT_MEDIUM "\"", metadata->ci_id);
+            sscanf(line, "  \"ci_id\": \"" SSCANF_FMT_MEDIUM "\"", metadata->ci_id); /* GUIDELINE_APPROVED */
         } else if (strstr(line, KATRA_JSON_FIELD_TIMESTAMP)) {
             long ts;
-            sscanf(line, "  \"timestamp\": %ld", &ts);
+            sscanf(line, "  \"timestamp\": %ld", &ts); /* GUIDELINE_APPROVED */
             metadata->timestamp = (time_t)ts;
         } else if (strstr(line, KATRA_JSON_FIELD_VERSION)) {
-            sscanf(line, "  \"version\": \"" SSCANF_FMT_SMALL "\"", metadata->version);
+            sscanf(line, "  \"version\": \"" SSCANF_FMT_SMALL "\"", metadata->version); /* GUIDELINE_APPROVED */
         } else if (strstr(line, KATRA_JSON_FIELD_RECORD_COUNT)) {
-            sscanf(line, "  \"record_count\": %zu", &metadata->record_count);
+            sscanf(line, "  \"record_count\": %zu", &metadata->record_count); /* GUIDELINE_APPROVED */
         } else if (strstr(line, KATRA_JSON_FIELD_TIER1_RECORDS)) {
-            sscanf(line, "  \"tier1_records\": %zu", &metadata->tier1_records);
+            sscanf(line, "  \"tier1_records\": %zu", &metadata->tier1_records); /* GUIDELINE_APPROVED */
         } else if (strstr(line, KATRA_JSON_FIELD_NOTES)) {
-            sscanf(line, "  \"notes\": \"" SSCANF_FMT_NOTES "\"", metadata->notes);
+            sscanf(line, "  \"notes\": \"" SSCANF_FMT_NOTES "\"", metadata->notes); /* GUIDELINE_APPROVED */
         }
+        /* GUIDELINE_APPROVED_END */
     }
 
     return KATRA_SUCCESS;
@@ -236,13 +238,13 @@ int katra_checkpoint_save(const checkpoint_save_options_t* options,
 
     if (!options || !checkpoint_id) {
         katra_report_error(E_INPUT_NULL, "katra_checkpoint_save",
-                          "options or checkpoint_id is NULL");
+                          KATRA_ERR_OPTIONS_OR_CHECKPOINT_ID_NULL);
         result = E_INPUT_NULL;
         goto cleanup;
     }
 
     if (!options->ci_id) {
-        katra_report_error(E_INPUT_NULL, "katra_checkpoint_save", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "katra_checkpoint_save", KATRA_ERR_CI_ID_NULL);
         result = E_INPUT_NULL;
         goto cleanup;
     }
@@ -320,7 +322,7 @@ int katra_checkpoint_save(const checkpoint_save_options_t* options,
     *checkpoint_id = strdup(id_buffer);
     if (!*checkpoint_id) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_checkpoint_save",
-                          "Failed to allocate checkpoint ID");
+                          KATRA_ERR_ALLOC_FAILED);
         result = E_SYSTEM_MEMORY;
         goto cleanup;
     }
@@ -344,7 +346,7 @@ int katra_checkpoint_load(const char* checkpoint_id, const char* ci_id) {
 
     if (!checkpoint_id || !ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_checkpoint_load",
-                          "checkpoint_id or ci_id is NULL");
+                          KATRA_ERR_CHECKPOINT_ID_OR_CI_ID_NULL);
         return E_INPUT_NULL;
     }
 

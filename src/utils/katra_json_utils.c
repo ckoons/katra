@@ -285,7 +285,7 @@ int katra_json_extract_string_alloc(const char* json, const char* field,
     }
 
     if (!*dest) {
-        katra_report_error(E_SYSTEM_MEMORY, __func__, "Failed to allocate string");
+        katra_report_error(E_SYSTEM_MEMORY, __func__, KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 
@@ -317,7 +317,7 @@ int katra_json_extract_string_required(const char* json, const char* field,
     }
 
     if (!*dest) {
-        katra_report_error(E_SYSTEM_MEMORY, __func__, "Failed to allocate string");
+        katra_report_error(E_SYSTEM_MEMORY, __func__, KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

@@ -132,7 +132,7 @@ static int extract_keywords(const char* text, char*** keywords, size_t* count) {
     char** kw_array = calloc(max_keywords, sizeof(char*));
     if (!kw_array) {
         katra_report_error(E_SYSTEM_MEMORY, "extract_keywords",
-                          "Failed to allocate keyword array");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

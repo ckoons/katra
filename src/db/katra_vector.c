@@ -19,14 +19,14 @@
 /* Initialize vector store */
 vector_store_t* katra_vector_init(const char* ci_id, bool use_external) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, __func__, "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, __func__, KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
     vector_store_t* store = calloc(1, sizeof(vector_store_t));
     if (!store) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate vector store");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -38,7 +38,7 @@ vector_store_t* katra_vector_init(const char* ci_id, bool use_external) {
     if (!store->embeddings) {
         free(store);
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate embeddings array");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -107,7 +107,7 @@ int katra_vector_create_embedding(const char* text,
     vector_embedding_t* embedding = calloc(1, sizeof(vector_embedding_t));
     if (!embedding) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate embedding");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 
@@ -116,7 +116,7 @@ int katra_vector_create_embedding(const char* text,
     if (!embedding->values) {
         free(embedding);
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate embedding values");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 
@@ -245,7 +245,7 @@ int katra_vector_search(vector_store_t* store,
     if (!matches) {
         katra_vector_free_embedding(query_embedding);
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate matches array");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

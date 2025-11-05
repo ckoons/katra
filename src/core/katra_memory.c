@@ -342,7 +342,7 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     /* GUIDELINE_APPROVED_END */
         katra_memory_free_record(record);
         katra_report_error(E_SYSTEM_MEMORY, "katra_memory_create_record", /* GUIDELINE_APPROVED: function name */
-                          "Failed to allocate strings"); /* GUIDELINE_APPROVED: error context */
+                          KATRA_ERR_ALLOC_FAILED); /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 
@@ -447,7 +447,7 @@ memory_record_t* katra_memory_create_with_context(
 cleanup:
     katra_memory_free_record(record);
     katra_report_error(result, "katra_memory_create_with_context", /* GUIDELINE_APPROVED: function name */
-                      "Failed to allocate context fields"); /* GUIDELINE_APPROVED: error context */
+                      KATRA_ERR_ALLOC_FAILED); /* GUIDELINE_APPROVED: error context */
     return NULL;
 }
 

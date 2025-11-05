@@ -35,7 +35,7 @@ consolidation_context_t* katra_consolidation_init(const char* ci_id) {
     ctx = calloc(1, sizeof(consolidation_context_t));
     if (!ctx) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_consolidation_init",
-                          "Failed to allocate context"); /* GUIDELINE_APPROVED: error context */
+                          KATRA_ERR_ALLOC_FAILED); /* GUIDELINE_APPROVED: error context */
         return NULL;
     }
 

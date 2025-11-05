@@ -174,7 +174,7 @@ db_backend_t* katra_db_create_jsonl_backend(const char* ci_id) {
 
     if (!ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_db_create_jsonl_backend",
-                          "ci_id is NULL");
+                          KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
@@ -182,7 +182,7 @@ db_backend_t* katra_db_create_jsonl_backend(const char* ci_id) {
     backend = calloc(1, sizeof(db_backend_t));
     if (!backend) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_db_create_jsonl_backend",
-                          "Failed to allocate backend");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -191,7 +191,7 @@ db_backend_t* katra_db_create_jsonl_backend(const char* ci_id) {
     if (!context) {
         free(backend);
         katra_report_error(E_SYSTEM_MEMORY, "katra_db_create_jsonl_backend",
-                          "Failed to allocate context");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 

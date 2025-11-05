@@ -60,7 +60,7 @@ static enhanced_stats_t g_enhanced_stats = {0};
 
 int breathe_init(const char* ci_id) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, "breathe_init", "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, "breathe_init", KATRA_ERR_CI_ID_NULL);
         return E_INPUT_NULL;
     }
 
@@ -78,7 +78,7 @@ int breathe_init(const char* ci_id) {
     /* Setup context */
     g_context.ci_id = strdup(ci_id);
     if (!g_context.ci_id) {
-        katra_report_error(E_SYSTEM_MEMORY, "breathe_init", "Failed to allocate ci_id");
+        katra_report_error(E_SYSTEM_MEMORY, "breathe_init", KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

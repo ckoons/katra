@@ -55,7 +55,7 @@ int katra_extract_topics(const char* ci_id,
     clusters = calloc(SUNRISE_MAX_CLUSTERS, sizeof(topic_cluster_t*));
     if (!clusters) {
         katra_memory_free_results(records, record_count);
-        katra_report_error(E_SYSTEM_MEMORY, __func__, "Failed to allocate clusters array");
+        katra_report_error(E_SYSTEM_MEMORY, __func__, KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

@@ -180,7 +180,7 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
          * not_to_archive: CI explicitly holding onto this memory */
         if (record->personal) {
             LOG_DEBUG("Preserving personal memory (collection='%s'): %.50s...",
-                     record->collection ? record->collection : "none",
+                     record->collection ? record->collection : KATRA_DEFAULT_NONE,
                      record->content);
             katra_memory_free_record(record);
             continue;

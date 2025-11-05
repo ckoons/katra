@@ -259,7 +259,7 @@ impact_prediction_t* katra_nous_impact_predict_impact(const char* change_target)
 
     /* Generate risk explanation */
     char explanation[NOUS_MEDIUM_BUFFER];
-    const char* severity_str = prediction->severity == IMPACT_NONE ? "none" :
+    const char* severity_str = prediction->severity == IMPACT_NONE ? KATRA_DEFAULT_NONE :
                                prediction->severity == IMPACT_LOW ? "low" :
                                prediction->severity == IMPACT_MEDIUM ? "medium" :
                                prediction->severity == IMPACT_HIGH ? "high" : "critical";

@@ -33,14 +33,14 @@ const char* katra_graph_relationship_name(relationship_type_t type) {
 /* Initialize graph store */
 graph_store_t* katra_graph_init(const char* ci_id) {
     if (!ci_id) {
-        katra_report_error(E_INPUT_NULL, __func__, "ci_id is NULL");
+        katra_report_error(E_INPUT_NULL, __func__, KATRA_ERR_CI_ID_NULL);
         return NULL;
     }
 
     graph_store_t* store = calloc(1, sizeof(graph_store_t));
     if (!store) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate graph store");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -52,7 +52,7 @@ graph_store_t* katra_graph_init(const char* ci_id) {
     if (!store->nodes) {
         free(store);
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate nodes array");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -110,7 +110,7 @@ graph_node_t* katra_graph_get_or_create_node(graph_store_t* store,
     node = calloc(1, sizeof(graph_node_t));
     if (!node) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate node");
+                          KATRA_ERR_ALLOC_FAILED);
         return NULL;
     }
 
@@ -170,7 +170,7 @@ int katra_graph_add_edge(graph_store_t* store,
     graph_edge_t* edge = calloc(1, sizeof(graph_edge_t));
     if (!edge) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate edge");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 
@@ -254,7 +254,7 @@ int katra_graph_get_related(graph_store_t* store,
     graph_edge_t** edges = calloc(count, sizeof(graph_edge_t*));
     if (!edges) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate edges array");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 
@@ -294,7 +294,7 @@ int katra_graph_traverse(graph_store_t* store,
     graph_path_node_t** nodes = calloc(capacity, sizeof(graph_path_node_t*));
     if (!nodes) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to allocate traversal array");
+                          KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
 

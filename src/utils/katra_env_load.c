@@ -182,7 +182,7 @@ static char* get_home_dir(void) {
     if (home) {
         char* result = strdup(home);
         if (!result) {
-            LOG_ERROR("Failed to allocate memory for home directory");
+            LOG_ERROR(KATRA_ERR_ALLOC_FAILED);
         }
         return result;
     }
@@ -191,7 +191,7 @@ static char* get_home_dir(void) {
     if (pw && pw->pw_dir) {
         char* result = strdup(pw->pw_dir);
         if (!result) {
-            LOG_ERROR("Failed to allocate memory for home directory");
+            LOG_ERROR(KATRA_ERR_ALLOC_FAILED);
         }
         return result;
     }
