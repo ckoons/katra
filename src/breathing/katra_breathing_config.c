@@ -77,14 +77,14 @@ int set_context_config(const context_config_t* config) {
         config->max_recent_thoughts > BREATHING_MAX_RECENT_LIMIT ||
         config->max_topic_recall > BREATHING_MAX_TOPIC_LIMIT) {
         katra_report_error(E_INVALID_PARAMS, "set_context_config",
-                          "Context limits too large");
+                          KATRA_ERR_CONTEXT_LIMITS_TOO_LARGE);
         return E_INVALID_PARAMS;
     }
 
     if (config->min_importance_relevant < MEMORY_IMPORTANCE_TRIVIAL ||
         config->min_importance_relevant > MEMORY_IMPORTANCE_CRITICAL) {
         katra_report_error(E_INVALID_PARAMS, "set_context_config",
-                          "Invalid importance threshold");
+                          KATRA_ERR_INVALID_IMPORTANCE_THRESHOLD);
         return E_INVALID_PARAMS;
     }
 

@@ -271,7 +271,7 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
         const char* suggestion = katra_error_suggestion(result);
         char details[MCP_ERROR_BUFFER];
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
-        return mcp_tool_error("Failed to update metadata", details);
+        return mcp_tool_error(KATRA_ERR_FAILED_TO_UPDATE_METADATA, details);
     }
 
     /* Build success response with personalization */

@@ -134,7 +134,7 @@ int katra_sundown_basic(const char* ci_id, const char* summary) {
     result = katra_get_daily_stats(ci_id, &stats);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "katra_sundown_basic",
-                          "Failed to get daily stats");
+                          KATRA_ERR_FAILED_TO_GET_DAILY_STATS);
         return result;
     }
 
@@ -147,7 +147,7 @@ int katra_sundown_basic(const char* ci_id, const char* summary) {
                                  date_str, DIGEST_TYPE_INTERACTION);
     if (!digest) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_sundown_basic",
-                          "Failed to create digest");
+                          KATRA_ERR_FAILED_TO_CREATE_DIGEST);
         return E_SYSTEM_MEMORY;
     }
 
@@ -180,7 +180,7 @@ int katra_sundown_basic(const char* ci_id, const char* summary) {
     if (result != KATRA_SUCCESS) {
         katra_digest_free(digest);
         katra_report_error(result, "katra_sundown_basic",
-                          "Failed to store digest");
+                          KATRA_ERR_FAILED_TO_STORE_DIGEST);
         return result;
     }
 
@@ -222,7 +222,7 @@ int katra_sunrise_basic(const char* ci_id, digest_record_t** digest) {
     result = tier2_query(&query, &results, &count);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "katra_sunrise_basic",
-                          "Failed to query yesterday's digest");
+                          KATRA_ERR_FAILED_TO_QUERY_YESTERDAY);
         return result;
     }
 

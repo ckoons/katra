@@ -93,7 +93,7 @@ graph_node_t* katra_graph_get_or_create_node(graph_store_t* store,
                                            new_capacity * sizeof(graph_node_t*));
         if (!new_nodes) {
             katra_report_error(E_SYSTEM_MEMORY, __func__,
-                              "Failed to expand nodes array");
+                              KATRA_ERR_FAILED_TO_EXPAND_NODES);
             return NULL;
         }
 
@@ -162,7 +162,7 @@ int katra_graph_add_edge(graph_store_t* store,
 
     if (!from_node || !to_node) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to create nodes");
+                          KATRA_ERR_FAILED_TO_CREATE_NODES);
         return E_SYSTEM_MEMORY;
     }
 

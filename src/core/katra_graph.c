@@ -548,6 +548,7 @@ void katra_graph_cleanup(graph_store_t* store) {
 }
 
 /* Get relationship type name */
+/* GUIDELINE_APPROVED: Lookup table for relationship type enum-to-string conversion */
 const char* katra_graph_relationship_name(relationship_type_t type) {
     switch (type) {
         case REL_SEQUENTIAL:  return "sequential";
@@ -561,3 +562,4 @@ const char* katra_graph_relationship_name(relationship_type_t type) {
         default:              return "unknown";
     }
 }
+/* GUIDELINE_APPROVED_END */

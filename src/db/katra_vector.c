@@ -147,7 +147,7 @@ int katra_vector_store(vector_store_t* store,
                                                        new_capacity * sizeof(vector_embedding_t*));
         if (!new_embeddings) {
             katra_report_error(E_SYSTEM_MEMORY, __func__,
-                              "Failed to expand embeddings array");
+                              KATRA_ERR_FAILED_TO_EXPAND_EMBEDDINGS);
             return E_SYSTEM_MEMORY;
         }
 

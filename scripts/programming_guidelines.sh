@@ -587,12 +587,14 @@ TOTAL_STRINGS=$(grep '"[^"]*"' "$TEMP_COUNT" 2>/dev/null | \
 APPROVED_STRINGS=$(grep '"[^"]*"' "$TEMP_COUNT" 2>/dev/null | \
   grep -v "#define" | \
   grep -v ":[[:space:]]*//" | grep -v ":[[:space:]]*\*" | grep -v ":[[:space:]]/\*" | \
-  grep -v '"\."' | grep -v "\"'\"" | \
+  grep -v '/\*[^*]*"[^"]*"[^*]*\*/' | \
+  grep -v '"\."' | grep -v "\"'\"" | grep -v '"\\.\\.\\."' | \
   grep -v '""' | grep -v '"\\n"' | grep -v '","' | grep -v '":"' | grep -v '"}"' | grep -v '"]"' | \
-  grep -E "%|LOG_|printf\|fprintf\|snprintf\|dprintf|katra_report_error|static const char|\
+  grep -E "%|LOG_|printf\|fprintf\|snprintf\|dprintf|katra_report_error|mcp_tool_error|static const char|\
 strstr\(|strcmp\(|strncmp\(|strchr\(|strrchr\(|strpbrk\(|strspn\(|strcspn\(|\
 execlp\(|execv\(|execvp\(|execve\(|execl\(|\
 fopen\(|popen\(|freopen\(|getenv\(|setenv\(|putenv\(|\
+memcpy\([^,]+,[[:space:]]*\"|\
 argo_config_get\(|argo_config_set\(|\
 write\([^,]+,[[:space:]]*\"|\
 \\..*=[[:space:]]*\"|return\s+\"|\

@@ -20,7 +20,7 @@ int katra_db_backend_init(db_backend_t* backend, const char* ci_id) {
 
     if (!backend->init) {
         katra_report_error(E_INVALID_STATE, "katra_db_backend_init",
-                          "Backend has no init function");
+                          KATRA_ERR_BACKEND_NO_INIT);
         return E_INVALID_STATE;
     }
 
@@ -62,7 +62,7 @@ int katra_db_backend_store(db_backend_t* backend, const memory_record_t* record)
 
     if (!backend->store) {
         katra_report_error(E_INTERNAL_NOTIMPL, "katra_db_backend_store",
-                          "Backend does not support store operation");
+                          KATRA_ERR_BACKEND_NO_STORE);
         return E_INTERNAL_NOTIMPL;
     }
 
@@ -86,7 +86,7 @@ int katra_db_backend_retrieve(db_backend_t* backend, const char* record_id,
 
     if (!backend->retrieve) {
         katra_report_error(E_INTERNAL_NOTIMPL, "katra_db_backend_retrieve",
-                          "Backend does not support retrieve operation");
+                          KATRA_ERR_BACKEND_NO_RETRIEVE);
         return E_INTERNAL_NOTIMPL;
     }
 
@@ -110,7 +110,7 @@ int katra_db_backend_query(db_backend_t* backend, const db_query_t* query,
 
     if (!backend->query) {
         katra_report_error(E_INTERNAL_NOTIMPL, "katra_db_backend_query",
-                          "Backend does not support query operation");
+                          KATRA_ERR_BACKEND_NO_QUERY);
         return E_INTERNAL_NOTIMPL;
     }
 

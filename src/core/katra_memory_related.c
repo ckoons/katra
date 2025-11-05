@@ -233,7 +233,7 @@ int katra_memory_get_related(const char* ci_id, const char* record_id,
     if (!target) {
         katra_memory_free_results(results, result_count);
         katra_report_error(E_NOT_FOUND, "katra_memory_get_related",
-                          "Target record not found");
+                          KATRA_ERR_TARGET_RECORD_NOT_FOUND);
         return E_NOT_FOUND;
     }
 

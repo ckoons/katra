@@ -126,6 +126,7 @@ void log_set_level(log_level_t level) {
 }
 
 /* Get log level string */
+/* GUIDELINE_APPROVED: Lookup table for log level enum-to-string conversion */
 const char* log_level_string(log_level_t level) {
     switch (level) {
         case LOG_FATAL: return "FATAL";
@@ -137,6 +138,7 @@ const char* log_level_string(log_level_t level) {
         default:        return "?????";
     }
 }
+/* GUIDELINE_APPROVED_END */
 
 /* Core logging function */
 void log_write(log_level_t level, const char* file, int line,

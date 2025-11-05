@@ -84,7 +84,7 @@ static int sqlite_store(void* ctx, const memory_record_t* record) {
     /* Note: This is a simplified implementation - would need to convert
      * memory_record_t to digest_record_t for full support */
     katra_report_error(E_INTERNAL_NOTIMPL, "sqlite_store",
-                      "Direct memory record storage not yet implemented");
+                      KATRA_ERR_SQLITE_STORAGE_NOT_IMPL);
     return E_INTERNAL_NOTIMPL;
 }
 
@@ -107,7 +107,7 @@ static int sqlite_retrieve(void* ctx, const char* record_id,
     /* SQLite index supports ID-based lookups */
     /* Would need to implement tier2_index_retrieve_by_id() */
     katra_report_error(E_INTERNAL_NOTIMPL, "sqlite_retrieve",
-                      "ID-based retrieval not yet implemented");
+                      KATRA_ERR_SQLITE_ID_RETRIEVAL_NOT_IMPL);
     return E_INTERNAL_NOTIMPL;
 }
 
@@ -130,7 +130,7 @@ static int sqlite_query(void* ctx, const db_query_t* query,
     /* SQLite backend queries via Tier 2 index */
     /* Note: This is a simplified implementation - would need full conversion */
     katra_report_error(E_INTERNAL_NOTIMPL, "sqlite_query",
-                      "Query not yet fully implemented");
+                      KATRA_ERR_SQLITE_QUERY_NOT_IMPL);
     return E_INTERNAL_NOTIMPL;
 }
 
@@ -156,7 +156,7 @@ static int sqlite_get_stats(void* ctx, size_t* record_count, size_t* bytes_used)
                                     &theme_count, &keyword_count);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "sqlite_get_stats",
-                          "tier2_index_stats failed");
+                          KATRA_ERR_TIER2_INDEX_STATS_FAILED);
         return result;
     }
 
@@ -193,7 +193,7 @@ db_backend_t* katra_db_create_sqlite_backend(const char* ci_id) {
     }
 
     /* Initialize backend structure */
-    strncpy(backend->name, "sqlite", sizeof(backend->name) - 1);
+    strncpy(backend->name, KATRA_BACKEND_NAME_SQLITE, sizeof(backend->name) - 1);
     backend->type = DB_BACKEND_SQLITE;
     backend->context = context;
     backend->initialized = false;

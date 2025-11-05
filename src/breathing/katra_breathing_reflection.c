@@ -62,7 +62,7 @@ int track_memory_in_turn(const char* record_id) {
                                    new_capacity * sizeof(char*));
         if (!new_array) {
             katra_report_error(E_SYSTEM_MEMORY, "track_memory_in_turn",
-                             "Failed to grow turn memory array");
+                             KATRA_ERR_FAILED_TO_GROW_ARRAY);
             return E_SYSTEM_MEMORY;
         }
 
@@ -74,7 +74,7 @@ int track_memory_in_turn(const char* record_id) {
     g_turn_memory_ids[g_turn_memory_count] = strdup(record_id);
     if (!g_turn_memory_ids[g_turn_memory_count]) {
         katra_report_error(E_SYSTEM_MEMORY, "track_memory_in_turn",
-                         "Failed to duplicate record_id");
+                         KATRA_ERR_FAILED_TO_DUPLICATE_RECORD_ID);
         return E_SYSTEM_MEMORY;
     }
 
@@ -223,7 +223,7 @@ char** get_memories_this_turn(size_t* count) {
             }
             free(result);
             katra_report_error(E_SYSTEM_MEMORY, "get_memories_this_turn",
-                             "Failed to duplicate memory ID");
+                             KATRA_ERR_FAILED_TO_DUPLICATE_MEMORY_ID);
             *count = 0;
             return NULL;
         }
@@ -417,7 +417,7 @@ int update_memory_metadata(const char* record_id,
     /* Validate at least one metadata field is provided */
     if (!personal && !not_to_archive && !collection) {
         katra_report_error(E_INPUT_NULL, "update_memory_metadata",
-                         "At least one metadata field must be provided");
+                         KATRA_ERR_AT_LEAST_ONE_METADATA_FIELD);
         return E_INPUT_NULL;
     }
 

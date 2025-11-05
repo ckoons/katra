@@ -167,7 +167,7 @@ int katra_working_memory_access(working_memory_t* wm,
 
     if (index >= wm->count) {
         katra_report_error(E_INPUT_RANGE, "katra_working_memory_access",
-                          "Index out of bounds");
+                          KATRA_ERR_INDEX_OUT_OF_BOUNDS);
         return E_INPUT_RANGE;
     }
 

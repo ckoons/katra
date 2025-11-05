@@ -224,7 +224,7 @@ int katra_store_thought_typed(const char* ci_id, const char* content,
 
     if (!record) {
         katra_report_error(E_SYSTEM_MEMORY, __func__,
-                          "Failed to create memory record");
+                          KATRA_ERR_FAILED_TO_CREATE_MEMORY_RECORD);
         return E_SYSTEM_MEMORY;
     }
 

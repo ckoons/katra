@@ -129,7 +129,7 @@ int breathing_attach_session(memory_record_t* record) {
         record->session_id = strdup(session_id);
         if (!record->session_id) {
             katra_report_error(E_SYSTEM_MEMORY, "breathing_attach_session",
-                              "Failed to duplicate session_id");
+                              KATRA_ERR_FAILED_TO_DUPLICATE_SESSION_ID);
             return E_SYSTEM_MEMORY;
         }
     }

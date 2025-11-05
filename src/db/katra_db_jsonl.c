@@ -102,7 +102,7 @@ static int jsonl_retrieve(void* ctx, const char* record_id,
     /* JSONL doesn't support direct ID lookup efficiently */
     /* Would need to query all and filter - not optimal */
     katra_report_error(E_INTERNAL_NOTIMPL, "jsonl_retrieve",
-                      "Direct retrieval not supported by JSONL backend");
+                      KATRA_ERR_JSONL_NO_DIRECT_RETRIEVAL);
     return E_INTERNAL_NOTIMPL;
 }
 
@@ -196,7 +196,7 @@ db_backend_t* katra_db_create_jsonl_backend(const char* ci_id) {
     }
 
     /* Initialize backend structure */
-    strncpy(backend->name, "jsonl", sizeof(backend->name) - 1);
+    strncpy(backend->name, KATRA_BACKEND_NAME_JSONL, sizeof(backend->name) - 1);
     backend->type = DB_BACKEND_JSONL;
     backend->context = context;
     backend->initialized = false;

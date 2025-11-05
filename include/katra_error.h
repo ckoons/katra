@@ -158,7 +158,54 @@ static inline const char* katra_error_type_string(int type) {
 #define KATRA_ERR_OPTIONS_OR_CHECKPOINT_ID_NULL "options or checkpoint_id is NULL"
 #define KATRA_ERR_CHECKPOINT_ID_OR_CI_ID_NULL "checkpoint_id or ci_id is NULL"
 
+/* "Failed to" error messages */
+#define KATRA_ERR_FAILED_TO_CREATE_DIGEST "Failed to create digest"
+#define KATRA_ERR_FAILED_TO_CREATE_MEMORY_RECORD "Failed to create memory record"
+#define KATRA_ERR_FAILED_TO_CREATE_NODES "Failed to create nodes"
+#define KATRA_ERR_FAILED_TO_DUPLICATE_MEMORY_ID "Failed to duplicate memory ID"
+#define KATRA_ERR_FAILED_TO_DUPLICATE_RECORD_ID "Failed to duplicate record_id"
+#define KATRA_ERR_FAILED_TO_DUPLICATE_SESSION_ID "Failed to duplicate session_id"
+#define KATRA_ERR_FAILED_TO_EXPAND_EMBEDDINGS "Failed to expand embeddings array"
+#define KATRA_ERR_FAILED_TO_EXPAND_NODES "Failed to expand nodes array"
+#define KATRA_ERR_FAILED_TO_GET_DAILY_STATS "Failed to get daily stats"
+#define KATRA_ERR_FAILED_TO_GROW_ARRAY "Failed to grow turn memory array"
+#define KATRA_ERR_FAILED_TO_INIT_BACKEND "Failed to initialize backend"
+#define KATRA_ERR_FAILED_TO_QUERY_YESTERDAY "Failed to query yesterday's digest"
+#define KATRA_ERR_FAILED_TO_STORE_DIGEST "Failed to store digest"
+#define KATRA_ERR_FAILED_TO_UPDATE_METADATA "Failed to update metadata"
+
+/* Backend/DB error messages */
+#define KATRA_ERR_BACKEND_NO_INIT "Backend has no init function"
+#define KATRA_ERR_BACKEND_NO_STORE "Backend does not support store operation"
+#define KATRA_ERR_BACKEND_NO_RETRIEVE "Backend does not support retrieve operation"
+#define KATRA_ERR_BACKEND_NO_QUERY "Backend does not support query operation"
+#define KATRA_ERR_ALL_BACKENDS_FAILED_STORE "All backends failed to store"
+#define KATRA_ERR_ALL_BACKENDS_FAILED_QUERY "All backends failed to query"
+#define KATRA_ERR_NO_BACKENDS_SUPPORT_STORE "No backends support store operation"
+#define KATRA_ERR_NO_BACKENDS_SUPPORT_QUERY "No backends support query operation"
+#define KATRA_ERR_NO_BACKENDS_ADDED "No backends added"
+#define KATRA_ERR_MAX_BACKENDS_REACHED "Maximum backends reached"
+#define KATRA_ERR_ENCODER_IS_NULL "encoder is NULL"
+#define KATRA_ERR_ENCODER_NOT_INITIALIZED "Encoder not initialized"
+#define KATRA_ERR_JSONL_NO_DIRECT_RETRIEVAL "Direct retrieval not supported by JSONL backend"
+#define KATRA_ERR_SQLITE_STORAGE_NOT_IMPL "Direct memory record storage not yet implemented"
+#define KATRA_ERR_SQLITE_ID_RETRIEVAL_NOT_IMPL "ID-based retrieval not yet implemented"
+#define KATRA_ERR_SQLITE_QUERY_NOT_IMPL "Query not yet fully implemented"
+#define KATRA_ERR_TIER2_INDEX_STATS_FAILED "tier2_index_stats failed"
+
+/* Other common error messages */
+#define KATRA_ERR_TARGET_RECORD_NOT_FOUND "Target record not found"
+#define KATRA_ERR_CONTEXT_LIMITS_TOO_LARGE "Context limits too large"
+#define KATRA_ERR_INVALID_IMPORTANCE_THRESHOLD "Invalid importance threshold"
+#define KATRA_ERR_INDEX_OUT_OF_BOUNDS "Index out of bounds"
+#define KATRA_ERR_AT_LEAST_ONE_METADATA_FIELD "At least one metadata field must be provided"
+
 /* Common default/fallback values */
 #define KATRA_DEFAULT_NONE "none"
+#define KATRA_DEFAULT_UNKNOWN "unknown"
+
+/* Backend names */
+#define KATRA_BACKEND_NAME_JSONL "jsonl"
+#define KATRA_BACKEND_NAME_SQLITE "sqlite"
 
 #endif /* KATRA_ERROR_H */

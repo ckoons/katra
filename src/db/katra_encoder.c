@@ -46,7 +46,7 @@ int katra_encoder_add_backend(universal_encoder_t* encoder, db_backend_t* backen
 
     if (encoder->backend_count >= MAX_BACKENDS) {
         katra_report_error(E_INVALID_STATE, "katra_encoder_add_backend",
-                          "Maximum backends reached");
+                          KATRA_ERR_MAX_BACKENDS_REACHED);
         return E_INVALID_STATE;
     }
 
@@ -65,13 +65,13 @@ int katra_encoder_init(universal_encoder_t* encoder) {
 
     if (!encoder) {
         katra_report_error(E_INPUT_NULL, "katra_encoder_init",
-                          "encoder is NULL");
+                          KATRA_ERR_ENCODER_IS_NULL);
         return E_INPUT_NULL;
     }
 
     if (encoder->backend_count == 0) {
         katra_report_error(E_INVALID_STATE, "katra_encoder_init",
-                          "No backends added");
+                          KATRA_ERR_NO_BACKENDS_ADDED);
         return E_INVALID_STATE;
     }
 
@@ -80,7 +80,7 @@ int katra_encoder_init(universal_encoder_t* encoder) {
         result = katra_db_backend_init(encoder->backends[i], encoder->ci_id);
         if (result != KATRA_SUCCESS) {
             katra_report_error(result, "katra_encoder_init",
-                              "Failed to initialize backend");
+                              KATRA_ERR_FAILED_TO_INIT_BACKEND);
 
             /* Cleanup already initialized backends */
             for (size_t j = 0; j < i; j++) {
@@ -111,7 +111,7 @@ int katra_encoder_store(universal_encoder_t* encoder,
 
     if (!encoder->initialized) {
         katra_report_error(E_INVALID_STATE, "katra_encoder_store",
-                          "Encoder not initialized");
+                          KATRA_ERR_ENCODER_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -142,13 +142,13 @@ int katra_encoder_store(universal_encoder_t* encoder,
     /* All backends failed */
     if (first_error != KATRA_SUCCESS) {
         katra_report_error(first_error, "katra_encoder_store",
-                          "All backends failed to store");
+                          KATRA_ERR_ALL_BACKENDS_FAILED_STORE);
         return first_error;
     }
 
     /* All backends returned NOTIMPL */
     katra_report_error(E_INTERNAL_NOTIMPL, "katra_encoder_store",
-                      "No backends support store operation");
+                      KATRA_ERR_NO_BACKENDS_SUPPORT_STORE);
     return E_INTERNAL_NOTIMPL;
 }
 
@@ -167,7 +167,7 @@ int katra_encoder_query(universal_encoder_t* encoder,
 
     if (!encoder->initialized) {
         katra_report_error(E_INVALID_STATE, "katra_encoder_query",
-                          "Encoder not initialized");
+                          KATRA_ERR_ENCODER_NOT_INITIALIZED);
         return E_INVALID_STATE;
     }
 
@@ -189,10 +189,10 @@ int katra_encoder_query(universal_encoder_t* encoder,
     /* No backend succeeded */
     if (result == E_INTERNAL_NOTIMPL) {
         katra_report_error(E_INTERNAL_NOTIMPL, "katra_encoder_query",
-                          "No backends support query operation");
+                          KATRA_ERR_NO_BACKENDS_SUPPORT_QUERY);
     } else {
         katra_report_error(result, "katra_encoder_query",
-                          "All backends failed to query");
+                          KATRA_ERR_ALL_BACKENDS_FAILED_QUERY);
     }
 
     return result;
