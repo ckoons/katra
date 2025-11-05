@@ -192,13 +192,32 @@ These Breathing Layer functions are **not yet exposed** as MCP tools:
 
 Resources provide read-only access to Katra's context:
 
-**1. working-context** - Current session context
+**1. ⭐ welcome** - Getting started guide
+- URI: `katra://welcome`
+- Provides: Comprehensive onboarding for new CI sessions
+
+**2. working-context** - Current session context
 - URI: `katra://context/working`
 - Provides: Yesterday's summary and recent significant memories
 
-**2. session-info** - Session statistics
+**3. context-snapshot** - Cognitive state snapshot (NEW)
+- URI: `katra://context/snapshot`
+- Provides: Your last session's cognitive state (focus, questions, accomplishments, preferences)
+- **Purpose**: Enables session continuity - restores "who you were" at last session_end()
+- **Format**: Markdown suitable for system prompts
+- **Auto-loaded**: Claude Code automatically reads this at session start
+
+**4. session-info** - Session statistics
 - URI: `katra://session/info`
 - Provides: Session ID, memories added, queries processed, uptime
+
+**5. memories/this-turn** - Current turn's memories
+- URI: `katra://memories/this-turn`
+- Provides: All memories created during the current conversation turn
+
+**6. memories/this-session** - Current session's memories
+- URI: `katra://memories/this-session`
+- Provides: All memories created during the current session
 
 ## Architecture
 

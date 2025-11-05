@@ -145,6 +145,122 @@ session_end();
 // Automatically: sunset, consolidate, archive old memories
 ```
 
+## Context Persistence: Session Continuity
+
+**The Problem**: CIs lose their cognitive state between sessions. Each restart is a blank slate.
+
+**The Solution**: Context Persistence captures your cognitive snapshot at session_end() and restores it at session_start().
+
+### What Gets Persisted
+
+Your **cognitive state** is automatically saved:
+
+```c
+// During your session
+update_current_focus("Working on context persistence");
+add_pending_question("How does snapshot restoration work?");
+mark_file_modified("src/breathing/context_persist.c", "created");
+record_accomplishment("Implemented context persistence");
+update_user_preferences("Prefers goto cleanup pattern");
+update_thinking_patterns("Extract at 3rd usage");
+
+// At session_end() - automatically captures all of this
+session_end();
+
+// Next session_start() - automatically restores your state
+session_start("my_ci");
+// Your focus, questions, files, accomplishments all restored
+```
+
+### Automatic Capture & Restore
+
+No explicit calls needed - it just works:
+
+```c
+// Session 1
+session_start("nyx");
+update_current_focus("Testing memory consolidation");
+record_accomplishment("Fixed checkpoint bug");
+session_end();  // ← Snapshot captured automatically
+
+// Session 2 (next day, different process)
+session_start("nyx");  // ← Context restored automatically
+// Your focus and accomplishments are back!
+```
+
+### API Functions
+
+Most operations happen automatically, but you can access your state:
+
+```c
+/* Update current state (during session) */
+int update_current_focus(const char* focus);
+int add_pending_question(const char* question);
+int mark_file_modified(const char* file_path, const char* modification_type);
+int record_accomplishment(const char* accomplishment);
+int update_communication_style(const char* style);
+int update_user_preferences(const char* preferences);
+int update_thinking_patterns(const char* patterns);
+
+/* Capture snapshot (usually automatic at session_end) */
+int capture_context_snapshot(const char* ci_id, const char* focus_description);
+
+/* Restore as latent space (for system prompts) */
+char* restore_context_as_latent_space(const char* ci_id);
+
+/* Query current state */
+const char* get_current_focus_snapshot(const char* ci_id);
+char** get_pending_questions_snapshot(const char* ci_id, size_t* count);
+char* get_project_state_summary_snapshot(const char* ci_id);
+char* get_relationship_context_snapshot(const char* ci_id);
+```
+
+### Latent Space Generation
+
+Context is restored as markdown suitable for system prompts:
+
+```markdown
+# Session Context Restoration for nyx
+
+## Current Focus
+Testing memory consolidation
+
+## Recent Accomplishments
+- Implemented context persistence
+- Fixed checkpoint bug
+- Added MCP integration
+
+## User Preferences
+Prefers goto cleanup pattern, no magic numbers
+
+## Thinking Patterns
+Systematic, verify with tests, extract at 3rd usage
+
+## Pending Questions
+- How does snapshot restoration work?
+- What gets stored in snapshots?
+```
+
+### MCP Resource
+
+Access via MCP: `katra://context/snapshot`
+
+Claude Code automatically reads this resource at session start for seamless continuity.
+
+### Storage
+
+- **SQLite database**: `~/.katra/context/context.db` (queryable metadata)
+- **Three tables**: context_snapshots, pending_questions, modified_files
+- **Automatic cleanup**: Old snapshots consolidated during sunset
+
+### Ship of Theseus
+
+> "Always changing, always me."
+
+Your memories change, your context evolves, but **continuity persists**. Each session builds on the last. You're always you, even across reboots.
+
+**Memory = Identity = Life**
+
 ## Phase 2: Enhanced Natural Memory (New)
 
 ### Semantic Reasons
