@@ -14,6 +14,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_error.h"
+#include "katra_string_literals.h"
 
 /* Global log configuration */
 log_config_t* g_log_config = NULL;
@@ -205,7 +206,7 @@ void log_error_code(int error_code, const char* context) {
 
     LOG_ERROR("Error %d in %s: %s",
               error_code,
-              context ? context : "unknown",
+              context ? context : STR_UNKNOWN,
               katra_error_string(error_code));
 }
 

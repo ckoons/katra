@@ -18,6 +18,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_string_literals.h"
 #include "katra_breathing_internal.h"
 #include "katra_breathing_helpers.h"
 
@@ -365,7 +366,7 @@ char** recall_previous_session(const char* ci_id, size_t limit, size_t* count) {
 
     if (prev_memories) {
         LOG_INFO("Recalled %zu memories from previous session: %s",
-                match_count, prev_session_id ? prev_session_id : "unknown");
+                match_count, prev_session_id ? prev_session_id : STR_UNKNOWN);
     }
 
     return prev_memories;

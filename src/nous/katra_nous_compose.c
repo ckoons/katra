@@ -13,6 +13,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_string_literals.h"
 #include "katra_breathing.h"
 #include "katra_psyche_common.h"
 
@@ -42,7 +43,7 @@ static const char* query_type_name(query_type_t type) {
         case QUERY_TYPE_IMPACT: return "impact";
         case QUERY_TYPE_USER_DOMAIN: return "user_domain";
         case QUERY_TYPE_GENERAL: return "general";
-        default: return "unknown";
+        default: return STR_UNKNOWN;
     }
 }
 
