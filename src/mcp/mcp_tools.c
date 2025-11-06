@@ -334,6 +334,10 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
         }
     }
 
+    /* Update global ci_id */
+    strncpy(g_ci_id, ci_id, sizeof(g_ci_id) - 1);
+    g_ci_id[sizeof(g_ci_id) - 1] = '\0';
+
     /* Start new session with ci_id (not name) */
     result = session_start(ci_id);
 

@@ -229,6 +229,9 @@ int session_end(void) {
     /* Auto-consolidate */
     auto_consolidate();
 
+    /* Cleanup breathing layer to allow re-initialization with new identity */
+    breathe_cleanup();
+
     return result;
 }
 
