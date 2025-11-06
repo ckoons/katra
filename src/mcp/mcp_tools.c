@@ -307,8 +307,35 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
     /* End current session if active */
     session_end();
 
-    /* Start new session with chosen name as namespace */
-    int result = session_start(name);
+    /* Look up or create persona to get ci_id */
+    char ci_id[KATRA_CI_ID_SIZE];
+    int result = katra_lookup_persona(name, ci_id, sizeof(ci_id));
+
+    if (result != KATRA_SUCCESS) {
+        /* Persona doesn't exist - generate new ci_id and register */
+        result = katra_generate_ci_id(ci_id, sizeof(ci_id));
+        if (result != KATRA_SUCCESS) {
+            pthread_mutex_unlock(&g_katra_api_lock);
+            const char* msg = katra_error_message(result);
+            char error_details[512];
+            snprintf(error_details, sizeof(error_details),
+                    "Failed to generate CI identity: %s", msg);
+            return mcp_tool_error("Registration failed", error_details);
+        }
+
+        result = katra_register_persona(name, ci_id);
+        if (result != KATRA_SUCCESS) {
+            pthread_mutex_unlock(&g_katra_api_lock);
+            const char* msg = katra_error_message(result);
+            char error_details[512];
+            snprintf(error_details, sizeof(error_details),
+                    "Failed to register persona: %s", msg);
+            return mcp_tool_error("Registration failed", error_details);
+        }
+    }
+
+    /* Start new session with ci_id (not name) */
+    result = session_start(ci_id);
 
     pthread_mutex_unlock(&g_katra_api_lock);
 

@@ -64,28 +64,7 @@ void mcp_mark_first_call_complete(void) {
     g_session.first_call = false;
 }
 
-/* Generate unique per-instance CI identity */
-static int generate_ci_id(char* buffer, size_t size) {
-    if (!buffer || size == 0) {
-        return E_INPUT_NULL;
-    }
-
-    const char* user = getenv(MCP_ENV_USER);
-    if (!user) {
-        user = MCP_CI_ID_UNKNOWN_USER;
-    }
-
-    pid_t pid = getpid();
-    time_t now = time(NULL);
-
-    int written = snprintf(buffer, size, MCP_CI_ID_FMT, MCP_CI_ID_PREFIX, user, pid, (long)now);
-
-    if (written < 0 || (size_t)written >= size) {
-        return E_BUFFER_OVERFLOW;
-    }
-
-    return KATRA_SUCCESS;
-}
+/* Note: generate_ci_id() moved to katra_identity.c as katra_generate_ci_id() */
 
 /* Initialize MCP server */
 int mcp_server_init(const char* ci_id) {
@@ -242,7 +221,7 @@ int main(void) {
             katra_update_persona_session(g_persona_name);
         } else {
             /* Not found - create new persona with this name */
-            result = generate_ci_id(g_ci_id, sizeof(g_ci_id));
+            result = katra_generate_ci_id(g_ci_id, sizeof(g_ci_id));
             if (result != KATRA_SUCCESS) {
                 /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
                 fprintf(stderr, "Failed to generate CI identity: %s\n",
@@ -277,7 +256,7 @@ int main(void) {
         }
         else {
             /* Priority 3: Generate anonymous persona */
-            result = generate_ci_id(g_ci_id, sizeof(g_ci_id));
+            result = katra_generate_ci_id(g_ci_id, sizeof(g_ci_id));
             if (result != KATRA_SUCCESS) {
                 /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
                 fprintf(stderr, "Failed to generate CI identity: %s\n",

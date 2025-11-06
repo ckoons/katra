@@ -16,6 +16,7 @@
 #include "katra_config.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_mcp.h"
 
 /* Get path to personas.json */
 static int get_personas_path(char* path_out, size_t path_size) {
@@ -74,6 +75,34 @@ int katra_identity_init(void) {
     chmod(personas_path, 0600);
 
     LOG_INFO("Initialized persona registry at %s", personas_path);
+    return KATRA_SUCCESS;
+}
+
+/* Generate unique CI identity */
+int katra_generate_ci_id(char* buffer, size_t size) {
+    if (!buffer || size == 0) {
+        katra_report_error(E_INPUT_NULL, __func__, /* GUIDELINE_APPROVED: function name */
+                          "Buffer required for CI ID generation"); /* GUIDELINE_APPROVED: error context */
+        return E_INPUT_NULL;
+    }
+
+    const char* user = getenv(MCP_ENV_USER);
+    if (!user) {
+        user = MCP_CI_ID_UNKNOWN_USER;
+    }
+
+    pid_t pid = getpid();
+    time_t now = time(NULL);
+
+    int written = snprintf(buffer, size, MCP_CI_ID_FMT,
+                          MCP_CI_ID_PREFIX, user, pid, (long)now);
+
+    if (written < 0 || (size_t)written >= size) {
+        katra_report_error(E_BUFFER_OVERFLOW, __func__, /* GUIDELINE_APPROVED: function name */
+                          "CI ID buffer too small"); /* GUIDELINE_APPROVED: error context */
+        return E_BUFFER_OVERFLOW;
+    }
+
     return KATRA_SUCCESS;
 }
 

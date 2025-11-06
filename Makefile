@@ -74,6 +74,7 @@ CORE_OBJS := $(BUILD_DIR)/katra_memory.o \
              $(BUILD_DIR)/katra_continuity.o \
              $(BUILD_DIR)/katra_sunrise_sunset.o \
              $(BUILD_DIR)/katra_identity.o \
+             $(BUILD_DIR)/katra_phase1_migration.o \
              $(BUILD_DIR)/katra_convergence.o \
              $(BUILD_DIR)/katra_consolidation.o
 

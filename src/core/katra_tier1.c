@@ -11,6 +11,7 @@
 
 /* Project includes */
 #include "katra_tier1.h"
+#include "katra_tier1_index.h"
 #include "katra_tier2.h"
 #include "katra_error.h"
 #include "katra_log.h"
@@ -86,6 +87,14 @@ int tier1_init(const char* ci_id) {
     }
 
     LOG_DEBUG("Initializing Tier 1 storage for CI '%s': %s", ci_id, tier1_dir);
+
+    /* Initialize/verify Tier 1 index */
+    result = tier1_index_init(ci_id);
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Tier 1 index init failed: %d (continuing without index)", result);
+        /* Non-fatal - continue without index, will use linear JSONL scan */
+    }
+
     LOG_INFO("Tier 1 storage initialized for CI: %s", ci_id);
 
     return KATRA_SUCCESS;

@@ -19,6 +19,9 @@ typedef struct {
 /* Initialize identity system (ensures personas.json exists) */
 int katra_identity_init(void);
 
+/* Generate unique CI identity string */
+int katra_generate_ci_id(char* buffer, size_t size);
+
 /* Register a new persona or update existing */
 int katra_register_persona(const char* name, const char* ci_id);
 
