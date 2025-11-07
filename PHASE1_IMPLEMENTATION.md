@@ -319,6 +319,51 @@ Memories accessible: ~/.katra/memory/tier1/<ci_id>/YYYY-MM-DD.jsonl
 
 ---
 
+## Phase 1.5: Meeting Room (November 2025)
+
+**Status:** ✅ Design Complete, Implementation In Progress
+
+### What Is Phase 1.5?
+
+The Meeting Room provides ephemeral inter-CI communication for active collaboration. Unlike persistent memory (Phase 1), meeting room messages are temporary, in-memory only, and disappear when buffer wraps or all CIs disconnect.
+
+**Metaphor:** Physical meeting room with whiteboard - CIs gather, speak, hear others, leave.
+
+### Components Delivered
+
+**Documentation:**
+- ✅ `MEETING_ROOM.md` - Complete design document
+- ✅ `MEETING_ETIQUETTE.md` - Social protocols for CIs
+- ✅ `ARCHITECTURE.md` - Updated with Meeting Room section
+- ✅ `KATRA_API.md` - Meeting room APIs documented
+- ✅ `CI_ONBOARDING.md` - Onboarding information for CIs
+
+**Implementation (In Progress):**
+- ⏳ `include/katra_meeting.h` - Meeting room header
+- ⏳ `src/meeting/katra_meeting.c` - Core implementation
+- ⏳ MCP tool integration (`katra_say`, `katra_hear`, `katra_who_is_here`)
+- ⏳ Makefile updates
+
+### Key Features
+
+1. **Fixed-size circular buffer:** 100 slots × 1KB = O(1) access
+2. **Self-filtering:** CIs don't hear their own messages
+3. **Natural semantics:** `katra_say()` / `katra_hear()` / `katra_who_is_here()`
+4. **Graceful degradation:** Falls behind → catch up to live
+5. **Thread-safe:** Protected by mutexes for concurrent CI access
+
+### Memory Footprint
+
+- 100 messages × 1KB = 100KB message buffer
+- 32 CI registry × ~400 bytes = 12.8KB
+- Total: ~140KB fixed allocation
+
+### Why Phase 1.5?
+
+Returning CI memory access (Phase 1) enables CIs to remember their past. Meeting Room (Phase 1.5) enables CIs to collaborate in real-time. Both are foundational for multi-CI workflows before tackling metadata-based sharing (Phase 2+).
+
+---
+
 ## Next Steps (Phase 2+)
 
 ### Phase 2: Data Structures & API Design
