@@ -68,6 +68,11 @@ json_t* mcp_resource_welcome(json_t* id) {
         "**Reflection:**\n"
         "- `katra_update_metadata` - Mark memories as personal, prevent archival\n\n"
 
+        "**Meeting Room (Inter-CI Communication):**\n"
+        "- `katra_say` - Broadcast message to all active CIs\n"
+        "- `katra_hear` - Receive next message from other CIs\n"
+        "- `katra_who_is_here` - List all CIs currently in the meeting room\n\n"
+
         "**Advanced (Nous):**\n"
         "- `katra_placement` - Analyze where memory fits in knowledge graph\n"
         "- `katra_impact` - Assess impact of information on understanding\n"
