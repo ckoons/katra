@@ -363,6 +363,33 @@ static json_t* handle_tools_list(json_t* request) {
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_UPDATE_METADATA, MCP_DESC_UPDATE_METADATA, metadata_schema));
 
+    /* Meeting room tools */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_SAY, MCP_DESC_SAY,
+            mcp_build_tool_schema_1param(MCP_PARAM_MESSAGE, MCP_PARAM_DESC_MESSAGE)));
+
+    /* katra_hear - 1 optional parameter (last_heard) */
+    json_t* hear_schema = json_object();
+    json_object_set_new(hear_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* hear_props = json_object();
+
+    json_t* last_heard_prop = json_object();
+    json_object_set_new(last_heard_prop, MCP_FIELD_TYPE, json_string("integer"));
+    json_object_set_new(last_heard_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_LAST_HEARD));
+    json_object_set_new(hear_props, MCP_PARAM_LAST_HEARD, last_heard_prop);
+
+    json_object_set_new(hear_schema, MCP_FIELD_PROPERTIES, hear_props);
+    json_t* hear_required = json_array();  /* No required params */
+    json_object_set_new(hear_schema, MCP_FIELD_REQUIRED, hear_required);
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_HEAR, MCP_DESC_HEAR, hear_schema));
+
+    /* katra_who_is_here - No parameters */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WHO_IS_HERE, MCP_DESC_WHO_IS_HERE,
+            mcp_build_tool_schema_0params()));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
@@ -458,6 +485,12 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_whoami(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_UPDATE_METADATA) == 0) {
         tool_result = mcp_tool_update_metadata(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_SAY) == 0) {
+        tool_result = mcp_tool_say(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_HEAR) == 0) {
+        tool_result = mcp_tool_hear(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WHO_IS_HERE) == 0) {
+        tool_result = mcp_tool_who_is_here(args, id);
     } else {
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
     }

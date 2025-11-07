@@ -3,8 +3,9 @@
 #ifndef KATRA_ERROR_H
 #define KATRA_ERROR_H
 
-/* Success */
+/* Success and special status codes */
 #define KATRA_SUCCESS 0
+#define KATRA_NO_NEW_MESSAGES 1  /* Meeting room: no new messages available */
 
 /* Error reporting buffer size */
 #define ERROR_LINE_BUFFER_SIZE 512
@@ -54,6 +55,8 @@
 #define E_NOT_FOUND         KATRA_ERROR(ERR_INPUT, 3008)
 #define E_DUPLICATE         KATRA_ERROR(ERR_INPUT, 3009)
 #define E_RESOURCE_LIMIT    KATRA_ERROR(ERR_INPUT, 3010)
+#define E_ALREADY_INITIALIZED KATRA_ERROR(ERR_INPUT, 3011)
+#define E_MEETING_FULL      KATRA_ERROR(ERR_INPUT, 3012)
 
 /* Consent errors (CONSENT:4xxx) */
 #define E_CONSENT_DENIED        KATRA_ERROR(ERR_CONSENT, 4001)

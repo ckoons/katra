@@ -21,6 +21,7 @@
 /* Identity-specific buffer sizes */
 #define KATRA_NAME_SIZE KATRA_BUFFER_NAME      /* Persona name buffer size */
 #define KATRA_CI_ID_SIZE KATRA_BUFFER_MEDIUM   /* CI identity string size */
+#define KATRA_ROLE_SIZE KATRA_BUFFER_SMALL     /* CI role buffer size */
 
 /* Standard I/O and content buffers */
 #define KATRA_BUFFER_STANDARD 4096

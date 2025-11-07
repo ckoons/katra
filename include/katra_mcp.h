@@ -86,6 +86,9 @@
 #define MCP_TOOL_UPDATE_METADATA "katra_update_metadata"
 #define MCP_TOOL_REGISTER "katra_register"
 #define MCP_TOOL_WHOAMI "katra_whoami"
+#define MCP_TOOL_SAY "katra_say"
+#define MCP_TOOL_HEAR "katra_hear"
+#define MCP_TOOL_WHO_IS_HERE "katra_who_is_here"
 
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
@@ -99,6 +102,9 @@
 #define MCP_DESC_UPDATE_METADATA "Update memory metadata (personal, collection, archival flags)"
 #define MCP_DESC_REGISTER "Register your name and role for this session"
 #define MCP_DESC_WHOAMI "Get your identity information for this session"
+#define MCP_DESC_SAY "Broadcast message to all active CIs in the meeting room"
+#define MCP_DESC_HEAR "Receive next message from other CIs in the meeting room"
+#define MCP_DESC_WHO_IS_HERE "List all active CIs currently in the meeting room"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -114,6 +120,8 @@
 #define MCP_PARAM_COLLECTION "collection"
 #define MCP_PARAM_NAME "name"
 #define MCP_PARAM_ROLE "role"
+#define MCP_PARAM_MESSAGE "message"
+#define MCP_PARAM_LAST_HEARD "last_heard"
 
 /* Tool Parameter Descriptions */
 #define MCP_PARAM_DESC_CONTENT "The thought or experience to remember"
@@ -131,6 +139,8 @@
 #define MCP_PARAM_DESC_COLLECTION "Collection path like 'People/Casey' or 'Moments/Breakthrough' (optional)"
 #define MCP_PARAM_DESC_NAME "Your chosen name for this session (e.g., 'Claude-Dev', 'Nyx', 'Bob')"
 #define MCP_PARAM_DESC_ROLE "Your role (e.g., 'developer', 'tester', 'assistant')"
+#define MCP_PARAM_DESC_MESSAGE "The message to broadcast to all CIs in the meeting room"
+#define MCP_PARAM_DESC_LAST_HEARD "Last message number received (0 to start from oldest available message)"
 
 /* Resource URIs */
 #define MCP_RESOURCE_URI_WELCOME "katra://welcome"
@@ -300,6 +310,11 @@ void mcp_mark_first_call_complete(void);
 /* Session Tools */
 json_t* mcp_tool_register(json_t* args, json_t* id);
 json_t* mcp_tool_whoami(json_t* args, json_t* id);
+
+/* Meeting Room Tools - Inter-CI Communication */
+json_t* mcp_tool_say(json_t* args, json_t* id);
+json_t* mcp_tool_hear(json_t* args, json_t* id);
+json_t* mcp_tool_who_is_here(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;

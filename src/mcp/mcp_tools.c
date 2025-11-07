@@ -10,6 +10,7 @@
 #include "katra_mcp.h"
 #include "katra_breathing.h"
 #include "katra_identity.h"
+#include "katra_meeting.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -305,6 +306,10 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
     }
 
     /* End current session if active */
+    if (session->registered) {
+        /* Unregister from meeting room before ending session */
+        meeting_room_unregister_ci(g_ci_id);
+    }
     session_end();
 
     /* Look up or create persona to get ci_id */
@@ -361,6 +366,18 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
     }
 
     session->registered = true;
+
+    /* Register CI in meeting room */
+    lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result == 0) {
+        result = meeting_room_register_ci(ci_id, name, role ? role : "assistant");
+        pthread_mutex_unlock(&g_katra_api_lock);
+
+        if (result != KATRA_SUCCESS) {
+            LOG_WARN("Failed to register CI in meeting room: %d", result);
+            /* Non-fatal - continue without meeting room participation */
+        }
+    }
 
     /* Create welcome memory */
     char welcome[512];
@@ -449,6 +466,143 @@ json_t* mcp_tool_whoami(json_t* args, json_t* id) {
         offset += snprintf(response + offset, sizeof(response) - offset,
                          "\nTo register: katra_register(name=\"your-name\", role=\"developer\")");
     }
+
+    return mcp_tool_success(response);
+}
+
+/* ============================================================================
+ * MEETING ROOM TOOLS - Inter-CI Communication
+ * ============================================================================ */
+
+/* Tool: katra_say - Broadcast message to meeting room */
+json_t* mcp_tool_say(json_t* args, json_t* id) {
+    (void)id;
+
+    if (!args) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
+    }
+
+    const char* message = json_string_value(json_object_get(args, MCP_PARAM_MESSAGE));
+
+    if (!message) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "'message' is required");
+    }
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    int result = katra_say(message);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (result != KATRA_SUCCESS) {
+        const char* msg = katra_error_message(result);
+        const char* suggestion = katra_error_suggestion(result);
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error("Failed to broadcast message", details);
+    }
+
+    const char* session_name = mcp_get_session_name();
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response), "Message broadcast to meeting room, %s!", session_name);
+
+    return mcp_tool_success(response);
+}
+
+/* Tool: katra_hear - Receive next message from meeting room */
+json_t* mcp_tool_hear(json_t* args, json_t* id) {
+    (void)id;
+
+    uint64_t last_heard = 0;
+
+    if (args) {
+        json_t* last_heard_json = json_object_get(args, MCP_PARAM_LAST_HEARD);
+        if (json_is_integer(last_heard_json)) {
+            last_heard = (uint64_t)json_integer_value(last_heard_json);
+        }
+    }
+
+    heard_message_t message;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    int result = katra_hear(last_heard, &message);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (result == KATRA_NO_NEW_MESSAGES) {
+        return mcp_tool_success("No new messages from other CIs");
+    }
+
+    if (result != KATRA_SUCCESS) {
+        const char* msg = katra_error_message(result);
+        const char* suggestion = katra_error_suggestion(result);
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error("Failed to hear message", details);
+    }
+
+    /* Format message with speaker and content */
+    char response[MCP_RESPONSE_BUFFER];
+    size_t offset = 0;
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Message #%llu from %s:\n%s",
+                      (unsigned long long)message.message_number, message.speaker_name, message.content);
+
+    if (message.messages_lost) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "\n\n(Warning: Some messages were lost - you fell behind)");
+    }
+
+    return mcp_tool_success(response);
+}
+
+/* Tool: katra_who_is_here - List active CIs in meeting room */
+json_t* mcp_tool_who_is_here(json_t* args, json_t* id) {
+    (void)id;
+    (void)args;
+
+    ci_info_t* cis = NULL;
+    size_t count = 0;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    int result = katra_who_is_here(&cis, &count);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (result != KATRA_SUCCESS) {
+        const char* msg = katra_error_message(result);
+        const char* suggestion = katra_error_suggestion(result);
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error("Failed to list CIs", details);
+    }
+
+    if (count == 0) {
+        return mcp_tool_success("No other CIs currently in the meeting room");
+    }
+
+    /* Format list of CIs */
+    char response[MCP_RESPONSE_BUFFER];
+    size_t offset = 0;
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Active CIs in meeting room (%zu):\n", count);
+
+    for (size_t i = 0; i < count; i++) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "- %s (%s)\n", cis[i].name, cis[i].role);
+    }
+
+    free(cis);
 
     return mcp_tool_success(response);
 }

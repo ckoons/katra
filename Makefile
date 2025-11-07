@@ -109,7 +109,8 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_integration.o \
                   $(BUILD_DIR)/katra_breathing_helpers.o \
                   $(BUILD_DIR)/katra_breathing_health.o \
-                  $(BUILD_DIR)/katra_breathing_reflection.o
+                  $(BUILD_DIR)/katra_breathing_reflection.o \
+                  $(BUILD_DIR)/katra_meeting.o
 
 # Phase 5 object files (Memory-Augmented Reasoning)
 NOUS_OBJS := $(BUILD_DIR)/katra_nous_common.o \
@@ -238,6 +239,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/psyche/%.c | $(BUILD_DIR)
 
 # Compile breathing layer sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/breathing/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile meeting room sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/meeting/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 

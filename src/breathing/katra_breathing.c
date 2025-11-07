@@ -27,6 +27,7 @@
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
 #include "katra_breathing_context_persist.h"
+#include "katra_meeting.h"
 
 /* ============================================================================
  * GLOBAL STATE - Shared across breathing layer files
@@ -98,6 +99,13 @@ int breathe_init(const char* ci_id) {
         /* Non-fatal - continue without context persistence */
     }
 
+    /* Initialize meeting room subsystem */
+    result = meeting_room_init();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Meeting room init failed: %d (continuing without it)", result);
+        /* Non-fatal - continue without meeting room */
+    }
+
     return KATRA_SUCCESS;
 }
 
@@ -131,6 +139,10 @@ void breathe_cleanup(void) {
     /* Step 5: Cleanup context persistence */
     context_persist_cleanup();
     LOG_DEBUG("Step 5: Context persistence cleaned up");
+
+    /* Step 5a: Cleanup meeting room */
+    meeting_room_cleanup();
+    LOG_DEBUG("Step 5a: Meeting room cleaned up");
 
     /* Step 6: Free breathing layer resources */
     free(g_context.ci_id);
