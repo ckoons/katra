@@ -365,6 +365,18 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
 
     session->registered = true;
 
+    /* Register CI in meeting room */
+    int lock_result_meeting = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result_meeting == 0) {
+        result = meeting_room_register_ci(ci_id, name, role ? role : "assistant");
+        pthread_mutex_unlock(&g_katra_api_lock);
+
+        if (result != KATRA_SUCCESS) {
+            LOG_WARN("Failed to register CI in meeting room: %d", result);
+            /* Non-fatal - continue even if meeting room registration fails */
+        }
+    }
+
     /* Create welcome memory */
     char welcome[512];
     if (role && strlen(role) > 0) {
@@ -460,7 +472,7 @@ json_t* mcp_tool_whoami(json_t* args, json_t* id) {
  * MEETING ROOM TOOLS - Inter-CI Communication
  * ============================================================================ */
 
-/* Tool: katra_say - Broadcast message to meeting room */
+/* Tool: katra_say - Send message to recipient(s) */
 json_t* mcp_tool_say(json_t* args, json_t* id) {
     (void)id;
 
@@ -474,12 +486,15 @@ json_t* mcp_tool_say(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, "'message' is required");
     }
 
+    /* Optional recipients parameter (NULL/""/broadcast or "alice,bob") */
+    const char* recipients = json_string_value(json_object_get(args, "recipients"));
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = katra_say(message);
+    int result = katra_say(message, recipients);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS) {
@@ -487,28 +502,25 @@ json_t* mcp_tool_say(json_t* args, json_t* id) {
         const char* suggestion = katra_error_suggestion(result);
         char details[MCP_ERROR_BUFFER];
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
-        return mcp_tool_error("Failed to broadcast message", details);
+        return mcp_tool_error("Failed to send message", details);
     }
 
     const char* session_name = mcp_get_session_name();
     char response[MCP_RESPONSE_BUFFER];
-    snprintf(response, sizeof(response), "Message broadcast to meeting room, %s!", session_name);
+
+    if (!recipients || strlen(recipients) == 0 || strcmp(recipients, "broadcast") == 0) {
+        snprintf(response, sizeof(response), "Message broadcast to meeting room, %s!", session_name);
+    } else {
+        snprintf(response, sizeof(response), "Message sent to %s, %s!", recipients, session_name);
+    }
 
     return mcp_tool_success(response);
 }
 
-/* Tool: katra_hear - Receive next message from meeting room */
+/* Tool: katra_hear - Receive next message from personal queue */
 json_t* mcp_tool_hear(json_t* args, json_t* id) {
     (void)id;
-
-    uint64_t last_heard = 0;
-
-    if (args) {
-        json_t* last_heard_json = json_object_get(args, MCP_PARAM_LAST_HEARD);
-        if (json_is_integer(last_heard_json)) {
-            last_heard = (uint64_t)json_integer_value(last_heard_json);
-        }
-    }
+    (void)args;
 
     heard_message_t message;
 
@@ -517,7 +529,7 @@ json_t* mcp_tool_hear(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = katra_hear(last_heard, &message);
+    int result = katra_hear(&message);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result == KATRA_NO_NEW_MESSAGES) {
@@ -537,12 +549,17 @@ json_t* mcp_tool_hear(json_t* args, json_t* id) {
     size_t offset = 0;
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Message #%llu from %s:\n%s",
-                      (unsigned long long)message.message_number, message.speaker_name, message.content);
+                      "Message from %s", message.speaker_name);
 
-    if (message.messages_lost) {
+    if (message.is_direct_message) {
+        offset += snprintf(response + offset, sizeof(response) - offset, " (direct message)");
+    }
+
+    offset += snprintf(response + offset, sizeof(response) - offset, ":\n%s", message.content);
+
+    if (message.more_available) {
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          "\n\n(Warning: Some messages were lost - you fell behind)");
+                          "\n\n(More messages waiting - call katra_hear again)");
     }
 
     return mcp_tool_success(response);

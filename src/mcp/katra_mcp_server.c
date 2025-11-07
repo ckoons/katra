@@ -16,6 +16,7 @@
 #include "katra_identity.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_meeting.h"
 
 /* Global persona name (set during initialization) */
 char g_persona_name[256] = "";
@@ -107,12 +108,25 @@ int mcp_server_init(const char* ci_id) {
         return result;
     }
 
-    /* Step 4: Start session */
+    /* Step 4: Initialize chat/meeting room database */
+    result = meeting_room_init();
+    if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic */
+        fprintf(stderr, "Failed to initialize meeting room: %s\n",
+                katra_error_message(result));
+        breathe_cleanup();
+        katra_memory_cleanup();
+        katra_exit();
+        return result;
+    }
+
+    /* Step 5: Start session */
     result = session_start(ci_id);
     if (result != KATRA_SUCCESS) {
         /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to start session: %s\n",
                 katra_error_message(result));
+        meeting_room_cleanup();
         breathe_cleanup();
         katra_memory_cleanup();
         katra_exit();
@@ -129,6 +143,7 @@ void mcp_server_cleanup(void) {
 
     /* Cleanup in reverse order of initialization */
     session_end();
+    meeting_room_cleanup();
     breathe_cleanup();
     katra_memory_cleanup();
     katra_exit();
