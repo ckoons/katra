@@ -112,7 +112,9 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_reflection.o
 
 # Chat (Inter-CI Communication) object files
-CHAT_OBJS := $(BUILD_DIR)/katra_chat.o
+CHAT_OBJS := $(BUILD_DIR)/katra_chat.o \
+             $(BUILD_DIR)/katra_chat_helpers.o \
+             $(BUILD_DIR)/katra_chat_registry.o
 
 # Phase 5 object files (Memory-Augmented Reasoning)
 NOUS_OBJS := $(BUILD_DIR)/katra_nous_common.o \

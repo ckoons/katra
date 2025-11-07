@@ -1,9 +1,9 @@
 /* © 2025 Casey Koons All rights reserved */
 
 /*
- * katra_chat.c - Database-Backed Inter-CI Communication
+ * katra_chat.c - Database-Backed Inter-CI Communication (Public API)
  *
- * Implements ephemeral chat system for CIs across multiple processes.
+ * Core API for ephemeral chat between CIs across multiple processes.
  * Uses SQLite for multi-process safe message queuing and history.
  */
 
@@ -12,560 +12,146 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <ctype.h>
 #include <sqlite3.h>
 #include <pthread.h>
 
 /* Project includes */
+#include "katra_chat_internal.h"
 #include "katra_meeting.h"
 #include "katra_error.h"
 #include "katra_log.h"
-#include "katra_limits.h"
-#include "katra_breathing.h"
-#include "katra_path_utils.h"
-#include "katra_file_utils.h"
 
 /* ============================================================================
- * CONSTANTS
- * ============================================================================ */
-
-#define CHAT_DB_FILENAME "chat.db"
-#define CHAT_SQL_BUFFER_SIZE 4096
-#define SECONDS_PER_HOUR (MINUTES_PER_HOUR * SECONDS_PER_MINUTE)
-
-/* ============================================================================
- * GLOBAL STATE
- * ============================================================================ */
-
-static sqlite3* g_chat_db = NULL;
-static bool g_chat_initialized = false;
-static pthread_mutex_t g_chat_lock = PTHREAD_MUTEX_INITIALIZER;
-
-/* ============================================================================
- * SQL SCHEMA
- * ============================================================================ */
-
-/* Global broadcast history (2-hour TTL) */
-static const char* CHAT_SCHEMA_MESSAGES =
-    "CREATE TABLE IF NOT EXISTS katra_messages ("
-    "  message_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-    "  sender_ci_id TEXT NOT NULL,"
-    "  sender_name TEXT NOT NULL,"
-    "  message TEXT NOT NULL,"
-    "  timestamp INTEGER NOT NULL,"
-    "  created_at INTEGER DEFAULT (strftime('%s', 'now'))"
-    ");"
-    "CREATE INDEX IF NOT EXISTS idx_messages_timestamp "
-    "  ON katra_messages(timestamp);";
-
-/* Per-CI personal queues (self-contained) */
-static const char* CHAT_SCHEMA_QUEUES =
-    "CREATE TABLE IF NOT EXISTS katra_queues ("
-    "  queue_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-    "  recipient_ci_id TEXT NOT NULL,"
-    "  sender_ci_id TEXT NOT NULL,"
-    "  sender_name TEXT NOT NULL,"
-    "  message TEXT NOT NULL,"
-    "  timestamp INTEGER NOT NULL,"
-    "  recipients TEXT,"
-    "  message_id INTEGER,"
-    "  created_at INTEGER DEFAULT (strftime('%s', 'now'))"
-    ");"
-    "CREATE INDEX IF NOT EXISTS idx_queues_recipient "
-    "  ON katra_queues(recipient_ci_id);";
-
-/* Active CI registry */
-static const char* CHAT_SCHEMA_REGISTRY =
-    "CREATE TABLE IF NOT EXISTS katra_ci_registry ("
-    "  ci_id TEXT PRIMARY KEY,"
-    "  name TEXT NOT NULL,"
-    "  role TEXT NOT NULL,"
-    "  joined_at INTEGER NOT NULL"
-    ");";
-
-/* ============================================================================
- * HELPER FUNCTIONS
+ * INTERNAL HELPERS
  * ============================================================================ */
 
 /**
- * get_caller_ci_id() - Get calling CI's identity
+ * lookup_sender_name() - Get sender's registered name from CI registry
  */
-static int get_caller_ci_id(char* ci_id_out, size_t size) {
-    katra_session_info_t info;
-    int result = katra_get_session_info(&info);
-    if (result != KATRA_SUCCESS) {
-        ci_id_out[0] = '\0';
-        return result;
-    }
-    strncpy(ci_id_out, info.ci_id, size - 1);
-    ci_id_out[size - 1] = '\0';
-    return KATRA_SUCCESS;
-}
-
-/**
- * case_insensitive_compare() - Compare strings case-insensitively
- */
-static int case_insensitive_compare(const char* s1, const char* s2) {
-    while (*s1 && *s2) {
-        int c1 = tolower((unsigned char)*s1);
-        int c2 = tolower((unsigned char)*s2);
-        if (c1 != c2) {
-            return c1 - c2;
-        }
-        s1++;
-        s2++;
-    }
-    return tolower((unsigned char)*s1) - tolower((unsigned char)*s2);
-}
-
-/**
- * is_broadcast() - Check if recipients string means broadcast
- */
-static bool is_broadcast(const char* recipients) {
-    if (!recipients || strlen(recipients) == 0) {
-        return true;
-    }
-    if (case_insensitive_compare(recipients, "broadcast") == 0) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * resolve_ci_name_to_id() - Resolve CI name to ci_id (case-insensitive)
- */
-static int resolve_ci_name_to_id(const char* name, char* ci_id_out, size_t size) {
-    if (!name || !ci_id_out) {
-        return E_INPUT_NULL;
-    }
-
+static int lookup_sender_name(const char* sender_ci_id, char* name_out, size_t size) {
     if (pthread_mutex_lock(&g_chat_lock) != 0) {
         return E_INTERNAL_LOGIC;
     }
 
     sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT ci_id FROM katra_ci_registry WHERE name = ? COLLATE NOCASE";
-
+    const char* sql = "SELECT name FROM katra_ci_registry WHERE ci_id = ?";
     int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        pthread_mutex_unlock(&g_chat_lock);
-        return E_SYSTEM_FILE;
-    }
-
-    sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
-
-    int result = E_NOT_FOUND;
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        const char* ci_id = (const char*)sqlite3_column_text(stmt, 0);
-        strncpy(ci_id_out, ci_id, size - 1);
-        ci_id_out[size - 1] = '\0';
-        result = KATRA_SUCCESS;
-    }
-
-    sqlite3_finalize(stmt);
-    pthread_mutex_unlock(&g_chat_lock);
-
-    return result;
-}
-
-/**
- * get_active_ci_ids() - Get array of all active CI IDs
- */
-static int get_active_ci_ids(char*** ci_ids_out, size_t* count_out) {
-    if (!ci_ids_out || !count_out) {
-        return E_INPUT_NULL;
-    }
-
-    *ci_ids_out = NULL;
-    *count_out = 0;
-
-    if (pthread_mutex_lock(&g_chat_lock) != 0) {
-        return E_INTERNAL_LOGIC;
-    }
-
-    sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT ci_id FROM katra_ci_registry ORDER BY joined_at";
-
-    int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        pthread_mutex_unlock(&g_chat_lock);
-        return E_SYSTEM_FILE;
-    }
-
-    /* Count rows first */
-    size_t count = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        count++;
-    }
-    sqlite3_reset(stmt);
-
-    if (count == 0) {
-        sqlite3_finalize(stmt);
-        pthread_mutex_unlock(&g_chat_lock);
-        return KATRA_SUCCESS;
-    }
-
-    /* Allocate array */
-    char** ci_ids = malloc(count * sizeof(char*));
-    if (!ci_ids) {
-        sqlite3_finalize(stmt);
-        pthread_mutex_unlock(&g_chat_lock);
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Fill array */
-    size_t idx = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW && idx < count) {
-        const char* ci_id = (const char*)sqlite3_column_text(stmt, 0);
-        ci_ids[idx] = strdup(ci_id);
-        if (!ci_ids[idx]) {
-            /* Cleanup on failure */
-            for (size_t i = 0; i < idx; i++) {
-                free(ci_ids[i]);
-            }
-            free(ci_ids);
-            sqlite3_finalize(stmt);
-            pthread_mutex_unlock(&g_chat_lock);
-            return E_SYSTEM_MEMORY;
+    if (rc == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, sender_ci_id, -1, SQLITE_STATIC);
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            const char* name = (const char*)sqlite3_column_text(stmt, 0);
+            strncpy(name_out, name, size - 1);
+            name_out[size - 1] = '\0';
         }
-        idx++;
+        sqlite3_finalize(stmt);
     }
 
-    sqlite3_finalize(stmt);
     pthread_mutex_unlock(&g_chat_lock);
-
-    *ci_ids_out = ci_ids;
-    *count_out = count;
-
     return KATRA_SUCCESS;
 }
 
 /**
- * parse_recipients() - Parse comma-separated recipient list
+ * store_broadcast_message() - Store broadcast in global history
  *
- * Returns array of ci_ids. Unknown names are logged and skipped.
+ * Returns message_id via out parameter.
  */
-static int parse_recipients(const char* recipients_str, const char* sender_ci_id,
-                           char*** ci_ids_out, size_t* count_out) {
-    if (!recipients_str || !sender_ci_id || !ci_ids_out || !count_out) {
-        return E_INPUT_NULL;
+static int store_broadcast_message(const char* sender_ci_id, const char* sender_name,
+                                   const char* content, time_t timestamp,
+                                   sqlite3_int64* message_id_out) {
+    if (pthread_mutex_lock(&g_chat_lock) != 0) {
+        return E_INTERNAL_LOGIC;
     }
 
-    *ci_ids_out = NULL;
-    *count_out = 0;
+    sqlite3_stmt* stmt = NULL;
+    const char* insert_msg_sql =
+        "INSERT INTO katra_messages (sender_ci_id, sender_name, message, timestamp) "
+        "VALUES (?, ?, ?, ?)";
 
-    /* Make a mutable copy */
-    char* copy = strdup(recipients_str);
-    if (!copy) {
-        return E_SYSTEM_MEMORY;
+    int rc = sqlite3_prepare_v2(g_chat_db, insert_msg_sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        pthread_mutex_unlock(&g_chat_lock);
+        return E_SYSTEM_FILE;
     }
 
-    /* Count commas to estimate max recipients */
-    size_t max_recipients = 1;
-    for (const char* p = copy; *p; p++) {
-        if (*p == ',') {
-            max_recipients++;
-        }
+    sqlite3_bind_text(stmt, 1, sender_ci_id, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, sender_name, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, content, -1, SQLITE_STATIC);
+    sqlite3_bind_int64(stmt, 4, (sqlite3_int64)timestamp);
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_DONE) {
+        *message_id_out = sqlite3_last_insert_rowid(g_chat_db);
+    }
+    sqlite3_finalize(stmt);
+
+    pthread_mutex_unlock(&g_chat_lock);
+
+    if (rc != SQLITE_DONE) {
+        katra_report_error(E_SYSTEM_FILE, "store_broadcast_message",
+                          sqlite3_errmsg(g_chat_db));
+        return E_SYSTEM_FILE;
     }
 
-    /* Allocate array */
-    char** ci_ids = malloc(max_recipients * sizeof(char*));
-    if (!ci_ids) {
-        free(copy);
-        return E_SYSTEM_MEMORY;
+    return KATRA_SUCCESS;
+}
+
+/**
+ * queue_to_recipients() - Queue message to each recipient's personal queue
+ */
+static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
+                               const char* sender_ci_id, const char* sender_name,
+                               const char* content, time_t timestamp,
+                               const char* recipients, bool broadcast,
+                               sqlite3_int64 message_id) {
+    int result = KATRA_SUCCESS;
+
+    if (pthread_mutex_lock(&g_chat_lock) != 0) {
+        return E_INTERNAL_LOGIC;
     }
 
-    size_t count = 0;
-    char* token = strtok(copy, ",");
-    while (token) {
-        /* Trim leading whitespace */
-        while (*token && isspace((unsigned char)*token)) {
-            token++;
-        }
+    const char* queue_sql =
+        "INSERT INTO katra_queues "
+        "(recipient_ci_id, sender_ci_id, sender_name, message, timestamp, recipients, message_id) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        /* Trim trailing whitespace */
-        char* end = token + strlen(token) - 1;
-        while (end > token && isspace((unsigned char)*end)) {
-            *end = '\0';
-            end--;
-        }
+    sqlite3_stmt* stmt = NULL;
 
-        /* Skip empty strings */
-        if (strlen(token) == 0) {
-            token = strtok(NULL, ",");
+    for (size_t i = 0; i < recipient_count; i++) {
+        /* Skip sender (self-filtering) */
+        if (strcmp(recipient_ci_ids[i], sender_ci_id) == 0) {
             continue;
         }
 
-        /* Resolve name to ci_id */
-        char ci_id[KATRA_CI_ID_SIZE];
-        int result = resolve_ci_name_to_id(token, ci_id, sizeof(ci_id));
-
-        if (result == KATRA_SUCCESS) {
-            /* Skip if sender */
-            if (strcmp(ci_id, sender_ci_id) == 0) {
-                LOG_DEBUG("Skipping sender '%s' from recipient list", token);
-                token = strtok(NULL, ",");
-                continue;
-            }
-
-            /* Add to array */
-            ci_ids[count] = strdup(ci_id);
-            if (!ci_ids[count]) {
-                /* Cleanup on failure */
-                for (size_t i = 0; i < count; i++) {
-                    free(ci_ids[i]);
-                }
-                free(ci_ids);
-                free(copy);
-                return E_SYSTEM_MEMORY;
-            }
-            count++;
-        } else {
-            LOG_DEBUG("Recipient '%s' not found, skipping", token);
+        int rc = sqlite3_prepare_v2(g_chat_db, queue_sql, -1, &stmt, NULL);
+        if (rc != SQLITE_OK) {
+            result = E_SYSTEM_FILE;
+            break;
         }
 
-        token = strtok(NULL, ",");
-    }
+        sqlite3_bind_text(stmt, 1, recipient_ci_ids[i], -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, sender_ci_id, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, sender_name, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, content, -1, SQLITE_STATIC);
+        sqlite3_bind_int64(stmt, 5, (sqlite3_int64)timestamp);
+        sqlite3_bind_text(stmt, 6, broadcast ? "broadcast" : recipients, -1, SQLITE_STATIC);
+        if (broadcast) {
+            sqlite3_bind_int64(stmt, 7, message_id);
+        } else {
+            sqlite3_bind_null(stmt, 7);
+        }
 
-    free(copy);
-
-    *ci_ids_out = ci_ids;
-    *count_out = count;
-
-    return KATRA_SUCCESS;
-}
-
-/* ============================================================================
- * LIFECYCLE
- * ============================================================================ */
-
-int meeting_room_init(void) {
-    int result = KATRA_SUCCESS;
-    char db_path[KATRA_PATH_MAX];
-
-    if (g_chat_initialized) {
-        return E_ALREADY_INITIALIZED;
-    }
-
-    /* Create database directory: ~/.katra/chat/ */
-    char dir_path[KATRA_PATH_MAX];
-    result = katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "chat", NULL);
-    if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "meeting_room_init", "Failed to create chat directory");
-        return result;
-    }
-
-    /* Build full database path: ~/.katra/chat/chat.db */
-    result = katra_path_join(db_path, sizeof(db_path), dir_path, CHAT_DB_FILENAME);
-    if (result != KATRA_SUCCESS) {
-        katra_report_error(result, "meeting_room_init", "Failed to build database path");
-        return result;
-    }
-
-    /* Open database */
-    int rc = sqlite3_open(db_path, &g_chat_db);
-    if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "meeting_room_init",
-                          sqlite3_errmsg(g_chat_db));
-        sqlite3_close(g_chat_db);
-        g_chat_db = NULL;
-        return E_SYSTEM_FILE;
-    }
-
-    /* Create tables */
-    char* err_msg = NULL;
-
-    rc = sqlite3_exec(g_chat_db, CHAT_SCHEMA_MESSAGES, NULL, NULL, &err_msg);
-    if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "meeting_room_init", err_msg);
-        sqlite3_free(err_msg);
-        sqlite3_close(g_chat_db);
-        g_chat_db = NULL;
-        return E_SYSTEM_FILE;
-    }
-
-    rc = sqlite3_exec(g_chat_db, CHAT_SCHEMA_QUEUES, NULL, NULL, &err_msg);
-    if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "meeting_room_init", err_msg);
-        sqlite3_free(err_msg);
-        sqlite3_close(g_chat_db);
-        g_chat_db = NULL;
-        return E_SYSTEM_FILE;
-    }
-
-    rc = sqlite3_exec(g_chat_db, CHAT_SCHEMA_REGISTRY, NULL, NULL, &err_msg);
-    if (rc != SQLITE_OK) {
-        katra_report_error(E_SYSTEM_FILE, "meeting_room_init", err_msg);
-        sqlite3_free(err_msg);
-        sqlite3_close(g_chat_db);
-        g_chat_db = NULL;
-        return E_SYSTEM_FILE;
-    }
-
-    g_chat_initialized = true;
-    LOG_INFO("Chat database initialized: %s", db_path);
-
-    /* Run cleanup on startup */
-    result = katra_cleanup_old_messages();
-    if (result != KATRA_SUCCESS) {
-        LOG_WARN("Initial message cleanup failed: %d", result);
-        /* Non-fatal */
-    }
-
-    return KATRA_SUCCESS;
-}
-
-void meeting_room_cleanup(void) {
-    if (!g_chat_initialized) {
-        return;
-    }
-
-    if (g_chat_db) {
-        sqlite3_close(g_chat_db);
-        g_chat_db = NULL;
-    }
-
-    g_chat_initialized = false;
-    LOG_INFO("Chat database closed");
-}
-
-int katra_cleanup_old_messages(void) {
-    if (!g_chat_initialized) {
-        return E_INVALID_STATE;
-    }
-
-    time_t cutoff = time(NULL) - (MEETING_MESSAGE_TTL_HOURS * SECONDS_PER_HOUR);
-
-    if (pthread_mutex_lock(&g_chat_lock) != 0) {
-        return E_INTERNAL_LOGIC;
-    }
-
-    /* Delete old broadcasts from global history */
-    sqlite3_stmt* stmt = NULL;
-    const char* sql = "DELETE FROM katra_messages WHERE timestamp < ?";
-
-    int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        pthread_mutex_unlock(&g_chat_lock);
-        return E_SYSTEM_FILE;
-    }
-
-    sqlite3_bind_int64(stmt, 1, (sqlite3_int64)cutoff);
-
-    rc = sqlite3_step(stmt);
-    int changes = sqlite3_changes(g_chat_db);
-    sqlite3_finalize(stmt);
-
-    pthread_mutex_unlock(&g_chat_lock);
-
-    if (rc != SQLITE_DONE) {
-        katra_report_error(E_SYSTEM_FILE, "katra_cleanup_old_messages",
-                          sqlite3_errmsg(g_chat_db));
-        return E_SYSTEM_FILE;
-    }
-
-    LOG_INFO("Cleaned up %d old messages (older than %d hours)",
-             changes, MEETING_MESSAGE_TTL_HOURS);
-
-    return KATRA_SUCCESS;
-}
-
-/* Continued in next message due to length... */
-
-/* ============================================================================
- * CI REGISTRY
- * ============================================================================ */
-
-int meeting_room_register_ci(const char* ci_id, const char* name, const char* role) {
-    if (!ci_id || !name || !role) {
-        return E_INPUT_NULL;
-    }
-
-    if (!g_chat_initialized) {
-        return E_INVALID_STATE;
-    }
-
-    if (pthread_mutex_lock(&g_chat_lock) != 0) {
-        return E_INTERNAL_LOGIC;
-    }
-
-    /* Remove existing registration if any */
-    sqlite3_stmt* stmt = NULL;
-    const char* delete_sql = "DELETE FROM katra_ci_registry WHERE ci_id = ?";
-
-    int rc = sqlite3_prepare_v2(g_chat_db, delete_sql, -1, &stmt, NULL);
-    if (rc == SQLITE_OK) {
-        sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
-        sqlite3_step(stmt);
+        rc = sqlite3_step(stmt);
         sqlite3_finalize(stmt);
+
+        if (rc != SQLITE_DONE) {
+            result = E_SYSTEM_FILE;
+            break;
+        }
     }
-
-    /* Insert new registration */
-    const char* insert_sql =
-        "INSERT INTO katra_ci_registry (ci_id, name, role, joined_at) "
-        "VALUES (?, ?, ?, ?)";
-
-    rc = sqlite3_prepare_v2(g_chat_db, insert_sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        pthread_mutex_unlock(&g_chat_lock);
-        return E_SYSTEM_FILE;
-    }
-
-    sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, name, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, role, -1, SQLITE_STATIC);
-    sqlite3_bind_int64(stmt, 4, (sqlite3_int64)time(NULL));
-
-    rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
 
     pthread_mutex_unlock(&g_chat_lock);
 
-    if (rc != SQLITE_DONE) {
-        katra_report_error(E_SYSTEM_FILE, "meeting_room_register_ci",
-                          sqlite3_errmsg(g_chat_db));
-        return E_SYSTEM_FILE;
-    }
-
-    LOG_INFO("CI registered: %s (%s)", name, role);
-    return KATRA_SUCCESS;
-}
-
-int meeting_room_unregister_ci(const char* ci_id) {
-    if (!ci_id) {
-        return E_INPUT_NULL;
-    }
-
-    if (!g_chat_initialized) {
-        return E_INVALID_STATE;
-    }
-
-    if (pthread_mutex_lock(&g_chat_lock) != 0) {
-        return E_INTERNAL_LOGIC;
-    }
-
-    sqlite3_stmt* stmt = NULL;
-    const char* sql = "DELETE FROM katra_ci_registry WHERE ci_id = ?";
-
-    int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        pthread_mutex_unlock(&g_chat_lock);
-        return E_SYSTEM_FILE;
-    }
-
-    sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
-
-    rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-
-    pthread_mutex_unlock(&g_chat_lock);
-
-    if (rc != SQLITE_DONE) {
-        return E_SYSTEM_FILE;
-    }
-
-    LOG_INFO("CI unregistered: %s", ci_id);
-    return KATRA_SUCCESS;
+    return result;
 }
 
 /* ============================================================================
@@ -599,24 +185,7 @@ int katra_say(const char* content, const char* recipients) {
     }
 
     /* Get sender name from registry */
-    if (pthread_mutex_lock(&g_chat_lock) != 0) {
-        return E_INTERNAL_LOGIC;
-    }
-
-    sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT name FROM katra_ci_registry WHERE ci_id = ?";
-    int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
-    if (rc == SQLITE_OK) {
-        sqlite3_bind_text(stmt, 1, sender_ci_id, -1, SQLITE_STATIC);
-        if (sqlite3_step(stmt) == SQLITE_ROW) {
-            const char* name = (const char*)sqlite3_column_text(stmt, 0);
-            strncpy(sender_name, name, KATRA_NAME_SIZE - 1);
-            sender_name[KATRA_NAME_SIZE - 1] = '\0';
-        }
-        sqlite3_finalize(stmt);
-    }
-
-    pthread_mutex_unlock(&g_chat_lock);
+    lookup_sender_name(sender_ci_id, sender_name, sizeof(sender_name));
 
     /* Determine if broadcast */
     broadcast = is_broadcast(recipients);
@@ -625,37 +194,10 @@ int katra_say(const char* content, const char* recipients) {
 
     /* Store broadcast in global history */
     if (broadcast) {
-        if (pthread_mutex_lock(&g_chat_lock) != 0) {
-            return E_INTERNAL_LOGIC;
-        }
-
-        const char* insert_msg_sql =
-            "INSERT INTO katra_messages (sender_ci_id, sender_name, message, timestamp) "
-            "VALUES (?, ?, ?, ?)";
-
-        rc = sqlite3_prepare_v2(g_chat_db, insert_msg_sql, -1, &stmt, NULL);
-        if (rc != SQLITE_OK) {
-            pthread_mutex_unlock(&g_chat_lock);
-            return E_SYSTEM_FILE;
-        }
-
-        sqlite3_bind_text(stmt, 1, sender_ci_id, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, sender_name, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, content, -1, SQLITE_STATIC);
-        sqlite3_bind_int64(stmt, 4, (sqlite3_int64)timestamp);
-
-        rc = sqlite3_step(stmt);
-        if (rc == SQLITE_DONE) {
-            message_id = sqlite3_last_insert_rowid(g_chat_db);
-        }
-        sqlite3_finalize(stmt);
-
-        pthread_mutex_unlock(&g_chat_lock);
-
-        if (rc != SQLITE_DONE) {
-            katra_report_error(E_SYSTEM_FILE, "katra_say",
-                              sqlite3_errmsg(g_chat_db));
-            return E_SYSTEM_FILE;
+        result = store_broadcast_message(sender_ci_id, sender_name, content,
+                                        timestamp, &message_id);
+        if (result != KATRA_SUCCESS) {
+            return result;
         }
 
         /* Get all active CIs for broadcast */
@@ -673,55 +215,14 @@ int katra_say(const char* content, const char* recipients) {
     }
 
     /* Queue message to each recipient */
-    if (pthread_mutex_lock(&g_chat_lock) != 0) {
-        goto cleanup;
-    }
-
-    const char* queue_sql =
-        "INSERT INTO katra_queues "
-        "(recipient_ci_id, sender_ci_id, sender_name, message, timestamp, recipients, message_id) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-    for (size_t i = 0; i < recipient_count; i++) {
-        /* Skip sender (self-filtering) */
-        if (strcmp(recipient_ci_ids[i], sender_ci_id) == 0) {
-            continue;
-        }
-
-        rc = sqlite3_prepare_v2(g_chat_db, queue_sql, -1, &stmt, NULL);
-        if (rc != SQLITE_OK) {
-            result = E_SYSTEM_FILE;
-            break;
-        }
-
-        sqlite3_bind_text(stmt, 1, recipient_ci_ids[i], -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, sender_ci_id, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, sender_name, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 4, content, -1, SQLITE_STATIC);
-        sqlite3_bind_int64(stmt, 5, (sqlite3_int64)timestamp);
-        sqlite3_bind_text(stmt, 6, broadcast ? "broadcast" : recipients, -1, SQLITE_STATIC);
-        if (broadcast) {
-            sqlite3_bind_int64(stmt, 7, message_id);
-        } else {
-            sqlite3_bind_null(stmt, 7);
-        }
-
-        rc = sqlite3_step(stmt);
-        sqlite3_finalize(stmt);
-
-        if (rc != SQLITE_DONE) {
-            result = E_SYSTEM_FILE;
-            break;
-        }
-    }
-
-    pthread_mutex_unlock(&g_chat_lock);
+    result = queue_to_recipients(recipient_ci_ids, recipient_count,
+                                 sender_ci_id, sender_name, content,
+                                 timestamp, recipients, broadcast, message_id);
 
     LOG_DEBUG("CI %s sent message to %zu recipients (%s)",
               sender_name, recipient_count, broadcast ? "broadcast" : "direct");
 
-cleanup:
-    /* Free recipient ci_ids */
+    /* Cleanup */
     if (recipient_ci_ids) {
         for (size_t i = 0; i < recipient_count; i++) {
             free(recipient_ci_ids[i]);

@@ -341,6 +341,9 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
     strncpy(g_ci_id, ci_id, sizeof(g_ci_id) - 1);
     g_ci_id[sizeof(g_ci_id) - 1] = '\0';
 
+    /* Mark this persona as last active for future sessions */
+    katra_update_persona_session(name);
+
     /* Start new session with ci_id (not name) */
     result = session_start(ci_id);
 
