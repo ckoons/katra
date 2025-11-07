@@ -307,10 +307,8 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
 
     /* End current session if active */
     if (session->registered) {
-        /* Unregister from meeting room before ending session */
-        meeting_room_unregister_ci(g_ci_id);
+        session_end();
     }
-    session_end();
 
     /* Look up or create persona to get ci_id */
     char ci_id[KATRA_CI_ID_SIZE];
@@ -366,18 +364,6 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
     }
 
     session->registered = true;
-
-    /* Register CI in meeting room */
-    lock_result = pthread_mutex_lock(&g_katra_api_lock);
-    if (lock_result == 0) {
-        result = meeting_room_register_ci(ci_id, name, role ? role : "assistant");
-        pthread_mutex_unlock(&g_katra_api_lock);
-
-        if (result != KATRA_SUCCESS) {
-            LOG_WARN("Failed to register CI in meeting room: %d", result);
-            /* Non-fatal - continue without meeting room participation */
-        }
-    }
 
     /* Create welcome memory */
     char welcome[512];
