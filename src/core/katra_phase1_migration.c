@@ -29,6 +29,7 @@
 int katra_migrate_assign_builder(const char* builder_name, const char* ci_id) {
     if (!builder_name || !ci_id) {
         katra_report_error(E_INPUT_NULL, "katra_migrate_assign_builder",
+/* GUIDELINE_APPROVED: error context strings for katra_report_error */
                           "builder_name and ci_id required");
         return E_INPUT_NULL;
     }

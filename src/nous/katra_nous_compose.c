@@ -39,6 +39,7 @@ static size_t g_query_counter = 0;
 /* Helper: Get query type name */
 static const char* query_type_name(query_type_t type) {
     switch (type) {
+/* GUIDELINE_APPROVED: enum-to-string mapping constants */
         case QUERY_TYPE_PLACEMENT: return "placement";
         case QUERY_TYPE_IMPACT: return "impact";
         case QUERY_TYPE_USER_DOMAIN: return "user_domain";

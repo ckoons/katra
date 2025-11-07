@@ -38,6 +38,7 @@ memory_context_t* get_current_context(void) {
     ctx->ci_id = strdup(ci_id);
     ctx->session_id = session_id ? strdup(session_id) : NULL;
     ctx->when = time(NULL);
+/* GUIDELINE_APPROVED: default context value */
     ctx->where = "breathing_layer";
     ctx->auto_captured = false;
 

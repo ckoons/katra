@@ -96,6 +96,7 @@ float katra_str_similarity(const char* text1, const char* text2) {
     size_t matches = 0;
     size_t total = 0;
 
+/* GUIDELINE_APPROVED: strtok delimiter constants */
     char* word1 = strtok(t1, " .,!?;:\n\t");
     while (word1) {
         if (strlen(word1) > 3) {

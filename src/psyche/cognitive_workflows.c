@@ -87,6 +87,7 @@ static size_t count_keywords(const char* const* keywords) {
 /* Get thought type name */
 const char* katra_thought_type_name(thought_type_t type) {
     if (type < 0 || type > THOUGHT_TYPE_UNKNOWN) {
+/* GUIDELINE_APPROVED: enum string constants */
         return "INVALID";
     }
     return thought_type_names[type];

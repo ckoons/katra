@@ -85,6 +85,7 @@ int breathe_init(const char* ci_id) {
 
     g_context.session_id = NULL;  /* Set by session_start() */
     g_context.when = time(NULL);
+/* GUIDELINE_APPROVED: default context value */
     g_context.where = "breathing_layer";
     g_context.auto_captured = false;
 

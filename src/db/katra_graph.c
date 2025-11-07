@@ -18,6 +18,7 @@
 
 /* Relationship type names */
 static const char* relationship_names[] = {
+/* GUIDELINE_APPROVED: relationship type name constants */
     "sequential", "causal", "similar", "contrasts",
     "elaborates", "references", "resolves", "custom"
 };

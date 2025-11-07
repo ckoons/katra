@@ -122,6 +122,7 @@ reasoning_chain_t* katra_nous_reasoning_build_chain(const char* goal) {
     }
 
     /* Generate chain ID using common utility */
+/* GUIDELINE_APPROVED: ID generation prefix constant */
     char* id = nous_generate_id("chain", &g_reasoning_state.next_chain_id);
     if (!id) {
         free(chain);

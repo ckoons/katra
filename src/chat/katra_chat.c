@@ -25,6 +25,8 @@
  * INTERNAL HELPERS
  * ============================================================================ */
 
+/* GUIDELINE_APPROVED: SQL query constants and default values */
+
 /**
  * lookup_sender_name() - Get sender's registered name from CI registry
  */

@@ -54,6 +54,7 @@ bool is_broadcast(const char* recipients) {
     if (!recipients || strlen(recipients) == 0) {
         return true;
     }
+    /* GUIDELINE_APPROVED: keyword constant for broadcast messages */
     if (case_insensitive_compare(recipients, "broadcast") == 0) {
         return true;
     }
@@ -70,6 +71,7 @@ int resolve_ci_name_to_id(const char* name, char* ci_id_out, size_t size) {
     }
 
     sqlite3_stmt* stmt = NULL;
+    /* GUIDELINE_APPROVED: SQL query constant */
     const char* sql = "SELECT ci_id FROM katra_ci_registry WHERE name = ? COLLATE NOCASE";
 
     int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
@@ -107,6 +109,7 @@ int get_active_ci_ids(char*** ci_ids_out, size_t* count_out) {
     }
 
     sqlite3_stmt* stmt = NULL;
+    /* GUIDELINE_APPROVED: SQL query constant */
     const char* sql = "SELECT ci_id FROM katra_ci_registry ORDER BY joined_at";
 
     int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
@@ -193,6 +196,7 @@ int parse_recipients(const char* recipients_str, const char* sender_ci_id,
         return E_SYSTEM_MEMORY;
     }
 
+    /* GUIDELINE_APPROVED: delimiter constant for strtok */
     size_t count = 0;
     char* token = strtok(copy, ",");
     while (token) {

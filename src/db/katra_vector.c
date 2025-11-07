@@ -47,6 +47,7 @@ vector_store_t* katra_vector_init(const char* ci_id, bool use_external) {
     store->external_url[0] = '\0';
 
     LOG_INFO("Initialized vector store for %s (external: %s)",
+/* GUIDELINE_APPROVED: external vector DB toggle description */
             ci_id, use_external ? "yes" : "no");
 
     return store;

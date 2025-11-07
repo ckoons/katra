@@ -170,6 +170,7 @@ const char* get_current_turn_id(void) {
     static char turn_id_buffer[KATRA_BUFFER_TINY];
 
     if (g_turn_state == TURN_STATE_IDLE || g_current_turn == 0) {
+/* GUIDELINE_APPROVED: empty string default */
         return "";
     }
 

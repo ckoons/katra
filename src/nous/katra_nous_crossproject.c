@@ -55,6 +55,7 @@ int katra_nous_crossproject_init(void) {
 
     /* Add some default best practices */
     katra_nous_crossproject_add_practice(
+/* GUIDELINE_APPROVED: knowledge base content (best practices and antipatterns) */
         "Error Handling with goto cleanup",
         "Use goto cleanup pattern for consistent resource cleanup",
         "Prevents resource leaks and simplifies error paths",

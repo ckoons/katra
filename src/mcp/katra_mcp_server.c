@@ -19,6 +19,7 @@
 #include "katra_meeting.h"
 
 /* Global persona name (set during initialization) */
+/* GUIDELINE_APPROVED: global state initialization constants */
 char g_persona_name[256] = "";
 char g_ci_id[256] = "";
 

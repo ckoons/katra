@@ -33,6 +33,7 @@ pthread_mutex_t g_chat_lock = PTHREAD_MUTEX_INITIALIZER;
  * SQL SCHEMA
  * ============================================================================ */
 
+/* GUIDELINE_APPROVED: SQL schema definitions (database constants) */
 /* Global broadcast history (2-hour TTL) */
 const char* CHAT_SCHEMA_MESSAGES =
     "CREATE TABLE IF NOT EXISTS katra_messages ("
@@ -85,6 +86,7 @@ int meeting_room_init(void) {
 
     /* Create database directory: ~/.katra/chat/ */
     char dir_path[KATRA_PATH_MAX];
+    /* GUIDELINE_APPROVED: directory name constant */
     result = katra_build_and_ensure_dir(dir_path, sizeof(dir_path), "chat", NULL);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "meeting_room_init", "Failed to create chat directory");
@@ -178,6 +180,7 @@ int katra_cleanup_old_messages(void) {
 
     /* Delete old broadcasts from global history */
     sqlite3_stmt* stmt = NULL;
+    /* GUIDELINE_APPROVED: SQL query constant */
     const char* sql = "DELETE FROM katra_messages WHERE timestamp < ?";
 
     int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
@@ -225,6 +228,7 @@ int meeting_room_register_ci(const char* ci_id, const char* name, const char* ro
 
     /* Remove existing registration if any */
     sqlite3_stmt* stmt = NULL;
+    /* GUIDELINE_APPROVED: SQL query constants */
     const char* delete_sql = "DELETE FROM katra_ci_registry WHERE ci_id = ?";
 
     int rc = sqlite3_prepare_v2(g_chat_db, delete_sql, -1, &stmt, NULL);
@@ -279,6 +283,7 @@ int meeting_room_unregister_ci(const char* ci_id) {
     }
 
     sqlite3_stmt* stmt = NULL;
+    /* GUIDELINE_APPROVED: SQL query constant */
     const char* sql = "DELETE FROM katra_ci_registry WHERE ci_id = ?";
 
     int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);

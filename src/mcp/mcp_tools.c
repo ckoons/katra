@@ -254,6 +254,7 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
     /* If no metadata provided, return error */
     if (!personal_ptr && !not_to_archive_ptr && !collection) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS,
+/* GUIDELINE_APPROVED: error message and response text constants */
                             "At least one metadata field must be provided (personal, not_to_archive, or collection)");
     }
 

@@ -72,6 +72,7 @@ char* get_working_context(void) {
 
     /* Header */
     offset += snprintf(context + offset, buffer_size - offset,
+/* GUIDELINE_APPROVED: markdown formatting constants */
                       "# Working Memory Context\n\n");
 
     /* Yesterday's summary */

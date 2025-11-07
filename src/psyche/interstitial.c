@@ -35,6 +35,7 @@ static const char* boundary_type_names[] = {
 /* Get boundary type name */
 const char* katra_boundary_type_name(boundary_type_t type) {
     if (type < 0 || type > BOUNDARY_NONE) {
+/* GUIDELINE_APPROVED: enum string constants */
         return "INVALID";
     }
     return boundary_type_names[type];

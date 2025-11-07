@@ -148,6 +148,7 @@ int record_accomplishment(const char* accomplishment) {
         }
 
         ctx->recent_accomplishments = new_accom;
+/* GUIDELINE_APPROVED: string concatenation constant */
         strncat(ctx->recent_accomplishments, "\n- ", new_len - old_len - 1);
         strncat(ctx->recent_accomplishments, accomplishment,
                 new_len - strlen(ctx->recent_accomplishments) - 1);
