@@ -49,6 +49,7 @@ int katra_migrate_assign_builder(const char* builder_name, const char* ci_id) {
         /* Persona exists - verify it matches the ci_id */
         if (strcmp(existing_ci_id, ci_id) == 0) {
             /* Already correctly assigned */
+            /* GUIDELINE_APPROVED: Migration utility user-facing output */
             fprintf(stderr, "Builder persona '%s' already assigned to ci_id: %s\n",
                    builder_name, ci_id);
             return KATRA_SUCCESS;
@@ -69,6 +70,7 @@ int katra_migrate_assign_builder(const char* builder_name, const char* ci_id) {
         return result;
     }
 
+    /* GUIDELINE_APPROVED: Migration utility user-facing output */
     fprintf(stderr, "Assigned builder persona '%s' to ci_id: %s\n",
            builder_name, ci_id);
 
@@ -84,10 +86,12 @@ int katra_migrate_verify_persona_registry(void) {
                                        ci_id, sizeof(ci_id));
 
     if (result == KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: Migration utility user-facing output */
         fprintf(stderr, "Persona registry verified. Last active: '%s' (ci_id: %s)\n",
                last_active, ci_id);
         return KATRA_SUCCESS;
     } else if (result == E_NOT_FOUND) {
+        /* GUIDELINE_APPROVED: Migration utility user-facing output */
         fprintf(stderr, "Persona registry is empty (no personas registered)\n");
         return KATRA_SUCCESS;  /* Empty registry is valid */
     } else {
@@ -114,12 +118,14 @@ int katra_migrate_create_test_personas(void) {
         return result;
     }
 
+    /* GUIDELINE_APPROVED: Migration utility user-facing output */
     fprintf(stderr, "Test persona 'Nyx' created/verified\n");
 
     return KATRA_SUCCESS;
 }
 
 int katra_migrate_show_status(void) {
+    /* GUIDELINE_APPROVED: Migration utility user-facing output */
     fprintf(stderr, "\n=== Katra Phase 1 Migration Status ===\n\n");
 
     /* Show persona registry */
@@ -130,12 +136,16 @@ int katra_migrate_show_status(void) {
                                        ci_id, sizeof(ci_id));
 
     if (result == KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: Migration utility user-facing output */
         fprintf(stderr, "Last active persona: '%s'\n", last_active);
+        /* GUIDELINE_APPROVED: Migration utility user-facing output */
         fprintf(stderr, "Associated ci_id: %s\n", ci_id);
     } else {
+        /* GUIDELINE_APPROVED: Migration utility user-facing output */
         fprintf(stderr, "No personas registered\n");
     }
 
+    /* GUIDELINE_APPROVED: Migration utility user-facing output */
     fprintf(stderr, "\n======================================\n\n");
 
     return KATRA_SUCCESS;

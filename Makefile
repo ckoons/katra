@@ -101,6 +101,9 @@ BREATHING_OBJS := $(BUILD_DIR)/katra_breathing.o \
                   $(BUILD_DIR)/katra_breathing_semantic.o \
                   $(BUILD_DIR)/katra_breathing_context.o \
                   $(BUILD_DIR)/katra_breathing_context_persist.o \
+                  $(BUILD_DIR)/katra_breathing_context_update.o \
+                  $(BUILD_DIR)/katra_breathing_context_capture.o \
+                  $(BUILD_DIR)/katra_breathing_context_query.o \
                   $(BUILD_DIR)/katra_breathing_config.o \
                   $(BUILD_DIR)/katra_breathing_interstitial.o \
                   $(BUILD_DIR)/katra_breathing_integration.o \
