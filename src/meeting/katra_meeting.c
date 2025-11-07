@@ -129,7 +129,9 @@ int katra_say(const char* content) {
 
     /* Get caller's persona name from registry */
     char speaker_name[KATRA_NAME_SIZE] = "Unknown";
-    pthread_mutex_lock(&g_registry_lock);
+    if (pthread_mutex_lock(&g_registry_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
     int idx = find_ci_in_registry(caller_ci_id);
     if (idx >= 0) {
         strncpy(speaker_name, g_ci_registry[idx].name, KATRA_NAME_SIZE - 1);
@@ -138,7 +140,9 @@ int katra_say(const char* content) {
     pthread_mutex_unlock(&g_registry_lock);
 
     /* Write to circular buffer */
-    pthread_mutex_lock(&g_meeting_lock);
+    if (pthread_mutex_lock(&g_meeting_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
 
     uint64_t msg_num = g_next_message_number++;
     size_t slot = msg_num % MEETING_MAX_MESSAGES;
@@ -182,7 +186,9 @@ int katra_hear(uint64_t last_heard, heard_message_t* message_out) {
         return E_INVALID_STATE;
     }
 
-    pthread_mutex_lock(&g_meeting_lock);
+    if (pthread_mutex_lock(&g_meeting_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
 
     /* Start from oldest if last_heard is 0 */
     uint64_t search_from = (last_heard == 0) ? g_oldest_message_number : last_heard + 1;
@@ -248,7 +254,9 @@ int katra_who_is_here(ci_info_t** cis_out, size_t* count_out) {
     *cis_out = NULL;
     *count_out = 0;
 
-    pthread_mutex_lock(&g_registry_lock);
+    if (pthread_mutex_lock(&g_registry_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
 
     if (g_active_ci_count == 0) {
         pthread_mutex_unlock(&g_registry_lock);
@@ -296,8 +304,13 @@ int katra_meeting_status(uint64_t last_heard, meeting_status_t* status_out) {
         caller_ci_id[0] = '\0';  /* Continue but won't count unread */
     }
 
-    pthread_mutex_lock(&g_meeting_lock);
-    pthread_mutex_lock(&g_registry_lock);
+    if (pthread_mutex_lock(&g_meeting_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
+    if (pthread_mutex_lock(&g_registry_lock) != 0) {
+        pthread_mutex_unlock(&g_meeting_lock);
+        return E_INTERNAL_LOGIC;
+    }
 
     status_out->active_ci_count = g_active_ci_count;
     status_out->oldest_message_number = g_oldest_message_number;
@@ -377,7 +390,9 @@ int meeting_room_register_ci(const char* ci_id, const char* name, const char* ro
         return E_INPUT_NULL;
     }
 
-    pthread_mutex_lock(&g_registry_lock);
+    if (pthread_mutex_lock(&g_registry_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
 
     /* Check if already registered */
     int existing = find_ci_in_registry(ci_id);
@@ -431,7 +446,9 @@ int meeting_room_unregister_ci(const char* ci_id) {
         return E_INPUT_NULL;
     }
 
-    pthread_mutex_lock(&g_registry_lock);
+    if (pthread_mutex_lock(&g_registry_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
 
     int idx = find_ci_in_registry(ci_id);
     if (idx >= 0) {
