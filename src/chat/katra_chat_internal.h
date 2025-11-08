@@ -49,6 +49,11 @@ extern const char* CHAT_SCHEMA_REGISTRY;
 int get_caller_ci_id(char* ci_id_out, size_t size);
 
 /**
+ * get_caller_name() - Get calling CI's name from MCP session
+ */
+void get_caller_name(char* name_out, size_t size);
+
+/**
  * case_insensitive_compare() - Compare strings case-insensitively
  */
 int case_insensitive_compare(const char* s1, const char* s2);

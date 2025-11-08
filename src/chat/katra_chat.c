@@ -28,31 +28,6 @@
 /* GUIDELINE_APPROVED: SQL query constants and default values */
 
 /**
- * lookup_sender_name() - Get sender's registered name from CI registry
- */
-static int lookup_sender_name(const char* sender_ci_id, char* name_out, size_t size) {
-    if (pthread_mutex_lock(&g_chat_lock) != 0) {
-        return E_INTERNAL_LOGIC;
-    }
-
-    sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT name FROM katra_ci_registry WHERE ci_id = ?";
-    int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
-    if (rc == SQLITE_OK) {
-        sqlite3_bind_text(stmt, 1, sender_ci_id, -1, SQLITE_STATIC);
-        if (sqlite3_step(stmt) == SQLITE_ROW) {
-            const char* name = (const char*)sqlite3_column_text(stmt, 0);
-            strncpy(name_out, name, size - 1);
-            name_out[size - 1] = '\0';
-        }
-        sqlite3_finalize(stmt);
-    }
-
-    pthread_mutex_unlock(&g_chat_lock);
-    return KATRA_SUCCESS;
-}
-
-/**
  * store_broadcast_message() - Store broadcast in global history
  *
  * Returns message_id via out parameter.
@@ -186,8 +161,8 @@ int katra_say(const char* content, const char* recipients) {
         return E_INVALID_STATE;
     }
 
-    /* Get sender name from registry */
-    lookup_sender_name(sender_ci_id, sender_name, sizeof(sender_name));
+    /* Get sender name directly from MCP session (no registry lookup needed) */
+    get_caller_name(sender_name, sizeof(sender_name));
 
     /* Determine if broadcast */
     broadcast = is_broadcast(recipients);

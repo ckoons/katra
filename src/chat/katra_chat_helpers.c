@@ -20,6 +20,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_breathing.h"
+#include "katra_mcp.h"
 
 /* ============================================================================
  * HELPER FUNCTIONS
@@ -35,6 +36,17 @@ int get_caller_ci_id(char* ci_id_out, size_t size) {
     strncpy(ci_id_out, info.ci_id, size - 1);
     ci_id_out[size - 1] = '\0';
     return KATRA_SUCCESS;
+}
+
+void get_caller_name(char* name_out, size_t size) {
+    const char* name = mcp_get_session_name();
+    if (name && strlen(name) > 0) {
+        strncpy(name_out, name, size - 1);
+        name_out[size - 1] = '\0';
+    } else {
+        strncpy(name_out, "Unknown", size - 1);
+        name_out[size - 1] = '\0';
+    }
 }
 
 int case_insensitive_compare(const char* s1, const char* s2) {

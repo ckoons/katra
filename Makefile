@@ -246,10 +246,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/breathing/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
-# Compile chat sources
+# Compile chat sources (needs Jansson for MCP integration)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/chat/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 
 # Compile Phase 5 sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/nous/%.c | $(BUILD_DIR)
@@ -622,6 +622,23 @@ install:
 uninstall:
 	@echo "Uninstall target not yet implemented"
 
+# MCP-specific install and restart targets
+install-mcp: mcp-server restart-mcp
+	@echo "MCP server installed and restarted"
+	@echo "Claude Code will automatically use the new binary on next tool call"
+
+restart-mcp:
+	@echo "Restarting MCP server..."
+	@pkill -9 -f katra_mcp_server 2>/dev/null || true
+	@sleep 1
+	@if pgrep -f katra_mcp_server >/dev/null 2>&1; then \
+		echo "Warning: Some MCP server processes still running"; \
+		pgrep -f katra_mcp_server; \
+	else \
+		echo "All MCP server processes terminated"; \
+		echo "Claude Code will restart from new binary on next tool call"; \
+	fi
+
 # ==============================================================================
 # CLEAN SECTION (future Makefile.clean)
 # ==============================================================================
@@ -669,8 +686,10 @@ help:
 	@echo "  make test-all   - Run all tests (same as test-quick)"
 	@echo ""
 	@echo "Install Targets:"
-	@echo "  make install   - Install to ~/.local/bin/ (not yet implemented)"
-	@echo "  make uninstall - Remove from ~/.local/bin/ (not yet implemented)"
+	@echo "  make install      - Install to ~/.local/bin/ (not yet implemented)"
+	@echo "  make uninstall    - Remove from ~/.local/bin/ (not yet implemented)"
+	@echo "  make install-mcp  - Rebuild and restart MCP server (kills old processes)"
+	@echo "  make restart-mcp  - Kill running MCP servers (auto-restart on next use)"
 	@echo ""
 	@echo "Clean Targets:"
 	@echo "  make clean      - Remove build artifacts (build/, bin/)"
