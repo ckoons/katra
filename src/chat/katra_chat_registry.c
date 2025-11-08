@@ -52,6 +52,7 @@ const char* CHAT_SCHEMA_QUEUES =
     "CREATE TABLE IF NOT EXISTS katra_queues ("
     "  queue_id INTEGER PRIMARY KEY AUTOINCREMENT,"
     "  recipient_ci_id TEXT NOT NULL,"
+    "  recipient_name TEXT NOT NULL,"
     "  sender_ci_id TEXT NOT NULL,"
     "  sender_name TEXT NOT NULL,"
     "  message TEXT NOT NULL,"
@@ -61,7 +62,7 @@ const char* CHAT_SCHEMA_QUEUES =
     "  created_at INTEGER DEFAULT (strftime('%s', 'now'))"
     ");"
     "CREATE INDEX IF NOT EXISTS idx_queues_recipient "
-    "  ON katra_queues(recipient_ci_id);";
+    "  ON katra_queues(recipient_name);";
 
 /* Active CI registry */
 const char* CHAT_SCHEMA_REGISTRY =

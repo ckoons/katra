@@ -88,10 +88,12 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
 
     const char* queue_sql =
         "INSERT INTO katra_queues "
-        "(recipient_ci_id, sender_ci_id, sender_name, message, timestamp, recipients, message_id) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        "(recipient_ci_id, recipient_name, sender_ci_id, sender_name, message, timestamp, recipients, message_id) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+    const char* lookup_sql = "SELECT name FROM katra_ci_registry WHERE ci_id = ?";
     sqlite3_stmt* stmt = NULL;
+    sqlite3_stmt* lookup_stmt = NULL;
 
     for (size_t i = 0; i < recipient_count; i++) {
         /* Skip sender (self-filtering) */
@@ -99,22 +101,37 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
             continue;
         }
 
-        int rc = sqlite3_prepare_v2(g_chat_db, queue_sql, -1, &stmt, NULL);
+        /* Look up recipient name from registry */
+        char recipient_name[KATRA_NAME_SIZE] = "Unknown";
+        int rc = sqlite3_prepare_v2(g_chat_db, lookup_sql, -1, &lookup_stmt, NULL);
+        if (rc == SQLITE_OK) {
+            sqlite3_bind_text(lookup_stmt, 1, recipient_ci_ids[i], -1, SQLITE_STATIC);
+            if (sqlite3_step(lookup_stmt) == SQLITE_ROW) {
+                const char* name = (const char*)sqlite3_column_text(lookup_stmt, 0);
+                strncpy(recipient_name, name, sizeof(recipient_name) - 1);
+                recipient_name[sizeof(recipient_name) - 1] = '\0';
+            }
+            sqlite3_finalize(lookup_stmt);
+            lookup_stmt = NULL;
+        }
+
+        rc = sqlite3_prepare_v2(g_chat_db, queue_sql, -1, &stmt, NULL);
         if (rc != SQLITE_OK) {
             result = E_SYSTEM_FILE;
             break;
         }
 
         sqlite3_bind_text(stmt, 1, recipient_ci_ids[i], -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, sender_ci_id, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, sender_name, -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 4, content, -1, SQLITE_STATIC);
-        sqlite3_bind_int64(stmt, 5, (sqlite3_int64)timestamp);
-        sqlite3_bind_text(stmt, 6, broadcast ? "broadcast" : recipients, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, recipient_name, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 3, sender_ci_id, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, sender_name, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 5, content, -1, SQLITE_STATIC);
+        sqlite3_bind_int64(stmt, 6, (sqlite3_int64)timestamp);
+        sqlite3_bind_text(stmt, 7, broadcast ? "broadcast" : recipients, -1, SQLITE_STATIC);
         if (broadcast) {
-            sqlite3_bind_int64(stmt, 7, message_id);
+            sqlite3_bind_int64(stmt, 8, message_id);
         } else {
-            sqlite3_bind_null(stmt, 7);
+            sqlite3_bind_null(stmt, 8);
         }
 
         rc = sqlite3_step(stmt);
@@ -211,8 +228,7 @@ int katra_say(const char* content, const char* recipients) {
 }
 
 int katra_hear(heard_message_t* message_out) {
-    char receiver_ci_id[KATRA_CI_ID_SIZE];
-    int result = KATRA_SUCCESS;
+    char receiver_name[KATRA_NAME_SIZE];
 
     if (!message_out) {
         return E_INPUT_NULL;
@@ -224,11 +240,8 @@ int katra_hear(heard_message_t* message_out) {
 
     memset(message_out, 0, sizeof(heard_message_t));
 
-    /* Get receiver identity */
-    result = get_caller_ci_id(receiver_ci_id, sizeof(receiver_ci_id));
-    if (result != KATRA_SUCCESS || receiver_ci_id[0] == '\0') {
-        return E_INVALID_STATE;
-    }
+    /* Get receiver name */
+    get_caller_name(receiver_name, sizeof(receiver_name));
 
     if (pthread_mutex_lock(&g_chat_lock) != 0) {
         return E_INTERNAL_LOGIC;
@@ -239,7 +252,7 @@ int katra_hear(heard_message_t* message_out) {
     const char* sql =
         "SELECT queue_id, sender_name, message, timestamp, recipients, message_id "
         "FROM katra_queues "
-        "WHERE recipient_ci_id = ? "
+        "WHERE recipient_name = ? "
         "ORDER BY queue_id ASC "
         "LIMIT 1";
 
@@ -249,7 +262,7 @@ int katra_hear(heard_message_t* message_out) {
         return E_SYSTEM_FILE;
     }
 
-    sqlite3_bind_text(stmt, 1, receiver_ci_id, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, receiver_name, -1, SQLITE_STATIC);
 
     rc = sqlite3_step(stmt);
     if (rc != SQLITE_ROW) {
@@ -296,10 +309,10 @@ int katra_hear(heard_message_t* message_out) {
 
     /* Check if more messages available */
     const char* count_sql =
-        "SELECT COUNT(*) FROM katra_queues WHERE recipient_ci_id = ?";
+        "SELECT COUNT(*) FROM katra_queues WHERE recipient_name = ?";
     rc = sqlite3_prepare_v2(g_chat_db, count_sql, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
-        sqlite3_bind_text(stmt, 1, receiver_ci_id, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 1, receiver_name, -1, SQLITE_STATIC);
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             int count = sqlite3_column_int(stmt, 0);
             message_out->more_available = (count > 0);
