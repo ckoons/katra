@@ -96,11 +96,6 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
     sqlite3_stmt* lookup_stmt = NULL;
 
     for (size_t i = 0; i < recipient_count; i++) {
-        /* Skip sender (self-filtering) */
-        if (strcmp(recipient_ci_ids[i], sender_ci_id) == 0) {
-            continue;
-        }
-
         /* Look up recipient name from registry */
         char recipient_name[KATRA_NAME_SIZE] = "Unknown";
         int rc = sqlite3_prepare_v2(g_chat_db, lookup_sql, -1, &lookup_stmt, NULL);
@@ -113,6 +108,11 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
             }
             sqlite3_finalize(lookup_stmt);
             lookup_stmt = NULL;
+        }
+
+        /* Skip sender (self-filtering by name) */
+        if (strcmp(recipient_name, sender_name) == 0) {
+            continue;
         }
 
         rc = sqlite3_prepare_v2(g_chat_db, queue_sql, -1, &stmt, NULL);

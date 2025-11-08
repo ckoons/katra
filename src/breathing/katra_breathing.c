@@ -27,6 +27,7 @@
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
 #include "katra_breathing_context_persist.h"
+#include "katra_meeting.h"
 
 /* ============================================================================
  * GLOBAL STATE - Shared across breathing layer files
@@ -203,6 +204,11 @@ int session_start(const char* ci_id) {
     /* Load relevant context */
     load_context();
 
+    /* Autonomic function: Check for waiting messages (awareness only, don't consume) */
+    /* TODO: Implement katra_count_messages() API for non-consuming message count */
+    /* For now, log that session is ready to receive messages */
+    LOG_DEBUG("Session start complete - ready to receive messages");
+
     return KATRA_SUCCESS;
 }
 
@@ -229,6 +235,14 @@ int session_end(void) {
 
     /* Auto-consolidate */
     auto_consolidate();
+
+    /* Autonomic cleanup: Unregister from meeting room registry */
+    result = meeting_room_unregister_ci(g_context.ci_id);
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Unregistered from meeting room");
+    } else {
+        LOG_WARN("Meeting room unregister failed: %d (continuing shutdown)", result);
+    }
 
     /* Cleanup breathing layer to allow re-initialization with new identity */
     breathe_cleanup();
