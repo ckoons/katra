@@ -327,6 +327,52 @@ int katra_hear(heard_message_t* message_out) {
     return KATRA_SUCCESS;
 }
 
+int katra_count_messages(size_t* count_out) {
+    char receiver_name[KATRA_NAME_SIZE];
+
+    if (!count_out) {
+        return E_INPUT_NULL;
+    }
+
+    if (!g_chat_initialized) {
+        return E_INVALID_STATE;
+    }
+
+    *count_out = 0;
+
+    /* Get receiver name */
+    get_caller_name(receiver_name, sizeof(receiver_name));
+
+    if (pthread_mutex_lock(&g_chat_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
+
+    /* Count messages in personal queue (non-consuming) */
+    sqlite3_stmt* stmt = NULL;
+    const char* count_sql =
+        "SELECT COUNT(*) FROM katra_queues WHERE recipient_name = ?";
+
+    int rc = sqlite3_prepare_v2(g_chat_db, count_sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        pthread_mutex_unlock(&g_chat_lock);
+        return E_SYSTEM_FILE;
+    }
+
+    sqlite3_bind_text(stmt, 1, receiver_name, -1, SQLITE_STATIC);
+
+    rc = sqlite3_step(stmt);
+    if (rc == SQLITE_ROW) {
+        *count_out = (size_t)sqlite3_column_int(stmt, 0);
+    }
+
+    sqlite3_finalize(stmt);
+    pthread_mutex_unlock(&g_chat_lock);
+
+    LOG_DEBUG("Message count for %s: %zu", receiver_name, *count_out);
+
+    return KATRA_SUCCESS;
+}
+
 int katra_who_is_here(ci_info_t** cis_out, size_t* count_out) {
     if (!cis_out || !count_out) {
         return E_INPUT_NULL;

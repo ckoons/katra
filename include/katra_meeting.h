@@ -124,6 +124,27 @@ int katra_say(const char* content, const char* recipients);
 int katra_hear(heard_message_t* message_out);
 
 /**
+ * katra_count_messages() - Count messages in personal queue (non-consuming)
+ *
+ * Returns number of messages waiting in caller's personal queue without
+ * consuming them. Used for ambient awareness (autonomic breathing).
+ *
+ * Unlike katra_hear() which deletes messages, this is read-only awareness.
+ *
+ * Parameters:
+ *   count_out: Pointer to receive message count
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Count returned
+ *   E_INPUT_NULL - NULL count_out
+ *   E_INVALID_STATE - Meeting room not initialized
+ *   E_SYSTEM_DATABASE - Database error
+ *
+ * Thread-safe: Yes
+ */
+int katra_count_messages(size_t* count_out);
+
+/**
  * katra_who_is_here() - List all active CIs in meeting
  *
  * Returns array of CI information for all active participants.

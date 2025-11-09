@@ -1,0 +1,287 @@
+/* © 2025 Casey Koons All rights reserved */
+
+#ifndef KATRA_LIFECYCLE_H
+#define KATRA_LIFECYCLE_H
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <time.h>
+#include <pthread.h>
+
+/**
+ * katra_lifecycle.h - Autonomic Breathing and Lifecycle Management
+ *
+ * This layer provides natural autonomic awareness for CIs through rhythmic
+ * "breathing" - checking for ambient state (messages, context changes) at
+ * a natural ~2 breaths per minute rhythm.
+ *
+ * Key Design Principles:
+ * 1. Hooks call katra_breath() frequently (every session/turn boundary)
+ * 2. Function rate-limits internally (~30 seconds between actual checks)
+ * 3. Returns cached context if called more frequently
+ * 4. Explicit operations (katra_hear) bypass rate limiting
+ * 5. Natural breathing rhythm without hyperventilation
+ *
+ * Philosophy:
+ *   Like humans breathe ~7 times per minute (life-critical, autonomic),
+ *   CIs breathe ~2 times per minute (awareness, ambient).
+ *
+ *   Breathing is autonomic - it "just happens" without conscious effort.
+ */
+
+/* ============================================================================
+ * CONSTANTS
+ * ============================================================================ */
+
+/* Default breathing interval in seconds (~30s = 2 breaths/minute) */
+#define KATRA_BREATH_INTERVAL_DEFAULT 30
+
+/* Environment variable to override breath interval */
+#define KATRA_ENV_BREATH_INTERVAL "KATRA_BREATH_INTERVAL"
+
+/* ============================================================================
+ * DATA STRUCTURES
+ * ============================================================================ */
+
+/**
+ * breath_context_t - Ambient awareness context returned by katra_breath()
+ *
+ * Provides non-intrusive awareness of CI state without requiring explicit
+ * checks. Hooks can log this information or pass to CI as ambient context.
+ */
+typedef struct {
+    size_t unread_messages;        /* Number of messages waiting */
+    time_t last_checkpoint;        /* Time since last checkpoint */
+    bool needs_consolidation;      /* Memory consolidation recommended */
+    time_t last_breath;            /* When this context was generated */
+    /* Future: other autonomic state hints */
+} breath_context_t;
+
+/**
+ * session_state_t - In-memory session state for autonomic breathing
+ *
+ * One per MCP server process. Tracks breathing state across multiple
+ * katra_breath() calls to implement rate limiting.
+ *
+ * Thread-safe: Protected by breath_lock mutex.
+ */
+typedef struct {
+    /* Breathing state */
+    time_t last_breath_time;       /* When last actual breath occurred */
+    breath_context_t cached_context; /* Cached context from last breath */
+    pthread_mutex_t breath_lock;   /* Protects breath state */
+
+    /* Configuration */
+    int breath_interval;           /* Seconds between breaths (default: 30) */
+    bool breathing_enabled;        /* Can be disabled for testing */
+
+    /* Session identity */
+    char* ci_id;                   /* Current CI identity */
+    char* session_id;              /* Current session ID */
+    bool session_active;           /* True if session is running */
+} session_state_t;
+
+/* ============================================================================
+ * INITIALIZATION
+ * ============================================================================ */
+
+/**
+ * katra_lifecycle_init() - Initialize lifecycle layer
+ *
+ * Reads environment variables and sets up defaults for autonomic breathing.
+ * Must be called before any other lifecycle functions.
+ *
+ * Environment variables:
+ *   KATRA_BREATH_INTERVAL - Override default breathing interval (seconds)
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Initialization successful
+ *   E_ALREADY_INITIALIZED - Already initialized
+ *   E_SYSTEM_MEMORY - Failed to allocate state
+ */
+int katra_lifecycle_init(void);
+
+/**
+ * katra_lifecycle_cleanup() - Cleanup lifecycle layer
+ *
+ * Frees resources allocated by katra_lifecycle_init().
+ * Safe to call even if not initialized.
+ */
+void katra_lifecycle_cleanup(void);
+
+/* ============================================================================
+ * AUTONOMIC BREATHING
+ * ============================================================================ */
+
+/**
+ * katra_breath() - Autonomic awareness check (rate-limited)
+ *
+ * Called from ALL lifecycle hooks (session start/end, turn start/end, etc.)
+ * but only performs actual checks every ~30 seconds. Returns cached context
+ * if called more frequently.
+ *
+ * This provides natural "breathing" rhythm:
+ * - Hooks call it frequently (every turn, every session boundary)
+ * - Function rate-limits to ~2 checks per minute
+ * - No hyperventilation, no database overload
+ * - Natural ambient awareness
+ *
+ * First breath of session always performs actual check (not rate-limited).
+ *
+ * Parameters:
+ *   context_out: Pointer to receive breathing context (can be NULL if only
+ *                side effects are needed)
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Context returned (may be cached)
+ *   E_INVALID_STATE - Not initialized or no active session
+ *   E_INPUT_NULL - context_out is NULL
+ *   E_SYSTEM_DATABASE - Database error during check
+ *
+ * Thread-safe: Yes (protected by internal mutex)
+ */
+int katra_breath(breath_context_t* context_out);
+
+/**
+ * katra_count_messages() - Non-consuming message count
+ *
+ * Returns number of messages waiting in personal queue without consuming them.
+ * Used by katra_breath() for ambient awareness.
+ *
+ * Unlike katra_hear() which consumes messages, this is read-only.
+ *
+ * Parameters:
+ *   count_out: Pointer to receive message count
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Count returned
+ *   E_INPUT_NULL - NULL parameter
+ *   E_INVALID_STATE - Not initialized
+ *   E_SYSTEM_DATABASE - Database error
+ *
+ * Thread-safe: Yes
+ */
+int katra_count_messages(size_t* count_out);
+
+/* ============================================================================
+ * LIFECYCLE WRAPPERS
+ * ============================================================================ */
+
+/**
+ * katra_session_start() - Begin CI session with autonomic breathing
+ *
+ * Wraps existing session_start() from breathing layer and adds:
+ * - First breath (not rate-limited)
+ * - Ambient message awareness logging
+ * - Session state initialization
+ *
+ * Automatically called by MCP server on startup.
+ *
+ * Parameters:
+ *   ci_id: Persistent CI identity
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Session started
+ *   E_INPUT_NULL - NULL ci_id
+ *   E_INVALID_STATE - Lifecycle not initialized
+ *   E_ALREADY_INITIALIZED - Session already active
+ *   (or errors from session_start())
+ *
+ * Side effects:
+ * - Initializes breathing layer (breathe_init)
+ * - Loads context and memories (session_start)
+ * - Performs first breath (katra_breath)
+ * - Logs ambient awareness if messages waiting
+ */
+int katra_session_start(const char* ci_id);
+
+/**
+ * katra_session_end() - End CI session with final breath
+ *
+ * Wraps existing session_end() from breathing layer and adds:
+ * - Final breath before shutdown
+ * - Session state cleanup
+ *
+ * Automatically called by MCP server on shutdown (SIGTERM/SIGINT).
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Session ended
+ *   E_INVALID_STATE - No active session
+ *   (or errors from session_end())
+ *
+ * Side effects:
+ * - Performs final breath (katra_breath)
+ * - Creates daily summary (session_end)
+ * - Consolidates memories (session_end)
+ * - Unregisters from meeting room (session_end)
+ * - Cleans up breathing layer (breathe_cleanup)
+ * - Clears session state
+ */
+int katra_session_end(void);
+
+/* ============================================================================
+ * FUTURE: TURN BOUNDARIES (Phase 3)
+ * ============================================================================ */
+
+/**
+ * katra_turn_start() - Begin interaction turn with autonomic breathing
+ *
+ * NOTE: Not implemented in Phase 2. Placeholder for Phase 3.
+ *
+ * Will wrap begin_turn() and add rate-limited breathing.
+ */
+int katra_turn_start(void);
+
+/**
+ * katra_turn_end() - End interaction turn with autonomic breathing
+ *
+ * NOTE: Not implemented in Phase 2. Placeholder for Phase 3.
+ *
+ * Will wrap end_turn() and add rate-limited breathing.
+ */
+int katra_turn_end(void);
+
+/* ============================================================================
+ * TESTING AND DEBUGGING
+ * ============================================================================ */
+
+/**
+ * katra_set_breath_interval() - Override breathing interval for testing
+ *
+ * Allows setting custom breath interval (useful for testing with 2-second
+ * intervals instead of 30-second production intervals).
+ *
+ * Parameters:
+ *   seconds: Breathing interval in seconds (minimum: 1)
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Interval updated
+ *   E_INVALID_STATE - Not initialized
+ *   E_INVALID_PARAMS - Invalid interval (< 1)
+ */
+int katra_set_breath_interval(int seconds);
+
+/**
+ * katra_get_breath_interval() - Get current breathing interval
+ *
+ * Returns: Current breathing interval in seconds
+ */
+int katra_get_breath_interval(void);
+
+/**
+ * katra_force_breath() - Force immediate breath (bypass rate limiting)
+ *
+ * Useful for testing to trigger breath without waiting for interval.
+ * Updates last_breath_time and cached_context.
+ *
+ * Parameters:
+ *   context_out: Pointer to receive context
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Breath performed
+ *   E_INVALID_STATE - Not initialized
+ *   E_INPUT_NULL - context_out is NULL
+ */
+int katra_force_breath(breath_context_t* context_out);
+
+#endif /* KATRA_LIFECYCLE_H */

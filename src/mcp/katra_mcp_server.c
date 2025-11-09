@@ -12,6 +12,7 @@
 #include "katra_mcp.h"
 #include "katra_init.h"
 #include "katra_breathing.h"
+#include "katra_lifecycle.h"
 #include "katra_memory.h"
 #include "katra_identity.h"
 #include "katra_error.h"
@@ -98,11 +99,11 @@ int mcp_server_init(const char* ci_id) {
         return result;
     }
 
-    /* Step 3: Initialize breathing layer */
-    result = breathe_init(ci_id);
-    if (result != KATRA_SUCCESS) {
+    /* Step 3: Initialize lifecycle layer (autonomic breathing) */
+    result = katra_lifecycle_init();
+    if (result != KATRA_SUCCESS && result != E_ALREADY_INITIALIZED) {
         /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
-        fprintf(stderr, "Failed to initialize breathing layer: %s\n",
+        fprintf(stderr, "Failed to initialize lifecycle layer: %s\n",
                 katra_error_message(result));
         katra_memory_cleanup();
         katra_exit();
@@ -115,20 +116,20 @@ int mcp_server_init(const char* ci_id) {
         /* GUIDELINE_APPROVED: startup diagnostic */
         fprintf(stderr, "Failed to initialize meeting room: %s\n",
                 katra_error_message(result));
-        breathe_cleanup();
+        katra_lifecycle_cleanup();
         katra_memory_cleanup();
         katra_exit();
         return result;
     }
 
-    /* Step 5: Start session */
-    result = session_start(ci_id);
+    /* Step 5: Start session with autonomic breathing */
+    result = katra_session_start(ci_id);
     if (result != KATRA_SUCCESS) {
         /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to start session: %s\n",
                 katra_error_message(result));
         meeting_room_cleanup();
-        breathe_cleanup();
+        katra_lifecycle_cleanup();
         katra_memory_cleanup();
         katra_exit();
         return result;
@@ -143,9 +144,9 @@ void mcp_server_cleanup(void) {
     LOG_INFO("MCP server cleanup started");
 
     /* Cleanup in reverse order of initialization */
-    session_end();
+    katra_session_end();   /* Wraps session_end + final breath + breathe_cleanup */
     meeting_room_cleanup();
-    breathe_cleanup();
+    katra_lifecycle_cleanup();  /* Lifecycle layer cleanup */
     katra_memory_cleanup();
     katra_exit();
 
