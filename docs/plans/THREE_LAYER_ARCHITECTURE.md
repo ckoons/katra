@@ -297,11 +297,22 @@ typedef struct {
 ### Layer C: Hook Adapters (Lifecycle Automation)
 **Provider-specific code that maps lifecycle events to Katra calls.**
 
+**Architecture Approach:**
+
+Katra uses Anthropic API format as the primary interface. For multi-provider support, we integrate with [claude-code-router](https://github.com/musistudio/claude-code-router) instead of implementing separate hook adapters for each provider.
+
+**Why Router Integration?**
+- **Single Interface:** Katra only needs Anthropic-compatible hooks
+- **Provider Independence:** Router handles all API transformations (OpenAI, DeepSeek, Gemini, etc.)
+- **Persona Mapping:** Map CI personas to providers ("SamAltman" → OpenAI)
+- **Maintainability:** Router project handles provider API changes
+- **Separation of Concerns:** Katra = memory/communication, Router = provider routing
+
 **Responsibilities:**
-- Intercept provider lifecycle events
+- Intercept provider lifecycle events (Anthropic format)
 - Call Katra primitives automatically
 - Implement autonomic behaviors
-- Handle provider-specific quirks
+- Optional: Integrate with router for multi-provider support
 - Fail gracefully (autonomic failures = warnings, not errors)
 
 **Hook Adapter Interface:**
@@ -380,11 +391,66 @@ int anthropic_on_session_end(void) {
 }
 ```
 
-**Hook Adapter Selection (Auto-detect):**
+**Router Integration (Multi-Provider Support):**
+
+For users who want to use multiple LLM providers (OpenAI, DeepSeek, Gemini, etc.), Katra integrates with claude-code-router instead of implementing separate hook adapters.
+
+**How Router Integration Works:**
+
+1. **Environment Variable Override:**
+   ```bash
+   export ANTHROPIC_BASE_URL="http://localhost:8000"  # Router endpoint
+   export KATRA_ROUTER_PERSONA="SamAltman"           # Persona name
+   ```
+
+2. **Persona Configuration:**
+   ```json
+   {
+     "Personas": {
+       "SamAltman": {
+         "provider": "openai",
+         "model": "gpt-5",
+         "router_config": {
+           "default": "openai,gpt-5",
+           "think": "openai,o1-preview",
+           "background": "openai,gpt-5-mini"
+         }
+       },
+       "YannLeCun": {
+         "provider": "deepseek",
+         "model": "deepseek-reasoner"
+       }
+     }
+   }
+   ```
+
+3. **Katra Integration:**
+   - `katra_session_start()` detects `KATRA_ROUTER_PERSONA`
+   - Reads persona config from `~/.katra/router/personas.json`
+   - Launches router subprocess if not running
+   - Sets `ANTHROPIC_BASE_URL` to router endpoint
+   - All hook interactions remain unchanged (Anthropic format)
+
+4. **Request Flow:**
+   ```
+   Claude Code → Anthropic API call → Router (localhost:8000)
+                                       ↓
+                                   Transformer (persona-based)
+                                       ↓
+                                   Provider API (OpenAI/DeepSeek/Gemini)
+   ```
+
+**Benefits:**
+- Katra code remains simple (single hook interface)
+- Add new providers without changing Katra
+- Leverage router's transformer ecosystem
+- Persona-based provider selection
+- Router handles API versioning and compatibility
+
+**Hook Adapter Selection:**
 ```
-"anthropic/claude-sonnet-4.5" → load anthropic_mcp_hooks
-"openai/gpt-4"                → load openai_api_hooks
-"google/gemini-pro"           → load gemini_hooks
+No router:  "anthropic/claude-sonnet-4.5" → anthropic_mcp_hooks (direct)
+With router: Any persona → anthropic_mcp_hooks + router service (transformed)
 ```
 
 **Key Principle:** Deterministic, config-driven, invisible to CI.
@@ -772,10 +838,19 @@ These aren't rules - they're examples of patterns that might naturally emerge as
 3. ⬜ Create hook adapter registry/loader
 4. ⬜ Test provider switching (same CI, different providers)
 
-### Phase 4: Future Providers (as needed)
-1. ⬜ Implement OpenAI hook adapter
-2. ⬜ Implement Google Gemini hook adapter
-3. ⬜ Test multi-provider conversations
+### Phase 4: Multi-CI Testing and Router Planning (as needed)
+1. ⬜ Test Alice + Bob multi-CI conversations with breathing
+2. ⬜ Study claude-code-router architecture and transformers
+3. ⬜ Design persona configuration schema
+4. ⬜ Plan router integration approach
+
+### Phase 5: Router Integration (optional, future)
+1. ⬜ Implement router process management (katra_router.c)
+2. ⬜ Implement persona → provider mapping (router_config.c)
+3. ⬜ Add router integration to session_start (env var setup)
+4. ⬜ Test with multiple providers (OpenAI, DeepSeek, Gemini)
+5. ⬜ Test multi-provider conversations (Alice on Claude, Bob on GPT)
+6. ⬜ Document router setup and persona configuration
 
 ---
 
@@ -795,16 +870,20 @@ katra/
 │   │   ├── ci_registry.c           # CI registry database
 │   │   └── autonomic_config.c      # Autonomic behavior config
 │   │
-│   └── hooks/                      # Layer C: Provider adapters
-│       ├── hook_registry.c         # Load correct adapter
-│       ├── hook_anthropic.c        # Anthropic MCP hooks
-│       ├── hook_openai.c           # OpenAI API hooks (future)
-│       └── hook_gemini.c           # Google Gemini hooks (future)
+│   ├── hooks/                      # Layer C: Provider adapters
+│   │   ├── hook_registry.c         # Load correct adapter
+│   │   ├── hook_anthropic.c        # Anthropic MCP hooks (primary)
+│   │   └── hook_router.c           # Router integration (optional)
+│   │
+│   └── router/                     # Router integration (Phase 5)
+│       ├── katra_router.c          # Router process management
+│       └── router_config.c         # Persona → provider mapping
 │
 ├── include/
 │   ├── katra.h                     # Layer A public API
 │   ├── ci_config.h                 # Layer B config types
-│   └── katra_hooks.h               # Layer C hook interface
+│   ├── katra_hooks.h               # Layer C hook interface
+│   └── katra_router.h              # Router integration (Phase 5)
 │
 └── docs/
     └── plan/
@@ -815,18 +894,28 @@ katra/
 
 ## Open Questions
 
-### 1. Hook Adapter Selection
+### 1. Router Integration Strategy
+**Should router integration be optional or mandatory?**
+
+**Decision: Optional (Phase 5)**
+- Phase 2-4: Anthropic MCP hooks work directly (no router needed)
+- Phase 5: Add router integration for multi-provider scenarios
+- Router adds complexity - only enable when user needs multiple providers
+- Default path: Simple, direct Anthropic MCP integration
+
+### 2. Hook Adapter Selection
 **How does Katra know which adapter to load?**
 
 - Option A: Auto-detect from provider string (recommended)
   - `"anthropic/claude-sonnet-4.5"` → `hook_anthropic`
+  - `KATRA_ROUTER_PERSONA=SamAltman` → `hook_anthropic` + router service
 - Option B: Explicit in config
   - `{"provider": "anthropic", "hook_adapter": "anthropic_mcp"}`
 - Option C: Registry lookup at runtime
 
 **Recommendation:** Option A with Option B as override.
 
-### 2. Autonomic Failure Handling
+### 3. Autonomic Failure Handling
 **What happens when autonomic functions fail?**
 
 - Session lifecycle failures: Fatal (can't continue)
@@ -836,7 +925,7 @@ katra/
 
 **Rule:** Essential fails fatally, autonomic fails gracefully.
 
-### 3. Configuration Precedence
+### 4. Configuration Precedence
 **Multiple config sources, which wins?**
 
 1. Command-line flags (highest precedence)
@@ -845,7 +934,7 @@ katra/
 4. Registry defaults
 5. Hardcoded defaults (lowest precedence)
 
-### 4. Multi-Tenant Support
+### 5. Multi-Tenant Support
 **Can one MCP server run multiple CIs?**
 
 - Current: One CI per MCP server process
@@ -854,7 +943,7 @@ katra/
 
 **Decision needed:** Single-tenant for now, design for multi-tenant future.
 
-### 5. Breathing Frequency ✅ RESOLVED
+### 6. Breathing Frequency ✅ RESOLVED
 **How often should autonomic awareness happen?**
 
 **Final design (based on Alice and Casey discussion):**
