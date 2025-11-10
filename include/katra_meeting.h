@@ -261,4 +261,16 @@ int meeting_room_unregister_ci(const char* ci_id);
  */
 int katra_cleanup_old_messages(void);
 
+/**
+ * katra_cleanup_stale_registrations() - Remove CIs not seen recently
+ *
+ * Phase 4.5.1: Removes registry entries with last_seen > 5 minutes ago.
+ * Called on startup and periodically during breathing.
+ *
+ * Returns:
+ *   KATRA_SUCCESS
+ *   E_SYSTEM_DATABASE - Database error
+ */
+int katra_cleanup_stale_registrations(void);
+
 #endif /* KATRA_MEETING_H */

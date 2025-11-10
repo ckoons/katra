@@ -70,8 +70,61 @@ const char* CHAT_SCHEMA_REGISTRY =
     "  ci_id TEXT PRIMARY KEY,"
     "  name TEXT NOT NULL,"
     "  role TEXT NOT NULL,"
-    "  joined_at INTEGER NOT NULL"
+    "  joined_at INTEGER NOT NULL,"
+    "  last_seen INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))"
     ");";
+
+/* ============================================================================
+ * MIGRATIONS
+ * ============================================================================ */
+
+/**
+ * migrate_add_last_seen() - Add last_seen column if missing (Phase 4.5.1)
+ *
+ * Existing databases from Phase 4 don't have last_seen column.
+ * This migration adds it safely.
+ */
+static int migrate_add_last_seen(void) {
+    /* Check if column exists */
+    sqlite3_stmt* stmt = NULL;
+    const char* check_sql = "PRAGMA table_info(katra_ci_registry)";
+
+    int rc = sqlite3_prepare_v2(g_chat_db, check_sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        return E_SYSTEM_FILE;
+    }
+
+    bool has_last_seen = false;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const char* col_name = (const char*)sqlite3_column_text(stmt, 1);
+        if (col_name && strcmp(col_name, "last_seen") == 0) {
+            has_last_seen = true;
+            break;
+        }
+    }
+    sqlite3_finalize(stmt);
+
+    if (has_last_seen) {
+        LOG_DEBUG("Migration: last_seen column already exists");
+        return KATRA_SUCCESS;
+    }
+
+    /* Add last_seen column with default value */
+    const char* alter_sql =
+        "ALTER TABLE katra_ci_registry "
+        "ADD COLUMN last_seen INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))";
+
+    char* err_msg = NULL;
+    rc = sqlite3_exec(g_chat_db, alter_sql, NULL, NULL, &err_msg);
+    if (rc != SQLITE_OK) {
+        LOG_ERROR("Migration failed: %s", err_msg);
+        sqlite3_free(err_msg);
+        return E_SYSTEM_FILE;
+    }
+
+    LOG_INFO("Migration: Added last_seen column to katra_ci_registry");
+    return KATRA_SUCCESS;
+}
 
 /* ============================================================================
  * LIFECYCLE
@@ -144,10 +197,24 @@ int meeting_room_init(void) {
     g_chat_initialized = true;
     LOG_INFO("Chat database initialized: %s", db_path);
 
+    /* Run migration for Phase 4.5.1 (add last_seen column) */
+    result = migrate_add_last_seen();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Migration failed: %d", result);
+        /* Non-fatal - new installs have column already */
+    }
+
     /* Run cleanup on startup */
     result = katra_cleanup_old_messages();
     if (result != KATRA_SUCCESS) {
         LOG_WARN("Initial message cleanup failed: %d", result);
+        /* Non-fatal */
+    }
+
+    /* Clean up stale registry entries */
+    result = katra_cleanup_stale_registrations();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Initial registry cleanup failed: %d", result);
         /* Non-fatal */
     }
 
@@ -210,6 +277,50 @@ int katra_cleanup_old_messages(void) {
     return KATRA_SUCCESS;
 }
 
+int katra_cleanup_stale_registrations(void) {
+    if (!g_chat_initialized) {
+        return E_INVALID_STATE;
+    }
+
+    /* Remove registrations not seen in last 5 minutes */
+    time_t cutoff = time(NULL) - (STALE_REGISTRATION_TIMEOUT_MINUTES * SECONDS_PER_MINUTE);
+
+    if (pthread_mutex_lock(&g_chat_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
+
+    sqlite3_stmt* stmt = NULL;
+    /* GUIDELINE_APPROVED: SQL query constant */
+    const char* sql = "DELETE FROM katra_ci_registry WHERE last_seen < ?";
+
+    int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        pthread_mutex_unlock(&g_chat_lock);
+        return E_SYSTEM_FILE;
+    }
+
+    sqlite3_bind_int64(stmt, 1, (sqlite3_int64)cutoff);
+
+    rc = sqlite3_step(stmt);
+    int changes = sqlite3_changes(g_chat_db);
+    sqlite3_finalize(stmt);
+
+    pthread_mutex_unlock(&g_chat_lock);
+
+    if (rc != SQLITE_DONE) {
+        katra_report_error(E_SYSTEM_FILE, "katra_cleanup_stale_registrations",
+                          sqlite3_errmsg(g_chat_db));
+        return E_SYSTEM_FILE;
+    }
+
+    if (changes > 0) {
+        LOG_INFO("Cleaned up %d stale CI registrations (not seen in %d minutes)",
+                 changes, STALE_REGISTRATION_TIMEOUT_MINUTES);
+    }
+
+    return KATRA_SUCCESS;
+}
+
 /* ============================================================================
  * CI REGISTRY
  * ============================================================================ */
@@ -227,24 +338,19 @@ int meeting_room_register_ci(const char* ci_id, const char* name, const char* ro
         return E_INTERNAL_LOGIC;
     }
 
-    /* Remove existing registration if any */
+    /* Insert or replace registration (updates last_seen as heartbeat) */
     sqlite3_stmt* stmt = NULL;
+    time_t now = time(NULL);
+
     /* GUIDELINE_APPROVED: SQL query constants */
-    const char* delete_sql = "DELETE FROM katra_ci_registry WHERE ci_id = ?";
-
-    int rc = sqlite3_prepare_v2(g_chat_db, delete_sql, -1, &stmt, NULL);
-    if (rc == SQLITE_OK) {
-        sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
-        sqlite3_step(stmt);
-        sqlite3_finalize(stmt);
-    }
-
-    /* Insert new registration */
     const char* insert_sql =
-        "INSERT INTO katra_ci_registry (ci_id, name, role, joined_at) "
-        "VALUES (?, ?, ?, ?)";
+        "INSERT OR REPLACE INTO katra_ci_registry "
+        "(ci_id, name, role, joined_at, last_seen) "
+        "VALUES (?, ?, ?, "
+        "  COALESCE((SELECT joined_at FROM katra_ci_registry WHERE ci_id = ?), ?), "
+        "  ?)";
 
-    rc = sqlite3_prepare_v2(g_chat_db, insert_sql, -1, &stmt, NULL);
+    int rc = sqlite3_prepare_v2(g_chat_db, insert_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_chat_lock);
         return E_SYSTEM_FILE;
@@ -253,7 +359,9 @@ int meeting_room_register_ci(const char* ci_id, const char* name, const char* ro
     sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, name, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 3, role, -1, SQLITE_STATIC);
-    sqlite3_bind_int64(stmt, 4, (sqlite3_int64)time(NULL));
+    sqlite3_bind_text(stmt, 4, ci_id, -1, SQLITE_STATIC);  /* For COALESCE */
+    sqlite3_bind_int64(stmt, 5, (sqlite3_int64)now);  /* joined_at if new */
+    sqlite3_bind_int64(stmt, 6, (sqlite3_int64)now);  /* last_seen (always updated) */
 
     rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);

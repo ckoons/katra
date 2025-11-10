@@ -9,6 +9,7 @@
 #include <jansson.h>
 #include "katra_mcp.h"
 #include "katra_breathing.h"
+#include "katra_lifecycle.h"
 #include "katra_identity.h"
 #include "katra_meeting.h"
 #include "katra_error.h"
@@ -379,6 +380,13 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
             LOG_WARN("Failed to register CI in meeting room: %d", result);
             /* Non-fatal - continue even if meeting room registration fails */
         }
+    }
+
+    /* Update persona for auto-registration (Phase 4.5.1) */
+    result = katra_update_persona(ci_id, name, role ? role : "assistant");
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Failed to update persona for auto-registration: %d", result);
+        /* Non-fatal - auto-registration will use defaults */
     }
 
     /* Create welcome memory */

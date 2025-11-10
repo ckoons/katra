@@ -23,6 +23,9 @@
 #define CHAT_SQL_BUFFER_SIZE 4096
 #define SECONDS_PER_HOUR (MINUTES_PER_HOUR * SECONDS_PER_MINUTE)
 
+/* Phase 4.5.1: Registry heartbeat timeout (5 minutes) */
+#define STALE_REGISTRATION_TIMEOUT_MINUTES 5
+
 /* ============================================================================
  * GLOBAL STATE (defined in katra_chat_registry.c)
  * ============================================================================ */

@@ -309,4 +309,23 @@ int katra_get_breath_interval(void);
  */
 int katra_force_breath(breath_context_t* context_out);
 
+/**
+ * katra_update_persona() - Update persona info for auto-registration
+ *
+ * Phase 4.5.1: Updates session_state persona info so auto-registration
+ * uses the correct name/role. Called by katra_register MCP tool.
+ *
+ * Parameters:
+ *   ci_id: CI identity (persistent)
+ *   name: Persona name
+ *   role: CI role
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Persona updated
+ *   E_INVALID_STATE - Not initialized
+ *   E_INPUT_NULL - NULL parameters
+ *   E_SYSTEM_MEMORY - Allocation failed
+ */
+int katra_update_persona(const char* ci_id, const char* name, const char* role);
+
 #endif /* KATRA_LIFECYCLE_H */

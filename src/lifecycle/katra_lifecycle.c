@@ -488,3 +488,58 @@ int katra_force_breath(breath_context_t* context_out) {
     /* Perform breath (will do actual check now) */
     return katra_breath(context_out);
 }
+
+int katra_update_persona(const char* ci_id, const char* name, const char* role) {
+    if (!ci_id || !name || !role) {
+        return E_INPUT_NULL;
+    }
+
+    if (!g_lifecycle_initialized || !g_session_state) {
+        return E_INVALID_STATE;
+    }
+
+    pthread_mutex_lock(&g_session_state->breath_lock);
+
+    /* Update CI ID */
+    free(g_session_state->ci_id);
+    g_session_state->ci_id = strdup(ci_id);
+    if (!g_session_state->ci_id) {
+        pthread_mutex_unlock(&g_session_state->breath_lock);
+        katra_report_error(E_SYSTEM_MEMORY, "katra_update_persona",
+                          "Failed to allocate ci_id");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Free old persona strings */
+    free(g_session_state->persona_name);
+    free(g_session_state->persona_role);
+
+    /* Store new persona info */
+    g_session_state->persona_name = strdup(name);
+    if (!g_session_state->persona_name) {
+        g_session_state->persona_role = NULL;
+        pthread_mutex_unlock(&g_session_state->breath_lock);
+        katra_report_error(E_SYSTEM_MEMORY, "katra_update_persona",
+                          "Failed to allocate persona_name");
+        return E_SYSTEM_MEMORY;
+    }
+
+    g_session_state->persona_role = strdup(role);
+    if (!g_session_state->persona_role) {
+        free(g_session_state->persona_name);
+        g_session_state->persona_name = NULL;
+        pthread_mutex_unlock(&g_session_state->breath_lock);
+        katra_report_error(E_SYSTEM_MEMORY, "katra_update_persona",
+                          "Failed to allocate persona_role");
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Mark session as active (needed when register bypasses katra_session_start) */
+    g_session_state->session_active = true;
+
+    pthread_mutex_unlock(&g_session_state->breath_lock);
+
+    LOG_INFO("Persona updated for auto-registration: %s/%s (%s)", ci_id, name, role);
+
+    return KATRA_SUCCESS;
+}
