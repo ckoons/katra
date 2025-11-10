@@ -9,6 +9,7 @@
 #include "katra_mcp.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_hooks.h"
 
 /* Parse JSON-RPC request from string */
 json_t* mcp_parse_request(const char* json_str) {
@@ -462,6 +463,9 @@ static json_t* handle_tools_call(json_t* request) {
         return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_MISSING_TOOL_NAME, NULL);
     }
 
+    /* Trigger turn start hook (autonomic breathing) */
+    katra_hook_turn_start();
+
     /* Dispatch to tool implementation */
     json_t* tool_result = NULL;
 
@@ -492,8 +496,12 @@ static json_t* handle_tools_call(json_t* request) {
     } else if (strcmp(tool_name, MCP_TOOL_WHO_IS_HERE) == 0) {
         tool_result = mcp_tool_who_is_here(args, id);
     } else {
+        katra_hook_turn_end();  /* Trigger turn end hook before error return */
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
     }
+
+    /* Trigger turn end hook (autonomic breathing) */
+    katra_hook_turn_end();
 
     return mcp_success_response(id, tool_result);
 }

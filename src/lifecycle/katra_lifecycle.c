@@ -208,6 +208,14 @@ int katra_breath(breath_context_t* context_out) {
         }
     }
 
+    /* Periodic stale entry cleanup (Phase 4.5.1) */
+    /* Clean up CI registrations not seen in last 5 minutes */
+    int cleanup_result = katra_cleanup_stale_registrations();
+    if (cleanup_result != KATRA_SUCCESS) {
+        LOG_DEBUG("Stale registration cleanup failed: %d", cleanup_result);
+        /* Non-critical - continue anyway */
+    }
+
     /* Update cached context and last breath time */
     memcpy(&g_session_state->cached_context, &context, sizeof(breath_context_t));
     g_session_state->last_breath_time = now;
