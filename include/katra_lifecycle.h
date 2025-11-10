@@ -220,24 +220,45 @@ int katra_session_start(const char* ci_id);
 int katra_session_end(void);
 
 /* ============================================================================
- * FUTURE: TURN BOUNDARIES (Phase 3)
+ * TURN BOUNDARIES (Phase 3)
  * ============================================================================ */
 
 /**
  * katra_turn_start() - Begin interaction turn with autonomic breathing
  *
- * NOTE: Not implemented in Phase 2. Placeholder for Phase 3.
+ * Wraps begin_turn() from breathing layer and adds rate-limited breathing.
+ * Called by hooks at the start of each CI interaction turn.
  *
- * Will wrap begin_turn() and add rate-limited breathing.
+ * A turn represents one interaction cycle where the CI:
+ * - Receives input (user message, tool call, etc.)
+ * - Processes and acts
+ * - Produces output
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Turn started
+ *   E_INVALID_STATE - No active session
+ *
+ * Side effects:
+ * - Calls begin_turn() (turn tracking)
+ * - Calls katra_breath() (rate-limited awareness)
+ * - Logs turn awareness if messages waiting
  */
 int katra_turn_start(void);
 
 /**
  * katra_turn_end() - End interaction turn with autonomic breathing
  *
- * NOTE: Not implemented in Phase 2. Placeholder for Phase 3.
+ * Wraps end_turn() from breathing layer and adds rate-limited breathing.
+ * Called by hooks at the end of each CI interaction turn.
  *
- * Will wrap end_turn() and add rate-limited breathing.
+ * Returns:
+ *   KATRA_SUCCESS - Turn ended
+ *   E_INVALID_STATE - No active session
+ *
+ * Side effects:
+ * - Calls katra_breath() (rate-limited awareness)
+ * - Calls end_turn() (turn tracking)
+ * - Logs turn end awareness
  */
 int katra_turn_end(void);
 

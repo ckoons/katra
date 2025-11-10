@@ -119,6 +119,10 @@ CHAT_OBJS := $(BUILD_DIR)/katra_chat.o \
 # Lifecycle (Autonomic Breathing) object files
 LIFECYCLE_OBJS := $(BUILD_DIR)/katra_lifecycle.o
 
+# Hook Adapter object files (Phase 3)
+HOOKS_OBJS := $(BUILD_DIR)/hook_registry.o \
+              $(BUILD_DIR)/hook_anthropic.o
+
 # Phase 5 object files (Memory-Augmented Reasoning)
 NOUS_OBJS := $(BUILD_DIR)/katra_nous_common.o \
                $(BUILD_DIR)/katra_nous_compose.o \
@@ -148,7 +152,7 @@ JANSSON_CFLAGS := -I/opt/homebrew/Cellar/jansson/2.14.1/include
 JANSSON_LDFLAGS := -L/opt/homebrew/Cellar/jansson/2.14.1/lib -ljansson
 
 # All object files (for dependency tracking)
-ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(NOUS_OBJS) $(MCP_OBJS)
+ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(HOOKS_OBJS) $(NOUS_OBJS) $(MCP_OBJS)
 
 # Auto-generated dependency files
 DEP_FILES := $(ALL_OBJS:.o=.d)
@@ -206,7 +210,7 @@ $(BUILD_DIR):
 
 # Build utils library
 # Note: Delete library first to ensure deterministic rebuild
-$(LIBKATRA_UTILS): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(NOUS_OBJS)
+$(LIBKATRA_UTILS): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(HOOKS_OBJS) $(NOUS_OBJS)
 	@echo "Creating utils library: $@"
 	@rm -f $@
 	@ar rcs $@ $^
@@ -256,6 +260,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/chat/%.c | $(BUILD_DIR)
 
 # Compile lifecycle sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/lifecycle/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile hook adapter sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/hooks/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 

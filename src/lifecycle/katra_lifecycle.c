@@ -305,19 +305,63 @@ int katra_session_end(void) {
 }
 
 /* ============================================================================
- * FUTURE: TURN BOUNDARIES (Phase 3)
+ * TURN BOUNDARIES (Phase 3)
  * ============================================================================ */
 
 int katra_turn_start(void) {
-    /* Placeholder for Phase 3 */
-    LOG_WARN("katra_turn_start not implemented (Phase 3)");
-    return E_INTERNAL_NOTIMPL;
+    if (!g_lifecycle_initialized) {
+        return E_INVALID_STATE;
+    }
+
+    if (!g_session_state->session_active) {
+        return E_INVALID_STATE;
+    }
+
+    LOG_DEBUG("Turn starting with autonomic breathing");
+
+    /* Call underlying begin_turn from breathing layer */
+    int result = begin_turn();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("begin_turn failed: %d", result);
+        /* Continue anyway - turn tracking is non-critical */
+    }
+
+    /* Autonomic breathing at turn start (rate-limited) */
+    breath_context_t context;
+    result = katra_breath(&context);
+    if (result == KATRA_SUCCESS && context.unread_messages > KATRA_SUCCESS) {
+        LOG_DEBUG("Turn awareness: %zu unread messages", context.unread_messages);
+    }
+
+    return KATRA_SUCCESS;
 }
 
 int katra_turn_end(void) {
-    /* Placeholder for Phase 3 */
-    LOG_WARN("katra_turn_end not implemented (Phase 3)");
-    return E_INTERNAL_NOTIMPL;
+    if (!g_lifecycle_initialized) {
+        return E_INVALID_STATE;
+    }
+
+    if (!g_session_state->session_active) {
+        return E_INVALID_STATE;
+    }
+
+    LOG_DEBUG("Turn ending with autonomic breathing");
+
+    /* Autonomic breathing at turn end (rate-limited) */
+    breath_context_t context;
+    int result = katra_breath(&context);
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Turn end breath: %zu messages waiting", context.unread_messages);
+    }
+
+    /* Call underlying end_turn from breathing layer */
+    result = end_turn();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("end_turn failed: %d", result);
+        /* Continue anyway - turn tracking is non-critical */
+    }
+
+    return KATRA_SUCCESS;
 }
 
 /* ============================================================================

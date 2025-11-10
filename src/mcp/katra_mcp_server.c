@@ -13,6 +13,7 @@
 #include "katra_init.h"
 #include "katra_breathing.h"
 #include "katra_lifecycle.h"
+#include "katra_hooks.h"
 #include "katra_memory.h"
 #include "katra_identity.h"
 #include "katra_error.h"
@@ -110,12 +111,39 @@ int mcp_server_init(const char* ci_id) {
         return result;
     }
 
+    /* Step 3a: Initialize hook registry */
+    result = katra_hooks_init();
+    if (result != KATRA_SUCCESS && result != E_ALREADY_INITIALIZED) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
+        fprintf(stderr, "Failed to initialize hook registry: %s\n",
+                katra_error_message(result));
+        katra_lifecycle_cleanup();
+        katra_memory_cleanup();
+        katra_exit();
+        return result;
+    }
+
+    /* Step 3b: Register Anthropic MCP adapter */
+    const katra_hook_adapter_t* anthropic_adapter = katra_hook_anthropic_adapter();
+    result = katra_hooks_register(anthropic_adapter);
+    if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
+        fprintf(stderr, "Failed to register Anthropic adapter: %s\n",
+                katra_error_message(result));
+        katra_hooks_cleanup();
+        katra_lifecycle_cleanup();
+        katra_memory_cleanup();
+        katra_exit();
+        return result;
+    }
+
     /* Step 4: Initialize chat/meeting room database */
     result = meeting_room_init();
     if (result != KATRA_SUCCESS) {
         /* GUIDELINE_APPROVED: startup diagnostic */
         fprintf(stderr, "Failed to initialize meeting room: %s\n",
                 katra_error_message(result));
+        katra_hooks_cleanup();
         katra_lifecycle_cleanup();
         katra_memory_cleanup();
         katra_exit();
@@ -129,6 +157,7 @@ int mcp_server_init(const char* ci_id) {
         fprintf(stderr, "Failed to start session: %s\n",
                 katra_error_message(result));
         meeting_room_cleanup();
+        katra_hooks_cleanup();
         katra_lifecycle_cleanup();
         katra_memory_cleanup();
         katra_exit();
@@ -146,6 +175,7 @@ void mcp_server_cleanup(void) {
     /* Cleanup in reverse order of initialization */
     katra_session_end();   /* Wraps session_end + final breath + breathe_cleanup */
     meeting_room_cleanup();
+    katra_hooks_cleanup();  /* Hook registry cleanup */
     katra_lifecycle_cleanup();  /* Lifecycle layer cleanup */
     katra_memory_cleanup();
     katra_exit();
