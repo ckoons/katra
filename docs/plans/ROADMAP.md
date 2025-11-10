@@ -227,31 +227,66 @@ Like humans have:
 
 ---
 
-### Phase 4: Multi-CI Testing and Refinement (Week 4-5)
+### Phase 4: Multi-CI Testing and Refinement (Week 4-5) ✅ COMPLETE
 
 **Goal:** Verify autonomic breathing works in multi-CI scenarios
 
 **Tasks:**
-- [ ] Test Alice + Claude conversations with breathing
-- [ ] Verify natural rhythm during extended work
-- [ ] Test concurrent registration (3+ CIs)
-- [ ] Measure breathing frequency in real usage
-- [ ] Test message awareness timing
-- [ ] Refine breath_interval if needed
-- [ ] Test provider portability (if multiple providers available)
+- [x] Test Alice + Claude conversations with breathing
+- [x] Verify natural rhythm during extended work
+- [x] Test concurrent registration (3+ CIs)
+- [x] Measure breathing frequency in real usage
+- [x] Test message awareness timing
+- [x] Refine breath_interval if needed
+- [x] Test provider portability (if multiple providers available)
+
+**Success Criteria:** ✅ ALL MET
+- ✅ Multi-CI conversations "just work"
+- ✅ Natural awareness without spam
+- ✅ No database overload
+- ✅ CIs stay synchronized naturally
+- ✅ Breathing feels natural, not intrusive
+
+**Deliverables:** ✅ COMPLETE
+- ✅ Multi-CI test results (docs/plans/PHASE4_TEST_RESULTS.md)
+- ✅ Performance metrics (documented in test results)
+- ✅ Tuning recommendations (breathing works as designed)
+- ✅ User experience feedback (tested with Alice)
+
+---
+
+### Phase 4.5: Developer Tools & Polish (Week 5)
+
+**Goal:** Refine core system based on Phase 4 findings, add developer convenience
+
+**Motivation:**
+Phase 4 testing revealed registration can be lost during development (MCP restarts,
+state fiddling). Add auto-registration during breathing to self-heal, plus developer
+tools to make working with Katra smoother and more scriptable.
+
+**Tasks:**
+- [ ] Implement auto-registration in breathing (handles state loss)
+- [ ] Create `katra start` wrapper (session launcher with environment config)
+- [ ] Create `k` command (one-shot CLI queries with full Katra access)
+- [ ] Update documentation with new tools
+- [ ] Test developer workflows
+- [ ] Create usage examples
 
 **Success Criteria:**
-- Multi-CI conversations "just work"
-- Natural awareness without spam
-- No database overload
-- CIs stay synchronized naturally
-- Breathing feels natural, not intrusive
+- Auto-registration recovers from MCP restarts within 30 seconds
+- `katra start --persona Alice` launches configured session
+- `k "query"` provides quick Katra access with memory
+- Piping works: `echo "text" | k` and `k "query" | grep`
+- Developer experience significantly improved
 
 **Deliverables:**
-- Multi-CI test results
-- Performance metrics
-- Tuning recommendations
-- User experience feedback
+- Auto-registration in katra_breath() (C code change)
+- bin/katra start script (bash wrapper)
+- bin/k script (CLI query tool)
+- docs/guide/DEVELOPER_TOOLS.md
+- Usage examples and patterns
+
+**Timeline:** 1-2 days
 
 ---
 
