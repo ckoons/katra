@@ -86,6 +86,10 @@ int katra_lifecycle_init(void) {
     g_session_state->ci_id = NULL;
     g_session_state->session_id = NULL;
 
+    /* Initialize persona fields (for auto-registration) */
+    g_session_state->persona_name = NULL;
+    g_session_state->persona_role = NULL;
+
     /* Initialize cached context */
     memset(&g_session_state->cached_context, 0, sizeof(breath_context_t));
 
@@ -110,6 +114,10 @@ void katra_lifecycle_cleanup(void) {
         /* Free identity strings */
         free(g_session_state->ci_id);
         free(g_session_state->session_id);
+
+        /* Free persona strings */
+        free(g_session_state->persona_name);
+        free(g_session_state->persona_role);
 
         /* Free state */
         free(g_session_state);
@@ -186,6 +194,20 @@ int katra_breath(breath_context_t* context_out) {
     /* TODO: Add consolidation check (future enhancement) */
     context.needs_consolidation = false;
 
+    /* Auto-registration (Phase 4.5) - Re-register every breath as heartbeat */
+    /* This is idempotent and self-healing - if registration was lost, we recover within 30s */
+    if (g_session_state->ci_id && g_session_state->persona_name && g_session_state->persona_role) {
+        LOG_DEBUG("Auto-registration: %s as %s (%s)", g_session_state->ci_id,
+                  g_session_state->persona_name, g_session_state->persona_role);
+        int reg_result = meeting_room_register_ci(g_session_state->ci_id,
+                                                   g_session_state->persona_name,
+                                                   g_session_state->persona_role);
+        if (reg_result != KATRA_SUCCESS && reg_result != E_ALREADY_INITIALIZED) {
+            LOG_WARN("Auto-registration failed: %d", reg_result);
+            /* Don't fail the breath - registration failure is non-critical */
+        }
+    }
+
     /* Update cached context and last breath time */
     memcpy(&g_session_state->cached_context, &context, sizeof(breath_context_t));
     g_session_state->last_breath_time = now;
@@ -220,10 +242,44 @@ int katra_session_start(const char* ci_id) {
 
     LOG_INFO("Starting session with autonomic breathing for %s", ci_id);
 
+    /* Get persona from environment or use defaults */
+    const char* persona = getenv("KATRA_PERSONA");
+    if (!persona) {
+        persona = "Katra";  /* Default persona name */
+    }
+
+    const char* role = getenv("KATRA_ROLE");
+    if (!role) {
+        role = "developer";  /* Default role */
+    }
+
+    /* Store persona info for auto-registration */
+    g_session_state->persona_name = strdup(persona);
+    if (!g_session_state->persona_name) {
+        katra_report_error(E_SYSTEM_MEMORY, "katra_session_start",
+                          "Failed to allocate persona_name");
+        return E_SYSTEM_MEMORY;
+    }
+
+    g_session_state->persona_role = strdup(role);
+    if (!g_session_state->persona_role) {
+        free(g_session_state->persona_name);
+        g_session_state->persona_name = NULL;
+        katra_report_error(E_SYSTEM_MEMORY, "katra_session_start",
+                          "Failed to allocate persona_role");
+        return E_SYSTEM_MEMORY;
+    }
+
+    LOG_INFO("Persona configured: %s (%s)", persona, role);
+
     /* Call existing session_start from breathing layer */
     int result = session_start(ci_id);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "katra_session_start", "session_start failed");
+        free(g_session_state->persona_name);
+        free(g_session_state->persona_role);
+        g_session_state->persona_name = NULL;
+        g_session_state->persona_role = NULL;
         return result;
     }
 
@@ -231,6 +287,10 @@ int katra_session_start(const char* ci_id) {
     g_session_state->ci_id = strdup(ci_id);
     if (!g_session_state->ci_id) {
         session_end();  /* Cleanup breathing layer */
+        free(g_session_state->persona_name);
+        free(g_session_state->persona_role);
+        g_session_state->persona_name = NULL;
+        g_session_state->persona_role = NULL;
         return E_SYSTEM_MEMORY;
     }
 
@@ -293,8 +353,12 @@ int katra_session_end(void) {
     /* Clear session state */
     free(g_session_state->ci_id);
     free(g_session_state->session_id);
+    free(g_session_state->persona_name);
+    free(g_session_state->persona_role);
     g_session_state->ci_id = NULL;
     g_session_state->session_id = NULL;
+    g_session_state->persona_name = NULL;
+    g_session_state->persona_role = NULL;
     g_session_state->session_active = false;
     g_session_state->last_breath_time = KATRA_SUCCESS;
     memset(&g_session_state->cached_context, 0, sizeof(breath_context_t));

@@ -1,0 +1,114 @@
+#!/bin/bash
+# © 2025 Casey Koons All rights reserved
+#
+# katra - Start Claude Code with Katra environment
+#
+# Usage:
+#   katra start --persona Alice --breath-interval 15 [project-path]
+#   katra start --persona Bob ~/myproject
+
+set -euo pipefail
+
+# Defaults
+PERSONA="${KATRA_PERSONA:-Katra}"
+ROLE="${KATRA_ROLE:-developer}"
+BREATH_INTERVAL="${KATRA_BREATH_INTERVAL:-30}"
+LOG_LEVEL="${KATRA_LOG_LEVEL:-INFO}"
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+usage() {
+    cat <<EOF
+Katra - Start Claude Code with Katra environment
+
+Usage:
+  katra start [options] [project-path]
+
+Options:
+  --persona NAME         Set persona name (default: Katra)
+  --role ROLE           Set role (default: developer)
+  --breath-interval N    Set breathing interval in seconds (default: 30)
+  --log-level LEVEL     Set log level (DEBUG|INFO|WARN|ERROR)
+  -h, --help            Show this help
+
+Examples:
+  katra start --persona Alice
+  katra start --persona Bob --breath-interval 15
+  katra start --persona Charlie ~/myproject
+
+Environment Variables:
+  KATRA_PERSONA         Default persona name
+  KATRA_ROLE           Default role
+  KATRA_BREATH_INTERVAL Default breathing interval
+  KATRA_LOG_LEVEL      Default log level
+EOF
+    exit 0
+}
+
+# Parse command
+COMMAND="${1:-help}"
+shift || true
+
+case "$COMMAND" in
+    start)
+        # Parse options
+        while [[ $# -gt 0 ]]; do
+            case $1 in
+                --persona)
+                    PERSONA="$2"
+                    shift 2
+                    ;;
+                --role)
+                    ROLE="$2"
+                    shift 2
+                    ;;
+                --breath-interval)
+                    BREATH_INTERVAL="$2"
+                    shift 2
+                    ;;
+                --log-level)
+                    LOG_LEVEL="$2"
+                    shift 2
+                    ;;
+                -h|--help)
+                    usage
+                    ;;
+                *)
+                    # Assume it's project path or other Claude Code arg
+                    break
+                    ;;
+            esac
+        done
+
+        # Display configuration
+        echo -e "${GREEN}Starting Katra session...${NC}"
+        echo -e "${BLUE}Persona:${NC} $PERSONA"
+        echo -e "${BLUE}Role:${NC} $ROLE"
+        echo -e "${BLUE}Breathing:${NC} $BREATH_INTERVAL seconds"
+        echo -e "${BLUE}Log Level:${NC} $LOG_LEVEL"
+        echo ""
+
+        # Export environment
+        export KATRA_PERSONA="$PERSONA"
+        export KATRA_ROLE="$ROLE"
+        export KATRA_BREATH_INTERVAL="$BREATH_INTERVAL"
+        export KATRA_LOG_LEVEL="$LOG_LEVEL"
+
+        # Start Claude Code
+        echo -e "${GREEN}Launching Claude Code...${NC}"
+        exec claude-code "$@"
+        ;;
+
+    help|-h|--help)
+        usage
+        ;;
+
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Try 'katra help' for usage information"
+        exit 1
+        ;;
+esac

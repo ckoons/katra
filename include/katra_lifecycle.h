@@ -79,6 +79,10 @@ typedef struct {
     char* ci_id;                   /* Current CI identity */
     char* session_id;              /* Current session ID */
     bool session_active;           /* True if session is running */
+
+    /* Persona info (for auto-registration) */
+    char* persona_name;            /* Persistent persona name */
+    char* persona_role;            /* CI role (developer, researcher, etc.) */
 } session_state_t;
 
 /* ============================================================================

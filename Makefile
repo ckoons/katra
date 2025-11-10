@@ -656,6 +656,37 @@ restart-mcp:
 		echo "Claude Code will restart from new binary on next tool call"; \
 	fi
 
+# Developer tools install targets (Phase 4.5)
+INSTALL_DIR ?= $(HOME)/bin
+INSTALL_MODE := 0755
+
+install-k:
+	@echo "Installing Katra developer tools..."
+	@$(MKDIR_P) $(INSTALL_DIR)
+	@install -m $(INSTALL_MODE) $(SCRIPTS_DIR)/katra $(INSTALL_DIR)/katra
+	@install -m $(INSTALL_MODE) $(SCRIPTS_DIR)/k $(INSTALL_DIR)/k
+	@echo "Installed:"
+	@echo "  $(INSTALL_DIR)/katra - Start Claude Code with Katra environment"
+	@echo "  $(INSTALL_DIR)/k - One-shot CLI queries with Katra"
+	@echo ""
+	@echo "Make sure $(INSTALL_DIR) is in your PATH"
+	@if echo "$$PATH" | grep -q "$(INSTALL_DIR)"; then \
+		echo "✓ $(INSTALL_DIR) is already in PATH"; \
+	else \
+		echo "⚠ Add this to your ~/.bashrc or ~/.zshrc:"; \
+		echo "  export PATH=\"$(INSTALL_DIR):\$$PATH\""; \
+	fi
+
+uninstall-k:
+	@echo "Uninstalling Katra developer tools..."
+	@rm -f $(INSTALL_DIR)/katra
+	@rm -f $(INSTALL_DIR)/k
+	@echo "Uninstalled from $(INSTALL_DIR)"
+
+install-all: install-k
+	@echo ""
+	@echo "All Katra tools installed successfully"
+
 # ==============================================================================
 # CLEAN SECTION (future Makefile.clean)
 # ==============================================================================
@@ -703,8 +734,9 @@ help:
 	@echo "  make test-all   - Run all tests (same as test-quick)"
 	@echo ""
 	@echo "Install Targets:"
-	@echo "  make install      - Install to ~/.local/bin/ (not yet implemented)"
-	@echo "  make uninstall    - Remove from ~/.local/bin/ (not yet implemented)"
+	@echo "  make install-k    - Install katra/k scripts to ~/bin (Phase 4.5 tools)"
+	@echo "  make uninstall-k  - Uninstall katra/k scripts from ~/bin"
+	@echo "  make install-all  - Install all Katra tools (currently install-k)"
 	@echo "  make install-mcp  - Rebuild and restart MCP server (kills old processes)"
 	@echo "  make restart-mcp  - Kill running MCP servers (auto-restart on next use)"
 	@echo ""

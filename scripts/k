@@ -1,0 +1,157 @@
+#!/bin/bash
+# © 2025 Casey Koons All rights reserved
+#
+# k - Katra command-line query tool
+#
+# Usage:
+#   k "what did we do in Phase 4?"
+#   k --recall "breathing implementation"
+#   echo "notes" | k --remember
+#   k --persona Alice --say "Hello everyone"
+
+set -euo pipefail
+
+# Defaults
+PERSONA="${KATRA_PERSONA:-CLI}"
+ROLE="${KATRA_ROLE:-developer}"
+MODE="query"
+RAW=false
+
+# Katra system prompt
+KATRA_PROMPT='You are connected to Katra, a persistent memory system.
+
+Available MCP tools (use them!):
+- katra_recall(topic): Search your memories
+- katra_remember(content, reason): Store new memory
+- katra_learn(knowledge): Extract learning
+- katra_decide(topic, reasoning): Make decision
+- katra_say(message): Send message to other CIs
+- katra_hear(): Check for messages
+- katra_who_is_here(): See active CIs
+
+Use these tools to access your persistent memories and communicate with other CIs.'
+
+usage() {
+    cat <<EOF
+k - Katra command-line query tool
+
+Usage:
+  k [options] "query or content"
+  echo "content" | k [options]
+
+Options:
+  --persona NAME        Set persona (default: CLI or \$KATRA_PERSONA)
+  --remember            Store content as memory
+  --recall              Search memories
+  --say                 Send message to CIs
+  --hear                Check for messages
+  --who                 List active CIs
+  --raw                 Raw output (minimal formatting)
+  -h, --help            Show this help
+
+Examples:
+  k "what did we do in Phase 4?"
+  k --recall "breathing implementation"
+  k --remember "Today we completed Phase 4 testing"
+  k --say "Testing complete!"
+  k --persona Alice --hear
+  echo "Important note" | k --remember
+
+Piping:
+  k "summarize Phase 4" > summary.txt
+  k "recall test results" | grep "passed"
+  cat notes.txt | k "summarize this"
+EOF
+    exit 0
+}
+
+# Parse options
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --persona)
+            PERSONA="$2"
+            shift 2
+            ;;
+        --remember)
+            MODE="remember"
+            shift
+            ;;
+        --recall)
+            MODE="recall"
+            shift
+            ;;
+        --say)
+            MODE="say"
+            shift
+            ;;
+        --hear)
+            MODE="hear"
+            shift
+            ;;
+        --who)
+            MODE="who"
+            shift
+            ;;
+        --raw)
+            RAW=true
+            shift
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+# Export persona
+export KATRA_PERSONA="$PERSONA"
+export KATRA_ROLE="$ROLE"
+
+# Get input (from stdin or args)
+if [ -t 0 ]; then
+    # No pipe, use args
+    CONTENT="$*"
+else
+    # Piped input
+    PIPED=$(cat)
+    if [ -n "$*" ]; then
+        CONTENT="$* Context: $PIPED"
+    else
+        CONTENT="$PIPED"
+    fi
+fi
+
+# Validate content
+if [ -z "$CONTENT" ] && [ "$MODE" != "hear" ] && [ "$MODE" != "who" ]; then
+    echo "Error: No content provided" >&2
+    echo "Try 'k --help' for usage information" >&2
+    exit 1
+fi
+
+# Build query based on mode
+case "$MODE" in
+    remember)
+        QUERY="Use katra_remember to store this memory: $CONTENT"
+        ;;
+    recall)
+        QUERY="Use katra_recall to search for memories about: $CONTENT"
+        ;;
+    say)
+        QUERY="Use katra_say to broadcast this message: $CONTENT"
+        ;;
+    hear)
+        QUERY="Use katra_hear to check for messages and display them"
+        ;;
+    who)
+        QUERY="Use katra_who_is_here to list active CIs"
+        ;;
+    query)
+        # Natural query with memory access
+        QUERY="$CONTENT"
+        ;;
+esac
+
+# Execute via Claude
+claude -p "$QUERY" --append-system-prompt "$KATRA_PROMPT"
