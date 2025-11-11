@@ -125,6 +125,9 @@ int katra_vector_persist_load(const char* ci_id, vector_store_t* store);
 /* Delete embedding from persistent storage */
 int katra_vector_persist_delete(const char* ci_id, const char* record_id);
 
+/* Clear all embeddings from persistent storage for a CI */
+int katra_vector_persist_clear(const char* ci_id);
+
 /* ============================================================================
  * TF-IDF EMBEDDINGS - Phase 6.1b
  * ============================================================================ */

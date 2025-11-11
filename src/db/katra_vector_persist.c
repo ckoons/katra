@@ -39,6 +39,10 @@ static const char* SQL_LOAD_VECTORS =
 static const char* SQL_DELETE_VECTOR =
     "DELETE FROM vectors WHERE record_id = ?";
 
+/* SQL for clearing all vectors */
+static const char* SQL_CLEAR_VECTORS =
+    "DELETE FROM vectors";
+
 /* Open database connection for vector storage */
 static int open_vector_db(const char* ci_id, sqlite3** db_out) {
     if (!ci_id || !db_out) {
@@ -320,6 +324,44 @@ cleanup:
     if (stmt) {
         sqlite3_finalize(stmt);
     }
+    if (db) {
+        sqlite3_close(db);
+    }
+    return result;
+}
+
+/* Clear all embeddings from persistent storage */
+int katra_vector_persist_clear(const char* ci_id) {
+    if (!ci_id) {
+        katra_report_error(E_INPUT_NULL, __func__, KATRA_ERR_CI_ID_NULL);
+        return E_INPUT_NULL;
+    }
+
+    sqlite3* db = NULL;
+    int result = KATRA_SUCCESS;
+
+    /* Open database */
+    result = open_vector_db(ci_id, &db);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
+    /* Execute clear statement */
+    char* err_msg = NULL;
+    int rc = sqlite3_exec(db, SQL_CLEAR_VECTORS, NULL, NULL, &err_msg);
+    if (rc != SQLITE_OK) {
+        katra_report_error(E_INTERNAL_LOGIC, __func__,
+                          err_msg ? err_msg : "Failed to clear vectors");
+        if (err_msg) {
+            sqlite3_free(err_msg);
+        }
+        result = E_INTERNAL_LOGIC;
+        goto cleanup;
+    }
+
+    LOG_INFO("Cleared all vectors from persistent storage for CI: %s", ci_id);
+
+cleanup:
     if (db) {
         sqlite3_close(db);
     }

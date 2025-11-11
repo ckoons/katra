@@ -29,6 +29,12 @@ static int tests_passed = 0;
     printf("  FAILED: %s\n", msg); \
     return;
 
+/* Helper: Initialize clean vector store (clears persistence first) */
+static vector_store_t* init_clean_store(const char* ci_id) {
+    katra_vector_persist_clear(ci_id);
+    return katra_vector_init(ci_id, false);
+}
+
 /* Test: Initialize vector store */
 static void test_vector_init(void) {
     TEST("Vector store initialization");
@@ -81,7 +87,7 @@ static void test_create_embedding(void) {
 static void test_store_retrieve(void) {
     TEST("Store and retrieve embeddings");
 
-    vector_store_t* store = katra_vector_init("test_ci", false);
+    vector_store_t* store = init_clean_store("test_ci");
     if (!store) {
         FAIL("Failed to initialize store");
     }
@@ -150,7 +156,7 @@ static void test_cosine_similarity(void) {
 static void test_vector_search(void) {
     TEST("Vector similarity search");
 
-    vector_store_t* store = katra_vector_init("test_ci", false);
+    vector_store_t* store = init_clean_store("test_ci");
     if (!store) {
         FAIL("Failed to initialize store");
     }
@@ -189,7 +195,7 @@ static void test_vector_search(void) {
 static void test_delete_embedding(void) {
     TEST("Delete embedding");
 
-    vector_store_t* store = katra_vector_init("test_ci", false);
+    vector_store_t* store = init_clean_store("test_ci");
     if (!store) {
         FAIL("Failed to initialize store");
     }
@@ -226,7 +232,7 @@ static void test_delete_embedding(void) {
 static void test_expand_capacity(void) {
     TEST("Expand vector store capacity");
 
-    vector_store_t* store = katra_vector_init("test_ci", false);
+    vector_store_t* store = init_clean_store("test_ci");
     if (!store) {
         FAIL("Failed to initialize store");
     }
@@ -262,6 +268,9 @@ int main(void) {
     printf("Katra Vector Database Tests\n");
     printf("========================================\n");
     printf("\n");
+
+    /* Clear any persisted data from previous test runs */
+    katra_vector_persist_clear("test_ci");
 
     /* Run tests */
     test_vector_init();
