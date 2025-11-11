@@ -32,7 +32,7 @@ CFLAGS_RELEASE := $(CFLAGS) -O2 -DNDEBUG -MMD -MP
 
 # Linker flags
 LDFLAGS :=
-LIBS :=
+LIBS := -lcurl
 
 # Tools
 MKDIR_P := mkdir -p
@@ -84,6 +84,10 @@ DB_OBJS := $(BUILD_DIR)/katra_db_backend.o \
            $(BUILD_DIR)/katra_db_sqlite.o \
            $(BUILD_DIR)/katra_encoder.o \
            $(BUILD_DIR)/katra_vector.o \
+           $(BUILD_DIR)/katra_vector_persist.o \
+           $(BUILD_DIR)/katra_vector_tfidf.o \
+           $(BUILD_DIR)/katra_vector_external.o \
+           $(BUILD_DIR)/katra_vector_hnsw.o \
            $(BUILD_DIR)/katra_graph.o \
            $(BUILD_DIR)/katra_tier1_index.o \
            $(BUILD_DIR)/katra_tier1_index_mgmt.o
@@ -133,7 +137,8 @@ NOUS_OBJS := $(BUILD_DIR)/katra_nous_common.o \
 
 # MCP library object files (without server main)
 MCP_LIB_OBJS := $(BUILD_DIR)/mcp_protocol.o \
-                $(BUILD_DIR)/mcp_tools.o \
+                $(BUILD_DIR)/mcp_tools_memory.o \
+                $(BUILD_DIR)/mcp_tools_identity.o \
                 $(BUILD_DIR)/mcp_nous.o \
                 $(BUILD_DIR)/mcp_resources.o
 
@@ -285,7 +290,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/mcp/%.c | $(BUILD_DIR)
 # Build MCP server binary
 $(MCP_SERVER): $(MCP_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)
 	@echo "Building MCP server: $@"
-	@$(CC) -o $@ $(MCP_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
+	@$(CC) -o $@ $(MCP_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread $(LIBS)
 	@echo "Copying wrapper script to bin/..."
 	@cp $(SCRIPTS_DIR)/katra_mcp_server_wrapper.sh $(BIN_DIR)/
 	@chmod +x $(BIN_DIR)/katra_mcp_server_wrapper.sh
@@ -322,6 +327,10 @@ TEST_TIER2_INDEX := $(BIN_DIR)/tests/test_tier2_index
 TEST_CHECKPOINT := $(BIN_DIR)/tests/test_checkpoint
 TEST_CONTINUITY := $(BIN_DIR)/tests/test_continuity
 TEST_VECTOR := $(BIN_DIR)/tests/test_vector
+TEST_VECTOR_PERSIST := $(BIN_DIR)/tests/test_vector_persist
+TEST_VECTOR_TFIDF := $(BIN_DIR)/tests/test_vector_tfidf
+TEST_VECTOR_EXTERNAL := $(BIN_DIR)/tests/test_vector_external
+TEST_VECTOR_HNSW := $(BIN_DIR)/tests/test_vector_hnsw
 TEST_GRAPH := $(BIN_DIR)/tests/test_graph
 TEST_SUNRISE_SUNSET := $(BIN_DIR)/tests/test_sunrise_sunset
 
@@ -344,7 +353,7 @@ BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 BENCHMARK_REFLECTION := $(BIN_DIR)/tests/benchmark_reflection
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -402,6 +411,22 @@ test-continuity: $(TEST_CONTINUITY)
 test-vector: $(TEST_VECTOR)
 	@echo "Running vector database tests..."
 	@$(TEST_VECTOR)
+
+test-vector-persist: $(TEST_VECTOR_PERSIST)
+	@echo "Running vector persistence tests..."
+	@$(TEST_VECTOR_PERSIST)
+
+test-vector-tfidf: $(TEST_VECTOR_TFIDF)
+	@echo "Running TF-IDF embedding tests..."
+	@$(TEST_VECTOR_TFIDF)
+
+test-vector-external: $(TEST_VECTOR_EXTERNAL)
+	@echo "Running external embedding tests..."
+	@$(TEST_VECTOR_EXTERNAL)
+
+test-vector-hnsw: $(TEST_VECTOR_HNSW)
+	@echo "Running HNSW indexing tests..."
+	@$(TEST_VECTOR_HNSW)
 
 test-graph: $(TEST_GRAPH)
 	@echo "Running graph database tests..."
@@ -512,6 +537,22 @@ $(TEST_CONTINUITY): $(TEST_DIR)/unit/test_continuity.c $(LIBKATRA_UTILS)
 $(TEST_VECTOR): $(TEST_DIR)/unit/test_vector.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm
+
+$(TEST_VECTOR_PERSIST): $(TEST_DIR)/test_vector_persist.c $(LIBKATRA_UTILS)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm -lcurl
+
+$(TEST_VECTOR_TFIDF): $(TEST_DIR)/test_vector_tfidf.c $(LIBKATRA_UTILS)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm -lcurl
+
+$(TEST_VECTOR_EXTERNAL): $(TEST_DIR)/test_vector_external.c $(LIBKATRA_UTILS)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm -lcurl
+
+$(TEST_VECTOR_HNSW): $(TEST_DIR)/test_vector_hnsw.c $(LIBKATRA_UTILS)
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm -lcurl
 
 $(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"

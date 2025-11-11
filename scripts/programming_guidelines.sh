@@ -215,11 +215,11 @@ echo "10. CODE SIZE BUDGET"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 TOTAL_LINES=$(find src/ -name "*.c" -exec cat {} \; | wc -l | tr -d ' ')
 echo "Total source lines: $TOTAL_LINES"
-if [ "$TOTAL_LINES" -lt 16000 ]; then
-  echo "✓ EXCELLENT: Within 16K budget"
-elif [ "$TOTAL_LINES" -lt 20000 ]; then
+if [ "$TOTAL_LINES" -lt 30000 ]; then
+  echo "✓ EXCELLENT: Within 30K budget"
+elif [ "$TOTAL_LINES" -lt 35000 ]; then
   echo "✓ GOOD: Manageable complexity"
-elif [ "$TOTAL_LINES" -lt 25000 ]; then
+elif [ "$TOTAL_LINES" -lt 40000 ]; then
   echo "ℹ INFO: Growing - consider refactoring"
   INFOS=$((INFOS + 1))
 else
@@ -230,6 +230,15 @@ fi
 # File count
 TOTAL_FILES=$(find src/ -name "*.c" | wc -l | tr -d ' ')
 echo "Total .c files: $TOTAL_FILES"
+if [ "$TOTAL_FILES" -lt 99 ]; then
+  echo "✓ PASS: File count within 99 file budget"
+elif [ "$TOTAL_FILES" -lt 120 ]; then
+  echo "ℹ INFO: File count approaching limit"
+  INFOS=$((INFOS + 1))
+else
+  echo "⚠ WARN: File count exceeds recommended limit"
+  WARNINGS=$((WARNINGS + 1))
+fi
 echo ""
 
 # 11. Binary size

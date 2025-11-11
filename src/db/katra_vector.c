@@ -43,12 +43,27 @@ vector_store_t* katra_vector_init(const char* ci_id, bool use_external) {
     }
 
     store->count = 0;
+    store->method = EMBEDDING_TFIDF;  /* Use TF-IDF by default (Phase 6.1b) */
     store->use_external = use_external;
     store->external_url[0] = '\0';
 
-    LOG_INFO("Initialized vector store for %s (external: %s)",
+    /* Initialize persistent storage (Phase 6.1d) */
+    int persist_result = katra_vector_persist_init(ci_id);
+    if (persist_result != KATRA_SUCCESS) {
+        LOG_WARN("Vector persistence initialization failed (non-fatal): %d", persist_result);
+        /* Non-fatal - continue with in-memory only */
+    } else {
+        /* Load existing embeddings from persistent storage */
+        persist_result = katra_vector_persist_load(ci_id, store);
+        if (persist_result != KATRA_SUCCESS) {
+            LOG_WARN("Failed to load persisted vectors (non-fatal): %d", persist_result);
+            /* Non-fatal - continue with empty store */
+        }
+    }
+
+    LOG_INFO("Initialized vector store for %s (external: %s, loaded: %zu)",
 /* GUIDELINE_APPROVED: external vector DB toggle description */
-            ci_id, use_external ? "yes" : "no");
+            ci_id, use_external ? "yes" : "no", store->count);
 
     return store;
 }
@@ -100,7 +115,7 @@ static void hash_text_to_vector(const char* text, float* vector,
     }
 }
 
-/* Create embedding from text */
+/* Create embedding from text (uses hash-based method) */
 int katra_vector_create_embedding(const char* text,
                                   vector_embedding_t** embedding_out) {
     PSYCHE_CHECK_PARAMS_2(text, embedding_out);
@@ -135,6 +150,44 @@ int katra_vector_create_embedding(const char* text,
     return KATRA_SUCCESS;
 }
 
+/* Create embedding using store's configured method */
+static int create_embedding_with_method(vector_store_t* store, const char* text,
+                                        vector_embedding_t** embedding_out) {
+    if (!store || !text || !embedding_out) {
+        return E_INPUT_NULL;
+    }
+
+    /* Try external API if configured (Phase 6.1c) */
+    if (store->method == EMBEDDING_EXTERNAL) {
+        const char* api_key = katra_vector_external_get_api_key();
+        if (katra_vector_external_available(api_key)) {
+            int result = katra_vector_external_create(text, api_key, NULL, embedding_out);
+            if (result == KATRA_SUCCESS) {
+                return result;
+            }
+            LOG_WARN("External embedding failed: %d (falling back to TF-IDF)", result);
+            /* Fall through to TF-IDF */
+        } else {
+            LOG_WARN("External embeddings requested but no API key available (falling back to TF-IDF)");
+            /* Fall through to TF-IDF */
+        }
+    }
+
+    /* Update IDF stats if using TF-IDF */
+    if (store->method == EMBEDDING_TFIDF || store->method == EMBEDDING_EXTERNAL) {
+        int result = katra_vector_tfidf_update_stats(text);
+        if (result != KATRA_SUCCESS) {
+            LOG_WARN("Failed to update TF-IDF stats: %d (falling back to hash)", result);
+            /* Fall through to use hash method */
+            return katra_vector_create_embedding(text, embedding_out);
+        }
+        return katra_vector_tfidf_create(text, embedding_out);
+    }
+
+    /* Default: hash-based embedding */
+    return katra_vector_create_embedding(text, embedding_out);
+}
+
 /* Store embedding */
 int katra_vector_store(vector_store_t* store,
                       const char* record_id,
@@ -161,9 +214,9 @@ int katra_vector_store(vector_store_t* store,
         }
     }
 
-    /* Create embedding */
+    /* Create embedding using configured method */
     vector_embedding_t* embedding = NULL;
-    int result = katra_vector_create_embedding(text, &embedding);
+    int result = create_embedding_with_method(store, text, &embedding);
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -175,6 +228,13 @@ int katra_vector_store(vector_store_t* store,
     /* Store embedding */
     store->embeddings[store->count] = embedding;
     store->count++;
+
+    /* Save to persistent storage (Phase 6.1d) */
+    int persist_result = katra_vector_persist_save(store->ci_id, embedding);
+    if (persist_result != KATRA_SUCCESS) {
+        LOG_WARN("Failed to persist vector for %s: %d", record_id, persist_result);
+        /* Non-fatal - embedding is still in memory */
+    }
 
     LOG_DEBUG("Stored vector for record %s (total: %zu)", record_id, store->count);
     return KATRA_SUCCESS;
@@ -234,9 +294,9 @@ int katra_vector_search(vector_store_t* store,
         return KATRA_SUCCESS;
     }
 
-    /* Create query embedding */
+    /* Create query embedding using configured method */
     vector_embedding_t* query_embedding = NULL;
-    int result = katra_vector_create_embedding(query_text, &query_embedding);
+    int result = create_embedding_with_method(store, query_text, &query_embedding);
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -314,6 +374,13 @@ int katra_vector_delete(vector_store_t* store, const char* record_id) {
 
     for (size_t i = 0; i < store->count; i++) {
         if (strcmp(store->embeddings[i]->record_id, record_id) == 0) {
+            /* Delete from persistent storage first (Phase 6.1d) */
+            int persist_result = katra_vector_persist_delete(store->ci_id, record_id);
+            if (persist_result != KATRA_SUCCESS) {
+                LOG_WARN("Failed to delete persisted vector for %s: %d", record_id, persist_result);
+                /* Non-fatal - continue deleting from memory */
+            }
+
             /* Free embedding */
             katra_vector_free_embedding(store->embeddings[i]);
 
