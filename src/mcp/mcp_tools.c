@@ -15,10 +15,12 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_vector.h"
 
 /* External globals from katra_mcp_server.c */
 extern char g_persona_name[256];
 extern char g_ci_id[256];
+extern vector_store_t* g_vector_store;
 
 /* Global mutex for Katra API access */
 pthread_mutex_t g_katra_api_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -46,6 +48,23 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
     }
 
     int result = remember_semantic(content, context);
+
+    /* Auto-generate embedding for semantic search (Phase 6.1) */
+    if (result == KATRA_SUCCESS && g_vector_store) {
+        /* Generate a simple record ID from content hash (for now) */
+        /* TODO: Get actual record_id from remember_semantic */
+        char record_id[256];
+        snprintf(record_id, sizeof(record_id), "mem_%lu", (unsigned long)time(NULL));
+
+        /* Store embedding (non-fatal if fails) */
+        int vec_result = katra_vector_store(g_vector_store, record_id, content);
+        if (vec_result != KATRA_SUCCESS) {
+            LOG_WARN("Failed to store embedding for memory: %s", record_id);
+        } else {
+            LOG_DEBUG("Stored embedding for memory: %s", record_id);
+        }
+    }
+
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS) {
@@ -77,65 +96,117 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_TOPIC_REQUIRED);
     }
 
+    /* Check for semantic search flag (Phase 6.1) */
+    json_t* semantic_json = json_object_get(args, "semantic");
+    bool use_semantic = semantic_json && json_is_true(semantic_json);
+
+    const char* session_name = mcp_get_session_name();
     size_t count = 0;
     char** results = NULL;
+    vector_match_t** vector_results = NULL;
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    results = recall_about(topic, &count);
-    pthread_mutex_unlock(&g_katra_api_lock);
+    /* Use semantic or keyword search */
+    if (use_semantic && g_vector_store) {
+        /* Semantic search via vector database */
+        int result = katra_vector_search(g_vector_store, topic, 10, &vector_results, &count);
+        pthread_mutex_unlock(&g_katra_api_lock);
 
-    const char* session_name = mcp_get_session_name();
+        if (result != KATRA_SUCCESS) {
+            return mcp_tool_error(MCP_ERR_INTERNAL, "Semantic search failed");
+        }
 
-    if (!results || count == 0) {
+        if (!vector_results || count == 0) {
+            char response[MCP_RESPONSE_BUFFER];
+            snprintf(response, sizeof(response),
+                    "No semantically similar memories found for '%s', %s", topic, session_name);
+            return mcp_tool_success(response);
+        }
+
+        /* Build response from vector results */
         char response[MCP_RESPONSE_BUFFER];
-        snprintf(response, sizeof(response), "No memories found about '%s', %s", topic, session_name);
-        return mcp_tool_success(response);
-    }
+        size_t offset = 0;
 
-    /* Truncate large result sets */
-    bool truncated = false;
-    size_t original_count = count;
-    if (count > MCP_MAX_RECALL_RESULTS) {
-        truncated = true;
-        count = MCP_MAX_RECALL_RESULTS;
-    }
-
-    /* Build response text with personalization */
-    char response[MCP_RESPONSE_BUFFER];
-    size_t offset = 0;
-
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Here are your memories, %s:\n\n", session_name);
-
-    if (truncated) {
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          MCP_FMT_FOUND_MEMORIES_TRUNCATED,
-                          original_count, MCP_MAX_RECALL_RESULTS);
-    } else {
-        offset += snprintf(response + offset, sizeof(response) - offset,
-                          MCP_FMT_FOUND_MEMORIES, count);
-    }
+                          "Semantic search results for '%s', %s:\n\n", topic, session_name);
 
-    for (size_t i = 0; i < count; i++) {
-        if (results[i]) {
-            offset += snprintf(response + offset, sizeof(response) - offset,
-                             MCP_FMT_MEMORY_ITEM, i + 1, results[i]);
+        for (size_t i = 0; i < count; i++) {
+            if (vector_results[i]) {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                 "%zu. [similarity: %.2f] %s\n",
+                                 i + 1, vector_results[i]->similarity, vector_results[i]->record_id);
 
-            /* Safety check - stop if buffer nearly full */
-            if (offset >= sizeof(response) - 100) {
-                snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
-                break;
+                /* Safety check */
+                if (offset >= sizeof(response) - 100) {
+                    snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
+                    break;
+                }
             }
         }
+
+        katra_vector_free_matches(vector_results, count);
+        return mcp_tool_success(response);
+
+    } else if (use_semantic && !g_vector_store) {
+        /* Semantic search requested but not available */
+        pthread_mutex_unlock(&g_katra_api_lock);
+        return mcp_tool_error(MCP_ERR_INTERNAL,
+                             "Semantic search not available (vector database not initialized)");
+    } else {
+        /* Keyword search (existing behavior) */
+        results = recall_about(topic, &count);
+        pthread_mutex_unlock(&g_katra_api_lock);
+
+        if (!results || count == 0) {
+            char response[MCP_RESPONSE_BUFFER];
+            snprintf(response, sizeof(response), "No memories found about '%s', %s", topic, session_name);
+            return mcp_tool_success(response);
+        }
+
+        /* Truncate large result sets */
+        bool truncated = false;
+        size_t original_count = count;
+        if (count > MCP_MAX_RECALL_RESULTS) {
+            truncated = true;
+            count = MCP_MAX_RECALL_RESULTS;
+        }
+
+        /* Build response text with personalization */
+        char response[MCP_RESPONSE_BUFFER];
+        size_t offset = 0;
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "Here are your memories, %s:\n\n", session_name);
+
+        if (truncated) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              MCP_FMT_FOUND_MEMORIES_TRUNCATED,
+                              original_count, MCP_MAX_RECALL_RESULTS);
+        } else {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              MCP_FMT_FOUND_MEMORIES, count);
+        }
+
+        for (size_t i = 0; i < count; i++) {
+            if (results[i]) {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                 MCP_FMT_MEMORY_ITEM, i + 1, results[i]);
+
+                /* Safety check - stop if buffer nearly full */
+                if (offset >= sizeof(response) - 100) {
+                    snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
+                    break;
+                }
+            }
+        }
+
+        free_memory_list(results, original_count);
+        return mcp_tool_success(response);
     }
-
-    free_memory_list(results, original_count);
-
-    return mcp_tool_success(response);
 }
 
 /* Tool: katra_learn */

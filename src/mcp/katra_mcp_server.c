@@ -19,11 +19,15 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_meeting.h"
+#include "katra_vector.h"
 
 /* Global persona name (set during initialization) */
 /* GUIDELINE_APPROVED: global state initialization constants */
 char g_persona_name[256] = "";
 char g_ci_id[256] = "";
+
+/* Global vector store for semantic search (Phase 6.1) */
+vector_store_t* g_vector_store = NULL;
 
 /* Global session state */
 static mcp_session_t g_session = {
@@ -150,6 +154,15 @@ int mcp_server_init(const char* ci_id) {
         return result;
     }
 
+    /* Step 4.5: Initialize vector database for semantic search (Phase 6.1) */
+    g_vector_store = katra_vector_init(ci_id, false);
+    if (!g_vector_store) {
+        /* Non-fatal: semantic search will be disabled */
+        LOG_WARN("Vector database initialization failed, semantic search disabled");
+    } else {
+        LOG_INFO("Vector database initialized for semantic search");
+    }
+
     /* Step 5: Start session with autonomic breathing */
     result = katra_session_start(ci_id);
     if (result != KATRA_SUCCESS) {
@@ -174,6 +187,13 @@ void mcp_server_cleanup(void) {
 
     /* Cleanup in reverse order of initialization */
     katra_session_end();   /* Wraps session_end + final breath + breathe_cleanup */
+
+    /* Cleanup vector database */
+    if (g_vector_store) {
+        katra_vector_cleanup(g_vector_store);
+        g_vector_store = NULL;
+    }
+
     meeting_room_cleanup();
     katra_hooks_cleanup();  /* Hook registry cleanup */
     katra_lifecycle_cleanup();  /* Lifecycle layer cleanup */
