@@ -243,7 +243,7 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
         /* Map to vector dimension (use hash of term) */
         unsigned int hash = 0;
         for (const char* p = tokens[i].text; *p; p++) {
-            hash = hash * 31 + (unsigned char)*p;
+            hash = hash * TFIDF_HASH_MULTIPLIER + (unsigned char)*p;
         }
         size_t dim = hash % VECTOR_DIMENSIONS;
 

@@ -27,12 +27,14 @@
 #define OPENAI_MODEL "text-embedding-3-small"
 #define EXTERNAL_API_TIMEOUT_SEC 30  /* API request timeout */
 #define EXTERNAL_MAX_RESPONSE_SIZE (1024 * 1024)  /* 1MB max response */
+#define EXTERNAL_AUTH_HEADER_SIZE 512  /* Authorization header buffer size */
 
 /* TF-IDF Constants (Phase 6.1b) */
 #define TFIDF_MAX_TOKENS 1000        /* Max tokens per document */
 #define TFIDF_MAX_TOKEN_LENGTH 64    /* Max length of individual token */
 #define TFIDF_MIN_TOKEN_LEN 2        /* Minimum token length */
 #define TFIDF_MAX_TOKEN_LEN 50       /* Maximum token length */
+#define TFIDF_HASH_MULTIPLIER 31     /* Hash function multiplier (prime number) */
 
 /* Vector embedding (simplified representation) */
 typedef struct {

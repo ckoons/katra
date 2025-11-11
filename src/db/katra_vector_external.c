@@ -160,7 +160,7 @@ static int call_openai_api(const char* text, const char* api_key,
     free(escaped_text);
 
     /* Set up headers */
-    char auth_header[512];
+    char auth_header[EXTERNAL_AUTH_HEADER_SIZE];
     snprintf(auth_header, sizeof(auth_header), "Authorization: Bearer %s", api_key);
 
     headers = curl_slist_append(headers, "Content-Type: application/json");

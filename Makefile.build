@@ -1,0 +1,117 @@
+# Makefile.build
+# © 2025 Casey Koons All rights reserved
+# Katra Build Rules - Compilation and linking targets
+
+# ==============================================================================
+# DIRECTORY CREATION
+# ==============================================================================
+
+# Create directories (order-only prerequisite to avoid timestamp issues)
+directories:
+	@$(MKDIR_P) $(BUILD_DIR)
+	@$(MKDIR_P) $(BIN_DIR)
+	@$(MKDIR_P) $(BIN_DIR)/tests
+
+# Pattern rule to create build directory (for order-only prerequisites)
+$(BUILD_DIR):
+	@$(MKDIR_P) $@
+
+# ==============================================================================
+# LIBRARY BUILD
+# ==============================================================================
+
+# Build utils library
+# Note: Delete library first to ensure deterministic rebuild
+$(LIBKATRA_UTILS): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(HOOKS_OBJS) $(NOUS_OBJS)
+	@echo "Creating utils library: $@"
+	@rm -f $@
+	@ar rcs $@ $^
+	@echo "Library created successfully"
+
+# ==============================================================================
+# PATTERN RULES - Automatic compilation
+# ==============================================================================
+# The '| $(BUILD_DIR)' is an order-only prerequisite - creates dir without
+# triggering rebuilds when dir timestamp changes
+
+# Compile foundation sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/utils/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile core sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/core/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Exception: katra_identity.c uses jansson
+$(BUILD_DIR)/katra_identity.o: $(SRC_DIR)/core/katra_identity.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+# Compile DB backend sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/db/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile engram sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/psyche/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile breathing layer sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/breathing/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile chat sources (needs Jansson for MCP integration)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/chat/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+# Compile lifecycle sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/lifecycle/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile hook adapter sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/hooks/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile Phase 5 sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/nous/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile MCP sources (requires jansson headers)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/mcp/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+# ==============================================================================
+# MCP SERVER BUILD
+# ==============================================================================
+
+# Build MCP server binary
+$(MCP_SERVER): $(MCP_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)
+	@echo "Building MCP server: $@"
+	@$(CC) -o $@ $(MCP_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread $(LIBS)
+	@echo "Copying wrapper script to bin/..."
+	@cp $(SCRIPTS_DIR)/katra_mcp_server_wrapper.sh $(BIN_DIR)/
+	@chmod +x $(BIN_DIR)/katra_mcp_server_wrapper.sh
+	@echo "MCP server built successfully"
+
+# Convenience target
+mcp-server: $(MCP_SERVER)
+
+# ==============================================================================
+# AUTOMATIC DEPENDENCY INCLUSION
+# ==============================================================================
+# Include auto-generated .d files (header dependencies)
+# The '-' prefix means "don't error if files don't exist yet"
+# Make will automatically regenerate them during compilation
+-include $(DEP_FILES)
+
+# Mark .d files as secondary targets (don't delete them as intermediate files)
+.SECONDARY: $(DEP_FILES)
