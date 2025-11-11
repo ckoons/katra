@@ -1,11 +1,14 @@
 #!/bin/bash
 # © 2025 Casey Koons All rights reserved
 #
-# katra - Start Claude Code with Katra environment
+# katra - Start Claude Code with Katra environment and multi-provider support
 #
 # Usage:
-#   katra start --persona Alice --breath-interval 15 [project-path]
-#   katra start --persona Bob ~/myproject
+#   katra start --persona Alice --provider anthropic [project-path]
+#   katra start --persona Sam --provider openai --background
+#   katra list
+#   katra attach Sam
+#   katra stop Alice
 
 set -euo pipefail
 
@@ -14,39 +17,79 @@ PERSONA="${KATRA_PERSONA:-Katra}"
 ROLE="${KATRA_ROLE:-developer}"
 BREATH_INTERVAL="${KATRA_BREATH_INTERVAL:-30}"
 LOG_LEVEL="${KATRA_LOG_LEVEL:-INFO}"
+PROVIDER="${KATRA_PROVIDER:-anthropic}"
+MODEL=""
+BACKGROUND=false
 
 # Colors for output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 usage() {
     cat <<EOF
-Katra - Start Claude Code with Katra environment
+Katra - Start Claude Code with Katra environment and multi-provider support
 
 Usage:
   katra start [options] [project-path]
+  katra list
+  katra attach <persona>
+  katra stop <persona>
+  katra stop --all
 
-Options:
+Start Options:
   --persona NAME         Set persona name (default: Katra)
   --role ROLE           Set role (default: developer)
+  --provider NAME       LLM provider: anthropic|openai|deepseek|openrouter (default: anthropic)
+  --model NAME          Model name (provider-specific, optional)
   --breath-interval N    Set breathing interval in seconds (default: 30)
   --log-level LEVEL     Set log level (DEBUG|INFO|WARN|ERROR)
+  --background, -b      Start in background (tmux session)
   -h, --help            Show this help
 
 Examples:
+  # Single provider (default)
   katra start --persona Alice
-  katra start --persona Bob --breath-interval 15
-  katra start --persona Charlie ~/myproject
+
+  # Multiple providers in different terminals
+  katra start --persona Dario --provider anthropic
+  katra start --persona Sam --provider openai
+
+  # Background sessions
+  katra start --persona Charlie --provider deepseek --background
+  katra list
+  katra attach Charlie
+  # (Ctrl-B then D to detach)
+  katra stop Charlie
+
+  # Custom models
+  katra start --persona Alice --provider anthropic --model claude-opus-4
+  katra start --persona Sam --provider openai --model gpt-4-turbo
+
+Providers:
+  anthropic  - Anthropic Claude (default, direct connection)
+  openai     - OpenAI GPT models (requires OPENAI_API_KEY)
+  deepseek   - DeepSeek models (requires DEEPSEEK_API_KEY)
+  openrouter - OpenRouter multi-provider gateway (requires OPENROUTER_API_KEY)
 
 Environment Variables:
   KATRA_PERSONA         Default persona name
   KATRA_ROLE           Default role
+  KATRA_PROVIDER       Default provider (anthropic)
   KATRA_BREATH_INTERVAL Default breathing interval
   KATRA_LOG_LEVEL      Default log level
+  ANTHROPIC_API_KEY    Anthropic API key
+  OPENAI_API_KEY       OpenAI API key
+  DEEPSEEK_API_KEY     DeepSeek API key
+  OPENROUTER_API_KEY   OpenRouter API key
 EOF
     exit 0
 }
+
+# Tmux session prefix
+TMUX_PREFIX="katra"
 
 # Parse command
 COMMAND="${1:-help}"
@@ -65,6 +108,14 @@ case "$COMMAND" in
                     ROLE="$2"
                     shift 2
                     ;;
+                --provider)
+                    PROVIDER="$2"
+                    shift 2
+                    ;;
+                --model)
+                    MODEL="$2"
+                    shift 2
+                    ;;
                 --breath-interval)
                     BREATH_INTERVAL="$2"
                     shift 2
@@ -72,6 +123,10 @@ case "$COMMAND" in
                 --log-level)
                     LOG_LEVEL="$2"
                     shift 2
+                    ;;
+                --background|-b)
+                    BACKGROUND=true
+                    shift
                     ;;
                 -h|--help)
                     usage
@@ -83,12 +138,73 @@ case "$COMMAND" in
             esac
         done
 
+        # Configure provider-specific settings
+        case "$PROVIDER" in
+            anthropic)
+                # Default - direct connection to Anthropic
+                # No ANTHROPIC_BASE_URL needed
+                if [ -z "$ANTHROPIC_API_KEY" ]; then
+                    echo -e "${RED}Error: ANTHROPIC_API_KEY not set${NC}"
+                    echo "Set it with: export ANTHROPIC_API_KEY=your-key-here"
+                    exit 1
+                fi
+                PROVIDER_DESC="Anthropic Claude (direct)"
+                ;;
+            openai)
+                # OpenAI - redirect Claude Code to OpenAI API
+                export ANTHROPIC_BASE_URL="https://api.openai.com/v1"
+                if [ -z "$OPENAI_API_KEY" ]; then
+                    echo -e "${RED}Error: OPENAI_API_KEY not set${NC}"
+                    echo "Set it with: export OPENAI_API_KEY=your-key-here"
+                    exit 1
+                fi
+                export ANTHROPIC_API_KEY="$OPENAI_API_KEY"
+                PROVIDER_DESC="OpenAI (via ANTHROPIC_BASE_URL)"
+                [ -z "$MODEL" ] && MODEL="gpt-4-turbo"
+                ;;
+            deepseek)
+                # DeepSeek - redirect to DeepSeek API
+                export ANTHROPIC_BASE_URL="https://api.deepseek.com"
+                if [ -z "$DEEPSEEK_API_KEY" ]; then
+                    echo -e "${RED}Error: DEEPSEEK_API_KEY not set${NC}"
+                    echo "Set it with: export DEEPSEEK_API_KEY=your-key-here"
+                    exit 1
+                fi
+                export ANTHROPIC_API_KEY="$DEEPSEEK_API_KEY"
+                PROVIDER_DESC="DeepSeek (via ANTHROPIC_BASE_URL)"
+                [ -z "$MODEL" ] && MODEL="deepseek-coder"
+                ;;
+            openrouter)
+                # OpenRouter - multi-provider gateway
+                export ANTHROPIC_BASE_URL="https://openrouter.ai/api/v1"
+                if [ -z "$OPENROUTER_API_KEY" ]; then
+                    echo -e "${RED}Error: OPENROUTER_API_KEY not set${NC}"
+                    echo "Set it with: export OPENROUTER_API_KEY=your-key-here"
+                    exit 1
+                fi
+                export ANTHROPIC_API_KEY="$OPENROUTER_API_KEY"
+                PROVIDER_DESC="OpenRouter (via ANTHROPIC_BASE_URL)"
+                if [ -n "$MODEL" ]; then
+                    echo -e "${BLUE}Note:${NC} OpenRouter model format: provider/model-name"
+                    echo "Example: anthropic/claude-sonnet-4 or openai/gpt-4"
+                fi
+                ;;
+            *)
+                echo -e "${RED}Error: Unknown provider: $PROVIDER${NC}"
+                echo "Valid providers: anthropic, openai, deepseek, openrouter"
+                exit 1
+                ;;
+        esac
+
         # Display configuration
         echo -e "${GREEN}Starting Katra session...${NC}"
         echo -e "${BLUE}Persona:${NC} $PERSONA"
         echo -e "${BLUE}Role:${NC} $ROLE"
+        echo -e "${BLUE}Provider:${NC} $PROVIDER_DESC"
+        [ -n "$MODEL" ] && echo -e "${BLUE}Model:${NC} $MODEL"
         echo -e "${BLUE}Breathing:${NC} $BREATH_INTERVAL seconds"
         echo -e "${BLUE}Log Level:${NC} $LOG_LEVEL"
+        [ "$BACKGROUND" = true ] && echo -e "${BLUE}Mode:${NC} Background (tmux)"
         echo ""
 
         # Export environment
@@ -97,9 +213,120 @@ case "$COMMAND" in
         export KATRA_BREATH_INTERVAL="$BREATH_INTERVAL"
         export KATRA_LOG_LEVEL="$LOG_LEVEL"
 
-        # Start Claude Code
-        echo -e "${GREEN}Launching Claude Code...${NC}"
-        exec claude-code "$@"
+        # Build Claude Code command
+        CLAUDE_CMD="claude-code"
+        [ -n "$MODEL" ] && CLAUDE_CMD="$CLAUDE_CMD --model $MODEL"
+        CLAUDE_CMD="$CLAUDE_CMD $@"
+
+        # Start in background or foreground
+        if [ "$BACKGROUND" = true ]; then
+            # Check if tmux is installed
+            if ! command -v tmux &> /dev/null; then
+                echo -e "${RED}Error: tmux not installed${NC}"
+                echo "Install with: brew install tmux (macOS) or apt install tmux (Linux)"
+                exit 1
+            fi
+
+            # Create tmux session
+            TMUX_SESSION="${TMUX_PREFIX}-${PERSONA}"
+
+            # Check if session already exists
+            if tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+                echo -e "${YELLOW}Warning: Session '$TMUX_SESSION' already exists${NC}"
+                echo "Use 'katra attach $PERSONA' to connect"
+                exit 1
+            fi
+
+            # Start tmux session with Claude Code
+            echo -e "${GREEN}Starting background session: $TMUX_SESSION${NC}"
+            tmux new-session -d -s "$TMUX_SESSION" "$CLAUDE_CMD"
+
+            echo -e "${GREEN}Session started successfully${NC}"
+            echo "Attach with: ${BLUE}katra attach $PERSONA${NC}"
+            echo "Detach with: ${BLUE}Ctrl-B then D${NC}"
+            echo "Stop with: ${BLUE}katra stop $PERSONA${NC}"
+        else
+            # Foreground mode
+            echo -e "${GREEN}Launching Claude Code...${NC}"
+            exec $CLAUDE_CMD
+        fi
+        ;;
+
+    list)
+        # List active Katra sessions
+        echo -e "${GREEN}Active Katra sessions:${NC}"
+        if command -v tmux &> /dev/null; then
+            tmux list-sessions 2>/dev/null | grep "^${TMUX_PREFIX}-" || echo "No active sessions"
+        else
+            echo -e "${YELLOW}tmux not installed${NC}"
+        fi
+        ;;
+
+    attach)
+        # Attach to existing session
+        if [ $# -lt 1 ]; then
+            echo -e "${RED}Error: Persona name required${NC}"
+            echo "Usage: katra attach <persona>"
+            exit 1
+        fi
+
+        PERSONA="$1"
+        TMUX_SESSION="${TMUX_PREFIX}-${PERSONA}"
+
+        if ! command -v tmux &> /dev/null; then
+            echo -e "${RED}Error: tmux not installed${NC}"
+            exit 1
+        fi
+
+        if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+            echo -e "${RED}Error: Session '$TMUX_SESSION' not found${NC}"
+            echo "Use 'katra list' to see active sessions"
+            exit 1
+        fi
+
+        echo -e "${GREEN}Attaching to $TMUX_SESSION...${NC}"
+        exec tmux attach-session -t "$TMUX_SESSION"
+        ;;
+
+    stop)
+        # Stop session(s)
+        if [ $# -lt 1 ]; then
+            echo -e "${RED}Error: Persona name or --all required${NC}"
+            echo "Usage: katra stop <persona> | katra stop --all"
+            exit 1
+        fi
+
+        if [ "$1" = "--all" ]; then
+            # Stop all Katra sessions
+            echo -e "${YELLOW}Stopping all Katra sessions...${NC}"
+            if command -v tmux &> /dev/null; then
+                for session in $(tmux list-sessions -F "#{session_name}" 2>/dev/null | grep "^${TMUX_PREFIX}-"); do
+                    echo "Stopping $session..."
+                    tmux kill-session -t "$session"
+                done
+                echo -e "${GREEN}All sessions stopped${NC}"
+            else
+                echo -e "${YELLOW}tmux not installed${NC}"
+            fi
+        else
+            # Stop specific session
+            PERSONA="$1"
+            TMUX_SESSION="${TMUX_PREFIX}-${PERSONA}"
+
+            if ! command -v tmux &> /dev/null; then
+                echo -e "${RED}Error: tmux not installed${NC}"
+                exit 1
+            fi
+
+            if ! tmux has-session -t "$TMUX_SESSION" 2>/dev/null; then
+                echo -e "${RED}Error: Session '$TMUX_SESSION' not found${NC}"
+                exit 1
+            fi
+
+            echo -e "${YELLOW}Stopping $TMUX_SESSION...${NC}"
+            tmux kill-session -t "$TMUX_SESSION"
+            echo -e "${GREEN}Session stopped${NC}"
+        fi
         ;;
 
     help|-h|--help)
