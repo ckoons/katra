@@ -21,6 +21,7 @@
 #include <string.h>
 #include <time.h>
 #include <pthread.h>
+#include <limits.h>
 
 /* Project includes */
 #include "katra_lifecycle.h"
@@ -66,10 +67,15 @@ int katra_lifecycle_init(void) {
     /* Read environment variables */
     const char* breath_interval_str = getenv(KATRA_ENV_BREATH_INTERVAL);
     if (breath_interval_str) {
-        int interval = atoi(breath_interval_str);
-        if (interval > KATRA_SUCCESS) {
-            g_session_state->breath_interval = interval;
-            LOG_INFO("Breathing interval set from environment: %d seconds", interval);
+        char* endptr;
+        long interval_long = strtol(breath_interval_str, &endptr, 10);
+
+        /* Check for conversion errors and range */
+        if (endptr != breath_interval_str && *endptr == '\0' &&
+            interval_long > 0 && interval_long <= INT_MAX) {
+            g_session_state->breath_interval = (int)interval_long;
+            LOG_INFO("Breathing interval set from environment: %d seconds",
+                     g_session_state->breath_interval);
         } else {
             LOG_WARN("Invalid KATRA_BREATH_INTERVAL value: %s, using default",
                      breath_interval_str);

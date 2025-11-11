@@ -15,11 +15,6 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 
-/* OpenAI API configuration */
-#define OPENAI_API_URL "https://api.openai.com/v1/embeddings"
-#define OPENAI_MODEL "text-embedding-3-small"
-#define MAX_API_RESPONSE_SIZE (1024 * 1024)  /* 1MB */
-
 /* Response buffer for CURL */
 typedef struct {
     char* data;
@@ -31,7 +26,7 @@ static size_t write_callback(void* contents, size_t size, size_t nmemb, void* us
     size_t realsize = size * nmemb;
     response_buffer_t* mem = (response_buffer_t*)userp;
 
-    if (mem->size + realsize > MAX_API_RESPONSE_SIZE) {
+    if (mem->size + realsize > EXTERNAL_MAX_RESPONSE_SIZE) {
         LOG_ERROR("API response too large");
         return 0;
     }
@@ -177,7 +172,7 @@ static int call_openai_api(const char* text, const char* api_key,
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request_json);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&response);
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30L);  /* 30 second timeout */
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, (long)EXTERNAL_API_TIMEOUT_SEC);
 
     /* Perform request */
     CURLcode res = curl_easy_perform(curl);

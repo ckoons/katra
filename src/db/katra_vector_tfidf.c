@@ -15,13 +15,9 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 
-/* Maximum tokens per document for TF-IDF */
-#define MAX_TOKENS 1000
-#define MAX_TOKEN_LENGTH 64
-
 /* Token structure for TF-IDF calculation */
 typedef struct {
-    char text[MAX_TOKEN_LENGTH];
+    char text[TFIDF_MAX_TOKEN_LENGTH];
     int frequency;
 } token_t;
 
@@ -44,10 +40,10 @@ static int tokenize_text(const char* text, token_t* tokens, size_t* count_out) {
 
     size_t count = 0;
     const char* ptr = text;
-    char current_token[MAX_TOKEN_LENGTH];
+    char current_token[TFIDF_MAX_TOKEN_LENGTH];
     size_t token_len = 0;
 
-    while (*ptr && count < MAX_TOKENS) {
+    while (*ptr && count < TFIDF_MAX_TOKENS) {
         /* Skip whitespace and punctuation */
         while (*ptr && !isalnum((unsigned char)*ptr)) {
             ptr++;
@@ -59,7 +55,7 @@ static int tokenize_text(const char* text, token_t* tokens, size_t* count_out) {
 
         /* Extract word */
         token_len = 0;
-        while (*ptr && isalnum((unsigned char)*ptr) && token_len < MAX_TOKEN_LENGTH - 1) {
+        while (*ptr && isalnum((unsigned char)*ptr) && token_len < TFIDF_MAX_TOKEN_LENGTH - 1) {
             current_token[token_len++] = tolower((unsigned char)*ptr);
             ptr++;
         }
@@ -70,7 +66,7 @@ static int tokenize_text(const char* text, token_t* tokens, size_t* count_out) {
         }
 
         /* Skip very short or very long tokens */
-        if (token_len < 2 || token_len > 50) {
+        if (token_len < TFIDF_MIN_TOKEN_LEN || token_len > TFIDF_MAX_TOKEN_LEN) {
             continue;
         }
 
@@ -84,9 +80,9 @@ static int tokenize_text(const char* text, token_t* tokens, size_t* count_out) {
             }
         }
 
-        if (!found && count < MAX_TOKENS) {
-            strncpy(tokens[count].text, current_token, MAX_TOKEN_LENGTH - 1);
-            tokens[count].text[MAX_TOKEN_LENGTH - 1] = '\0';
+        if (!found && count < TFIDF_MAX_TOKENS) {
+            strncpy(tokens[count].text, current_token, TFIDF_MAX_TOKEN_LENGTH - 1);
+            tokens[count].text[TFIDF_MAX_TOKEN_LENGTH - 1] = '\0';
             tokens[count].frequency = 1;
             count++;
         }
@@ -103,7 +99,7 @@ int katra_vector_tfidf_update_stats(const char* text) {
     }
 
     /* Tokenize document */
-    token_t* tokens = calloc(MAX_TOKENS, sizeof(token_t));
+    token_t* tokens = calloc(TFIDF_MAX_TOKENS, sizeof(token_t));
     if (!tokens) {
         return E_SYSTEM_MEMORY;
     }
@@ -174,7 +170,7 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
     }
 
     /* Tokenize text */
-    token_t* tokens = calloc(MAX_TOKENS, sizeof(token_t));
+    token_t* tokens = calloc(TFIDF_MAX_TOKENS, sizeof(token_t));
     if (!tokens) {
         return E_SYSTEM_MEMORY;
     }

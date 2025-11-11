@@ -14,14 +14,6 @@
 #include "katra_error.h"
 #include "katra_log.h"
 
-/* HNSW configuration */
-#define HNSW_M 16                    /* Max connections per node per layer */
-#define HNSW_M_MAX 32                /* Max connections during construction */
-#define HNSW_EF_CONSTRUCTION 200     /* Size of dynamic candidate list */
-#define HNSW_EF_SEARCH 50            /* Size of dynamic candidate list for search */
-#define HNSW_ML 1.0 / log(2.0)       /* Level generation multiplier */
-#define HNSW_MAX_LAYERS 16           /* Maximum number of layers */
-
 /* HNSW node (one per embedding) */
 typedef struct hnsw_node {
     size_t id;                       /* Node ID (index in store) */

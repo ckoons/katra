@@ -351,6 +351,7 @@ TEST_REFLECTION_INTEGRATION := $(BIN_DIR)/tests/test_reflection_integration
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
 BENCHMARK_REFLECTION := $(BIN_DIR)/tests/benchmark_reflection
+BENCHMARK_VECTOR := $(BIN_DIR)/tests/benchmark_vector
 
 # Test targets
 test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration
@@ -536,7 +537,7 @@ $(TEST_CONTINUITY): $(TEST_DIR)/unit/test_continuity.c $(LIBKATRA_UTILS)
 
 $(TEST_VECTOR): $(TEST_DIR)/unit/test_vector.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm -lcurl
 
 $(TEST_VECTOR_PERSIST): $(TEST_DIR)/test_vector_persist.c $(LIBKATRA_UTILS)
 	@echo "Building test: $@"
@@ -619,6 +620,10 @@ $(BENCHMARK_REFLECTION): $(TEST_DIR)/benchmark_reflection.c $(LIBKATRA_UTILS)
 	@echo "Building benchmark: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread
 
+$(BENCHMARK_VECTOR): $(TEST_DIR)/benchmark_vector.c $(LIBKATRA_UTILS)
+	@echo "Building benchmark: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lm -lcurl
+
 # Benchmark targets
 benchmark: $(BENCHMARK_TIER2_QUERY)
 	@echo ""
@@ -629,6 +634,11 @@ benchmark-reflection: $(BENCHMARK_REFLECTION)
 	@echo ""
 	@echo "Running reflection system performance benchmark..."
 	@$(BENCHMARK_REFLECTION)
+
+benchmark-vector: $(BENCHMARK_VECTOR)
+	@echo ""
+	@echo "Running vector search performance benchmark..."
+	@$(BENCHMARK_VECTOR)
 
 # ==============================================================================
 # CODE DISCIPLINE TARGETS

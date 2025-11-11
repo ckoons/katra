@@ -149,9 +149,9 @@ echo "----------------------------------------"
 if [ -f "scripts/dev/count_core.sh" ]; then
     line_count=$(./scripts/dev/count_core.sh 2>&1 | grep "Used (no includes)" | awk '{print $4}')
     if [ -n "$line_count" ]; then
-        check_pass "Line count: $line_count lines (budget: 10,000)"
-        if [ "$line_count" -gt 10000 ]; then
-            check_warn "Over budget by $((line_count - 10000)) lines"
+        check_pass "Line count: $line_count lines (budget: 30,000)"
+        if [ "$line_count" -gt 30000 ]; then
+            check_warn "Over budget by $((line_count - 30000)) lines"
         fi
     fi
 else

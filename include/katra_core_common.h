@@ -65,6 +65,14 @@
         } \
     } while(0)
 
+#define KATRA_CHECK_PARAMS_5(p1, p2, p3, p4, p5) \
+    do { \
+        if (!(p1) || !(p2) || !(p3) || !(p4) || !(p5)) { \
+            katra_report_error(E_INPUT_NULL, __func__, "NULL parameter"); \
+            return E_INPUT_NULL; \
+        } \
+    } while(0)
+
 /* ===== Memory Allocation ===== */
 
 /* Allocate with error reporting and early return */

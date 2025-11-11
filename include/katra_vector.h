@@ -6,12 +6,33 @@
 #include "katra_cognitive.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include <math.h>
 
 /* Vector database for semantic similarity search */
 
 /* Vector dimensions (simplified for MVP) */
 #define VECTOR_DIMENSIONS 384  /* MiniLM embedding size */
 #define MAX_VECTOR_RESULTS 100
+
+/* HNSW Configuration Constants (Phase 6.1e) */
+#define HNSW_M 16                    /* Max connections per node per layer */
+#define HNSW_M_MAX 32                /* Max connections during construction */
+#define HNSW_EF_CONSTRUCTION 200     /* Size of dynamic candidate list */
+#define HNSW_EF_SEARCH 50            /* Search candidate list size */
+#define HNSW_ML 1.0 / log(2.0)       /* Level generation multiplier */
+#define HNSW_MAX_LAYERS 16           /* Maximum number of layers */
+
+/* External API Constants (Phase 6.1c) */
+#define OPENAI_API_URL "https://api.openai.com/v1/embeddings"
+#define OPENAI_MODEL "text-embedding-3-small"
+#define EXTERNAL_API_TIMEOUT_SEC 30  /* API request timeout */
+#define EXTERNAL_MAX_RESPONSE_SIZE (1024 * 1024)  /* 1MB max response */
+
+/* TF-IDF Constants (Phase 6.1b) */
+#define TFIDF_MAX_TOKENS 1000        /* Max tokens per document */
+#define TFIDF_MAX_TOKEN_LENGTH 64    /* Max length of individual token */
+#define TFIDF_MIN_TOKEN_LEN 2        /* Minimum token length */
+#define TFIDF_MAX_TOKEN_LEN 50       /* Maximum token length */
 
 /* Vector embedding (simplified representation) */
 typedef struct {

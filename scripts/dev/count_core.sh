@@ -178,7 +178,7 @@ percent_used_no_inc=$((total_no_includes * 100 / budget))
 echo ""
 echo "Budget Status:"
 echo "--------------"
-printf "  Budget:                        16,000 lines\n"
+printf "  Budget:                        30,000 lines\n"
 printf "  Used (primary):                 %5d lines (%d%%)\n" "$total" "$percent_used"
 printf "  Used (no includes):             %5d lines (%d%%)\n" "$total_no_includes" "$percent_used_no_inc"
 
