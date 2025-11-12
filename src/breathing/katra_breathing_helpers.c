@@ -158,7 +158,34 @@ char** breathing_copy_memory_contents(memory_record_t** results,
 
     /* Copy strings (caller owns these) */
     for (size_t i = 0; i < result_count; i++) {
-        if (results[i]->content) {
+        if (!results[i]->content) {
+            strings[i] = NULL;
+            continue;
+        }
+
+        /* For decisions, include both content and reasoning */
+        if (results[i]->type == MEMORY_TYPE_DECISION && results[i]->importance_note) {
+            /* Format: "Decision: <content> (Reasoning: <importance_note>)" */
+            size_t needed = strlen(results[i]->content) +
+                          strlen(results[i]->importance_note) +
+                          strlen("Decision: ") +
+                          strlen(" (Reasoning: )") + 1;
+
+            strings[i] = malloc(needed);
+            if (!strings[i]) {
+                /* Allocation failed - clean up and return NULL */
+                for (size_t j = 0; j < i; j++) {
+                    free(strings[j]);
+                }
+                free(strings);
+                *out_count = 0;
+                return NULL;
+            }
+
+            snprintf(strings[i], needed, "Decision: %s (Reasoning: %s)",
+                    results[i]->content, results[i]->importance_note);
+        } else {
+            /* For all other types, just copy content */
             strings[i] = strdup(results[i]->content);
             if (!strings[i]) {
                 /* Allocation failed - clean up and return NULL */
@@ -169,8 +196,6 @@ char** breathing_copy_memory_contents(memory_record_t** results,
                 *out_count = 0;
                 return NULL;
             }
-        } else {
-            strings[i] = NULL;
         }
     }
 
