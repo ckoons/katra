@@ -12,8 +12,14 @@ directories:
 	@$(MKDIR_P) $(BIN_DIR)
 	@$(MKDIR_P) $(BIN_DIR)/tests
 
-# Pattern rule to create build directory (for order-only prerequisites)
+# Pattern rules to create directories (for order-only prerequisites)
 $(BUILD_DIR):
+	@$(MKDIR_P) $@
+
+$(BIN_DIR):
+	@$(MKDIR_P) $@
+
+$(BIN_DIR)/tests:
 	@$(MKDIR_P) $@
 
 # ==============================================================================
