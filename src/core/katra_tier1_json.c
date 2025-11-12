@@ -161,6 +161,13 @@ int katra_tier1_parse_json_record(const char* line, memory_record_t** record) {
     EXTRACT_INT_WITH_DEFAULT(line, "review_count", review_count, int, 0); /* GUIDELINE_APPROVED */
     EXTRACT_INT_WITH_DEFAULT(line, "turn_id", turn_id, int, 0); /* GUIDELINE_APPROVED */
 
+    /* Extract Phase 7 fields - namespace isolation */
+    EXTRACT_INT_WITH_DEFAULT(line, "isolation", isolation, memory_isolation_t, ISOLATION_PRIVATE); /* GUIDELINE_APPROVED */
+    EXTRACT_OPTIONAL_STRING(line, "team_name", team_name); /* GUIDELINE_APPROVED */
+    /* Note: shared_with array extraction deferred (complex array parsing) */
+    rec->shared_with = NULL;
+    rec->shared_with_count = 0;
+
     /* Extract Phase 2 fields - connection graph */
     EXTRACT_INT_WITH_DEFAULT(line, "connection_count", connection_count, size_t, 0); /* GUIDELINE_APPROVED */
     rec->connected_memory_ids = NULL;  /* Array parsing deferred to graph builder */
@@ -262,6 +269,22 @@ static void write_phase1_fields(FILE* fp, const memory_record_t* record) {
 }
 /* GUIDELINE_APPROVED_END */
 
+/* Helper: Write Phase 7 fields (namespace isolation) */
+/* GUIDELINE_APPROVED: JSON field names are part of the data format */
+static void write_phase7_fields(FILE* fp, const memory_record_t* record) {
+    fprintf(fp, ",\"isolation\":%d", (int)record->isolation); /* GUIDELINE_APPROVED */
+
+    if (record->team_name) {
+        char team_escaped[KATRA_BUFFER_MEDIUM];
+        katra_json_escape(record->team_name, team_escaped, sizeof(team_escaped));
+        fprintf(fp, ",\"team_name\":\"%s\"", team_escaped); /* GUIDELINE_APPROVED */
+    }
+
+    /* Note: shared_with array serialization deferred (complex array writing) */
+    fprintf(fp, ",\"shared_with_count\":%zu", record->shared_with_count); /* GUIDELINE_APPROVED */
+}
+/* GUIDELINE_APPROVED_END */
+
 /* Helper: Write Phase 2 & 3 fields (connection graph + pattern compression) */
 /* GUIDELINE_APPROVED: JSON field names are part of the data format */
 static void write_phase2_phase3_fields(FILE* fp, const memory_record_t* record) {
@@ -346,6 +369,7 @@ int katra_tier1_write_json_record(FILE* fp, const memory_record_t* record) {
     fprintf(fp, "{");
     write_basic_fields(fp, record, content_escaped, response_escaped, context_escaped, importance_note_escaped);
     write_phase1_fields(fp, record);
+    write_phase7_fields(fp, record);  /* Phase 7: namespace isolation */
     write_phase2_phase3_fields(fp, record);
     write_phase4_fields(fp, record);
     fprintf(fp, "}\n");

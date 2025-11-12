@@ -49,6 +49,13 @@ typedef enum {
 #define MEMORY_ACCESS_IGNORE_SECONDS 5      /* Ignore recent accesses (query side effect) */
 /* Note: SECONDS_PER_DAY is defined in katra_limits.h */
 
+/* Namespace isolation levels (Phase 7) */
+typedef enum {
+    ISOLATION_PRIVATE = 0,     /* Default: Only accessible to owning CI */
+    ISOLATION_TEAM = 1,        /* Shared within team (requires team_name) */
+    ISOLATION_PUBLIC = 2       /* Accessible across all CIs (opt-in sharing) */
+} memory_isolation_t;
+
 /* Memory record structure
  *
  * This is the fundamental unit of persistent memory in Katra.
@@ -69,6 +76,12 @@ typedef struct {
     char* ci_id;               /* Which CI this memory belongs to */
     char* session_id;          /* Session identifier */
     char* component;           /* Which Tekton component created this */
+
+    /* Namespace isolation (Phase 7) */
+    memory_isolation_t isolation;  /* Isolation level (default: PRIVATE) */
+    char* team_name;               /* Team name (NULL if PRIVATE/PUBLIC) */
+    char** shared_with;            /* CI IDs with explicit access (NULL if not shared) */
+    size_t shared_with_count;      /* Number of CIs in shared_with array */
 
     katra_tier_t tier;         /* Which tier this memory is stored in */
     bool archived;             /* Has this been moved to higher tier? */

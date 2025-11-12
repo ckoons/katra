@@ -369,6 +369,12 @@ memory_record_t* katra_memory_create_record(const char* ci_id,
     record->review_count = 0;           /* No reviews yet */
     record->turn_id = 0;                /* No turn ID yet (set by breathing layer) */
 
+    /* Initialize namespace isolation fields (Phase 7) */
+    record->isolation = ISOLATION_PRIVATE;  /* Default to private (no sharing) */
+    record->team_name = NULL;               /* Not part of any team */
+    record->shared_with = NULL;             /* No explicit sharing */
+    record->shared_with_count = 0;          /* No shared CIs */
+
     /* Initialize Thane's Phase 2 fields */
     record->connected_memory_ids = NULL; /* No connections yet */
     record->connection_count = 0;        /* No connections */
@@ -469,6 +475,10 @@ void katra_memory_free_record(memory_record_t* record) {
 
     /* Free personal collection metadata */
     free(record->collection);
+
+    /* Free namespace isolation fields (Phase 7) */
+    free(record->team_name);
+    katra_free_string_array(record->shared_with, record->shared_with_count);
 
     /* Free Phase 2 connection array */
     katra_free_string_array(record->connected_memory_ids, record->connection_count);
