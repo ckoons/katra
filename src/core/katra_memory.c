@@ -12,6 +12,7 @@
 #include "katra_tier1.h"
 #include "katra_tier2.h"
 #include "katra_consent.h"
+#include "katra_team.h"
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
@@ -517,4 +518,57 @@ bool katra_memory_tier2_enabled(void) {
 /* Check if memory subsystem is initialized (accessor for metacognitive module) */
 bool katra_memory_is_initialized(void) {
     return memory_initialized;
+}
+
+/* Check if requesting CI has access to memory record (Phase 7 namespace isolation) */
+bool katra_memory_check_access(const memory_record_t* record,
+                                 const char* requesting_ci_id) {
+    if (!record) {
+        return false;
+    }
+
+    /* NULL requesting_ci_id means owner access */
+    if (!requesting_ci_id) {
+        requesting_ci_id = record->ci_id;
+    }
+
+    /* Owner always has access */
+    if (strcmp(record->ci_id, requesting_ci_id) == 0) {
+        return true;
+    }
+
+    /* Check isolation level */
+    switch (record->isolation) {
+        case ISOLATION_PRIVATE:
+            /* Private: Only owner has access (already checked above) */
+            break;
+
+        case ISOLATION_TEAM:
+            /* Team: Check team membership */
+            if (record->team_name &&
+                katra_team_is_member(record->team_name, requesting_ci_id)) {
+                return true;
+            }
+            break;
+
+        case ISOLATION_PUBLIC:
+            /* Public: Everyone has access */
+            return true;
+
+        default:
+            /* Unknown isolation level - deny access */
+            break;
+    }
+
+    /* Check explicit sharing list */
+    if (record->shared_with && record->shared_with_count > 0) {
+        for (size_t i = 0; i < record->shared_with_count; i++) {
+            if (strcmp(record->shared_with[i], requesting_ci_id) == 0) {
+                return true;
+            }
+        }
+    }
+
+    /* Access denied */
+    return false;
 }

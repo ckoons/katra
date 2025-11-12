@@ -137,6 +137,9 @@ typedef struct {
     const char* collection_prefix; /* Filter by collection prefix (NULL = no filter) */
     bool filter_not_to_archive; /* If true, filter by not_to_archive field */
     bool not_to_archive_value; /* Value to match if filter_not_to_archive=true */
+
+    /* Namespace isolation (Phase 7) */
+    const char* requesting_ci_id; /* CI making the request (for access control, NULL = owner) */
 } memory_query_t;
 
 /* Memory statistics */
@@ -218,6 +221,24 @@ int katra_memory_query(const memory_query_t* query,
  *   E_INPUT_NULL if ci_id or stats is NULL
  */
 int katra_memory_stats(const char* ci_id, memory_stats_t* stats);
+
+/* Check if requesting CI has access to memory record (Phase 7)
+ *
+ * Determines if a CI can access a memory record based on isolation level:
+ * - PRIVATE: Only accessible to owner
+ * - TEAM: Accessible to team members
+ * - PUBLIC: Accessible to all
+ * - Also checks shared_with array for explicit sharing
+ *
+ * Parameters:
+ *   record - Memory record to check
+ *   requesting_ci_id - CI requesting access (NULL = owner access)
+ *
+ * Returns:
+ *   true if access allowed, false otherwise
+ */
+bool katra_memory_check_access(const memory_record_t* record,
+                                 const char* requesting_ci_id);
 
 /* Archive old memories
  *
