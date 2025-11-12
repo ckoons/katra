@@ -877,6 +877,39 @@ memory_context_t* get_current_context(void);
 void free_context(memory_context_t* ctx);
 
 /* ============================================================================
+ * NAMESPACE ISOLATION (Phase 7)
+ * ============================================================================ */
+
+/**
+ * set_memory_isolation() - Set isolation level for next memory to be stored
+ *
+ * Controls sharing for the next call to remember(), decide(), etc.
+ * Resets to PRIVATE after memory is stored (one-time use).
+ *
+ * Parameters:
+ *   isolation - Isolation level (PRIVATE, TEAM, PUBLIC)
+ *   team_name - Team name (required if isolation==TEAM, NULL otherwise)
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int set_memory_isolation(memory_isolation_t isolation, const char* team_name);
+
+/**
+ * share_memory_with() - Explicitly share next memory with specific CIs
+ *
+ * Adds CIs to shared_with list for next memory to be stored.
+ * Works in addition to isolation level (can share PRIVATE memory explicitly).
+ * Resets after memory is stored (one-time use).
+ *
+ * Parameters:
+ *   ci_ids - Array of CI identifiers
+ *   count - Number of CIs in array
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int share_memory_with(const char** ci_ids, size_t count);
+
+/* ============================================================================
  * KEYWORD ARRAYS - Pattern detection for significance detection
  * ============================================================================ */
 
