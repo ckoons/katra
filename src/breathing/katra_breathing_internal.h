@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "katra_breathing.h"
+#include "katra_vector.h"  /* Phase 6.1f: for vector_store_t */
 
 /**
  * katra_breathing_internal.h - Internal state accessors for breathing layer
@@ -76,5 +77,11 @@ int track_memory_in_turn(const char* record_id);
  * Cleanup turn tracking (called during breathe_cleanup)
  */
 void cleanup_turn_tracking(void);
+
+/**
+ * Get vector store for semantic search (Phase 6.1f)
+ * Returns: Pointer to vector store or NULL if not initialized
+ */
+vector_store_t* breathing_get_vector_store(void);
 
 #endif /* KATRA_BREATHING_INTERNAL_H */

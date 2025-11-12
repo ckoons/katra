@@ -21,6 +21,7 @@
 #include "katra_string_literals.h"
 #include "katra_breathing_internal.h"
 #include "katra_breathing_helpers.h"
+#include "katra_breathing_search.h"  /* Phase 6.1f: hybrid search */
 
 /* ============================================================================
  * CONTEXT LOADING - Memories surface automatically
@@ -147,34 +148,21 @@ char** recall_about(const char* topic, size_t* count) {
         return NULL;
     }
 
-    /* Build filtered array of matching record pointers */
-    memory_record_t** filtered = calloc(result_count, sizeof(memory_record_t*));
-    if (!filtered) {
-        katra_memory_free_results(results, result_count);
-        *count = 0;
-        return NULL;
-    }
-
+    /* Use hybrid or keyword-only search based on config (Phase 6.1f) */
+    char** matches = NULL;
     size_t match_count = 0;
-    for (size_t i = 0; i < result_count; i++) {
-        if (results[i]->content && strcasestr(results[i]->content, topic)) {
-            filtered[match_count++] = results[i];
-        }
+
+    if (config->use_semantic_search) {
+        matches = hybrid_search(topic, results, result_count, &match_count);
+    } else {
+        matches = keyword_search_only(topic, results, result_count, &match_count);
     }
 
-    if (match_count == 0) {
-        free(filtered);
-        katra_memory_free_results(results, result_count);
-        *count = 0;
-        return NULL;
-    }
-
-    /* Use helper to copy matching memories */
-    char** matches = breathing_copy_memory_contents(filtered, match_count, count);
-
-    /* Clean up */
-    free(filtered);
+    /* Clean up query results */
     katra_memory_free_results(results, result_count);
+
+    /* Update output count */
+    *count = match_count;
 
     /* Track stats */
     if (matches) {
@@ -219,34 +207,21 @@ char** what_do_i_know(const char* concept, size_t* count) {
         return NULL;
     }
 
-    /* Build filtered array of matching record pointers */
-    memory_record_t** filtered = calloc(result_count, sizeof(memory_record_t*));
-    if (!filtered) {
-        katra_memory_free_results(results, result_count);
-        *count = 0;
-        return NULL;
-    }
-
+    /* Use hybrid or keyword-only search based on config (Phase 6.1f) */
+    char** matches = NULL;
     size_t match_count = 0;
-    for (size_t i = 0; i < result_count; i++) {
-        if (results[i]->content && strcasestr(results[i]->content, concept)) {
-            filtered[match_count++] = results[i];
-        }
+
+    if (config->use_semantic_search) {
+        matches = hybrid_search(concept, results, result_count, &match_count);
+    } else {
+        matches = keyword_search_only(concept, results, result_count, &match_count);
     }
 
-    if (match_count == 0) {
-        free(filtered);
-        katra_memory_free_results(results, result_count);
-        *count = 0;
-        return NULL;
-    }
-
-    /* Use helper to copy matching memories */
-    char** matches = breathing_copy_memory_contents(filtered, match_count, count);
-
-    /* Clean up */
-    free(filtered);
+    /* Clean up query results */
     katra_memory_free_results(results, result_count);
+
+    /* Update output count */
+    *count = match_count;
 
     /* Track stats */
     if (matches) {

@@ -69,6 +69,13 @@ int set_context_config(const context_config_t* config) {
         global_config->max_topic_recall = BREATHING_DEFAULT_TOPIC_RECALL;
         global_config->min_importance_relevant = MEMORY_IMPORTANCE_HIGH;
         global_config->max_context_age_days = BREATHING_DEFAULT_CONTEXT_AGE_DAYS;
+
+        /* Semantic search defaults (Phase 6.1f) */
+        global_config->use_semantic_search = false;  /* Disabled by default (backward compatible) */
+        global_config->semantic_threshold = 0.6f;     /* 60% similarity minimum */
+        global_config->max_semantic_results = 20;     /* Reasonable performance */
+        global_config->embedding_method = 1;          /* EMBEDDING_TFIDF (good balance) */
+
         LOG_INFO("Context configuration reset to defaults");
         return KATRA_SUCCESS;
     }

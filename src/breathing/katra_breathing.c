@@ -28,6 +28,7 @@
 #include "katra_breathing_internal.h"
 #include "katra_breathing_context_persist.h"
 #include "katra_meeting.h"
+#include "katra_vector.h"  /* Phase 6.1f: semantic search */
 
 /* ============================================================================
  * GLOBAL STATE - Shared across breathing layer files
@@ -50,11 +51,19 @@ static context_config_t g_context_config = {
     .max_recent_thoughts = BREATHING_DEFAULT_RECENT_THOUGHTS,
     .max_topic_recall = BREATHING_DEFAULT_TOPIC_RECALL,
     .min_importance_relevant = MEMORY_IMPORTANCE_HIGH,
-    .max_context_age_days = BREATHING_DEFAULT_CONTEXT_AGE_DAYS
+    .max_context_age_days = BREATHING_DEFAULT_CONTEXT_AGE_DAYS,
+    /* Semantic search defaults (Phase 6.1f) */
+    .use_semantic_search = false,      /* Disabled by default */
+    .semantic_threshold = 0.6f,        /* 60% similarity */
+    .max_semantic_results = 20,        /* Reasonable limit */
+    .embedding_method = 1              /* EMBEDDING_TFIDF */
 };
 
 /* Global enhanced statistics */
 static enhanced_stats_t g_enhanced_stats = {0};
+
+/* Global vector store for semantic search (Phase 6.1f) */
+static vector_store_t* g_vector_store = NULL;
 
 /* ============================================================================
  * INITIALIZATION
@@ -100,6 +109,25 @@ int breathe_init(const char* ci_id) {
         /* Non-fatal - continue without context persistence */
     }
 
+    /* Initialize vector store if semantic search is enabled (Phase 6.1f) */
+    if (g_context_config.use_semantic_search) {
+        g_vector_store = katra_vector_init(ci_id, false);  /* false = use local, not external */
+        if (g_vector_store) {
+            /* Set embedding method from config */
+            g_vector_store->method = (embedding_method_t)g_context_config.embedding_method;
+
+            /* Initialize persistence for vector store */
+            result = katra_vector_persist_init(ci_id);
+            if (result == KATRA_SUCCESS) {
+                /* Load previously stored embeddings */
+                katra_vector_persist_load(ci_id, g_vector_store);
+                LOG_INFO("Vector store initialized with %zu embeddings", g_vector_store->count);
+            }
+        } else {
+            LOG_WARN("Vector store init failed (continuing without semantic search)");
+        }
+    }
+
     return KATRA_SUCCESS;
 }
 
@@ -133,6 +161,13 @@ void breathe_cleanup(void) {
     /* Step 5: Cleanup context persistence */
     context_persist_cleanup();
     LOG_DEBUG("Step 5: Context persistence cleaned up");
+
+    /* Step 5.5: Cleanup vector store (Phase 6.1f) */
+    if (g_vector_store) {
+        katra_vector_cleanup(g_vector_store);
+        g_vector_store = NULL;
+        LOG_DEBUG("Step 5.5: Vector store cleaned up");
+    }
 
     /* Step 6: Free breathing layer resources */
     free(g_context.ci_id);
@@ -284,6 +319,10 @@ context_config_t* breathing_get_config_ptr(void) {
 
 enhanced_stats_t* breathing_get_stats_ptr(void) {
     return &g_enhanced_stats;
+}
+
+vector_store_t* breathing_get_vector_store(void) {
+    return g_vector_store;
 }
 
 void breathing_track_memory_stored(memory_type_t type, why_remember_t importance) {

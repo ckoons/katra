@@ -47,6 +47,12 @@ typedef struct {
     size_t max_topic_recall;        /* Max memories in recall_about() search (default: 100) */
     float min_importance_relevant;  /* Min importance for relevant_memories() (default: HIGH) */
     int max_context_age_days;       /* Max age in days for context (default: 7) */
+
+    /* Semantic search configuration (Phase 6.1f) */
+    bool use_semantic_search;        /* Enable vector similarity search (default: false) */
+    float semantic_threshold;        /* Min similarity score 0.0-1.0 (default: 0.6) */
+    size_t max_semantic_results;     /* Max vector search results (default: 20) */
+    int embedding_method;            /* 0=HASH, 1=TFIDF, 2=EXTERNAL (default: 1=TFIDF) */
 } context_config_t;
 
 /** Memory context - automatically captured */

@@ -113,6 +113,18 @@ int breathing_store_typed_memory(memory_type_t type,
     if (result == KATRA_SUCCESS) {
         breathing_track_memory_stored(type, why_enum);
         track_memory_in_turn(record_id);  /* Track for end-of-turn reflection */
+
+        /* Index for semantic search if enabled (Phase 6.1f) */
+        vector_store_t* vector_store = breathing_get_vector_store();
+        if (vector_store && content) {
+            int vector_result = katra_vector_store(vector_store, record_id, content);
+            if (vector_result == KATRA_SUCCESS) {
+                LOG_DEBUG("Indexed memory for semantic search: %s", record_id);
+            } else {
+                LOG_WARN("Failed to index memory for semantic search: %s", record_id);
+                /* Non-fatal - continue without semantic indexing */
+            }
+        }
     }
 
     free(record_id);
