@@ -330,6 +330,17 @@ int tier2_query(const digest_query_t* query,
         return E_INPUT_NULL;
     }
 
+    /* Check access control (Phase 7 namespace isolation) */
+    /* For Tier2 digests, only owner can access (until isolation fields are added) */
+    const char* requesting_ci = query->requesting_ci_id ? query->requesting_ci_id : query->ci_id;
+    if (strcmp(requesting_ci, query->ci_id) != 0) {
+        LOG_DEBUG("Tier 2 access denied: requesting CI %s cannot access digests of %s",
+                  requesting_ci, query->ci_id);
+        *results = NULL;
+        *count = 0;
+        return KATRA_SUCCESS;  /* Return success with empty results */
+    }
+
     *results = NULL;
     *count = 0;
 

@@ -91,6 +91,9 @@ typedef struct {
     const char* keyword;          /* Keyword to search for (NULL = any) */
     digest_type_t digest_type;    /* Digest type filter (-1 = any) */
     size_t limit;                 /* Max results (0 = no limit) */
+
+    /* Namespace isolation (Phase 7) */
+    const char* requesting_ci_id; /* CI making the request (for access control, NULL = owner) */
 } digest_query_t;
 
 /* Initialize Tier 2 storage

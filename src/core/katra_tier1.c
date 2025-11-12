@@ -323,6 +323,12 @@ static int scan_file_for_records(const char* filepath, const memory_query_t* que
             continue;
         }
 
+        /* Check access control (Phase 7 namespace isolation) */
+        if (!katra_memory_check_access(record, query->requesting_ci_id)) {
+            katra_memory_free_record(record);
+            continue;
+        }
+
         /* Add to results */
         if (*result_count >= *result_capacity) {
             size_t new_capacity = *result_capacity == 0 ? 32 : *result_capacity * 2;
