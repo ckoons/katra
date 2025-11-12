@@ -344,9 +344,9 @@ This is Level 3 "breathing" - memory happens without conscious effort.
 
 ## Persona System
 
-### Using KATRA_NAME
+### Using KATRA_PERSONA
 
-Set `KATRA_NAME` environment variable in MCP server config to enable persistent identity:
+Set `KATRA_PERSONA` environment variable in MCP server config to enable persistent identity:
 
 ```json
 {
@@ -354,7 +354,7 @@ Set `KATRA_NAME` environment variable in MCP server config to enable persistent 
     "katra": {
       "command": "/path/to/katra_mcp_server_wrapper.sh",
       "env": {
-        "KATRA_NAME": "Casey"
+        "KATRA_PERSONA": "Casey"
       }
     }
   }
@@ -367,7 +367,7 @@ Set `KATRA_NAME` environment variable in MCP server config to enable persistent 
 - Session count tracks usage
 - Natural continuity experience
 
-**Without KATRA_NAME:**
+**Without KATRA_PERSONA:**
 - New anonymous persona each time
 - Memories don't persist across restarts
 - No long-term continuity

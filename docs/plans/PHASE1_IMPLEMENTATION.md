@@ -159,7 +159,7 @@ katra_migrate_verify_persona_registry();
 
 ```c
 /* Identity-specific buffer sizes */
-#define KATRA_NAME_SIZE KATRA_BUFFER_NAME      /* Persona name buffer size: 128 */
+#define KATRA_PERSONA_SIZE KATRA_BUFFER_NAME      /* Persona name buffer size: 128 */
 #define KATRA_CI_ID_SIZE KATRA_BUFFER_MEDIUM   /* CI identity string size: 256 */
 ```
 
@@ -213,7 +213,7 @@ katra_migrate_verify_persona_registry();
 
 ### Test 1: Nyx Initial Session
 ```bash
-export KATRA_NAME=Nyx
+export KATRA_PERSONA=Nyx
 # Start Claude Code session
 # Call: katra_register(name="Nyx", role="developer")
 # Call: katra_remember(content="Test memory for Nyx", context="significant")
@@ -224,7 +224,7 @@ export KATRA_NAME=Nyx
 ### Test 2: Twin Nyx (Returning CI)
 ```bash
 # Close previous session
-export KATRA_NAME=Nyx
+export KATRA_PERSONA=Nyx
 # Start new Claude Code session
 # Call: katra_recall(topic="Test memory")
 # Verify: Memory from Test 1 is returned
@@ -232,7 +232,7 @@ export KATRA_NAME=Nyx
 
 ### Test 3: Alice (Different Persona)
 ```bash
-export KATRA_NAME=Alice
+export KATRA_PERSONA=Alice
 # Start Claude Code session
 # Call: katra_register(name="Alice", role="tester")
 # Call: katra_remember(content="Alice's memory", context="significant")
@@ -243,7 +243,7 @@ export KATRA_NAME=Alice
 ### Test 4: Alice Returns
 ```bash
 # Close Alice session
-export KATRA_NAME=Alice
+export KATRA_PERSONA=Alice
 # Start new Claude Code session
 # Call: katra_recall(topic="Alice")
 # Verify: Sees Alice's memories from Test 3

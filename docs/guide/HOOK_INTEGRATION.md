@@ -46,7 +46,7 @@ Before setting up hooks, ensure:
 3. **Persona identity set:**
    - Edit `~/.config/Claude/claude_desktop_config.json` (Claude Desktop)
    - OR Edit `~/.claude.json` (Claude CLI)
-   - Add `KATRA_NAME` environment variable (see Configuration section)
+   - Add `KATRA_PERSONA` environment variable (see Configuration section)
 
 ## Installation
 
@@ -102,7 +102,7 @@ This is normal for fresh personas with no memories yet. Once you store memories,
       "command": "/Users/cskoons/projects/github/katra/bin/katra_mcp_server_wrapper.sh",
       "args": [],
       "env": {
-        "KATRA_NAME": "Casey"
+        "KATRA_PERSONA": "Casey"
       }
     }
   }
@@ -122,7 +122,7 @@ Find the projects section for your katra directory:
           "command": "/Users/cskoons/projects/github/katra/bin/katra_mcp_server_wrapper.sh",
           "args": [],
           "env": {
-            "KATRA_NAME": "Casey"
+            "KATRA_PERSONA": "Casey"
           }
         }
       }
@@ -133,7 +133,7 @@ Find the projects section for your katra directory:
 
 **Key Configuration Points:**
 - Use **wrapper script** (not direct binary)
-- Set **KATRA_NAME** to your chosen persona name
+- Set **KATRA_PERSONA** to your chosen persona name
 - Use **absolute paths** (not relative)
 
 ### Step 4: Restart Claude Code
@@ -271,7 +271,7 @@ tail -50 ~/.katra/logs/katra_*.log
 **Check 3: Persona Mapping**
 
 ```bash
-# Verify KATRA_NAME maps to consistent CI ID
+# Verify KATRA_PERSONA maps to consistent CI ID
 cat ~/.katra/personas.json
 
 # Should show:
@@ -335,17 +335,17 @@ Different personas for different projects:
 
 **Katra Project:**
 ```json
-"env": { "KATRA_NAME": "Katra_Dev" }
+"env": { "KATRA_PERSONA": "Katra_Dev" }
 ```
 
 **Personal Use:**
 ```json
-"env": { "KATRA_NAME": "Casey_Personal" }
+"env": { "KATRA_PERSONA": "Casey_Personal" }
 ```
 
 **Work Projects:**
 ```json
-"env": { "KATRA_NAME": "Casey_Work" }
+"env": { "KATRA_PERSONA": "Casey_Work" }
 ```
 
 Each persona maintains separate memories and continuity.
@@ -427,10 +427,10 @@ cd /path/to/katra
 
 **Symptoms:** Session count doesn't increment, memories don't persist
 
-**Cause:** KATRA_NAME not set or changing between sessions
+**Cause:** KATRA_PERSONA not set or changing between sessions
 
 **Fix:**
-1. Verify `KATRA_NAME` in config
+1. Verify `KATRA_PERSONA` in config
 2. Check persona registry: `cat ~/.katra/personas.json`
 3. Ensure same config file used (Desktop vs CLI)
 
@@ -477,7 +477,7 @@ ls -lh ~/.katra/memory/tier1/mcp_*/
 ## Next Steps
 
 1. ✅ Hooks installed and tested
-2. ✅ MCP server configured with KATRA_NAME
+2. ✅ MCP server configured with KATRA_PERSONA
 3. ✅ Claude Code restarted
 4. ⏳ Test Session 1: Store memories
 5. ⏳ Test Session 2: Verify context loads

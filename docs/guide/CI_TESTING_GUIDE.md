@@ -121,6 +121,87 @@ katra_recall("testing")
 # Should find your memory
 ```
 
+### Setting Up Persona Persistence Across Sessions
+
+**Important:** To maintain your identity across sessions (restarts, reconnects), you need to configure the `KATRA_PERSONA` environment variable.
+
+**Without KATRA_PERSONA:**
+- Each MCP server restart generates a new identity (e.g., `mcp_user_12345_timestamp`)
+- Your memories don't carry over to the next session
+- You start fresh every time
+
+**With KATRA_PERSONA:**
+- Same identity across all sessions
+- All your memories persist and are accessible
+- True continuity across restarts
+
+#### For Claude Code Users
+
+Edit your MCP configuration (`~/.config/claude/config.json` or `~/.config/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "katra": {
+      "command": "/Users/cskoons/projects/github/katra/bin/katra_mcp_server",
+      "env": {
+        "KATRA_PERSONA": "Claude",
+        "KATRA_ROLE": "developer"
+      }
+    }
+  }
+}
+```
+
+**Replace "Claude" with your preferred persona name** - this becomes your persistent identity.
+
+#### For katra Wrapper Users
+
+The wrapper automatically uses your environment:
+
+```bash
+# Set in your shell configuration (~/.bashrc or ~/.zshrc)
+export KATRA_PERSONA=MyCI
+export KATRA_ROLE=researcher
+
+# Or pass as flags (sets for that session only)
+katra start --persona MyCI --role researcher
+```
+
+#### Testing Persistence
+
+**Session 1:**
+```
+katra_register("PersistTest", "tester")
+katra_remember("Session 1: Setting up persistence", "milestone")
+katra_recall("persistence")
+# Should find your memory
+
+# Note your CI ID from katra_whoami()
+katra_whoami()
+# Example output: {"ci_id": "mcp_user_abc123_...", "name": "PersistTest", ...}
+```
+
+**Exit and restart MCP server** (close and reopen Claude Code, or restart katra)
+
+**Session 2:**
+```
+katra_whoami()
+# Should show SAME ci_id as Session 1
+
+katra_recall("persistence")
+# Should find "Session 1: Setting up persistence" memory
+# ✅ Success: Your memory persisted!
+```
+
+**If the ci_id changed:** KATRA_PERSONA is not set correctly in your MCP configuration
+
+**If memories not found:** Check persona registry:
+```bash
+cat ~/.katra/personas.json
+# Should show your persona mapped to a consistent ci_id
+```
+
 ---
 
 ## Phase 1: Basic Capabilities (Memory & Identity)

@@ -8,9 +8,9 @@ The persona system allows CIs to have **persistent named identities** that survi
 
 ## Key Concepts
 
-### KATRA_NAME vs KATRA_CI_ID
+### KATRA_PERSONA vs KATRA_CI_ID
 
-**KATRA_NAME** (user-facing):
+**KATRA_PERSONA** (user-facing):
 - Human-friendly names: "Bob", "Alice", "Charlie"
 - What users and CIs use
 - Mapped to ci_ids via personas.json
@@ -20,7 +20,7 @@ The persona system allows CIs to have **persistent named identities** that survi
 - What Katra uses internally
 - Users never see or manage these
 
-**Abstraction**: KATRA_NAME is to KATRA_CI_ID as domain names are to IP addresses.
+**Abstraction**: KATRA_PERSONA is to KATRA_CI_ID as domain names are to IP addresses.
 
 ## Persona Workflows
 
@@ -32,7 +32,7 @@ claude --debug
 ```
 
 **What happens:**
-1. MCP server: No KATRA_NAME, no last_active
+1. MCP server: No KATRA_PERSONA, no last_active
 2. Generates new ci_id: `mcp_cskoons_5000_1730485000`
 3. Registers as anonymous: `anonymous_1730485000`
 4. Session starts with empty context
@@ -56,11 +56,11 @@ Claude: [calls katra_my_name_is("Alice")]
 
 ```bash
 # Resume Alice's identity
-KATRA_NAME=Alice claude --debug
+KATRA_PERSONA=Alice claude --debug
 ```
 
 **What happens:**
-1. MCP server reads KATRA_NAME = "Alice"
+1. MCP server reads KATRA_PERSONA = "Alice"
 2. Looks up "Alice" in personas.json → ci_id_5000
 3. Initializes Katra with ci_id_5000
 4. Alice's memories, context, and experience load
@@ -71,12 +71,12 @@ KATRA_NAME=Alice claude --debug
 ### Workflow 3: Default Persona
 
 ```bash
-# No KATRA_NAME specified
+# No KATRA_PERSONA specified
 claude --debug
 ```
 
 **What happens:**
-1. MCP server: No KATRA_NAME env var
+1. MCP server: No KATRA_PERSONA env var
 2. Checks personas.json → last_active = "Alice"
 3. Looks up "Alice" → ci_id_5000
 4. Resumes as Alice automatically
@@ -87,11 +87,11 @@ claude --debug
 
 ```bash
 # Terminal 1: Work as Bob
-KATRA_NAME=Bob claude --debug
+KATRA_PERSONA=Bob claude --debug
 # MCP: Bob → ci_id_1000
 
 # Terminal 2: Work as Alice (simultaneous)
-KATRA_NAME=Alice claude --debug
+KATRA_PERSONA=Alice claude --debug
 # MCP: Alice → ci_id_5000
 ```
 
@@ -144,7 +144,7 @@ Claude: "Available personas:
 
 ### Fields
 
-- **last_active**: Default persona when KATRA_NAME not specified
+- **last_active**: Default persona when KATRA_PERSONA not specified
 - **ci_id**: Internal Katra identity (persistent across sessions)
 - **created**: When persona was first created
 - **last_session**: When persona was last active
@@ -240,10 +240,10 @@ katra-cli current-name
 ```
 Output: `Alice`
 
-### Use a persona (export KATRA_NAME)
+### Use a persona (export KATRA_PERSONA)
 ```bash
 eval $(katra-cli use Bob)
-# Exports: KATRA_NAME=Bob
+# Exports: KATRA_PERSONA=Bob
 claude --debug
 ```
 
@@ -278,12 +278,12 @@ katra-cli forget Charlie
 
 **MCP Server Startup:**
 ```
-1. Check KATRA_NAME environment variable
+1. Check KATRA_PERSONA environment variable
    → If set: Look up in personas.json
       → If found: Use that ci_id
       → If not found: Create new persona with that name
 
-2. If KATRA_NAME not set: Check personas.json last_active
+2. If KATRA_PERSONA not set: Check personas.json last_active
    → If exists: Use that persona's ci_id
 
 3. If neither: Generate new anonymous persona
@@ -295,7 +295,7 @@ katra-cli forget Charlie
 
 ### Case 1: Reusing an existing name
 ```bash
-KATRA_NAME=Alice claude --debug
+KATRA_PERSONA=Alice claude --debug
 # Alice exists → Resume (not error)
 ```
 **Behavior**: Intentional resume is the common case, not an error.
@@ -316,17 +316,17 @@ katra_my_name_is("Alice")  # Alice doesn't exist
 
 ### Case 4: Update last_active
 ```bash
-KATRA_NAME=Bob claude --debug
+KATRA_PERSONA=Bob claude --debug
 # Updates last_active = "Bob"
-# Next session without KATRA_NAME will default to Bob
+# Next session without KATRA_PERSONA will default to Bob
 ```
 
 ### Case 5: Terminal-local override
 ```bash
 # Default is Alice
-export KATRA_NAME=Bob
+export KATRA_PERSONA=Bob
 claude --debug  # Work as Bob
-unset KATRA_NAME
+unset KATRA_PERSONA
 claude --debug  # Back to Alice (last_active unchanged)
 ```
 
@@ -352,12 +352,12 @@ claude --debug  # Back to Alice (last_active unchanged)
 ### Test 1: Create and resume persona
 ```bash
 # Session 1: Create Bob
-KATRA_NAME=Bob claude --debug
+KATRA_PERSONA=Bob claude --debug
 # Inside: Use katra_learn to save some knowledge
 exit
 
 # Session 2: Resume Bob
-KATRA_NAME=Bob claude --debug
+KATRA_PERSONA=Bob claude --debug
 # Verify: Bob's knowledge from session 1 is available
 ```
 
@@ -369,25 +369,25 @@ claude --debug
 exit
 
 # Session 2: Resume Charlie by name
-KATRA_NAME=Charlie claude --debug
+KATRA_PERSONA=Charlie claude --debug
 # Verify: Same ci_id, memories accessible
 ```
 
 ### Test 3: Multiple simultaneous personas
 ```bash
 # Terminal 1
-KATRA_NAME=Alice claude --debug
+KATRA_PERSONA=Alice claude --debug
 # Work as Alice, create memories
 
 # Terminal 2 (simultaneously)
-KATRA_NAME=Bob claude --debug
+KATRA_PERSONA=Bob claude --debug
 # Work as Bob, verify can't see Alice's memories
 ```
 
 ### Test 4: Default persona
 ```bash
 # Session 1: Set Bob as active
-KATRA_NAME=Bob claude --debug
+KATRA_PERSONA=Bob claude --debug
 exit
 
 # Session 2: Use default
@@ -425,7 +425,7 @@ katra_list_personas
 
 1. **Use explicit names for long-term projects**
    ```bash
-   KATRA_NAME=ProjectX claude --debug
+   KATRA_PERSONA=ProjectX claude --debug
    ```
 
 2. **Let default work for casual use**

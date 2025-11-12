@@ -269,10 +269,10 @@ int main(void) {
     }
 
     /* Determine CI identity using persona system */
-    const char* env_name = getenv("KATRA_NAME");
+    const char* env_name = getenv("KATRA_PERSONA");
 
     if (env_name && strlen(env_name) > 0) {
-        /* Priority 1: KATRA_NAME environment variable */
+        /* Priority 1: KATRA_PERSONA environment variable */
         strncpy(g_persona_name, env_name, sizeof(g_persona_name) - 1);
 
         /* Look up in persona registry */

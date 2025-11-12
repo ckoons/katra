@@ -33,7 +33,7 @@ Create or edit `~/.config/Claude/claude_desktop_config.json`:
       "command": "/Users/YOUR_USERNAME/projects/github/katra/bin/katra_mcp_server",
       "args": [],
       "env": {
-        "KATRA_NAME": "your_name"
+        "KATRA_PERSONA": "your_name"
       }
     }
   }
@@ -42,8 +42,8 @@ Create or edit `~/.config/Claude/claude_desktop_config.json`:
 
 **Important**:
 - Replace `/Users/YOUR_USERNAME/` with your actual path!
-- **Optional**: Set `KATRA_NAME` to use a persistent, readable identity instead of auto-generated IDs like `mcp_cskoons_33097_1762367296`
-- If `KATRA_NAME` is not set, the server generates a unique session ID automatically
+- **Optional**: Set `KATRA_PERSONA` to use a persistent, readable identity instead of auto-generated IDs like `mcp_cskoons_33097_1762367296`
+- If `KATRA_PERSONA` is not set, the server generates a unique session ID automatically
 
 ### 3. Restart Claude Code
 
@@ -269,7 +269,7 @@ Each MCP server instance creates a unique session:
 
 #### Using Persistent Identity
 
-For better user experience, set `KATRA_NAME` environment variable:
+For better user experience, set `KATRA_PERSONA` environment variable:
 
 ```json
 {
@@ -277,7 +277,7 @@ For better user experience, set `KATRA_NAME` environment variable:
     "katra": {
       "command": "/path/to/katra_mcp_server",
       "env": {
-        "KATRA_NAME": "Bob"
+        "KATRA_PERSONA": "Bob"
       }
     }
   }
@@ -290,12 +290,12 @@ For better user experience, set `KATRA_NAME` environment variable:
 - ✅ Easy to identify in logs and debugging
 - ✅ Works with persona management tools (`katra_my_name_is`)
 
-**Without `KATRA_NAME`**: Each server instance gets a unique auto-generated ID. Memories don't persist across Claude Code restarts.
+**Without `KATRA_PERSONA`**: Each server instance gets a unique auto-generated ID. Memories don't persist across Claude Code restarts.
 
-**With `KATRA_NAME`**: All sessions for that name share the same memory store, enabling true cross-session continuity.
+**With `KATRA_PERSONA`**: All sessions for that name share the same memory store, enabling true cross-session continuity.
 
 **Session Lifecycle**:
-1. Server starts → Reads `KATRA_NAME` or generates unique CI ID
+1. Server starts → Reads `KATRA_PERSONA` or generates unique CI ID
 2. Initializes Katra (utils, memory, breathing layer)
 3. Starts session with CI ID
 4. Processes JSON-RPC requests

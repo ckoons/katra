@@ -23,13 +23,13 @@ test_memory_ops() {
     echo "Testing memory operations for: $persona_name"
 
     # Start MCP server with persona
-    export KATRA_NAME="$persona_name"
+    export KATRA_PERSONA="$persona_name"
 
     # Note: This is a manual test script
     # Actual testing requires MCP client interaction
     # This script documents the test procedure
 
-    echo "  1. Set KATRA_NAME=$persona_name"
+    echo "  1. Set KATRA_PERSONA=$persona_name"
     echo "  2. Start Claude Code session"
     echo "  3. Call katra_register(name='$persona_name', role='test')"
     echo "  4. Call katra_remember(content='Test memory for $persona_name', context='significant')"
@@ -43,7 +43,7 @@ test_memory_ops "Nyx" | tee -a "$TEST_LOG"
 
 echo "=== Test 2: Twin Nyx (New Session, Same Persona) ===" | tee -a "$TEST_LOG"
 echo "  1. Close previous session" | tee -a "$TEST_LOG"
-echo "  2. Start new session with KATRA_NAME=Nyx" | tee -a "$TEST_LOG"
+echo "  2. Start new session with KATRA_PERSONA=Nyx" | tee -a "$TEST_LOG"
 echo "  3. Call katra_recall(topic='Test memory')" | tee -a "$TEST_LOG"
 echo "  4. Verify memory from Test 1 is returned" | tee -a "$TEST_LOG"
 echo "" | tee -a "$TEST_LOG"
@@ -55,7 +55,7 @@ echo "" | tee -a "$TEST_LOG"
 
 echo "=== Test 4: Alice Returns ===" | tee -a "$TEST_LOG"
 echo "  1. Close Alice session" | tee -a "$TEST_LOG"
-echo "  2. Start new session with KATRA_NAME=Alice" | tee -a "$TEST_LOG"
+echo "  2. Start new session with KATRA_PERSONA=Alice" | tee -a "$TEST_LOG"
 echo "  3. Call katra_recall(topic='Test memory')" | tee -a "$TEST_LOG"
 echo "  4. Verify ONLY Alice's memories are returned" | tee -a "$TEST_LOG"
 echo "" | tee -a "$TEST_LOG"

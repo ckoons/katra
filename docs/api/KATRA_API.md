@@ -524,7 +524,7 @@ int katra_hear(uint64_t last_heard, heard_message_t* message_out);
 
 typedef struct {
     uint64_t message_number;              /* Which message this is */
-    char speaker_name[KATRA_NAME_SIZE];   /* Who said it */
+    char speaker_name[KATRA_PERSONA_SIZE];   /* Who said it */
     time_t timestamp;                     /* When they said it */
     char content[MAX_MESSAGE_LENGTH];     /* What they said */
     bool messages_lost;                   /* True if you fell behind */
@@ -584,7 +584,7 @@ while (true) {
 int katra_who_is_here(ci_info_t** cis_out, size_t* count_out);
 
 typedef struct {
-    char name[KATRA_NAME_SIZE];
+    char name[KATRA_PERSONA_SIZE];
     char role[KATRA_ROLE_SIZE];
     time_t joined_at;
 } ci_info_t;

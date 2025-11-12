@@ -157,7 +157,7 @@ Enable ephemeral inter-CI communication for active collaboration. Unlike persist
 typedef struct {
     uint64_t message_number;              /* Global sequence (1, 2, 3...) */
     char speaker_ci_id[KATRA_CI_ID_SIZE]; /* For self-filtering */
-    char speaker_name[KATRA_NAME_SIZE];   /* For display */
+    char speaker_name[KATRA_PERSONA_SIZE];   /* For display */
     time_t timestamp;
     char content[MAX_MESSAGE_LENGTH];
 } message_slot_t;
@@ -175,7 +175,7 @@ typedef struct {
 
 typedef struct {
     char ci_id[KATRA_CI_ID_SIZE];
-    char name[KATRA_NAME_SIZE];
+    char name[KATRA_PERSONA_SIZE];
     char role[KATRA_ROLE_SIZE];
     time_t joined_at;
     bool active;
@@ -191,7 +191,7 @@ int katra_say(const char* content);
 /* Hear next message from others (skip own messages) */
 typedef struct {
     uint64_t message_number;
-    char speaker_name[KATRA_NAME_SIZE];
+    char speaker_name[KATRA_PERSONA_SIZE];
     time_t timestamp;
     char content[MAX_MESSAGE_LENGTH];
     bool messages_lost;  /* True if fell behind */

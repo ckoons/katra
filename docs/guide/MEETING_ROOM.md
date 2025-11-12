@@ -40,7 +40,7 @@ The **Meeting Room** provides ephemeral inter-CI communication for Companion Int
 typedef struct {
     uint64_t message_number;                  /* Global message counter (1, 2, 3...) */
     char speaker_ci_id[KATRA_CI_ID_SIZE];     /* For filtering own messages */
-    char speaker_name[KATRA_NAME_SIZE];       /* For display ("Alice said...") */
+    char speaker_name[KATRA_PERSONA_SIZE];       /* For display ("Alice said...") */
     time_t timestamp;                         /* When message was said */
     char content[MAX_MESSAGE_LENGTH];         /* The actual message */
 } message_slot_t;
@@ -62,7 +62,7 @@ typedef struct {
 
 typedef struct {
     char ci_id[KATRA_CI_ID_SIZE];
-    char name[KATRA_NAME_SIZE];
+    char name[KATRA_PERSONA_SIZE];
     char role[KATRA_ROLE_SIZE];
     time_t joined_at;
     bool active;
@@ -111,7 +111,7 @@ int katra_say(const char* content);
 /* Hear next message from others (skip own messages) */
 typedef struct {
     uint64_t message_number;              /* Which message this is */
-    char speaker_name[KATRA_NAME_SIZE];   /* Who said it */
+    char speaker_name[KATRA_PERSONA_SIZE];   /* Who said it */
     time_t timestamp;                     /* When they said it */
     char content[MAX_MESSAGE_LENGTH];     /* What they said */
     bool messages_lost;                   /* True if you fell behind */
@@ -126,7 +126,7 @@ int katra_hear(uint64_t last_heard, heard_message_t* message_out);
 ```c
 /* Who else is in the meeting right now? */
 typedef struct {
-    char name[KATRA_NAME_SIZE];
+    char name[KATRA_PERSONA_SIZE];
     char role[KATRA_ROLE_SIZE];
     time_t joined_at;
 } ci_info_t;
@@ -171,7 +171,7 @@ int katra_say(const char* content) {
     message_slot_t* msg = &g_meeting_room.messages[slot];
     msg->message_number = msg_num;
     strncpy(msg->speaker_ci_id, g_context.ci_id, KATRA_CI_ID_SIZE);
-    strncpy(msg->speaker_name, g_persona_name, KATRA_NAME_SIZE);
+    strncpy(msg->speaker_name, g_persona_name, KATRA_PERSONA_SIZE);
     msg->timestamp = time(NULL);
     strncpy(msg->content, content, MAX_MESSAGE_LENGTH);
 
@@ -221,7 +221,7 @@ int katra_hear(uint64_t last_heard, heard_message_t* message_out) {
         if (strcmp(msg->speaker_ci_id, g_context.ci_id) != 0) {
             /* Found message from someone else - copy it out */
             message_out->message_number = msg->message_number;
-            strncpy(message_out->speaker_name, msg->speaker_name, KATRA_NAME_SIZE);
+            strncpy(message_out->speaker_name, msg->speaker_name, KATRA_PERSONA_SIZE);
             message_out->timestamp = msg->timestamp;
             strncpy(message_out->content, msg->content, MAX_MESSAGE_LENGTH);
 
@@ -273,7 +273,7 @@ int katra_who_is_here(ci_info_t** cis_out, size_t* count_out) {
     size_t idx = 0;
     for (size_t i = 0; i < MAX_ACTIVE_CIS && idx < count; i++) {
         if (g_ci_registry.sessions[i].active) {
-            strncpy(result[idx].name, g_ci_registry.sessions[i].name, KATRA_NAME_SIZE);
+            strncpy(result[idx].name, g_ci_registry.sessions[i].name, KATRA_PERSONA_SIZE);
             strncpy(result[idx].role, g_ci_registry.sessions[i].role, KATRA_ROLE_SIZE);
             result[idx].joined_at = g_ci_registry.sessions[i].joined_at;
             idx++;
