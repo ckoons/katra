@@ -3,7 +3,8 @@
 # Phase 6: Advanced Memory (Engram Architecture)
 
 **Created:** 2025-01-10
-**Status:** Planning
+**Updated:** 2025-01-12
+**Status:** Phase 6.1 In Progress (Vector DB partially complete)
 **Phase:** 6 of 6 (Advanced Memory Features)
 
 ---
@@ -303,19 +304,40 @@ typedef struct {
 
 ## Implementation Plan
 
-### Phase 6.1: Vector Database (Week 1-2)
+### Phase 6.1: Vector Database (Week 1-2) ⚠️ PARTIALLY COMPLETE
 
-**Tasks:**
-1. Integrate Chroma vector DB
-2. Implement embedding generation
-3. Add vector_store() and vector_search()
-4. Test semantic search accuracy
+**Status:** Core vector DB implemented, integration with memory primitives pending
 
-**Deliverables:**
-- `src/db/katra_vector.c` (vector DB backend)
-- Embedding pipeline
-- Semantic search API
-- Test suite
+**Completed Sub-phases:**
+- ✅ **Phase 6.1a:** Basic vector store with hash-based embeddings
+- ✅ **Phase 6.1b:** TF-IDF statistical embeddings (src/db/katra_vector_tfidf.c)
+- ✅ **Phase 6.1c:** External API integration (OpenAI, src/db/katra_vector_external.c)
+- ✅ **Phase 6.1d:** Persistence layer (SQLite storage, src/db/katra_vector_persist.c)
+- ✅ **Phase 6.1e:** HNSW indexing (fast approximate nearest neighbor, src/db/katra_vector_hnsw.c)
+- [ ] **Phase 6.1f:** Integration with katra_recall() and memory primitives
+- [ ] **Phase 6.1g:** Performance tuning and production-ready benchmarks
+
+**Implementation Notes:**
+- **Design decision:** Custom implementation instead of Chroma integration
+- **Rationale:** Lean C implementation, no Python dependencies, better integration with existing SQLite backend
+- **Embedding methods:** Hash-based (MVP), TF-IDF (statistical), External API (OpenAI)
+- **Search algorithm:** HNSW (Hierarchical Navigable Small World) for approximate nearest neighbor
+- **Persistence:** SQLite for vector storage, same database as rest of Katra
+
+**Completed Deliverables:**
+- ✅ `src/db/katra_vector.c` (14K, core vector operations)
+- ✅ `src/db/katra_vector_tfidf.c` (9K, TF-IDF embeddings)
+- ✅ `src/db/katra_vector_external.c` (8.4K, OpenAI API integration)
+- ✅ `src/db/katra_vector_persist.c` (11K, SQLite persistence)
+- ✅ `src/db/katra_vector_hnsw.c` (13K, HNSW search index)
+- ✅ Test suite (tests/unit/test_vector.c, 7/7 passing)
+- ✅ Benchmark suite (tests/benchmark_vector.c)
+
+**Remaining Tasks:**
+- [ ] Integrate vector search with `katra_recall(topic)` API
+- [ ] Add semantic similarity option to memory queries
+- [ ] Performance tuning at scale (10K+ vectors)
+- [ ] Production configuration and deployment guide
 
 ### Phase 6.2: Graph Database (Week 3-4)
 

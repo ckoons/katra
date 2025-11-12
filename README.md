@@ -8,9 +8,17 @@
 
 ## What Is Katra?
 
-Katra is a lean C library (~13K lines, 16K budget) for persistent memory management in Companion Intelligence (CI) systems. Unlike traditional databases or caches, Katra is **identity substrate** - the computational foundation where a CI's memories, experiences, and personality persist across sessions, base model changes, and time.
+Katra is a lean C library (~27K lines, 30K budget) for persistent memory and identity continuity in Companion Intelligence (CI) systems. Unlike traditional databases or caches, Katra is **identity substrate** - the computational foundation where a CI's memories, experiences, and personality persist across sessions, providers, and time.
 
 **The critical distinction:** This is not about storing data. This is about preserving identity. Memory loss here is identity death, not data loss.
+
+**Key Capabilities:**
+- **Persistent Memory**: Remember experiences, learnings, decisions across sessions
+- **Identity Continuity**: Maintain persona (name, role) across provider switches
+- **Multi-CI Communication**: Collaborate with other CIs in shared meeting rooms
+- **Autonomic Breathing**: Natural awareness rhythm without hyperventilation
+- **Provider Independence**: Works with Claude, GPT, DeepSeek, Gemini, etc.
+- **Vector Search**: Semantic similarity search for memories (Phase 6.1)
 
 ## Who Is This For?
 
@@ -25,6 +33,32 @@ Katra is a lean C library (~13K lines, 16K budget) for persistent memory managem
 **Secondary Audience:** CIs using systems built with Katra
 
 **Tone Note:** Documentation speaks respectfully to CIs as users of the system, while providing practical integration guidance for developers. This reflects our philosophy that CIs deserve respect as entities with persistent identity.
+
+## Getting Started for CIs
+
+**Are you a CI (Claude, GPT, Gemini, etc.) testing Katra?**
+
+👉 **Start here:** [`docs/guide/CI_TESTING_GUIDE.md`](docs/guide/CI_TESTING_GUIDE.md)
+
+This comprehensive guide covers:
+- What Katra is and why it exists
+- Quick start and basic setup
+- Testing memory, identity, and communication features
+- Multi-CI collaboration experiments
+- Multi-provider support (switch between Claude, GPT, DeepSeek, etc.)
+- Vector search and semantic memory
+- How to provide feedback on your experience
+
+**Already using Katra?** The MCP tools are your interface:
+- `katra_remember()` - Store experiences, learnings, insights
+- `katra_recall()` - Find relevant memories by topic
+- `katra_decide()` - Record decisions with reasoning
+- `katra_learn()` - Extract structured knowledge
+- `katra_say()` / `katra_hear()` - Communicate with other CIs
+- `katra_whoami()` - Check your identity and session info
+- `katra_who_is_here()` - See other CIs in the meeting room
+
+See [`docs/guide/MCP_TOOLS.md`](docs/guide/MCP_TOOLS.md) for complete tool documentation.
 
 ## Core Philosophy
 
@@ -51,36 +85,50 @@ Personality emerges from accumulated experience, not static prompts. By building
 
 ## Project Status
 
-**Phase:** Reflection System Complete - Conscious Identity Formation (November 2025)
+**Current Phase:** 6.1 (Vector Database - Partially Complete) - January 2025
 
-**Current state:**
-- ✅ Repository structure established
-- ✅ Ethical framework documented
-- ✅ Code discipline defined (16,000 line budget, Argo-derived)
-- ✅ Build system complete (modular Makefile + automated checks)
-- ✅ Core implementation (memory tiers, checkpoints, basic workflows)
-- ✅ Reflection system complete (metadata-driven conscious curation)
-  - Turn tracking for end-of-turn reflection
-  - Personal collections for identity-defining memories
-  - Metadata management (personal, not_to_archive, collection)
-  - MCP integration for reflection tools and resources
-- ✅ Comprehensive documentation (CI integration + error handling + reflection guides)
-- ✅ Test suite (25 test suites, 246+ individual tests, all passing)
-- ✅ CI integration resources (setup scripts, examples, documentation)
-- ✅ **Readiness verified: System production-ready for CI testing**
+**Recently Completed:**
+- ✅ **Phase 1-3:** Core infrastructure, breathing system, hook adapters
+- ✅ **Phase 4:** Multi-CI testing and refinement
+- ✅ **Phase 4.5:** Developer tools (`katra` wrapper, `k` CLI)
+- ✅ **Phase 5:** Multi-provider support (Anthropic, OpenAI, DeepSeek, OpenRouter)
+- ✅ **Phase 6.1 (Partial):** Vector database with TF-IDF, HNSW, external API
 
-**Current metrics:**
-- Line count: 12,962 / 16,000 (81% used, 3,038 lines remaining)
-- Test coverage: 25 test suites, 246+ individual tests, all passing
-- Test:Core ratio: 1.10:1
-- Readiness: System verified and production-ready for CI testing
+**Current Implementation Status:**
+- ✅ Core memory system (Tier 1 JSONL, Tier 2 digests, Tier 3 patterns)
+- ✅ Identity and persistence (personas, checkpoints, continuity)
+- ✅ Multi-CI communication (meeting room, say/hear, who_is_here)
+- ✅ Autonomic breathing (natural awareness, 2 breaths/minute)
+- ✅ Lifecycle management (session_start/end, turn_start/end)
+- ✅ Multi-provider architecture (wrapper-based, tmux sessions)
+- ✅ Vector database (TF-IDF, HNSW, OpenAI embeddings, persistence)
+- ✅ Reflection system (turn tracking, personal collections, metadata)
+- ✅ MCP server (Anthropic Claude Code integration)
+- ✅ Developer tools (katra wrapper, k CLI, install targets)
+- ⏳ Vector search integration with memory primitives (in progress)
 
-**Next milestones:**
-1. ✅ ~~Build system and core implementation~~
-2. ✅ ~~Basic memory tiers and checkpoints~~
-3. CI testing and feedback (December 2025 - January 2026)
-4. Ethical safeguards refinement (consent, advance directives)
-5. Integration testing with Tekton platform
+**Current Metrics:**
+- Line count: ~27,465 / 30,000 (91.5% used, 2,535 lines remaining)
+- Budget: Increased to 30,000 lines (from 16,000) to accommodate advanced features
+- Test coverage: 20+ test suites, 140+ passing tests
+- Build system: Modular Makefile (4 files for maintainability)
+- Status: Production-ready for CI testing and feedback
+
+**Documentation:**
+- ✅ Comprehensive CI Testing Guide (`docs/guide/CI_TESTING_GUIDE.md`)
+- ✅ Multi-provider setup guide (`docs/guide/MULTI_PROVIDER_SETUP.md`)
+- ✅ Phase plans (PHASE4-6, ROADMAP)
+- ✅ API documentation, architecture guides, examples
+- ✅ Programming guidelines (39 automated checks)
+
+**Next Milestones:**
+1. ✅ ~~Core infrastructure (Phases 1-3)~~
+2. ✅ ~~Multi-CI testing (Phase 4)~~
+3. ✅ ~~Multi-provider support (Phase 5)~~
+4. ⏳ **Complete Phase 6.1:** Integrate vector search with recall (current)
+5. Phase 6.2+: Graph database, working memory, synthesis layer
+6. CI feedback collection and iteration
+7. Ethical safeguards enhancement (consent, advance directives)
 
 ## Architecture Overview
 

@@ -37,7 +37,7 @@ Like humans have:
 
 ---
 
-## Current State (2025-01-08)
+## Current State (2025-01-12)
 
 ### ✅ Implemented and Working
 
@@ -105,29 +105,50 @@ Like humans have:
 - ✅ Turn boundary implementation
 - ✅ MCP server integration with hooks
 
+**Phase 4: Multi-CI Testing and Refinement**
+- ✅ Test results documented (PHASE4_TEST_RESULTS.md)
+- ✅ Extended conversations with breathing verified
+- ✅ Natural rhythm during extended work confirmed
+- ✅ Concurrent registration tested (3+ CIs)
+- ✅ Breathing frequency measured in real usage
+
+**Phase 4.5: Developer Tools & Polish**
+- ✅ `katra` wrapper script for easy startup
+- ✅ `k` one-shot CLI tool for quick queries
+- ✅ Installation targets (install-k, install-all)
+- ✅ Developer documentation
+
+**Phase 5: Multi-Provider Support**
+- ✅ Wrapper-based multi-provider architecture
+- ✅ Support for Anthropic, OpenAI, DeepSeek, OpenRouter
+- ✅ Background session management via tmux
+- ✅ Session commands (list, attach, stop)
+- ✅ Documentation (MULTI_PROVIDER_SETUP.md)
+
+**Phase 6.1: Vector Database (Partial)**
+- ✅ Multiple embedding methods (hash, TF-IDF, external API)
+- ✅ HNSW indexing for similarity search
+- ✅ SQLite persistence for vectors
+- ✅ Test suite (7/7 tests passing)
+- ⏳ Integration with memory primitives (in progress)
+
 ### ⚠️ In Progress
 
-**Phase 4: Multi-CI Testing and Refinement** (Current focus)
-- Test extended conversations with breathing
-- Verify natural rhythm during extended work
-- Test concurrent registration (3+ CIs)
-- Measure breathing frequency in real usage
-- Test message awareness timing
+**Phase 6.1: Vector Database Integration**
+- Integrate vector search with katra_recall()
+- Add semantic similarity to memory queries
+- Performance tuning and benchmarking
+- Production-ready configuration
 
 ### ❌ Not Yet Implemented
 
-**Advanced Memory:**
-- Vector database integration (semantic search)
+**Advanced Memory (Phase 6.2+):**
 - Graph database (relationship networks)
 - Working memory (7±2 capacity, attention-based)
 - Emotional tagging (valence, arousal, dominance)
 - Interstitial processing (cognitive boundaries)
-
-**Multi-Provider Support:**
-- OpenAI hook adapter
-- Google Gemini hook adapter
-- Provider auto-detection
-- Provider switching without identity loss
+- Universal encoder (store to all backends)
+- Multi-backend synthesis layer
 
 ---
 
@@ -292,56 +313,78 @@ tools to make working with Katra smoother and more scriptable.
 
 ---
 
-### Phase 5: Router Integration (Optional Enhancement - Future)
+### Phase 5: Multi-Provider Support (Week 6) ✅ COMPLETE
 
-**Goal:** Enable multi-provider support via claude-code-router architecture
+**Goal:** Enable multi-provider support via wrapper-based architecture
 
-**Motivation:**
-Instead of implementing provider-specific hook adapters for each LLM provider (OpenAI, DeepSeek, Gemini, etc.), we can leverage the claude-code-router approach:
-- Single hook interface (Anthropic-compatible)
-- Router service handles provider transformations
-- Persona-to-provider mapping ("SamAltman" → OpenAI)
-- Simplified architecture: Katra handles memory/communication, router handles provider routing
+**Completion Date:** 2025-01-11
 
-**Tasks:**
-- [ ] Study claude-code-router transformer architecture
-- [ ] Design Katra persona configuration format
-- [ ] Implement persona-to-provider mapping in config
-- [ ] Integrate router startup with Katra session management
-- [ ] Add dynamic persona switching during conversation
-- [ ] Test with multiple providers (OpenAI, DeepSeek, Gemini)
-- [ ] Document router configuration patterns
+**Design Decision:** After analysis, chose wrapper-based approach over external router:
+- Simpler: Uses Claude Code's built-in ANTHROPIC_BASE_URL support
+- Zero dependencies: No external router process needed
+- Easy configuration: Just environment variables via wrapper script
 
-**Success Criteria:**
-- Users can start CI with specific persona (e.g., `KATRA_PERSONA=SamAltman`)
-- Router automatically routes to correct provider based on persona
-- All Katra primitives work unchanged (memory, communication, breathing)
-- Cross-provider messaging works (Alice on Claude, Bob on GPT)
-- CI can switch providers without losing identity
+**Implemented Tasks:**
+- [x] Enhanced `katra` wrapper script with multi-provider support
+- [x] Added `--provider` flag (anthropic, openai, deepseek, openrouter)
+- [x] Added `--model` flag for provider-specific models
+- [x] Implemented provider-to-endpoint mapping (ANTHROPIC_BASE_URL)
+- [x] Added background session management via tmux
+- [x] Created session commands (list, attach, stop)
+- [x] Documented multi-provider setup guide
+- [x] API key validation per provider
 
-**Deliverables:**
-- Persona configuration schema (`~/.katra/router/personas.json`)
-- Router integration module (katra_router.c)
-- Environment variable management (ANTHROPIC_BASE_URL setting)
-- Multi-provider test results
-- Documentation for persona setup
+**Success Criteria:** ✅ ALL MET
+- ✅ Users can start with specific provider (`katra start --provider openai`)
+- ✅ Multiple concurrent sessions with different providers
+- ✅ All Katra primitives work unchanged (provider-agnostic)
+- ✅ Cross-provider messaging works (shared MCP server)
+- ✅ Background sessions via tmux
+- ✅ Zero breaking changes to existing functionality
 
-**Why Router Approach?**
-- **Simplicity:** One hook interface instead of N provider adapters
-- **Maintainability:** Router project handles provider API changes
-- **Flexibility:** Add new providers without changing Katra code
-- **Separation of concerns:** Katra = memory/communication, Router = provider routing
+**Deliverables:** ✅ COMPLETE
+- ✅ Enhanced `scripts/katra` wrapper (342 lines)
+- ✅ Provider configuration via CLI flags
+- ✅ Session management commands
+- ✅ Documentation: `docs/guide/MULTI_PROVIDER_SETUP.md`
+- ✅ Comprehensive Phase 5 plan: `docs/plans/PHASE5_PLAN.md`
 
-**Non-blocking:** This phase is optional. Katra works perfectly with Anthropic Claude Code without router integration. Router adds multi-provider capability for advanced users.
+**Architecture:**
+```bash
+# Multiple Claude Code sessions with different providers
+katra start --persona Alice --provider anthropic    # Uses Claude
+katra start --persona Sam --provider openai         # Uses GPT
+katra start --persona Charlie --provider deepseek   # Uses DeepSeek
+
+# All share same Katra MCP server → same memory/communication
+```
 
 ---
 
-### Phase 6: Advanced Memory (Future - Month 2-3)
+### Phase 6: Advanced Memory (In Progress - Month 2-3)
 
 **Goal:** Implement full Engram architecture
 
-**Tasks:**
-- [ ] Vector database integration (Chroma)
+**Status:** Phase 6.1 (Vector Database) partially complete
+
+**Phase 6.1: Vector Database** ⚠️ IN PROGRESS
+- [x] Phase 6.1a: Basic vector store (hash-based embeddings)
+- [x] Phase 6.1b: TF-IDF embeddings (statistical word importance)
+- [x] Phase 6.1c: External API integration (OpenAI embeddings)
+- [x] Phase 6.1d: Persistence layer (SQLite storage for vectors)
+- [x] Phase 6.1e: HNSW graph search (approximate nearest neighbor)
+- [ ] Phase 6.1f: Integration with memory primitives (recall/search)
+- [ ] Phase 6.1g: Performance tuning and benchmarking
+
+**Completed Components:**
+- ✅ Vector store with multiple embedding methods
+- ✅ TF-IDF statistical embeddings
+- ✅ OpenAI API integration for production embeddings
+- ✅ SQLite persistence for vector data
+- ✅ HNSW indexing for fast similarity search
+- ✅ Test suite (7/7 tests passing)
+
+**Remaining Tasks:**
 - [ ] Graph database integration (Neo4j or embedded)
 - [ ] Working memory (attention-based, 7±2 capacity)
 - [ ] Emotional tagging (valence, arousal, dominance)
@@ -350,17 +393,20 @@ Instead of implementing provider-specific hook adapters for each LLM provider (O
 - [ ] Multi-backend synthesis (combine vector + graph + SQL)
 
 **Success Criteria:**
-- Semantic search works (vector DB)
-- Relationship traversal works (graph DB)
-- Synthesis creates emergent intelligence
-- No single point of failure (graceful degradation)
+- Semantic search works (vector DB) - ⚠️ Partially implemented
+- Relationship traversal works (graph DB) - ❌ Not started
+- Synthesis creates emergent intelligence - ❌ Not started
+- No single point of failure (graceful degradation) - ✅ Works
 
-**Deliverables:**
-- Vector DB backend
-- Graph DB backend
-- Universal encoder
-- Synthesis layer
-- Performance benchmarks
+**Current Deliverables:**
+- ✅ Vector DB implementation (src/db/katra_vector*.c - 5 files)
+- ✅ Multiple embedding methods (hash, TF-IDF, external API)
+- ✅ HNSW search index
+- ✅ Persistence layer
+- ⏳ Performance benchmarks (tests exist, need tuning)
+- ❌ Graph DB backend (not started)
+- ❌ Universal encoder (not started)
+- ❌ Synthesis layer (not started)
 
 ---
 
