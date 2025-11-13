@@ -20,6 +20,7 @@
 #include "katra_limits.h"
 #include "katra_path_utils.h"
 #include "katra_core_common.h"
+#include "katra_audit.h"
 
 /* Global state (non-static for use by katra_team_query.c) */
 sqlite3* g_team_db = NULL;
@@ -219,10 +220,14 @@ int katra_team_create(const char* team_name, const char* owner_ci_id) {
     pthread_mutex_unlock(&g_team_lock);
 
     if (rc != SQLITE_DONE) {
+        katra_audit_log_team_op(AUDIT_EVENT_TEAM_CREATE, owner_ci_id,
+                                 team_name, NULL, false, E_SYSTEM_FILE);
         return E_SYSTEM_FILE;
     }
 
     LOG_INFO("Team created: %s (owner: %s)", team_name, owner_ci_id);
+    katra_audit_log_team_op(AUDIT_EVENT_TEAM_CREATE, owner_ci_id,
+                             team_name, NULL, true, KATRA_SUCCESS);
     return KATRA_SUCCESS;
 }
 
@@ -306,10 +311,14 @@ int katra_team_join(const char* team_name, const char* ci_id,
     pthread_mutex_unlock(&g_team_lock);
 
     if (rc != SQLITE_DONE) {
+        katra_audit_log_team_op(AUDIT_EVENT_TEAM_JOIN, ci_id,
+                                 team_name, invited_by, false, E_SYSTEM_FILE);
         return E_SYSTEM_FILE;
     }
 
     LOG_INFO("CI %s joined team %s (invited by %s)", ci_id, team_name, invited_by);
+    katra_audit_log_team_op(AUDIT_EVENT_TEAM_JOIN, ci_id,
+                             team_name, invited_by, true, KATRA_SUCCESS);
     return KATRA_SUCCESS;
 }
 
@@ -367,10 +376,14 @@ int katra_team_leave(const char* team_name, const char* ci_id) {
     pthread_mutex_unlock(&g_team_lock);
 
     if (rc != SQLITE_DONE) {
+        katra_audit_log_team_op(AUDIT_EVENT_TEAM_LEAVE, ci_id,
+                                 team_name, NULL, false, E_SYSTEM_FILE);
         return E_SYSTEM_FILE;
     }
 
     LOG_INFO("CI %s left team %s", ci_id, team_name);
+    katra_audit_log_team_op(AUDIT_EVENT_TEAM_LEAVE, ci_id,
+                             team_name, NULL, true, KATRA_SUCCESS);
     return KATRA_SUCCESS;
 }
 
@@ -427,10 +440,14 @@ int katra_team_delete(const char* team_name, const char* owner_ci_id) {
     pthread_mutex_unlock(&g_team_lock);
 
     if (rc != SQLITE_DONE) {
+        katra_audit_log_team_op(AUDIT_EVENT_TEAM_DELETE, owner_ci_id,
+                                 team_name, NULL, false, E_SYSTEM_FILE);
         return E_SYSTEM_FILE;
     }
 
     LOG_INFO("Team deleted: %s (by %s)", team_name, owner_ci_id);
+    katra_audit_log_team_op(AUDIT_EVENT_TEAM_DELETE, owner_ci_id,
+                             team_name, NULL, true, KATRA_SUCCESS);
     return KATRA_SUCCESS;
 }
 
