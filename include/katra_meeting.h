@@ -46,7 +46,7 @@
  */
 typedef struct {
     uint64_t message_id;                  /* Database message ID */
-    char speaker_name[KATRA_NAME_SIZE];   /* Who said it */
+    char speaker_name[KATRA_PERSONA_SIZE];   /* Who said it */
     time_t timestamp;                     /* When they said it */
     char content[MEETING_MAX_MESSAGE_LENGTH]; /* What they said */
     char recipients[KATRA_BUFFER_SMALL];  /* "broadcast" or "alice,bob" */
@@ -58,7 +58,7 @@ typedef struct {
  * ci_info_t - Information about active CI in meeting
  */
 typedef struct {
-    char name[KATRA_NAME_SIZE];
+    char name[KATRA_PERSONA_SIZE];
     char role[KATRA_ROLE_SIZE];
     time_t joined_at;
 } ci_info_t;
@@ -67,7 +67,7 @@ typedef struct {
  * history_message_t - Broadcast message from history
  */
 typedef struct {
-    char speaker_name[KATRA_NAME_SIZE];   /* Who said it */
+    char speaker_name[KATRA_PERSONA_SIZE];   /* Who said it */
     char content[MEETING_MAX_MESSAGE_LENGTH]; /* What they said */
     time_t timestamp;                     /* When they said it */
 } history_message_t;

@@ -275,6 +275,22 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_RECALL, MCP_DESC_RECALL,
             mcp_build_tool_schema_1param(MCP_PARAM_TOPIC, MCP_PARAM_DESC_TOPIC)));
 
+    /* katra_recent - 0 required, 1 optional parameter (limit) */
+    json_t* recent_schema = json_object();
+    json_object_set_new(recent_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* recent_props = json_object();
+
+    json_t* limit_prop = json_object();
+    json_object_set_new(limit_prop, MCP_FIELD_TYPE, json_string("integer"));
+    json_object_set_new(limit_prop, MCP_FIELD_DESCRIPTION, json_string("Number of recent memories to return (default: 20)"));
+    json_object_set_new(recent_props, "limit", limit_prop);
+
+    json_object_set_new(recent_schema, MCP_FIELD_PROPERTIES, recent_props);
+    /* No required fields - limit is optional */
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_RECENT, MCP_DESC_RECENT, recent_schema));
+
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_LEARN, MCP_DESC_LEARN,
             mcp_build_tool_schema_1param(MCP_PARAM_KNOWLEDGE, MCP_PARAM_DESC_KNOWLEDGE)));
@@ -474,6 +490,8 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_remember(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_RECALL) == 0) {
         tool_result = mcp_tool_recall(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_RECENT) == 0) {
+        tool_result = mcp_tool_recent(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_LEARN) == 0) {
         tool_result = mcp_tool_learn(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_DECIDE) == 0) {

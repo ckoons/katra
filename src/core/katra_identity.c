@@ -199,6 +199,9 @@ int katra_register_persona(const char* name, const char* ci_id) {
     /* Check if persona already exists */
     json_t* existing = json_object_get(personas, name);
     if (existing) {
+        /* Update ci_id (for migration from PID-based to name-based) */
+        json_object_set_new(existing, "ci_id", json_string(ci_id)); /* GUIDELINE_APPROVED */
+
         /* Update session info */
         time_t now = time(NULL);
         json_object_set_new(existing, "last_session", /* GUIDELINE_APPROVED */
@@ -207,7 +210,7 @@ int katra_register_persona(const char* name, const char* ci_id) {
         int sessions = json_integer_value(json_object_get(existing, "sessions")); /* GUIDELINE_APPROVED */
         json_object_set_new(existing, "sessions", json_integer(sessions + 1)); /* GUIDELINE_APPROVED */
 
-        LOG_INFO("Updated existing persona: %s", name);
+        LOG_INFO("Updated existing persona: %s -> %s", name, ci_id);
     } else {
         /* Create new persona */
         json_t* persona = json_object();

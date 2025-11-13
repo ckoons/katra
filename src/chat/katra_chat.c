@@ -97,7 +97,7 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
 
     for (size_t i = 0; i < recipient_count; i++) {
         /* Look up recipient name from registry */
-        char recipient_name[KATRA_NAME_SIZE] = "Unknown";
+        char recipient_name[KATRA_PERSONA_SIZE] = "Unknown";
         int rc = sqlite3_prepare_v2(g_chat_db, lookup_sql, -1, &lookup_stmt, NULL);
         if (rc == SQLITE_OK) {
             sqlite3_bind_text(lookup_stmt, 1, recipient_ci_ids[i], -1, SQLITE_STATIC);
@@ -154,7 +154,7 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
 
 int katra_say(const char* content, const char* recipients) {
     char sender_ci_id[KATRA_CI_ID_SIZE];
-    char sender_name[KATRA_NAME_SIZE] = "Unknown";
+    char sender_name[KATRA_PERSONA_SIZE] = "Unknown";
     int result = KATRA_SUCCESS;
     char** recipient_ci_ids = NULL;
     size_t recipient_count = 0;
@@ -228,7 +228,7 @@ int katra_say(const char* content, const char* recipients) {
 }
 
 int katra_hear(heard_message_t* message_out) {
-    char receiver_name[KATRA_NAME_SIZE];
+    char receiver_name[KATRA_PERSONA_SIZE];
 
     if (!message_out) {
         return E_INPUT_NULL;
@@ -281,8 +281,8 @@ int katra_hear(heard_message_t* message_out) {
 
     /* Fill output */
     message_out->message_id = (uint64_t)msg_id;
-    strncpy(message_out->speaker_name, sender_name, KATRA_NAME_SIZE - 1);
-    message_out->speaker_name[KATRA_NAME_SIZE - 1] = '\0';
+    strncpy(message_out->speaker_name, sender_name, KATRA_PERSONA_SIZE - 1);
+    message_out->speaker_name[KATRA_PERSONA_SIZE - 1] = '\0';
     message_out->timestamp = (time_t)timestamp;
     strncpy(message_out->content, message, MEETING_MAX_MESSAGE_LENGTH - 1);
     message_out->content[MEETING_MAX_MESSAGE_LENGTH - 1] = '\0';
@@ -328,7 +328,7 @@ int katra_hear(heard_message_t* message_out) {
 }
 
 int katra_count_messages(size_t* count_out) {
-    char receiver_name[KATRA_NAME_SIZE];
+    char receiver_name[KATRA_PERSONA_SIZE];
 
     if (!count_out) {
         return E_INPUT_NULL;
@@ -426,8 +426,8 @@ int katra_who_is_here(ci_info_t** cis_out, size_t* count_out) {
         const char* role = (const char*)sqlite3_column_text(stmt, 1);
         sqlite3_int64 joined_at = sqlite3_column_int64(stmt, 2);
 
-        strncpy(cis[idx].name, name, KATRA_NAME_SIZE - 1);
-        cis[idx].name[KATRA_NAME_SIZE - 1] = '\0';
+        strncpy(cis[idx].name, name, KATRA_PERSONA_SIZE - 1);
+        cis[idx].name[KATRA_PERSONA_SIZE - 1] = '\0';
         strncpy(cis[idx].role, role, KATRA_ROLE_SIZE - 1);
         cis[idx].role[KATRA_ROLE_SIZE - 1] = '\0';
         cis[idx].joined_at = (time_t)joined_at;
@@ -510,8 +510,8 @@ int katra_get_history(size_t count, history_message_t** messages_out, size_t* co
         const char* message = (const char*)sqlite3_column_text(stmt, 1);
         sqlite3_int64 timestamp = sqlite3_column_int64(stmt, 2);
 
-        strncpy(messages[idx].speaker_name, sender_name, KATRA_NAME_SIZE - 1);
-        messages[idx].speaker_name[KATRA_NAME_SIZE - 1] = '\0';
+        strncpy(messages[idx].speaker_name, sender_name, KATRA_PERSONA_SIZE - 1);
+        messages[idx].speaker_name[KATRA_PERSONA_SIZE - 1] = '\0';
         strncpy(messages[idx].content, message, MEETING_MAX_MESSAGE_LENGTH - 1);
         messages[idx].content[MEETING_MAX_MESSAGE_LENGTH - 1] = '\0';
         messages[idx].timestamp = (time_t)timestamp;

@@ -152,6 +152,65 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     return mcp_tool_success(response);
 }
 
+/* Tool: katra_recent */
+json_t* mcp_tool_recent(json_t* args, json_t* id) {
+    (void)id;  /* Unused - id handled by caller */
+
+    /* Optional limit parameter (defaults to 20) */
+    size_t limit = BREATHING_DEFAULT_RECENT_THOUGHTS;
+    if (args) {
+        json_t* limit_json = json_object_get(args, "limit");
+        if (limit_json && json_is_integer(limit_json)) {
+            limit = (size_t)json_integer_value(limit_json);
+        }
+    }
+
+    const char* session_name = mcp_get_session_name();
+    size_t count = 0;
+    char** results = NULL;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    /* Use breathing layer's recent_thoughts() */
+    results = recent_thoughts(limit, &count);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (!results || count == 0) {
+        char response[MCP_RESPONSE_BUFFER];
+        snprintf(response, sizeof(response), "No recent memories found, %s", session_name);
+        return mcp_tool_success(response);
+    }
+
+    /* Build response text with personalization */
+    char response[MCP_RESPONSE_BUFFER];
+    size_t offset = 0;
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Your recent memories, %s:\n\n", session_name);
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Found %zu recent memories:\n", count);
+
+    for (size_t i = 0; i < count; i++) {
+        if (results[i]) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                             "%zu. %s\n", i + 1, results[i]);
+
+            /* Safety check - stop if buffer nearly full */
+            if (offset >= sizeof(response) - 100) {
+                snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
+                break;
+            }
+        }
+    }
+
+    free_memory_list(results, count);
+    return mcp_tool_success(response);
+}
+
 /* Tool: katra_learn */
 json_t* mcp_tool_learn(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */

@@ -288,6 +288,7 @@ int main(void) {
             /* Found existing persona - update to use name-based ci_id */
             if (strcmp(old_ci_id, g_ci_id) != 0) {
                 /* Old PID-based ci_id detected - update to name-based */
+                /* GUIDELINE_APPROVED: startup diagnostic message */
                 fprintf(stderr, "Migrating persona '%s' from old ci_id '%s' to name-based '%s'\n",
                         g_persona_name, old_ci_id, g_ci_id);
 
@@ -295,6 +296,7 @@ int main(void) {
                 katra_register_persona(g_persona_name, g_ci_id);
             } else {
                 /* Already using name-based ci_id */
+                /* GUIDELINE_APPROVED: startup diagnostic message */
                 fprintf(stderr, "Katra MCP Server resuming persona '%s' with CI identity: %s\n",
                         g_persona_name, g_ci_id);
             }
@@ -326,9 +328,30 @@ int main(void) {
             /* Resume last active persona */
             strncpy(g_persona_name, last_active_name, sizeof(g_persona_name) - 1);
 
-            /* GUIDELINE_APPROVED: startup diagnostic message */
-            fprintf(stderr, "Katra MCP Server resuming last active persona '%s' with CI identity: %s\n",
-                    g_persona_name, g_ci_id);
+            /* Store old ci_id from registry */
+            char old_ci_id[KATRA_CI_ID_SIZE];
+            strncpy(old_ci_id, g_ci_id, sizeof(old_ci_id) - 1);
+            old_ci_id[sizeof(old_ci_id) - 1] = '\0';
+
+            /* ALWAYS use persona name as ci_id (identity preservation fix) */
+            strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
+            g_ci_id[sizeof(g_ci_id) - 1] = '\0';
+
+            /* Check if ci_id needs migration */
+            if (strcmp(old_ci_id, g_ci_id) != 0) {
+                /* Old PID-based ci_id detected - update to name-based */
+                /* GUIDELINE_APPROVED: startup diagnostic message */
+                fprintf(stderr, "Migrating persona '%s' from old ci_id '%s' to name-based '%s'\n",
+                        g_persona_name, old_ci_id, g_ci_id);
+
+                /* Update persona registry with new ci_id */
+                katra_register_persona(g_persona_name, g_ci_id);
+            } else {
+                /* Already using name-based ci_id */
+                /* GUIDELINE_APPROVED: startup diagnostic message */
+                fprintf(stderr, "Katra MCP Server resuming last active persona '%s' with CI identity: %s\n",
+                        g_persona_name, g_ci_id);
+            }
 
             /* Update session count */
             katra_update_persona_session(g_persona_name);

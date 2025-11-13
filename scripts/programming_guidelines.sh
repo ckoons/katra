@@ -112,10 +112,11 @@ if [ "$UNAPPROVED_STDERR" -gt 0 ]; then
   echo "Action: Add GUIDELINE_APPROVED comment or use katra_report_error()"
   echo ""
   echo "Unapproved locations:"
+  # Find fprintf(stderr) calls where the previous line does NOT contain GUIDELINE_APPROVED
   grep -rn 'fprintf(stderr' src/ --include="*.c" 2>/dev/null -B 1 | \
-    grep -B 1 -v "GUIDELINE_APPROVED" | \
-    grep "fprintf(stderr" | \
-    grep -v "katra_error.c\|argo_daemon_main.c\|argo_print_utils.c\|arc_main.c\|ci_main.c" | head -5
+    grep -v "katra_error.c\|argo_daemon_main.c\|argo_print_utils.c\|arc_main.c\|ci_main.c" | \
+    awk '/GUIDELINE_APPROVED/{skip=1; next} /fprintf\(stderr/{if(!skip) print; skip=0} /--/{skip=0}' | \
+    head -5
   echo ""
   echo "Note: Add /* GUIDELINE_APPROVED: reason */ comment above fprintf(stderr)"
   WARNINGS=$((WARNINGS + 1))

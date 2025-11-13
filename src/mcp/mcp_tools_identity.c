@@ -146,16 +146,61 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
         }
     }
 
-    /* Build success response */
+    /* Build success response with recent memories */
     char response[MCP_RESPONSE_BUFFER];
+    size_t offset = 0;
+
     if (role && strlen(role) > 0) {
-        snprintf(response, sizeof(response),
-                "Welcome, %s! You're registered as a %s. "
-                "Your memories will persist under this name.", name, role);
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                "Welcome back, %s! You're registered as a %s.\n"
+                "Your memories will persist under this name.\n\n", name, role);
     } else {
-        snprintf(response, sizeof(response),
-                "Welcome, %s! You're registered. "
-                "Your memories will persist under this name.", name);
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                "Welcome back, %s! You're registered.\n"
+                "Your memories will persist under this name.\n\n", name);
+    }
+
+    /* Get recent memories to show context (default 5 most recent) */
+    size_t memory_count = 0;
+    char** recent_memories = NULL;
+
+    lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result == 0) {
+        recent_memories = recent_thoughts(5, &memory_count);
+        pthread_mutex_unlock(&g_katra_api_lock);
+    }
+
+    if (recent_memories && memory_count > 0) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "Your last %zu memories:\n", memory_count);
+
+        for (size_t i = 0; i < memory_count; i++) {
+            if (recent_memories[i]) {
+                /* Truncate long memories to first 80 chars */
+                char truncated[84];
+                strncpy(truncated, recent_memories[i], 80);
+                truncated[80] = '\0';
+                if (strlen(recent_memories[i]) > 80) {
+                    strcat(truncated, "...");
+                }
+
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                 "%zu. %s\n", i + 1, truncated);
+
+                /* Safety check */
+                if (offset >= sizeof(response) - 200) {
+                    break;
+                }
+            }
+        }
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "\nUse katra_recent() for more, or katra_recall(topic) to search.");
+
+        free_memory_list(recent_memories, memory_count);
+    } else {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "This appears to be your first session. Welcome!");
     }
 
     LOG_INFO("Registered session: %s (role: %s)", name, role ? role : "unspecified");

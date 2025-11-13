@@ -80,7 +80,7 @@ int katra_migrate_assign_builder(const char* builder_name, const char* ci_id) {
 
 int katra_migrate_verify_persona_registry(void) {
     /* Load persona registry and verify structure */
-    char last_active[KATRA_NAME_SIZE];
+    char last_active[KATRA_PERSONA_SIZE];
     char ci_id[KATRA_CI_ID_SIZE];
 
     int result = katra_get_last_active(last_active, sizeof(last_active),
@@ -130,7 +130,7 @@ int katra_migrate_show_status(void) {
     fprintf(stderr, "\n=== Katra Phase 1 Migration Status ===\n\n");
 
     /* Show persona registry */
-    char last_active[KATRA_NAME_SIZE];
+    char last_active[KATRA_PERSONA_SIZE];
     char ci_id[KATRA_CI_ID_SIZE];
 
     int result = katra_get_last_active(last_active, sizeof(last_active),

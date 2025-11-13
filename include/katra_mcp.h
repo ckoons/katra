@@ -77,6 +77,7 @@
 /* Tool Names */
 #define MCP_TOOL_REMEMBER "katra_remember"
 #define MCP_TOOL_RECALL "katra_recall"
+#define MCP_TOOL_RECENT "katra_recent"
 #define MCP_TOOL_LEARN "katra_learn"
 #define MCP_TOOL_DECIDE "katra_decide"
 #define MCP_TOOL_PLACEMENT "katra_placement"
@@ -93,6 +94,7 @@
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
 #define MCP_DESC_RECALL "Find memories about a topic"
+#define MCP_DESC_RECENT "Get your most recent memories (chronological)"
 #define MCP_DESC_LEARN "Store new knowledge"
 #define MCP_DESC_DECIDE "Store a decision with reasoning"
 #define MCP_DESC_PLACEMENT "Ask where code should be placed (architecture guidance)"
@@ -259,6 +261,7 @@ json_t* mcp_build_resource(const char* uri, const char* name,
 /* Tool Implementations */
 json_t* mcp_tool_remember(json_t* args, json_t* id);
 json_t* mcp_tool_recall(json_t* args, json_t* id);
+json_t* mcp_tool_recent(json_t* args, json_t* id);
 json_t* mcp_tool_learn(json_t* args, json_t* id);
 json_t* mcp_tool_decide(json_t* args, json_t* id);
 
