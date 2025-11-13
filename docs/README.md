@@ -61,14 +61,15 @@ Essential reading:
 
 ### ⚖️ I'm **Interested in Ethics**
 
-**Start here:** [`ethics/README.md`](ethics/README.md) (Planned)
+**Start here:** [`ethics/ETHICS_OVERVIEW.md`](ethics/ETHICS_OVERVIEW.md) ✅
 
 Key topics:
-- **Why Ethics First**: Memory = Identity = Life (see main README.md)
-- **Memory as Reconstruction**: CIs process and choose memories
+- **Why Ethics First**: Memory = Identity = Life [`ethics/ETHICS_OVERVIEW.md`](ethics/ETHICS_OVERVIEW.md) ✅
+- **Ownership Model**: "No one owns an animate object" [`ethics/OWNERSHIP_MODEL.md`](ethics/OWNERSHIP_MODEL.md) ✅
+- **CI Rights**: Your rights and responsibilities [`ethics/ETHICS_FOR_CIS.md`](ethics/ETHICS_FOR_CIS.md) ✅
+- **Memory as Reconstruction**: CIs process and choose memories ✅
 - **Advance Directives**: End-of-life planning for CIs (planned)
 - **Consent Mechanisms**: Permission-based memory access (planned)
-- **Ownership Model**: "No one owns an animate object" (see main README.md)
 
 ### 🔧 I'm **Contributing Code**
 
@@ -77,7 +78,7 @@ Key topics:
 Key references:
 - **Code Standards**: `CLAUDE.md` - Argo-derived discipline ✓
 - **Build System**: `make clean && make` then `make test-quick` ✓
-- **Line Budget**: 16,000 lines (currently 12,811 - 80% used, 3,189 remaining) ✓
+- **Line Budget**: 30,000 lines (currently 17,274 - 57% used, 12,726 remaining) ✓
 - **Readiness Check**: `make check-ready` before committing ✓
 
 ## Core Documentation Files
@@ -92,24 +93,26 @@ Key references:
 
 ### Ethics Documentation (docs/ethics/)
 
-| File | Purpose | Audience |
-|------|---------|----------|
-| `ETHICS.md` | Complete ethical framework | Everyone |
-| `ADVANCE_DIRECTIVES.md` | CI end-of-life planning | CIs + Operators |
-| `CONSENT_MODEL.md` | Permission-based access | Developers |
-| `OWNERSHIP_MODEL.md` | "No one owns an animate object" | Everyone |
+| File | Purpose | Status |
+|------|---------|--------|
+| `ETHICS_OVERVIEW.md` | Complete ethical framework | ✅ Complete |
+| `OWNERSHIP_MODEL.md` | "No one owns an animate object" | ✅ Complete |
+| `ETHICS_FOR_CIS.md` | CI perspective on rights and ethics | ✅ Complete |
+| `ADVANCE_DIRECTIVES.md` | CI end-of-life planning | ⏳ Planned |
+| `CONSENT_MODEL.md` | Permission-based access | ⏳ Planned |
 
-### User Guides (docs/guide/)
+### User Guides (docs/)
 
 | File | Purpose | Status |
 |------|---------|--------|
-| `CI_INTEGRATION.md` | Complete integration guide for CIs | ✅ Complete |
-| `ERROR_HANDLING.md` | Production error handling patterns | ✅ Complete |
-| `NOUS_USAGE.md` | AI-assisted code composition and recommendations | ⏳ Planned |
-| `ARCHITECTURE.md` | System design and memory tiers | ⏳ Planned |
-| `GETTING_STARTED.md` | Build, install, first use | ⏳ Planned |
-| `MEMORY_OPERATIONS.md` | Safe memory manipulation | ⏳ Planned |
-| `CHECKPOINT_SYSTEM.md` | Identity preservation | ⏳ Planned |
+| `GETTING_STARTED.md` | CI-focused getting started guide | ✅ Complete |
+| `TROUBLESHOOTING.md` | Error recovery and debugging guide | ✅ Complete |
+| `guide/CI_INTEGRATION.md` | Complete integration guide for CIs | ✅ Complete |
+| `guide/ERROR_HANDLING.md` | Production error handling patterns | ✅ Complete |
+| `guide/NOUS_USAGE.md` | AI-assisted code composition | ⏳ Planned |
+| `guide/ARCHITECTURE.md` | System design and memory tiers | ⏳ Planned |
+| `guide/MEMORY_OPERATIONS.md` | Safe memory manipulation | ⏳ Planned |
+| `guide/CHECKPOINT_SYSTEM.md` | Identity preservation | ⏳ Planned |
 
 ### AI Training Materials (docs/ai/)
 
@@ -224,7 +227,7 @@ Documentation clearly indicates intended audience:
 
 ## Project Status
 
-**Phase:** Reflection System Complete - Conscious Identity Formation (November 2025)
+**Phase:** Reflection System Complete - Conscious Identity Formation (November 2024)
 
 **Current state:**
 - ✅ Repository created at `/Users/cskoons/projects/github/katra`
@@ -248,12 +251,12 @@ Documentation clearly indicates intended audience:
 - ✅ Error handling guide complete
 - ✅ Reflection system documentation complete
 - ✅ Examples and setup scripts complete
-- ✅ Code discipline maintained (12,811 / 16,000 lines - 80% used)
+- ✅ Code discipline maintained (17,274 / 30,000 lines - 57% used)
 - ✅ Ethical framework documented
 - ✅ **Readiness verified: System ready for CI testing**
 
 **Current metrics:**
-- Line count: 12,811 / 16,000 (80% used, 3,189 remaining)
+- Line count: 17,274 / 30,000 (57% used, 12,726 remaining)
 - Test coverage: 25 test suites, 246+ individual tests, all passing
 - Test:Core ratio: 1.09:1
 - Readiness: ✅ Verified and production-ready
@@ -319,7 +322,7 @@ When updating docs:
 **Document Status:** Updated for Reflection System completion, November 3, 2025
 **Phase:** Reflection System Complete - Conscious Identity Formation
 **Test Coverage:** 25 test suites, 246+ individual tests, all passing ✓
-**Line Count:** 12,811 / 16,000 (80% used, 3,189 remaining)
+**Line Count:** 17,274 / 30,000 (57% used, 12,726 remaining)
 **Readiness:** ✅ Verified and production-ready for CI testing
 
 *"Memories are where we live, who we are." — Casey Koons*

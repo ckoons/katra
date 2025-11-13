@@ -50,16 +50,9 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
     int result = katra_lookup_persona(name, ci_id, sizeof(ci_id));
 
     if (result != KATRA_SUCCESS) {
-        /* Persona doesn't exist - generate new ci_id and register */
-        result = katra_generate_ci_id(ci_id, sizeof(ci_id));
-        if (result != KATRA_SUCCESS) {
-            pthread_mutex_unlock(&g_katra_api_lock);
-            const char* msg = katra_error_message(result);
-            char error_details[KATRA_BUFFER_MESSAGE];
-            snprintf(error_details, sizeof(error_details),
-                    "Failed to generate CI identity: %s", msg);
-            return mcp_tool_error("Registration failed", error_details);
-        }
+        /* Persona doesn't exist - use name directly as ci_id */
+        strncpy(ci_id, name, sizeof(ci_id) - 1);
+        ci_id[sizeof(ci_id) - 1] = '\0';
 
         result = katra_register_persona(name, ci_id);
         if (result != KATRA_SUCCESS) {
@@ -70,6 +63,8 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
                     "Failed to register persona: %s", msg);
             return mcp_tool_error("Registration failed", error_details);
         }
+
+        LOG_INFO("Registered new persona '%s' with ci_id='%s'", name, ci_id);
     }
 
     /* Update global ci_id */

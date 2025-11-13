@@ -163,7 +163,27 @@ int tier1_store(const memory_record_t* record) {
         goto cleanup;
     }
 
-    LOG_DEBUG("Stored record to %s", filepath);
+    /* Flush to disk immediately (identity preservation - no memory loss on crash) */
+    if (fflush(fp) != 0) {
+        katra_report_error(E_SYSTEM_FILE, "tier1_store", "Failed to flush buffer");
+        result = E_SYSTEM_FILE;
+        goto cleanup;
+    }
+
+    int fd = fileno(fp);
+    if (fd == -1) {
+        katra_report_error(E_SYSTEM_FILE, "tier1_store", "Failed to get file descriptor");
+        result = E_SYSTEM_FILE;
+        goto cleanup;
+    }
+
+    if (fsync(fd) != 0) {
+        katra_report_error(E_SYSTEM_FILE, "tier1_store", "Failed to sync to disk");
+        result = E_SYSTEM_FILE;
+        goto cleanup;
+    }
+
+    LOG_DEBUG("Stored record to %s (flushed to disk)", filepath);
 
 cleanup:
     if (fp) {

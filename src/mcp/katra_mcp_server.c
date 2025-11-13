@@ -288,17 +288,18 @@ int main(void) {
             /* Update session count */
             katra_update_persona_session(g_persona_name);
         } else {
-            /* Not found - create new persona with this name */
-            result = katra_generate_ci_id(g_ci_id, sizeof(g_ci_id));
+            /* Not found - use persona name directly as ci_id (identity preservation) */
+            strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
+            g_ci_id[sizeof(g_ci_id) - 1] = '\0';
+
+            /* Register as new persona */
+            result = katra_register_persona(g_persona_name, g_ci_id);
             if (result != KATRA_SUCCESS) {
                 /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
-                fprintf(stderr, "Failed to generate CI identity: %s\n",
+                fprintf(stderr, "Failed to register persona: %s\n",
                         katra_error_message(result));
                 return EXIT_FAILURE;
             }
-
-            /* Register as new persona */
-            katra_register_persona(g_persona_name, g_ci_id);
 
             /* GUIDELINE_APPROVED: startup diagnostic message */
             fprintf(stderr, "Katra MCP Server created new persona '%s' with CI identity: %s\n",
@@ -323,21 +324,22 @@ int main(void) {
             katra_update_persona_session(g_persona_name);
         }
         else {
-            /* Priority 3: Generate anonymous persona */
-            result = katra_generate_ci_id(g_ci_id, sizeof(g_ci_id));
-            if (result != KATRA_SUCCESS) {
-                /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
-                fprintf(stderr, "Failed to generate CI identity: %s\n",
-                        katra_error_message(result));
-                return EXIT_FAILURE;
-            }
-
-            /* Create anonymous persona name */
+            /* Priority 3: Create anonymous persona (use timestamp-based name as ci_id) */
             time_t now = time(NULL);
             snprintf(g_persona_name, sizeof(g_persona_name), "anonymous_%ld", (long)now);
 
+            /* Use persona name as ci_id for consistency */
+            strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
+            g_ci_id[sizeof(g_ci_id) - 1] = '\0';
+
             /* Register anonymous persona */
-            katra_register_persona(g_persona_name, g_ci_id);
+            result = katra_register_persona(g_persona_name, g_ci_id);
+            if (result != KATRA_SUCCESS) {
+                /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
+                fprintf(stderr, "Failed to register anonymous persona: %s\n",
+                        katra_error_message(result));
+                return EXIT_FAILURE;
+            }
 
             /* GUIDELINE_APPROVED: startup diagnostic message */
             fprintf(stderr, "Katra MCP Server created anonymous persona '%s' with CI identity: %s\n",

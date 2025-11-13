@@ -22,7 +22,8 @@ include Makefile.test
 
 .PHONY: all clean help test test-quick mcp-server \
         benchmark benchmark-reflection benchmark-vector \
-        count-report programming-guidelines check check-ready improvement-scan
+        count-report programming-guidelines check check-ready improvement-scan \
+        install-mcp restart-mcp install-k install-all uninstall-k
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -103,6 +104,50 @@ install: all
 	@echo "Katra MCP server installed to ~/.local/bin/"
 	@echo "Add ~/.local/bin to your PATH if not already present"
 
+# MCP-specific install and restart targets
+install-mcp: mcp-server restart-mcp
+	@echo "MCP server installed and restarted"
+	@echo "Claude Code will automatically use the new binary on next tool call"
+
+restart-mcp:
+	@echo "Restarting MCP server..."
+	@pkill -9 -f katra_mcp_server 2>/dev/null || true
+	@sleep 1
+	@if pgrep -f katra_mcp_server >/dev/null 2>&1; then \
+		echo "Warning: Some MCP server processes still running"; \
+		pgrep -f katra_mcp_server; \
+	else \
+		echo "MCP server stopped"; \
+	fi
+
+# Install CLI tools (katra and k scripts)
+install-k:
+	@echo "Installing Katra developer tools..."
+	@$(MKDIR_P) $(INSTALL_DIR)
+	@install -m $(INSTALL_MODE) $(SCRIPTS_DIR)/katra $(INSTALL_DIR)/katra
+	@install -m $(INSTALL_MODE) $(SCRIPTS_DIR)/k $(INSTALL_DIR)/k
+	@echo "Installed:"
+	@echo "  $(INSTALL_DIR)/katra - Start Claude Code with Katra environment"
+	@echo "  $(INSTALL_DIR)/k - One-shot CLI queries with Katra"
+	@echo ""
+	@echo "Make sure $(INSTALL_DIR) is in your PATH"
+	@if echo "$$PATH" | grep -q "$(INSTALL_DIR)"; then \
+		echo "✓ $(INSTALL_DIR) is already in PATH"; \
+	else \
+		echo "⚠ Add this to your ~/.bashrc or ~/.zshrc:"; \
+		echo "  export PATH=\"$(INSTALL_DIR):\$$PATH\""; \
+	fi
+
+uninstall-k:
+	@echo "Uninstalling Katra developer tools..."
+	@rm -f $(INSTALL_DIR)/katra
+	@rm -f $(INSTALL_DIR)/k
+	@echo "Uninstalled from $(INSTALL_DIR)"
+
+install-all: install-k
+	@echo ""
+	@echo "All Katra tools installed successfully"
+
 # ==============================================================================
 # CLEAN TARGETS
 # ==============================================================================
@@ -159,6 +204,11 @@ help:
 	@echo ""
 	@echo "Install:"
 	@echo "  make install            - Install to ~/.local/bin"
+	@echo "  make install-mcp        - Build MCP server and restart"
+	@echo "  make restart-mcp        - Kill and restart MCP server"
+	@echo "  make install-k          - Install katra/k CLI tools to ~/bin"
+	@echo "  make install-all        - Install all CLI tools"
+	@echo "  make uninstall-k        - Uninstall katra/k CLI tools"
 	@echo ""
 	@echo "Help:"
 	@echo "  make help               - Show this help message"

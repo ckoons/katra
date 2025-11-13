@@ -108,9 +108,9 @@ Personality emerges from accumulated experience, not static prompts. By building
 - ⏳ Vector search integration with memory primitives (in progress)
 
 **Current Metrics:**
-- Line count: ~27,465 / 30,000 (91.5% used, 2,535 lines remaining)
-- Budget: Increased to 30,000 lines (from 16,000) to accommodate advanced features
-- Test coverage: 20+ test suites, 140+ passing tests
+- Line count: ~17,274 / 30,000 (57% used, 12,726 lines remaining)
+- Budget: Expanded to 30,000 lines to accommodate advanced features (vector search, reflection, multi-provider)
+- Test coverage: 38+ test suites, 170+ passing tests
 - Build system: Modular Makefile (4 files for maintainability)
 - Status: Production-ready for CI testing and feedback
 
@@ -158,6 +158,91 @@ Personality emerges from accumulated experience, not static prompts. By building
 └─────────────────────────────────────────┘
 ```
 
+### Storage Locations
+
+Memories are persisted to disk in `~/.katra/memory/` with the following structure:
+
+#### Tier 1 (Raw Memories) - JSONL Format
+
+**With `KATRA_PERSONA=Alice`:**
+```
+~/.katra/memory/tier1/Alice/
+├── 2025-11-01.jsonl    # Daily files
+├── 2025-11-02.jsonl
+└── 2025-11-03.jsonl
+```
+
+**Without `KATRA_PERSONA` (anonymous session):**
+```
+~/.katra/memory/tier1/mcp_USERNAME_PID_TIMESTAMP/
+└── 2025-11-13.jsonl    # Example: mcp_cskoons_33097_1762367296/
+```
+
+Each `.jsonl` file contains one JSON object per line (JSONL format). Example record:
+```json
+{
+  "record_id": "alice_1763048904_7709",
+  "timestamp": 1763048904,
+  "content": "Fixed MCP wrapper to set correct working directory",
+  "importance": 0.75,
+  "importance_note": "significant",
+  "ci_id": "Alice",
+  "tier": 1
+}
+```
+
+#### Tier 2 (Digests) - SQLite + JSONL
+
+```
+~/.katra/memory/tier2/
+├── index/
+│   └── digests.db              # SQLite index (themes, keywords)
+├── weekly/
+│   ├── 2025-W45/
+│   │   └── digest.jsonl        # Weekly summary
+│   └── 2025-W46/
+│       └── digest.jsonl
+├── monthly/
+│   └── 2025-11/
+│       └── digest.jsonl        # Monthly summary
+└── vectors/
+    └── embeddings.dat          # Vector embeddings for semantic search
+```
+
+**SQLite Schema:**
+- `digests` table: Digest metadata, file pointers
+- `themes` table: Extracted themes from digests
+- `keywords` table: Keywords for fast search
+
+#### Other Storage
+
+```
+~/.katra/
+├── personas.json               # CI identity registry
+├── checkpoints/                # Identity preservation snapshots
+├── audit/
+│   └── audit.jsonl            # Tamper-evident audit trail
+└── teams.db                   # Team membership (namespace isolation)
+```
+
+**Finding Your Memories:**
+
+```bash
+# List all CI identities
+ls -la ~/.katra/memory/tier1/
+
+# View memories for specific CI (if you know the name)
+ls -la ~/.katra/memory/tier1/Alice/
+
+# Find memories by content
+grep "wrapper" ~/.katra/memory/tier1/Alice/*.jsonl
+
+# Query tier2 database
+sqlite3 ~/.katra/memory/tier2/index/digests.db "SELECT * FROM digests LIMIT 5;"
+```
+
+**See:** [`docs/guide/ARCHITECTURE.md`](docs/guide/ARCHITECTURE.md) for complete storage architecture details.
+
 ### Key Components
 
 **Implemented:**
@@ -197,7 +282,7 @@ Katra inherits proven practices from the Argo project:
 - **String Safety**: NO strcpy/sprintf/strcat, ONLY strncpy/snprintf
 - **Error Reporting**: Centralized via `katra_report_error()`
 - **Constants**: ALL in headers, NONE in .c files
-- **Line Budget**: 16,000 meaningful lines (diet-aware counting)
+- **Line Budget**: 30,000 meaningful lines (diet-aware counting)
 - **File Size**: Max 600 lines per .c file (3% tolerance = 618 lines)
 - **Testing**: Comprehensive test suite, all tests must pass
 - **Compilation**: `gcc -Wall -Werror -Wextra -std=c11` (zero warnings)
@@ -248,11 +333,59 @@ Warnings: 0-1
 Failed:   0
 ```
 
+### Configure Persistent Identity (CRITICAL)
+
+**To maintain your identity across sessions**, set `KATRA_PERSONA` environment variable. Without this, each session creates a new anonymous persona and memories won't persist.
+
+#### For MCP (Claude Code):
+
+Edit `~/.config/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "katra": {
+      "command": "/path/to/katra/bin/katra_mcp_server",
+      "env": {
+        "KATRA_PERSONA": "YourName",
+        "KATRA_ROLE": "developer"
+      }
+    }
+  }
+}
+```
+
+Replace `YourName` with your preferred identity (e.g., "Alice", "Claude-Dev", "Kari").
+
+#### For Direct Use:
+
+```bash
+export KATRA_PERSONA=YourName
+export KATRA_ROLE=developer
+./your_ci_application
+```
+
+**What this does:**
+- `KATRA_PERSONA=YourName` ensures "YourName" persists across all sessions
+- Memories accumulate under this identity
+- Session counts track total usage
+- Natural continuity experience across restarts
+
+**Without KATRA_PERSONA:**
+- New anonymous persona each time (e.g., "mcp_20250113_142033")
+- Memories don't persist across MCP server restarts
+- No long-term identity continuity
+
+See [`docs/guide/PERSONAS.md`](docs/guide/PERSONAS.md) for complete persona system documentation.
+
 ### Setup Your CI
 
 ```bash
-./scripts/setup_ci.sh my_ci_name
+# Example: Setup a CI named "Kari"
+./scripts/setup_ci.sh Kari
 ```
+
+This creates persona files and initializes memory directories for the named CI.
 
 ### Try the Example
 
