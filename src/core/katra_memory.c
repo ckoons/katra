@@ -13,6 +13,7 @@
 #include "katra_tier2.h"
 #include "katra_consent.h"
 #include "katra_team.h"
+#include "katra_access_control.h"
 #include "katra_core_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
@@ -219,7 +220,44 @@ int katra_memory_query(const memory_query_t* query,
     /* TODO: Query Tier 2 if requested - Phase 2.2 */
     /* TODO: Query Tier 3 if requested - Phase 2.3 */
 
-    /* Update access tracking for all retrieved memories (Thane's reconsolidation) */
+    /* Get requesting CI from consent context */
+    const char* requesting_ci = katra_consent_get_context();
+    if (!requesting_ci) {
+        /* No active context - deny access */
+        LOG_WARN("No active consent context for memory query");
+        katra_memory_free_results(*results, *count);
+        *results = NULL;
+        *count = 0;
+        return E_CONSENT_REQUIRED;
+    }
+
+    /* Filter results based on isolation/access control */
+    size_t filtered_count = 0;
+    for (size_t i = 0; i < *count; i++) {
+        if ((*results)[i]) {
+            /* Check if requesting CI has access to this memory */
+            int access_result = katra_access_check_memory(requesting_ci, (*results)[i]);
+
+            if (access_result == KATRA_SUCCESS) {
+                /* Access allowed - keep this result */
+                if (i != filtered_count) {
+                    (*results)[filtered_count] = (*results)[i];
+                }
+                filtered_count++;
+            } else {
+                /* Access denied - free this record */
+                katra_memory_free_record((*results)[i]);
+                (*results)[i] = NULL;
+            }
+        }
+    }
+
+    /* Update count to reflect filtered results */
+    *count = filtered_count;
+
+    LOG_DEBUG("Access control: %zu memories after filtering", filtered_count);
+
+    /* Update access tracking for accessible memories (Thane's reconsolidation) */
     time_t now = time(NULL);
     for (size_t i = 0; i < *count; i++) {
         if ((*results)[i]) {

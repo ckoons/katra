@@ -39,6 +39,11 @@ TEST_CONTEXT_PERSIST := $(BIN_DIR)/tests/test_context_persist
 TEST_MCP := $(BIN_DIR)/tests/test_mcp
 TEST_TURN_TRACKING := $(BIN_DIR)/tests/test_turn_tracking
 TEST_REFLECTION_INTEGRATION := $(BIN_DIR)/tests/test_reflection_integration
+TEST_TEAM_MANAGEMENT := $(BIN_DIR)/tests/test_team_management
+TEST_ISOLATION_FILTERING := $(BIN_DIR)/tests/test_isolation_filtering
+TEST_SEMANTIC_RECALL := $(BIN_DIR)/tests/test_semantic_recall
+TEST_AUDIT := $(BIN_DIR)/tests/test_audit
+TEST_ACCESS_CONTROL := $(BIN_DIR)/tests/test_access_control
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
@@ -46,7 +51,7 @@ BENCHMARK_REFLECTION := $(BIN_DIR)/tests/benchmark_reflection
 BENCHMARK_VECTOR := $(BIN_DIR)/tests/benchmark_vector
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration test-team-management test-isolation-filtering test-semantic-recall test-audit test-access-control
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -177,6 +182,26 @@ test-reflection-integration: $(TEST_REFLECTION_INTEGRATION)
 	@echo "Running reflection integration test..."
 	@$(TEST_REFLECTION_INTEGRATION)
 
+test-team-management: $(TEST_TEAM_MANAGEMENT)
+	@echo "Running team management tests..."
+	@$(TEST_TEAM_MANAGEMENT)
+
+test-isolation-filtering: $(TEST_ISOLATION_FILTERING)
+	@echo "Running isolation filtering tests..."
+	@$(TEST_ISOLATION_FILTERING)
+
+test-semantic-recall: $(TEST_SEMANTIC_RECALL)
+	@echo "Running semantic recall tests..."
+	@$(TEST_SEMANTIC_RECALL)
+
+test-audit: $(TEST_AUDIT)
+	@echo "Running audit logging tests..."
+	@$(TEST_AUDIT)
+
+test-access-control: $(TEST_ACCESS_CONTROL)
+	@echo "Running access control tests..."
+	@$(TEST_ACCESS_CONTROL)
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
@@ -295,6 +320,26 @@ $(TEST_TURN_TRACKING): $(TEST_DIR)/test_turn_tracking.c $(LIBKATRA_UTILS) | $(BI
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
 
 $(TEST_REFLECTION_INTEGRATION): $(TEST_DIR)/test_reflection_integration.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+
+$(TEST_TEAM_MANAGEMENT): $(TEST_DIR)/test_team_management.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+
+$(TEST_ISOLATION_FILTERING): $(TEST_DIR)/test_isolation_filtering.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+
+$(TEST_SEMANTIC_RECALL): $(TEST_DIR)/test_semantic_recall.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+
+$(TEST_AUDIT): $(TEST_DIR)/test_audit.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+
+$(TEST_ACCESS_CONTROL): $(TEST_DIR)/test_access_control.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
 
