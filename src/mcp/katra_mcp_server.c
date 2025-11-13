@@ -276,23 +276,33 @@ int main(void) {
         /* Priority 1: KATRA_PERSONA environment variable */
         strncpy(g_persona_name, env_name, sizeof(g_persona_name) - 1);
 
-        /* Look up in persona registry */
-        result = katra_lookup_persona(env_name, g_ci_id, sizeof(g_ci_id));
+        /* ALWAYS use persona name as ci_id (identity preservation fix) */
+        strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
+        g_ci_id[sizeof(g_ci_id) - 1] = '\0';
+
+        /* Look up in persona registry to check if exists */
+        char old_ci_id[KATRA_CI_ID_SIZE];
+        result = katra_lookup_persona(env_name, old_ci_id, sizeof(old_ci_id));
 
         if (result == KATRA_SUCCESS) {
-            /* Found existing persona */
-            /* GUIDELINE_APPROVED: startup diagnostic message */
-            fprintf(stderr, "Katra MCP Server resuming persona '%s' with CI identity: %s\n",
-                    g_persona_name, g_ci_id);
+            /* Found existing persona - update to use name-based ci_id */
+            if (strcmp(old_ci_id, g_ci_id) != 0) {
+                /* Old PID-based ci_id detected - update to name-based */
+                fprintf(stderr, "Migrating persona '%s' from old ci_id '%s' to name-based '%s'\n",
+                        g_persona_name, old_ci_id, g_ci_id);
+
+                /* Update persona registry with new ci_id */
+                katra_register_persona(g_persona_name, g_ci_id);
+            } else {
+                /* Already using name-based ci_id */
+                fprintf(stderr, "Katra MCP Server resuming persona '%s' with CI identity: %s\n",
+                        g_persona_name, g_ci_id);
+            }
 
             /* Update session count */
             katra_update_persona_session(g_persona_name);
         } else {
-            /* Not found - use persona name directly as ci_id (identity preservation) */
-            strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
-            g_ci_id[sizeof(g_ci_id) - 1] = '\0';
-
-            /* Register as new persona */
+            /* Not found - register new persona */
             result = katra_register_persona(g_persona_name, g_ci_id);
             if (result != KATRA_SUCCESS) {
                 /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */

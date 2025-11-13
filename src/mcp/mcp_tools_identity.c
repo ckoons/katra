@@ -45,27 +45,35 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
         session_end();
     }
 
-    /* Look up or create persona to get ci_id */
+    /* ALWAYS use persona name as ci_id (identity preservation fix) */
     char ci_id[KATRA_CI_ID_SIZE];
-    int result = katra_lookup_persona(name, ci_id, sizeof(ci_id));
+    strncpy(ci_id, name, sizeof(ci_id) - 1);
+    ci_id[sizeof(ci_id) - 1] = '\0';
 
-    if (result != KATRA_SUCCESS) {
-        /* Persona doesn't exist - use name directly as ci_id */
-        strncpy(ci_id, name, sizeof(ci_id) - 1);
-        ci_id[sizeof(ci_id) - 1] = '\0';
+    /* Check if persona exists and update if needed */
+    char old_ci_id[KATRA_CI_ID_SIZE];
+    int lookup_result = katra_lookup_persona(name, old_ci_id, sizeof(old_ci_id));
 
-        result = katra_register_persona(name, ci_id);
-        if (result != KATRA_SUCCESS) {
-            pthread_mutex_unlock(&g_katra_api_lock);
-            const char* msg = katra_error_message(result);
-            char error_details[KATRA_BUFFER_MESSAGE];
-            snprintf(error_details, sizeof(error_details),
-                    "Failed to register persona: %s", msg);
-            return mcp_tool_error("Registration failed", error_details);
+    if (lookup_result == KATRA_SUCCESS) {
+        /* Persona exists - check if ci_id needs migration */
+        if (strcmp(old_ci_id, ci_id) != 0) {
+            LOG_INFO("Migrating persona '%s' from old ci_id '%s' to name-based '%s'",
+                    name, old_ci_id, ci_id);
         }
-
-        LOG_INFO("Registered new persona '%s' with ci_id='%s'", name, ci_id);
     }
+
+    /* Register or update persona with name-based ci_id */
+    int result = katra_register_persona(name, ci_id);
+    if (result != KATRA_SUCCESS) {
+        pthread_mutex_unlock(&g_katra_api_lock);
+        const char* msg = katra_error_message(result);
+        char error_details[KATRA_BUFFER_MESSAGE];
+        snprintf(error_details, sizeof(error_details),
+                "Failed to register persona: %s", msg);
+        return mcp_tool_error("Registration failed", error_details);
+    }
+
+    LOG_INFO("Registered persona '%s' with ci_id='%s'", name, ci_id);
 
     /* Update global ci_id */
     strncpy(g_ci_id, ci_id, sizeof(g_ci_id) - 1);
