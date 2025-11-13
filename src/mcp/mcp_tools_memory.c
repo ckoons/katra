@@ -317,21 +317,25 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset, "):\n");
 
         for (size_t i = 0; i < digest->memory_count; i++) {
-            /* Truncate long memories */
-            char truncated[121];
-            strncpy(truncated, digest->memories[i], 120);
-            truncated[120] = '\0';
-            if (strlen(digest->memories[i]) > 120) {
-                strcat(truncated, "...");
+            /* Check available space */
+            size_t available = sizeof(response) - resp_offset;
+            if (available < 300) {
+                resp_offset += snprintf(response + resp_offset, available,
+                                       "... (buffer limit reached, use smaller limit or recall for specific memories)\n");
+                break;
             }
 
-            resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
-                                   "%zu. %s\n", offset + i + 1, truncated);
+            /* Include full memory content */
+            int written = snprintf(response + resp_offset, available,
+                                 "%zu. %s\n", offset + i + 1, digest->memories[i]);
 
-            if (resp_offset >= sizeof(response) - 200) {
-                resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
-                                       "... (truncated)\n");
-                break;
+            if (written < 0 || (size_t)written >= available) {
+                /* Memory too long for remaining buffer */
+                resp_offset += snprintf(response + resp_offset, available,
+                                       "%zu. [Memory too long - use katra_recall() to retrieve]\n",
+                                       offset + i + 1);
+            } else {
+                resp_offset += written;
             }
         }
     }

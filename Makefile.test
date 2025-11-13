@@ -372,3 +372,9 @@ benchmark-vector: $(BENCHMARK_VECTOR)
 	@echo "Running vector search performance benchmark..."
 	@$(BENCHMARK_VECTOR)
 
+test-memory-digest: $(LIBKATRA_UTILS)
+	@echo "Building test: bin/tests/test_memory_digest"
+	@$(MKDIR_P) bin/tests
+	@$(CC) $(CFLAGS_DEBUG) -o bin/tests/test_memory_digest tests/unit/test_memory_digest.c $(LIBKATRA_UTILS) $(LIBS) -lsqlite3
+	@echo "Running memory digest tests..."
+	@bin/tests/test_memory_digest
