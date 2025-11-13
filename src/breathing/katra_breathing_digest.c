@@ -1,0 +1,388 @@
+/* © 2025 Casey Koons All rights reserved */
+
+/*
+ * katra_breathing_digest.c - Memory digest generation
+ *
+ * Provides comprehensive memory inventory including:
+ * - Total memory stats and date range
+ * - Topic/keyword extraction and frequency
+ * - Collection listing and counts
+ * - Paginated memory access
+ */
+
+/* System includes */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+/* Project includes */
+#include "katra_breathing.h"
+#include "katra_breathing_internal.h"
+#include "katra_breathing_helpers.h"
+#include "katra_memory.h"
+#include "katra_error.h"
+#include "katra_log.h"
+#include "katra_limits.h"
+
+/* Maximum topics/collections to track */
+#define MAX_DIGEST_TOPICS 20
+#define MAX_DIGEST_COLLECTIONS 20
+#define TOPIC_SAMPLE_SIZE 100
+
+/* Helper: Extract simple keywords from text (split on spaces, lowercase) */
+static void extract_keywords_from_text(const char* text, char*** keywords, size_t* count) {
+    if (!text || !keywords || !count) {
+        return;
+    }
+
+    *keywords = NULL;
+    *count = 0;
+
+    /* Allocate initial array */
+    size_t capacity = 10;
+    char** words = malloc(capacity * sizeof(char*));
+    if (!words) {
+        return;
+    }
+
+    /* Duplicate text for tokenization */
+    char* text_copy = strdup(text);
+    if (!text_copy) {
+        free(words);
+        return;
+    }
+
+    /* Extract words */
+    char* token = strtok(text_copy, " \t\n.,;:!?()[]{}\"'");
+    while (token) {
+        /* Skip short words and common stop words */
+        size_t len = strlen(token);
+        if (len >= 4 &&
+            strcmp(token, "that") != 0 &&
+            strcmp(token, "this") != 0 &&
+            strcmp(token, "with") != 0 &&
+            strcmp(token, "from") != 0 &&
+            strcmp(token, "have") != 0 &&
+            strcmp(token, "been") != 0) {
+
+            /* Convert to lowercase */
+            char* word = strdup(token);
+            if (word) {
+                for (size_t i = 0; word[i]; i++) {
+                    word[i] = tolower((unsigned char)word[i]);
+                }
+
+                /* Grow array if needed */
+                if (*count >= capacity) {
+                    capacity *= 2;
+                    char** new_words = realloc(words, capacity * sizeof(char*));
+                    if (!new_words) {
+                        free(word);
+                        break;
+                    }
+                    words = new_words;
+                }
+
+                words[*count] = word;
+                (*count)++;
+            }
+        }
+
+        token = strtok(NULL, " \t\n.,;:!?()[]{}\"'");
+    }
+
+    free(text_copy);
+    *keywords = words;
+}
+
+/* Helper: Count keyword frequencies and return top N */
+static int extract_top_topics(memory_record_t** records, size_t record_count,
+                              topic_count_t** topics, size_t* topic_count) {
+    if (!records || !topics || !topic_count) {
+        return E_INPUT_NULL;
+    }
+
+    *topics = NULL;
+    *topic_count = 0;
+
+    /* Extract all keywords from all records */
+    typedef struct {
+        char* word;
+        size_t count;
+    } word_freq_t;
+
+    word_freq_t* frequencies = malloc(MAX_DIGEST_TOPICS * sizeof(word_freq_t));
+    if (!frequencies) {
+        return E_SYSTEM_MEMORY;
+    }
+    size_t freq_count = 0;
+
+    /* Scan all records */
+    for (size_t i = 0; i < record_count; i++) {
+        if (!records[i] || !records[i]->content) {
+            continue;
+        }
+
+        char** keywords = NULL;
+        size_t keyword_count = 0;
+        extract_keywords_from_text(records[i]->content, &keywords, &keyword_count);
+
+        /* Count each keyword */
+        for (size_t j = 0; j < keyword_count; j++) {
+            /* Find existing or add new */
+            bool found = false;
+            for (size_t k = 0; k < freq_count; k++) {
+                if (strcmp(frequencies[k].word, keywords[j]) == 0) {
+                    frequencies[k].count++;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found && freq_count < MAX_DIGEST_TOPICS) {
+                frequencies[freq_count].word = keywords[j];
+                frequencies[freq_count].count = 1;
+                freq_count++;
+            } else if (!found) {
+                free(keywords[j]);
+            }
+        }
+
+        free(keywords);
+    }
+
+    /* Sort by frequency (simple bubble sort, small N) */
+    for (size_t i = 0; i < freq_count; i++) {
+        for (size_t j = i + 1; j < freq_count; j++) {
+            if (frequencies[j].count > frequencies[i].count) {
+                word_freq_t temp = frequencies[i];
+                frequencies[i] = frequencies[j];
+                frequencies[j] = temp;
+            }
+        }
+    }
+
+    /* Convert to topic_count_t array */
+    topic_count_t* result = malloc(freq_count * sizeof(topic_count_t));
+    if (!result) {
+        for (size_t i = 0; i < freq_count; i++) {
+            free(frequencies[i].word);
+        }
+        free(frequencies);
+        return E_SYSTEM_MEMORY;
+    }
+
+    for (size_t i = 0; i < freq_count; i++) {
+        result[i].name = frequencies[i].word;
+        result[i].count = frequencies[i].count;
+    }
+
+    free(frequencies);
+    *topics = result;
+    *topic_count = freq_count;
+
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Extract unique collections from records */
+static int extract_collections(memory_record_t** records, size_t record_count,
+                               collection_count_t** collections, size_t* collection_count) {
+    if (!records || !collections || !collection_count) {
+        return E_INPUT_NULL;
+    }
+
+    *collections = NULL;
+    *collection_count = 0;
+
+    collection_count_t* result = malloc(MAX_DIGEST_COLLECTIONS * sizeof(collection_count_t));
+    if (!result) {
+        return E_SYSTEM_MEMORY;
+    }
+
+    size_t count = 0;
+
+    /* Scan all records for unique collections */
+    for (size_t i = 0; i < record_count; i++) {
+        if (!records[i] || !records[i]->collection) {
+            continue;
+        }
+
+        /* Find existing or add new */
+        bool found = false;
+        for (size_t j = 0; j < count; j++) {
+            if (strcmp(result[j].name, records[i]->collection) == 0) {
+                result[j].count++;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found && count < MAX_DIGEST_COLLECTIONS) {
+            result[count].name = strdup(records[i]->collection);
+            if (!result[count].name) {
+                /* Cleanup and return */
+                for (size_t j = 0; j < count; j++) {
+                    free(result[j].name);
+                }
+                free(result);
+                return E_SYSTEM_MEMORY;
+            }
+            result[count].count = 1;
+            count++;
+        }
+    }
+
+    if (count == 0) {
+        free(result);
+        return KATRA_SUCCESS;  /* No collections, not an error */
+    }
+
+    *collections = result;
+    *collection_count = count;
+
+    return KATRA_SUCCESS;
+}
+
+/* Main function: Generate memory digest */
+int memory_digest(size_t limit, size_t offset, memory_digest_t** digest) {
+    if (!digest) {
+        katra_report_error(E_INPUT_NULL, "memory_digest", "digest is NULL");
+        return E_INPUT_NULL;
+    }
+
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "memory_digest",
+                          "Breathing layer not initialized");
+        return E_INVALID_STATE;
+    }
+
+    const char* ci_id = breathing_get_ci_id();
+    if (!ci_id) {
+        katra_report_error(E_INVALID_STATE, "memory_digest", "CI ID not set");
+        return E_INVALID_STATE;
+    }
+
+    /* Allocate digest structure */
+    memory_digest_t* result = calloc(1, sizeof(memory_digest_t));
+    if (!result) {
+        katra_report_error(E_SYSTEM_MEMORY, "memory_digest",
+                          "Failed to allocate digest");
+        return E_SYSTEM_MEMORY;
+    }
+
+    int status = KATRA_SUCCESS;
+
+    /* Step 1: Get overall memory stats */
+    memory_stats_t stats = {0};
+    status = katra_memory_stats(ci_id, &stats);
+    if (status == KATRA_SUCCESS) {
+        result->total_memories = stats.total_records;
+        result->oldest_memory = stats.oldest_memory;
+        result->newest_memory = stats.newest_memory;
+    }
+
+    /* Step 2: Get sample of recent memories for topic/collection extraction */
+    memory_record_t** sample_results = NULL;
+    size_t sample_count = 0;
+
+    memory_query_t sample_query = {
+        .ci_id = ci_id,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = TOPIC_SAMPLE_SIZE
+    };
+
+    status = katra_memory_query(&sample_query, &sample_results, &sample_count);
+    if (status == KATRA_SUCCESS && sample_count > 0) {
+        /* Extract topics */
+        extract_top_topics(sample_results, sample_count,
+                          &result->topics, &result->topic_count);
+
+        /* Extract collections */
+        extract_collections(sample_results, sample_count,
+                           &result->collections, &result->collection_count);
+
+        katra_memory_free_results(sample_results, sample_count);
+    }
+
+    /* Step 3: Get paginated memories */
+    memory_query_t paged_query = {
+        .ci_id = ci_id,
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = limit
+    };
+
+    memory_record_t** paged_results = NULL;
+    size_t paged_count = 0;
+
+    status = katra_memory_query(&paged_query, &paged_results, &paged_count);
+    if (status == KATRA_SUCCESS) {
+        /* Skip 'offset' results (simple pagination) */
+        size_t start_idx = (offset < paged_count) ? offset : paged_count;
+        size_t actual_count = (start_idx < paged_count) ? (paged_count - start_idx) : 0;
+
+        if (actual_count > limit) {
+            actual_count = limit;
+        }
+
+        /* Copy memory contents */
+        if (actual_count > 0) {
+            result->memories = breathing_copy_memory_contents(
+                paged_results + start_idx, actual_count, &result->memory_count);
+        }
+
+        result->offset = offset;
+        result->limit = limit;
+
+        katra_memory_free_results(paged_results, paged_count);
+    }
+
+    *digest = result;
+
+    LOG_INFO("Generated memory digest: %zu total, %zu topics, %zu collections, %zu memories",
+            result->total_memories, result->topic_count,
+            result->collection_count, result->memory_count);
+
+    return KATRA_SUCCESS;
+}
+
+/* Free memory digest */
+void free_memory_digest(memory_digest_t* digest) {
+    if (!digest) {
+        return;
+    }
+
+    /* Free topics */
+    if (digest->topics) {
+        for (size_t i = 0; i < digest->topic_count; i++) {
+            free(digest->topics[i].name);
+        }
+        free(digest->topics);
+    }
+
+    /* Free collections */
+    if (digest->collections) {
+        for (size_t i = 0; i < digest->collection_count; i++) {
+            free(digest->collections[i].name);
+        }
+        free(digest->collections);
+    }
+
+    /* Free memories */
+    if (digest->memories) {
+        for (size_t i = 0; i < digest->memory_count; i++) {
+            free(digest->memories[i]);
+        }
+        free(digest->memories);
+    }
+
+    free(digest);
+}

@@ -211,6 +211,144 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
     return mcp_tool_success(response);
 }
 
+/* Tool: katra_memory_digest */
+json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
+    (void)id;  /* Unused - id handled by caller */
+
+    /* Optional parameters */
+    size_t limit = 10;  /* Default: 10 memories */
+    size_t offset = 0;   /* Default: start at newest */
+
+    if (args) {
+        json_t* limit_json = json_object_get(args, "limit");
+        if (limit_json && json_is_integer(limit_json)) {
+            limit = (size_t)json_integer_value(limit_json);
+        }
+
+        json_t* offset_json = json_object_get(args, "offset");
+        if (offset_json && json_is_integer(offset_json)) {
+            offset = (size_t)json_integer_value(offset_json);
+        }
+    }
+
+    const char* session_name = mcp_get_session_name();
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    memory_digest_t* digest = NULL;
+    int result = memory_digest(limit, offset, &digest);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (result != KATRA_SUCCESS || !digest) {
+        const char* msg = katra_error_message(result);
+        const char* suggestion = katra_error_suggestion(result);
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error("Failed to generate memory digest", details);
+    }
+
+    /* Build comprehensive response */
+    char response[MCP_RESPONSE_BUFFER];
+    size_t resp_offset = 0;
+
+    /* Memory overview */
+    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                           "Memory Digest for %s:\n\n", session_name);
+
+    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                           "INVENTORY:\n");
+    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                           "- Total: %zu memories\n", digest->total_memories);
+
+    if (digest->oldest_memory > 0) {
+        char oldest_date[32];
+        struct tm* tm_oldest = localtime(&digest->oldest_memory);
+        strftime(oldest_date, sizeof(oldest_date), "%Y-%m-%d", tm_oldest);
+        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                               "- First memory: %s\n", oldest_date);
+    }
+
+    if (digest->newest_memory > 0) {
+        char newest_date[32];
+        struct tm* tm_newest = localtime(&digest->newest_memory);
+        strftime(newest_date, sizeof(newest_date), "%Y-%m-%d %H:%M", tm_newest);
+        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                               "- Last memory: %s\n", newest_date);
+    }
+
+    /* Topics */
+    if (digest->topic_count > 0) {
+        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                               "\nTOPICS (from recent memories):\n");
+        size_t topics_to_show = (digest->topic_count > 10) ? 10 : digest->topic_count;
+        for (size_t i = 0; i < topics_to_show; i++) {
+            resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                                   "- %s (%zu)\n",
+                                   digest->topics[i].name, digest->topics[i].count);
+
+            if (resp_offset >= sizeof(response) - 500) break;
+        }
+    }
+
+    /* Collections */
+    if (digest->collection_count > 0) {
+        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                               "\nCOLLECTIONS:\n");
+        for (size_t i = 0; i < digest->collection_count; i++) {
+            resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                                   "- %s (%zu)\n",
+                                   digest->collections[i].name, digest->collections[i].count);
+
+            if (resp_offset >= sizeof(response) - 500) break;
+        }
+    }
+
+    /* Recent memories */
+    if (digest->memory_count > 0) {
+        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                               "\nRECENT MEMORIES (showing %zu", digest->memory_count);
+        if (offset > 0) {
+            resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                                   ", starting from #%zu", offset + 1);
+        }
+        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset, "):\n");
+
+        for (size_t i = 0; i < digest->memory_count; i++) {
+            /* Truncate long memories */
+            char truncated[121];
+            strncpy(truncated, digest->memories[i], 120);
+            truncated[120] = '\0';
+            if (strlen(digest->memories[i]) > 120) {
+                strcat(truncated, "...");
+            }
+
+            resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                                   "%zu. %s\n", offset + i + 1, truncated);
+
+            if (resp_offset >= sizeof(response) - 200) {
+                resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                                       "... (truncated)\n");
+                break;
+            }
+        }
+    }
+
+    /* Navigation hints */
+    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                           "\nNAVIGATION:\n");
+    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                           "- katra_memory_digest(limit=%zu, offset=%zu) for more\n",
+                           limit, offset + limit);
+    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                           "- katra_recall(\"topic\") to search by keyword\n");
+
+    free_memory_digest(digest);
+    return mcp_tool_success(response);
+}
+
 /* Tool: katra_learn */
 json_t* mcp_tool_learn(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */

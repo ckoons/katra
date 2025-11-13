@@ -64,6 +64,52 @@ typedef struct {
     bool auto_captured;             /* Was this interstitial? */
 } memory_context_t;
 
+/** Topic with count (for memory digest) */
+typedef struct {
+    char* name;                     /* Topic/keyword name */
+    size_t count;                   /* Number of memories with this topic */
+} topic_count_t;
+
+/** Collection with count (for memory digest) */
+typedef struct {
+    char* name;                     /* Collection path */
+    size_t count;                   /* Number of memories in collection */
+} collection_count_t;
+
+/** Memory digest - Complete memory inventory with pagination
+ *
+ * Provides a comprehensive overview of all memories including:
+ * - Total memory count and date range
+ * - Extracted topics/keywords with frequency
+ * - Active collections with counts
+ * - Paginated memory records
+ *
+ * Use for:
+ * - "Welcome back" context on session start
+ * - Browsing all memories with pagination
+ * - Understanding what topics/collections exist
+ */
+typedef struct {
+    /* Overview */
+    size_t total_memories;          /* Total memory count */
+    time_t oldest_memory;           /* Oldest memory timestamp */
+    time_t newest_memory;           /* Newest memory timestamp */
+
+    /* Topics (extracted from recent memories) */
+    topic_count_t* topics;          /* Array of topics with counts */
+    size_t topic_count;             /* Number of topics */
+
+    /* Collections (extracted from memories) */
+    collection_count_t* collections; /* Array of collections with counts */
+    size_t collection_count;        /* Number of collections */
+
+    /* Paginated memories */
+    char** memories;                /* Array of memory content strings */
+    size_t memory_count;            /* Number of memories returned */
+    size_t offset;                  /* Starting position (0 = newest) */
+    size_t limit;                   /* Max memories requested */
+} memory_digest_t;
+
 /* Simple primitives - these feel natural to use */
 
 /**
@@ -287,6 +333,42 @@ char** recall_about(const char* topic, size_t* count);
  * Returns: Array of strings (caller owns), or NULL on error/no matches
  */
 char** what_do_i_know(const char* concept, size_t* count);
+
+/**
+ * memory_digest() - Get comprehensive memory inventory
+ *
+ * Returns a complete digest of all memories including:
+ * - Total count, date range
+ * - Topics/keywords extracted from recent memories
+ * - Active collections with counts
+ * - Paginated memory records
+ *
+ * Perfect for "welcome back" context or browsing all memories.
+ *
+ * Parameters:
+ *   limit - Max memories to return (default: 10)
+ *   offset - Starting position, 0=newest (default: 0)
+ *   digest - Receives allocated digest (caller must free with free_memory_digest())
+ *
+ * Example:
+ *   memory_digest_t* digest = NULL;
+ *   memory_digest(10, 0, &digest);  // Get 10 most recent
+ *   // Use digest...
+ *   free_memory_digest(digest);
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int memory_digest(size_t limit, size_t offset, memory_digest_t** digest);
+
+/**
+ * free_memory_digest() - Free digest returned by memory_digest()
+ *
+ * Frees all allocated memory in digest structure including:
+ * - Topic/collection arrays
+ * - Memory content strings
+ * - The digest structure itself
+ */
+void free_memory_digest(memory_digest_t* digest);
 
 /**
  * free_memory_list() - Free memory list returned by context functions

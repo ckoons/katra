@@ -291,6 +291,27 @@ static json_t* handle_tools_list(json_t* request) {
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_RECENT, MCP_DESC_RECENT, recent_schema));
 
+    /* katra_memory_digest - 2 optional parameters */
+    json_t* digest_schema = json_object();
+    json_object_set_new(digest_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* digest_props = json_object();
+
+    json_t* digest_limit_prop = json_object();
+    json_object_set_new(digest_limit_prop, MCP_FIELD_TYPE, json_string("integer"));
+    json_object_set_new(digest_limit_prop, MCP_FIELD_DESCRIPTION, json_string("Number of memories to return (default: 10)"));
+    json_object_set_new(digest_props, "limit", digest_limit_prop);
+
+    json_t* offset_prop = json_object();
+    json_object_set_new(offset_prop, MCP_FIELD_TYPE, json_string("integer"));
+    json_object_set_new(offset_prop, MCP_FIELD_DESCRIPTION, json_string("Starting position, 0=newest (default: 0)"));
+    json_object_set_new(digest_props, "offset", offset_prop);
+
+    json_object_set_new(digest_schema, MCP_FIELD_PROPERTIES, digest_props);
+    /* No required fields - both parameters are optional */
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_MEMORY_DIGEST, MCP_DESC_MEMORY_DIGEST, digest_schema));
+
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_LEARN, MCP_DESC_LEARN,
             mcp_build_tool_schema_1param(MCP_PARAM_KNOWLEDGE, MCP_PARAM_DESC_KNOWLEDGE)));
@@ -492,6 +513,8 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_recall(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_RECENT) == 0) {
         tool_result = mcp_tool_recent(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_MEMORY_DIGEST) == 0) {
+        tool_result = mcp_tool_memory_digest(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_LEARN) == 0) {
         tool_result = mcp_tool_learn(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_DECIDE) == 0) {

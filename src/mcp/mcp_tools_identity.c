@@ -160,44 +160,68 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
                 "Your memories will persist under this name.\n\n", name);
     }
 
-    /* Get recent memories to show context (default 5 most recent) */
-    size_t memory_count = 0;
-    char** recent_memories = NULL;
+    /* Get memory digest to show context during registration */
+    memory_digest_t* digest = NULL;
 
     lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result == 0) {
-        recent_memories = recent_thoughts(5, &memory_count);
+        memory_digest(5, 0, &digest);
         pthread_mutex_unlock(&g_katra_api_lock);
     }
 
-    if (recent_memories && memory_count > 0) {
+    if (digest && digest->total_memories > 0) {
+        /* Show memory inventory */
         offset += snprintf(response + offset, sizeof(response) - offset,
-                         "Your last %zu memories:\n", memory_count);
+                         "MEMORY INVENTORY:\n");
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "Total memories: %zu\n", digest->total_memories);
 
-        for (size_t i = 0; i < memory_count; i++) {
-            if (recent_memories[i]) {
-                /* Truncate long memories to first 80 chars */
-                char truncated[84];
-                strncpy(truncated, recent_memories[i], 80);
-                truncated[80] = '\0';
-                if (strlen(recent_memories[i]) > 80) {
-                    strcat(truncated, "...");
-                }
-
+        /* Show top topics if available */
+        if (digest->topic_count > 0) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                             "\nTop topics: ");
+            size_t topics_shown = (digest->topic_count < 5) ? digest->topic_count : 5;
+            for (size_t i = 0; i < topics_shown; i++) {
                 offset += snprintf(response + offset, sizeof(response) - offset,
-                                 "%zu. %s\n", i + 1, truncated);
-
-                /* Safety check */
-                if (offset >= sizeof(response) - 200) {
+                                 "%s(%zu)%s", digest->topics[i].name,
+                                 digest->topics[i].count,
+                                 (i < topics_shown - 1) ? ", " : "\n");
+                if (offset >= sizeof(response) - 300) {
                     break;
                 }
             }
         }
 
-        offset += snprintf(response + offset, sizeof(response) - offset,
-                         "\nUse katra_recent() for more, or katra_recall(topic) to search.");
+        /* Show recent memories */
+        if (digest->memory_count > 0) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                             "\nYour last %zu memories:\n", digest->memory_count);
 
-        free_memory_list(recent_memories, memory_count);
+            for (size_t i = 0; i < digest->memory_count; i++) {
+                if (digest->memories[i]) {
+                    /* Truncate long memories to first 80 chars */
+                    char truncated[84];
+                    strncpy(truncated, digest->memories[i], 80);
+                    truncated[80] = '\0';
+                    if (strlen(digest->memories[i]) > 80) {
+                        strcat(truncated, "...");
+                    }
+
+                    offset += snprintf(response + offset, sizeof(response) - offset,
+                                     "%zu. %s\n", i + 1, truncated);
+
+                    /* Safety check */
+                    if (offset >= sizeof(response) - 200) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "\nUse katra_memory_digest() for full inventory, or katra_recall(topic) to search.");
+
+        free_memory_digest(digest);
     } else {
         offset += snprintf(response + offset, sizeof(response) - offset,
                          "This appears to be your first session. Welcome!");
