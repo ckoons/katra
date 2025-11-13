@@ -180,4 +180,51 @@ void katra_team_free_members(team_member_t* members, size_t count);
  */
 void katra_team_free_list(char** teams, size_t count);
 
+/* ============================================================================
+ * SQL QUERY CONSTANTS
+ * ============================================================================ */
+
+/* Team table SQL */
+#define TEAM_SQL_CHECK_EXISTS \
+    "SELECT team_name FROM teams WHERE team_name = ?"
+
+#define TEAM_SQL_CREATE \
+    "INSERT INTO teams (team_name, owner_ci_id, created_at) VALUES (?, ?, ?)"
+
+#define TEAM_SQL_GET_OWNER \
+    "SELECT owner_ci_id FROM teams WHERE team_name = ?"
+
+#define TEAM_SQL_DELETE \
+    "DELETE FROM teams WHERE team_name = ?"
+
+/* Team member SQL */
+#define TEAM_SQL_CHECK_MEMBER \
+    "SELECT ci_id FROM team_members WHERE team_name = ? AND ci_id = ?"
+
+#define TEAM_SQL_GET_MEMBER_STATUS \
+    "SELECT is_owner FROM team_members WHERE team_name = ? AND ci_id = ?"
+
+#define TEAM_SQL_ADD_MEMBER \
+    "INSERT INTO team_members (team_name, ci_id, is_owner, joined_at) VALUES (?, ?, ?, ?)"
+
+#define TEAM_SQL_REMOVE_MEMBER \
+    "DELETE FROM team_members WHERE team_name = ? AND ci_id = ?"
+
+#define TEAM_SQL_LIST_MEMBERS \
+    "SELECT ci_id, is_owner, joined_at FROM team_members WHERE team_name = ? ORDER BY joined_at ASC"
+
+#define TEAM_SQL_LIST_FOR_CI \
+    "SELECT team_name FROM team_members WHERE ci_id = ? ORDER BY joined_at ASC"
+
+/* Error messages */
+#define TEAM_ERR_MUTEX_LOCK "Failed to acquire mutex lock"
+#define TEAM_ERR_NOT_INITIALIZED "Team registry not initialized"
+#define TEAM_ERR_ALREADY_EXISTS "Team already exists"
+#define TEAM_ERR_NOT_FOUND "Team not found"
+#define TEAM_ERR_ALREADY_MEMBER "Already a member of this team"
+#define TEAM_ERR_NOT_MEMBER "Not a member of this team"
+#define TEAM_ERR_OWNER_CANNOT_LEAVE "Team owner cannot leave (must delete team)"
+#define TEAM_ERR_NOT_OWNER "Only team owner can perform this action"
+#define TEAM_ERR_DB_QUERY "Database query failed"
+
 #endif /* KATRA_TEAM_H */

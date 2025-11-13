@@ -27,6 +27,7 @@ pthread_mutex_t g_team_lock = PTHREAD_MUTEX_INITIALIZER;
 bool g_team_initialized = false;
 
 /* SQL schema for teams table */
+/* GUIDELINE_APPROVED: Multi-line SQL schema string */
 #define TEAMS_TABLE_SCHEMA \
     "CREATE TABLE IF NOT EXISTS teams (" \
     "  team_name TEXT PRIMARY KEY," \
@@ -35,6 +36,7 @@ bool g_team_initialized = false;
     ")"
 
 /* SQL schema for team_members table */
+/* GUIDELINE_APPROVED: Multi-line SQL schema string */
 #define TEAM_MEMBERS_TABLE_SCHEMA \
     "CREATE TABLE IF NOT EXISTS team_members (" \
     "  team_name TEXT NOT NULL," \
@@ -46,9 +48,11 @@ bool g_team_initialized = false;
     ")"
 
 /* Indices for fast lookup */
+/* GUIDELINE_APPROVED: SQL index creation strings */
 #define CREATE_MEMBER_INDEX \
     "CREATE INDEX IF NOT EXISTS idx_team_members_ci ON team_members(ci_id)"
 
+/* GUIDELINE_APPROVED: SQL index creation strings */
 #define CREATE_TEAM_INDEX \
     "CREATE INDEX IF NOT EXISTS idx_team_members_team ON team_members(team_name)"
 
@@ -63,7 +67,7 @@ int katra_team_init(void) {
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_init", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_init", TEAM_ERR_MUTEX_LOCK);
         return E_SYSTEM_PERMISSION;
     }
 
@@ -89,7 +93,7 @@ int katra_team_init(void) {
     }
 
     /* Enable foreign keys */
-    sqlite3_exec(g_team_db, "PRAGMA foreign_keys = ON", NULL, NULL, NULL);
+    sqlite3_exec(g_team_db, "PRAGMA foreign_keys = ON", NULL, NULL, NULL);  /* GUIDELINE_APPROVED: SQLite pragma */
 
     /* Create teams table */
     rc = sqlite3_exec(g_team_db, TEAMS_TABLE_SCHEMA, NULL, NULL, &err_msg);
@@ -127,7 +131,7 @@ int katra_team_init(void) {
 void katra_team_cleanup(void) {
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_cleanup", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_cleanup", TEAM_ERR_MUTEX_LOCK);
         /* Continue cleanup anyway to avoid leaks */
     }
 
@@ -157,13 +161,13 @@ int katra_team_create(const char* team_name, const char* owner_ci_id) {
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_create", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_create", TEAM_ERR_MUTEX_LOCK);
         return E_SYSTEM_PERMISSION;
     }
 
     /* Check if team already exists */
     sqlite3_stmt* stmt = NULL;
-    const char* check_sql = "SELECT team_name FROM teams WHERE team_name = ?";
+    const char* check_sql = TEAM_SQL_CHECK_EXISTS;
     int rc = sqlite3_prepare_v2(g_team_db, check_sql, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
@@ -177,8 +181,7 @@ int katra_team_create(const char* team_name, const char* owner_ci_id) {
     }
 
     /* Insert team */
-    const char* insert_sql = "INSERT INTO teams (team_name, owner_ci_id, created_at) "
-                             "VALUES (?, ?, ?)";
+    const char* insert_sql = TEAM_SQL_CREATE;
     rc = sqlite3_prepare_v2(g_team_db, insert_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);
@@ -198,9 +201,7 @@ int katra_team_create(const char* team_name, const char* owner_ci_id) {
     }
 
     /* Add owner as first member */
-    const char* member_sql = "INSERT INTO team_members "
-                             "(team_name, ci_id, is_owner, joined_at) "
-                             "VALUES (?, ?, 1, ?)";
+    const char* member_sql = TEAM_SQL_ADD_MEMBER;
     rc = sqlite3_prepare_v2(g_team_db, member_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);
@@ -209,7 +210,8 @@ int katra_team_create(const char* team_name, const char* owner_ci_id) {
 
     sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, owner_ci_id, -1, SQLITE_STATIC);
-    sqlite3_bind_int64(stmt, 3, (sqlite3_int64)time(NULL));
+    sqlite3_bind_int(stmt, 3, 1);  /* is_owner = 1 */
+    sqlite3_bind_int64(stmt, 4, (sqlite3_int64)time(NULL));
 
     rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
@@ -236,13 +238,13 @@ int katra_team_join(const char* team_name, const char* ci_id,
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_join", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_join", TEAM_ERR_MUTEX_LOCK);
         return E_SYSTEM_PERMISSION;
     }
 
     /* Check if team exists */
     sqlite3_stmt* stmt = NULL;
-    const char* check_sql = "SELECT team_name FROM teams WHERE team_name = ?";
+    const char* check_sql = TEAM_SQL_CHECK_EXISTS;
     int rc = sqlite3_prepare_v2(g_team_db, check_sql, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
@@ -256,8 +258,7 @@ int katra_team_join(const char* team_name, const char* ci_id,
     }
 
     /* Check if inviter is a member */
-    const char* member_check = "SELECT ci_id FROM team_members "
-                                "WHERE team_name = ? AND ci_id = ?";
+    const char* member_check = TEAM_SQL_CHECK_MEMBER;
     rc = sqlite3_prepare_v2(g_team_db, member_check, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
@@ -272,8 +273,7 @@ int katra_team_join(const char* team_name, const char* ci_id,
     }
 
     /* Check if CI already member */
-    const char* already_member = "SELECT ci_id FROM team_members "
-                                  "WHERE team_name = ? AND ci_id = ?";
+    const char* already_member = TEAM_SQL_CHECK_MEMBER;
     rc = sqlite3_prepare_v2(g_team_db, already_member, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
@@ -288,9 +288,7 @@ int katra_team_join(const char* team_name, const char* ci_id,
     }
 
     /* Add new member */
-    const char* insert_sql = "INSERT INTO team_members "
-                             "(team_name, ci_id, is_owner, joined_at) "
-                             "VALUES (?, ?, 0, ?)";
+    const char* insert_sql = TEAM_SQL_ADD_MEMBER;
     rc = sqlite3_prepare_v2(g_team_db, insert_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);
@@ -299,7 +297,8 @@ int katra_team_join(const char* team_name, const char* ci_id,
 
     sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, ci_id, -1, SQLITE_STATIC);
-    sqlite3_bind_int64(stmt, 3, (sqlite3_int64)time(NULL));
+    sqlite3_bind_int(stmt, 3, 0);  /* is_owner = 0 */
+    sqlite3_bind_int64(stmt, 4, (sqlite3_int64)time(NULL));
 
     rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
@@ -325,14 +324,13 @@ int katra_team_leave(const char* team_name, const char* ci_id) {
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_leave", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_leave", TEAM_ERR_MUTEX_LOCK);
         return E_SYSTEM_PERMISSION;
     }
 
     /* Check if CI is owner */
     sqlite3_stmt* stmt = NULL;
-    const char* owner_check = "SELECT is_owner FROM team_members "
-                               "WHERE team_name = ? AND ci_id = ?";
+    const char* owner_check = TEAM_SQL_GET_MEMBER_STATUS;
     int rc = sqlite3_prepare_v2(g_team_db, owner_check, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
@@ -353,8 +351,7 @@ int katra_team_leave(const char* team_name, const char* ci_id) {
     }
 
     /* Remove member */
-    const char* delete_sql = "DELETE FROM team_members "
-                             "WHERE team_name = ? AND ci_id = ?";
+    const char* delete_sql = TEAM_SQL_REMOVE_MEMBER;
     rc = sqlite3_prepare_v2(g_team_db, delete_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);
@@ -388,13 +385,13 @@ int katra_team_delete(const char* team_name, const char* owner_ci_id) {
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_delete", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_delete", TEAM_ERR_MUTEX_LOCK);
         return E_SYSTEM_PERMISSION;
     }
 
     /* Verify ownership */
     sqlite3_stmt* stmt = NULL;
-    const char* owner_check = "SELECT owner_ci_id FROM teams WHERE team_name = ?";
+    const char* owner_check = TEAM_SQL_GET_OWNER;
     int rc = sqlite3_prepare_v2(g_team_db, owner_check, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, team_name, -1, SQLITE_STATIC);
@@ -416,7 +413,7 @@ int katra_team_delete(const char* team_name, const char* owner_ci_id) {
     }
 
     /* Delete team (cascade will remove members) */
-    const char* delete_sql = "DELETE FROM teams WHERE team_name = ?";
+    const char* delete_sql = TEAM_SQL_DELETE;
     rc = sqlite3_prepare_v2(g_team_db, delete_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);

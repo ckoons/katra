@@ -36,13 +36,12 @@ bool katra_team_is_member(const char* team_name, const char* ci_id) {
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_is_member", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_is_member", TEAM_ERR_MUTEX_LOCK);
         return false;
     }
 
     sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT ci_id FROM team_members "
-                      "WHERE team_name = ? AND ci_id = ?";
+    const char* sql = TEAM_SQL_CHECK_MEMBER;
     int rc = sqlite3_prepare_v2(g_team_db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);
@@ -67,13 +66,12 @@ bool katra_team_is_owner(const char* team_name, const char* ci_id) {
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_is_owner", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_is_owner", TEAM_ERR_MUTEX_LOCK);
         return false;
     }
 
     sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT is_owner FROM team_members "
-                      "WHERE team_name = ? AND ci_id = ?";
+    const char* sql = TEAM_SQL_GET_MEMBER_STATUS;
     int rc = sqlite3_prepare_v2(g_team_db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);
@@ -110,14 +108,13 @@ int katra_team_list_members(const char* team_name,
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_list_members", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_list_members", TEAM_ERR_MUTEX_LOCK);
         return E_SYSTEM_PERMISSION;
     }
 
     /* Query all members */
     sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT ci_id, is_owner, joined_at FROM team_members "
-                      "WHERE team_name = ? ORDER BY joined_at ASC";
+    const char* sql = TEAM_SQL_LIST_MEMBERS;
     int rc = sqlite3_prepare_v2(g_team_db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);
@@ -195,14 +192,13 @@ int katra_team_list_for_ci(const char* ci_id,
 
     int lock_result = pthread_mutex_lock(&g_team_lock);
     if (lock_result != 0) {
-        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_list_for_ci", "Failed to acquire mutex lock");
+        katra_report_error(E_SYSTEM_PERMISSION, "katra_team_list_for_ci", TEAM_ERR_MUTEX_LOCK);
         return E_SYSTEM_PERMISSION;
     }
 
     /* Query all teams for this CI */
     sqlite3_stmt* stmt = NULL;
-    const char* sql = "SELECT team_name FROM team_members "
-                      "WHERE ci_id = ? ORDER BY joined_at ASC";
+    const char* sql = TEAM_SQL_LIST_FOR_CI;
     int rc = sqlite3_prepare_v2(g_team_db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         pthread_mutex_unlock(&g_team_lock);

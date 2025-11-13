@@ -211,4 +211,19 @@ static inline const char* katra_error_type_string(int type) {
 #define KATRA_BACKEND_NAME_JSONL "jsonl"
 #define KATRA_BACKEND_NAME_SQLITE "sqlite"
 
+/* Tier1 error messages */
+#define KATRA_ERR_RECORD_IS_NULL "record is NULL"
+#define KATRA_ERR_RECORD_CI_ID_NULL "record->ci_id is NULL"
+#define KATRA_ERR_FAILED_GET_FILE_PATH "Failed to get file path"
+#define KATRA_ERR_FAILED_ENSURE_DIR "Failed to ensure directory"
+#define KATRA_ERR_FAILED_WRITE_RECORD "Failed to write record"
+
+/* Tier2 error messages */
+#define KATRA_ERR_DIGEST_IS_NULL "digest is NULL"
+#define KATRA_ERR_PERIOD_ID_NULL "period_id is NULL"
+#define KATRA_ERR_FAILED_BUILD_PATH "Failed to build path"
+#define KATRA_ERR_FAILED_WRITE_DIGEST "Failed to write digest"
+#define KATRA_ERR_CI_ID_REQUIRED "ci_id is required"
+#define KATRA_ERR_FAILED_LOAD_DIGESTS "Failed to load digests"
+
 #endif /* KATRA_ERROR_H */
