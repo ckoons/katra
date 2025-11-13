@@ -163,7 +163,7 @@ json_t* mcp_resource_working_context(json_t* id) {
     }
 
     /* Build resource response with optional onboarding */
-    char enhanced_context[16384];
+    char enhanced_context[KATRA_BUFFER_LARGE];
     const char* final_context = context;
 
     if (is_first_call) {

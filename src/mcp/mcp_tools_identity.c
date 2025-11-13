@@ -55,7 +55,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
         if (result != KATRA_SUCCESS) {
             pthread_mutex_unlock(&g_katra_api_lock);
             const char* msg = katra_error_message(result);
-            char error_details[512];
+            char error_details[KATRA_BUFFER_MESSAGE];
             snprintf(error_details, sizeof(error_details),
                     "Failed to generate CI identity: %s", msg);
             return mcp_tool_error("Registration failed", error_details);
@@ -65,7 +65,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
         if (result != KATRA_SUCCESS) {
             pthread_mutex_unlock(&g_katra_api_lock);
             const char* msg = katra_error_message(result);
-            char error_details[512];
+            char error_details[KATRA_BUFFER_MESSAGE];
             snprintf(error_details, sizeof(error_details),
                     "Failed to register persona: %s", msg);
             return mcp_tool_error("Registration failed", error_details);
@@ -86,7 +86,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
 
     if (result != KATRA_SUCCESS) {
         const char* msg = katra_error_message(result);
-        char error_details[512];
+        char error_details[KATRA_BUFFER_MESSAGE];
         snprintf(error_details, sizeof(error_details),
                 "Failed to start session with name '%s': %s", name, msg);
         return mcp_tool_error("Registration failed", error_details);
@@ -123,7 +123,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
     }
 
     /* Create welcome memory */
-    char welcome[512];
+    char welcome[KATRA_BUFFER_MESSAGE];
     if (role && strlen(role) > 0) {
         snprintf(welcome, sizeof(welcome),
                 "Session started. My name is %s, I'm a %s.", name, role);

@@ -10,6 +10,7 @@
 #include <time.h>
 #include <jansson.h>
 #include "katra_mcp.h"
+#include "katra_limits.h"
 #include "katra_init.h"
 #include "katra_breathing.h"
 #include "katra_lifecycle.h"
@@ -23,8 +24,8 @@
 
 /* Global persona name (set during initialization) */
 /* GUIDELINE_APPROVED: global state initialization constants */
-char g_persona_name[256] = "";
-char g_ci_id[256] = "";
+char g_persona_name[KATRA_CI_ID_SIZE] = "";
+char g_ci_id[KATRA_CI_ID_SIZE] = "";
 
 /* Global vector store for semantic search (Phase 6.1) */
 vector_store_t* g_vector_store = NULL;
@@ -306,7 +307,7 @@ int main(void) {
     }
     else {
         /* Priority 2: last_active from persona registry */
-        char last_active_name[256];
+        char last_active_name[KATRA_CI_ID_SIZE];
         result = katra_get_last_active(last_active_name, sizeof(last_active_name),
                                        g_ci_id, sizeof(g_ci_id));
 

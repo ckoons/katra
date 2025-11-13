@@ -16,6 +16,7 @@
 #include "katra_config.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 #include "katra_mcp.h"
 
 /* Get path to personas.json */
@@ -37,7 +38,7 @@ static int get_personas_path(char* path_out, size_t path_size) {
 
 /* Initialize identity system */
 int katra_identity_init(void) {
-    char personas_path[512];
+    char personas_path[KATRA_BUFFER_MESSAGE];
     int result = get_personas_path(personas_path, sizeof(personas_path));
     if (result != KATRA_SUCCESS) return result;
 
@@ -72,7 +73,7 @@ int katra_identity_init(void) {
     fclose(fp);
 
     /* Set proper permissions */
-    chmod(personas_path, 0600);
+    chmod(personas_path, KATRA_FILE_PERMISSIONS_PRIVATE);
 
     LOG_INFO("Initialized persona registry at %s", personas_path);
     return KATRA_SUCCESS;
@@ -108,7 +109,7 @@ int katra_generate_ci_id(char* buffer, size_t size) {
 
 /* Load personas.json with file locking */
 static json_t* load_personas_locked(FILE** fp_out) {
-    char personas_path[512];
+    char personas_path[KATRA_BUFFER_MESSAGE];
     int result = get_personas_path(personas_path, sizeof(personas_path));
     if (result != KATRA_SUCCESS) return NULL;
 

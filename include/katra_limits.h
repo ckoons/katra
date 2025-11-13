@@ -17,6 +17,8 @@
 #define KATRA_BUFFER_SMALL 64
 #define KATRA_BUFFER_NAME 128
 #define KATRA_BUFFER_MEDIUM 256
+#define KATRA_BUFFER_MESSAGE 512    /* Message and error detail buffers */
+#define KATRA_BUFFER_TEXT 1024      /* Text processing and conversion buffers */
 
 /* Identity-specific buffer sizes */
 #define KATRA_NAME_SIZE KATRA_BUFFER_NAME      /* Persona name buffer size */
@@ -25,6 +27,7 @@
 
 /* Standard I/O and content buffers */
 #define KATRA_BUFFER_STANDARD 4096
+#define KATRA_BUFFER_ENHANCED 8192  /* Enhanced context and protocol buffers */
 #define KATRA_BUFFER_LARGE 16384
 
 /* Growth buffer for streaming operations */
@@ -110,6 +113,9 @@
 
 /* File permissions for Katra-created files */
 #define KATRA_FILE_PERMISSIONS 0644
+
+/* File permissions for private files (e.g., persona registry) */
+#define KATRA_FILE_PERMISSIONS_PRIVATE 0600
 
 /* Directory names for Katra standard directories */
 #define KATRA_DIR_CONFIG "config"

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <jansson.h>
 #include "katra_mcp.h"
+#include "katra_limits.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_hooks.h"
@@ -98,7 +99,7 @@ static const char* inject_onboarding_if_first(const char* response_text,
 
 /* Build tool success response */
 json_t* mcp_tool_success(const char* text) {
-    char enhanced[8192];
+    char enhanced[KATRA_BUFFER_ENHANCED];
     const char* final_text = inject_onboarding_if_first(text, enhanced, sizeof(enhanced));
 
     json_t* content_array = json_array();

@@ -83,7 +83,7 @@ static bool contains_keyword(const char* text, const char** keywords) {
         return false;
     }
 
-    char lowercase[1024];
+    char lowercase[KATRA_BUFFER_TEXT];
     size_t len = strlen(text);
     if (len >= sizeof(lowercase)) {
         len = sizeof(lowercase) - 1;
@@ -166,7 +166,7 @@ int katra_analyze_conversation(convergence_detector_t* detector,
 
         /* Build rationale */
         /* GUIDELINE_APPROVED: Memory rationale strings for automatic memory formation */
-        char rationale[256] = {0};
+        char rationale[KATRA_BUFFER_MEDIUM] = {0};
         if (user_candidate->decision_made) {
             strncat(rationale, "Decision made; ", sizeof(rationale) - strlen(rationale) - 1); /* GUIDELINE_APPROVED */
         }
@@ -202,7 +202,7 @@ int katra_analyze_conversation(convergence_detector_t* detector,
 
         /* Build rationale */
         /* GUIDELINE_APPROVED: Memory rationale strings for automatic memory formation */
-        char rationale[256] = {0};
+        char rationale[KATRA_BUFFER_MEDIUM] = {0};
         if (ci_candidate->decision_made) {
             strncat(rationale, "CI decision; ", sizeof(rationale) - strlen(rationale) - 1); /* GUIDELINE_APPROVED */
         }

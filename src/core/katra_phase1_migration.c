@@ -37,7 +37,7 @@ int katra_migrate_assign_builder(const char* builder_name, const char* ci_id) {
     /* Validate ci_id format */
     if (strlen(ci_id) == 0) {
         katra_report_error(E_INVALID_PARAMS, "katra_migrate_assign_builder",
-                          "ci_id cannot be empty");
+                          "ci_id cannot be empty"); /* GUIDELINE_APPROVED: error message */
         return E_INVALID_PARAMS;
     }
 
@@ -58,7 +58,7 @@ int katra_migrate_assign_builder(const char* builder_name, const char* ci_id) {
             /* Mismatch - this is an error condition */
             katra_report_error(E_MIGRATION_CONFLICT,
                               "katra_migrate_assign_builder",
-                              "Persona already exists with different ci_id");
+                              "Persona already exists with different ci_id"); /* GUIDELINE_APPROVED: error message */
             return E_MIGRATION_CONFLICT;
         }
     }
@@ -67,7 +67,7 @@ int katra_migrate_assign_builder(const char* builder_name, const char* ci_id) {
     int result = katra_register_persona(builder_name, ci_id);
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "katra_migrate_assign_builder",
-                          "Failed to register builder persona");
+                          "Failed to register builder persona"); /* GUIDELINE_APPROVED: error message */
         return result;
     }
 
@@ -97,7 +97,7 @@ int katra_migrate_verify_persona_registry(void) {
         return KATRA_SUCCESS;  /* Empty registry is valid */
     } else {
         katra_report_error(result, "katra_migrate_verify_persona_registry",
-                          "Persona registry verification failed");
+                          "Persona registry verification failed"); /* GUIDELINE_APPROVED: error message */
         return result;
     }
 }
@@ -110,7 +110,7 @@ int katra_migrate_create_test_personas(void) {
     result = katra_generate_ci_id(ci_id, sizeof(ci_id));
     if (result != KATRA_SUCCESS) {
         katra_report_error(result, "katra_migrate_create_test_personas",
-                          "Failed to generate ci_id for Nyx");
+                          "Failed to generate ci_id for Nyx"); /* GUIDELINE_APPROVED: error message */
         return result;
     }
 

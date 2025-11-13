@@ -11,6 +11,7 @@
 
 /* Project includes */
 #include "katra_vector.h"
+#include "katra_limits.h"
 #include "katra_error.h"
 #include "katra_log.h"
 
@@ -196,7 +197,7 @@ hnsw_index_t* katra_vector_hnsw_init(void) {
         return NULL;
     }
 
-    index->capacity = 100;
+    index->capacity = KATRA_INITIAL_CAPACITY_GRAPH;
     index->nodes = calloc(index->capacity, sizeof(hnsw_node_t*));
     if (!index->nodes) {
         free(index);
