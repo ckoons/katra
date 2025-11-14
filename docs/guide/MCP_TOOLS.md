@@ -4,7 +4,7 @@
 
 ## Overview
 
-The Katra MCP server provides 9 tools for memory formation and retrieval. These tools integrate with Claude Code to enable persistent inter-session continuity.
+The Katra MCP server provides 20 tools for memory formation, retrieval, and configuration. These tools integrate with Claude Code to enable persistent inter-session continuity and customizable semantic search.
 
 ## Available Tools
 
@@ -412,6 +412,89 @@ cat ~/.katra/memory/tier1/{ci_id}/*.jsonl  # View stored memories
 /path/to/.claude/hooks/SessionStart
 # Should return {"additionalContext": "..."}
 ```
+
+---
+
+### Configuration Tools
+
+#### `katra_configure_semantic` - Configure semantic search
+
+Enable or disable semantic search and configure its parameters.
+
+**Parameters:**
+- `enabled` (boolean, required): Enable or disable semantic search
+- `threshold` (number, optional): Similarity threshold (0.0 to 1.0, default: 0.7)
+- `method` (string, optional): Embedding method - `"hash"`, `"tfidf"`, or `"external"`
+
+**Example Usage:**
+```javascript
+// Enable semantic search with default settings
+katra_configure_semantic(enabled: true)
+
+// Enable with custom threshold
+katra_configure_semantic(
+  enabled: true,
+  threshold: 0.8
+)
+
+// Configure method
+katra_configure_semantic(
+  enabled: true,
+  threshold: 0.7,
+  method: "tfidf"
+)
+
+// Disable semantic search
+katra_configure_semantic(enabled: false)
+```
+
+**When to Use:**
+- Enable semantic search when you want meaning-based memory recall
+- Adjust threshold to control match sensitivity
+- Choose embedding method based on your needs:
+  - `hash`: Fast, simple similarity
+  - `tfidf`: Better for text analysis
+  - `external`: Use external embedding API (requires setup)
+
+**Note:** Semantic search provides hybrid recall combining keyword matching with semantic similarity.
+
+---
+
+#### `katra_get_semantic_config` - Get semantic search configuration
+
+Get current semantic search configuration and usage instructions.
+
+**Parameters:** None
+
+**Example Usage:**
+```javascript
+katra_get_semantic_config()
+```
+
+**Returns:** Information about semantic search configuration options.
+
+**When to Use:**
+- Check current semantic search settings
+- Learn how to configure semantic search
+
+---
+
+#### `katra_get_config` - Get breathing configuration
+
+Get comprehensive Katra breathing configuration information.
+
+**Parameters:** None
+
+**Example Usage:**
+```javascript
+katra_get_config()
+```
+
+**Returns:** Available configuration functions and settings.
+
+**When to Use:**
+- Discover available configuration options
+- Understand breathing system settings
 
 ---
 
