@@ -420,6 +420,75 @@ make check
 ./scripts/dev/count_core.sh
 ```
 
+## Troubleshooting
+
+### No memories found with katra_recall()
+
+**Symptom:** `katra_recall("topic")` returns "No memories found" even though you've stored memories.
+
+**Common causes:**
+
+1. **Missing KATRA_PERSONA** - Most common issue!
+   - Without `KATRA_PERSONA`, each session creates a new anonymous identity
+   - Memories from previous sessions are under different persona names
+   - **Fix:** Set `KATRA_PERSONA` in your MCP config or environment (see "Configure Persistent Identity" above)
+
+2. **Searching wrong topic/keyword**
+   - Memory indexing extracts keywords from content
+   - Topic search is keyword-based, not semantic (unless vector search enabled)
+   - **Fix:** Use `katra_memory_digest()` to see all available topics with counts
+
+3. **FTS index not initialized**
+   - SQLite FTS5 index may not have been built yet
+   - Happens on fresh installs or after database corruption
+   - **Fix:** Run `k --rebuild-index` or call tier1_index_rebuild() from your code
+
+4. **Vector search disabled** (if using semantic queries)
+   - Vector search is opt-in via `KATRA_USE_VECTOR_SEARCH=true`
+   - Without it, only keyword matching works
+   - **Fix:** Enable vector search in config or use keyword-based topics
+
+**Helpful tools:**
+```bash
+k --who               # Check your current persona
+k --digest            # See all memories and topics
+k --stats             # Verify memory counts
+```
+
+**Improved error messages:**
+- As of Week 1 improvements, `katra_recall()` now shows:
+  - Total memory count
+  - Available topics (up to 10)
+  - Suggestion to use `katra_memory_digest()` for full topic list
+
+### MCP connection issues
+
+**Symptom:** MCP tools not appearing in Claude Code
+
+**Checks:**
+1. Verify MCP server binary exists: `ls -la bin/katra_mcp_server`
+2. Check Claude config: `cat ~/.config/Claude/claude_desktop_config.json`
+3. Restart Claude Code completely (quit and reopen)
+4. Check logs for errors: `tail -50 /tmp/katra_mcp_debug.log`
+
+### Memory persistence issues
+
+**Symptom:** Memories don't persist across sessions
+
+**Cause:** Usually missing `KATRA_PERSONA` (see above)
+
+**Check storage:**
+```bash
+# List your persona directories
+ls -la ~/.katra/memory/tier1/
+
+# Check for anonymous personas (should not exist if KATRA_PERSONA is set)
+ls -la ~/.katra/memory/tier1/mcp_*
+
+# Verify memory files exist
+ls -la ~/.katra/memory/tier1/YourPersonaName/
+```
+
 ## Documentation
 
 ```

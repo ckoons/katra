@@ -103,13 +103,64 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
 
     /* Use breathing layer's recall (hybrid or keyword based on config) */
     results = recall_about(topic, &count);
-    pthread_mutex_unlock(&g_katra_api_lock);
 
+    /* If no results, provide helpful suggestions */
     if (!results || count == 0) {
+        /* Get digest to show total memory count and available topics */
+        memory_digest_t* digest = NULL;
+        int digest_result = memory_digest(0, 0, &digest);  /* 0,0 = just stats, no memories */
+
         char response[MCP_RESPONSE_BUFFER];
-        snprintf(response, sizeof(response), "No memories found about '%s', %s", topic, session_name);
+        size_t offset = 0;
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "No memories found about '%s', %s.\n\n", topic, session_name);
+
+        if (digest_result == KATRA_SUCCESS && digest) {
+            /* Show total memory count */
+            if (digest->total_memories > 0) {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "You have %zu total memories. ", digest->total_memories);
+
+                /* Show available topics if any */
+                if (digest->topic_count > 0) {
+                    offset += snprintf(response + offset, sizeof(response) - offset,
+                                      "Available topics:\n");
+
+                    /* Show up to 10 topics */
+                    size_t topics_to_show = (digest->topic_count < 10) ? digest->topic_count : 10;
+                    for (size_t i = 0; i < topics_to_show; i++) {
+                        offset += snprintf(response + offset, sizeof(response) - offset,
+                                          "  - %s (%zu memories)\n",
+                                          digest->topics[i].name, digest->topics[i].count);
+                    }
+
+                    if (digest->topic_count > 10) {
+                        offset += snprintf(response + offset, sizeof(response) - offset,
+                                          "  ... and %zu more topics\n",
+                                          digest->topic_count - 10);
+                    }
+                } else {
+                    offset += snprintf(response + offset, sizeof(response) - offset,
+                                      "No indexed topics yet.\n");
+                }
+            } else {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "You don't have any memories stored yet. Use katra_remember to create some!");
+            }
+
+            free_memory_digest(digest);
+        } else {
+            /* Fallback if digest fails */
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "Try using katra_memory_digest to see all available memories and topics.");
+        }
+
+        pthread_mutex_unlock(&g_katra_api_lock);
         return mcp_tool_success(response);
     }
+
+    pthread_mutex_unlock(&g_katra_api_lock);
 
     /* Truncate large result sets */
     bool truncated = false;
