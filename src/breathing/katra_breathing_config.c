@@ -163,3 +163,44 @@ int reset_session_statistics(void) {
 
     return KATRA_SUCCESS;
 }
+
+/* ============================================================================
+ * SEMANTIC SEARCH CONFIGURATION (Phase 6.1f)
+ * ============================================================================ */
+
+int enable_semantic_search(bool enable) {
+    context_config_t* config = breathing_get_config_ptr();
+    config->use_semantic_search = enable;
+
+    LOG_INFO("Semantic search %s", enable ? "enabled" : "disabled");
+    return KATRA_SUCCESS;
+}
+
+int set_semantic_threshold(float threshold) {
+    if (threshold < 0.0f || threshold > 1.0f) {
+        katra_report_error(E_INVALID_PARAMS, "set_semantic_threshold",
+                          "Threshold must be between 0.0 and 1.0");
+        return E_INVALID_PARAMS;
+    }
+
+    context_config_t* config = breathing_get_config_ptr();
+    config->semantic_threshold = threshold;
+
+    LOG_INFO("Semantic threshold set to %.2f", threshold);
+    return KATRA_SUCCESS;
+}
+
+int set_embedding_method(int method) {
+    if (method < 0 || method > 2) {
+        katra_report_error(E_INVALID_PARAMS, "set_embedding_method",
+                          "Method must be 0=HASH, 1=TFIDF, 2=EXTERNAL");
+        return E_INVALID_PARAMS;
+    }
+
+    context_config_t* config = breathing_get_config_ptr();
+    config->embedding_method = method;
+
+    const char* method_names[] = {"HASH", "TFIDF", "EXTERNAL"};
+    LOG_INFO("Embedding method set to %s", method_names[method]);
+    return KATRA_SUCCESS;
+}

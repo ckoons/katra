@@ -370,6 +370,57 @@ int memory_digest(size_t limit, size_t offset, memory_digest_t** digest);
  */
 void free_memory_digest(memory_digest_t* digest);
 
+/* ============================================================================
+ * SEMANTIC SEARCH CONFIGURATION (Phase 6.1f)
+ * ============================================================================ */
+
+/**
+ * enable_semantic_search() - Enable or disable hybrid semantic search
+ *
+ * When enabled, recall_about() and what_do_i_know() will use both:
+ * - Keyword matching (always enabled)
+ * - Vector similarity search (semantic understanding)
+ *
+ * Default: Disabled (backward compatible, keyword-only)
+ *
+ * Example:
+ *   enable_semantic_search(true);   // Use hybrid search
+ *   enable_semantic_search(false);  // Use keyword-only (default)
+ */
+int enable_semantic_search(bool enable);
+
+/**
+ * set_semantic_threshold() - Set minimum similarity score for semantic matches
+ *
+ * Threshold range: 0.0 to 1.0
+ * - 0.0 = accept all semantic matches (not recommended)
+ * - 0.4 = loose matching (high recall, lower precision)
+ * - 0.6 = balanced (default, good for most use cases)
+ * - 0.8 = strict matching (high precision, lower recall)
+ * - 1.0 = exact match only
+ *
+ * Default: 0.6
+ *
+ * Example:
+ *   set_semantic_threshold(0.7f);  // Stricter matching
+ */
+int set_semantic_threshold(float threshold);
+
+/**
+ * set_embedding_method() - Choose embedding algorithm
+ *
+ * Methods:
+ * - 0 (EMBEDDING_HASH): Simple hash-based (fastest, least accurate)
+ * - 1 (EMBEDDING_TFIDF): TF-IDF weighted (balanced, default)
+ * - 2 (EMBEDDING_EXTERNAL): External service (most accurate, requires setup)
+ *
+ * Default: 1 (TFIDF)
+ *
+ * Example:
+ *   set_embedding_method(1);  // Use TF-IDF (default)
+ */
+int set_embedding_method(int method);
+
 /**
  * free_memory_list() - Free memory list returned by context functions
  *

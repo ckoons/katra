@@ -435,7 +435,7 @@ make check
 
 2. **Searching wrong topic/keyword**
    - Memory indexing extracts keywords from content
-   - Topic search is keyword-based, not semantic (unless vector search enabled)
+   - Topic search is keyword-based by default (see "Semantic Search" below to enable similarity matching)
    - **Fix:** Use `katra_memory_digest()` to see all available topics with counts
 
 3. **FTS index not initialized**
@@ -488,6 +488,93 @@ ls -la ~/.katra/memory/tier1/mcp_*
 # Verify memory files exist
 ls -la ~/.katra/memory/tier1/YourPersonaName/
 ```
+
+## Semantic Search (Phase 6.1f)
+
+**Hybrid Search**: Katra supports combining keyword matching with vector similarity search for better memory recall.
+
+### How It Works
+
+**Default (Keyword-only):**
+- `recall_about("database")` finds memories containing the exact word "database"
+- Fast, simple, but misses semantically similar content
+
+**With Semantic Search Enabled:**
+- Finds memories about "database" + "SQL", "queries", "storage", "persistence", etc.
+- Uses TF-IDF vector embeddings for semantic similarity
+- Combines keyword and semantic results, sorted by relevance
+
+### Quick Start
+
+```c
+/* Enable hybrid search */
+enable_semantic_search(true);
+
+/* Now recall_about() and what_do_i_know() use both keyword + semantic matching */
+char** memories = recall_about("database performance", &count);
+```
+
+### Configuration Options
+
+```c
+/* Enable/disable semantic search (default: disabled for backward compatibility) */
+enable_semantic_search(true);   // Hybrid search (keyword + semantic)
+enable_semantic_search(false);  // Keyword-only (default)
+
+/* Set similarity threshold (default: 0.6 = 60% similarity) */
+set_semantic_threshold(0.7f);   // Stricter matching (higher precision, lower recall)
+set_semantic_threshold(0.4f);   // Looser matching (lower precision, higher recall)
+
+/* Choose embedding method (default: 1 = TF-IDF) */
+set_embedding_method(0);  // EMBEDDING_HASH (fastest, least accurate)
+set_embedding_method(1);  // EMBEDDING_TFIDF (balanced, default)
+set_embedding_method(2);  // EMBEDDING_EXTERNAL (requires external service)
+```
+
+### Tuning Recommendations
+
+| Use Case | Threshold | Method | Notes |
+|----------|-----------|--------|-------|
+| Broad exploration | 0.4 - 0.5 | TFIDF | Find related concepts |
+| Balanced recall | 0.6 - 0.7 | TFIDF | Good default (60-70% similar) |
+| Precise matching | 0.8 - 0.9 | TFIDF | Only very similar content |
+| External embeddings | 0.6 - 0.7 | EXTERNAL | Requires API setup |
+
+### Performance Impact
+
+- **TFIDF**: ~5-10ms additional latency per query (minimal impact)
+- **Memory**: ~100 bytes per memory for vector storage
+- **Index Build**: One-time cost when vector store initialized
+
+### Via set_context_config()
+
+```c
+context_config_t config = {
+    .max_relevant_memories = 10,
+    .max_recent_thoughts = 20,
+    .max_topic_recall = 100,
+    .min_importance_relevant = MEMORY_IMPORTANCE_HIGH,
+    .max_context_age_days = 7,
+
+    /* Semantic search settings */
+    .use_semantic_search = true,     // Enable hybrid search
+    .semantic_threshold = 0.6f,      // 60% similarity minimum
+    .max_semantic_results = 20,      // Limit semantic results
+    .embedding_method = 1            // Use TF-IDF
+};
+
+set_context_config(&config);
+```
+
+### Affected Functions
+
+When semantic search is enabled, these functions use hybrid search:
+- `recall_about(topic, &count)` - Topic-based memory recall
+- `what_do_i_know(concept, &count)` - Knowledge recall
+
+These functions are unaffected (always use other criteria):
+- `relevant_memories(&count)` - Uses importance + recency
+- `recent_thoughts(limit, &count)` - Uses timestamp only
 
 ## Documentation
 
