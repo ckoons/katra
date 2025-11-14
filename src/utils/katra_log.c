@@ -181,6 +181,7 @@ void log_write(log_level_t level, const char* file, int line,
     va_end(args);
 
     fprintf(g_log_config->log_fp, "\n");
+    fflush(g_log_config->log_fp);  /* Ensure log is written immediately */
 }
 
 /* Get log level */

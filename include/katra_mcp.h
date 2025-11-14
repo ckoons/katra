@@ -95,6 +95,7 @@
 #define MCP_TOOL_CONFIGURE_SEMANTIC "katra_configure_semantic"
 #define MCP_TOOL_GET_SEMANTIC_CONFIG "katra_get_semantic_config"
 #define MCP_TOOL_GET_CONFIG "katra_get_config"
+#define MCP_TOOL_REGENERATE_VECTORS "katra_regenerate_vectors"
 
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
@@ -117,6 +118,7 @@
 #define MCP_DESC_CONFIGURE_SEMANTIC "Configure semantic search (enable/disable, threshold, method)"
 #define MCP_DESC_GET_SEMANTIC_CONFIG "Get current semantic search configuration"
 #define MCP_DESC_GET_CONFIG "Get comprehensive breathing configuration"
+#define MCP_DESC_REGENERATE_VECTORS "Rebuild semantic search vectors from all existing memories"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -341,6 +343,7 @@ json_t* mcp_tool_who_is_here(json_t* args, json_t* id);
 json_t* mcp_tool_configure_semantic(json_t* args, json_t* id);
 json_t* mcp_tool_get_semantic_config(json_t* args, json_t* id);
 json_t* mcp_tool_get_config(json_t* args, json_t* id);
+json_t* mcp_tool_regenerate_vectors(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;

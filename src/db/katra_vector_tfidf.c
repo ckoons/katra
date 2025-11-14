@@ -286,16 +286,16 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
         }
     }
 
-    /* Log a few dimensions before normalization */
-    LOG_INFO("  Before normalization: [0]=%.6f, [226]=%.6f, [227]=%.6f",
-           embedding->values[0], embedding->values[226], embedding->values[227]);
-
     /* Normalize vector (L2 norm) */
     float magnitude = 0.0f;
     for (size_t i = 0; i < VECTOR_DIMENSIONS; i++) {
         magnitude += embedding->values[i] * embedding->values[i];
     }
     embedding->magnitude = sqrtf(magnitude);
+
+    /* Log before normalization */
+    LOG_INFO("  Before normalization: mag=%.6f, [0]=%.6f, [16]=%.6f, [100]=%.6f",
+           embedding->magnitude, embedding->values[0], embedding->values[16], embedding->values[100]);
 
     if (embedding->magnitude > 0.0f) {
         for (size_t i = 0; i < VECTOR_DIMENSIONS; i++) {
@@ -305,8 +305,8 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
         embedding->magnitude = 1.0f;
     }
 
-    LOG_INFO("  After normalization (mag=%.6f): [0]=%.6f, [226]=%.6f, [227]=%.6f",
-           embedding->magnitude, embedding->values[0], embedding->values[226], embedding->values[227]);
+    LOG_INFO("  After normalization (mag=%.6f): [0]=%.6f, [16]=%.6f, [100]=%.6f",
+           embedding->magnitude, embedding->values[0], embedding->values[16], embedding->values[100]);
 
     *embedding_out = embedding;
     free(tokens);

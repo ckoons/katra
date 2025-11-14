@@ -103,6 +103,15 @@ int mcp_server_init(const char* ci_id) {
         return result;
     }
 
+    /* Step 1.5: Initialize logging system */
+    result = log_init(NULL);  /* Use default log directory */
+    if (result != KATRA_SUCCESS) {
+        fprintf(stderr, "Failed to initialize logging: %s\n",
+                katra_error_message(result));
+        katra_exit();
+        return result;
+    }
+
     /* Step 2: Initialize Katra memory */
     result = katra_memory_init(ci_id);
     if (result != KATRA_SUCCESS) {
@@ -170,6 +179,22 @@ int mcp_server_init(const char* ci_id) {
         LOG_WARN("Vector database initialization failed, semantic search disabled");
     } else {
         LOG_INFO("Vector database initialized for semantic search");
+
+        /* Step 4.6: Auto-regenerate vectors if needed (Phase 6.1f) */
+        /* Note: Semantic search is enabled by default, so check if vectors need building */
+        if (g_vector_store->count < 10) {
+            /* Vector count is very low - likely need regeneration */
+            LOG_INFO("Auto-regenerating vectors (current count: %zu)", g_vector_store->count);
+            fprintf(stderr, "Regenerating semantic search vectors...\n");
+
+            int regen_result = regenerate_vectors();
+            if (regen_result > 0) {
+                LOG_INFO("Vector regeneration complete: %d vectors created", regen_result);
+                fprintf(stderr, "Vector regeneration complete: %d vectors\n", regen_result);
+            } else if (regen_result < 0) {
+                LOG_WARN("Vector regeneration failed: %d", regen_result);
+            }
+        }
     }
 
     /* Step 5: Start session with autonomic breathing */

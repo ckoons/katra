@@ -181,3 +181,50 @@ json_t* mcp_tool_get_config(json_t* args, json_t* id) {
 
     return mcp_tool_success(response);
 }
+
+/* Regenerate all vectors from existing memories
+ *
+ * Rebuilds semantic search vectors for all memories using 2-pass TF-IDF:
+ *   Pass 1: Build IDF statistics from all memories
+ *   Pass 2: Create embeddings using those statistics
+ *
+ * This is useful when:
+ *   - Semantic search was recently enabled
+ *   - Old memories don't have vectors
+ *   - Vector database was corrupted or cleared
+ */
+json_t* mcp_tool_regenerate_vectors(json_t* args, json_t* id) {
+    (void)args;
+    (void)id;
+
+    /* Check if semantic search is enabled */
+    context_config_t* config = get_context_config();
+    if (!config) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to get configuration");
+    }
+
+    if (!config->use_semantic_search) {
+        return mcp_tool_error(MCP_ERR_INTERNAL,
+                            "Semantic search is disabled. Enable it first with katra_configure_semantic(enabled=true)");
+    }
+
+    /* Run regeneration */
+    int result = regenerate_vectors();
+
+    if (result < 0) {
+        char error[KATRA_BUFFER_MEDIUM];
+        snprintf(error, sizeof(error),
+                "Vector regeneration failed with error code: %d", result);
+        return mcp_tool_error(MCP_ERR_INTERNAL, error);
+    }
+
+    /* Build success response */
+    char response[KATRA_BUFFER_MEDIUM];
+    snprintf(response, sizeof(response),
+            "Vector regeneration complete!\n\n"
+            "Created %d semantic search vectors from existing memories.\n"
+            "Hybrid search (keyword + semantic) now enabled for all memories.",
+            result);
+
+    return mcp_tool_success(response);
+}

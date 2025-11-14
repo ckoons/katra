@@ -479,6 +479,11 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_GET_CONFIG, MCP_DESC_GET_CONFIG,
             mcp_build_tool_schema_0params()));
 
+    /* katra_regenerate_vectors - No parameters */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_REGENERATE_VECTORS, MCP_DESC_REGENERATE_VECTORS,
+            mcp_build_tool_schema_0params()));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
@@ -595,6 +600,8 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_get_semantic_config(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_GET_CONFIG) == 0) {
         tool_result = mcp_tool_get_config(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_REGENERATE_VECTORS) == 0) {
+        tool_result = mcp_tool_regenerate_vectors(args, id);
     } else {
         katra_hook_turn_end();  /* Trigger turn end hook before error return */
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
