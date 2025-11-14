@@ -177,17 +177,25 @@ static int create_embedding_with_method(vector_store_t* store, const char* text,
         }
     }
 
-    /* Update IDF stats ONLY when storing documents, NOT when querying */
+    /* TF-IDF embedding method */
     if (store->method == EMBEDDING_TFIDF || store->method == EMBEDDING_EXTERNAL) {
+        /* Create embedding FIRST using current IDF stats */
+        int result = katra_vector_tfidf_create(text, embedding_out);
+        if (result != KATRA_SUCCESS) {
+            LOG_WARN("Failed to create TF-IDF embedding: %d (falling back to hash)", result);
+            return katra_vector_create_embedding(text, embedding_out);
+        }
+
+        /* THEN update IDF stats for future embeddings (only when storing, not querying) */
         if (!is_query) {
-            int result = katra_vector_tfidf_update_stats(text);
+            result = katra_vector_tfidf_update_stats(text);
             if (result != KATRA_SUCCESS) {
-                LOG_WARN("Failed to update TF-IDF stats: %d (falling back to hash)", result);
-                /* Fall through to use hash method */
-                return katra_vector_create_embedding(text, embedding_out);
+                LOG_WARN("Failed to update IDF stats: %d (non-fatal)", result);
+                /* Non-fatal - embedding already created successfully */
             }
         }
-        return katra_vector_tfidf_create(text, embedding_out);
+
+        return KATRA_SUCCESS;
     }
 
     /* Default: hash-based embedding */
