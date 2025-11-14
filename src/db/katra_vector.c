@@ -150,9 +150,13 @@ int katra_vector_create_embedding(const char* text,
     return KATRA_SUCCESS;
 }
 
-/* Create embedding using store's configured method */
+/* Create embedding using store's configured method
+ * is_query: true for search queries, false for documents being stored
+ *           (queries should NOT update IDF statistics)
+ */
 static int create_embedding_with_method(vector_store_t* store, const char* text,
-                                        vector_embedding_t** embedding_out) {
+                                        vector_embedding_t** embedding_out,
+                                        bool is_query) {
     if (!store || !text || !embedding_out) {
         return E_INPUT_NULL;
     }
@@ -173,13 +177,15 @@ static int create_embedding_with_method(vector_store_t* store, const char* text,
         }
     }
 
-    /* Update IDF stats if using TF-IDF */
+    /* Update IDF stats ONLY when storing documents, NOT when querying */
     if (store->method == EMBEDDING_TFIDF || store->method == EMBEDDING_EXTERNAL) {
-        int result = katra_vector_tfidf_update_stats(text);
-        if (result != KATRA_SUCCESS) {
-            LOG_WARN("Failed to update TF-IDF stats: %d (falling back to hash)", result);
-            /* Fall through to use hash method */
-            return katra_vector_create_embedding(text, embedding_out);
+        if (!is_query) {
+            int result = katra_vector_tfidf_update_stats(text);
+            if (result != KATRA_SUCCESS) {
+                LOG_WARN("Failed to update TF-IDF stats: %d (falling back to hash)", result);
+                /* Fall through to use hash method */
+                return katra_vector_create_embedding(text, embedding_out);
+            }
         }
         return katra_vector_tfidf_create(text, embedding_out);
     }
@@ -214,9 +220,9 @@ int katra_vector_store(vector_store_t* store,
         }
     }
 
-    /* Create embedding using configured method */
+    /* Create embedding using configured method (not a query - update IDF stats) */
     vector_embedding_t* embedding = NULL;
-    int result = create_embedding_with_method(store, text, &embedding);
+    int result = create_embedding_with_method(store, text, &embedding, false);
     if (result != KATRA_SUCCESS) {
         return result;
     }
@@ -294,9 +300,9 @@ int katra_vector_search(vector_store_t* store,
         return KATRA_SUCCESS;
     }
 
-    /* Create query embedding using configured method */
+    /* Create query embedding using configured method (is a query - do NOT update IDF stats) */
     vector_embedding_t* query_embedding = NULL;
-    int result = create_embedding_with_method(store, query_text, &query_embedding);
+    int result = create_embedding_with_method(store, query_text, &query_embedding, true);
     if (result != KATRA_SUCCESS) {
         return result;
     }

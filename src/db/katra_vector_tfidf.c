@@ -212,6 +212,8 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
     }
 
     /* Calculate TF-IDF for each term */
+    size_t terms_found = 0;
+    size_t terms_skipped = 0;
     for (size_t i = 0; i < token_count; i++) {
         /* Find term in vocabulary */
         int vocab_idx = -1;
@@ -224,8 +226,11 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
 
         if (vocab_idx < 0) {
             /* Term not in vocabulary - skip */
+            LOG_DEBUG("TF-IDF: term '%s' not in vocabulary (skipped)", tokens[i].text);
+            terms_skipped++;
             continue;
         }
+        terms_found++;
 
         /* Calculate TF (Term Frequency) */
         float tf = (float)tokens[i].frequency / (float)total_terms;
@@ -277,8 +282,8 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
     *embedding_out = embedding;
     free(tokens);
 
-    LOG_DEBUG("Created TF-IDF embedding: %zu tokens, magnitude: %.3f",
-             token_count, embedding->magnitude);
+    LOG_DEBUG("Created TF-IDF embedding: %zu total tokens, %zu found in vocab, %zu skipped, magnitude: %.3f",
+             token_count, terms_found, terms_skipped, embedding->magnitude);
 
     return KATRA_SUCCESS;
 }

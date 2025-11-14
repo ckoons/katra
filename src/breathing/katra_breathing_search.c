@@ -149,6 +149,7 @@ char** hybrid_search(const char* topic,
                                             &vector_matches, &vector_count);
 
             if (result == KATRA_SUCCESS && vector_matches) {
+                size_t above_threshold = 0;
                 for (size_t i = 0; i < vector_count; i++) {
                     /* Only add if similarity above threshold */
                     if (vector_matches[i]->similarity >= config->semantic_threshold) {
@@ -157,10 +158,12 @@ char** hybrid_search(const char* topic,
                                            vector_matches[i]->record_id,
                                            vector_matches[i]->similarity,
                                            false, true);
+                        above_threshold++;
                     }
                 }
-                LOG_DEBUG("Semantic search found %zu matches above threshold %.2f",
-                         vector_count, config->semantic_threshold);
+                LOG_DEBUG("Semantic search found %zu/%zu matches above threshold %.2f (total vectors: %zu)",
+                         above_threshold, vector_count, config->semantic_threshold,
+                         vector_store->count);
 
                 katra_vector_free_matches(vector_matches, vector_count);
             }
