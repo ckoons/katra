@@ -201,12 +201,16 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
 
             for (size_t i = 0; i < digest->memory_count; i++) {
                 if (digest->memories[i]) {
-                    /* Truncate long memories to first 80 chars */
+                        /* Truncate long memories to first 80 chars */
                     char truncated[84];
                     strncpy(truncated, digest->memories[i], 80);
                     truncated[80] = '\0';
                     if (strlen(digest->memories[i]) > 80) {
-                        strcat(truncated, "...");
+                        /* Safe concatenation - buffer is 84 bytes, we null-terminated at 80 */
+                        truncated[80] = '.';
+                        truncated[81] = '.';
+                        truncated[82] = '.';
+                        truncated[83] = '\0';
                     }
 
                     offset += snprintf(response + offset, sizeof(response) - offset,
