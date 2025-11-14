@@ -235,6 +235,9 @@ int katra_vector_store(vector_store_t* store,
         return result;
     }
 
+    LOG_INFO("  katra_vector_store: After create, values: %.6f, %.6f, %.6f",
+           embedding->values[0], embedding->values[1], embedding->values[2]);
+
     /* Set record ID */
     strncpy(embedding->record_id, record_id, sizeof(embedding->record_id) - 1);
     embedding->record_id[sizeof(embedding->record_id) - 1] = '\0';
@@ -242,6 +245,9 @@ int katra_vector_store(vector_store_t* store,
     /* Store embedding */
     store->embeddings[store->count] = embedding;
     store->count++;
+
+    LOG_INFO("  katra_vector_store: Before persist, values: %.6f, %.6f, %.6f",
+           embedding->values[0], embedding->values[1], embedding->values[2]);
 
     /* Save to persistent storage (Phase 6.1d) */
     int persist_result = katra_vector_persist_save(store->ci_id, embedding);

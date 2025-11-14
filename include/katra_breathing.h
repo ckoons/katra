@@ -1042,6 +1042,18 @@ int set_memory_isolation(memory_isolation_t isolation, const char* team_name);
  */
 int share_memory_with(const char** ci_ids, size_t count);
 
+/**
+ * regenerate_vectors - Rebuild all semantic search vectors
+ *
+ * Clears the vector database and regenerates TF-IDF embeddings for all
+ * existing Tier 2 memories. Use this after fixing vector generation bugs
+ * or changing embedding methods.
+ *
+ * Returns:
+ *   Number of vectors successfully regenerated, or negative error code
+ */
+int regenerate_vectors(void);
+
 /* ============================================================================
  * KEYWORD ARRAYS - Pattern detection for significance detection
  * ============================================================================ */

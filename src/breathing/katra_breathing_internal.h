@@ -84,4 +84,10 @@ void cleanup_turn_tracking(void);
  */
 vector_store_t* breathing_get_vector_store(void);
 
+/**
+ * Initialize vector store if not already initialized
+ * Returns: KATRA_SUCCESS or error code
+ */
+int breathing_init_vector_store(void);
+
 #endif /* KATRA_BREATHING_INTERNAL_H */

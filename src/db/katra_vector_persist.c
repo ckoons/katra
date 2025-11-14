@@ -142,9 +142,28 @@ int katra_vector_persist_save(const char* ci_id,
     /* Bind parameters */
     sqlite3_bind_text(stmt, 1, embedding->record_id, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, (int)embedding->dimensions);
-    sqlite3_bind_blob(stmt, 3, embedding->values,
-                     (int)(embedding->dimensions * sizeof(float)), SQLITE_STATIC);
+
+    LOG_INFO("  Persist: About to bind blob for '%s', dims=%zu, first values: %.6f, %.6f, %.6f",
+           embedding->record_id, embedding->dimensions,
+           embedding->values[0], embedding->values[1], embedding->values[2]);
+
+    /* Make a copy of the values to ensure they don't get corrupted */
+    size_t blob_size = embedding->dimensions * sizeof(float);
+    float* values_copy = malloc(blob_size);
+    if (!values_copy) {
+        result = E_SYSTEM_MEMORY;
+        goto cleanup;
+    }
+    memcpy(values_copy, embedding->values, blob_size);
+
+    LOG_INFO("  Persist: After copy, values: %.6f, %.6f, %.6f",
+           values_copy[0], values_copy[1], values_copy[2]);
+
+    sqlite3_bind_blob(stmt, 3, values_copy,
+                     (int)blob_size, SQLITE_TRANSIENT);
     sqlite3_bind_double(stmt, 4, embedding->magnitude);
+
+    free(values_copy);
 
     /* Execute */
     rc = sqlite3_step(stmt);

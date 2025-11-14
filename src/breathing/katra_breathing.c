@@ -326,6 +326,31 @@ vector_store_t* breathing_get_vector_store(void) {
     return g_vector_store;
 }
 
+int breathing_init_vector_store(void) {
+    if (g_vector_store) {
+        return KATRA_SUCCESS;  /* Already initialized */
+    }
+
+    const char* ci_id = breathing_get_ci_id();
+    if (!ci_id) {
+        return E_INVALID_STATE;
+    }
+
+    g_vector_store = katra_vector_init(ci_id, false);
+    if (!g_vector_store) {
+        return E_SYSTEM_MEMORY;
+    }
+
+    g_vector_store->method = (embedding_method_t)g_context_config.embedding_method;
+
+    int result = katra_vector_persist_init(ci_id);
+    if (result == KATRA_SUCCESS) {
+        katra_vector_persist_load(ci_id, g_vector_store);
+    }
+
+    return KATRA_SUCCESS;
+}
+
 void breathing_track_memory_stored(memory_type_t type, why_remember_t importance) {
     g_enhanced_stats.total_memories_stored++;
     g_enhanced_stats.by_type[type]++;

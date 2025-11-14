@@ -214,6 +214,8 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
     /* Calculate TF-IDF for each term */
     size_t terms_found = 0;
     size_t terms_skipped = 0;
+    LOG_INFO("TF-IDF: Processing %zu tokens, total_terms=%d, total_docs=%zu, vocab_size=%zu",
+           token_count, total_terms, g_idf_stats.total_docs, g_idf_stats.vocab_size);
     for (size_t i = 0; i < token_count; i++) {
         /* Find term in vocabulary */
         int vocab_idx = -1;
@@ -227,8 +229,8 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
         /* Calculate TF (Term Frequency) */
         float tf = (float)tokens[i].frequency / (float)total_terms;
 
-        /* Calculate IDF (Inverse Document Frequency) */
-        float idf = 0.0f;
+        /* Calculate IDF (Inverse Document Frequency) - default to 1.0 not 0.0 */
+        float idf = 1.0f;
 
         if (vocab_idx < 0) {
             /* Term not in vocabulary - assign default IDF weight */
@@ -244,9 +246,10 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
                      tokens[i].text, idf);
             terms_skipped++;
         } else {
-            /* Term in vocabulary - use actual IDF */
+            /* Term in vocabulary - use actual IDF with smoothing */
+            /* Use Laplace smoothing: add 1 to numerator to prevent zero IDF */
             if (g_idf_stats.total_docs > 0 && g_idf_stats.doc_frequencies[vocab_idx] > 0) {
-                idf = logf((float)g_idf_stats.total_docs /
+                idf = logf(((float)g_idf_stats.total_docs + 1.0f) /
                           (float)g_idf_stats.doc_frequencies[vocab_idx]);
             }
             terms_found++;
@@ -254,6 +257,11 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
 
         /* TF-IDF score */
         float tfidf = tf * idf;
+
+        if (i < 3) {  /* Log first 3 terms */
+            LOG_INFO("  Term[%zu] '%s': tf=%.3f, idf=%.3f, tfidf=%.3f",
+                   i, tokens[i].text, tf, idf, tfidf);
+        }
 
         /* Map to vector dimension (use hash of term) */
         unsigned int hash = 0;
@@ -265,6 +273,10 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
         /* Add TF-IDF score to dimension */
         embedding->values[dim] += tfidf;
 
+        if (i == 0) {  /* Log first term's dimension mapping */
+            LOG_INFO("  First term maps to dim %zu, value now %.6f", dim, embedding->values[dim]);
+        }
+
         /* Add to neighboring dimensions for smoother distribution */
         if (dim > 0) {
             embedding->values[dim - 1] += tfidf * 0.5f;
@@ -273,6 +285,10 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
             embedding->values[dim + 1] += tfidf * 0.5f;
         }
     }
+
+    /* Log a few dimensions before normalization */
+    LOG_INFO("  Before normalization: [0]=%.6f, [226]=%.6f, [227]=%.6f",
+           embedding->values[0], embedding->values[226], embedding->values[227]);
 
     /* Normalize vector (L2 norm) */
     float magnitude = 0.0f;
@@ -288,6 +304,9 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
         /* Recalculate magnitude after normalization (should be 1.0) */
         embedding->magnitude = 1.0f;
     }
+
+    LOG_INFO("  After normalization (mag=%.6f): [0]=%.6f, [226]=%.6f, [227]=%.6f",
+           embedding->magnitude, embedding->values[0], embedding->values[226], embedding->values[227]);
 
     *embedding_out = embedding;
     free(tokens);
