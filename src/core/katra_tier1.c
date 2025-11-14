@@ -105,6 +105,7 @@ int tier1_store(const memory_record_t* record) {
     int result = KATRA_SUCCESS;
     FILE* fp = NULL;
     char filepath[KATRA_PATH_MAX];
+    long offset_before = 0;
 
     if (!record) {
         katra_report_error(E_INPUT_NULL, "tier1_store", "record is NULL");
@@ -156,6 +157,14 @@ int tier1_store(const memory_record_t* record) {
         goto cleanup;
     }
 
+    /* Get current file position (where this record will be written) */
+    offset_before = ftell(fp);
+    if (offset_before == -1L) {
+        katra_report_error(E_SYSTEM_FILE, "tier1_store", "Failed to get file position");
+        result = E_SYSTEM_FILE;
+        goto cleanup;
+    }
+
     /* Write JSON record */
     result = katra_tier1_write_json_record(fp, record);
     if (result != KATRA_SUCCESS) {
@@ -184,6 +193,13 @@ int tier1_store(const memory_record_t* record) {
     }
 
     LOG_DEBUG("Stored record to %s (flushed to disk)", filepath);
+
+    /* Add to FTS index for searchability (CRITICAL FIX) */
+    int index_result = tier1_index_add(record, filepath, offset_before);
+    if (index_result != KATRA_SUCCESS) {
+        /* Log warning but don't fail - fallback to linear scan */
+        LOG_WARN("Failed to add record to FTS index: %d (memory stored but not indexed)", index_result);
+    }
 
 cleanup:
     if (fp) {

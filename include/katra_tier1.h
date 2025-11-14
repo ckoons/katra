@@ -99,6 +99,34 @@ int tier1_archive(const char* ci_id, int max_age_days);
  */
 int tier1_stats(const char* ci_id, size_t* total_records, size_t* bytes_used);
 
+/* Get Tier 1 directory path
+ *
+ * Helper function for archive module and index rebuild.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   buffer - Output buffer for path
+ *   size - Buffer size
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ */
+int tier1_get_dir(const char* ci_id, char* buffer, size_t size);
+
+/* Collect JSONL files from Tier 1 directory
+ *
+ * Helper function for archive module and index rebuild.
+ *
+ * Parameters:
+ *   tier1_dir - Tier 1 directory path
+ *   filenames - Output array of filenames (caller must free)
+ *   count - Number of files found
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ */
+int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, size_t* count);
+
 /* Flush Tier 1 storage to disk
  *
  * Forces all pending writes to disk for crash safety.

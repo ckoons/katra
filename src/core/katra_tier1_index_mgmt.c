@@ -10,6 +10,7 @@
 /* Project includes */
 #include "katra_tier1_index.h"
 #include "katra_tier1.h"
+#include "katra_memory.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -156,6 +157,10 @@ int tier1_load_by_locations(const memory_location_t* locations,
 /* Rebuild index from JSONL files */
 int tier1_index_rebuild(const char* ci_id) {
     int total_indexed = 0;
+    int result = KATRA_SUCCESS;
+    char tier1_dir[KATRA_PATH_MAX];
+    char** filenames = NULL;
+    size_t file_count = 0;
 
     if (!ci_id) {
         return E_INPUT_NULL;
@@ -168,12 +173,75 @@ int tier1_index_rebuild(const char* ci_id) {
         return E_INTERNAL_LOGIC;
     }
 
-    /* This is a simplified implementation */
-    /* Full implementation would scan all tier1 JSONL files and reindex them */
-    /* For now, just return success - the index will be built incrementally */
-    LOG_INFO("Tier 1 index rebuild not yet fully implemented");
-    LOG_INFO("Index will be built incrementally as memories are stored");
+    /* Get tier1 directory */
+    result = tier1_get_dir(ci_id, tier1_dir, sizeof(tier1_dir));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
 
+    /* Collect all JSONL files */
+    result = tier1_collect_jsonl_files(tier1_dir, &filenames, &file_count);
+    if (result != KATRA_SUCCESS || file_count == 0) {
+        LOG_INFO("No JSONL files found for %s", ci_id);
+        return 0;
+    }
+
+    LOG_INFO("Rebuilding index from %zu JSONL files for %s", file_count, ci_id);
+
+    /* Clear existing index entries for this CI */
+    const char* delete_sql = "DELETE FROM memories WHERE ci_id = ?";
+    sqlite3_stmt* delete_stmt = NULL;
+    if (sqlite3_prepare_v2(db, delete_sql, -1, &delete_stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_text(delete_stmt, 1, ci_id, -1, SQLITE_STATIC);
+        sqlite3_step(delete_stmt);
+        sqlite3_finalize(delete_stmt);
+    }
+
+    /* Process each JSONL file */
+    for (size_t i = 0; i < file_count; i++) {
+        char filepath[KATRA_PATH_MAX];
+        snprintf(filepath, sizeof(filepath), "%s/%s", tier1_dir, filenames[i]);
+
+        FILE* fp = fopen(filepath, KATRA_FILE_MODE_READ);
+        if (!fp) {
+            LOG_WARN("Failed to open %s", filepath);
+            continue;
+        }
+
+        /* Read each line (memory record) */
+        long offset = 0;
+        char line[KATRA_BUFFER_LARGE];
+
+        while (fgets(line, sizeof(line), fp)) {
+            long next_offset = ftell(fp);
+
+            /* Parse JSON record */
+            memory_record_t* record = NULL;
+            result = katra_tier1_parse_json_record(line, &record);
+
+            if (result == KATRA_SUCCESS && record) {
+                /* Add to index */
+                result = tier1_index_add(record, filepath, offset);
+                if (result == KATRA_SUCCESS) {
+                    total_indexed++;
+                }
+                katra_memory_free_record(record);
+            }
+
+            offset = next_offset;
+        }
+
+        fclose(fp);
+        LOG_DEBUG("Indexed %s", filenames[i]);
+    }
+
+    /* Free filename array */
+    for (size_t i = 0; i < file_count; i++) {
+        free(filenames[i]);
+    }
+    free(filenames);
+
+    LOG_INFO("Index rebuild complete: %d memories indexed for %s", total_indexed, ci_id);
     return total_indexed;
 }
 
