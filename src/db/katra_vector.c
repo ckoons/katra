@@ -250,10 +250,13 @@ int katra_vector_store(vector_store_t* store,
 float katra_vector_cosine_similarity(const vector_embedding_t* a,
                                      const vector_embedding_t* b) {
     if (!a || !b || a->dimensions != b->dimensions) {
+        LOG_DEBUG("Cosine similarity: NULL or dimension mismatch");
         return 0.0f;
     }
 
     if (a->magnitude == 0.0f || b->magnitude == 0.0f) {
+        LOG_DEBUG("Cosine similarity: zero magnitude (query=%.3f, doc=%.3f)",
+                 a->magnitude, b->magnitude);
         return 0.0f;
     }
 
@@ -334,6 +337,14 @@ int katra_vector_search(vector_store_t* store,
 
     /* Sort by similarity (descending) */
     qsort(matches, store->count, sizeof(vector_match_t*), compare_matches);
+
+    /* Log top 5 matches for debugging */
+    size_t log_count = (store->count < 5) ? store->count : 5;
+    LOG_DEBUG("Top %zu vector matches:", log_count);
+    for (size_t i = 0; i < log_count; i++) {
+        LOG_DEBUG("  [%zu] %s: similarity=%.4f", i,
+                 matches[i]->record_id, matches[i]->similarity);
+    }
 
     /* Limit results */
     size_t result_count = (limit < store->count) ? limit : store->count;
