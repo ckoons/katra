@@ -306,13 +306,92 @@ bool verify_checkpoint_integrity(checkpoint_t* checkpoint) {
 }
 ```
 
+## Utility Macros (Week 2/3 Improvements)
+
+Katra provides several utility macros to reduce boilerplate and enforce consistent patterns:
+
+### Error Checking Macros (katra_error.h)
+
+```c
+/* Check for NULL parameter */
+KATRA_CHECK_NULL(ptr);  // Returns E_INPUT_NULL if ptr is NULL
+
+/* Check numeric range */
+KATRA_CHECK_RANGE(value, 0, 100);  // Returns E_INPUT_RANGE if not in [0, 100]
+
+/* Check size limit */
+KATRA_CHECK_SIZE(size, MAX_SIZE);  // Returns E_INPUT_TOO_LARGE if size > MAX_SIZE
+
+/* Check function result */
+KATRA_CHECK_RESULT(call);  // Returns error code if call fails
+
+/* Assert condition */
+KATRA_ASSERT(condition);  // Returns E_INTERNAL_ASSERT if false
+
+/* Combined validation */
+KATRA_VALIDATE_INPUT(ptr, size, MAX_SIZE);  // Checks both NULL and size
+```
+
+### Struct Initialization Macro (katra_limits.h)
+
+```c
+/* Zero-initialize a structure */
+memory_record_t record;
+KATRA_INIT_STRUCT(record);  // Expands to: memset(&record, 0, sizeof(record))
+```
+
+### Cleanup Pattern Macros (katra_limits.h)
+
+```c
+/* Jump to cleanup with error code */
+if (error_condition) {
+    CLEANUP_GOTO(cleanup, E_SYSTEM_FILE);  // Sets result and jumps to label
+}
+
+/* Return from cleanup block */
+cleanup:
+    free(buffer);
+    CLEANUP_RETURN(result);  // Returns the result code
+```
+
+**Usage Example:**
+```c
+int katra_operation(const char* input) {
+    int result = KATRA_SUCCESS;
+    char* buffer = NULL;
+    FILE* fp = NULL;
+
+    /* Error checking with macros */
+    KATRA_CHECK_NULL(input);
+
+    /* Allocate resources */
+    buffer = malloc(BUFFER_SIZE);
+    if (!buffer) {
+        CLEANUP_GOTO(cleanup, E_SYSTEM_MEMORY);
+    }
+
+    fp = fopen(path, "r");
+    if (!fp) {
+        CLEANUP_GOTO(cleanup, E_SYSTEM_FILE);
+    }
+
+    /* Do work... */
+    result = process_data(buffer, fp);
+
+cleanup:
+    free(buffer);
+    if (fp) fclose(fp);
+    CLEANUP_RETURN(result);
+}
+```
+
 ## Mandatory Daily Practices
 
 ### Before Every Code Change
 1. **Read before write** - Always read existing files first
 2. **Search for patterns** - Grep for similar code before creating new
 3. **Check headers** - Look for existing constants/macros before defining new ones
-4. **Consider ethics** - Ask: "What if this fails? What happens to the entity?"
+4. **Consider ethics** - Ask: "If this fails? What happens to the entity?"
 
 ### During Coding
 1. **No magic numbers** - Every numeric constant goes in a header with a descriptive name

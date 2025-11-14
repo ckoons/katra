@@ -268,4 +268,48 @@
 #define BREATHING_DEFAULT_TURN_CAPACITY 16            /* Initial turn memory tracking capacity */
 #define BREATHING_GROWTH_FACTOR 2                     /* Array growth factor */
 
+/* ===== Utility Macros - Week 2/3 Improvements ===== */
+
+/*
+ * Note: KATRA_CHECK_NULL, KATRA_CHECK_RANGE, and other error checking macros
+ * are defined in katra_error.h
+ */
+
+/*
+ * KATRA_INIT_STRUCT - Zero-initialize a structure
+ *
+ * Usage:
+ *   memory_record_t record;
+ *   KATRA_INIT_STRUCT(record);
+ *
+ * Expands to:
+ *   memset(&record, 0, sizeof(record));
+ */
+#define KATRA_INIT_STRUCT(var) memset(&(var), 0, sizeof(var))
+
+/*
+ * CLEANUP_GOTO - Jump to cleanup label with result code
+ *
+ * Usage:
+ *   if (error) CLEANUP_GOTO(cleanup, E_SYSTEM_FILE);
+ *
+ * Expands to:
+ *   do { result = E_SYSTEM_FILE; goto cleanup; } while (0)
+ */
+#define CLEANUP_GOTO(label, code) \
+    do { result = (code); goto label; } while (0)
+
+/*
+ * CLEANUP_RETURN - Return from cleanup block with result
+ *
+ * Usage:
+ *   cleanup:
+ *       free(buffer);
+ *       CLEANUP_RETURN(result);
+ *
+ * Expands to:
+ *   return result;
+ */
+#define CLEANUP_RETURN(code) return (code)
+
 #endif /* KATRA_LIMITS_H */
