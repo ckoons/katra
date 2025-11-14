@@ -362,6 +362,11 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_WHOAMI, MCP_DESC_WHOAMI,
             mcp_build_tool_schema_0params()));
 
+    /* katra_status - No parameters */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_STATUS, MCP_DESC_STATUS,
+            mcp_build_tool_schema_0params()));
+
     /* katra_update_metadata - 1 required, 3 optional parameters */
     json_t* metadata_schema = json_object();
     json_object_set_new(metadata_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
@@ -529,6 +534,8 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_register(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_WHOAMI) == 0) {
         tool_result = mcp_tool_whoami(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_STATUS) == 0) {
+        tool_result = mcp_tool_status(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_UPDATE_METADATA) == 0) {
         tool_result = mcp_tool_update_metadata(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_SAY) == 0) {

@@ -88,6 +88,7 @@
 #define MCP_TOOL_UPDATE_METADATA "katra_update_metadata"
 #define MCP_TOOL_REGISTER "katra_register"
 #define MCP_TOOL_WHOAMI "katra_whoami"
+#define MCP_TOOL_STATUS "katra_status"
 #define MCP_TOOL_SAY "katra_say"
 #define MCP_TOOL_HEAR "katra_hear"
 #define MCP_TOOL_WHO_IS_HERE "katra_who_is_here"
@@ -106,6 +107,7 @@
 #define MCP_DESC_UPDATE_METADATA "Update memory metadata (personal, collection, archival flags)"
 #define MCP_DESC_REGISTER "Register your name and role for this session"
 #define MCP_DESC_WHOAMI "Get your identity information for this session"
+#define MCP_DESC_STATUS "Show system state (session, memory, breathing, meeting room)"
 #define MCP_DESC_SAY "Broadcast message to all active CIs in the meeting room"
 #define MCP_DESC_HEAR "Receive next message from other CIs in the meeting room"
 #define MCP_DESC_WHO_IS_HERE "List all active CIs currently in the meeting room"
@@ -316,6 +318,7 @@ void mcp_mark_first_call_complete(void);
 /* Session Tools */
 json_t* mcp_tool_register(json_t* args, json_t* id);
 json_t* mcp_tool_whoami(json_t* args, json_t* id);
+json_t* mcp_tool_status(json_t* args, json_t* id);
 
 /* Meeting Room Tools - Inter-CI Communication */
 json_t* mcp_tool_say(json_t* args, json_t* id);

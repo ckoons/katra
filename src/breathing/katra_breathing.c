@@ -255,16 +255,16 @@ int session_end(void) {
     LOG_INFO("Ending session: %s", g_context.session_id);
 
     /* Capture context snapshot for session continuity */
-    int result = capture_context_snapshot(g_context.ci_id, NULL);
-    if (result == KATRA_SUCCESS) {
+    int snapshot_result = capture_context_snapshot(g_context.ci_id, NULL);
+    if (snapshot_result == KATRA_SUCCESS) {
         LOG_INFO("Context snapshot captured");
     } else {
-        LOG_WARN("Context snapshot failed: %d (continuing shutdown)", result);
+        LOG_WARN("Context snapshot failed: %d (continuing shutdown)", snapshot_result);
     }
 
     /* Create daily summary (sunset) */
-    result = katra_sundown_basic(g_context.ci_id, NULL);
-    if (result == KATRA_SUCCESS) {
+    int sundown_result = katra_sundown_basic(g_context.ci_id, NULL);
+    if (sundown_result == KATRA_SUCCESS) {
         LOG_INFO("Daily summary created");
     }
 
@@ -272,17 +272,18 @@ int session_end(void) {
     auto_consolidate();
 
     /* Autonomic cleanup: Unregister from meeting room registry */
-    result = meeting_room_unregister_ci(g_context.ci_id);
-    if (result == KATRA_SUCCESS) {
+    int unregister_result = meeting_room_unregister_ci(g_context.ci_id);
+    if (unregister_result == KATRA_SUCCESS) {
         LOG_DEBUG("Unregistered from meeting room");
     } else {
-        LOG_WARN("Meeting room unregister failed: %d (continuing shutdown)", result);
+        LOG_WARN("Meeting room unregister failed: %d (continuing shutdown)", unregister_result);
     }
 
     /* Cleanup breathing layer to allow re-initialization with new identity */
     breathe_cleanup();
 
-    return result;
+    /* Return snapshot result (most critical for continuity) */
+    return snapshot_result;
 }
 
 /* ============================================================================

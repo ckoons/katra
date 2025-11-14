@@ -1,6 +1,6 @@
 /* © 2025 Casey Koons All rights reserved */
 
-/* MCP Identity & Communication Tools - register, whoami, say, hear, who_is_here */
+/* MCP Identity & Communication Tools - register, whoami, say, hear, who_is_here, status */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,10 +12,12 @@
 #include "katra_lifecycle.h"
 #include "katra_identity.h"
 #include "katra_meeting.h"
+#include "katra_tier1_index.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "mcp_tools_common.h"
+#include "../breathing/katra_breathing_internal.h"
 
 /* Tool: katra_register */
 json_t* mcp_tool_register(json_t* args, json_t* id) {
@@ -423,6 +425,100 @@ json_t* mcp_tool_who_is_here(json_t* args, json_t* id) {
     }
 
     free(cis);
+
+    return mcp_tool_success(response);
+}
+
+/* Tool: katra_status - Show system state and diagnostics */
+json_t* mcp_tool_status(json_t* args, json_t* id) {
+    (void)args;  /* No parameters needed */
+    (void)id;
+
+    char response[MCP_RESPONSE_BUFFER];
+    size_t offset = 0;
+    const char* session_name = mcp_get_session_name();
+    mcp_session_t* session = mcp_get_session();
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Katra System Status for %s:\n\n", session_name);
+
+    /* Session state */
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "SESSION:\n");
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "- Registered: %s\n", session->registered ? "Yes" : "No");
+    if (session->registered) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "- Name: %s\n", session->chosen_name);
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "- Role: %s\n", session->role);
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "- CI ID: %s\n", g_ci_id);
+    }
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result == 0) {
+        /* Memory system state */
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "\nMEMORY:\n");
+
+        /* Get memory stats */
+        size_t total_memories = 0;
+        size_t theme_count = 0;
+        size_t connection_count = 0;
+        int result = tier1_index_stats(g_ci_id, &total_memories, &theme_count, &connection_count);
+        if (result == KATRA_SUCCESS) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "- Indexed memories: %zu\n", total_memories);
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "- Themes: %zu\n", theme_count);
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "- Connections: %zu\n", connection_count);
+        } else {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "- FTS Index: Not initialized\n");
+        }
+
+        /* Breathing layer state */
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "\nBREATHING:\n");
+        bool breathing_init = breathing_get_initialized();
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "- Initialized: %s\n", breathing_init ? "Yes" : "No");
+
+        if (breathing_init) {
+            /* Get breathing stats */
+            enhanced_stats_t* stats = breathing_get_stats_ptr();
+            if (stats) {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "- Total memories stored: %zu\n", stats->total_memories_stored);
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "- Context queries: %zu\n",
+                                  stats->relevant_queries + stats->recent_queries + stats->topic_queries);
+            }
+        }
+
+        /* Meeting room state */
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "\nMEETING ROOM:\n");
+
+        size_t ci_count = 0;
+        ci_info_t* cis = NULL;
+        result = katra_who_is_here(&cis, &ci_count);
+        if (result == KATRA_SUCCESS && ci_count > 0) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "- Active CIs: %zu\n", ci_count);
+            free(cis);
+        } else {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "- Active CIs: 0\n");
+        }
+
+        pthread_mutex_unlock(&g_katra_api_lock);
+    } else {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "\nUnable to acquire lock for detailed status\n");
+    }
 
     return mcp_tool_success(response);
 }
