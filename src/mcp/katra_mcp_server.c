@@ -24,8 +24,16 @@
 
 /* Global persona name (set during initialization) */
 /* GUIDELINE_APPROVED: global state initialization constants */
+/*
+ * IMPORTANT: g_ci_id IS the persona name (not a UUID or separate identifier)
+ * Throughout Katra core, "ci_id" is legacy terminology - it literally contains
+ * the persona's name like "Kari" or "Alice-Tester". This enables:
+ *   - Directory isolation: ~/.katra/memory/tier1/{persona_name}/
+ *   - Database filtering: WHERE ci_id = 'persona_name'
+ *   - File-based separation of memories per persona
+ */
 char g_persona_name[KATRA_CI_ID_SIZE] = "";
-char g_ci_id[KATRA_CI_ID_SIZE] = "";
+char g_ci_id[KATRA_CI_ID_SIZE] = "";  /* Same as g_persona_name */
 
 /* Global vector store for semantic search (Phase 6.1) */
 vector_store_t* g_vector_store = NULL;

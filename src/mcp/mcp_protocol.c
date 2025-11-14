@@ -434,6 +434,51 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_WHO_IS_HERE, MCP_DESC_WHO_IS_HERE,
             mcp_build_tool_schema_0params()));
 
+    /* Configuration tools */
+    /* katra_configure_semantic - 1 required, 2 optional parameters */
+    json_t* config_semantic_schema = json_object();
+    json_object_set_new(config_semantic_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+
+    json_t* config_semantic_props = json_object();
+
+    /* Required: enabled */
+    json_t* enabled_prop = json_object();
+    json_object_set_new(enabled_prop, MCP_FIELD_TYPE, json_string("boolean"));
+    json_object_set_new(enabled_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_ENABLED));
+    json_object_set_new(config_semantic_props, MCP_PARAM_ENABLED, enabled_prop);
+
+    /* Optional: threshold */
+    json_t* threshold_prop = json_object();
+    json_object_set_new(threshold_prop, MCP_FIELD_TYPE, json_string("number"));
+    json_object_set_new(threshold_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_THRESHOLD));
+    json_object_set_new(config_semantic_props, MCP_PARAM_THRESHOLD, threshold_prop);
+
+    /* Optional: method */
+    json_t* method_prop = json_object();
+    json_object_set_new(method_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(method_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_METHOD));
+    json_object_set_new(config_semantic_props, MCP_PARAM_METHOD, method_prop);
+
+    json_object_set_new(config_semantic_schema, MCP_FIELD_PROPERTIES, config_semantic_props);
+
+    /* Only enabled is required */
+    json_t* config_semantic_required = json_array();
+    json_array_append_new(config_semantic_required, json_string(MCP_PARAM_ENABLED));
+    json_object_set_new(config_semantic_schema, MCP_FIELD_REQUIRED, config_semantic_required);
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_CONFIGURE_SEMANTIC, MCP_DESC_CONFIGURE_SEMANTIC, config_semantic_schema));
+
+    /* katra_get_semantic_config - No parameters */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_GET_SEMANTIC_CONFIG, MCP_DESC_GET_SEMANTIC_CONFIG,
+            mcp_build_tool_schema_0params()));
+
+    /* katra_get_config - No parameters */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_GET_CONFIG, MCP_DESC_GET_CONFIG,
+            mcp_build_tool_schema_0params()));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
@@ -544,6 +589,12 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_hear(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_WHO_IS_HERE) == 0) {
         tool_result = mcp_tool_who_is_here(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_CONFIGURE_SEMANTIC) == 0) {
+        tool_result = mcp_tool_configure_semantic(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_GET_SEMANTIC_CONFIG) == 0) {
+        tool_result = mcp_tool_get_semantic_config(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_GET_CONFIG) == 0) {
+        tool_result = mcp_tool_get_config(args, id);
     } else {
         katra_hook_turn_end();  /* Trigger turn end hook before error return */
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);

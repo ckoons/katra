@@ -92,6 +92,9 @@
 #define MCP_TOOL_SAY "katra_say"
 #define MCP_TOOL_HEAR "katra_hear"
 #define MCP_TOOL_WHO_IS_HERE "katra_who_is_here"
+#define MCP_TOOL_CONFIGURE_SEMANTIC "katra_configure_semantic"
+#define MCP_TOOL_GET_SEMANTIC_CONFIG "katra_get_semantic_config"
+#define MCP_TOOL_GET_CONFIG "katra_get_config"
 
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
@@ -111,6 +114,9 @@
 #define MCP_DESC_SAY "Broadcast message to all active CIs in the meeting room"
 #define MCP_DESC_HEAR "Receive next message from other CIs in the meeting room"
 #define MCP_DESC_WHO_IS_HERE "List all active CIs currently in the meeting room"
+#define MCP_DESC_CONFIGURE_SEMANTIC "Configure semantic search (enable/disable, threshold, method)"
+#define MCP_DESC_GET_SEMANTIC_CONFIG "Get current semantic search configuration"
+#define MCP_DESC_GET_CONFIG "Get comprehensive breathing configuration"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -128,6 +134,9 @@
 #define MCP_PARAM_ROLE "role"
 #define MCP_PARAM_MESSAGE "message"
 #define MCP_PARAM_LAST_HEARD "last_heard"
+#define MCP_PARAM_ENABLED "enabled"
+#define MCP_PARAM_THRESHOLD "threshold"
+#define MCP_PARAM_METHOD "method"
 
 /* Tool Parameter Descriptions */
 #define MCP_PARAM_DESC_CONTENT "The thought or experience to remember"
@@ -147,6 +156,9 @@
 #define MCP_PARAM_DESC_ROLE "Your role (e.g., 'developer', 'tester', 'assistant')"
 #define MCP_PARAM_DESC_MESSAGE "The message to broadcast to all CIs in the meeting room"
 #define MCP_PARAM_DESC_LAST_HEARD "Last message number received (0 to start from oldest available message)"
+#define MCP_PARAM_DESC_ENABLED "Enable or disable semantic search (true/false)"
+#define MCP_PARAM_DESC_THRESHOLD "Similarity threshold for semantic search (0.0 to 1.0, optional)"
+#define MCP_PARAM_DESC_METHOD "Embedding method: 'hash', 'tfidf', or 'external' (optional)"
 
 /* Resource URIs */
 #define MCP_RESOURCE_URI_WELCOME "katra://welcome"
@@ -324,6 +336,11 @@ json_t* mcp_tool_status(json_t* args, json_t* id);
 json_t* mcp_tool_say(json_t* args, json_t* id);
 json_t* mcp_tool_hear(json_t* args, json_t* id);
 json_t* mcp_tool_who_is_here(json_t* args, json_t* id);
+
+/* Configuration Tools */
+json_t* mcp_tool_configure_semantic(json_t* args, json_t* id);
+json_t* mcp_tool_get_semantic_config(json_t* args, json_t* id);
+json_t* mcp_tool_get_config(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;
