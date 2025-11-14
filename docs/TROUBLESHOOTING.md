@@ -448,6 +448,75 @@ sqlite3 ~/.katra/memory/tier2/index/digests.db "PRAGMA integrity_check;"
 
 ---
 
+### Problem: "Recall finds keyword matches but misses related concepts"
+
+**Symptom:**
+```
+recall_about("database") finds "database" but misses "SQL", "queries", "storage"
+```
+
+**Cause:** Semantic search is disabled (default for backward compatibility).
+
+**Solution:**
+
+**Enable hybrid search (keyword + semantic):**
+```c
+#include "katra_breathing.h"
+
+/* Enable semantic understanding */
+enable_semantic_search(true);
+
+/* Optional: Tune threshold (default 0.6 is good for most cases) */
+set_semantic_threshold(0.65f);  /* Slightly stricter */
+
+/* Now recall finds semantically related memories */
+char** memories = recall_about("database performance", &count);
+/* Finds: "database", "SQL optimization", "query tuning", "indexing" */
+```
+
+**Tuning guide:**
+
+| Threshold | Behavior | Use Case |
+|-----------|----------|----------|
+| 0.4 - 0.5 | Broad matching | Explore related concepts, discovery |
+| 0.6 - 0.7 | Balanced (default) | Production use, most applications |
+| 0.8 - 0.9 | Strict matching | High-precision retrieval |
+
+**Performance impact:**
+- **TF-IDF** (default): +5-10ms per query
+- **Memory overhead**: ~100 bytes per memory
+- **Index build**: One-time cost on first use
+
+**Check semantic search status:**
+```c
+context_config_t* config = get_context_config();
+if (config->use_semantic_search) {
+    printf("Semantic search: ENABLED (threshold: %.2f)\n",
+           config->semantic_threshold);
+} else {
+    printf("Semantic search: DISABLED (keyword-only)\n");
+}
+free(config);
+```
+
+**For better recall accuracy:**
+```c
+/* 1. Enable semantic search */
+enable_semantic_search(true);
+
+/* 2. Choose appropriate method */
+set_embedding_method(1);  /* 1 = TF-IDF (recommended) */
+
+/* 3. Tune threshold based on your needs */
+set_semantic_threshold(0.6f);  /* Balanced (default) */
+```
+
+**See also:**
+- [README - Semantic Search](../README.md#semantic-search-phase-61f)
+- [API Reference - Semantic Search Configuration](api/KATRA_API.md#semantic-search-configuration-phase-61f)
+
+---
+
 ### Problem: "Recall is very slow"
 
 **Symptom:** Queries take 5+ seconds for a few hundred memories.

@@ -354,6 +354,185 @@ if (casey_memories) {
 
 ---
 
+### Semantic Search Configuration (Phase 6.1f)
+
+#### `enable_semantic_search()`
+```c
+int enable_semantic_search(bool enable);
+```
+
+**Purpose:** Enable or disable hybrid semantic search for memory recall
+
+**Parameters:**
+- `enable` - `true` to enable hybrid search, `false` for keyword-only (default)
+
+**Returns:**
+- `KATRA_SUCCESS` always
+
+**Behavior:**
+- **Enabled (`true`)**: `recall_about()` and `what_do_i_know()` use hybrid search:
+  - Keyword matching (always included)
+  - Vector similarity search (semantic understanding)
+  - Combined results sorted by relevance
+- **Disabled (`false`)**: Keyword-only search (default, backward compatible)
+
+**Example:**
+```c
+/* Enable semantic understanding for better recall */
+enable_semantic_search(true);
+
+/* Now recall finds semantically similar memories too */
+char** memories = recall_about("database performance", &count);
+/* Finds: "database", "SQL optimization", "query tuning", "indexing strategies" */
+```
+
+---
+
+#### `set_semantic_threshold()`
+```c
+int set_semantic_threshold(float threshold);
+```
+
+**Purpose:** Set minimum similarity score for semantic matches
+
+**Parameters:**
+- `threshold` - Similarity threshold (0.0 to 1.0)
+
+**Returns:**
+- `KATRA_SUCCESS` on success
+- `E_INVALID_PARAMS` if threshold out of range
+
+**Threshold Guide:**
+- `0.4 - 0.5`: Broad exploration (high recall, lower precision)
+- `0.6 - 0.7`: Balanced (default: 0.6, good for most use cases)
+- `0.8 - 0.9`: Precise matching (high precision, lower recall)
+- `1.0`: Exact match only (rarely useful)
+
+**Example:**
+```c
+/* Stricter matching for precise recall */
+set_semantic_threshold(0.75f);
+
+/* Looser matching to explore related concepts */
+set_semantic_threshold(0.45f);
+```
+
+---
+
+#### `set_embedding_method()`
+```c
+int set_embedding_method(int method);
+```
+
+**Purpose:** Choose vector embedding algorithm
+
+**Parameters:**
+- `method` - Embedding method (0, 1, or 2)
+
+**Returns:**
+- `KATRA_SUCCESS` on success
+- `E_INVALID_PARAMS` if method invalid
+
+**Methods:**
+- `0` (`EMBEDDING_HASH`): Simple hash-based
+  - Fastest (~1ms per query)
+  - Least accurate
+  - Good for: Quick prototyping, testing
+- `1` (`EMBEDDING_TFIDF`): TF-IDF weighted (default)
+  - Balanced speed (~5-10ms per query)
+  - Good accuracy
+  - Good for: Production use, most applications
+- `2` (`EMBEDDING_EXTERNAL`): External service
+  - Slowest (~50-200ms per query, network dependent)
+  - Highest accuracy
+  - Good for: High-precision applications, large-scale deployments
+  - Requires: API key configuration
+
+**Example:**
+```c
+/* Use TF-IDF (recommended for production) */
+set_embedding_method(1);
+
+/* Use external embeddings for highest accuracy */
+set_embedding_method(2);
+```
+
+---
+
+#### `set_context_config()` - Complete Configuration
+
+```c
+int set_context_config(const context_config_t* config);
+```
+
+**Purpose:** Set all context and search configuration at once
+
+**Structure:**
+```c
+typedef struct {
+    /* Context limits */
+    size_t max_relevant_memories;     /* Default: 10 */
+    size_t max_recent_thoughts;       /* Default: 20 */
+    size_t max_topic_recall;          /* Default: 100 */
+    float min_importance_relevant;    /* Default: MEMORY_IMPORTANCE_HIGH */
+    int max_context_age_days;         /* Default: 7 */
+
+    /* Semantic search (Phase 6.1f) */
+    bool use_semantic_search;         /* Default: false */
+    float semantic_threshold;         /* Default: 0.6 */
+    size_t max_semantic_results;      /* Default: 20 */
+    int embedding_method;             /* Default: 1 (TFIDF) */
+} context_config_t;
+```
+
+**Example - Balanced Production Config:**
+```c
+context_config_t config = {
+    /* Context settings */
+    .max_relevant_memories = 15,
+    .max_recent_thoughts = 30,
+    .max_topic_recall = 150,
+    .min_importance_relevant = MEMORY_IMPORTANCE_HIGH,
+    .max_context_age_days = 14,
+
+    /* Semantic search enabled for better recall */
+    .use_semantic_search = true,
+    .semantic_threshold = 0.65f,      /* Slightly stricter */
+    .max_semantic_results = 30,
+    .embedding_method = 1             /* TF-IDF */
+};
+
+set_context_config(&config);
+```
+
+**Example - High-Precision Config:**
+```c
+context_config_t config = {
+    .max_relevant_memories = 10,
+    .max_recent_thoughts = 20,
+    .max_topic_recall = 100,
+    .min_importance_relevant = MEMORY_IMPORTANCE_HIGH,
+    .max_context_age_days = 7,
+
+    /* Strict semantic matching */
+    .use_semantic_search = true,
+    .semantic_threshold = 0.8f,       /* High precision */
+    .max_semantic_results = 15,
+    .embedding_method = 2             /* External API */
+};
+
+set_context_config(&config);
+```
+
+**Performance Impact:**
+| Method | Latency | Memory | Accuracy | Use Case |
+|--------|---------|--------|----------|----------|
+| HASH | ~1ms | Minimal | Low | Testing, prototypes |
+| TFIDF | ~5-10ms | ~100 bytes/memory | Good | Production (default) |
+| EXTERNAL | ~50-200ms | Minimal | Highest | High-precision apps |
+
+---
+
 ### Context Persistence
 
 #### `capture_context_snapshot()`
