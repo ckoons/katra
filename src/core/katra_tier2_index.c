@@ -512,6 +512,8 @@ int tier2_load_by_locations(const index_location_t* locations,
 /* Cleanup index resources */
 void tier2_index_cleanup(void) {
     if (g_db) {
+        /* Force WAL checkpoint before close (prevents data loss on restart) */
+        sqlite3_wal_checkpoint_v2(g_db, NULL, SQLITE_CHECKPOINT_FULL, NULL, NULL);
         sqlite3_close(g_db);
         g_db = NULL;
     }

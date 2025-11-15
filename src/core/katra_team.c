@@ -137,6 +137,8 @@ void katra_team_cleanup(void) {
     }
 
     if (g_team_db) {
+        /* Force WAL checkpoint before close (prevents data loss on restart) */
+        sqlite3_wal_checkpoint_v2(g_team_db, NULL, SQLITE_CHECKPOINT_FULL, NULL, NULL);
         sqlite3_close(g_team_db);
         g_team_db = NULL;
     }

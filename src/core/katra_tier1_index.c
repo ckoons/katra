@@ -573,6 +573,8 @@ cleanup:
 /* Cleanup index resources */
 void tier1_index_cleanup(void) {
     if (g_memory_db) {
+        /* Force WAL checkpoint before close (prevents data loss on restart) */
+        sqlite3_wal_checkpoint_v2(g_memory_db, NULL, SQLITE_CHECKPOINT_FULL, NULL, NULL);
         sqlite3_close(g_memory_db);
         g_memory_db = NULL;
     }

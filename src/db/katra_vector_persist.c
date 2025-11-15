@@ -180,6 +180,8 @@ cleanup:
         sqlite3_finalize(stmt);
     }
     if (db) {
+        /* Force WAL checkpoint before close (prevents data loss on restart) */
+        sqlite3_wal_checkpoint_v2(db, NULL, SQLITE_CHECKPOINT_PASSIVE, NULL, NULL);
         sqlite3_close(db);
     }
     return result;
@@ -296,6 +298,8 @@ cleanup:
         sqlite3_finalize(stmt);
     }
     if (db) {
+        /* Force WAL checkpoint before close (prevents data loss on restart) */
+        sqlite3_wal_checkpoint_v2(db, NULL, SQLITE_CHECKPOINT_PASSIVE, NULL, NULL);
         sqlite3_close(db);
     }
     return result;
@@ -344,6 +348,8 @@ cleanup:
         sqlite3_finalize(stmt);
     }
     if (db) {
+        /* Force WAL checkpoint before close (prevents data loss on restart) */
+        sqlite3_wal_checkpoint_v2(db, NULL, SQLITE_CHECKPOINT_PASSIVE, NULL, NULL);
         sqlite3_close(db);
     }
     return result;
