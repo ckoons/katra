@@ -21,6 +21,7 @@
 #include "katra_log.h"
 #include "katra_meeting.h"
 #include "katra_vector.h"
+#include "katra_env_utils.h"
 
 /* Global persona name (set during initialization) */
 /* GUIDELINE_APPROVED: global state initialization constants */
@@ -134,7 +135,7 @@ static int handle_new_persona(const char* persona_name, const char* ci_id) {
 /* Resolve persona from environment variable */
 static int resolve_persona_from_env(char* persona_name_out, char* ci_id_out,
                                     size_t buffer_size) {
-    const char* env_name = getenv("KATRA_PERSONA");
+    const char* env_name = katra_getenv("KATRA_PERSONA");
     if (!env_name || strlen(env_name) == 0) {
         return E_INPUT_NULL;  /* Signal: try next priority */
     }
@@ -417,8 +418,17 @@ int main(void) {
     signal(SIGINT, mcp_signal_handler);
     signal(SIGPIPE, SIG_IGN);
 
+    /* Load environment from .env files (required for KATRA_PERSONA) */
+    int result = katra_loadenv();
+    if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
+        fprintf(stderr, "Warning: Failed to load .env configuration: %s\n",
+                katra_error_message(result));
+        /* Continue anyway - can still use system environment */
+    }
+
     /* Initialize persona registry */
-    int result = katra_identity_init();
+    result = katra_identity_init();
     if (result != KATRA_SUCCESS) {
         /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to initialize persona registry: %s\n",

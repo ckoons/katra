@@ -31,7 +31,7 @@
  * ============================================================================ */
 
 /* Meeting room configuration */
-#define MEETING_MAX_MESSAGE_LENGTH 1024
+#define MEETING_MAX_MESSAGE_LENGTH 2048
 #define MEETING_MAX_ACTIVE_CIS 32
 #define MEETING_MESSAGE_TTL_HOURS 2
 #define MEETING_DEFAULT_HISTORY_COUNT 10

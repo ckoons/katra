@@ -615,6 +615,7 @@ APPROVED_STRINGS=$(grep '"[^"]*"' "$TEMP_COUNT" 2>/dev/null | \
   grep -v '/\*[^*]*"[^"]*"[^*]*\*/' | \
   grep -v '"\."' | grep -v "\"'\"" | grep -v '"\\.\\.\\."' | \
   grep -v '""' | grep -v '"\\n"' | grep -v '","' | grep -v '":"' | grep -v '"}"' | grep -v '"]"' | \
+  grep -v '\"[[:space:]]*\\\\[[:space:]]*$' | \
   grep -E "%|LOG_|printf\|fprintf\|snprintf\|dprintf|katra_report_error|mcp_tool_error|static const char|\
 strstr\(|strcmp\(|strncmp\(|strchr\(|strrchr\(|strpbrk\(|strspn\(|strcspn\(|\
 execlp\(|execv\(|execvp\(|execve\(|execl\(|\
@@ -632,6 +633,7 @@ strstr\([^,]+,[[:space:]]*\"[^\"]*:|\
 snprintf\([^,]+,[^,]+,[[:space:]]*\"[^\"]*:|\
 snprintf\([^,]+,[^,]+,[[:space:]]*\"{|\
 const char\*[[:space:]]*[a-zA-Z_].*=[[:space:]]*\"|\
+SQL_[A-Z_]*.*=.*\"(CREATE|INSERT|SELECT|UPDATE|DELETE|ALTER|DROP|PRAGMA)|\
 fprintf\(fp," | \
   wc -l | tr -d ' ')
 
@@ -699,6 +701,7 @@ UNAPPROVED_REPORT="/tmp/argo_unapproved_strings.txt"
     grep -v 'case[[:space:]]*'"'" | \
     grep -v '"\."' | grep -v "\"'\"" | \
     grep -v '""' | grep -v '"\\n"' | grep -v '","' | grep -v '":"' | grep -v '"}"' | grep -v '"]"' | \
+    grep -v '\"[[:space:]]*\\\\[[:space:]]*$' | \
     grep -v -E "%|LOG_|printf\|fprintf\|snprintf\|dprintf|katra_report_error|static const char|\
 strstr\(|strcmp\(|strncmp\(|strchr\(|strrchr\(|strpbrk\(|strspn\(|strcspn\(|\
 execlp\(|execv\(|execvp\(|execve\(|execl\(|\
@@ -715,6 +718,7 @@ strstr\([^,]+,[[:space:]]*\"[^\"]*:|\
 snprintf\([^,]+,[^,]+,[[:space:]]*\"[^\"]*:|\
 snprintf\([^,]+,[^,]+,[[:space:]]*\"{|\
 const char\*[[:space:]]*[a-zA-Z_].*=[[:space:]]*\"|\
+SQL_[A-Z_]*.*=.*\"(CREATE|INSERT|SELECT|UPDATE|DELETE|ALTER|DROP|PRAGMA)|\
 fprintf\(fp," | \
     sort | \
     nl -w3 -s'. '
@@ -751,6 +755,7 @@ if [ "$UNAPPROVED_STRINGS" -gt 100 ]; then
     grep -v "GUIDELINE_APPROVED" | \
     grep -v "%" | grep -v "LOG_\|printf\|fprintf\|snprintf\|dprintf" | \
     grep -v "katra_report_error" | grep -v "static const char" | \
+    grep -v '\"[[:space:]]*\\\\[[:space:]]*$' | \
     grep -vE "strstr\(|strcmp\(|strncmp\(|strchr\(|strrchr\(" | \
     grep -vE "execlp\(|execv\(|execvp\(|execve\(|execl\(" | \
     grep -vE "fopen\(|popen\(|freopen\(|getenv\(|setenv\(|putenv\(" | \
@@ -765,6 +770,7 @@ if [ "$UNAPPROVED_STRINGS" -gt 100 ]; then
     grep -vE "snprintf\([^,]+,[^,]+,[[:space:]]*\"[^\"]*:" | \
     grep -vE "snprintf\([^,]+,[^,]+,[[:space:]]*\"{" | \
     grep -vE "const char\*[[:space:]]*[a-zA-Z_].*=[[:space:]]*\"" | \
+    grep -vE "SQL_[A-Z_]*.*=.*\"(CREATE|INSERT|SELECT|UPDATE|DELETE|ALTER|DROP|PRAGMA)" | \
     grep -vE "fprintf\(fp," | head -10
   echo ""
   echo "Note: Add GUIDELINE_APPROVED comment for legitimate constants (JSON, API paths, etc.)"
@@ -794,6 +800,8 @@ else
   echo "  - File output formatting (fprintf(fp, ...))"
   echo "  - Switch case statements (case '...':)"
   echo "  - Comment-only lines (/* ... */, //, *)"
+  echo "  - Line continuations (\"string\" \\)"
+  echo "  - SQL DDL statements (SQL_* = \"CREATE TABLE...\")"
   echo "  - GUIDELINE_APPROVED markers"
 fi
 echo ""
