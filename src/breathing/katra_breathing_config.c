@@ -72,7 +72,7 @@ int set_context_config(const context_config_t* config) {
 
         /* Semantic search defaults (Phase 6.1f) */
         global_config->use_semantic_search = true;  /* Enabled by default (Phase 6.1f) */
-        global_config->semantic_threshold = 0.6f;     /* 60% similarity minimum */
+        global_config->semantic_threshold = 0.3f;     /* 30% similarity - Ami's testing shows optimal */
         global_config->max_semantic_results = 20;     /* Reasonable performance */
         global_config->embedding_method = 1;          /* EMBEDDING_TFIDF (good balance) */
 

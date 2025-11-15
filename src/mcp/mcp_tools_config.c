@@ -12,6 +12,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "mcp_tools_common.h"
 
 /* Configure semantic search
  *
@@ -79,11 +80,48 @@ json_t* mcp_tool_configure_semantic(json_t* args, json_t* id) {
         }
     }
 
-    /* Build response */
-    char response[KATRA_BUFFER_MEDIUM];
+    /* Auto-regenerate vectors when enabling semantic search (Ami's UX suggestion) */
+    if (enabled && g_vector_store && g_vector_store->count < MIN_VECTOR_COUNT_THRESHOLD) {
+        LOG_INFO("Auto-regenerating vectors (current count: %zu)", g_vector_store->count);
+        int regen_result = regenerate_vectors();
+
+        if (regen_result > 0) {
+            /* Get current config for response */
+            context_config_t* config = get_context_config();
+            char response[KATRA_BUFFER_TEXT];
+            snprintf(response, sizeof(response),
+                    "Semantic search enabled successfully!\n\n"
+                    "Auto-regenerated %d vector embeddings for semantic search.\n\n"
+                    "Current configuration:\n"
+                    "- Enabled: yes\n"
+                    "- Threshold: %.2f\n"
+                    "- Method: %s\n"
+                    "- Max Results: %zu",
+                    regen_result,
+                    config->semantic_threshold,
+                    config->embedding_method == 0 ? "hash" :
+                    config->embedding_method == 1 ? "tfidf" : "external",
+                    config->max_semantic_results);
+            return mcp_tool_success(response);
+        }
+    }
+
+    /* Build response with current configuration */
+    context_config_t* config = get_context_config();
+    char response[KATRA_BUFFER_TEXT];
     snprintf(response, sizeof(response),
-            "Semantic search %s successfully",
-            enabled ? "enabled" : "disabled");
+            "Semantic search %s successfully\n\n"
+            "Current configuration:\n"
+            "- Enabled: %s\n"
+            "- Threshold: %.2f\n"
+            "- Method: %s\n"
+            "- Max Results: %zu",
+            enabled ? "enabled" : "disabled",
+            config->use_semantic_search ? "yes" : "no",
+            config->semantic_threshold,
+            config->embedding_method == 0 ? "hash" :
+            config->embedding_method == 1 ? "tfidf" : "external",
+            config->max_semantic_results);
 
     return mcp_tool_success(response);
 }

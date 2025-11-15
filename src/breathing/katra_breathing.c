@@ -53,8 +53,8 @@ static context_config_t g_context_config = {
     .min_importance_relevant = MEMORY_IMPORTANCE_HIGH,
     .max_context_age_days = BREATHING_DEFAULT_CONTEXT_AGE_DAYS,
     /* Semantic search defaults (Phase 6.1f) */
-    .use_semantic_search = false,      /* Disabled by default */
-    .semantic_threshold = 0.6f,        /* 60% similarity */
+    .use_semantic_search = true,       /* Enabled by default - core feature */
+    .semantic_threshold = 0.3f,        /* 30% similarity - Ami's testing shows optimal balance */
     .max_semantic_results = 20,        /* Reasonable limit */
     .embedding_method = 1              /* EMBEDDING_TFIDF */
 };

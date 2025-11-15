@@ -347,6 +347,11 @@ void mcp_server_cleanup(void) {
         g_vector_store = NULL;
     }
 
+    /* Unregister from meeting room before cleanup (prevents duplicate registrations) */
+    if (g_ci_id[0]) {
+        meeting_room_unregister_ci(g_ci_id);
+    }
+
     meeting_room_cleanup();
     katra_hooks_cleanup();  /* Hook registry cleanup */
     katra_lifecycle_cleanup();  /* Lifecycle layer cleanup */
