@@ -272,6 +272,13 @@ json_t* mcp_build_tool_schema_0params(void);
 json_t* mcp_build_tool_schema_1param(const char* param_name, const char* param_desc);
 json_t* mcp_build_tool_schema_2params(const char* param1_name, const char* param1_desc,
                                        const char* param2_name, const char* param2_desc);
+json_t* mcp_build_schema_optional_int(const char* param_name, const char* param_desc);
+json_t* mcp_build_schema_2optional_ints(const char* p1_name, const char* p1_desc,
+                                         const char* p2_name, const char* p2_desc);
+json_t* mcp_build_schema_1req_1opt_string(const char* req_name, const char* req_desc,
+                                           const char* opt_name, const char* opt_desc);
+json_t* mcp_build_metadata_schema(void);
+json_t* mcp_build_semantic_config_schema(void);
 json_t* mcp_build_tool(const char* name, const char* description, json_t* schema);
 json_t* mcp_build_resource(const char* uri, const char* name,
                            const char* description, const char* mime_type);

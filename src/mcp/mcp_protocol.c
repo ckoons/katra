@@ -215,6 +215,113 @@ json_t* mcp_build_tool_schema_2params(const char* param1_name, const char* param
     return schema;
 }
 
+/* Helper: Add integer property to schema */
+static void add_int_property(json_t* props, const char* name, const char* desc) {
+    json_t* prop = json_object();
+    json_object_set_new(prop, MCP_FIELD_TYPE, json_string("integer"));
+    json_object_set_new(prop, MCP_FIELD_DESCRIPTION, json_string(desc));
+    json_object_set_new(props, name, prop);
+}
+
+/* Helper: Add boolean property to schema */
+static void add_bool_property(json_t* props, const char* name, const char* desc) {
+    json_t* prop = json_object();
+    json_object_set_new(prop, MCP_FIELD_TYPE, json_string("boolean"));
+    json_object_set_new(prop, MCP_FIELD_DESCRIPTION, json_string(desc));
+    json_object_set_new(props, name, prop);
+}
+
+/* Helper: Add string property to schema */
+static void add_string_property(json_t* props, const char* name, const char* desc) {
+    json_t* prop = json_object();
+    json_object_set_new(prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
+    json_object_set_new(prop, MCP_FIELD_DESCRIPTION, json_string(desc));
+    json_object_set_new(props, name, prop);
+}
+
+/* Helper: Add number property to schema */
+static void add_number_property(json_t* props, const char* name, const char* desc) {
+    json_t* prop = json_object();
+    json_object_set_new(prop, MCP_FIELD_TYPE, json_string("number"));
+    json_object_set_new(prop, MCP_FIELD_DESCRIPTION, json_string(desc));
+    json_object_set_new(props, name, prop);
+}
+
+/* Build schema with 1 optional integer parameter */
+static json_t* build_schema_optional_int(const char* param_name, const char* param_desc) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_int_property(props, param_name, param_desc);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+    return schema;
+}
+
+/* Build schema with 2 optional integer parameters */
+static json_t* build_schema_2optional_ints(const char* p1_name, const char* p1_desc,
+                                            const char* p2_name, const char* p2_desc) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_int_property(props, p1_name, p1_desc);
+    add_int_property(props, p2_name, p2_desc);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+    return schema;
+}
+
+/* Build schema: 1 required string, 1 optional string */
+static json_t* build_schema_1req_1opt_string(const char* req_name, const char* req_desc,
+                                              const char* opt_name, const char* opt_desc) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_string_property(props, req_name, req_desc);
+    add_string_property(props, opt_name, opt_desc);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(req_name));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+    return schema;
+}
+
+/* Build schema: 1 required string, 3 optional (2 bool, 1 string) */
+static json_t* build_metadata_schema(void) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+
+    add_string_property(props, MCP_PARAM_MEMORY_ID, MCP_PARAM_DESC_MEMORY_ID);
+    add_bool_property(props, MCP_PARAM_PERSONAL, MCP_PARAM_DESC_PERSONAL);
+    add_bool_property(props, MCP_PARAM_NOT_TO_ARCHIVE, MCP_PARAM_DESC_NOT_TO_ARCHIVE);
+    add_string_property(props, MCP_PARAM_COLLECTION, MCP_PARAM_DESC_COLLECTION);
+
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(MCP_PARAM_MEMORY_ID));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+    return schema;
+}
+
+/* Build schema: 1 required bool, 2 optional (1 number, 1 string) */
+static json_t* build_semantic_config_schema(void) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+
+    add_bool_property(props, MCP_PARAM_ENABLED, MCP_PARAM_DESC_ENABLED);
+    add_number_property(props, MCP_PARAM_THRESHOLD, MCP_PARAM_DESC_THRESHOLD);
+    add_string_property(props, MCP_PARAM_METHOD, MCP_PARAM_DESC_METHOD);
+
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(MCP_PARAM_ENABLED));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+    return schema;
+}
+
 /* Build complete tool definition */
 json_t* mcp_build_tool(const char* name, const char* description, json_t* schema) {
     json_t* tool = json_object();
@@ -265,7 +372,7 @@ static json_t* handle_tools_list(json_t* request) {
     json_t* id = json_object_get(request, MCP_FIELD_ID);
     json_t* tools_array = json_array();
 
-    /* Build all tools using helpers */
+    /* Memory tools */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_REMEMBER, MCP_DESC_REMEMBER,
             mcp_build_tool_schema_2params(MCP_PARAM_CONTENT, MCP_PARAM_DESC_CONTENT,
@@ -275,42 +382,14 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_RECALL, MCP_DESC_RECALL,
             mcp_build_tool_schema_1param(MCP_PARAM_TOPIC, MCP_PARAM_DESC_TOPIC)));
 
-    /* katra_recent - 0 required, 1 optional parameter (limit) */
-    json_t* recent_schema = json_object();
-    json_object_set_new(recent_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
-    json_t* recent_props = json_object();
-
-    json_t* limit_prop = json_object();
-    json_object_set_new(limit_prop, MCP_FIELD_TYPE, json_string("integer"));
-    json_object_set_new(limit_prop, MCP_FIELD_DESCRIPTION, json_string("Number of recent memories to return (default: 20)"));
-    json_object_set_new(recent_props, "limit", limit_prop);
-
-    json_object_set_new(recent_schema, MCP_FIELD_PROPERTIES, recent_props);
-    /* No required fields - limit is optional */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_RECENT, MCP_DESC_RECENT,
+            build_schema_optional_int("limit", "Number of recent memories to return (default: 20)")));
 
     json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_RECENT, MCP_DESC_RECENT, recent_schema));
-
-    /* katra_memory_digest - 2 optional parameters */
-    json_t* digest_schema = json_object();
-    json_object_set_new(digest_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
-    json_t* digest_props = json_object();
-
-    json_t* digest_limit_prop = json_object();
-    json_object_set_new(digest_limit_prop, MCP_FIELD_TYPE, json_string("integer"));
-    json_object_set_new(digest_limit_prop, MCP_FIELD_DESCRIPTION, json_string("Number of memories to return (default: 10)"));
-    json_object_set_new(digest_props, "limit", digest_limit_prop);
-
-    json_t* offset_prop = json_object();
-    json_object_set_new(offset_prop, MCP_FIELD_TYPE, json_string("integer"));
-    json_object_set_new(offset_prop, MCP_FIELD_DESCRIPTION, json_string("Starting position, 0=newest (default: 0)"));
-    json_object_set_new(digest_props, "offset", offset_prop);
-
-    json_object_set_new(digest_schema, MCP_FIELD_PROPERTIES, digest_props);
-    /* No required fields - both parameters are optional */
-
-    json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_MEMORY_DIGEST, MCP_DESC_MEMORY_DIGEST, digest_schema));
+        mcp_build_tool(MCP_TOOL_MEMORY_DIGEST, MCP_DESC_MEMORY_DIGEST,
+            build_schema_2optional_ints("limit", "Number of memories to return (default: 10)",
+                                       "offset", "Starting position, 0=newest (default: 0)")));
 
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_LEARN, MCP_DESC_LEARN,
@@ -321,6 +400,7 @@ static json_t* handle_tools_list(json_t* request) {
             mcp_build_tool_schema_2params(MCP_PARAM_DECISION, MCP_PARAM_DESC_DECISION,
                                          MCP_PARAM_REASONING, MCP_PARAM_DESC_REASONING)));
 
+    /* Nous tools */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_PLACEMENT, MCP_DESC_PLACEMENT,
             mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_PLACEMENT)));
@@ -333,153 +413,50 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_USER_DOMAIN, MCP_DESC_USER_DOMAIN,
             mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_USER_DOMAIN)));
 
-    /* katra_register - 1 required, 1 optional parameter */
-    json_t* register_schema = json_object();
-    json_object_set_new(register_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
-    json_t* register_props = json_object();
-
-    json_t* name_prop = json_object();
-    json_object_set_new(name_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
-    json_object_set_new(name_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_NAME));
-    json_object_set_new(register_props, MCP_PARAM_NAME, name_prop);
-
-    json_t* role_prop = json_object();
-    json_object_set_new(role_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
-    json_object_set_new(role_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_ROLE));
-    json_object_set_new(register_props, MCP_PARAM_ROLE, role_prop);
-
-    json_object_set_new(register_schema, MCP_FIELD_PROPERTIES, register_props);
-
-    json_t* register_required = json_array();
-    json_array_append_new(register_required, json_string(MCP_PARAM_NAME));
-    json_object_set_new(register_schema, MCP_FIELD_REQUIRED, register_required);
-
+    /* Identity tools */
     json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_REGISTER, MCP_DESC_REGISTER, register_schema));
+        mcp_build_tool(MCP_TOOL_REGISTER, MCP_DESC_REGISTER,
+            build_schema_1req_1opt_string(MCP_PARAM_NAME, MCP_PARAM_DESC_NAME,
+                                         MCP_PARAM_ROLE, MCP_PARAM_DESC_ROLE)));
 
-    /* katra_whoami - No parameters */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_WHOAMI, MCP_DESC_WHOAMI,
             mcp_build_tool_schema_0params()));
 
-    /* katra_status - No parameters */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_STATUS, MCP_DESC_STATUS,
             mcp_build_tool_schema_0params()));
 
-    /* katra_update_metadata - 1 required, 3 optional parameters */
-    json_t* metadata_schema = json_object();
-    json_object_set_new(metadata_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
-
-    json_t* metadata_props = json_object();
-
-    /* Required: memory_id */
-    json_t* memory_id_prop = json_object();
-    json_object_set_new(memory_id_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
-    json_object_set_new(memory_id_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_MEMORY_ID));
-    json_object_set_new(metadata_props, MCP_PARAM_MEMORY_ID, memory_id_prop);
-
-    /* Optional: personal */
-    json_t* personal_prop = json_object();
-    json_object_set_new(personal_prop, MCP_FIELD_TYPE, json_string("boolean"));
-    json_object_set_new(personal_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_PERSONAL));
-    json_object_set_new(metadata_props, MCP_PARAM_PERSONAL, personal_prop);
-
-    /* Optional: not_to_archive */
-    json_t* not_to_archive_prop = json_object();
-    json_object_set_new(not_to_archive_prop, MCP_FIELD_TYPE, json_string("boolean"));
-    json_object_set_new(not_to_archive_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_NOT_TO_ARCHIVE));
-    json_object_set_new(metadata_props, MCP_PARAM_NOT_TO_ARCHIVE, not_to_archive_prop);
-
-    /* Optional: collection */
-    json_t* collection_prop = json_object();
-    json_object_set_new(collection_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
-    json_object_set_new(collection_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_COLLECTION));
-    json_object_set_new(metadata_props, MCP_PARAM_COLLECTION, collection_prop);
-
-    json_object_set_new(metadata_schema, MCP_FIELD_PROPERTIES, metadata_props);
-
-    /* Only memory_id is required */
-    json_t* metadata_required = json_array();
-    json_array_append_new(metadata_required, json_string(MCP_PARAM_MEMORY_ID));
-    json_object_set_new(metadata_schema, MCP_FIELD_REQUIRED, metadata_required);
-
     json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_UPDATE_METADATA, MCP_DESC_UPDATE_METADATA, metadata_schema));
+        mcp_build_tool(MCP_TOOL_UPDATE_METADATA, MCP_DESC_UPDATE_METADATA,
+            build_metadata_schema()));
 
     /* Meeting room tools */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_SAY, MCP_DESC_SAY,
             mcp_build_tool_schema_1param(MCP_PARAM_MESSAGE, MCP_PARAM_DESC_MESSAGE)));
 
-    /* katra_hear - 1 optional parameter (last_heard) */
-    json_t* hear_schema = json_object();
-    json_object_set_new(hear_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
-    json_t* hear_props = json_object();
-
-    json_t* last_heard_prop = json_object();
-    json_object_set_new(last_heard_prop, MCP_FIELD_TYPE, json_string("integer"));
-    json_object_set_new(last_heard_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_LAST_HEARD));
-    json_object_set_new(hear_props, MCP_PARAM_LAST_HEARD, last_heard_prop);
-
-    json_object_set_new(hear_schema, MCP_FIELD_PROPERTIES, hear_props);
-    json_t* hear_required = json_array();  /* No required params */
-    json_object_set_new(hear_schema, MCP_FIELD_REQUIRED, hear_required);
-
     json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_HEAR, MCP_DESC_HEAR, hear_schema));
+        mcp_build_tool(MCP_TOOL_HEAR, MCP_DESC_HEAR,
+            build_schema_optional_int(MCP_PARAM_LAST_HEARD, MCP_PARAM_DESC_LAST_HEARD)));
 
-    /* katra_who_is_here - No parameters */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_WHO_IS_HERE, MCP_DESC_WHO_IS_HERE,
             mcp_build_tool_schema_0params()));
 
     /* Configuration tools */
-    /* katra_configure_semantic - 1 required, 2 optional parameters */
-    json_t* config_semantic_schema = json_object();
-    json_object_set_new(config_semantic_schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
-
-    json_t* config_semantic_props = json_object();
-
-    /* Required: enabled */
-    json_t* enabled_prop = json_object();
-    json_object_set_new(enabled_prop, MCP_FIELD_TYPE, json_string("boolean"));
-    json_object_set_new(enabled_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_ENABLED));
-    json_object_set_new(config_semantic_props, MCP_PARAM_ENABLED, enabled_prop);
-
-    /* Optional: threshold */
-    json_t* threshold_prop = json_object();
-    json_object_set_new(threshold_prop, MCP_FIELD_TYPE, json_string("number"));
-    json_object_set_new(threshold_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_THRESHOLD));
-    json_object_set_new(config_semantic_props, MCP_PARAM_THRESHOLD, threshold_prop);
-
-    /* Optional: method */
-    json_t* method_prop = json_object();
-    json_object_set_new(method_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_STRING));
-    json_object_set_new(method_prop, MCP_FIELD_DESCRIPTION, json_string(MCP_PARAM_DESC_METHOD));
-    json_object_set_new(config_semantic_props, MCP_PARAM_METHOD, method_prop);
-
-    json_object_set_new(config_semantic_schema, MCP_FIELD_PROPERTIES, config_semantic_props);
-
-    /* Only enabled is required */
-    json_t* config_semantic_required = json_array();
-    json_array_append_new(config_semantic_required, json_string(MCP_PARAM_ENABLED));
-    json_object_set_new(config_semantic_schema, MCP_FIELD_REQUIRED, config_semantic_required);
-
     json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_CONFIGURE_SEMANTIC, MCP_DESC_CONFIGURE_SEMANTIC, config_semantic_schema));
+        mcp_build_tool(MCP_TOOL_CONFIGURE_SEMANTIC, MCP_DESC_CONFIGURE_SEMANTIC,
+            build_semantic_config_schema()));
 
-    /* katra_get_semantic_config - No parameters */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_GET_SEMANTIC_CONFIG, MCP_DESC_GET_SEMANTIC_CONFIG,
             mcp_build_tool_schema_0params()));
 
-    /* katra_get_config - No parameters */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_GET_CONFIG, MCP_DESC_GET_CONFIG,
             mcp_build_tool_schema_0params()));
 
-    /* katra_regenerate_vectors - No parameters */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_REGENERATE_VECTORS, MCP_DESC_REGENERATE_VECTORS,
             mcp_build_tool_schema_0params()));
