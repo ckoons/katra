@@ -299,7 +299,7 @@ int mcp_server_init(const char* ci_id) {
 
         /* Step 4.6: Auto-regenerate vectors if needed (Phase 6.1f) */
         /* Note: Semantic search is enabled by default, so check if vectors need building */
-        if (g_vector_store->count < 10) {
+        if (g_vector_store->count < MIN_VECTOR_COUNT_THRESHOLD) {
             /* Vector count is very low - likely need regeneration */
             LOG_INFO("Auto-regenerating vectors (current count: %zu)", g_vector_store->count);
             /* GUIDELINE_APPROVED: startup diagnostic for user feedback during potentially long operation */

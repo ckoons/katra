@@ -127,18 +127,19 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
                     offset += snprintf(response + offset, sizeof(response) - offset,
                                       "Available topics:\n");
 
-                    /* Show up to 10 topics */
-                    size_t topics_to_show = (digest->topic_count < 10) ? digest->topic_count : 10;
+                    /* Show up to MAX_TOPICS_TO_DISPLAY topics */
+                    size_t topics_to_show = (digest->topic_count < MAX_TOPICS_TO_DISPLAY) ?
+                                           digest->topic_count : MAX_TOPICS_TO_DISPLAY;
                     for (size_t i = 0; i < topics_to_show; i++) {
                         offset += snprintf(response + offset, sizeof(response) - offset,
                                           "  - %s (%zu memories)\n",
                                           digest->topics[i].name, digest->topics[i].count);
                     }
 
-                    if (digest->topic_count > 10) {
+                    if (digest->topic_count > MAX_TOPICS_TO_DISPLAY) {
                         offset += snprintf(response + offset, sizeof(response) - offset,
                                           "  ... and %zu more topics\n",
-                                          digest->topic_count - 10);
+                                          digest->topic_count - MAX_TOPICS_TO_DISPLAY);
                     }
                 } else {
                     offset += snprintf(response + offset, sizeof(response) - offset,
@@ -334,13 +335,14 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
     if (digest->topic_count > 0) {
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
                                "\nTOPICS (from recent memories):\n");
-        size_t topics_to_show = (digest->topic_count > 10) ? 10 : digest->topic_count;
+        size_t topics_to_show = (digest->topic_count > MAX_TOPICS_TO_DISPLAY) ?
+                               MAX_TOPICS_TO_DISPLAY : digest->topic_count;
         for (size_t i = 0; i < topics_to_show; i++) {
             resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
                                    "- %s (%zu)\n",
                                    digest->topics[i].name, digest->topics[i].count);
 
-            if (resp_offset >= sizeof(response) - 500) break;
+            if (resp_offset >= sizeof(response) - RESPONSE_BUFFER_RESERVE) break;
         }
     }
 
@@ -353,7 +355,7 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
                                    "- %s (%zu)\n",
                                    digest->collections[i].name, digest->collections[i].count);
 
-            if (resp_offset >= sizeof(response) - 500) break;
+            if (resp_offset >= sizeof(response) - RESPONSE_BUFFER_RESERVE) break;
         }
     }
 

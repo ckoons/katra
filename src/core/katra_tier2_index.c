@@ -180,6 +180,7 @@ int tier2_index_add(const digest_record_t* digest,
     sqlite3_bind_int64(stmt, 7, (sqlite3_int64)digest->source_record_count);
     sqlite3_bind_int(stmt, 8, digest->questions_asked);
     sqlite3_bind_int(stmt, 9, digest->archived ? 1 : 0);
+    /* GUIDELINE_APPROVED: SQLite bind parameter indices are positional API requirements */
     sqlite3_bind_text(stmt, 10, file_path, -1, SQLITE_STATIC);
     sqlite3_bind_int64(stmt, 11, (sqlite3_int64)offset);
 

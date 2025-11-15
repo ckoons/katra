@@ -68,7 +68,7 @@ int katra_lifecycle_init(void) {
     const char* breath_interval_str = getenv(KATRA_ENV_BREATH_INTERVAL);
     if (breath_interval_str) {
         char* endptr;
-        long interval_long = strtol(breath_interval_str, &endptr, 10);
+        long interval_long = strtol(breath_interval_str, &endptr, DECIMAL_BASE);
 
         /* Check for conversion errors and range */
         if (endptr != breath_interval_str && *endptr == '\0' &&

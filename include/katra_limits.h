@@ -292,6 +292,30 @@
 /* Safety margins for response buffer overflow prevention */
 #define RESPONSE_BUFFER_SAFETY_MARGIN_SMALL 100   /* Reserve 100 bytes for completion */
 #define RESPONSE_BUFFER_SAFETY_MARGIN_LARGE 200   /* Reserve 200 bytes for longer completions */
+#define RESPONSE_BUFFER_RESERVE 500               /* Reserve 500 bytes for MCP tool responses */
+
+/* ===== Vector Store Configuration ===== */
+
+/* Vector store query and processing limits */
+#define VECTOR_REGENERATION_QUERY_LIMIT 50000     /* Maximum memories to query for vector regeneration */
+#define PROGRESS_LOG_INTERVAL 1000                /* Log progress every N operations */
+#define MIN_VECTOR_COUNT_THRESHOLD 10             /* Minimum vector count before regeneration offered */
+#define VECTOR_DEBUG_INDEX_SMALL 16               /* Small debug array index for vector logging */
+#define VECTOR_DEBUG_INDEX_LARGE 100              /* Large debug array index for vector logging */
+
+/* ===== MCP Tool Configuration ===== */
+
+/* Topic and memory display limits */
+#define MAX_TOPICS_TO_DISPLAY 10                  /* Maximum number of topics to show in responses */
+
+/* Identity summary truncation */
+#define IDENTITY_SUMMARY_TRUNCATE_LENGTH 80       /* Maximum characters before truncation marker */
+#define IDENTITY_SUMMARY_BUFFER_SIZE 84           /* Buffer size for truncated summary (80 + "..." + null) */
+
+/* ===== HTTP Status Codes ===== */
+
+/* Standard HTTP status codes for external API calls */
+#define HTTP_STATUS_OK 200                        /* Successful HTTP request */
 
 /* ===== Utility Macros - Week 2/3 Improvements ===== */
 

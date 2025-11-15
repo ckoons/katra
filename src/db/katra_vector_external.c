@@ -187,7 +187,7 @@ static int call_openai_api(const char* text, const char* api_key,
     long http_code = 0;
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
 
-    if (http_code != 200) {
+    if (http_code != HTTP_STATUS_OK) {
         LOG_ERROR("OpenAI API returned HTTP %ld: %s", http_code,
                  response.data ? response.data : "no response");
         result = E_SYSTEM_IO;

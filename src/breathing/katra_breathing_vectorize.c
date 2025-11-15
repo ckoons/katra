@@ -27,7 +27,7 @@ static int query_tier_memories(const char* ci_id, int tier,
         .type = 0,
         .min_importance = 0.0,
         .tier = tier,
-        .limit = 50000
+        .limit = VECTOR_REGENERATION_QUERY_LIMIT
     };
 
     return katra_memory_query(&query, results, count);
@@ -118,7 +118,7 @@ static int create_embeddings_for_memories(const char* ci_id, vector_store_t* sto
             if (result == KATRA_SUCCESS) {
                 (*total_success)++;
 
-                if (*total_success % 1000 == 0) {
+                if (*total_success % PROGRESS_LOG_INTERVAL == 0) {
                     LOG_INFO("Vectorized %zu total memories...", *total_success);
                 }
             } else {

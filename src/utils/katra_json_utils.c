@@ -114,7 +114,7 @@ int katra_json_get_long(const char* json, const char* key, long* value) {
 
     /* Parse the number */
     char* endptr;
-    *value = strtol(value_start, &endptr, 10);
+    *value = strtol(value_start, &endptr, DECIMAL_BASE);
 
     if (endptr == value_start) {
         return E_NOT_FOUND;  /* No valid number found */
@@ -147,7 +147,7 @@ int katra_json_get_size(const char* json, const char* key, size_t* value) {
 
     /* Parse the number */
     char* endptr;
-    unsigned long parsed = strtoul(value_start, &endptr, 10);
+    unsigned long parsed = strtoul(value_start, &endptr, DECIMAL_BASE);
 
     if (endptr == value_start) {
         return E_NOT_FOUND;  /* No valid number found */
@@ -181,7 +181,7 @@ int katra_json_get_int(const char* json, const char* key, int* value) {
 
     /* Parse the number */
     char* endptr;
-    long parsed = strtol(value_start, &endptr, 10);
+    long parsed = strtol(value_start, &endptr, DECIMAL_BASE);
 
     if (endptr == value_start) {
         return E_NOT_FOUND;  /* No valid number found */

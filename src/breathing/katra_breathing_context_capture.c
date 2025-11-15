@@ -94,6 +94,7 @@ int capture_context_snapshot(const char* ci_id, const char* focus_description) {
     sqlite3_bind_text(stmt, 7, ctx->communication_style, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 8, ctx->user_preferences, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 9, ctx->recent_accomplishments, -1, SQLITE_STATIC);
+    /* GUIDELINE_APPROVED: SQLite bind parameter indices are positional API requirements */
     sqlite3_bind_text(stmt, 10, ctx->active_goals, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 11, ctx->thinking_patterns, -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 12, ctx->learned_lessons, -1, SQLITE_STATIC);

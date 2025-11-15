@@ -40,7 +40,7 @@ static void extract_keywords_from_text(const char* text, char*** keywords, size_
     *count = 0;
 
     /* Allocate initial array */
-    size_t capacity = 10;
+    size_t capacity = KATRA_INITIAL_CAPACITY_SMALL;
     char** words = malloc(capacity * sizeof(char*));
     if (!words) {
         return;

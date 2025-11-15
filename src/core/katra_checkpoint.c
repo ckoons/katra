@@ -63,7 +63,7 @@ int katra_checkpoint_get_path_internal(const char* checkpoint_id, char* buffer, 
 
     /* Extract timestamp (everything after last underscore) */
     char* endptr;
-    long timestamp = strtol(last_underscore + 1, &endptr, 10);
+    long timestamp = strtol(last_underscore + 1, &endptr, DECIMAL_BASE);
     if (endptr == last_underscore + 1 || *endptr != '\0' || timestamp == 0) {
         return E_INPUT_FORMAT;
     }
