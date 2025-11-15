@@ -164,6 +164,55 @@ int katra_vector_tfidf_update_stats(const char* text) {
 }
 
 /* Calculate TF-IDF vector for text */
+/* Calculate total term count in document */
+static int calculate_total_terms(const token_t* tokens, size_t token_count) {
+    int total = 0;
+    for (size_t i = 0; i < token_count; i++) {
+        total += tokens[i].frequency;
+    }
+    return total;
+}
+
+/* Find term index in vocabulary, returns -1 if not found */
+static int find_vocab_index(const char* term) {
+    for (size_t j = 0; j < g_idf_stats.vocab_size; j++) {
+        if (strcmp(g_idf_stats.vocabulary[j], term) == 0) {
+            return (int)j;
+        }
+    }
+    return -1;
+}
+
+/* Calculate IDF for a term */
+static float calculate_idf(int vocab_idx, const char* term) {
+    float idf = 1.0f;
+
+    if (vocab_idx < 0) {
+        /* Term not in vocabulary - use default IDF weight */
+        if (g_idf_stats.total_docs > 0) {
+            idf = logf((float)(g_idf_stats.total_docs + 1));
+        }
+        LOG_DEBUG("TF-IDF: term '%s' not in vocabulary, using default IDF=%.3f", term, idf);
+    } else {
+        /* Term in vocabulary - use actual IDF with Laplace smoothing */
+        if (g_idf_stats.total_docs > 0 && g_idf_stats.doc_frequencies[vocab_idx] > 0) {
+            idf = logf(((float)g_idf_stats.total_docs + 1.0f) /
+                      (float)g_idf_stats.doc_frequencies[vocab_idx]);
+        }
+    }
+
+    return idf;
+}
+
+/* Map term to vector dimension using hash */
+static size_t hash_term_to_dimension(const char* term) {
+    unsigned int hash = 0;
+    for (const char* p = term; *p; p++) {
+        hash = hash * TFIDF_HASH_MULTIPLIER + (unsigned char)*p;
+    }
+    return hash % VECTOR_DIMENSIONS;
+}
+
 int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_out) {
     if (!text || !embedding_out) {
         return E_INPUT_NULL;
@@ -198,11 +247,7 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
     }
 
     /* Calculate total terms in document */
-    int total_terms = 0;
-    for (size_t i = 0; i < token_count; i++) {
-        total_terms += tokens[i].frequency;
-    }
-
+    int total_terms = calculate_total_terms(tokens, token_count);
     if (total_terms == 0) {
         /* Empty document - return zero vector */
         embedding->magnitude = 0.0f;
@@ -216,42 +261,21 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
     size_t terms_skipped = 0;
     LOG_INFO("TF-IDF: Processing %zu tokens, total_terms=%d, total_docs=%zu, vocab_size=%zu",
            token_count, total_terms, g_idf_stats.total_docs, g_idf_stats.vocab_size);
+
     for (size_t i = 0; i < token_count; i++) {
         /* Find term in vocabulary */
-        int vocab_idx = -1;
-        for (size_t j = 0; j < g_idf_stats.vocab_size; j++) {
-            if (strcmp(g_idf_stats.vocabulary[j], tokens[i].text) == 0) {
-                vocab_idx = (int)j;
-                break;
-            }
-        }
+        int vocab_idx = find_vocab_index(tokens[i].text);
 
         /* Calculate TF (Term Frequency) */
         float tf = (float)tokens[i].frequency / (float)total_terms;
 
-        /* Calculate IDF (Inverse Document Frequency) - default to 1.0 not 0.0 */
-        float idf = 1.0f;
+        /* Calculate IDF */
+        float idf = calculate_idf(vocab_idx, tokens[i].text);
 
+        /* Track stats */
         if (vocab_idx < 0) {
-            /* Term not in vocabulary - assign default IDF weight */
-            /* Use log(total_docs + 1) which is the IDF for a term appearing once */
-            /* This gives unknown terms a moderate weight (not zero, not maximum) */
-            if (g_idf_stats.total_docs > 0) {
-                idf = logf((float)(g_idf_stats.total_docs + 1));
-            } else {
-                /* No documents yet - use small default weight */
-                idf = 1.0f;
-            }
-            LOG_DEBUG("TF-IDF: term '%s' not in vocabulary, using default IDF=%.3f",
-                     tokens[i].text, idf);
             terms_skipped++;
         } else {
-            /* Term in vocabulary - use actual IDF with smoothing */
-            /* Use Laplace smoothing: add 1 to numerator to prevent zero IDF */
-            if (g_idf_stats.total_docs > 0 && g_idf_stats.doc_frequencies[vocab_idx] > 0) {
-                idf = logf(((float)g_idf_stats.total_docs + 1.0f) /
-                          (float)g_idf_stats.doc_frequencies[vocab_idx]);
-            }
             terms_found++;
         }
 
@@ -263,12 +287,8 @@ int katra_vector_tfidf_create(const char* text, vector_embedding_t** embedding_o
                    i, tokens[i].text, tf, idf, tfidf);
         }
 
-        /* Map to vector dimension (use hash of term) */
-        unsigned int hash = 0;
-        for (const char* p = tokens[i].text; *p; p++) {
-            hash = hash * TFIDF_HASH_MULTIPLIER + (unsigned char)*p;
-        }
-        size_t dim = hash % VECTOR_DIMENSIONS;
+        /* Map to vector dimension */
+        size_t dim = hash_term_to_dimension(tokens[i].text);
 
         /* Add TF-IDF score to dimension */
         embedding->values[dim] += tfidf;

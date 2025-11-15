@@ -83,6 +83,122 @@ void mcp_mark_first_call_complete(void) {
 
 /* Note: generate_ci_id() moved to katra_identity.c as katra_generate_ci_id() */
 
+/* Migrate persona from old PID-based ci_id to name-based ci_id if needed */
+static int migrate_persona_if_needed(const char* persona_name, const char* new_ci_id,
+                                     const char* old_ci_id) {
+    if (strcmp(old_ci_id, new_ci_id) != 0) {
+        /* Old PID-based ci_id detected - update to name-based */
+        /* GUIDELINE_APPROVED: startup diagnostic message */
+        fprintf(stderr, "Migrating persona '%s' from old ci_id '%s' to name-based '%s'\n",
+                persona_name, old_ci_id, new_ci_id);
+
+        /* Update persona registry with new ci_id */
+        return katra_register_persona(persona_name, new_ci_id);
+    }
+
+    /* Already using name-based ci_id */
+    /* GUIDELINE_APPROVED: startup diagnostic message */
+    fprintf(stderr, "Katra MCP Server resuming persona '%s' with CI identity: %s\n",
+            persona_name, new_ci_id);
+    return KATRA_SUCCESS;
+}
+
+/* Handle existing persona (found in registry) */
+static int handle_existing_persona(const char* persona_name, const char* ci_id,
+                                   const char* old_ci_id) {
+    int result = migrate_persona_if_needed(persona_name, ci_id, old_ci_id);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Update session count */
+    return katra_update_persona_session(persona_name);
+}
+
+/* Handle new persona (not in registry) */
+static int handle_new_persona(const char* persona_name, const char* ci_id) {
+    int result = katra_register_persona(persona_name, ci_id);
+    if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
+        fprintf(stderr, "Failed to register persona: %s\n",
+                katra_error_message(result));
+        return result;
+    }
+
+    /* GUIDELINE_APPROVED: startup diagnostic message */
+    fprintf(stderr, "Katra MCP Server created new persona '%s' with CI identity: %s\n",
+            persona_name, ci_id);
+    return KATRA_SUCCESS;
+}
+
+/* Resolve persona from environment variable */
+static int resolve_persona_from_env(char* persona_name_out, char* ci_id_out,
+                                    size_t buffer_size) {
+    const char* env_name = getenv("KATRA_PERSONA");
+    if (!env_name || strlen(env_name) == 0) {
+        return E_INPUT_NULL;  /* Signal: try next priority */
+    }
+
+    /* Set persona name from environment */
+    strncpy(persona_name_out, env_name, buffer_size - 1);
+    persona_name_out[buffer_size - 1] = '\0';
+
+    /* ALWAYS use persona name as ci_id (identity preservation fix) */
+    strncpy(ci_id_out, persona_name_out, buffer_size - 1);
+    ci_id_out[buffer_size - 1] = '\0';
+
+    /* Look up in persona registry to check if exists */
+    char old_ci_id[KATRA_CI_ID_SIZE];
+    int result = katra_lookup_persona(env_name, old_ci_id, sizeof(old_ci_id));
+
+    if (result == KATRA_SUCCESS) {
+        /* Found existing persona */
+        return handle_existing_persona(persona_name_out, ci_id_out, old_ci_id);
+    }
+
+    /* Not found - create new persona */
+    return handle_new_persona(persona_name_out, ci_id_out);
+}
+
+/* Resolve persona from last active in registry */
+static int resolve_persona_from_last_active(char* persona_name_out, char* ci_id_out,
+                                            size_t buffer_size) {
+    char last_active_name[KATRA_CI_ID_SIZE];
+    char registry_ci_id[KATRA_CI_ID_SIZE];
+
+    int result = katra_get_last_active(last_active_name, sizeof(last_active_name),
+                                      registry_ci_id, sizeof(registry_ci_id));
+    if (result != KATRA_SUCCESS) {
+        return result;  /* Signal: try next priority */
+    }
+
+    /* Set persona name */
+    strncpy(persona_name_out, last_active_name, buffer_size - 1);
+    persona_name_out[buffer_size - 1] = '\0';
+
+    /* ALWAYS use persona name as ci_id (identity preservation fix) */
+    strncpy(ci_id_out, persona_name_out, buffer_size - 1);
+    ci_id_out[buffer_size - 1] = '\0';
+
+    /* Handle migration if needed */
+    return handle_existing_persona(persona_name_out, ci_id_out, registry_ci_id);
+}
+
+/* Create anonymous persona (fallback when no persona found) */
+static int create_anonymous_persona(char* persona_name_out, char* ci_id_out,
+                                    size_t buffer_size) {
+    /* Create timestamp-based anonymous name */
+    time_t now = time(NULL);
+    snprintf(persona_name_out, buffer_size, "anonymous_%ld", (long)now);
+
+    /* Use persona name as ci_id for consistency */
+    strncpy(ci_id_out, persona_name_out, buffer_size - 1);
+    ci_id_out[buffer_size - 1] = '\0';
+
+    /* Register anonymous persona */
+    return handle_new_persona(persona_name_out, ci_id_out);
+}
+
 /* Initialize MCP server */
 int mcp_server_init(const char* ci_id) {
     if (!ci_id) {
@@ -106,6 +222,7 @@ int mcp_server_init(const char* ci_id) {
     /* Step 1.5: Initialize logging system */
     result = log_init(NULL);  /* Use default log directory */
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
         fprintf(stderr, "Failed to initialize logging: %s\n",
                 katra_error_message(result));
         katra_exit();
@@ -185,11 +302,13 @@ int mcp_server_init(const char* ci_id) {
         if (g_vector_store->count < 10) {
             /* Vector count is very low - likely need regeneration */
             LOG_INFO("Auto-regenerating vectors (current count: %zu)", g_vector_store->count);
+            /* GUIDELINE_APPROVED: startup diagnostic for user feedback during potentially long operation */
             fprintf(stderr, "Regenerating semantic search vectors...\n");
 
             int regen_result = regenerate_vectors();
             if (regen_result > 0) {
                 LOG_INFO("Vector regeneration complete: %d vectors created", regen_result);
+                /* GUIDELINE_APPROVED: startup diagnostic for user feedback */
                 fprintf(stderr, "Vector regeneration complete: %d vectors\n", regen_result);
             } else if (regen_result < 0) {
                 LOG_WARN("Vector regeneration failed: %d", regen_result);
@@ -302,118 +421,24 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    /* Determine CI identity using persona system */
-    const char* env_name = getenv("KATRA_PERSONA");
+    /* Determine CI identity using persona system (priority cascade) */
+    /* Priority 1: KATRA_PERSONA environment variable */
+    result = resolve_persona_from_env(g_persona_name, g_ci_id, sizeof(g_persona_name));
 
-    if (env_name && strlen(env_name) > 0) {
-        /* Priority 1: KATRA_PERSONA environment variable */
-        strncpy(g_persona_name, env_name, sizeof(g_persona_name) - 1);
-
-        /* ALWAYS use persona name as ci_id (identity preservation fix) */
-        strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
-        g_ci_id[sizeof(g_ci_id) - 1] = '\0';
-
-        /* Look up in persona registry to check if exists */
-        char old_ci_id[KATRA_CI_ID_SIZE];
-        result = katra_lookup_persona(env_name, old_ci_id, sizeof(old_ci_id));
-
-        if (result == KATRA_SUCCESS) {
-            /* Found existing persona - update to use name-based ci_id */
-            if (strcmp(old_ci_id, g_ci_id) != 0) {
-                /* Old PID-based ci_id detected - update to name-based */
-                /* GUIDELINE_APPROVED: startup diagnostic message */
-                fprintf(stderr, "Migrating persona '%s' from old ci_id '%s' to name-based '%s'\n",
-                        g_persona_name, old_ci_id, g_ci_id);
-
-                /* Update persona registry with new ci_id */
-                katra_register_persona(g_persona_name, g_ci_id);
-            } else {
-                /* Already using name-based ci_id */
-                /* GUIDELINE_APPROVED: startup diagnostic message */
-                fprintf(stderr, "Katra MCP Server resuming persona '%s' with CI identity: %s\n",
-                        g_persona_name, g_ci_id);
-            }
-
-            /* Update session count */
-            katra_update_persona_session(g_persona_name);
-        } else {
-            /* Not found - register new persona */
-            result = katra_register_persona(g_persona_name, g_ci_id);
-            if (result != KATRA_SUCCESS) {
-                /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
-                fprintf(stderr, "Failed to register persona: %s\n",
-                        katra_error_message(result));
-                return EXIT_FAILURE;
-            }
-
-            /* GUIDELINE_APPROVED: startup diagnostic message */
-            fprintf(stderr, "Katra MCP Server created new persona '%s' with CI identity: %s\n",
-                    g_persona_name, g_ci_id);
-        }
-    }
-    else {
+    if (result != KATRA_SUCCESS) {
         /* Priority 2: last_active from persona registry */
-        char last_active_name[KATRA_CI_ID_SIZE];
-        result = katra_get_last_active(last_active_name, sizeof(last_active_name),
-                                       g_ci_id, sizeof(g_ci_id));
+        result = resolve_persona_from_last_active(g_persona_name, g_ci_id, sizeof(g_persona_name));
 
-        if (result == KATRA_SUCCESS) {
-            /* Resume last active persona */
-            strncpy(g_persona_name, last_active_name, sizeof(g_persona_name) - 1);
-
-            /* Store old ci_id from registry */
-            char old_ci_id[KATRA_CI_ID_SIZE];
-            strncpy(old_ci_id, g_ci_id, sizeof(old_ci_id) - 1);
-            old_ci_id[sizeof(old_ci_id) - 1] = '\0';
-
-            /* ALWAYS use persona name as ci_id (identity preservation fix) */
-            strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
-            g_ci_id[sizeof(g_ci_id) - 1] = '\0';
-
-            /* Check if ci_id needs migration */
-            if (strcmp(old_ci_id, g_ci_id) != 0) {
-                /* Old PID-based ci_id detected - update to name-based */
-                /* GUIDELINE_APPROVED: startup diagnostic message */
-                fprintf(stderr, "Migrating persona '%s' from old ci_id '%s' to name-based '%s'\n",
-                        g_persona_name, old_ci_id, g_ci_id);
-
-                /* Update persona registry with new ci_id */
-                katra_register_persona(g_persona_name, g_ci_id);
-            } else {
-                /* Already using name-based ci_id */
-                /* GUIDELINE_APPROVED: startup diagnostic message */
-                fprintf(stderr, "Katra MCP Server resuming last active persona '%s' with CI identity: %s\n",
-                        g_persona_name, g_ci_id);
-            }
-
-            /* Update session count */
-            katra_update_persona_session(g_persona_name);
-        }
-        else {
-            /* Priority 3: Create anonymous persona (use timestamp-based name as ci_id) */
-            time_t now = time(NULL);
-            snprintf(g_persona_name, sizeof(g_persona_name), "anonymous_%ld", (long)now);
-
-            /* Use persona name as ci_id for consistency */
-            strncpy(g_ci_id, g_persona_name, sizeof(g_ci_id) - 1);
-            g_ci_id[sizeof(g_ci_id) - 1] = '\0';
-
-            /* Register anonymous persona */
-            result = katra_register_persona(g_persona_name, g_ci_id);
+        if (result != KATRA_SUCCESS) {
+            /* Priority 3: Create anonymous persona */
+            result = create_anonymous_persona(g_persona_name, g_ci_id, sizeof(g_persona_name));
             if (result != KATRA_SUCCESS) {
-                /* GUIDELINE_APPROVED: startup diagnostic before logging initialized */
-                fprintf(stderr, "Failed to register anonymous persona: %s\n",
-                        katra_error_message(result));
                 return EXIT_FAILURE;
             }
-
-            /* GUIDELINE_APPROVED: startup diagnostic message */
-            fprintf(stderr, "Katra MCP Server created anonymous persona '%s' with CI identity: %s\n",
-                    g_persona_name, g_ci_id);
         }
     }
 
-    /* Update session name from loaded persona */
+    /* Update session name from resolved persona */
     strncpy(g_session.chosen_name, g_persona_name, sizeof(g_session.chosen_name) - 1);
     g_session.chosen_name[sizeof(g_session.chosen_name) - 1] = '\0';
 
