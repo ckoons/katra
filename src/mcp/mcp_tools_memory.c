@@ -49,7 +49,7 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
     if (result == KATRA_SUCCESS && g_vector_store) {
         /* Generate a simple record ID from content hash (for now) */
         /* TODO: Get actual record_id from remember_semantic */
-        char record_id[256];
+        char record_id[KATRA_BUFFER_MEDIUM];
         snprintf(record_id, sizeof(record_id), "mem_%lu", (unsigned long)time(NULL));
 
         /* Store embedding (non-fatal if fails) */
@@ -192,7 +192,7 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
                              MCP_FMT_MEMORY_ITEM, i + 1, results[i]);
 
             /* Safety check - stop if buffer nearly full */
-            if (offset >= sizeof(response) - 100) {
+            if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL) {
                 snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
                 break;
             }
@@ -251,7 +251,7 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
                              "%zu. %s\n", i + 1, results[i]);
 
             /* Safety check - stop if buffer nearly full */
-            if (offset >= sizeof(response) - 100) {
+            if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL) {
                 snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
                 break;
             }
@@ -315,7 +315,7 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
                            "- Total: %zu memories\n", digest->total_memories);
 
     if (digest->oldest_memory > 0) {
-        char oldest_date[32];
+        char oldest_date[KATRA_BUFFER_TINY];
         struct tm* tm_oldest = localtime(&digest->oldest_memory);
         strftime(oldest_date, sizeof(oldest_date), "%Y-%m-%d", tm_oldest);
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
@@ -323,7 +323,7 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
     }
 
     if (digest->newest_memory > 0) {
-        char newest_date[32];
+        char newest_date[KATRA_BUFFER_TINY];
         struct tm* tm_newest = localtime(&digest->newest_memory);
         strftime(newest_date, sizeof(newest_date), "%Y-%m-%d %H:%M", tm_newest);
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
@@ -370,7 +370,7 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
         for (size_t i = 0; i < digest->memory_count; i++) {
             /* Check available space */
             size_t available = sizeof(response) - resp_offset;
-            if (available < 300) {
+            if (available < RESPONSE_BUFFER_SAFETY_MARGIN_LARGE + RESPONSE_BUFFER_SAFETY_MARGIN_SMALL) {
                 resp_offset += snprintf(response + resp_offset, available,
                                        "... (buffer limit reached, use smaller limit or recall for specific memories)\n");
                 break;

@@ -65,7 +65,7 @@ static json_t* execute_nous_query(const char* query_text, query_type_t type, con
     /* Build response with confidence */
     char full_response[MCP_RESPONSE_BUFFER];
     snprintf(full_response, sizeof(full_response), MCP_FMT_WITH_CONFIDENCE,
-            response_text, confidence * 100.0f);
+            response_text, confidence * PERCENTAGE_MULTIPLIER);
 
     free(response_text);
     return mcp_tool_success(full_response);

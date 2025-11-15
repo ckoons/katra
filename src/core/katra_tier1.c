@@ -367,7 +367,7 @@ static int scan_file_for_records(const char* filepath, const memory_query_t* que
 
         /* Add to results */
         if (*result_count >= *result_capacity) {
-            size_t new_capacity = *result_capacity == 0 ? 32 : *result_capacity * 2;
+            size_t new_capacity = *result_capacity == 0 ? KATRA_INITIAL_CAPACITY_STANDARD : *result_capacity * BREATHING_GROWTH_FACTOR;
             memory_record_t** new_array = realloc(*result_array,
                                                   new_capacity * sizeof(memory_record_t*));
             if (!new_array) {

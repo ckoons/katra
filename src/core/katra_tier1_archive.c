@@ -77,13 +77,13 @@ static float get_emotion_multiplier(const char* emotion_type) {
  * factor is strong.
  *
  * Score breakdown:
- * - Voluntary marking: Absolute (±100)
- * - Recent access: 0-30 points (scaled by access count - Priority 6)
- * - Emotional salience: 0-25 points (type-weighted - Priority 2)
- * - Graph centrality: 0-20 points
- * - Pattern outlier: 15 points
- * - Base importance: 0-10 points
- * - Age penalty: -1 per day after 14 days
+ * - Voluntary marking: Absolute (±PRESERVATION_SCORE_ABSOLUTE)
+ * - Recent access: 0-ARCHIVE_SCORE_RECENT_ACCESS_MAX points (scaled by access count - Priority 6)
+ * - Emotional salience: 0-ARCHIVE_SCORE_EMOTIONAL_MAX points (type-weighted - Priority 2)
+ * - Graph centrality: 0-ARCHIVE_SCORE_CENTRALITY_MAX points
+ * - Pattern outlier: ARCHIVE_SCORE_PATTERN_OUTLIER points
+ * - Base importance: 0-ARCHIVE_SCORE_BASE_IMPORTANCE_MAX points
+ * - Age penalty: -ARCHIVE_AGE_PENALTY_PER_DAY per day after ARCHIVE_AGE_THRESHOLD_DAYS days
  */
 static float calculate_preservation_score(memory_record_t* rec, time_t now) {
     float score = 0.0f;
@@ -200,7 +200,7 @@ static int collect_archivable_from_file(const char* filepath, time_t cutoff,
          * Fresh memories haven't had time to accumulate access/connection metrics */
         if (age_days < 1.0f) {
             LOG_DEBUG("Preserving recent memory (%.1f hours old): %.50s...",
-                     age_days * 24.0f, record->content);
+                     age_days * (float)HOURS_PER_DAY, record->content);
             katra_memory_free_record(record);
             continue;
         }

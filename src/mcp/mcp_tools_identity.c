@@ -188,7 +188,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
                                  "%s(%zu)%s", digest->topics[i].name,
                                  digest->topics[i].count,
                                  (i < topics_shown - 1) ? ", " : "\n");
-                if (offset >= sizeof(response) - 300) {
+                if (offset >= sizeof(response) - (RESPONSE_BUFFER_SAFETY_MARGIN_LARGE + RESPONSE_BUFFER_SAFETY_MARGIN_SMALL)) {
                     break;
                 }
             }
@@ -217,7 +217,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
                                      "%zu. %s\n", i + 1, truncated);
 
                     /* Safety check */
-                    if (offset >= sizeof(response) - 200) {
+                    if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_LARGE) {
                         break;
                     }
                 }

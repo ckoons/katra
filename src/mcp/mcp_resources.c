@@ -224,8 +224,8 @@ json_t* mcp_resource_session_info(json_t* id) {
 
     /* Format session info as text */
     char session_text[MCP_RESPONSE_BUFFER];
-    char start_time_str[64];
-    char last_activity_str[64];
+    char start_time_str[KATRA_BUFFER_SMALL];
+    char last_activity_str[KATRA_BUFFER_SMALL];
 
     /* GUIDELINE_APPROVED: time format string for strftime */
     const char* time_fmt = "%Y-%m-%d %H:%M:%S";
@@ -341,7 +341,7 @@ json_t* mcp_resource_memories_this_turn(json_t* id) {
                          "%zu. Memory ID: %s\n", i + 1, memories[i]);
 
         /* Safety check */
-        if (offset >= sizeof(response) - 200) {
+        if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_LARGE) {
             snprintf(response + offset, sizeof(response) - offset,
                     "... (list truncated)\n");
             break;
@@ -415,7 +415,7 @@ json_t* mcp_resource_memories_this_session(json_t* id) {
                          "%zu. Memory ID: %s\n", i + 1, memories[i]);
 
         /* Safety check */
-        if (offset >= sizeof(response) - 200) {
+        if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_LARGE) {
             snprintf(response + offset, sizeof(response) - offset,
                     "... (list truncated)\n");
             break;

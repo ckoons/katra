@@ -20,7 +20,7 @@
 
 /* External globals from MCP server */
 extern pthread_mutex_t g_katra_api_lock;
-extern char g_ci_id[256];
+extern char g_ci_id[KATRA_BUFFER_MEDIUM];
 
 /* ============================================================================
  * TEAM MANAGEMENT TOOLS
