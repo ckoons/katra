@@ -268,6 +268,31 @@
 #define BREATHING_DEFAULT_TURN_CAPACITY 16            /* Initial turn memory tracking capacity */
 #define BREATHING_GROWTH_FACTOR 2                     /* Array growth factor */
 
+/* ===== Archive Scoring Constants ===== */
+
+/* Archive scoring for memory preservation/archival decisions (tier1_archive.c) */
+#define ARCHIVE_SCORE_RECENT_ACCESS_MAX 30     /* Maximum score for recent access */
+#define ARCHIVE_SCORE_EMOTIONAL_MAX 25         /* Maximum score for emotional salience */
+#define ARCHIVE_SCORE_CENTRALITY_MAX 20        /* Maximum score for graph centrality */
+#define ARCHIVE_SCORE_PATTERN_OUTLIER 15       /* Score bonus for pattern outliers */
+#define ARCHIVE_SCORE_BASE_IMPORTANCE_MAX 10   /* Maximum base importance score */
+#define ARCHIVE_AGE_THRESHOLD_DAYS 14          /* Age threshold before applying penalty */
+#define ARCHIVE_AGE_PENALTY_PER_DAY 1          /* Score penalty per day after threshold */
+
+/* ===== Date Formatting Constants ===== */
+
+/* Date format field widths for snprintf/strftime */
+#define DATE_FORMAT_YEAR_WIDTH 4       /* YYYY width */
+#define DATE_FORMAT_MONTH_WIDTH 2      /* MM width */
+#define DATE_FORMAT_DAY_WIDTH 2        /* DD width */
+#define DATE_FORMAT_WEEK_WIDTH 2       /* WW width for week numbers */
+
+/* ===== Buffer Safety Margins ===== */
+
+/* Safety margins for response buffer overflow prevention */
+#define RESPONSE_BUFFER_SAFETY_MARGIN_SMALL 100   /* Reserve 100 bytes for completion */
+#define RESPONSE_BUFFER_SAFETY_MARGIN_LARGE 200   /* Reserve 200 bytes for longer completions */
+
 /* ===== Utility Macros - Week 2/3 Improvements ===== */
 
 /*

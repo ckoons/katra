@@ -45,15 +45,13 @@ int regenerate_vectors(void) {
     /* Initialize vector store if needed */
     result = breathing_init_vector_store();
     if (result != KATRA_SUCCESS) {
-        fprintf(stderr, "ERROR: Failed to initialize vector store: %d\n", result);
+        LOG_ERROR("Failed to initialize vector store: %d", result);
         return result;
     }
-
 
     /* Clear existing vectors */
     result = katra_vector_persist_clear(ci_id);
     if (result != KATRA_SUCCESS) {
-        fprintf(stderr, "WARN: Failed to clear existing vectors: %d\n", result);
         LOG_WARN("Failed to clear existing vectors: %d (continuing anyway)", result);
     }
 
@@ -69,7 +67,7 @@ int regenerate_vectors(void) {
     size_t total_skip = 0;
 
     /* PASS 1: Build IDF statistics from all memories */
-    fprintf(stderr, "Pass 1: Building IDF statistics...\n");
+    LOG_INFO("Vector regeneration: Pass 1 - Building IDF statistics");
     for (int tier = KATRA_TIER1; tier <= KATRA_TIER2; tier++) {
         memory_query_t query = {
             .ci_id = (char*)ci_id,
@@ -100,10 +98,10 @@ int regenerate_vectors(void) {
 
         katra_memory_free_results(results, count);
     }
-    fprintf(stderr, "Pass 1 complete: IDF stats built\n");
+    LOG_INFO("Vector regeneration: Pass 1 complete - IDF statistics built");
 
     /* PASS 2: Create embeddings using the IDF statistics */
-    fprintf(stderr, "Pass 2: Creating vector embeddings...\n");
+    LOG_INFO("Vector regeneration: Pass 2 - Creating vector embeddings");
     for (int tier = KATRA_TIER1; tier <= KATRA_TIER2; tier++) {
         memory_query_t query = {
             .ci_id = (char*)ci_id,
@@ -177,7 +175,7 @@ int regenerate_vectors(void) {
         katra_memory_free_results(results, count);
     }
 
-    fprintf(stderr, "\nVector regeneration complete: %zu created, %zu skipped\n",
+    LOG_INFO("Vector regeneration complete: %zu vectors created, %zu skipped",
             total_success, total_skip);
 
     /* Return number of vectors created */
