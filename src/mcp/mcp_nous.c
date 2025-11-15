@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <jansson.h>
 #include "katra_mcp.h"
+#include "katra_limits.h"
 #include "katra_nous.h"
 #include "katra_error.h"
 #include "katra_log.h"
