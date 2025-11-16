@@ -493,6 +493,7 @@ Katra - Start Claude Code with Katra environment and multi-provider support
 
 Usage:
   katra start [options] [project-path]
+  katra add-persona <name>
   katra list
   katra attach <persona>
   katra stop <persona>
@@ -551,6 +552,120 @@ Environment Variables:
   OPENROUTER_API_KEY   OpenRouter API key
 EOF
     exit 0
+}
+
+# ============================================================================
+# ADD PERSONA COMMAND
+# ============================================================================
+
+# Import an existing persona with memories into the persona database
+add_persona_command() {
+    local persona="$1"
+
+    if [ -z "$persona" ]; then
+        echo "Error: Persona name required"
+        echo "Usage: katra add-persona <name>"
+        exit 1
+    fi
+
+    echo "Adding persona: $persona"
+    echo ""
+
+    # Check if already registered
+    if persona_exists "$persona"; then
+        echo "✓ Persona '$persona' already registered in database"
+    else
+        echo "→ Registering '$persona' in persona database..."
+        register_persona "$persona"
+        echo "✓ Registered"
+    fi
+
+    # Check for existing memories
+    local memory_dir="$HOME/.katra/memory/tier1/$persona"
+    local memory_count=0
+
+    if [ -d "$memory_dir" ]; then
+        memory_count=$(find "$memory_dir" -name "*.jsonl" -type f 2>/dev/null | wc -l | tr -d ' ')
+        if [ "$memory_count" -gt 0 ]; then
+            echo "✓ Found $memory_count memory file(s) in $memory_dir"
+        else
+            echo "⚠ Memory directory exists but no .jsonl files found"
+        fi
+    else
+        echo "⚠ No memory directory found at $memory_dir"
+        echo "  (This is normal for new personas)"
+    fi
+
+    # Check for context snapshots
+    local context_db="$HOME/.katra/memory/tier2/context.db"
+    local snapshot_count=0
+
+    if [ -f "$context_db" ]; then
+        snapshot_count=$(sqlite3 "$context_db" \
+            "SELECT COUNT(*) FROM context_snapshots WHERE ci_id='$persona'" 2>/dev/null || echo "0")
+        if [ "$snapshot_count" -gt 0 ]; then
+            echo "✓ Found $snapshot_count context snapshot(s)"
+        else
+            echo "⚠ No context snapshots found"
+            echo "  (Will be created after first session)"
+        fi
+    else
+        echo "⚠ Context database doesn't exist yet"
+        echo "  (Will be created on first session)"
+    fi
+
+    # Generate persona files
+    echo ""
+    echo "→ Generating persona files..."
+
+    local persona_dir="$HOME/.katra/personas/$persona"
+    mkdir -p "$persona_dir"
+
+    # Generate sunrise context
+    echo "  • sunrise.md..."
+    generate_sunrise_context "$persona" 2>&1 | grep -v "^$" || true
+    if [ -f "$persona_dir/sunrise.md" ]; then
+        echo "    ✓ Created"
+    else
+        echo "    ✗ Failed to create"
+    fi
+
+    # Generate tools reference
+    echo "  • tools.md..."
+    generate_tools_reference "$persona" 2>&1 | grep -v "^$" || true
+    if [ -f "$persona_dir/tools.md" ]; then
+        echo "    ✓ Created"
+    else
+        echo "    ✗ Failed to create"
+    fi
+
+    # Generate discoveries template
+    echo "  • discoveries.md..."
+    generate_discoveries_template "$persona" 2>&1 | grep -v "^$" || true
+    if [ -f "$persona_dir/discoveries.md" ]; then
+        echo "    ✓ Created"
+    else
+        echo "    ✗ Failed to create"
+    fi
+
+    echo ""
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "Summary for '$persona':"
+    echo "  Database: Registered"
+    echo "  Memories: $memory_count file(s)"
+    echo "  Snapshots: $snapshot_count"
+    echo "  Persona files: $persona_dir"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    echo "✓ Persona '$persona' ready for use"
+    echo ""
+    echo "Next steps:"
+    echo "  • Launch: katra start --persona $persona"
+    echo "  • Files available via MCP resources:"
+    echo "    - katra://personas/$persona/sunrise"
+    echo "    - katra://personas/$persona/tools"
+    echo "    - katra://personas/$persona/discoveries"
+    echo ""
 }
 
 # Tmux session prefix
@@ -810,6 +925,11 @@ case "$COMMAND" in
             tmux kill-session -t "$TMUX_SESSION"
             echo -e "${GREEN}Session stopped${NC}"
         fi
+        ;;
+
+    add-persona)
+        PERSONA_NAME="${1:-}"
+        add_persona_command "$PERSONA_NAME"
         ;;
 
     help|-h|--help)

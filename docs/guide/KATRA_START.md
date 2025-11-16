@@ -244,13 +244,38 @@ When you're ready, let Casey know what's on your mind.
 
 **Problem:** You have memories but persona not in database
 
-**Solution:** Use `katra add-persona` command (Phase 9, coming soon)
+**Solution:** Use `katra add-persona` command
 
 ```bash
 katra add-persona Ami
 ```
 
-This will scan existing memories and register the persona properly.
+This will:
+- Register the persona in the database
+- Scan for existing memory files
+- Check for context snapshots
+- Generate sunrise/tools/discoveries files
+- Make persona ready for use
+
+**Example output:**
+```
+Adding persona: Ami
+
+→ Registering 'Ami' in persona database...
+✓ Registered
+✓ Found 3 memory file(s) in /Users/you/.katra/memory/tier1/Ami
+⚠ No context snapshots found
+
+→ Generating persona files...
+  • sunrise.md...    ✓ Created
+  • tools.md...      ✓ Created
+  • discoveries.md... ✓ Created
+
+✓ Persona 'Ami' ready for use
+
+Next steps:
+  • Launch: katra start --persona Ami
+```
 
 ### Sunrise context shows "No context snapshot"
 
@@ -295,9 +320,33 @@ ls -la ~/.katra/personas/
 - [MCP Tools Reference](MCP_TOOLS.md)
 - [Memory Architecture](ARCHITECTURE.md)
 
+## Additional Commands
+
+### katra add-persona
+
+Import an existing persona (with memories but not in database) into the system:
+
+```bash
+katra add-persona <name>
+```
+
+**Use cases:**
+- You have memory files from a previous persona
+- Persona exists but not registered in database
+- Manually created persona needs initialization
+
+**What it does:**
+- Registers persona in database
+- Scans for existing memories
+- Checks for context snapshots
+- Generates sunrise/tools/discoveries files
+- Reports what was found
+
+See [Troubleshooting](#troubleshooting) section for examples.
+
 ## Future Enhancements
 
-- `katra add-persona` - Import existing personas
 - `katra list-personas` - Show all registered personas
 - `katra persona-stats` - Show memory counts and activity
 - Custom awakening preferences per persona
+- Persona migration/export tools
