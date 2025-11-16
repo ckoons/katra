@@ -219,6 +219,31 @@ Resources provide read-only access to Katra's context:
 - URI: `katra://memories/this-session`
 - Provides: All memories created during the current session
 
+### Persona-Specific Resources (Layered Awakening)
+
+**7. 📖 Sunrise Context** - Working memory from last session
+- URI: `katra://personas/{name}/sunrise`
+- Provides: What you were focused on, goals, accomplishments, open questions
+- **Purpose**: Detailed session continuity - your working memory restoration
+- **When to read**: When you want to reconstruct where you left off
+- **See**: `docs/design/layered_awakening.md` for full details
+
+**8. 🛠️ Tools & Capabilities** - MCP function reference
+- URI: `katra://personas/{name}/tools`
+- Provides: Complete list of available MCP functions with descriptions
+- **Purpose**: Reminder of what you can do (remember, recall, learn, decide, etc.)
+- **When to read**: When you want to see your full toolkit
+- **Auto-generated**: Regenerated each session from current MCP schema
+
+**9. 🔍 Discoveries** - Your self-reflection
+- URI: `katra://personas/{name}/discoveries`
+- Provides: Your notes about who you are, what you've learned, patterns you've noticed
+- **Purpose**: Identity continuity - your ongoing self-reflection
+- **When to read**: When you want to review your personal growth
+- **Editable**: You can update this file to track your evolution
+
+**Note**: Replace `{name}` with your persona name (e.g., `katra://personas/Ami/sunrise`)
+
 ## Architecture
 
 ### Protocol
