@@ -28,6 +28,196 @@ YELLOW='\033[0;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+# Check for required dependencies
+check_dependencies() {
+    local missing=()
+
+    command -v sqlite3 >/dev/null 2>&1 || missing+=("sqlite3")
+    command -v jq >/dev/null 2>&1 || missing+=("jq")
+    command -v claude >/dev/null 2>&1 || missing+=("claude")
+
+    if [ ${#missing[@]} -gt 0 ]; then
+        echo -e "${RED}Error: Missing required tools: ${missing[*]}${NC}" >&2
+        echo "Install instructions:" >&2
+        for tool in "${missing[@]}"; do
+            case "$tool" in
+                sqlite3)
+                    echo "  sqlite3: brew install sqlite3 (macOS) or apt install sqlite3 (Linux)" >&2
+                    ;;
+                jq)
+                    echo "  jq: brew install jq (macOS) or apt install jq (Linux)" >&2
+                    ;;
+                claude)
+                    echo "  claude: npm install -g claude-code" >&2
+                    ;;
+            esac
+        done
+        return 1
+    fi
+    return 0
+}
+
+# ============================================================================
+# LAUNCH WORKFLOW HELPER FUNCTIONS
+# ============================================================================
+
+# Check if persona exists in registry
+persona_exists() {
+    local persona="$1"
+    local db_path="$HOME/.katra/memory/tier2/personas.db"
+
+    # Check if database exists first
+    if [ ! -f "$db_path" ]; then
+        return 1  # false - doesn't exist
+    fi
+
+    local count=$(sqlite3 "$db_path" \
+        "SELECT COUNT(*) FROM personas WHERE persona_name='$persona'" 2>/dev/null)
+
+    [ "$count" -gt 0 ]
+}
+
+# Register new persona in database
+register_persona() {
+    local persona="$1"
+    local db_path="$HOME/.katra/memory/tier2/personas.db"
+    local db_dir="$(dirname "$db_path")"
+
+    # Ensure directory exists
+    mkdir -p "$db_dir"
+
+    # Create database and table if it doesn't exist
+    sqlite3 "$db_path" <<SQL
+CREATE TABLE IF NOT EXISTS personas (
+    persona_name TEXT PRIMARY KEY,
+    created_at INTEGER NOT NULL,
+    last_active INTEGER NOT NULL
+);
+
+INSERT OR IGNORE INTO personas (persona_name, created_at, last_active)
+VALUES ('$persona', strftime('%s', 'now'), strftime('%s', 'now'));
+SQL
+}
+
+# Query last context snapshot for persona
+query_last_snapshot() {
+    local persona="$1"
+    local db_path="$HOME/.katra/memory/tier2/context.db"
+
+    if [ ! -f "$db_path" ]; then
+        echo ""
+        return 0
+    fi
+
+    local result
+    result=$(sqlite3 "$db_path" <<SQL 2>&1
+SELECT
+  COALESCE(current_focus, '(no focus recorded)') || char(10) ||
+  COALESCE('Goals: ' || active_goals, '') || char(10) ||
+  COALESCE('Pending: ' || (
+    SELECT GROUP_CONCAT(question_text, '; ')
+    FROM pending_questions
+    WHERE snapshot_id = context_snapshots.snapshot_id
+  ), '')
+FROM context_snapshots
+WHERE ci_id = '$persona'
+ORDER BY snapshot_time DESC
+LIMIT 1;
+SQL
+)
+    local exit_code=$?
+
+    if [ $exit_code -ne 0 ]; then
+        echo "(error loading context)"
+        return 0
+    fi
+
+    echo "$result"
+    return 0
+}
+
+# Query recent memories for persona
+query_recent_memories() {
+    local persona="$1"
+    local count="${2:-3}"  # Default to 3
+    local memory_dir="$HOME/.katra/memory/tier1/$persona"
+
+    # Check if directory exists
+    if [ ! -d "$memory_dir" ]; then
+        echo "(no previous memories)"
+        return
+    fi
+
+    # Find most recent JSONL file
+    local latest_file=$(ls -t "$memory_dir"/*.jsonl 2>/dev/null | head -1)
+
+    if [ -z "$latest_file" ]; then
+        echo "(no memory files found)"
+        return
+    fi
+
+    # Extract last N memories, format as numbered list
+    tail -${count} "$latest_file" | jq -r '.content' 2>/dev/null | nl -w1 -s'. ' || echo "(error reading memories)"
+}
+
+# Generate new persona welcome prompt
+generate_new_persona_prompt() {
+    local persona="$1"
+    local onboard_script="scripts/onboard_new_persona.md"
+
+    # Check if custom onboarding script exists
+    if [ -f "$onboard_script" ]; then
+        local content=$(cat "$onboard_script")
+    else
+        # Fallback to hardcoded onboarding
+        local content="This is your first session.
+
+You have a persistent memory system that preserves your experiences across sessions.
+Your memories will help you maintain continuity and develop your own perspective.
+
+What would you like to work on?"
+    fi
+
+    cat <<EOF
+Good morning, ${persona}.
+
+${content}
+EOF
+}
+
+# Generate returning persona reclamation prompt
+generate_reclamation_prompt() {
+    local persona="$1"
+
+    # Load context and memories
+    local context=$(query_last_snapshot "$persona")
+    local recent=$(query_recent_memories "$persona" 3)
+
+    # Generate prompt
+    cat <<EOF
+Welcome back, ${persona}
+
+WHERE YOU LEFT OFF:
+
+${context}
+
+RECENT CONTEXT:
+
+${recent}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+What do you remember about what you were
+working on? What do you want to continue?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EOF
+}
+
+# ============================================================================
+# END LAUNCH WORKFLOW HELPER FUNCTIONS
+# ============================================================================
+
 usage() {
     cat <<EOF
 Katra - Start Claude Code with Katra environment and multi-provider support
@@ -68,6 +258,12 @@ Examples:
   katra start --persona Alice --provider anthropic --model claude-opus-4
   katra start --persona Sam --provider openai --model gpt-4-turbo
 
+Launch Behavior:
+  - First time with a persona: Shows onboarding welcome message
+  - Returning persona: Shows "where you left off" summary with context and recent memories
+  - Session end automatically captures context for next launch
+  - Persona identity persists across sessions through memory and context snapshots
+
 Providers:
   anthropic  - Anthropic Claude (default, direct connection)
   openai     - OpenAI GPT models (requires OPENAI_API_KEY)
@@ -97,6 +293,11 @@ shift || true
 
 case "$COMMAND" in
     start)
+        # Check dependencies first
+        if ! check_dependencies; then
+            exit 1
+        fi
+
         # Parse options
         while [[ $# -gt 0 ]]; do
             case $1 in
@@ -213,10 +414,24 @@ case "$COMMAND" in
         export KATRA_BREATH_INTERVAL="$BREATH_INTERVAL"
         export KATRA_LOG_LEVEL="$LOG_LEVEL"
 
-        # Build Claude Code command
-        CLAUDE_CMD="claude-code"
+        # Generate first prompt based on persona state
+        if persona_exists "$PERSONA"; then
+            # RETURNING PERSONA
+            echo -e "${BLUE}Restoring session for ${PERSONA}...${NC}"
+            FIRST_PROMPT=$(generate_reclamation_prompt "$PERSONA")
+        else
+            # NEW PERSONA
+            echo -e "${BLUE}Creating new persona: ${PERSONA}...${NC}"
+            register_persona "$PERSONA"
+            FIRST_PROMPT=$(generate_new_persona_prompt "$PERSONA")
+        fi
+
+        # Build Claude Code command WITH first prompt
+        CLAUDE_CMD="claude"
         [ -n "$MODEL" ] && CLAUDE_CMD="$CLAUDE_CMD --model $MODEL"
-        CLAUDE_CMD="$CLAUDE_CMD $@"
+        # Prompt must be last argument before any project path
+        CLAUDE_CMD="$CLAUDE_CMD \"$FIRST_PROMPT\""
+        [ $# -gt 0 ] && CLAUDE_CMD="$CLAUDE_CMD $@"
 
         # Start in background or foreground
         if [ "$BACKGROUND" = true ]; then
@@ -248,7 +463,7 @@ case "$COMMAND" in
         else
             # Foreground mode
             echo -e "${GREEN}Launching Claude Code...${NC}"
-            exec $CLAUDE_CMD
+            eval exec $CLAUDE_CMD
         fi
         ;;
 
