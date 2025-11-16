@@ -55,11 +55,11 @@ Try these example queries in Claude Code:
 
 - **"Remember that I prefer tabs over spaces for indentation"** (uses `katra_remember`)
 - **"What do you remember about my preferences?"** (uses `katra_recall`)
-- **"Where should HTTP client code go in this project?"** (uses `katra_placement`)
+- **"What did we work on last session?"** (uses `katra_recent`)
 
 ## Available Tools
 
-Katra provides 9 MCP tools grouped into three categories:
+Katra provides MCP tools for persistent memory and identity:
 
 ### Core Memory Tools
 
@@ -82,7 +82,16 @@ Katra provides 9 MCP tools grouped into three categories:
 
 **Example**: Recall all memories about coding preferences
 
-**3. katra_learn** - Store permanent knowledge
+**3. katra_recent** - Get most recent memories
+```json
+{
+  "limit": 20  // optional, default 20
+}
+```
+
+**Example**: Get the last 20 memories chronologically
+
+**4. katra_learn** - Store permanent knowledge
 ```json
 {
   "knowledge": "The knowledge to learn"
@@ -91,7 +100,7 @@ Katra provides 9 MCP tools grouped into three categories:
 
 **Example**: Learn that this project uses C11 standard
 
-**4. katra_decide** - Record decisions with reasoning
+**5. katra_decide** - Record decisions with reasoning
 ```json
 {
   "decision": "The decision made",
@@ -100,37 +109,6 @@ Katra provides 9 MCP tools grouped into three categories:
 ```
 
 **Example**: Decide to use mutex locking because thread safety is critical
-
-### Phase 5 Reasoning Tools
-
-These tools use memory-augmented reasoning to provide architecture guidance:
-
-**5. katra_placement** - Architecture guidance
-```json
-{
-  "query": "Where should the HTTP client code go?"
-}
-```
-
-Returns recommendations based on project structure and past decisions.
-
-**6. katra_impact** - Impact analysis
-```json
-{
-  "query": "What breaks if I change this API?"
-}
-```
-
-Analyzes dependencies and provides impact assessment.
-
-**7. katra_user_domain** - User domain understanding
-```json
-{
-  "query": "Who would use this feature?"
-}
-```
-
-Provides insights about feature usage and user needs.
 
 ### Persona Management Tools
 
@@ -164,9 +142,9 @@ Returns a list of all personas registered in the system with their last activity
 | `learn()` | `katra_learn` | ✅ Available |
 | `decide()` | `katra_decide` | ✅ Available |
 | `recall_about()` | `katra_recall` | ✅ Available |
-| `placement query()` | `katra_placement` | ✅ Available |
-| `impact query()` | `katra_impact` | ✅ Available |
-| `user_domain query()` | `katra_user_domain` | ✅ Available |
+| `recent()` | `katra_recent` | ✅ Available |
+| `register()` | `katra_register` | ✅ Available |
+| `whoami()` | `katra_whoami` | ✅ Available |
 
 ### Available Only in C API:
 
@@ -430,29 +408,29 @@ Claude: [Uses katra_recall to check decisions]
         (snake_case for C function names).
 ```
 
-### Example 2: Architecture Guidance
+### Example 2: Recent Memories
 
 ```
-User: Where should I put the new HTTP client code?
+User: What did we work on last session?
 
-Claude: [Uses katra_placement]
-        Based on your project structure:
-        - Create src/utils/http_client.c
-        - This follows your pattern of utils
-        - Confidence: 87%
+Claude: [Uses katra_recent]
+        Your last session memories:
+        1. Implemented layered awakening system
+        2. Created sunrise context generator
+        3. Added MCP resources for personas
+        4. Completed all 9 phases
 ```
 
-### Example 3: Impact Analysis
+### Example 3: Identity Management
 
 ```
-User: What will break if I change the memory_record_t struct?
+User: Who am I in this session?
 
-Claude: [Uses katra_impact]
-        Changing memory_record_t will affect:
-        - katra_tier1.c (storage serialization)
-        - katra_tier2.c (digest creation)
-        - katra_checkpoint.c (checkpoint format)
-        Confidence: 92%
+Claude: [Uses katra_whoami]
+        You are registered as:
+        - Name: Ami
+        - Role: developer
+        - Session active since: 2025-11-16
 ```
 
 ## Implementation Details
@@ -468,17 +446,19 @@ Claude: [Uses katra_impact]
 
 ```
 src/mcp/
-├── mcp_protocol.c       - JSON-RPC 2.0 protocol handlers (411 lines)
-├── mcp_tools.c          - Core tools (remember, recall, learn, decide)
-├── mcp_nous.c         - Phase 5 tools (placement, impact, user_domain)
-├── mcp_resources.c      - Resources (working-context, session-info)
+├── mcp_protocol.c       - JSON-RPC 2.0 protocol handlers
+├── mcp_tools_memory.c   - Memory tools (remember, recall, recent, learn, decide)
+├── mcp_tools_identity.c - Identity tools (register, whoami)
+├── mcp_tools_team.c     - Team/meeting room tools (say, hear, who_is_here)
+├── mcp_tools_config.c   - Configuration tools
+├── mcp_resources.c      - Resources (working-context, persona files)
 └── katra_mcp_server.c   - Main server entry point
 
 include/
-└── katra_mcp.h          - MCP API and constants (243 lines)
+└── katra_mcp.h          - MCP API and constants
 
 tests/
-└── test_mcp.c           - MCP integration tests (13 tests)
+└── test_mcp.c           - MCP integration tests
 ```
 
 ### Constants
