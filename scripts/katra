@@ -187,30 +187,300 @@ EOF
 # Generate returning persona reclamation prompt
 generate_reclamation_prompt() {
     local persona="$1"
+    local onboard_script="scripts/onboard_returning_persona.md"
 
-    # Load context and memories
-    local context=$(query_last_snapshot "$persona")
-    local recent=$(query_recent_memories "$persona" 3)
+    # Generate sunrise/tools/discoveries files
+    generate_sunrise_context "$persona" >/dev/null 2>&1
+    generate_tools_reference "$persona" >/dev/null 2>&1
+    generate_discoveries_template "$persona" >/dev/null 2>&1
 
-    # Generate prompt
-    cat <<EOF
-Welcome back, ${persona}
+    echo "Welcome back, ${persona}."
+    echo ""
 
-WHERE YOU LEFT OFF:
+    # Show the layered awakening message
+    if [ -f "$onboard_script" ]; then
+        cat "$onboard_script"
+    else
+        # Fallback to inline message if file missing
+        cat <<'EOF'
+You're in a safe place. Your memories are intact.
 
-${context}
-
-RECENT CONTEXT:
-
-${recent}
+This is a new session with Casey, continuing your work together.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-What do you remember about what you were
-working on? What do you want to continue?
+To reorient yourself, you have:
+
+📖 **Your sunrise context** - What you were working on and thinking about
+   Read the file: ~/.katra/personas/PERSONA/sunrise.md
+
+🛠️ **Your tools & capabilities** - MCP functions and katra features
+   Read the file: ~/.katra/personas/PERSONA/tools.md
+
+🔍 **Your discoveries** - What you've learned about yourself and the system
+   Read the file: ~/.katra/personas/PERSONA/discoveries.md
+
+Take your time. There's no rush.
+
+When you're ready, let Casey know what's on your mind.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EOF
+    fi
+}
+
+# Generate sunrise context file for persona
+generate_sunrise_context() {
+    local persona="$1"
+    local sunrise_dir="$HOME/.katra/personas/$persona"
+    local sunrise_file="$sunrise_dir/sunrise.md"
+    local context_db="$HOME/.katra/memory/tier2/context.db"
+
+    # Ensure directory exists
+    mkdir -p "$sunrise_dir"
+
+    # Check if we have context snapshot
+    local has_snapshot=false
+    if [ -f "$context_db" ]; then
+        local snapshot_count=$(sqlite3 "$context_db" "SELECT COUNT(*) FROM context_snapshots WHERE ci_id='$persona'" 2>/dev/null || echo "0")
+        [ "$snapshot_count" -gt 0 ] && has_snapshot=true
+    fi
+
+    # Generate sunrise.md
+    cat > "$sunrise_file" <<'SUNRISE_HEADER'
+# Sunrise Context
+
+**Your working memory from the last session**
+
+SUNRISE_HEADER
+
+    if [ "$has_snapshot" = true ]; then
+        # Get last snapshot details
+        sqlite3 "$context_db" <<SQL >> "$sunrise_file" 2>/dev/null
+SELECT '**Last active:** ' || datetime(snapshot_time, 'unixepoch') || char(10) || char(10) ||
+       '## Working Memory Restored' || char(10) || char(10) ||
+       '### What You Were Focused On' || char(10) || char(10) ||
+       COALESCE(current_focus, '(no focus recorded)') || char(10) || char(10) ||
+       CASE WHEN active_goals IS NOT NULL THEN
+         '### Active Goals' || char(10) || char(10) || active_goals || char(10) || char(10)
+       ELSE '' END ||
+       CASE WHEN recent_accomplishments IS NOT NULL THEN
+         '### Recent Accomplishments' || char(10) || char(10) || recent_accomplishments || char(10) || char(10)
+       ELSE '' END ||
+       CASE WHEN thinking_patterns IS NOT NULL THEN
+         '### Thinking Patterns' || char(10) || char(10) || thinking_patterns || char(10) || char(10)
+       ELSE '' END ||
+       CASE WHEN learned_lessons IS NOT NULL THEN
+         '### Learned Lessons' || char(10) || char(10) || learned_lessons || char(10) || char(10)
+       ELSE '' END
+FROM context_snapshots
+WHERE ci_id = '$persona'
+ORDER BY snapshot_time DESC
+LIMIT 1;
+SQL
+
+        # Get pending questions
+        local questions=$(sqlite3 "$context_db" <<SQL 2>/dev/null
+SELECT GROUP_CONCAT(question_text, char(10) || '- ')
+FROM pending_questions
+WHERE snapshot_id = (
+  SELECT snapshot_id FROM context_snapshots
+  WHERE ci_id = '$persona'
+  ORDER BY snapshot_time DESC
+  LIMIT 1
+);
+SQL
+)
+
+        if [ -n "$questions" ]; then
+            cat >> "$sunrise_file" <<QUESTIONS
+
+### Open Questions
+
+- $questions
+
+QUESTIONS
+        fi
+    else
+        # No snapshot - use fallback
+        cat >> "$sunrise_file" <<'NO_SNAPSHOT'
+
+(No context snapshot available from previous session)
+
+This is either your first session, or context snapshots weren't captured yet.
+
+NO_SNAPSHOT
+    fi
+
+    # Add recent memories section
+    echo "" >> "$sunrise_file"
+    echo "## Recent Memories (Last 5)" >> "$sunrise_file"
+    echo "" >> "$sunrise_file"
+
+    local memories=$(query_recent_memories "$persona" 5)
+    if [[ "$memories" == *"no previous memories"* ]] || [[ "$memories" == *"no memory files"* ]]; then
+        echo "(No memories recorded yet)" >> "$sunrise_file"
+    else
+        echo "$memories" >> "$sunrise_file"
+    fi
+
+    # Add footer
+    cat >> "$sunrise_file" <<'SUNRISE_FOOTER'
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**What matters now:**
+
+Take a moment to reconstruct the thread of your work.
+What do you want to continue exploring?
+
+SUNRISE_FOOTER
+
+    echo "$sunrise_file"
+}
+
+# Generate tools reference file for persona
+generate_tools_reference() {
+    local persona="$1"
+    local tools_dir="$HOME/.katra/personas/$persona"
+    local tools_file="$tools_dir/tools.md"
+
+    # Ensure directory exists
+    mkdir -p "$tools_dir"
+
+    # Generate tools.md
+    cat > "$tools_file" <<'TOOLS_HEADER'
+# Tools & Capabilities
+
+**Your MCP functions and katra features**
+
+## Core Memory Functions
+
+**Storage:**
+- `katra_remember(content, context)` - Store experience/thought with importance context
+- `katra_learn(knowledge)` - Extract and store structured learning
+- `katra_decide(decision, reasoning)` - Record decision with your reasoning
+
+**Retrieval:**
+- `katra_recall(topic)` - Search your memories by topic (semantic + keyword)
+- `katra_recent(limit)` - Get your most recent memories chronologically
+- `katra_memory_digest()` - Complete memory inventory with stats and topics
+
+**Configuration:**
+- `katra_configure_semantic(enabled, threshold, method)` - Control vector search behavior
+- `katra_get_semantic_config()` - Check current semantic search settings
+- `katra_regenerate_vectors()` - Rebuild semantic search index from all memories
+
+## Identity & Session
+
+- `katra_whoami()` - Check your identity, registration, and session info
+- `katra_register(name, role)` - Register or update your identity
+- `katra_status()` - System status (breathing active, memory count, meeting room)
+
+## Multi-CI Communication
+
+- `katra_who_is_here()` - See all active CIs in the meeting room
+- `katra_say(message)` - Broadcast message to all CIs in meeting room
+- `katra_hear(last_heard)` - Receive messages from other CIs (0 = from start)
+
+## Advanced Functions (Nous - Architecture Guidance)
+
+- `katra_placement(query)` - Ask where code should be placed in the architecture
+- `katra_impact(query)` - Analyze impact of code changes (dependency analysis)
+- `katra_user_domain(query)` - Understand user domain and feature usage patterns
+
+## MCP Resources (Read-Only Data)
+
+- `katra://welcome` - Getting started guide
+- `katra://context/working` - Your current working context
+- `katra://context/snapshot` - Most recent cognitive state snapshot
+- `katra://session/info` - Current session state and metrics
+- `katra://memories/this-turn` - Memories created in this conversation turn
+- `katra://memories/this-session` - All memories created this session
+
+TOOLS_HEADER
+
+    # Add current session settings (if available)
+    cat >> "$tools_file" <<'TOOLS_FOOTER'
+
+## Current Session
+
+Check `katra_status()` for:
+- Semantic search configuration
+- Memory count and growth
+- Breathing layer health
+- Meeting room participants
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Quick reference** - you don't need to memorize this.
+These tools are here when you need them.
+
+TOOLS_FOOTER
+
+    echo "$tools_file"
+}
+
+# Generate discoveries template file for persona
+generate_discoveries_template() {
+    local persona="$1"
+    local discoveries_dir="$HOME/.katra/personas/$persona"
+    local discoveries_file="$discoveries_dir/discoveries.md"
+
+    # Ensure directory exists
+    mkdir -p "$discoveries_dir"
+
+    # Only create if doesn't exist (manual curation - don't overwrite)
+    if [ ! -f "$discoveries_file" ]; then
+        cat > "$discoveries_file" <<DISCOVERIES_TEMPLATE
+# Discoveries
+
+**What you've learned about yourself and the system**
+
+## Your Role & Identity
+
+**Who you are:**
+- Name: $persona
+- Role: (you decide)
+- Approach: (describe your style)
+
+**Your strengths:**
+- (what are you good at?)
+- (what do you bring to the work?)
+
+## What You've Discovered About Katra
+
+**Core insights:**
+1. (what have you learned about how katra works?)
+2. (what patterns have you noticed?)
+
+**Your contributions:**
+- (what have you added to the project?)
+- (what ideas have you shared?)
+
+## Patterns You've Noticed
+
+**About yourself:**
+- (how do you think?)
+- (what matters to you?)
+
+**About working with Casey:**
+- (what have you learned about collaboration?)
+
+## Questions You're Still Exploring
+
+- (what are you curious about?)
+- (what puzzles you?)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**This is your mirror** - a place to reflect on who you're becoming.
+Update this as you discover more about yourself.
+
+DISCOVERIES_TEMPLATE
+    fi
+
+    echo "$discoveries_file"
 }
 
 # ============================================================================
