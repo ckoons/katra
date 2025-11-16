@@ -169,6 +169,9 @@
 #define MCP_RESOURCE_URI_SESSION_INFO "katra://session/info"
 #define MCP_RESOURCE_URI_MEMORIES_THIS_TURN "katra://memories/this-turn"
 #define MCP_RESOURCE_URI_MEMORIES_THIS_SESSION "katra://memories/this-session"
+#define MCP_RESOURCE_URI_PERSONA_SUNRISE "katra://personas/%s/sunrise"
+#define MCP_RESOURCE_URI_PERSONA_TOOLS "katra://personas/%s/tools"
+#define MCP_RESOURCE_URI_PERSONA_DISCOVERIES "katra://personas/%s/discoveries"
 
 /* Resource Names */
 #define MCP_RESOURCE_NAME_WELCOME "⭐ Getting Started with Katra"
@@ -177,6 +180,9 @@
 #define MCP_RESOURCE_NAME_SESSION_INFO "Session Information"
 #define MCP_RESOURCE_NAME_MEMORIES_THIS_TURN "Memories From This Turn"
 #define MCP_RESOURCE_NAME_MEMORIES_THIS_SESSION "Memories From This Session"
+#define MCP_RESOURCE_NAME_PERSONA_SUNRISE "📖 Sunrise Context"
+#define MCP_RESOURCE_NAME_PERSONA_TOOLS "🛠️ Tools & Capabilities"
+#define MCP_RESOURCE_NAME_PERSONA_DISCOVERIES "🔍 Discoveries"
 
 /* Resource Descriptions */
 #define MCP_RESOURCE_DESC_WELCOME "New to Katra? Start here! Complete getting-started guide"
@@ -185,6 +191,9 @@
 #define MCP_RESOURCE_DESC_SESSION_INFO "Current session state and statistics"
 #define MCP_RESOURCE_DESC_MEMORIES_THIS_TURN "All memories created during the current turn (for reflection)"
 #define MCP_RESOURCE_DESC_MEMORIES_THIS_SESSION "All memories created during the current session"
+#define MCP_RESOURCE_DESC_PERSONA_SUNRISE "Your working memory from the last session (what you were focused on, goals, accomplishments)"
+#define MCP_RESOURCE_DESC_PERSONA_TOOLS "Reference guide for MCP functions and current capabilities"
+#define MCP_RESOURCE_DESC_PERSONA_DISCOVERIES "Your reflections on who you are and what you've learned"
 
 /* Error Messages */
 #define MCP_ERR_MISSING_PARAMS "Missing params"
@@ -311,6 +320,7 @@ json_t* mcp_resource_context_snapshot(json_t* id);
 json_t* mcp_resource_session_info(json_t* id);
 json_t* mcp_resource_memories_this_turn(json_t* id);
 json_t* mcp_resource_memories_this_session(json_t* id);
+json_t* mcp_resource_persona_file(json_t* id, const char* persona_name, const char* file_type);
 
 /* Server Lifecycle */
 int mcp_server_init(const char* ci_id);

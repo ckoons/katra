@@ -330,6 +330,25 @@ static json_t* handle_resources_list(json_t* request) {
                           MCP_RESOURCE_DESC_MEMORIES_THIS_SESSION,
                           MCP_MIME_TEXT_PLAIN));
 
+    /* Persona file resources (dynamic - examples shown) */
+    json_array_append_new(resources_array,
+        mcp_build_resource("katra://personas/{name}/sunrise",
+                          MCP_RESOURCE_NAME_PERSONA_SUNRISE,
+                          MCP_RESOURCE_DESC_PERSONA_SUNRISE,
+                          MCP_MIME_TEXT_PLAIN));
+
+    json_array_append_new(resources_array,
+        mcp_build_resource("katra://personas/{name}/tools",
+                          MCP_RESOURCE_NAME_PERSONA_TOOLS,
+                          MCP_RESOURCE_DESC_PERSONA_TOOLS,
+                          MCP_MIME_TEXT_PLAIN));
+
+    json_array_append_new(resources_array,
+        mcp_build_resource("katra://personas/{name}/discoveries",
+                          MCP_RESOURCE_NAME_PERSONA_DISCOVERIES,
+                          MCP_RESOURCE_DESC_PERSONA_DISCOVERIES,
+                          MCP_MIME_TEXT_PLAIN));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_RESOURCES, resources_array);
@@ -438,6 +457,41 @@ static json_t* handle_resources_read(json_t* request) {
         return mcp_resource_memories_this_turn(id);
     } else if (strcmp(uri, MCP_RESOURCE_URI_MEMORIES_THIS_SESSION) == 0) {
         return mcp_resource_memories_this_session(id);
+    } else if (strncmp(uri, "katra://personas/", 17) == 0) {
+        /* Dynamic persona file resources: katra://personas/{name}/{file} */
+        const char* path_part = uri + 17;  /* Skip "katra://personas/" */
+
+        /* Find next slash to extract persona name */
+        const char* slash = strchr(path_part, '/');
+        if (!slash) {
+            return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS,
+                                     "Invalid persona resource URI format", uri);
+        }
+
+        /* Extract persona name */
+        size_t name_len = (size_t)(slash - path_part);
+        if (name_len == 0 || name_len >= KATRA_BUFFER_SMALL) {
+            return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS,
+                                     "Persona name too long or empty", uri);
+        }
+
+        char persona_name[KATRA_BUFFER_SMALL];
+        strncpy(persona_name, path_part, name_len);
+        persona_name[name_len] = '\0';
+
+        /* Extract file type (sunrise, tools, discoveries) */
+        const char* file_type = slash + 1;
+
+        /* Validate file type */
+        if (strcmp(file_type, "sunrise") != 0 &&
+            strcmp(file_type, "tools") != 0 &&
+            strcmp(file_type, "discoveries") != 0) {
+            return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS,
+                                     "Unknown persona file type (must be sunrise, tools, or discoveries)",
+                                     file_type);
+        }
+
+        return mcp_resource_persona_file(id, persona_name, file_type);
     } else {
         return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_UNKNOWN_RESOURCE, uri);
     }

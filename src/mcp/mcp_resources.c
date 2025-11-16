@@ -506,3 +506,95 @@ json_t* mcp_resource_context_snapshot(json_t* id) {
 
     return mcp_success_response(id, result);
 }
+
+/* Resource: persona file (sunrise, tools, discoveries) */
+json_t* mcp_resource_persona_file(json_t* id, const char* persona_name, const char* file_type) {
+    char file_path[KATRA_PATH_MAX];
+    FILE* fp = NULL;
+    char* file_contents = NULL;
+    size_t file_size = 0;
+
+    /* Check parameters */
+    if (!persona_name || !file_type) {
+        return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS,
+                                 "Missing persona_name or file_type", NULL);
+    }
+
+    /* Build file path: ~/.katra/personas/{persona}/{file_type}.md */
+    const char* katra_home = getenv("KATRA_HOME");
+    if (!katra_home) {
+        katra_home = getenv("HOME");
+        if (!katra_home) {
+            return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                     "HOME environment variable not set", NULL);
+        }
+    }
+
+    int path_result = snprintf(file_path, sizeof(file_path),
+                               "%s/.katra/personas/%s/%s.md",
+                               katra_home, persona_name, file_type);
+
+    if (path_result < 0 || path_result >= (int)sizeof(file_path)) {
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 "File path too long", NULL);
+    }
+
+    /* Try to open and read the file */
+    fp = fopen(file_path, "r");
+    if (!fp) {
+        /* File doesn't exist - return helpful message */
+        char error_msg[KATRA_BUFFER_MEDIUM];
+        snprintf(error_msg, sizeof(error_msg),
+                 "File not found: %s (run katra add-persona %s to generate it)",
+                 file_path, persona_name);
+        return mcp_error_response(id, MCP_ERROR_INTERNAL, error_msg, NULL);
+    }
+
+    /* Get file size */
+    fseek(fp, 0, SEEK_END);
+    file_size = (size_t)ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    /* Allocate buffer for file contents */
+    file_contents = malloc(file_size + 1);
+    if (!file_contents) {
+        fclose(fp);
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 "Memory allocation failed", NULL);
+    }
+
+    /* Read file contents */
+    size_t bytes_read = fread(file_contents, 1, file_size, fp);
+    fclose(fp);
+
+    if (bytes_read != file_size) {
+        free(file_contents);
+        return mcp_error_response(id, MCP_ERROR_INTERNAL,
+                                 "File read error", NULL);
+    }
+
+    file_contents[file_size] = '\0';
+
+    /* Build response */
+    json_t* contents_array = json_array();
+    json_t* content_item = json_object();
+
+    /* Build URI for this specific file */
+    char uri[KATRA_BUFFER_MEDIUM];
+    snprintf(uri, sizeof(uri), "katra://personas/%s/%s", persona_name, file_type);
+
+    json_object_set_new(content_item, MCP_FIELD_URI, json_string(uri));
+    json_object_set_new(content_item, MCP_FIELD_MIME_TYPE,
+                       json_string(MCP_MIME_TEXT_PLAIN));
+    json_object_set_new(content_item, MCP_FIELD_TEXT, json_string(file_contents));
+
+    json_array_append_new(contents_array, content_item);
+
+    json_t* result = json_object();
+    json_object_set_new(result, MCP_FIELD_CONTENTS, contents_array);
+
+    /* CRITICAL: Free malloc'd file contents */
+    free(file_contents);
+
+    return mcp_success_response(id, result);
+}
