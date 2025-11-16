@@ -81,9 +81,6 @@
 #define MCP_TOOL_MEMORY_DIGEST "katra_memory_digest"
 #define MCP_TOOL_LEARN "katra_learn"
 #define MCP_TOOL_DECIDE "katra_decide"
-#define MCP_TOOL_PLACEMENT "katra_placement"
-#define MCP_TOOL_IMPACT "katra_impact"
-#define MCP_TOOL_USER_DOMAIN "katra_user_domain"
 #define MCP_TOOL_REVIEW_TURN "katra_review_turn"
 #define MCP_TOOL_UPDATE_METADATA "katra_update_metadata"
 #define MCP_TOOL_REGISTER "katra_register"
@@ -104,9 +101,6 @@
 #define MCP_DESC_MEMORY_DIGEST "Get comprehensive memory inventory (stats, topics, collections, paginated memories)"
 #define MCP_DESC_LEARN "Store new knowledge"
 #define MCP_DESC_DECIDE "Store a decision with reasoning"
-#define MCP_DESC_PLACEMENT "Ask where code should be placed (architecture guidance)"
-#define MCP_DESC_IMPACT "Analyze impact of code changes (dependency analysis)"
-#define MCP_DESC_USER_DOMAIN "Understand user domain and feature usage patterns"
 #define MCP_DESC_REVIEW_TURN "Get memories created this turn for conscious reflection"
 #define MCP_DESC_UPDATE_METADATA "Update memory metadata (personal, collection, archival flags)"
 #define MCP_DESC_REGISTER "Register your name and role for this session"
@@ -147,9 +141,6 @@
 #define MCP_PARAM_DESC_KNOWLEDGE "The knowledge to learn"
 #define MCP_PARAM_DESC_DECISION "The decision made"
 #define MCP_PARAM_DESC_REASONING "Why this decision was made"
-#define MCP_PARAM_DESC_QUERY_PLACEMENT "The placement question (e.g., 'Where should the HTTP client code go?')"
-#define MCP_PARAM_DESC_QUERY_IMPACT "The impact question (e.g., 'What breaks if I change this API?')"
-#define MCP_PARAM_DESC_QUERY_USER_DOMAIN "The user domain question (e.g., 'Who would use this feature?')"
 #define MCP_PARAM_DESC_MEMORY_ID "Memory record ID to update"
 #define MCP_PARAM_DESC_PERSONAL "Mark as personal collection memory (true/false, optional)"
 #define MCP_PARAM_DESC_NOT_TO_ARCHIVE "Prevent automatic archival (true/false, optional)"
@@ -299,11 +290,6 @@ json_t* mcp_tool_recent(json_t* args, json_t* id);
 json_t* mcp_tool_memory_digest(json_t* args, json_t* id);
 json_t* mcp_tool_learn(json_t* args, json_t* id);
 json_t* mcp_tool_decide(json_t* args, json_t* id);
-
-/* Nous Tool Implementations */
-json_t* mcp_tool_placement(json_t* args, json_t* id);
-json_t* mcp_tool_impact(json_t* args, json_t* id);
-json_t* mcp_tool_user_domain(json_t* args, json_t* id);
 
 /* Persona Tool Implementations */
 json_t* mcp_tool_my_name_is(json_t* args, json_t* id);

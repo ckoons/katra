@@ -121,80 +121,17 @@ List of memories containing the topic keywords, ordered by relevance.
 
 ---
 
-### Nous Tools (AI-Assisted Guidance)
+### Removed Tools
 
-#### `katra_placement` - Architecture guidance
+**Note:** The following tools have been removed from Katra and moved to [Argo SE-MCP](https://github.com/caseykoons/argo):
 
-Ask where code should be placed in the codebase.
+- `katra_placement()` - Architecture guidance (use `argo-se-mcp` instead)
+- `katra_impact()` - Dependency analysis (use `argo-se-mcp` instead)
+- `katra_user_domain()` - User domain modeling (use `argo-se-mcp` instead)
 
-**Parameters:**
-- `query` (string, required): The placement question
+**Reason:** These tools provide software engineering intelligence, which belongs with workflow coordination (Argo) rather than memory/identity (Katra).
 
-**Example Usage:**
-```javascript
-katra_placement(
-  query: "Where should hook integration code go?"
-)
-```
-
-**Returns:**
-Architectural recommendation with confidence level.
-
-**When to Use:**
-- Before creating new files
-- When refactoring existing code
-- When uncertain about module boundaries
-- When following existing patterns
-
----
-
-#### `katra_impact` - Dependency analysis
-
-Analyze what breaks if you change something.
-
-**Parameters:**
-- `query` (string, required): The impact question
-
-**Example Usage:**
-```javascript
-katra_impact(
-  query: "What breaks if I change session_end() signature?"
-)
-```
-
-**Returns:**
-Impact analysis showing affected code and dependencies.
-
-**When to Use:**
-- Before making breaking changes
-- When refactoring interfaces
-- When deprecating functions
-- When considering API changes
-
----
-
-#### `katra_user_domain` - User understanding
-
-Understand user domain and feature usage patterns.
-
-**Parameters:**
-- `query` (string, required): The user domain question
-
-**Example Usage:**
-```javascript
-katra_user_domain(
-  query: "Who would use inter-session continuity?"
-)
-```
-
-**Returns:**
-Analysis of user needs, use cases, and expected behavior.
-
-**When to Use:**
-- When designing user-facing features
-- Before making UX decisions
-- When prioritizing features
-- When understanding requirements
+**Migration:** See `docs/design/nous_removal_plan.md` for details.
 
 ---
 

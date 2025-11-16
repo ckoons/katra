@@ -127,19 +127,10 @@ LIFECYCLE_OBJS := $(BUILD_DIR)/katra_lifecycle.o
 HOOKS_OBJS := $(BUILD_DIR)/hook_registry.o \
               $(BUILD_DIR)/hook_anthropic.o
 
-# Phase 5 object files (Memory-Augmented Reasoning)
-NOUS_OBJS := $(BUILD_DIR)/katra_nous_common.o \
-               $(BUILD_DIR)/katra_nous_compose.o \
-               $(BUILD_DIR)/katra_nous_patterns.o \
-               $(BUILD_DIR)/katra_nous_impact.o \
-               $(BUILD_DIR)/katra_nous_reasoning.o \
-               $(BUILD_DIR)/katra_nous_crossproject.o
-
 # MCP library object files (without server main)
 MCP_LIB_OBJS := $(BUILD_DIR)/mcp_protocol.o \
                 $(BUILD_DIR)/mcp_tools_memory.o \
                 $(BUILD_DIR)/mcp_tools_identity.o \
-                $(BUILD_DIR)/mcp_nous.o \
                 $(BUILD_DIR)/mcp_resources.o
 
 # MCP Server object files (includes server main)
@@ -157,7 +148,7 @@ JANSSON_CFLAGS := -I/opt/homebrew/Cellar/jansson/2.14.1/include
 JANSSON_LDFLAGS := -L/opt/homebrew/Cellar/jansson/2.14.1/lib -ljansson
 
 # All object files (for dependency tracking)
-ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(HOOKS_OBJS) $(NOUS_OBJS) $(MCP_OBJS)
+ALL_OBJS := $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(HOOKS_OBJS) $(MCP_OBJS)
 
 # Auto-generated dependency files
 DEP_FILES := $(ALL_OBJS:.o=.d)

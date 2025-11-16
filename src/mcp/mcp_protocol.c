@@ -220,19 +220,6 @@ static json_t* handle_tools_list(json_t* request) {
             mcp_build_tool_schema_2params(MCP_PARAM_DECISION, MCP_PARAM_DESC_DECISION,
                                          MCP_PARAM_REASONING, MCP_PARAM_DESC_REASONING)));
 
-    /* Nous tools */
-    json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_PLACEMENT, MCP_DESC_PLACEMENT,
-            mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_PLACEMENT)));
-
-    json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_IMPACT, MCP_DESC_IMPACT,
-            mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_IMPACT)));
-
-    json_array_append_new(tools_array,
-        mcp_build_tool(MCP_TOOL_USER_DOMAIN, MCP_DESC_USER_DOMAIN,
-            mcp_build_tool_schema_1param(MCP_PARAM_QUERY, MCP_PARAM_DESC_QUERY_USER_DOMAIN)));
-
     /* Identity tools */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_REGISTER, MCP_DESC_REGISTER,
@@ -390,12 +377,6 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_learn(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_DECIDE) == 0) {
         tool_result = mcp_tool_decide(args, id);
-    } else if (strcmp(tool_name, MCP_TOOL_PLACEMENT) == 0) {
-        tool_result = mcp_tool_placement(args, id);
-    } else if (strcmp(tool_name, MCP_TOOL_IMPACT) == 0) {
-        tool_result = mcp_tool_impact(args, id);
-    } else if (strcmp(tool_name, MCP_TOOL_USER_DOMAIN) == 0) {
-        tool_result = mcp_tool_user_domain(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_REGISTER) == 0) {
         tool_result = mcp_tool_register(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_WHOAMI) == 0) {
