@@ -11,12 +11,14 @@
 #include "katra_breathing.h"
 #include "katra_memory.h"
 #include "katra_error.h"
+#include "katra_vector.h"
 
 #define TEST_CI_ID "test_mcp_ci"
 
 /* Mock globals for MCP tools (normally defined in katra_mcp_server.c) */
 char g_persona_name[256] = "test_persona";
 char g_ci_id[256] = TEST_CI_ID;
+vector_store_t* g_vector_store = NULL;  /* Mock vector store */
 
 /* Mock session state for testing */
 static mcp_session_t test_session = {
@@ -157,8 +159,8 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    if (tool_count != 13) {
-        printf("  ✗ Expected 13 tools, got %zu\n", tool_count);
+    if (tool_count != 17) {
+        printf("  ✗ Expected 17 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }
@@ -207,15 +209,15 @@ static int test_resources_list(void) {
     }
 
     size_t resource_count = json_array_size(resources);
-    if (resource_count != 6) {
-        printf("  ✗ Expected 6 resources, got %zu\n", resource_count);
+    if (resource_count != 9) {
+        printf("  ✗ Expected 9 resources, got %zu\n", resource_count);
         json_decref(response);
         return 1;
     }
 
     json_decref(response);
     tests_passed++;
-    printf("  ✓ resources/list returns 6 resources\n");
+    printf("  ✓ resources/list returns 9 resources\n");
     return 0;
 }
 

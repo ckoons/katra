@@ -313,7 +313,7 @@ $(TEST_CONTEXT_PERSIST): $(TEST_DIR)/test_context_persist.c $(LIBKATRA_UTILS) | 
 
 $(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread -lcurl
 
 $(TEST_TURN_TRACKING): $(TEST_DIR)/test_turn_tracking.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
