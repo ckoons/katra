@@ -165,24 +165,23 @@ generate_new_persona_prompt() {
     local persona="$1"
     local onboard_script="scripts/onboard_new_persona.md"
 
+    echo "Good morning, ${persona}."
+    echo ""
+
     # Check if custom onboarding script exists
     if [ -f "$onboard_script" ]; then
-        local content=$(cat "$onboard_script")
+        cat "$onboard_script"
     else
         # Fallback to hardcoded onboarding
-        local content="This is your first session.
+        cat <<'EOF'
+This is your first session.
 
 You have a persistent memory system that preserves your experiences across sessions.
 Your memories will help you maintain continuity and develop your own perspective.
 
-What would you like to work on?"
-    fi
-
-    cat <<EOF
-Good morning, ${persona}.
-
-${content}
+What would you like to work on?
 EOF
+    fi
 }
 
 # Generate returning persona reclamation prompt
@@ -344,17 +343,16 @@ case "$COMMAND" in
             anthropic)
                 # Default - direct connection to Anthropic
                 # No ANTHROPIC_BASE_URL needed
-                if [ -z "$ANTHROPIC_API_KEY" ]; then
-                    echo -e "${RED}Error: ANTHROPIC_API_KEY not set${NC}"
-                    echo "Set it with: export ANTHROPIC_API_KEY=your-key-here"
-                    exit 1
+                if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+                    echo -e "${YELLOW}Warning: ANTHROPIC_API_KEY not set - using Max account${NC}"
+                    echo -e "${BLUE}To use your own API key: export ANTHROPIC_API_KEY=your-key-here${NC}"
                 fi
                 PROVIDER_DESC="Anthropic Claude (direct)"
                 ;;
             openai)
                 # OpenAI - redirect Claude Code to OpenAI API
                 export ANTHROPIC_BASE_URL="https://api.openai.com/v1"
-                if [ -z "$OPENAI_API_KEY" ]; then
+                if [ -z "${OPENAI_API_KEY:-}" ]; then
                     echo -e "${RED}Error: OPENAI_API_KEY not set${NC}"
                     echo "Set it with: export OPENAI_API_KEY=your-key-here"
                     exit 1
@@ -366,7 +364,7 @@ case "$COMMAND" in
             deepseek)
                 # DeepSeek - redirect to DeepSeek API
                 export ANTHROPIC_BASE_URL="https://api.deepseek.com"
-                if [ -z "$DEEPSEEK_API_KEY" ]; then
+                if [ -z "${DEEPSEEK_API_KEY:-}" ]; then
                     echo -e "${RED}Error: DEEPSEEK_API_KEY not set${NC}"
                     echo "Set it with: export DEEPSEEK_API_KEY=your-key-here"
                     exit 1
@@ -378,7 +376,7 @@ case "$COMMAND" in
             openrouter)
                 # OpenRouter - multi-provider gateway
                 export ANTHROPIC_BASE_URL="https://openrouter.ai/api/v1"
-                if [ -z "$OPENROUTER_API_KEY" ]; then
+                if [ -z "${OPENROUTER_API_KEY:-}" ]; then
                     echo -e "${RED}Error: OPENROUTER_API_KEY not set${NC}"
                     echo "Set it with: export OPENROUTER_API_KEY=your-key-here"
                     exit 1

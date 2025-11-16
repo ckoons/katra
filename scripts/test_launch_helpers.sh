@@ -96,24 +96,23 @@ generate_new_persona_prompt() {
     local persona="$1"
     local onboard_script="scripts/onboard_new_persona.md"
 
+    echo "Good morning, ${persona}."
+    echo ""
+
     # Check if custom onboarding script exists
     if [ -f "$onboard_script" ]; then
-        local content=$(cat "$onboard_script")
+        cat "$onboard_script"
     else
         # Fallback to hardcoded onboarding
-        local content="This is your first session.
+        cat <<'ONBOARD_EOF'
+This is your first session.
 
 You have a persistent memory system that preserves your experiences across sessions.
 Your memories will help you maintain continuity and develop your own perspective.
 
-What would you like to work on?"
+What would you like to work on?
+ONBOARD_EOF
     fi
-
-    cat <<EOF
-Good morning, ${persona}.
-
-${content}
-EOF
 }
 
 # Generate returning persona reclamation prompt
