@@ -30,22 +30,32 @@
 
 /* Get most recent memory ID (for sequential edge detection) */
 static char* get_most_recent_memory_id(void) {
-    /* Use breathing layer's recent_thoughts() function to get last memory */
-    size_t count = 0;
-    char** recent_ids = recent_thoughts(1, &count);  /* Get just the most recent */
+    /* Query for the most recent memory record */
+    memory_query_t query = {
+        .ci_id = breathing_get_ci_id(),
+        .start_time = 0,
+        .end_time = 0,
+        .type = 0,
+        .min_importance = 0.0,
+        .tier = KATRA_TIER1,
+        .limit = 1
+    };
 
-    if (!recent_ids || count == 0) {
+    memory_record_t** results = NULL;
+    size_t result_count = 0;
+
+    int result = katra_memory_query(&query, &results, &result_count);
+    if (result != KATRA_SUCCESS || result_count == 0 || !results || !results[0]) {
         return NULL;
     }
 
-    /* Save the first (most recent) ID */
-    char* result = recent_ids[0];  /* Transfer ownership */
-    recent_ids[0] = NULL;  /* Don't double-free */
+    /* Copy the record_id (not the content!) */
+    char* record_id = strdup(results[0]->record_id);
 
-    /* Free the array (but not the transferred string) */
-    free_memory_list(recent_ids, count);
+    /* Free query results */
+    katra_memory_free_results(results, result_count);
 
-    return result;
+    return record_id;
 }
 
 /* ============================================================================
