@@ -20,6 +20,7 @@
 static const char* SQL_CREATE_VECTORS_TABLE =
     "CREATE TABLE IF NOT EXISTS vectors ("
     "  record_id TEXT PRIMARY KEY,"
+    "  ci_id TEXT NOT NULL,"
     "  dimensions INTEGER NOT NULL,"
     "  embedding_values BLOB NOT NULL,"
     "  magnitude REAL NOT NULL,"
@@ -28,20 +29,20 @@ static const char* SQL_CREATE_VECTORS_TABLE =
 
 /* SQL for storing vector */
 static const char* SQL_STORE_VECTOR =
-    "INSERT OR REPLACE INTO vectors (record_id, dimensions, embedding_values, magnitude) "
-    "VALUES (?, ?, ?, ?)";
+    "INSERT OR REPLACE INTO vectors (record_id, ci_id, dimensions, embedding_values, magnitude) "
+    "VALUES (?, ?, ?, ?, ?)";
 
 /* SQL for loading vectors */
 static const char* SQL_LOAD_VECTORS =
-    "SELECT record_id, dimensions, embedding_values, magnitude FROM vectors";
+    "SELECT record_id, dimensions, embedding_values, magnitude FROM vectors WHERE ci_id = ?";
 
 /* SQL for deleting vector */
 static const char* SQL_DELETE_VECTOR =
     "DELETE FROM vectors WHERE record_id = ?";
 
-/* SQL for clearing all vectors */
+/* SQL for clearing all vectors for a CI */
 static const char* SQL_CLEAR_VECTORS =
-    "DELETE FROM vectors";
+    "DELETE FROM vectors WHERE ci_id = ?";
 
 /* Open database connection for vector storage */
 static int open_vector_db(const char* ci_id, sqlite3** db_out) {
@@ -141,7 +142,8 @@ int katra_vector_persist_save(const char* ci_id,
 
     /* Bind parameters */
     sqlite3_bind_text(stmt, 1, embedding->record_id, -1, SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 2, (int)embedding->dimensions);
+    sqlite3_bind_text(stmt, 2, ci_id, -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 3, (int)embedding->dimensions);
 
     LOG_INFO("  Persist: About to bind blob for '%s', dims=%zu, first values: %.6f, %.6f, %.6f",
            embedding->record_id, embedding->dimensions,
@@ -159,9 +161,9 @@ int katra_vector_persist_save(const char* ci_id,
     LOG_INFO("  Persist: After copy, values: %.6f, %.6f, %.6f",
            values_copy[0], values_copy[1], values_copy[2]);
 
-    sqlite3_bind_blob(stmt, 3, values_copy,
+    sqlite3_bind_blob(stmt, 4, values_copy,
                      (int)blob_size, SQLITE_TRANSIENT);
-    sqlite3_bind_double(stmt, 4, embedding->magnitude);
+    sqlite3_bind_double(stmt, 5, embedding->magnitude);
 
     free(values_copy);
 
@@ -212,6 +214,9 @@ int katra_vector_persist_load(const char* ci_id, vector_store_t* store) {
         result = E_INTERNAL_LOGIC;
         goto cleanup;
     }
+
+    /* Bind ci_id parameter */
+    sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
 
     /* Load embeddings */
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
@@ -371,18 +376,28 @@ int katra_vector_persist_clear(const char* ci_id) {
         goto cleanup;
     }
 
-    /* Execute clear statement */
-    char* err_msg = NULL;
-    int rc = sqlite3_exec(db, SQL_CLEAR_VECTORS, NULL, NULL, &err_msg);
+    /* Prepare and execute clear statement */
+    sqlite3_stmt* stmt = NULL;
+    int rc = sqlite3_prepare_v2(db, SQL_CLEAR_VECTORS, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        katra_report_error(E_INTERNAL_LOGIC, __func__,
-                          err_msg ? err_msg : "Failed to clear vectors");
-        if (err_msg) {
-            sqlite3_free(err_msg);
-        }
+        katra_report_error(E_INTERNAL_LOGIC, __func__, sqlite3_errmsg(db));
         result = E_INTERNAL_LOGIC;
         goto cleanup;
     }
+
+    /* Bind ci_id parameter */
+    sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
+
+    /* Execute */
+    rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        katra_report_error(E_INTERNAL_LOGIC, __func__, sqlite3_errmsg(db));
+        result = E_INTERNAL_LOGIC;
+        sqlite3_finalize(stmt);
+        goto cleanup;
+    }
+
+    sqlite3_finalize(stmt);
 
     LOG_INFO("Cleared all vectors from persistent storage for CI: %s", ci_id);
 
