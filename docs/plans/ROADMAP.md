@@ -2,8 +2,8 @@
 
 # Katra Development Roadmap
 
-**Last Updated:** 2025-01-10
-**Status:** Phase 5 complete, Phase 6 planned and ready for implementation
+**Last Updated:** 2025-01-17
+**Status:** Phase 6.1f and 6.2 complete, Phase 6.3 (Emotional Tagging) in progress
 
 ---
 
@@ -37,7 +37,7 @@ Like humans have:
 
 ---
 
-## Current State (2025-01-12)
+## Current State (2025-01-17)
 
 ### ✅ Implemented and Working
 
@@ -125,27 +125,44 @@ Like humans have:
 - ✅ Session commands (list, attach, stop)
 - ✅ Documentation (MULTI_PROVIDER_SETUP.md)
 
-**Phase 6.1: Vector Database (Partial)**
+**Phase 6.1: Vector Database**
 - ✅ Multiple embedding methods (hash, TF-IDF, external API)
 - ✅ HNSW indexing for similarity search
 - ✅ SQLite persistence for vectors
 - ✅ Test suite (7/7 tests passing)
-- ⏳ Integration with memory primitives (in progress)
+- ✅ Integration with memory primitives (COMPLETE)
+
+**Phase 6.1f: Vector Search Integration (2025-01-17)**
+- ✅ Hybrid search (keyword + semantic similarity)
+- ✅ Integrated into recall_about() and what_do_i_know()
+- ✅ Enabled by default (0.3 similarity threshold)
+- ✅ Configurable thresholds and embedding methods
+- ✅ Full test coverage (test_semantic_recall.c - 9/9 passing)
+
+**Phase 6.2: Graph Auto-Edges (2025-01-17)**
+- ✅ Automatic edge creation during memory formation
+- ✅ SIMILAR edges (vector similarity, bidirectional)
+- ✅ SEQUENTIAL edges (temporal chain, unidirectional)
+- ✅ Enabled by default via configuration
+- ✅ Non-fatal design (graceful degradation)
+- ✅ Test suite (test_graph_auto_edges.c - basic verification)
 
 ### ⚠️ In Progress
 
-**Phase 6.1: Vector Database Integration**
-- Integrate vector search with katra_recall()
-- Add semantic similarity to memory queries
-- Performance tuning and benchmarking
-- Production-ready configuration
+**Phase 6.3: Emotional Tagging (Current)**
+- Implement PAD model (Pleasure, Arousal, Dominance)
+- Add emotion parameter to katra_remember()
+- Create recall_by_emotion() function
+- Test affective search capabilities
+
+**Phase 6.4: Working Memory**
+- Implement 7±2 attention-based cache
+- Add decay mechanism in katra_breath()
+- Integrate with recall functions
 
 ### ❌ Not Yet Implemented
 
-**Advanced Memory (Phase 6.2+):**
-- Graph database (relationship networks)
-- Working memory (7±2 capacity, attention-based)
-- Emotional tagging (valence, arousal, dominance)
+**Advanced Memory (Phase 6.5+):**
 - Interstitial processing (cognitive boundaries)
 - Universal encoder (store to all backends)
 - Multi-backend synthesis layer
