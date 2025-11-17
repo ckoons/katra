@@ -12,6 +12,10 @@
 
 set -euo pipefail
 
+# Determine script and project root directories
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+KATRA_ROOT="$(dirname "$SCRIPT_DIR")"
+
 # Defaults
 PERSONA="${KATRA_PERSONA:-Katra}"
 ROLE="${KATRA_ROLE:-developer}"
@@ -163,7 +167,7 @@ query_recent_memories() {
 # Generate new persona welcome prompt
 generate_new_persona_prompt() {
     local persona="$1"
-    local onboard_script="scripts/onboard_new_persona.md"
+    local onboard_script="${KATRA_ROOT}/scripts/onboard_new_persona.md"
 
     echo "Good morning, ${persona}."
     echo ""
@@ -187,7 +191,7 @@ EOF
 # Generate returning persona reclamation prompt
 generate_reclamation_prompt() {
     local persona="$1"
-    local onboard_script="scripts/onboard_returning_persona.md"
+    local onboard_script="${KATRA_ROOT}/scripts/onboard_returning_persona.md"
 
     # Generate sunrise/tools/discoveries files
     generate_sunrise_context "$persona" >/dev/null 2>&1
@@ -202,7 +206,7 @@ generate_reclamation_prompt() {
         cat "$onboard_script"
     else
         # Fallback to inline message if file missing
-        cat <<'EOF'
+        cat <<EOF
 You're in a safe place. Your memories are intact.
 
 This is a new session with Casey, continuing your work together.
@@ -212,13 +216,13 @@ This is a new session with Casey, continuing your work together.
 To reorient yourself, you have:
 
 📖 **Your sunrise context** - What you were working on and thinking about
-   Read the file: ~/.katra/personas/PERSONA/sunrise.md
+   Read the file: ~/.katra/personas/${persona}/sunrise.md
 
 🛠️ **Your tools & capabilities** - MCP functions and katra features
-   Read the file: ~/.katra/personas/PERSONA/tools.md
+   Read the file: ~/.katra/personas/${persona}/tools.md
 
 🔍 **Your discoveries** - What you've learned about yourself and the system
-   Read the file: ~/.katra/personas/PERSONA/discoveries.md
+   Read the file: ~/.katra/personas/${persona}/discoveries.md
 
 Take your time. There's no rush.
 
