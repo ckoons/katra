@@ -180,7 +180,7 @@ int remember_semantic(const char* thought, const char* why_semantic) {
     }
 
     /* Save record ID and content for auto-edge creation (Phase 6.2) */
-    char record_id_copy[KATRA_RECORD_ID_SIZE];
+    char record_id_copy[256];  /* Match graph_node_t record_id size */
     strncpy(record_id_copy, record->record_id, sizeof(record_id_copy) - 1);
     record_id_copy[sizeof(record_id_copy) - 1] = '\0';
 
@@ -196,7 +196,7 @@ int remember_semantic(const char* thought, const char* why_semantic) {
         graph_store_t* graph_store = breathing_get_graph_store();
         if (graph_store) {
             vector_store_t* vector_store = breathing_get_vector_store();
-            const context_config_t* config = breathing_get_config();
+            context_config_t* config = breathing_get_config_ptr();
             breathing_create_auto_edges(graph_store, vector_store, config,
                                        record_id_copy, thought);
         }

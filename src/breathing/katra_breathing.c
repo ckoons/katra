@@ -352,6 +352,10 @@ vector_store_t* breathing_get_vector_store(void) {
     return g_vector_store;
 }
 
+graph_store_t* breathing_get_graph_store(void) {
+    return g_graph_store;
+}
+
 int breathing_init_vector_store(void) {
     if (g_vector_store) {
         return KATRA_SUCCESS;  /* Already initialized */

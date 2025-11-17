@@ -132,8 +132,4 @@ int breathing_create_auto_edges(graph_store_t* graph_store,
     return KATRA_SUCCESS;  /* Non-fatal even if edge creation fails */
 }
 
-/* Get graph store (for breathing layer internal use) */
-graph_store_t* breathing_get_graph_store(void) {
-    extern graph_store_t* g_graph_store;
-    return g_graph_store;
-}
+/* Note: breathing_get_graph_store() is implemented in katra_breathing.c */
