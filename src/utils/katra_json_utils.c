@@ -72,9 +72,26 @@ int katra_json_get_string(const char* json, const char* key,
     }
     value_start++;  /* Skip opening quote */
 
-    /* Find closing quote */
-    const char* value_end = strchr(value_start, '"');
-    if (!value_end) {
+    /* Find closing quote (handle escaped quotes) */
+    const char* value_end = value_start;
+    while (*value_end) {
+        if (*value_end == '"') {
+            /* Check if this quote is escaped */
+            const char* check = value_end - 1;
+            int backslash_count = 0;
+            while (check >= value_start && *check == '\\') {
+                backslash_count++;
+                check--;
+            }
+            /* If even number of backslashes (including 0), quote is not escaped */
+            if (backslash_count % 2 == 0) {
+                break;  /* Found unescaped closing quote */
+            }
+        }
+        value_end++;
+    }
+
+    if (*value_end != '"') {
         return E_NOT_FOUND;
     }
 

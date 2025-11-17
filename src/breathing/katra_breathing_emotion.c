@@ -204,8 +204,9 @@ char** recall_by_emotion(const emotion_t* target_emotion, float threshold, size_
     };
 
     int result = katra_memory_query(&query, &records, &record_count);
+
     if (result != KATRA_SUCCESS || !records) {
-        LOG_DEBUG("No recent memories to search (result=%d, count=%zu)", result, record_count);
+        LOG_DEBUG("No memories found to search (result=%d)", result);
         return NULL;
     }
 
@@ -237,9 +238,6 @@ char** recall_by_emotion(const emotion_t* target_emotion, float threshold, size_
                               &mem_emotion.pleasure,
                               &mem_emotion.arousal,
                               &mem_emotion.dominance);
-
-            LOG_DEBUG("Parsing context (len=%zu): %.100s... (parsed=%d)",
-                     strlen(rec->context), rec->context, parsed);
 
             if (parsed == 3) {
                 float distance = emotion_distance(target_emotion, &mem_emotion);
