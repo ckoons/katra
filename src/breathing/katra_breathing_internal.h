@@ -7,6 +7,7 @@
 #include <time.h>
 #include "katra_breathing.h"
 #include "katra_vector.h"  /* Phase 6.1f: for vector_store_t */
+#include "katra_graph.h"   /* Phase 6.2: for graph_store_t */
 
 /**
  * katra_breathing_internal.h - Internal state accessors for breathing layer
@@ -89,5 +90,30 @@ vector_store_t* breathing_get_vector_store(void);
  * Returns: KATRA_SUCCESS or error code
  */
 int breathing_init_vector_store(void);
+
+/**
+ * Get graph store for memory associations (Phase 6.2)
+ * Returns: Pointer to graph store or NULL if not initialized
+ */
+graph_store_t* breathing_get_graph_store(void);
+
+/**
+ * Create automatic graph edges after memory formation (Phase 6.2)
+ * Creates SIMILAR edges (vector similarity) and SEQUENTIAL edges (temporal proximity)
+ *
+ * Parameters:
+ *   graph_store - Graph store to add edges to
+ *   vector_store - Vector store for similarity search (can be NULL)
+ *   config - Context configuration with thresholds
+ *   new_record_id - ID of newly created memory
+ *   content - Memory content for similarity matching
+ *
+ * Returns: KATRA_SUCCESS (non-fatal even if edge creation fails)
+ */
+int breathing_create_auto_edges(graph_store_t* graph_store,
+                                 vector_store_t* vector_store,
+                                 const context_config_t* config,
+                                 const char* new_record_id,
+                                 const char* content);
 
 #endif /* KATRA_BREATHING_INTERNAL_H */

@@ -28,6 +28,7 @@
 #include "katra_breathing_internal.h"
 #include "katra_breathing_context_persist.h"
 #include "katra_meeting.h"
+#include "katra_graph.h"  /* Phase 6.2: Graph auto-edges */
 #include "katra_vector.h"  /* Phase 6.1f: semantic search */
 
 /* ============================================================================
@@ -56,7 +57,12 @@ static context_config_t g_context_config = {
     .use_semantic_search = true,       /* Enabled by default - core feature */
     .semantic_threshold = 0.3f,        /* 30% similarity - Ami's testing shows optimal balance */
     .max_semantic_results = 20,        /* Reasonable limit */
-    .embedding_method = 1              /* EMBEDDING_TFIDF */
+    .embedding_method = 1,             /* EMBEDDING_TFIDF */
+    /* Graph auto-edges defaults (Phase 6.2) */
+    .auto_graph_edges = true,          /* Enabled by default - builds memory associations */
+    .graph_similarity_threshold = 0.5f,  /* 50% similarity for SIMILAR edges - stricter than recall */
+    .graph_max_similar_edges = 5,      /* Limit to top 5 most similar memories */
+    .graph_temporal_window_sec = 300   /* 5 minutes for SEQUENTIAL edge detection */
 };
 
 /* Global enhanced statistics */
@@ -64,6 +70,9 @@ static enhanced_stats_t g_enhanced_stats = {0};
 
 /* Global vector store for semantic search (Phase 6.1f) */
 static vector_store_t* g_vector_store = NULL;
+
+/* Global graph store for memory associations (Phase 6.2) */
+static graph_store_t* g_graph_store = NULL;
 
 /* ============================================================================
  * INITIALIZATION
@@ -128,6 +137,16 @@ int breathe_init(const char* ci_id) {
         }
     }
 
+    /* Initialize graph store if auto-edges are enabled (Phase 6.2) */
+    if (g_context_config.auto_graph_edges) {
+        g_graph_store = katra_graph_init(ci_id);
+        if (g_graph_store) {
+            LOG_INFO("Graph store initialized for automatic edge creation");
+        } else {
+            LOG_WARN("Graph store init failed (continuing without auto-edges)");
+        }
+    }
+
     return KATRA_SUCCESS;
 }
 
@@ -167,6 +186,13 @@ void breathe_cleanup(void) {
         katra_vector_cleanup(g_vector_store);
         g_vector_store = NULL;
         LOG_DEBUG("Step 5.5: Vector store cleaned up");
+    }
+
+    /* Step 5.6: Cleanup graph store (Phase 6.2) */
+    if (g_graph_store) {
+        katra_graph_cleanup(g_graph_store);
+        g_graph_store = NULL;
+        LOG_DEBUG("Step 5.6: Graph store cleaned up");
     }
 
     /* Step 6: Free breathing layer resources */

@@ -179,16 +179,30 @@ int remember_semantic(const char* thought, const char* why_semantic) {
         return session_result;
     }
 
+    /* Save record ID and content for auto-edge creation (Phase 6.2) */
+    char record_id_copy[KATRA_RECORD_ID_SIZE];
+    strncpy(record_id_copy, record->record_id, sizeof(record_id_copy) - 1);
+    record_id_copy[sizeof(record_id_copy) - 1] = '\0';
+
     /* Store memory */
     int result = katra_memory_store(record);
-    katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
         LOG_DEBUG("Memory stored successfully with semantic importance");
         why_remember_t why_enum = string_to_why_enum(why_semantic);
         breathing_track_semantic_remember(why_enum);
+
+        /* Create automatic graph edges (Phase 6.2) */
+        graph_store_t* graph_store = breathing_get_graph_store();
+        if (graph_store) {
+            vector_store_t* vector_store = breathing_get_vector_store();
+            const context_config_t* config = breathing_get_config();
+            breathing_create_auto_edges(graph_store, vector_store, config,
+                                       record_id_copy, thought);
+        }
     }
 
+    katra_memory_free_record(record);
     return result;
 }
 

@@ -53,6 +53,12 @@ typedef struct {
     float semantic_threshold;        /* Min similarity score 0.0-1.0 (default: 0.6) */
     size_t max_semantic_results;     /* Max vector search results (default: 20) */
     int embedding_method;            /* 0=HASH, 1=TFIDF, 2=EXTERNAL (default: 1=TFIDF) */
+
+    /* Graph auto-edges configuration (Phase 6.2) */
+    bool auto_graph_edges;           /* Auto-create graph edges on memory formation (default: true) */
+    float graph_similarity_threshold;  /* Min similarity for SIMILAR edges (default: 0.5) */
+    size_t graph_max_similar_edges;   /* Max SIMILAR edges per memory (default: 5) */
+    int graph_temporal_window_sec;    /* Time window for SEQUENTIAL edges in seconds (default: 300 = 5 min) */
 } context_config_t;
 
 /** Memory context - automatically captured */
