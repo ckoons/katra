@@ -18,10 +18,12 @@
 #include "katra_error.h"
 #include "katra_log.h"
 
+#include "katra_limits.h"
+
 #define TEST_CI_ID_BASE "test_emotion"
 
 /* Generate unique CI ID for each test */
-static char test_ci_id[64];
+static char test_ci_id[KATRA_BUFFER_SMALL];
 static int test_id_counter = 0;
 
 static const char* get_test_ci_id(void) {
@@ -356,7 +358,7 @@ int main(void) {
     printf("========================================\n\n");
 
     /* Clean up any leftover test data from previous runs */
-    char cleanup_cmd[512];
+    char cleanup_cmd[KATRA_BUFFER_MESSAGE];
     snprintf(cleanup_cmd, sizeof(cleanup_cmd),
              "rm -rf ~/.katra/memory/tier1/%s* ~/.katra/memory/tier2/%s* ~/.katra/vectors/%s*",
              TEST_CI_ID_BASE, TEST_CI_ID_BASE, TEST_CI_ID_BASE);
