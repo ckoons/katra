@@ -124,7 +124,7 @@ int remember_with_emotion(const char* thought, why_remember_t why, const emotion
     /* Add PAD emotion if provided */
     if (emotion) {
         /* Store PAD values in context field as JSON */
-        char pad_json[256];
+        char pad_json[KATRA_BUFFER_MEDIUM];
         snprintf(pad_json, sizeof(pad_json),
                 "{\"emotion\":{\"pad\":{\"pleasure\":%.2f,\"arousal\":%.2f,\"dominance\":%.2f}}}",
                 emotion->pleasure, emotion->arousal, emotion->dominance);
@@ -200,7 +200,7 @@ char** recall_by_emotion(const emotion_t* target_emotion, float threshold, size_
         .type = 0,
         .min_importance = 0.0,
         .tier = KATRA_TIER1,
-        .limit = 1000  /* Search last 1000 memories */
+        .limit = BREATHING_DEFAULT_TOPIC_RECALL * 10  /* Search recent memories broadly */
     };
 
     int result = katra_memory_query(&query, &records, &record_count);
@@ -214,7 +214,7 @@ char** recall_by_emotion(const emotion_t* target_emotion, float threshold, size_
 
     /* Collect matching memories */
     char** matches = NULL;
-    size_t match_capacity = 10;
+    size_t match_capacity = KATRA_BUFFER_TINY / 3;  /* Initial capacity: ~10 matches */
     size_t match_count = 0;
 
     matches = calloc(match_capacity, sizeof(char*));
