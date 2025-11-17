@@ -457,6 +457,9 @@ int main(void) {
     strncpy(g_session.chosen_name, g_persona_name, sizeof(g_session.chosen_name) - 1);
     g_session.chosen_name[sizeof(g_session.chosen_name) - 1] = '\0';
 
+    /* Auto-register when KATRA_PERSONA is set (prevents "Katra" default name) */
+    g_session.registered = true;
+
     /* Initialize server with determined ci_id */
     result = mcp_server_init(g_ci_id);
     if (result != KATRA_SUCCESS) {
