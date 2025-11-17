@@ -25,6 +25,7 @@ TEST_VECTOR_EXTERNAL := $(BIN_DIR)/tests/test_vector_external
 TEST_VECTOR_HNSW := $(BIN_DIR)/tests/test_vector_hnsw
 TEST_GRAPH := $(BIN_DIR)/tests/test_graph
 TEST_GRAPH_AUTO_EDGES := $(BIN_DIR)/tests/test_graph_auto_edges
+TEST_EMOTIONAL_TAGGING := $(BIN_DIR)/tests/test_emotional_tagging
 TEST_SUNRISE_SUNSET := $(BIN_DIR)/tests/test_sunrise_sunset
 
 # New test categories
@@ -52,7 +53,7 @@ BENCHMARK_REFLECTION := $(BIN_DIR)/tests/benchmark_reflection
 BENCHMARK_VECTOR := $(BIN_DIR)/tests/benchmark_vector
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-graph-auto-edges test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration test-team-management test-isolation-filtering test-semantic-recall test-audit test-access-control
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-graph-auto-edges test-emotional-tagging test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-turn-tracking test-reflection-integration test-team-management test-isolation-filtering test-semantic-recall test-audit test-access-control
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -134,6 +135,10 @@ test-graph: $(TEST_GRAPH)
 test-graph-auto-edges: $(TEST_GRAPH_AUTO_EDGES)
 	@echo "Running graph auto-edges tests..."
 	@$(TEST_GRAPH_AUTO_EDGES)
+
+test-emotional-tagging: $(TEST_EMOTIONAL_TAGGING)
+	@echo "Running emotional tagging tests..."
+	@$(TEST_EMOTIONAL_TAGGING)
 
 test-sunrise-sunset: $(TEST_SUNRISE_SUNSET)
 	@echo "Running sunrise/sunset tests..."
@@ -277,6 +282,10 @@ $(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_UTILS) | $(BIN_DIR)/test
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
 
 $(TEST_GRAPH_AUTO_EDGES): $(TEST_DIR)/test_graph_auto_edges.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+
+$(TEST_EMOTIONAL_TAGGING): $(TEST_DIR)/test_emotional_tagging.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
 

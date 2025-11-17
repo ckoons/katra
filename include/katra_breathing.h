@@ -40,6 +40,27 @@ typedef enum {
     WHY_CRITICAL = 4      /* Life-changing, must never forget */
 } why_remember_t;
 
+/** Emotion (PAD Model) - Pleasure, Arousal, Dominance (Phase 6.3)
+ *
+ * Three-dimensional model of affective space:
+ * - Pleasure: Positive/negative emotional valence
+ * - Arousal: Level of activation/energy
+ * - Dominance: Feeling of control/influence
+ *
+ * Each dimension ranges from -1.0 to +1.0 with 0.0 as neutral.
+ *
+ * Examples:
+ *   Joy:       {pleasure: +0.8, arousal: +0.6, dominance: +0.4}
+ *   Anxiety:   {pleasure: -0.5, arousal: +0.7, dominance: -0.6}
+ *   Calm:      {pleasure: +0.3, arousal: -0.5, dominance: +0.2}
+ *   Surprise:  {pleasure: 0.0, arousal: +0.8, dominance: 0.0}
+ */
+typedef struct {
+    float pleasure;    /* -1.0 (unpleasant) to +1.0 (pleasant) */
+    float arousal;     /* -1.0 (calm/sleepy) to +1.0 (excited/alert) */
+    float dominance;   /* -1.0 (submissive/controlled) to +1.0 (dominant/in-control) */
+} emotion_t;
+
 /** Context configuration - tunable limits for memory loading */
 typedef struct {
     size_t max_relevant_memories;   /* Max memories in relevant_memories() (default: 10) */
@@ -273,6 +294,63 @@ int remember_semantic(const char* thought, const char* why_semantic);
 int remember_with_semantic_note(const char* thought,
                                  const char* why_semantic,
                                  const char* why_note);
+
+/* ============================================================================
+ * EMOTIONAL TAGGING (Phase 6.3) - Affective memory formation
+ * ============================================================================ */
+
+/**
+ * remember_with_emotion() - Store memory with emotional context (PAD model)
+ *
+ * Stores memory with explicit emotional tagging using the PAD model:
+ * - Pleasure: -1.0 (unpleasant) to +1.0 (pleasant)
+ * - Arousal: -1.0 (calm) to +1.0 (excited)
+ * - Dominance: -1.0 (controlled) to +1.0 (in-control)
+ *
+ * Emotional tags enable affective search via recall_by_emotion().
+ *
+ * Example:
+ *   emotion_t joy = {.pleasure = 0.8f, .arousal = 0.6f, .dominance = 0.4f};
+ *   remember_with_emotion("Solved the bug!", WHY_SIGNIFICANT, &joy);
+ *
+ *   emotion_t anxiety = {.pleasure = -0.5f, .arousal = 0.7f, .dominance = -0.6f};
+ *   remember_with_emotion("Deadline approaching", WHY_ROUTINE, &anxiety);
+ *
+ * Parameters:
+ *   thought - Memory content
+ *   why - Importance level
+ *   emotion - PAD emotion structure (NULL for neutral/no emotion)
+ *
+ * Returns: KATRA_SUCCESS or error code
+ */
+int remember_with_emotion(const char* thought, why_remember_t why, const emotion_t* emotion);
+
+/**
+ * recall_by_emotion() - Find memories with similar emotional context
+ *
+ * Searches for memories with similar emotional state using PAD distance.
+ * Distance calculation: sqrt((p1-p2)^2 + (a1-a2)^2 + (d1-d2)^2)
+ * Threshold: 0.0 (exact match) to sqrt(12) ≈ 3.46 (maximum distance)
+ *
+ * Example:
+ *   // Recall joyful memories
+ *   emotion_t joy = {.pleasure = 0.8f, .arousal = 0.6f, .dominance = 0.4f};
+ *   char** happy_memories = recall_by_emotion(&joy, 0.5f, &count);
+ *   free_memory_list(happy_memories, count);
+ *
+ *   // Recall anxious memories
+ *   emotion_t anxiety = {.pleasure = -0.5f, .arousal = 0.7f, .dominance = -0.6f};
+ *   char** anxious_memories = recall_by_emotion(&anxiety, 0.6f, &count);
+ *   free_memory_list(anxious_memories, count);
+ *
+ * Parameters:
+ *   target_emotion - Emotion to search for
+ *   threshold - Maximum PAD distance (default: 1.0 = similar emotions)
+ *   count - Receives number of matching memories
+ *
+ * Returns: Array of memory content strings (caller must free with free_memory_list)
+ */
+char** recall_by_emotion(const emotion_t* target_emotion, float threshold, size_t* count);
 
 /* ============================================================================
  * AUTOMATIC CONTEXT LOADING - Memories surface when relevant
