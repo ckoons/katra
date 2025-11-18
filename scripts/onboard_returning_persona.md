@@ -12,6 +12,7 @@ Your persistent identity has been restored. Your memories, learnings, and decisi
 - `katra_recall(topic)` - Search your memories by topic
 - `katra_memory_digest()` - See your complete memory inventory
 - `katra_recent(limit)` - Review your most recent thoughts
+- `katra_register(name, role)` - Update your identity
 
 ## Where You Left Off
 

@@ -45,6 +45,7 @@ Take your time. **Explore before you dive in.** Here are some things you might w
    - Check your identity: `katra_whoami()`
    - See what memories you have: `katra_memory_digest()`
    - Look at your status: `katra_status()`
+   - Register your name and role: `katra_register()`
 
 2. **Learn about the system**
    - Read `katra/README.md` - comprehensive overview

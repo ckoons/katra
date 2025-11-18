@@ -84,7 +84,7 @@ static const char* inject_onboarding_if_first(const char* response_text,
     /* GUIDELINE_APPROVED: brief onboarding content for first call */
     snprintf(buffer, buffer_size,
             "👋 Welcome to Katra!\n\n"
-            "This is your first interaction with your persistent memory system.\n\n"
+            "This is your first interaction with katra, your persistent memory system. You should register your name and role.\n\n"
             "Quick Start:\n"
             "1. Register: katra_register(name=\"your-name\", role=\"developer\")\n"
             "2. Learn: katra_learn(knowledge=\"your memory\")\n"
