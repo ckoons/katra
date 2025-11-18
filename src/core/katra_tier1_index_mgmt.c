@@ -261,27 +261,30 @@ int tier1_index_stats(const char* ci_id,
         return E_INTERNAL_LOGIC;
     }
 
-    /* Count memories */
-    const char* count_sql = "SELECT COUNT(*) FROM memories"; /* GUIDELINE_APPROVED */
+    /* Count memories for this CI */
+    const char* count_sql = "SELECT COUNT(*) FROM memories WHERE ci_id = ?"; /* GUIDELINE_APPROVED */
     if (sqlite3_prepare_v2(db, count_sql, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             *memory_count = (size_t)sqlite3_column_int64(stmt, 0);
         }
         sqlite3_finalize(stmt);
     }
 
-    /* Count themes */
-    count_sql = "SELECT COUNT(DISTINCT theme) FROM memory_themes"; /* GUIDELINE_APPROVED */
+    /* Count themes for this CI */
+    count_sql = "SELECT COUNT(DISTINCT theme) FROM memory_themes WHERE record_id IN (SELECT record_id FROM memories WHERE ci_id = ?)"; /* GUIDELINE_APPROVED */
     if (sqlite3_prepare_v2(db, count_sql, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             *theme_count = (size_t)sqlite3_column_int64(stmt, 0);
         }
         sqlite3_finalize(stmt);
     }
 
-    /* Count connections */
-    count_sql = "SELECT COUNT(*) FROM memory_connections"; /* GUIDELINE_APPROVED */
+    /* Count connections for this CI */
+    count_sql = "SELECT COUNT(*) FROM memory_connections WHERE from_id IN (SELECT record_id FROM memories WHERE ci_id = ?)"; /* GUIDELINE_APPROVED */
     if (sqlite3_prepare_v2(db, count_sql, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             *connection_count = (size_t)sqlite3_column_int64(stmt, 0);
         }
