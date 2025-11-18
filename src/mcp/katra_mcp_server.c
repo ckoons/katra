@@ -10,6 +10,7 @@
 #include <time.h>
 #include <jansson.h>
 #include "katra_mcp.h"
+#include "katra_mcp_tcp.h"
 #include "katra_limits.h"
 #include "katra_init.h"
 #include "katra_breathing.h"
@@ -410,8 +411,27 @@ void mcp_main_loop(void) {
 }
 
 /* Main entry point */
-int main(void) {
+int main(int argc, char* argv[]) {
     int exit_code = EXIT_SUCCESS;
+    bool tcp_mode = false;
+    uint16_t tcp_port = KATRA_MCP_DEFAULT_PORT;
+
+    /* Parse command line arguments */
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--tcp") == 0) {
+            tcp_mode = true;
+        } else if (strcmp(argv[i], "--port") == 0 && i + 1 < argc) {
+            tcp_port = (uint16_t)atoi(argv[i + 1]);
+            i++;
+        } else if (strcmp(argv[i], "--help") == 0) {
+            printf("Usage: %s [OPTIONS]\n", argv[0]);
+            printf("Options:\n");
+            printf("  --tcp         Run in TCP multi-tenant mode\n");
+            printf("  --port PORT   TCP port (default: %d)\n", KATRA_MCP_DEFAULT_PORT);
+            printf("  --help        Show this help message\n");
+            return EXIT_SUCCESS;
+        }
+    }
 
     /* Setup signal handlers */
     signal(SIGTERM, mcp_signal_handler);
@@ -469,8 +489,26 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
-    /* Run main loop */
-    mcp_main_loop();
+    /* Run in TCP mode or stdio mode */
+    if (tcp_mode) {
+        /* TCP multi-tenant mode */
+        mcp_tcp_config_t config;
+        config.port = tcp_port;
+        config.bind_address = "127.0.0.1";
+        config.max_clients = KATRA_MCP_MAX_CLIENTS;
+        config.enable_health_check = true;
+
+        LOG_INFO("Starting TCP MCP server on port %d", tcp_port);
+        result = mcp_tcp_server_start(&config);
+        if (result != KATRA_SUCCESS) {
+            fprintf(stderr, "TCP server failed: %s\n",
+                    katra_error_message(result));
+            exit_code = EXIT_FAILURE;
+        }
+    } else {
+        /* stdio mode (backward compatibility) */
+        mcp_main_loop();
+    }
 
     /* Cleanup */
     mcp_server_cleanup();
