@@ -203,6 +203,13 @@ static int run_test_explicit_sharing(void) {
 static int run_test_tier1_filtering(void) {
     int result = KATRA_SUCCESS;
 
+    /* Clean up any existing data from previous tests */
+    printf("  Cleaning up existing data for ci-001...\n");
+    katra_memory_cleanup();
+
+    /* Delete the database directory to ensure clean state */
+    system("rm -rf ~/.katra/memory/tier1/ci-001");
+
     /* Initialize memory system for ci-001 */
     printf("  Initializing memory system for ci-001...\n");
     result = katra_memory_init("ci-001");
