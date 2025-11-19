@@ -98,6 +98,12 @@ int breathing_init_vector_store(void);
 graph_store_t* breathing_get_graph_store(void);
 
 /**
+ * Set graph store pointer (Phase 6.2)
+ * Used for dynamic enable/disable of auto-edges
+ */
+void breathing_set_graph_store(graph_store_t* store);
+
+/**
  * Create automatic graph edges after memory formation (Phase 6.2)
  * Creates SIMILAR edges (vector similarity) and SEQUENTIAL edges (temporal proximity)
  *

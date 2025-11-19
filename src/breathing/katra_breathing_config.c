@@ -17,6 +17,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
+#include "katra_graph.h"  /* Phase 6.2: Graph auto-edges */
 
 /* ============================================================================
  * CONTEXT HELPERS
@@ -76,6 +77,12 @@ int set_context_config(const context_config_t* config) {
         global_config->max_semantic_results = 20;     /* Reasonable performance */
         global_config->embedding_method = 1;          /* EMBEDDING_TFIDF (good balance) */
 
+        /* Graph auto-edges defaults (Phase 6.2) */
+        global_config->auto_graph_edges = true;          /* Enabled by default - builds memory associations */
+        global_config->graph_similarity_threshold = 0.5f;  /* 50% similarity for SIMILAR edges */
+        global_config->graph_max_similar_edges = 5;      /* Limit to top 5 most similar memories */
+        global_config->graph_temporal_window_sec = 300;   /* 5 minutes for SEQUENTIAL edge detection */
+
         LOG_INFO("Context configuration reset to defaults");
         return KATRA_SUCCESS;
     }
@@ -94,6 +101,32 @@ int set_context_config(const context_config_t* config) {
         katra_report_error(E_INVALID_PARAMS, "set_context_config",
                           KATRA_ERR_INVALID_IMPORTANCE_THRESHOLD);
         return E_INVALID_PARAMS;
+    }
+
+    /* Handle auto_graph_edges state change (Phase 6.2) */
+    bool was_enabled = global_config->auto_graph_edges;
+    bool now_enabled = config->auto_graph_edges;
+
+    if (was_enabled && !now_enabled) {
+        /* Disabling auto-edges - cleanup graph store */
+        graph_store_t* graph_store = breathing_get_graph_store();
+        if (graph_store) {
+            katra_graph_cleanup(graph_store);
+            breathing_set_graph_store(NULL);
+            LOG_INFO("Graph store disabled and cleaned up");
+        }
+    } else if (!was_enabled && now_enabled) {
+        /* Enabling auto-edges - initialize graph store */
+        const char* ci_id = breathing_get_ci_id();
+        if (ci_id) {
+            graph_store_t* new_graph_store = katra_graph_init(ci_id);
+            breathing_set_graph_store(new_graph_store);
+            if (new_graph_store) {
+                LOG_INFO("Graph store initialized for automatic edge creation");
+            } else {
+                LOG_WARN("Graph store init failed (continuing without auto-edges)");
+            }
+        }
     }
 
     /* Apply configuration */

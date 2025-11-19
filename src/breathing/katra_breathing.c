@@ -205,6 +205,10 @@ void breathe_cleanup(void) {
     g_current_thought = NULL;
     LOG_DEBUG("Step 6: Breathing layer resources freed");
 
+    /* Step 7: Reset configuration to defaults */
+    set_context_config(NULL);  /* NULL resets to defaults */
+    LOG_DEBUG("Step 7: Configuration reset to defaults");
+
     LOG_INFO("Breathing layer cleanup complete");
 }
 
@@ -354,6 +358,10 @@ vector_store_t* breathing_get_vector_store(void) {
 
 graph_store_t* breathing_get_graph_store(void) {
     return g_graph_store;
+}
+
+void breathing_set_graph_store(graph_store_t* store) {
+    g_graph_store = store;
 }
 
 int breathing_init_vector_store(void) {
