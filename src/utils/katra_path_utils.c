@@ -7,6 +7,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 /* Project includes */
 #include "katra_path_utils.h"
@@ -314,6 +315,149 @@ int katra_build_persona_path(char* buffer, size_t size, const char* persona_name
 
         offset += snprintf(buffer + offset, size - offset, "/%s", persona_name);
     }
+
+    if (offset >= size) {
+        return E_INPUT_TOO_LARGE;
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Get project root directory */
+int katra_get_project_root(char* buffer, size_t size) {
+    if (!buffer || size == 0) {
+        return E_INPUT_NULL;
+    }
+
+    char cwd[KATRA_PATH_MAX];
+    char search_path[KATRA_PATH_MAX];
+
+    /* Get current working directory */
+    if (!getcwd(cwd, sizeof(cwd))) {
+        return E_SYSTEM_FILE;
+    }
+
+    /* Search upward for .git or Makefile */
+    strncpy(search_path, cwd, sizeof(search_path) - 1);
+    search_path[sizeof(search_path) - 1] = '\0';
+
+    while (true) {
+        struct stat st;
+        char git_path[KATRA_PATH_MAX];
+        char makefile_path[KATRA_PATH_MAX];
+
+        /* Check for .git directory */
+        snprintf(git_path, sizeof(git_path), "%s/.git", search_path);
+        if (stat(git_path, &st) == 0) {
+            /* Found .git - this is project root */
+            strncpy(buffer, search_path, size - 1);
+            buffer[size - 1] = '\0';
+            return KATRA_SUCCESS;
+        }
+
+        /* Check for Makefile */
+        snprintf(makefile_path, sizeof(makefile_path), "%s/Makefile", search_path);
+        if (stat(makefile_path, &st) == 0) {
+            /* Found Makefile - this is project root */
+            strncpy(buffer, search_path, size - 1);
+            buffer[size - 1] = '\0';
+            return KATRA_SUCCESS;
+        }
+
+        /* Move up one directory */
+        char* last_slash = strrchr(search_path, '/');
+        if (!last_slash || last_slash == search_path) {
+            /* Reached filesystem root without finding project root */
+            return E_SYSTEM_FILE;
+        }
+
+        *last_slash = '\0';
+    }
+
+    return E_SYSTEM_FILE;
+}
+
+/* Get shipped persona directory */
+int katra_get_shipped_persona_dir(char* buffer, size_t size, const char* persona_name) {
+    if (!buffer || size == 0 || !persona_name) {
+        return E_INPUT_NULL;
+    }
+
+    /* Get project root */
+    char project_root[KATRA_PATH_MAX];
+    int result = katra_get_project_root(project_root, sizeof(project_root));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Build path: {project_root}/personas/{persona_name} */
+    int written = snprintf(buffer, size, "%s/personas/%s",
+                          project_root, persona_name);
+
+    if (written < 0 || (size_t)written >= size) {
+        return E_INPUT_TOO_LARGE;
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Get user persona directory */
+int katra_get_user_persona_dir(char* buffer, size_t size, const char* persona_name) {
+    if (!buffer || size == 0 || !persona_name) {
+        return E_INPUT_NULL;
+    }
+
+    /* Get home directory */
+    char home[KATRA_PATH_MAX];
+    int result = katra_get_home_dir(home, sizeof(home));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Build path: ~/.katra/personas/{persona_name} */
+    int written = snprintf(buffer, size, "%s/.katra/personas/%s",
+                          home, persona_name);
+
+    if (written < 0 || (size_t)written >= size) {
+        return E_INPUT_TOO_LARGE;
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Build path under user persona directory */
+int katra_build_user_persona_path(char* buffer, size_t size, const char* persona_name, ...) {
+    if (!buffer || size == 0 || !persona_name) {
+        return E_INPUT_NULL;
+    }
+
+    /* Get home directory */
+    char home[KATRA_PATH_MAX];
+    int result = katra_get_home_dir(home, sizeof(home));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Start with ~/.katra/personas/{persona_name} */
+    size_t offset = 0;
+    offset += snprintf(buffer + offset, size - offset,
+                      "%s/.katra/personas/%s", home, persona_name);
+
+    /* Append path components */
+    va_list args;
+    va_start(args, persona_name);
+
+    const char* component;
+    while ((component = va_arg(args, const char*)) != NULL) {
+        if (offset >= size - 1) {
+            va_end(args);
+            return E_INPUT_TOO_LARGE;
+        }
+
+        offset += snprintf(buffer + offset, size - offset, "/%s", component);
+    }
+
+    va_end(args);
 
     if (offset >= size) {
         return E_INPUT_TOO_LARGE;

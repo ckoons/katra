@@ -62,6 +62,12 @@ bin/
 .env.katra.local
 .katra/
 
+# IMPORTANT: Keep shipped personas in Git (these are templates)
+!personas/
+personas/**/memory/
+personas/**/chat/
+personas/**/checkpoints/
+
 # Katra logs
 *.log
 

@@ -113,38 +113,72 @@ int katra_path_join(char* dest, size_t dest_size,
 int katra_path_join_with_ext(char* dest, size_t dest_size,
                               const char* dir, const char* filename, const char* ext);
 
-/* Get persona home directory
+/* Get project root directory
  *
- * Returns the root directory for a persona's data.
- * Layout depends on KATRA_PERSONA_LAYOUT environment variable:
- *
- *   "unified" (new):   ~/.katra/personas/{persona_name}
- *   "scattered" (old): ~/.katra
+ * Finds the Katra project root directory by searching upward from
+ * current working directory for .git or Makefile.
  *
  * Parameters:
- *   buffer - Buffer to store persona directory path
+ *   buffer - Buffer to store project root path
  *   size - Size of buffer
- *   persona_name - Name of persona (NULL for current layout root)
  *
  * Returns:
  *   KATRA_SUCCESS on success
- *   E_INPUT_NULL if buffer is NULL
+ *   E_SYSTEM_FILE if project root not found
+ *   E_INPUT_TOO_LARGE if path exceeds buffer
+ */
+int katra_get_project_root(char* buffer, size_t size);
+
+/* Get shipped persona directory
+ *
+ * Returns path to shipped persona template in project repository.
+ * Location: {project_root}/personas/{persona_name}
+ *
+ * These are Git-versioned persona templates that ship with the product.
+ * They contain default configuration but NO user data (memory/chat).
+ *
+ * Parameters:
+ *   buffer - Buffer to store shipped persona path
+ *   size - Size of buffer
+ *   persona_name - Name of persona
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if buffer or persona_name is NULL
+ *   E_SYSTEM_FILE if project root not found
+ *   E_INPUT_TOO_LARGE if path exceeds buffer
+ */
+int katra_get_shipped_persona_dir(char* buffer, size_t size, const char* persona_name);
+
+/* Get user persona directory
+ *
+ * Returns path to user's persona runtime directory.
+ * Location: ~/.katra/personas/{persona_name}
+ *
+ * This directory contains user-private data (memory, chat, checkpoints)
+ * and is NEVER tracked in Git.
+ *
+ * Parameters:
+ *   buffer - Buffer to store user persona path
+ *   size - Size of buffer
+ *   persona_name - Name of persona
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if buffer or persona_name is NULL
  *   E_SYSTEM_FILE if HOME not set
  *   E_INPUT_TOO_LARGE if path exceeds buffer
  */
-int katra_get_persona_dir(char* buffer, size_t size, const char* persona_name);
+int katra_get_user_persona_dir(char* buffer, size_t size, const char* persona_name);
 
-/* Build path under persona directory
+/* Build path under user persona directory
  *
- * Constructs a path under persona's home directory with layout awareness.
+ * Constructs a path under user's persona runtime directory.
+ * All paths are under ~/.katra/personas/{persona_name}/
  *
- * Unified layout:
- *   katra_build_persona_path(buf, size, "Alice", "memory", "tier1", NULL)
+ * Example:
+ *   katra_build_user_persona_path(buf, size, "Alice", "memory", "tier1", NULL)
  *   -> ~/.katra/personas/Alice/memory/tier1
- *
- * Scattered layout:
- *   katra_build_persona_path(buf, size, "Alice", "memory", "tier1", NULL)
- *   -> ~/.katra/memory/tier1/Alice
  *
  * Parameters:
  *   buffer - Buffer to store constructed path
@@ -158,6 +192,12 @@ int katra_get_persona_dir(char* buffer, size_t size, const char* persona_name);
  *   E_SYSTEM_FILE if HOME not set
  *   E_INPUT_TOO_LARGE if path exceeds buffer
  */
+int katra_build_user_persona_path(char* buffer, size_t size, const char* persona_name, ...);
+
+/* DEPRECATED: Use katra_get_user_persona_dir() instead */
+int katra_get_persona_dir(char* buffer, size_t size, const char* persona_name);
+
+/* DEPRECATED: Use katra_build_user_persona_path() instead */
 int katra_build_persona_path(char* buffer, size_t size, const char* persona_name, ...);
 
 #endif /* KATRA_PATH_UTILS_H */
