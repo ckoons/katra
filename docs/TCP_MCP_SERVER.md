@@ -261,10 +261,167 @@ export KATRA_LOG_LEVEL=DEBUG
 tail -f ~/.katra/logs/katra.log
 ```
 
+## System Integration
+
+### systemd Integration (Linux)
+
+For production deployments on Linux, you can run the TCP MCP server as a systemd user service.
+
+**Installation:**
+
+```bash
+make install-systemd
+```
+
+This will:
+- Copy service file to `~/.config/systemd/user/katra-mcp.service`
+- Create config directory `~/.config/katra/`
+- Copy example config to `~/.config/katra/mcp.env`
+- Update paths to match your installation
+- Reload systemd daemon
+
+**Usage:**
+
+```bash
+# Start server
+systemctl --user start katra-mcp
+
+# Stop server
+systemctl --user stop katra-mcp
+
+# Check status
+systemctl --user status katra-mcp
+
+# View logs
+journalctl --user -u katra-mcp -f
+
+# Enable auto-start on login
+systemctl --user enable katra-mcp
+
+# Disable auto-start
+systemctl --user disable katra-mcp
+```
+
+**Configuration:**
+
+Edit `~/.config/katra/mcp.env` to customize settings:
+
+```bash
+KATRA_MCP_TCP_MODE=true
+KATRA_MCP_TCP_PORT=3141
+KATRA_MCP_TCP_BIND=127.0.0.1
+KATRA_LOG_LEVEL=INFO
+```
+
+**Uninstallation:**
+
+```bash
+make uninstall-systemd
+```
+
+### launchd Integration (macOS)
+
+For production deployments on macOS, you can run the TCP MCP server as a launchd agent.
+
+**Installation:**
+
+```bash
+make install-launchd
+```
+
+This will:
+- Copy plist file to `~/Library/LaunchAgents/com.katra.mcp.plist`
+- Update paths to match your installation
+- Create log directory `~/.katra/logs/`
+
+**Usage:**
+
+```bash
+# Load and start service
+launchctl load ~/Library/LaunchAgents/com.katra.mcp.plist
+
+# Unload and stop service
+launchctl unload ~/Library/LaunchAgents/com.katra.mcp.plist
+
+# Start (if already loaded)
+launchctl start com.katra.mcp
+
+# Stop (if already loaded)
+launchctl stop com.katra.mcp
+
+# Check status
+launchctl list | grep katra
+```
+
+**Logs:**
+
+```bash
+# Standard output
+tail -f ~/.katra/logs/mcp-server.log
+
+# Error output
+tail -f ~/.katra/logs/mcp-server-error.log
+```
+
+**Configuration:**
+
+Edit `~/Library/LaunchAgents/com.katra.mcp.plist` to customize settings:
+
+```xml
+<key>EnvironmentVariables</key>
+<dict>
+    <key>KATRA_MCP_TCP_PORT</key>
+    <string>3141</string>
+    <key>KATRA_LOG_LEVEL</key>
+    <string>INFO</string>
+</dict>
+```
+
+**Uninstallation:**
+
+```bash
+make uninstall-launchd
+```
+
+## Testing
+
+### Integration Test Suite
+
+Katra includes a comprehensive integration test suite for the TCP MCP server:
+
+```bash
+make test-tcp-integration
+```
+
+**Tests included:**
+- Server start/stop/restart
+- Health check endpoint functionality
+- Environment variable configuration
+- Command-line argument override
+- Multiple concurrent client connections
+- Graceful shutdown with active clients
+- Port-in-use error handling
+- SO_REUSEADDR restart capability
+
+**Manual testing:**
+
+```bash
+# Start server
+./bin/katra_mcp_server --tcp --port 3141 &
+
+# Test health check
+curl http://localhost:3141/health
+
+# Expected output:
+# {"status":"healthy","ok":true}
+
+# Stop server
+pkill katra_mcp_server
+```
+
 ## Future Enhancements
 
-- systemd service integration (Linux)
-- launchd service integration (macOS)
 - TLS/SSL support for encrypted connections
 - Authentication/authorization per client
 - Metrics and monitoring dashboard
+- Prometheus exporter integration
