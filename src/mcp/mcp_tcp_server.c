@@ -21,6 +21,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_strings.h"
+#include "katra_env_utils.h"
 
 /* Active client connections */
 static mcp_tcp_client_t* g_clients[KATRA_MCP_MAX_CLIENTS];
@@ -190,21 +191,51 @@ static void* client_thread(void* arg) {
     return NULL;
 }
 
-/* Load configuration from file */
+/* Load configuration from Katra environment */
 int mcp_tcp_load_config(mcp_tcp_config_t* config, const char* config_file) {
+    int result = KATRA_SUCCESS;
     KATRA_CHECK_NULL(config);
-    KATRA_CHECK_NULL(config_file);
 
-    /* For now, use defaults - later parse config_file */
+    /* Note: config_file parameter kept for API compatibility but ignored */
+    /* Configuration now comes from .env files via katra_getenv() */
+    (void)config_file;  /* Unused */
+
+    /* Load port from environment */
     config->port = KATRA_MCP_DEFAULT_PORT;
-    config->bind_address = "127.0.0.1";
+    int env_port = 0;
+    if (katra_getenvint("KATRA_MCP_TCP_PORT", &env_port) == KATRA_SUCCESS) {
+        if (env_port > 0 && env_port <= 65535) {
+            config->port = (uint16_t)env_port;
+        }
+    }
+
+    /* Load bind address from environment */
+    const char* bind_addr = katra_getenv("KATRA_MCP_TCP_BIND");
+    config->bind_address = bind_addr ? bind_addr : "127.0.0.1";
+
+    /* Load max clients from environment */
     config->max_clients = KATRA_MCP_MAX_CLIENTS;
+    int max_clients = 0;
+    if (katra_getenvint("KATRA_MCP_TCP_MAX_CLIENTS", &max_clients) == KATRA_SUCCESS) {
+        if (max_clients > 0 && max_clients <= KATRA_MCP_MAX_CLIENTS) {
+            config->max_clients = max_clients;
+        }
+    }
+
+    /* Load health check setting from environment */
     config->enable_health_check = true;
+    const char* health_check = katra_getenv("KATRA_MCP_TCP_HEALTH_CHECK");
+    if (health_check) {
+        if (strcmp(health_check, "false") == 0 || strcmp(health_check, "0") == 0) {
+            config->enable_health_check = false;
+        }
+    }
 
-    LOG_INFO("TCP config: port=%d, max_clients=%d",
-             config->port, config->max_clients);
+    LOG_INFO("TCP config: port=%d, bind=%s, max_clients=%d, health_check=%s",
+             config->port, config->bind_address, config->max_clients,
+             config->enable_health_check ? "enabled" : "disabled");
 
-    return KATRA_SUCCESS;
+    return result;
 }
 
 /* Start TCP server (blocks until shutdown) */

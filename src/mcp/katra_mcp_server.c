@@ -447,6 +447,28 @@ int main(int argc, char* argv[]) {
         /* Continue anyway - can still use system environment */
     }
 
+    /* Read TCP mode from environment if not set via command line */
+    if (!tcp_mode) {
+        const char* tcp_mode_env = katra_getenv("KATRA_MCP_TCP_MODE");
+        if (tcp_mode_env && (strcmp(tcp_mode_env, "true") == 0 || strcmp(tcp_mode_env, "1") == 0)) {
+            tcp_mode = true;
+        }
+    }
+
+    /* Read TCP port from environment if not set via command line */
+    if (tcp_mode && tcp_port == KATRA_MCP_DEFAULT_PORT) {
+        int env_port = 0;
+        if (katra_getenvint("KATRA_MCP_TCP_PORT", &env_port) == KATRA_SUCCESS) {
+            if (env_port > 0 && env_port <= 65535) {
+                tcp_port = (uint16_t)env_port;
+            } else {
+                /* GUIDELINE_APPROVED: startup diagnostic */
+                fprintf(stderr, "Warning: Invalid KATRA_MCP_TCP_PORT=%d, using default %d\n",
+                        env_port, KATRA_MCP_DEFAULT_PORT);
+            }
+        }
+    }
+
     /* Initialize persona registry */
     result = katra_identity_init();
     if (result != KATRA_SUCCESS) {
