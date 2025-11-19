@@ -167,7 +167,9 @@ static int run_test_list_teams_for_ci(void) {
     char** teams = NULL;
     size_t count = 0;
 
-    /* Create second team */
+    /* Create second team - cleanup first if it exists from previous run */
+    katra_team_delete("beta", "ci-002");  /* Ignore errors if doesn't exist */
+
     printf("  Creating team 'beta' with owner 'ci-002'...\n");
     int result = katra_team_create("beta", "ci-002");
     print_result(result);
@@ -193,6 +195,10 @@ static int run_test_list_teams_for_ci(void) {
     int success = (count == 2);
 
     katra_team_free_list(teams, count);
+
+    /* Cleanup beta team */
+    katra_team_delete("beta", "ci-002");
+
     return success;
 }
 
