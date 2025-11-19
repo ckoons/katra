@@ -523,6 +523,7 @@ int main(int argc, char* argv[]) {
         LOG_INFO("Starting TCP MCP server on port %d", tcp_port);
         result = mcp_tcp_server_start(&config);
         if (result != KATRA_SUCCESS) {
+            /* GUIDELINE_APPROVED: main() error output before exit */
             fprintf(stderr, "TCP server failed: %s\n",
                     katra_error_message(result));
             exit_code = EXIT_FAILURE;

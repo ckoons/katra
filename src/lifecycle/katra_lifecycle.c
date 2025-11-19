@@ -163,7 +163,7 @@ int katra_breath(breath_context_t* context_out) {
     }
 
     /* Lock for thread safety */
-    pthread_mutex_lock(&g_session_state->breath_lock);
+    (void)pthread_mutex_lock(&g_session_state->breath_lock);
 
     /* Check if enough time has passed since last breath */
     time_t now = time(NULL);
@@ -457,7 +457,7 @@ int katra_set_breath_interval(int seconds) {
         return E_INVALID_PARAMS;
     }
 
-    pthread_mutex_lock(&g_session_state->breath_lock);
+    (void)pthread_mutex_lock(&g_session_state->breath_lock);
     g_session_state->breath_interval = seconds;
     pthread_mutex_unlock(&g_session_state->breath_lock);
 
@@ -471,7 +471,7 @@ int katra_get_breath_interval(void) {
         return KATRA_BREATH_INTERVAL_DEFAULT;
     }
 
-    pthread_mutex_lock(&g_session_state->breath_lock);
+    (void)pthread_mutex_lock(&g_session_state->breath_lock);
     int interval = g_session_state->breath_interval;
     pthread_mutex_unlock(&g_session_state->breath_lock);
 
@@ -492,7 +492,7 @@ int katra_force_breath(breath_context_t* context_out) {
     LOG_DEBUG("Forcing immediate breath (bypassing rate limit)");
 
     /* Lock mutex */
-    pthread_mutex_lock(&g_session_state->breath_lock);
+    (void)pthread_mutex_lock(&g_session_state->breath_lock);
 
     /* Reset last_breath_time to force actual check */
     g_session_state->last_breath_time = KATRA_SUCCESS;
@@ -512,7 +512,7 @@ int katra_update_persona(const char* ci_id, const char* name, const char* role) 
         return E_INVALID_STATE;
     }
 
-    pthread_mutex_lock(&g_session_state->breath_lock);
+    (void)pthread_mutex_lock(&g_session_state->breath_lock);
 
     /* Update CI ID */
     free(g_session_state->ci_id);

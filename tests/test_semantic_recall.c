@@ -30,6 +30,9 @@ int main(void) {
     printf("Phase 6.1f: Semantic Search Test\n");
     printf("========================================\n\n");
 
+    /* Cleanup any previous test data */
+    system("rm -rf ~/.katra/memory/tier1/test_semantic_ci");
+
     /* Test 1: Initialize breathing layer with semantic search disabled */
     printf("Test 1: Initializing breathing layer (semantic disabled)...\n");
     int result = breathe_init(TEST_CI_ID);

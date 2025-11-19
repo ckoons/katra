@@ -60,6 +60,9 @@ static int run_test_initialization(void) {
  * TEST 2: Create Team
  * ============================================================================ */
 static int run_test_create_team(void) {
+    /* Cleanup alpha team if it exists from previous run */
+    katra_team_delete("alpha", "ci-001");  /* Ignore errors if doesn't exist */
+
     printf("  Creating team 'alpha' with owner 'ci-001'...\n");
     int result = katra_team_create("alpha", "ci-001");
     print_result(result);
@@ -97,6 +100,9 @@ static int run_test_duplicate_team(void) {
  * TEST 4: Join Team
  * ============================================================================ */
 static int run_test_join_team(void) {
+    /* Cleanup ci-002's membership if it exists from previous run */
+    katra_team_leave("alpha", "ci-002");  /* Ignore errors if doesn't exist */
+
     printf("  CI 'ci-002' joining team 'alpha' (invited by ci-001)...\n");
     int result = katra_team_join("alpha", "ci-002", "ci-001");
     print_result(result);
