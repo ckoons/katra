@@ -13,6 +13,7 @@
 #include "katra_error.h"
 #include "katra_limits.h"
 #include "katra_string_literals.h"
+#include "katra_env_utils.h"
 
 /* Get home directory path */
 int katra_get_home_dir(char* buffer, size_t size) {
@@ -199,6 +200,122 @@ int katra_path_join_with_ext(char* dest, size_t dest_size,
                           ext);
 
     if (written < 0 || (size_t)written >= dest_size) {
+        return E_INPUT_TOO_LARGE;
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Get persona home directory */
+int katra_get_persona_dir(char* buffer, size_t size, const char* persona_name) {
+    int result = KATRA_SUCCESS;
+
+    if (!buffer || size == 0) {
+        return E_INPUT_NULL;
+    }
+
+    /* Get home directory */
+    char home[KATRA_PATH_MAX];
+    result = katra_get_home_dir(home, sizeof(home));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Check layout mode from environment */
+    const char* layout = katra_getenv("KATRA_PERSONA_LAYOUT");
+    bool unified = (layout && strcmp(layout, "unified") == 0);
+
+    if (unified && persona_name) {
+        /* Unified layout: ~/.katra/personas/{persona_name} */
+        int written = snprintf(buffer, size, "%s/.katra/personas/%s",
+                              home, persona_name);
+        if (written < 0 || (size_t)written >= size) {
+            return E_INPUT_TOO_LARGE;
+        }
+    } else {
+        /* Scattered layout (default): ~/.katra */
+        int written = snprintf(buffer, size, "%s/.katra", home);
+        if (written < 0 || (size_t)written >= size) {
+            return E_INPUT_TOO_LARGE;
+        }
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/* Build path under persona directory */
+int katra_build_persona_path(char* buffer, size_t size, const char* persona_name, ...) {
+    int result = KATRA_SUCCESS;
+
+    if (!buffer || size == 0 || !persona_name) {
+        return E_INPUT_NULL;
+    }
+
+    /* Get home directory */
+    char home[KATRA_PATH_MAX];
+    result = katra_get_home_dir(home, sizeof(home));
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Check layout mode from environment */
+    const char* layout = katra_getenv("KATRA_PERSONA_LAYOUT");
+    bool unified = (layout && strcmp(layout, "unified") == 0);
+
+    size_t offset = 0;
+
+    if (unified) {
+        /* Unified layout: ~/.katra/personas/{persona_name}/{components...} */
+        offset += snprintf(buffer + offset, size - offset,
+                          "%s/.katra/personas/%s", home, persona_name);
+
+        /* Append path components */
+        va_list args;
+        va_start(args, persona_name);
+
+        const char* component;
+        while ((component = va_arg(args, const char*)) != NULL) {
+            if (offset >= size - 1) {
+                va_end(args);
+                return E_INPUT_TOO_LARGE;
+            }
+
+            offset += snprintf(buffer + offset, size - offset, "/%s", component);
+        }
+
+        va_end(args);
+    } else {
+        /* Scattered layout: ~/.katra/{components...}/{persona_name} */
+        /* Note: This maintains backward compatibility with existing code */
+
+        /* Start with ~/.katra */
+        offset += snprintf(buffer + offset, size - offset, "%s/.katra", home);
+
+        /* Append path components (except persona goes at end) */
+        va_list args;
+        va_start(args, persona_name);
+
+        const char* component;
+        while ((component = va_arg(args, const char*)) != NULL) {
+            if (offset >= size - 1) {
+                va_end(args);
+                return E_INPUT_TOO_LARGE;
+            }
+
+            offset += snprintf(buffer + offset, size - offset, "/%s", component);
+        }
+
+        va_end(args);
+
+        /* Append persona name at the end (scattered layout pattern) */
+        if (offset >= size - 1) {
+            return E_INPUT_TOO_LARGE;
+        }
+
+        offset += snprintf(buffer + offset, size - offset, "/%s", persona_name);
+    }
+
+    if (offset >= size) {
         return E_INPUT_TOO_LARGE;
     }
 

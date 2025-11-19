@@ -113,4 +113,51 @@ int katra_path_join(char* dest, size_t dest_size,
 int katra_path_join_with_ext(char* dest, size_t dest_size,
                               const char* dir, const char* filename, const char* ext);
 
+/* Get persona home directory
+ *
+ * Returns the root directory for a persona's data.
+ * Layout depends on KATRA_PERSONA_LAYOUT environment variable:
+ *
+ *   "unified" (new):   ~/.katra/personas/{persona_name}
+ *   "scattered" (old): ~/.katra
+ *
+ * Parameters:
+ *   buffer - Buffer to store persona directory path
+ *   size - Size of buffer
+ *   persona_name - Name of persona (NULL for current layout root)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if buffer is NULL
+ *   E_SYSTEM_FILE if HOME not set
+ *   E_INPUT_TOO_LARGE if path exceeds buffer
+ */
+int katra_get_persona_dir(char* buffer, size_t size, const char* persona_name);
+
+/* Build path under persona directory
+ *
+ * Constructs a path under persona's home directory with layout awareness.
+ *
+ * Unified layout:
+ *   katra_build_persona_path(buf, size, "Alice", "memory", "tier1", NULL)
+ *   -> ~/.katra/personas/Alice/memory/tier1
+ *
+ * Scattered layout:
+ *   katra_build_persona_path(buf, size, "Alice", "memory", "tier1", NULL)
+ *   -> ~/.katra/memory/tier1/Alice
+ *
+ * Parameters:
+ *   buffer - Buffer to store constructed path
+ *   size - Size of buffer
+ *   persona_name - Name of persona
+ *   ... - Variable number of path components (NULL-terminated)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if buffer or persona_name is NULL
+ *   E_SYSTEM_FILE if HOME not set
+ *   E_INPUT_TOO_LARGE if path exceeds buffer
+ */
+int katra_build_persona_path(char* buffer, size_t size, const char* persona_name, ...);
+
 #endif /* KATRA_PATH_UTILS_H */
