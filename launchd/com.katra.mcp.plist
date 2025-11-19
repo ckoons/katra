@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- © 2025 Casey Koons All rights reserved -->
+<!--
+  launchd configuration for Katra MCP TCP Server (macOS)
+
+  Installation:
+    make install-launchd
+
+  Usage:
+    launchctl load ~/Library/LaunchAgents/com.katra.mcp.plist
+    launchctl unload ~/Library/LaunchAgents/com.katra.mcp.plist
+    launchctl start com.katra.mcp
+    launchctl stop com.katra.mcp
+    launchctl list | grep katra
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.katra.mcp</string>
+
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/cskoons/projects/github/katra/bin/katra_mcp_server</string>
+		<string>--tcp</string>
+	</array>
+
+	<key>WorkingDirectory</key>
+	<string>/Users/cskoons/projects/github/katra</string>
+
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>KATRA_MCP_TCP_MODE</key>
+		<string>true</string>
+		<key>KATRA_MCP_TCP_PORT</key>
+		<string>3141</string>
+		<key>KATRA_MCP_TCP_BIND</key>
+		<string>127.0.0.1</string>
+		<key>KATRA_MCP_TCP_MAX_CLIENTS</key>
+		<string>32</string>
+		<key>KATRA_MCP_TCP_HEALTH_CHECK</key>
+		<string>true</string>
+		<key>KATRA_LOG_LEVEL</key>
+		<string>INFO</string>
+	</dict>
+
+	<key>RunAtLoad</key>
+	<false/>
+
+	<key>KeepAlive</key>
+	<dict>
+		<key>SuccessfulExit</key>
+		<false/>
+		<key>Crashed</key>
+		<true/>
+	</dict>
+
+	<key>StandardOutPath</key>
+	<string>/Users/cskoons/.katra/logs/mcp-server.log</string>
+
+	<key>StandardErrorPath</key>
+	<string>/Users/cskoons/.katra/logs/mcp-server-error.log</string>
+
+	<key>ThrottleInterval</key>
+	<integer>5</integer>
+</dict>
+</plist>

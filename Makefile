@@ -23,7 +23,10 @@ include Makefile.test
 .PHONY: all clean help test test-quick mcp-server \
         benchmark benchmark-reflection benchmark-vector \
         count-report programming-guidelines check check-ready improvement-scan \
-        install-mcp restart-mcp install-k install-all uninstall-k
+        install-mcp restart-mcp install-k install-all uninstall-k \
+        install-systemd uninstall-systemd status-systemd \
+        install-launchd uninstall-launchd status-launchd \
+        test-tcp-integration
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -149,6 +152,101 @@ install-all: install-k
 	@echo "All Katra tools installed successfully"
 
 # ==============================================================================
+# SYSTEMD INTEGRATION (Linux)
+# ==============================================================================
+
+install-systemd: mcp-server
+	@echo "Installing systemd service for Katra MCP server..."
+	@if [ ! -f /etc/os-release ]; then \
+		echo "Error: systemd is only supported on Linux"; \
+		exit 1; \
+	fi
+	@# Create systemd user directory if needed
+	@$(MKDIR_P) ~/.config/systemd/user
+	@# Copy service file
+	@cp systemd/katra-mcp.service ~/.config/systemd/user/
+	@# Update paths in service file
+	@sed -i "s|/opt/katra|$(PWD)|g" ~/.config/systemd/user/katra-mcp.service
+	@sed -i "s|User=%i|User=$(USER)|g" ~/.config/systemd/user/katra-mcp.service
+	@sed -i "s|Group=%i|Group=$(USER)|g" ~/.config/systemd/user/katra-mcp.service
+	@sed -i "s|/home/%i|$(HOME)|g" ~/.config/systemd/user/katra-mcp.service
+	@# Create config directory
+	@$(MKDIR_P) ~/.config/katra
+	@# Copy example config if doesn't exist
+	@if [ ! -f ~/.config/katra/mcp.env ]; then \
+		cp systemd/mcp.env.example ~/.config/katra/mcp.env; \
+		echo "Created config: ~/.config/katra/mcp.env"; \
+	fi
+	@# Reload systemd
+	@systemctl --user daemon-reload
+	@echo ""
+	@echo "systemd service installed!"
+	@echo ""
+	@echo "Usage:"
+	@echo "  systemctl --user start katra-mcp    # Start server"
+	@echo "  systemctl --user stop katra-mcp     # Stop server"
+	@echo "  systemctl --user status katra-mcp   # Check status"
+	@echo "  systemctl --user enable katra-mcp   # Start on login"
+	@echo "  systemctl --user disable katra-mcp  # Don't start on login"
+	@echo ""
+	@echo "Configuration: ~/.config/katra/mcp.env"
+	@echo "Logs: journalctl --user -u katra-mcp -f"
+
+uninstall-systemd:
+	@echo "Uninstalling systemd service..."
+	@systemctl --user stop katra-mcp 2>/dev/null || true
+	@systemctl --user disable katra-mcp 2>/dev/null || true
+	@rm -f ~/.config/systemd/user/katra-mcp.service
+	@systemctl --user daemon-reload
+	@echo "systemd service uninstalled"
+
+status-systemd:
+	@systemctl --user status katra-mcp
+
+# ==============================================================================
+# LAUNCHD INTEGRATION (macOS)
+# ==============================================================================
+
+install-launchd: mcp-server
+	@echo "Installing launchd service for Katra MCP server..."
+	@if [ "$$(uname -s)" != "Darwin" ]; then \
+		echo "Error: launchd is only supported on macOS"; \
+		exit 1; \
+	fi
+	@# Create LaunchAgents directory if needed
+	@$(MKDIR_P) ~/Library/LaunchAgents
+	@# Copy plist file
+	@cp launchd/com.katra.mcp.plist ~/Library/LaunchAgents/
+	@# Update paths in plist
+	@sed -i '' "s|/Users/cskoons/projects/github/katra|$(PWD)|g" ~/Library/LaunchAgents/com.katra.mcp.plist
+	@sed -i '' "s|/Users/cskoons|$(HOME)|g" ~/Library/LaunchAgents/com.katra.mcp.plist
+	@# Ensure log directory exists
+	@$(MKDIR_P) $(HOME)/.katra/logs
+	@echo ""
+	@echo "launchd service installed!"
+	@echo ""
+	@echo "Usage:"
+	@echo "  launchctl load ~/Library/LaunchAgents/com.katra.mcp.plist    # Enable"
+	@echo "  launchctl unload ~/Library/LaunchAgents/com.katra.mcp.plist  # Disable"
+	@echo "  launchctl start com.katra.mcp                                 # Start"
+	@echo "  launchctl stop com.katra.mcp                                  # Stop"
+	@echo "  launchctl list | grep katra                                   # Status"
+	@echo ""
+	@echo "Logs: ~/.katra/logs/mcp-server*.log"
+	@echo ""
+	@echo "To start now:"
+	@echo "  launchctl load ~/Library/LaunchAgents/com.katra.mcp.plist"
+
+uninstall-launchd:
+	@echo "Uninstalling launchd service..."
+	@launchctl unload ~/Library/LaunchAgents/com.katra.mcp.plist 2>/dev/null || true
+	@rm -f ~/Library/LaunchAgents/com.katra.mcp.plist
+	@echo "launchd service uninstalled"
+
+status-launchd:
+	@launchctl list | grep katra || echo "Service not loaded"
+
+# ==============================================================================
 # CLEAN TARGETS
 # ==============================================================================
 
@@ -209,6 +307,14 @@ help:
 	@echo "  make install-k          - Install katra/k CLI tools to ~/bin"
 	@echo "  make install-all        - Install all CLI tools"
 	@echo "  make uninstall-k        - Uninstall katra/k CLI tools"
+	@echo ""
+	@echo "System integration:"
+	@echo "  make install-systemd    - Install systemd service (Linux)"
+	@echo "  make uninstall-systemd  - Uninstall systemd service"
+	@echo "  make status-systemd     - Check systemd service status"
+	@echo "  make install-launchd    - Install launchd service (macOS)"
+	@echo "  make uninstall-launchd  - Uninstall launchd service"
+	@echo "  make status-launchd     - Check launchd service status"
 	@echo ""
 	@echo "Help:"
 	@echo "  make help               - Show this help message"

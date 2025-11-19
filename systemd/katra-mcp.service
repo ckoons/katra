@@ -1,0 +1,56 @@
+# © 2025 Casey Koons All rights reserved
+#
+# systemd service unit for Katra MCP TCP Server
+#
+# Installation:
+#   sudo make install-systemd
+#
+# Usage:
+#   sudo systemctl start katra-mcp
+#   sudo systemctl stop katra-mcp
+#   sudo systemctl restart katra-mcp
+#   sudo systemctl status katra-mcp
+#   sudo systemctl enable katra-mcp  # Start on boot
+#   sudo systemctl disable katra-mcp # Don't start on boot
+
+[Unit]
+Description=Katra MCP TCP Server
+Documentation=https://github.com/caseykoons/katra
+After=network.target
+
+[Service]
+Type=simple
+User=%i
+Group=%i
+
+# Working directory (adjust if needed)
+WorkingDirectory=/opt/katra
+
+# Binary location (adjust if needed)
+ExecStart=/opt/katra/bin/katra_mcp_server --tcp
+
+# Environment configuration
+# Load from system-wide config
+EnvironmentFile=-/etc/katra/mcp.env
+
+# Restart policy
+Restart=on-failure
+RestartSec=5s
+
+# Resource limits
+LimitNOFILE=65536
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/%i/.katra
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=katra-mcp
+
+[Install]
+WantedBy=multi-user.target

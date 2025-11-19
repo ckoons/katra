@@ -189,6 +189,10 @@ test-tcp-server: $(TEST_TCP_SERVER)
 	@echo "Running TCP MCP server tests..."
 	@$(TEST_TCP_SERVER)
 
+test-tcp-integration: mcp-server
+	@echo "Running TCP MCP server integration tests..."
+	@tests/integration/test_tcp_mcp_integration.sh
+
 test-turn-tracking: $(TEST_TURN_TRACKING)
 	@echo "Running turn tracking and metadata tests..."
 	@$(TEST_TURN_TRACKING)
