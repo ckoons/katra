@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <time.h>
 #include <pthread.h>
+#include "katra_session_state.h"
 
 /**
  * katra_lifecycle.h - Autonomic Breathing and Lifecycle Management
@@ -327,5 +328,20 @@ int katra_force_breath(breath_context_t* context_out);
  *   E_SYSTEM_MEMORY - Allocation failed
  */
 int katra_update_persona(const char* ci_id, const char* name, const char* role);
+
+/* ============================================================================
+ * SESSION STATE CAPTURE (Experiential Continuity)
+ * ============================================================================ */
+
+/**
+ * katra_get_session_state() - Get pointer to current session end state
+ *
+ * Returns pointer to the global session end state structure that can be
+ * populated during the session for experiential continuity.
+ *
+ * Returns:
+ *   Pointer to session_end_state_t (or NULL if not initialized)
+ */
+session_end_state_t* katra_get_session_state(void);
 
 #endif /* KATRA_LIFECYCLE_H */

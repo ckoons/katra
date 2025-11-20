@@ -80,6 +80,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/lifecycle/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
+# Exception: katra_session_state.c uses jansson
+$(BUILD_DIR)/katra_session_state.o: $(SRC_DIR)/lifecycle/katra_session_state.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
 # Compile hook adapter sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/hooks/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"

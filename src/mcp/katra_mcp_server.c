@@ -8,6 +8,10 @@
 #include <signal.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/stat.h>
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
 #include <jansson.h>
 #include "katra_mcp.h"
 #include "katra_mcp_tcp.h"
@@ -52,14 +56,28 @@ static mcp_session_t g_session = {
 /* Global shutdown flag */
 volatile sig_atomic_t g_shutdown_requested = 0;
 
-/* Signal handler */
-void mcp_signal_handler(int signum) {
-    (void)signum;  /* Signal number not used */
-    g_shutdown_requested = 1;
+/* Global reload flag (SIGUSR1) */
+volatile sig_atomic_t g_reload_requested = 0;
 
-    /* Write to stderr (async-signal-safe) */
-    ssize_t result = write(STDERR_FILENO, MCP_MSG_SHUTDOWN, strlen(MCP_MSG_SHUTDOWN));
-    (void)result;  /* Suppress unused result warning */
+/* Binary modification time for hot reload detection */
+static time_t g_binary_mtime = 0;
+
+/* Signal handler for shutdown (SIGTERM, SIGINT) */
+void mcp_signal_handler(int signum) {
+    if (signum == SIGUSR1) {
+        /* Hot reload request */
+        g_reload_requested = 1;
+        /* GUIDELINE_APPROVED: async-signal-safe message */
+        ssize_t result = write(STDERR_FILENO, "Hot reload requested...\n",
+                              strlen("Hot reload requested...\n"));
+        (void)result;
+    } else {
+        /* Shutdown request */
+        g_shutdown_requested = 1;
+        /* GUIDELINE_APPROVED: async-signal-safe shutdown message */
+        ssize_t result = write(STDERR_FILENO, MCP_MSG_SHUTDOWN, strlen(MCP_MSG_SHUTDOWN));
+        (void)result;
+    }
 }
 
 /* Session State Access Functions */
@@ -299,21 +317,18 @@ int mcp_server_init(const char* ci_id) {
     } else {
         LOG_INFO("Vector database initialized for semantic search");
 
-        /* Step 4.6: Auto-regenerate vectors if needed (Phase 6.1f) */
+        /* Step 4.6: Auto-regenerate vectors if needed (Phase 6.1f - Async) */
         /* Note: Semantic search is enabled by default, so check if vectors need building */
         if (g_vector_store->count < MIN_VECTOR_COUNT_THRESHOLD) {
-            /* Vector count is very low - likely need regeneration */
-            LOG_INFO("Auto-regenerating vectors (current count: %zu)", g_vector_store->count);
-            /* GUIDELINE_APPROVED: startup diagnostic for user feedback during potentially long operation */
-            fprintf(stderr, "Regenerating semantic search vectors...\n");
+            /* Vector count is very low - start async regeneration */
+            LOG_INFO("Starting async vector regeneration (current count: %zu)", g_vector_store->count);
+            /* GUIDELINE_APPROVED: startup diagnostic for user feedback */
+            fprintf(stderr, "Warming up semantic search (vectors building in background)...\n");
 
-            int regen_result = regenerate_vectors();
-            if (regen_result > 0) {
-                LOG_INFO("Vector regeneration complete: %d vectors created", regen_result);
-                /* GUIDELINE_APPROVED: startup diagnostic for user feedback */
-                fprintf(stderr, "Vector regeneration complete: %d vectors\n", regen_result);
-            } else if (regen_result < 0) {
-                LOG_WARN("Vector regeneration failed: %d", regen_result);
+            int regen_result = regenerate_vectors_async();
+            if (regen_result != KATRA_SUCCESS) {
+                LOG_WARN("Failed to start async vector regeneration: %d", regen_result);
+                /* Non-fatal: server will work with keyword search fallback */
             }
         }
     }
@@ -363,13 +378,61 @@ void mcp_server_cleanup(void) {
     LOG_INFO("MCP server cleanup complete");
 }
 
+/* Check if binary has been updated */
+/* Note: Currently unused - reserved for future auto-reload detection */
+static bool mcp_server_binary_updated(void) __attribute__((unused));
+static bool mcp_server_binary_updated(void) {
+    struct stat st;
+    char binary_path[KATRA_PATH_MAX];
+
+#ifdef __APPLE__
+    /* macOS: use _NSGetExecutablePath */
+    uint32_t size = sizeof(binary_path);
+    if (_NSGetExecutablePath(binary_path, &size) != 0) {
+        return false;
+    }
+#else
+    /* Linux: use /proc/self/exe */
+    if (readlink("/proc/self/exe", binary_path, sizeof(binary_path)) < 0) {
+        return false;
+    }
+#endif
+
+    if (stat(binary_path, &st) == 0) {
+        if (g_binary_mtime == 0) {
+            /* First time - store mtime */
+            g_binary_mtime = st.st_mtime;
+            return false;
+        }
+        return st.st_mtime > g_binary_mtime;
+    }
+    return false;
+}
+
+/* Perform hot reload via exec() */
+static void mcp_server_hot_reload(int argc, char* argv[], char* envp[]) {
+    (void)argc;  /* Unused - kept for future extensibility */
+
+    LOG_INFO("Hot reload: executing new binary");
+    /* GUIDELINE_APPROVED: user notification of hot reload */
+    fprintf(stderr, "Reloading MCP server with updated binary...\n");
+
+    /* exec() replaces current process with new binary */
+    execve(argv[0], argv, envp);
+
+    /* If we get here, exec() failed */
+    LOG_ERROR("Hot reload failed: execve() error");
+    katra_report_error(E_SYSTEM_PROCESS, "mcp_server_hot_reload",
+                      "Failed to execute new binary");
+}
+
 /* Main loop - read JSON-RPC requests from stdin */
 void mcp_main_loop(void) {
     char buffer[MCP_MAX_LINE];
 
     LOG_INFO("MCP server main loop started");
 
-    while (!g_shutdown_requested && fgets(buffer, sizeof(buffer), stdin)) {
+    while (!g_shutdown_requested && !g_reload_requested && fgets(buffer, sizeof(buffer), stdin)) {
         /* Remove trailing newline */
         buffer[strcspn(buffer, MCP_CHAR_NEWLINE)] = '\0';
 
@@ -405,13 +468,15 @@ void mcp_main_loop(void) {
 
     if (g_shutdown_requested) {
         LOG_INFO("MCP server main loop exiting (shutdown requested)");
+    } else if (g_reload_requested) {
+        LOG_INFO("MCP server main loop exiting (reload requested)");
     } else {
         LOG_INFO("MCP server main loop exiting (stdin closed)");
     }
 }
 
 /* Main entry point */
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[], char* envp[]) {
     int exit_code = EXIT_SUCCESS;
     bool tcp_mode = false;
     uint16_t tcp_port = KATRA_MCP_DEFAULT_PORT;
@@ -436,6 +501,7 @@ int main(int argc, char* argv[]) {
     /* Setup signal handlers */
     signal(SIGTERM, mcp_signal_handler);
     signal(SIGINT, mcp_signal_handler);
+    signal(SIGUSR1, mcp_signal_handler);  /* Hot reload */
     signal(SIGPIPE, SIG_IGN);
 
     /* Load environment from .env files (required for KATRA_PERSONA) */
@@ -535,6 +601,13 @@ int main(int argc, char* argv[]) {
 
     /* Cleanup */
     mcp_server_cleanup();
+
+    /* Check for hot reload request */
+    if (g_reload_requested) {
+        /* Perform hot reload via exec() - does not return */
+        mcp_server_hot_reload(argc, argv, envp);
+        /* If we get here, exec() failed - fall through to normal exit */
+    }
 
     /* GUIDELINE_APPROVED: shutdown diagnostic message */
     fprintf(stderr, "Katra MCP Server stopped\n");

@@ -312,6 +312,19 @@
 #define IDENTITY_SUMMARY_TRUNCATE_LENGTH 80       /* Maximum characters before truncation marker */
 #define IDENTITY_SUMMARY_BUFFER_SIZE 84           /* Buffer size for truncated summary (80 + "..." + null) */
 
+/* ===== Session State Capture ===== */
+
+/* Session state capture limits */
+#define MAX_ACTIVE_THREADS 5                      /* Maximum active thoughts/threads to track */
+#define MAX_NEXT_INTENTIONS 5                     /* Maximum next intentions to track */
+#define MAX_OPEN_QUESTIONS 5                      /* Maximum open questions to track */
+#define MAX_SESSION_INSIGHTS 10                   /* Maximum insights to track per session */
+
+/* Session state text buffer sizes */
+#define SESSION_STATE_SHORT_TEXT 128              /* Short descriptive text (cognitive mode, emotional state) */
+#define SESSION_STATE_ITEM_TEXT 256               /* Individual item text (thread, intention, question) */
+#define SESSION_STATE_INSIGHT_TEXT 512            /* Insight content text */
+
 /* ===== HTTP Status Codes ===== */
 
 /* Standard HTTP status codes for external API calls */

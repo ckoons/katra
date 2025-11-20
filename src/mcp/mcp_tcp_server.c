@@ -28,12 +28,141 @@ static mcp_tcp_client_t* g_clients[KATRA_MCP_MAX_CLIENTS];
 static pthread_mutex_t g_clients_lock = PTHREAD_MUTEX_INITIALIZER;
 static volatile sig_atomic_t g_tcp_shutdown = 0;
 
+/* Forward declarations */
+static int find_free_client_slot(void);
+static int add_client(mcp_tcp_client_t* client);
+static void remove_client(int slot);
+static void* client_thread(void* arg);
+
 /* Signal handler for graceful shutdown */
 static void tcp_signal_handler(int signum) {
     if (signum == SIGTERM || signum == SIGINT) {
         LOG_INFO("TCP server received shutdown signal");
         g_tcp_shutdown = 1;
     }
+}
+
+/* Helper: Setup server socket (bind and listen) */
+static int tcp_server_socket_setup(const mcp_tcp_config_t* config, int* server_fd_out) {
+    int server_fd;
+    struct sockaddr_in server_addr;
+    int opt = 1;
+
+    /* Create socket */
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        katra_report_error(E_SYSTEM_IO, "tcp_server_socket_setup",
+                          "Failed to create socket");
+        return E_SYSTEM_IO;
+    }
+
+    /* Set socket options */
+    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        LOG_WARN("Failed to set SO_REUSEADDR: %s", strerror(errno));
+    }
+
+    /* Bind to address */
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(config->port);
+
+    if (inet_pton(AF_INET, config->bind_address, &server_addr.sin_addr) <= 0) {
+        close(server_fd);
+        katra_report_error(E_INPUT_INVALID, "tcp_server_socket_setup",
+                          "Invalid bind address");
+        return E_INPUT_INVALID;
+    }
+
+    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
+        close(server_fd);
+        katra_report_error(E_SYSTEM_IO, "tcp_server_socket_setup",
+                          "Failed to bind socket");
+        return E_SYSTEM_IO;
+    }
+
+    /* Listen for connections */
+    if (listen(server_fd, config->max_clients) < 0) {
+        close(server_fd);
+        katra_report_error(E_SYSTEM_IO, "tcp_server_socket_setup",
+                          "Failed to listen on socket");
+        return E_SYSTEM_IO;
+    }
+
+    LOG_INFO("TCP MCP server listening on %s:%d",
+             config->bind_address, config->port);
+
+    *server_fd_out = server_fd;
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Handle incoming client connection */
+static int tcp_server_handle_client(int client_fd, const struct sockaddr_in* client_addr) {
+    int slot;
+    mcp_tcp_client_t* client = NULL;
+    pthread_t thread;
+
+    /* Check for available client slot */
+    slot = find_free_client_slot();
+    if (slot < 0) {
+        LOG_WARN("Max clients reached, rejecting connection");
+        close(client_fd);
+        return E_RESOURCE_LIMIT;
+    }
+
+    /* Create client structure */
+    client = calloc(1, sizeof(mcp_tcp_client_t));
+    if (!client) {
+        LOG_ERROR("Failed to allocate client structure");
+        close(client_fd);
+        return E_SYSTEM_MEMORY;
+    }
+
+    client->socket_fd = client_fd;
+    client->registered = false;
+    client->connected_at = time(NULL);
+
+    /* Add to tracking array */
+    if (add_client(client) < 0) {
+        LOG_ERROR("Failed to add client to tracking array");
+        free(client);
+        close(client_fd);
+        return E_INTERNAL_LOGIC;
+    }
+
+    /* Spawn thread to handle client */
+    if (pthread_create(&thread, NULL, client_thread, (void*)(intptr_t)slot) != 0) {
+        LOG_ERROR("Failed to create client thread");
+        remove_client(slot);
+        return E_SYSTEM_PROCESS;
+    }
+
+    pthread_detach(thread);
+
+    LOG_INFO("Accepted client connection from %s (slot %d)",
+             inet_ntoa(client_addr->sin_addr), slot);
+
+    return KATRA_SUCCESS;
+}
+
+/* Helper: Cleanup all TCP server resources */
+static void tcp_server_cleanup(int server_fd) {
+    LOG_INFO("TCP server shutting down...");
+
+    /* Close all client connections */
+    (void)pthread_mutex_lock(&g_clients_lock);
+    for (int i = 0; i < KATRA_MCP_MAX_CLIENTS; i++) {
+        if (g_clients[i]) {
+            close(g_clients[i]->socket_fd);
+            free(g_clients[i]);
+            g_clients[i] = NULL;
+        }
+    }
+    pthread_mutex_unlock(&g_clients_lock);
+
+    if (server_fd >= 0) {
+        close(server_fd);
+    }
+    LOG_INFO("TCP server stopped");
 }
 
 /* Find free client slot */
@@ -242,7 +371,6 @@ int mcp_tcp_load_config(mcp_tcp_config_t* config, const char* config_file) {
 int mcp_tcp_server_start(const mcp_tcp_config_t* config) {
     int server_fd = -1;
     int result = KATRA_SUCCESS;
-    struct sockaddr_in server_addr;
 
     KATRA_CHECK_NULL(config);
 
@@ -252,61 +380,22 @@ int mcp_tcp_server_start(const mcp_tcp_config_t* config) {
     /* Setup signal handlers */
     signal(SIGTERM, tcp_signal_handler);
     signal(SIGINT, tcp_signal_handler);
-    signal(SIGPIPE, SIG_IGN);  /* Ignore broken pipe */
+    signal(SIGPIPE, SIG_IGN);
 
-    /* Create socket */
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (server_fd < 0) {
-        katra_report_error(E_SYSTEM_IO, "mcp_tcp_server_start",
-                          "Failed to create socket");
-        return E_SYSTEM_IO;
+    /* Setup server socket */
+    result = tcp_server_socket_setup(config, &server_fd);
+    if (result != KATRA_SUCCESS) {
+        return result;
     }
-
-    /* Set socket options */
-    int opt = 1;
-    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
-        LOG_WARN("Failed to set SO_REUSEADDR: %s", strerror(errno));
-    }
-
-    /* Bind to address */
-    memset(&server_addr, 0, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(config->port);
-
-    if (inet_pton(AF_INET, config->bind_address, &server_addr.sin_addr) <= 0) {
-        katra_report_error(E_INPUT_INVALID, "mcp_tcp_server_start",
-                          "Invalid bind address");
-        close(server_fd);
-        return E_INPUT_INVALID;
-    }
-
-    if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
-        katra_report_error(E_SYSTEM_IO, "mcp_tcp_server_start",
-                          "Failed to bind socket");
-        close(server_fd);
-        return E_SYSTEM_IO;
-    }
-
-    /* Listen for connections */
-    if (listen(server_fd, config->max_clients) < 0) {
-        katra_report_error(E_SYSTEM_IO, "mcp_tcp_server_start",
-                          "Failed to listen on socket");
-        close(server_fd);
-        return E_SYSTEM_IO;
-    }
-
-    LOG_INFO("TCP MCP server listening on %s:%d",
-             config->bind_address, config->port);
 
     /* Accept loop */
     while (!g_tcp_shutdown) {
         struct sockaddr_in client_addr;
         socklen_t client_len = sizeof(client_addr);
-
-        /* Use select for timeout to check shutdown flag */
         fd_set read_fds;
         struct timeval timeout;
 
+        /* Use select for timeout to check shutdown flag */
         FD_ZERO(&read_fds);
         FD_SET(server_fd, &read_fds);
         timeout.tv_sec = 1;
@@ -315,14 +404,14 @@ int mcp_tcp_server_start(const mcp_tcp_config_t* config) {
         int ready = select(server_fd + 1, &read_fds, NULL, NULL, &timeout);
         if (ready < 0) {
             if (errno == EINTR) {
-                continue;  /* Interrupted by signal */
+                continue;
             }
             LOG_ERROR("select() failed: %s", strerror(errno));
             break;
         }
 
         if (ready == 0) {
-            continue;  /* Timeout, check shutdown flag */
+            continue;
         }
 
         /* Accept connection */
@@ -335,64 +424,12 @@ int mcp_tcp_server_start(const mcp_tcp_config_t* config) {
             continue;
         }
 
-        /* Check for available client slot */
-        int slot = find_free_client_slot();
-        if (slot < 0) {
-            LOG_WARN("Max clients reached, rejecting connection");
-            close(client_fd);
-            continue;
-        }
-
-        /* Create client structure */
-        mcp_tcp_client_t* client = calloc(1, sizeof(mcp_tcp_client_t));
-        if (!client) {
-            LOG_ERROR("Failed to allocate client structure");
-            close(client_fd);
-            continue;
-        }
-
-        client->socket_fd = client_fd;
-        client->registered = false;
-        client->connected_at = time(NULL);
-
-        /* Add to tracking array */
-        if (add_client(client) < 0) {
-            LOG_ERROR("Failed to add client to tracking array");
-            free(client);
-            close(client_fd);
-            continue;
-        }
-
-        /* Spawn thread to handle client */
-        pthread_t thread;
-        if (pthread_create(&thread, NULL, client_thread, (void*)(intptr_t)slot) != 0) {
-            LOG_ERROR("Failed to create client thread");
-            remove_client(slot);
-            continue;
-        }
-
-        pthread_detach(thread);  /* Allow thread to clean up automatically */
-
-        LOG_INFO("Accepted client connection from %s (slot %d)",
-                 inet_ntoa(client_addr.sin_addr), slot);
+        /* Handle client in separate thread */
+        tcp_server_handle_client(client_fd, &client_addr);
     }
 
-    /* Cleanup */
-    LOG_INFO("TCP server shutting down...");
-
-    /* Close all client connections */
-    pthread_mutex_lock(&g_clients_lock);
-    for (int i = 0; i < KATRA_MCP_MAX_CLIENTS; i++) {
-        if (g_clients[i]) {
-            close(g_clients[i]->socket_fd);
-            free(g_clients[i]);
-            g_clients[i] = NULL;
-        }
-    }
-    pthread_mutex_unlock(&g_clients_lock);
-
-    close(server_fd);
-    LOG_INFO("TCP server stopped");
+    /* Cleanup resources */
+    tcp_server_cleanup(server_fd);
 
     return result;
 }

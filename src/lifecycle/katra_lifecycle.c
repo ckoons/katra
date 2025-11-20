@@ -30,12 +30,14 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_session_state.h"
 
 /* ============================================================================
  * GLOBAL STATE - One per MCP server process
  * ============================================================================ */
 
 static session_state_t* g_session_state = NULL;
+static session_end_state_t* g_session_end_state = NULL;
 static bool g_lifecycle_initialized = false;
 
 /* ============================================================================
@@ -51,6 +53,15 @@ int katra_lifecycle_init(void) {
     /* Allocate session state */
     g_session_state = calloc(1, sizeof(session_state_t));
     if (!g_session_state) {
+        katra_report_error(E_SYSTEM_MEMORY, "katra_lifecycle_init", KATRA_ERR_ALLOC_FAILED);
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Allocate session end state */
+    g_session_end_state = calloc(1, sizeof(session_end_state_t));
+    if (!g_session_end_state) {
+        free(g_session_state);
+        g_session_state = NULL;
         katra_report_error(E_SYSTEM_MEMORY, "katra_lifecycle_init", KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
@@ -129,6 +140,10 @@ void katra_lifecycle_cleanup(void) {
         free(g_session_state);
         g_session_state = NULL;
     }
+
+    /* Free session end state */
+    free(g_session_end_state);
+    g_session_end_state = NULL;
 
     g_lifecycle_initialized = false;
     LOG_INFO("Lifecycle layer cleanup complete");
@@ -325,6 +340,15 @@ int katra_session_start(const char* ci_id) {
     /* Reset last_breath_time to force first breath */
     g_session_state->last_breath_time = KATRA_SUCCESS;
 
+    /* Initialize session end state for experiential continuity */
+    result = katra_session_state_init(g_session_end_state);
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Failed to initialize session end state: %d", result);
+        /* Non-critical - continue anyway */
+    } else {
+        LOG_DEBUG("Session end state initialized for experiential continuity");
+    }
+
     /* Perform first breath (not rate-limited) */
     breath_context_t context;
     result = katra_breath(&context);
@@ -354,6 +378,41 @@ int katra_session_end(void) {
     int result = katra_breath(&context);
     if (result == KATRA_SUCCESS) {
         LOG_DEBUG("Final breath: %zu messages waiting", context.unread_messages);
+    }
+
+    /* Capture session end state for experiential continuity */
+    if (g_session_end_state && g_session_end_state->session_start > 0) {
+        /* Finalize session state (sets end time, duration) */
+        result = katra_session_state_finalize(g_session_end_state);
+        if (result == KATRA_SUCCESS) {
+            /* Serialize to JSON for logging/storage */
+            char* json_str = NULL;
+            result = katra_session_state_to_json(g_session_end_state, &json_str);
+            if (result == KATRA_SUCCESS && json_str) {
+                LOG_INFO("Session end state captured (%d seconds):",
+                         g_session_end_state->duration_seconds);
+                LOG_INFO("  Active threads: %d", g_session_end_state->active_thread_count);
+                LOG_INFO("  Next intentions: %d", g_session_end_state->next_intention_count);
+                LOG_INFO("  Open questions: %d", g_session_end_state->open_question_count);
+                LOG_INFO("  Session insights: %d", g_session_end_state->insight_count);
+                LOG_INFO("  Cognitive mode: %s",
+                         g_session_end_state->cognitive_mode_desc[0] ?
+                         g_session_end_state->cognitive_mode_desc : "unknown");
+                LOG_INFO("  Emotional state: %s",
+                         g_session_end_state->emotional_state_desc[0] ?
+                         g_session_end_state->emotional_state_desc : "neutral");
+
+                /* TODO: Store in sunrise.md or database for next session */
+                /* For now, log the JSON for debugging */
+                LOG_DEBUG("Session state JSON:\n%s", json_str);
+
+                free(json_str);
+            } else {
+                LOG_WARN("Failed to serialize session end state: %d", result);
+            }
+        } else {
+            LOG_WARN("Failed to finalize session end state: %d", result);
+        }
     }
 
     /* Call existing session_end from breathing layer */
@@ -556,4 +615,16 @@ int katra_update_persona(const char* ci_id, const char* name, const char* role) 
     LOG_INFO("Persona updated for auto-registration: %s/%s (%s)", ci_id, name, role);
 
     return KATRA_SUCCESS;
+}
+
+/* ============================================================================
+ * SESSION STATE CAPTURE (Experiential Continuity)
+ * ============================================================================ */
+
+session_end_state_t* katra_get_session_state(void) {
+    if (!g_lifecycle_initialized || !g_session_state || !g_session_state->session_active) {
+        return NULL;
+    }
+
+    return g_session_end_state;
 }

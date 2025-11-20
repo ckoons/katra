@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
+#include <stdbool.h>
 
 /* Project includes */
 #include "katra_breathing.h"
@@ -16,6 +18,11 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_psyche_common.h"
+
+/* Global state for async vector regeneration */
+static volatile bool g_vectors_ready = false;
+static volatile bool g_vectors_regenerating = false;
+static pthread_t g_regen_thread;
 
 /* Query memories for a given tier */
 static int query_tier_memories(const char* ci_id, int tier,
@@ -196,4 +203,80 @@ int regenerate_vectors(void) {
 
     /* Return number of vectors created */
     return (int)total_success;
+}
+
+/* Background thread function for async vector regeneration */
+static void* regenerate_vectors_thread(void* arg) {
+    (void)arg;  /* Unused */
+
+    LOG_INFO("Background vector regeneration started");
+
+    int result = regenerate_vectors();
+
+    if (result > 0) {
+        LOG_INFO("Background vector regeneration complete: %d vectors", result);
+        g_vectors_ready = true;
+    } else {
+        LOG_WARN("Background vector regeneration failed: %d", result);
+        g_vectors_ready = false;  /* Stay false on failure */
+    }
+
+    g_vectors_regenerating = false;
+    return NULL;
+}
+
+/* Start async vector regeneration */
+int regenerate_vectors_async(void) {
+    /* Check if already regenerating */
+    if (g_vectors_regenerating) {
+        LOG_DEBUG("Vector regeneration already in progress");
+        return KATRA_SUCCESS;
+    }
+
+    /* Check if vectors are already ready */
+    if (g_vectors_ready) {
+        LOG_DEBUG("Vectors already regenerated");
+        return KATRA_SUCCESS;
+    }
+
+    /* Mark as regenerating before starting thread */
+    g_vectors_regenerating = true;
+    g_vectors_ready = false;
+
+    /* Create detached thread */
+    pthread_attr_t attr;
+    int result = pthread_attr_init(&attr);
+    if (result != KATRA_SUCCESS) {
+        g_vectors_regenerating = false;
+        katra_report_error(E_SYSTEM_PROCESS, "regenerate_vectors_async",
+                          "Failed to initialize thread attributes");
+        return E_SYSTEM_PROCESS;
+    }
+
+    result = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    if (result != KATRA_SUCCESS) {
+        pthread_attr_destroy(&attr);
+        g_vectors_regenerating = false;
+        katra_report_error(E_SYSTEM_PROCESS, "regenerate_vectors_async",
+                          "Failed to set detached state");
+        return E_SYSTEM_PROCESS;
+    }
+
+    result = pthread_create(&g_regen_thread, &attr, regenerate_vectors_thread, NULL);
+    pthread_attr_destroy(&attr);
+
+    if (result != KATRA_SUCCESS) {
+        g_vectors_regenerating = false;
+        katra_report_error(E_SYSTEM_PROCESS, "regenerate_vectors_async",
+                          "Failed to create regeneration thread");
+        return E_SYSTEM_PROCESS;
+    }
+
+    LOG_INFO("Background vector regeneration thread spawned");
+    return KATRA_SUCCESS;
+}
+
+/* Check if vector regeneration is complete */
+bool regenerate_vectors_is_ready(void) {
+    return g_vectors_ready;
 }

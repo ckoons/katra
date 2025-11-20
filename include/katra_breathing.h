@@ -1138,6 +1138,25 @@ int share_memory_with(const char** ci_ids, size_t count);
  */
 int regenerate_vectors(void);
 
+/*
+ * regenerate_vectors_async - Start vector regeneration in background thread
+ *
+ * Spawns a detached thread to regenerate vectors without blocking.
+ * Useful for lazy initialization during MCP server startup.
+ *
+ * Returns:
+ *   KATRA_SUCCESS if thread spawned successfully, error code otherwise
+ */
+int regenerate_vectors_async(void);
+
+/*
+ * regenerate_vectors_is_ready - Check if vector regeneration is complete
+ *
+ * Returns:
+ *   true if vectors are ready for use, false if still regenerating or failed
+ */
+bool regenerate_vectors_is_ready(void);
+
 /* ============================================================================
  * KEYWORD ARRAYS - Pattern detection for significance detection
  * ============================================================================ */
