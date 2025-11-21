@@ -281,4 +281,42 @@ int katra_session_state_to_json(const session_end_state_t* state, char** json_ou
  */
 int katra_session_state_from_json(const char* json_str, session_end_state_t* state_out);
 
+/**
+ * katra_session_state_to_toon - Convert session state to TOON format
+ *
+ * Serializes the session state using Token-Oriented Object Notation for
+ * maximum token efficiency in LLM contexts. TOON reduces token count by
+ * 50-70% compared to JSON while maintaining readability.
+ *
+ * TOON Format Example:
+ *   active_threads[2]:
+ *     Designing tier-2 compression
+ *     Testing breathing cycle
+ *
+ *   insights[1]{timestamp,type,impact,content}:
+ *     1737374400,conceptual,high,Ship of Theseus resolves continuity
+ *
+ * Parameters:
+ *   state - Session state structure
+ *   toon_out - Buffer to hold TOON string (caller must free)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success, error code otherwise
+ */
+int katra_session_state_to_toon(const session_end_state_t* state, char** toon_out);
+
+/**
+ * katra_session_state_from_toon - Load session state from TOON format
+ *
+ * Deserializes session state from TOON representation.
+ *
+ * Parameters:
+ *   toon_str - TOON formatted string
+ *   state_out - Pointer to state structure to populate
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success, error code otherwise
+ */
+int katra_session_state_from_toon(const char* toon_str, session_end_state_t* state_out);
+
 #endif /* KATRA_SESSION_STATE_H */

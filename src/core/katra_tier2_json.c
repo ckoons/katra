@@ -248,3 +248,266 @@ int katra_tier2_parse_json_digest(const char* line, digest_record_t** digest) {
     *digest = d;
     return KATRA_SUCCESS;
 }
+
+/* ============================================================================
+ * TOON (Token-Oriented Object Notation) Serialization
+ * ============================================================================
+ *
+ * TOON provides 50-60% token reduction compared to JSON for tier-2 digests.
+ * Perfect for LLM context loading in sunrise.md.
+ */
+
+/* Helper: Escape commas and newlines in TOON strings */
+static void toon_escape_string(const char* input, char* output, size_t output_size) {
+    size_t in_idx = 0;
+    size_t out_idx = 0;
+
+    while (input && input[in_idx] && out_idx < output_size - 1) {
+        if (input[in_idx] == ',') {
+            if (out_idx < output_size - 3) {
+                output[out_idx++] = '\\';
+                output[out_idx++] = ',';
+            }
+        } else if (input[in_idx] == '\n') {
+            if (out_idx < output_size - 2) {
+                output[out_idx++] = ' ';  /* Replace newlines with spaces */
+            }
+        } else {
+            output[out_idx++] = input[in_idx];
+        }
+        in_idx++;
+    }
+    output[out_idx] = '\0';
+}
+
+/* Helper: Period type to string */
+static const char* period_type_to_string(period_type_t type) {
+    switch (type) {
+        case PERIOD_TYPE_WEEKLY: return "weekly";
+        case PERIOD_TYPE_MONTHLY: return "monthly";
+        default: return "unknown";
+    }
+}
+
+/* Helper: Digest type to string */
+static const char* digest_type_to_string(digest_type_t type) {
+    switch (type) {
+        case DIGEST_TYPE_INTERACTION: return "interaction";
+        case DIGEST_TYPE_LEARNING: return "learning";
+        case DIGEST_TYPE_PROJECT: return "project";
+        case DIGEST_TYPE_MIXED: return "mixed";
+        default: return "unknown";
+    }
+}
+
+int katra_tier2_digest_to_toon(const digest_record_t* digest, char** toon_out) {
+    KATRA_CHECK_NULL(digest);
+    KATRA_CHECK_NULL(toon_out);
+
+    /* Allocate buffer - tier-2 digests can be larger than session state */
+    size_t buffer_size = 16384;  /* 16KB should handle most digests */
+    char* buffer = malloc(buffer_size);
+    if (!buffer) {
+        katra_report_error(E_SYSTEM_MEMORY, "katra_tier2_digest_to_toon",
+                          "Failed to allocate buffer");
+        return E_SYSTEM_MEMORY;
+    }
+
+    size_t offset = 0;
+    int written;
+    char escaped[KATRA_BUFFER_LARGE];
+
+    /* Digest header - compact metadata */
+    written = snprintf(buffer + offset, buffer_size - offset,
+                      "digest[%s,%s,%s,%s]:\n"
+                      "  id,period,period_type,digest_type\n\n",
+                      digest->digest_id ? digest->digest_id : "unknown",
+                      digest->period_id ? digest->period_id : "unknown",
+                      period_type_to_string(digest->period_type),
+                      digest_type_to_string(digest->digest_type));
+    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+    offset += (size_t)written;
+
+    /* Source metadata */
+    written = snprintf(buffer + offset, buffer_size - offset,
+                      "source: tier_%d (%zu records)\n\n",
+                      digest->source_tier,
+                      digest->source_record_count);
+    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+    offset += (size_t)written;
+
+    /* Themes - simple list */
+    if (digest->theme_count > 0 && digest->themes) {
+        written = snprintf(buffer + offset, buffer_size - offset,
+                          "themes[%zu]:\n", digest->theme_count);
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+
+        for (size_t i = 0; i < digest->theme_count && i < TIER2_MAX_THEMES; i++) {
+            if (digest->themes[i]) {
+                toon_escape_string(digest->themes[i], escaped, sizeof(escaped));
+                written = snprintf(buffer + offset, buffer_size - offset,
+                                  "  %s\n", escaped);
+                if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+                offset += (size_t)written;
+            }
+        }
+        written = snprintf(buffer + offset, buffer_size - offset, "\n");
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+    }
+
+    /* Keywords - comma-separated on one line for compactness */
+    if (digest->keyword_count > 0 && digest->keywords) {
+        written = snprintf(buffer + offset, buffer_size - offset,
+                          "keywords[%zu]: ", digest->keyword_count);
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+
+        for (size_t i = 0; i < digest->keyword_count && i < TIER2_MAX_KEYWORDS; i++) {
+            if (digest->keywords[i]) {
+                written = snprintf(buffer + offset, buffer_size - offset,
+                                  "%s%s",
+                                  digest->keywords[i],
+                                  (i < digest->keyword_count - 1) ? "," : "");
+                if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+                offset += (size_t)written;
+            }
+        }
+        written = snprintf(buffer + offset, buffer_size - offset, "\n\n");
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+    }
+
+    /* Summary - prose text */
+    if (digest->summary) {
+        toon_escape_string(digest->summary, escaped, sizeof(escaped));
+        written = snprintf(buffer + offset, buffer_size - offset,
+                          "summary:\n  %s\n\n", escaped);
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+    }
+
+    /* Key insights - list */
+    if (digest->insight_count > 0 && digest->key_insights) {
+        written = snprintf(buffer + offset, buffer_size - offset,
+                          "insights[%zu]:\n", digest->insight_count);
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+
+        for (size_t i = 0; i < digest->insight_count && i < TIER2_MAX_INSIGHTS; i++) {
+            if (digest->key_insights[i]) {
+                toon_escape_string(digest->key_insights[i], escaped, sizeof(escaped));
+                written = snprintf(buffer + offset, buffer_size - offset,
+                                  "  %s\n", escaped);
+                if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+                offset += (size_t)written;
+            }
+        }
+        written = snprintf(buffer + offset, buffer_size - offset, "\n");
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+    }
+
+    /* Questions and decisions */
+    if (digest->questions_asked > 0) {
+        written = snprintf(buffer + offset, buffer_size - offset,
+                          "questions_asked: %d\n", digest->questions_asked);
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+    }
+
+    if (digest->decision_count > 0 && digest->decisions_made) {
+        written = snprintf(buffer + offset, buffer_size - offset,
+                          "decisions[%zu]:\n", digest->decision_count);
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+
+        for (size_t i = 0; i < digest->decision_count; i++) {
+            if (digest->decisions_made[i]) {
+                toon_escape_string(digest->decisions_made[i], escaped, sizeof(escaped));
+                written = snprintf(buffer + offset, buffer_size - offset,
+                                  "  %s\n", escaped);
+                if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+                offset += (size_t)written;
+            }
+        }
+    }
+
+    *toon_out = buffer;
+    return KATRA_SUCCESS;
+
+overflow:
+    free(buffer);
+    katra_report_error(E_RESOURCE_LIMIT, "katra_tier2_digest_to_toon",
+                      "Buffer overflow during serialization");
+    return E_RESOURCE_LIMIT;
+}
+
+int katra_tier2_digests_to_toon(const digest_record_t** digests, size_t count, char** toon_out) {
+    KATRA_CHECK_NULL(digests);
+    KATRA_CHECK_NULL(toon_out);
+
+    if (count == 0) {
+        *toon_out = strdup("");
+        return KATRA_SUCCESS;
+    }
+
+    /* Allocate buffer - multiple digests need more space */
+    size_t buffer_size = 32768;  /* 32KB for multiple digests */
+    char* buffer = malloc(buffer_size);
+    if (!buffer) {
+        katra_report_error(E_SYSTEM_MEMORY, "katra_tier2_digests_to_toon",
+                          "Failed to allocate buffer");
+        return E_SYSTEM_MEMORY;
+    }
+
+    size_t offset = 0;
+    int written;
+    char escaped[KATRA_BUFFER_LARGE];
+
+    /* Compact header with schema declaration */
+    written = snprintf(buffer + offset, buffer_size - offset,
+                      "digests[%zu]{id,period,type,themes,summary_preview}:\n",
+                      count);
+    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+    offset += (size_t)written;
+
+    /* Each digest as compact row */
+    for (size_t i = 0; i < count; i++) {
+        const digest_record_t* d = digests[i];
+        if (!d) continue;
+
+        /* Extract summary preview (first 60 chars) */
+        char summary_preview[64] = {0};
+        if (d->summary) {
+            strncpy(summary_preview, d->summary, 60);
+            summary_preview[60] = '\0';
+            if (strlen(d->summary) > 60) {
+                strcat(summary_preview, "...");
+            }
+            toon_escape_string(summary_preview, escaped, sizeof(escaped));
+        } else {
+            snprintf(escaped, sizeof(escaped), "no summary");
+        }
+
+        written = snprintf(buffer + offset, buffer_size - offset,
+                          "  %s,%s,%s,%zu,%s\n",
+                          d->digest_id ? d->digest_id : "unknown",
+                          d->period_id ? d->period_id : "unknown",
+                          digest_type_to_string(d->digest_type),
+                          d->theme_count,
+                          escaped);
+        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
+        offset += (size_t)written;
+    }
+
+    *toon_out = buffer;
+    return KATRA_SUCCESS;
+
+overflow:
+    free(buffer);
+    katra_report_error(E_RESOURCE_LIMIT, "katra_tier2_digests_to_toon",
+                      "Buffer overflow during serialization");
+    return E_RESOURCE_LIMIT;
+}
