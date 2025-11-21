@@ -61,9 +61,14 @@ test-quick: test-env test-config test-error test-log test-init test-memory test-
 	@echo "All tests passed!"
 	@echo "========================================"
 
-test: test-quick
+test: test-quick test-cli
 
-test-all: test-quick
+test-all: test-quick test-cli
+
+# Katra CLI tests
+test-cli:
+	@echo "Running katra-cli tests..."
+	@./tests/test_katra_cli.sh
 
 # Individual test targets
 test-env: $(TEST_ENV)

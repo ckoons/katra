@@ -20,7 +20,7 @@ include Makefile.test
 # PHONY TARGETS
 # ==============================================================================
 
-.PHONY: all clean help test test-quick mcp-server \
+.PHONY: all clean help test test-quick test-cli mcp-server \
         benchmark benchmark-reflection benchmark-vector \
         count-report programming-guidelines check check-ready improvement-scan \
         install-mcp restart-mcp install-k install-all uninstall-k \
