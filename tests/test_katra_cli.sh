@@ -14,7 +14,7 @@ KATRA_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 # Test configuration
 CLI="$KATRA_ROOT/bin/katra-cli"
 MCP_SERVER="$KATRA_ROOT/bin/katra_mcp_server"
-TEST_PORT=3141
+TEST_PORT="${KATRA_MCP_PORT:-3141}"  # Use existing port or default to 3141
 TEST_LOG="/tmp/katra_cli_test_$$.log"
 STATE_DIR="$HOME/.katra"
 
@@ -35,10 +35,12 @@ cleanup() {
     echo ""
     echo "Cleanup..."
 
-    # Stop MCP server
+    # Stop MCP server only if we started it
     if [ -n "${MCP_PID:-}" ]; then
         kill $MCP_PID 2>/dev/null || true
-        echo -e "  ${GREEN}✓${NC} Stopped MCP server"
+        echo -e "  ${GREEN}✓${NC} Stopped test MCP server"
+    else
+        echo -e "  ${BLUE}→${NC} Left existing MCP server running"
     fi
 
     # Clean state
@@ -59,18 +61,22 @@ run_test() {
 
     TESTS_RUN=$((TESTS_RUN + 1))
 
-    # Run command and capture output
+    # Run command and capture output (strip ANSI color codes for matching)
     local output
+    local output_clean
     if output=$(eval "$test_cmd" 2>&1); then
+        # Strip ANSI color codes for pattern matching
+        output_clean=$(echo "$output" | sed 's/\x1b\[[0-9;]*m//g')
+
         # Check if output matches expected pattern
-        if echo "$output" | grep -q "$expected_pattern"; then
+        if echo "$output_clean" | grep -q "$expected_pattern"; then
             echo -e "  ${GREEN}✓${NC} Test $TESTS_RUN: $test_name"
             TESTS_PASSED=$((TESTS_PASSED + 1))
             return 0
         else
             echo -e "  ${RED}✗${NC} Test $TESTS_RUN: $test_name (output mismatch)"
             echo "    Expected pattern: $expected_pattern"
-            echo "    Got: $output"
+            echo "    Got: $output_clean"
             TESTS_FAILED=$((TESTS_FAILED + 1))
             return 1
         fi
@@ -115,21 +121,38 @@ main() {
     rm -f "$STATE_DIR/.human_"*
     echo -e "  ${GREEN}✓${NC} Cleaned state directory"
 
-    # Start TCP MCP server
-    cd "$KATRA_ROOT"
-    "$MCP_SERVER" --tcp --port $TEST_PORT > "$TEST_LOG" 2>&1 &
-    MCP_PID=$!
+    # Check if server is already running on the port
+    if lsof -Pi :$TEST_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+        echo -e "  ${BLUE}→${NC} Using existing TCP MCP server on port $TEST_PORT"
+        MCP_PID=""  # Don't manage existing server
+    else
+        # Start TCP MCP server
+        cd "$KATRA_ROOT"
+        "$MCP_SERVER" --tcp --port $TEST_PORT > "$TEST_LOG" 2>&1 &
+        MCP_PID=$!
 
-    # Wait for server to be ready
-    sleep 2
+        # Wait for server to be ready
+        local count=0
+        while [ $count -lt 10 ]; do
+            if lsof -Pi :$TEST_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+                break
+            fi
+            sleep 0.5
+            count=$((count + 1))
+        done
 
-    if ! ps -p $MCP_PID > /dev/null; then
-        echo -e "${RED}Error: MCP server failed to start${NC}"
-        cat "$TEST_LOG"
-        exit 1
+        # Check if server started successfully
+        if ! lsof -Pi :$TEST_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+            echo -e "${RED}Error: MCP server failed to start on port $TEST_PORT${NC}"
+            if [ -f "$TEST_LOG" ]; then
+                echo "Log output:"
+                cat "$TEST_LOG"
+            fi
+            exit 1
+        fi
+
+        echo -e "  ${GREEN}✓${NC} Started TCP MCP server (PID: $MCP_PID)"
     fi
-
-    echo -e "  ${GREEN}✓${NC} Starting TCP MCP server (PID: $MCP_PID)"
 
     # Set environment for tests
     export KATRA_MCP_PORT=$TEST_PORT

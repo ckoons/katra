@@ -25,14 +25,26 @@ This document describes how to test the `katra-cli` human interface tool. Tests 
 
 ## Running Tests
 
-### Quick Test (Make Target)
+### Quick Test (Make Targets)
 
 ```bash
 cd /Users/cskoons/projects/github/katra
+
+# Run CLI tests (uses existing server if available)
 make test-cli
+
+# Run CLI tests with clean server restart
+make test-cli-clean
+
+# Run all tests (core + CLI)
+make test
 ```
 
-This runs the automated test suite and reports results.
+The test suite will:
+- Use existing TCP MCP server on port 3141 if running
+- Start a new server if none exists
+- Only clean up servers it started
+- Leave existing servers running
 
 ### Manual Test Suite
 

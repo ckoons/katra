@@ -66,8 +66,14 @@ test: test-quick test-cli
 test-all: test-quick test-cli
 
 # Katra CLI tests
-test-cli:
+test-cli: $(MCP_SERVER)
 	@echo "Running katra-cli tests..."
+	@./tests/test_katra_cli.sh
+
+# CLI tests with server restart
+test-cli-clean: $(MCP_SERVER) restart-mcp
+	@sleep 2
+	@echo "Running katra-cli tests (with clean server)..."
 	@./tests/test_katra_cli.sh
 
 # Individual test targets
