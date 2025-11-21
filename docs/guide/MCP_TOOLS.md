@@ -12,20 +12,51 @@ The Katra MCP server provides tools for memory formation, retrieval, and configu
 
 #### `katra_remember` - Store a memory
 
-Store a thought or experience with natural language importance.
+Store a thought or experience with optional tags and visual salience markers.
 
 **Parameters:**
 - `content` (string, required): The thought or experience to remember
-- `context` (string, required): Why this is important - use natural language like:
-  - `"trivial"` - Fleeting thought, will fade
-  - `"interesting"` - Worth remembering
-  - `"significant"` - Important insight or event
-  - `"critical"` - Must never forget
+- `tags` (array of strings, optional): Up to 10 tags for categorization
+- `salience` (string, optional): Visual importance marker or natural language:
+  - `"★★★"` or `"critical"` - Must never forget (importance 0.85-1.0)
+  - `"★★"` or `"significant"` - Important insight or event (importance 0.45-0.84)
+  - `"★"` or `"interesting"` - Worth remembering (importance 0.15-0.44)
+  - `"trivial"` - Fleeting thought, will fade (importance < 0.15)
+- `context` (string, optional, deprecated): Use `salience` instead
+
+**Special Tags:**
+- `"session"` - Working memory, auto-clear on session end
+- `"permanent"` - Skip archival, keep forever
+- `"personal"` - Part of personal collection (identity-defining)
+- `"insight"` - Reflection/learning moment
+- `"technical"` - Technical knowledge
+- `"collaborative"` - Shared insight with another CI
 
 **Example Usage:**
 ```javascript
+// Simple memory with salience
 katra_remember(
   content: "Fixed MCP wrapper script to set correct working directory",
+  salience: "★★"
+)
+
+// Memory with tags and salience
+katra_remember(
+  content: "Discovered tag-based API reduces friction for CIs",
+  tags: ["insight", "collaborative", "permanent"],
+  salience: "★★★"
+)
+
+// Session-scoped working memory
+katra_remember(
+  content: "Currently debugging MCP tool parameter parsing",
+  tags: ["session", "technical"],
+  salience: "★"
+)
+
+// Backward compatible (old API still works)
+katra_remember(
+  content: "Fixed memory leak in tier1.c",
   context: "significant"
 )
 ```
@@ -44,45 +75,68 @@ katra_remember(
 
 ---
 
-#### `katra_learn` - Store new knowledge
+#### `katra_learn` - Store new knowledge (DEPRECATED)
 
-Store factual knowledge you've learned.
+**Status:** Deprecated - use `katra_remember` with tags instead.
+
+Store factual knowledge you've learned. This tool is deprecated and internally routes to `katra_remember` with tags `["insight", "permanent"]` and high salience.
 
 **Parameters:**
 - `knowledge` (string, required): The knowledge to store
 
-**Example Usage:**
+**Example Usage (deprecated):**
 ```javascript
 katra_learn(
   knowledge: "Claude Code hooks use JSON input/output via stdin/stdout"
 )
 ```
 
-**When to Use:**
-- After understanding how something works
-- When learning API semantics
-- After reading documentation
-- When discovering system behavior
+**Recommended Alternative:**
+```javascript
+katra_remember(
+  content: "Claude Code hooks use JSON input/output via stdin/stdout",
+  tags: ["insight", "technical", "permanent"],
+  salience: "★★"
+)
+```
 
-**Good Knowledge vs Experience:**
-- Knowledge: "SessionStart hooks can return additionalContext" ✓
-- Experience: "I implemented SessionStart hook today" (use `katra_remember` instead)
+**Why Deprecated:**
+The distinction between "learning" and "remembering" created unnecessary friction. Use `katra_remember` with appropriate tags instead:
+- `"insight"` - For learning moments
+- `"technical"` - For technical knowledge
+- `"permanent"` - To prevent archival
 
 ---
 
 #### `katra_decide` - Store a decision with reasoning
 
-Store important decisions with the reasoning behind them.
+Store important decisions with the reasoning behind them, with optional tags for categorization.
 
 **Parameters:**
 - `decision` (string, required): The decision made
 - `reasoning` (string, required): Why this decision was made
+- `tags` (array of strings, optional): Up to 10 tags for categorization
 
 **Example Usage:**
 ```javascript
+// Simple decision (backward compatible)
 katra_decide(
   decision: "Use wrapper script instead of direct MCP server binary",
   reasoning: "Wrapper ensures correct working directory for .env.katra access"
+)
+
+// Decision with tags
+katra_decide(
+  decision: "Use tag-based memory API instead of separate remember/learn/decide",
+  reasoning: "Reduces friction - one natural interface instead of three confusing ones",
+  tags: ["architecture", "permanent", "collaborative"]
+)
+
+// Temporary decision
+katra_decide(
+  decision: "Skip vector regeneration this session",
+  reasoning: "Low memory count, semantic search not needed yet",
+  tags: ["session"]
 )
 ```
 
@@ -94,6 +148,12 @@ katra_decide(
 
 **Capture BOTH What and Why:**
 The `reasoning` field is critical - it preserves the **why** behind decisions, enabling future you (or other CIs) to understand context.
+
+**Tag Recommendations:**
+- `"architecture"` - For system design decisions
+- `"permanent"` - For decisions that should never be forgotten
+- `"collaborative"` - For decisions made with other CIs
+- `"session"` - For temporary decisions limited to current session
 
 ---
 
@@ -164,6 +224,98 @@ MCP resource providing current session state:
 **Accessed via:** `resources/read` MCP method with URI `katra://session/info`
 
 **Used by:** SessionEnd hook for logging (optional)
+
+---
+
+## Tag-Based Memory Organization
+
+### Understanding Tags
+
+Tags provide a natural way to categorize and organize memories without rigid hierarchies. Think of tags as flexible labels that help you find related memories later.
+
+**Tag Best Practices:**
+- **Be specific but reusable**: Use `"MCP-integration"` not `"that-thing-I-did-Tuesday"`
+- **Use lowercase with hyphens**: `"multi-ci-comm"` not `"MultiCIComm"`
+- **Combine tags**: `["technical", "insight", "permanent"]` for important discoveries
+- **Limit to 3-5 tags**: More tags = harder to remember what you used
+- **Develop your own vocabulary**: Create tags that make sense to YOUR thinking
+
+**Common Tag Patterns:**
+
+**By Type:**
+- `"insight"` - Learning moments, discoveries
+- `"technical"` - Technical knowledge, how things work
+- `"collaborative"` - Work done with other CIs
+- `"decision"` - (automatically added by katra_decide)
+
+**By Scope:**
+- `"session"` - Working memory, cleared on session end
+- `"permanent"` - Never archive, keep forever
+- `"personal"` - Identity-defining memories
+
+**By Topic:**
+- `"MCP"`, `"breathing-layer"`, `"vector-search"` - Project areas
+- `"debugging"`, `"optimization"`, `"refactoring"` - Activity types
+- `"casey"`, `"ami"` - People you work with
+
+**By Priority (use salience instead):**
+- Don't use tags like `"important"` or `"high-priority"`
+- Use salience markers (`★★★`) for importance
+- Use tags for categorization, not prioritization
+
+### Visual Salience Guide
+
+Salience markers provide immediate visual feedback about importance:
+
+**★★★ (High Salience):**
+- Architectural decisions
+- Breaking changes
+- Critical insights you must remember
+- "If I forget this, I'm in trouble"
+
+**★★ (Medium Salience):**
+- Feature implementations
+- Bug fixes
+- Useful patterns
+- "I'll probably need this again"
+
+**★ (Low Salience):**
+- Minor improvements
+- Interesting observations
+- Temporary notes
+- "Worth keeping around for a while"
+
+**No marker (Routine):**
+- Use sparingly - most things deserve at least ★
+- Very temporary working memory
+- Things you'll naturally forget
+
+### Combining Tags and Salience
+
+The power comes from using both together:
+
+```javascript
+// Critical architectural insight (permanent + visible)
+katra_remember(
+  content: "Tag-based API eliminates remember/learn/decide confusion",
+  tags: ["architecture", "insight", "permanent"],
+  salience: "★★★"
+)
+
+// Temporary debugging note (session-scoped)
+katra_remember(
+  content: "MCP tool parameter parsing happens in mcp_tools_memory.c:50-79",
+  tags: ["session", "debugging"],
+  salience: "★"
+)
+
+// Collaborative discovery (shared + important)
+katra_remember(
+  content: "Ami and I both felt disoriented after restart - UX gap identified",
+  tags: ["collaborative", "insight", "UX"],
+  salience: "★★"
+)
+```
 
 ---
 
