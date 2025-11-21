@@ -119,6 +119,12 @@ typedef struct {
     char* context_resolution;    /* What did this resolve or clarify? */
     char* context_uncertainty;   /* What was I uncertain about before this? */
     char* related_to;            /* Record ID this connects to (NULL if standalone) */
+
+    /* Tag-based metadata - Phase 1: Working Memory */
+    char** tags;                 /* Array of tag strings */
+    size_t tag_count;            /* Number of tags */
+    char* salience_visual;       /* Visual salience: "★★★", "★★", "★" */
+    bool session_scoped;         /* Auto-clear on session end (derived from "session" tag) */
 } memory_record_t;
 
 /* Memory query parameters */
@@ -257,6 +263,24 @@ bool katra_memory_check_access(const memory_record_t* record,
  *   E_INTERNAL_NOTIMPL if archival not yet implemented
  */
 int katra_memory_archive(const char* ci_id, int max_age_days, size_t* archived_count);
+
+/**
+ * katra_memory_delete_session_scoped() - Delete all session-scoped memories
+ *
+ * Deletes all memory records marked with session_scoped=true flag.
+ * Called during session_end() to clear working memory.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   deleted_count - (output) Number of records deleted (may be NULL)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id is NULL
+ *   E_INVALID_STATE if memory subsystem not initialized
+ *   Error code on failure
+ */
+int katra_memory_delete_session_scoped(const char* ci_id, size_t* deleted_count);
 
 /* Create memory record (helper)
  *

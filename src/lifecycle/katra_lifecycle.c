@@ -30,12 +30,10 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
-#include "katra_session_state.h"
 
 /* ============================================================================
  * GLOBAL STATE - One per MCP server process
  * ============================================================================ */
-
 static session_state_t* g_session_state = NULL;
 static session_end_state_t* g_session_end_state = NULL;
 static bool g_lifecycle_initialized = false;
@@ -43,20 +41,17 @@ static bool g_lifecycle_initialized = false;
 /* ============================================================================
  * INITIALIZATION AND CLEANUP
  * ============================================================================ */
-
 int katra_lifecycle_init(void) {
     if (g_lifecycle_initialized) {
         LOG_DEBUG("Lifecycle layer already initialized");
         return E_ALREADY_INITIALIZED;
     }
-
     /* Allocate session state */
     g_session_state = calloc(1, sizeof(session_state_t));
     if (!g_session_state) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_lifecycle_init", KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
-
     /* Allocate session end state */
     g_session_end_state = calloc(1, sizeof(session_end_state_t));
     if (!g_session_end_state) {
@@ -65,7 +60,6 @@ int katra_lifecycle_init(void) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_lifecycle_init", KATRA_ERR_ALLOC_FAILED);
         return E_SYSTEM_MEMORY;
     }
-
     /* Initialize mutex */
     int result = pthread_mutex_init(&g_session_state->breath_lock, NULL);
     if (result != KATRA_SUCCESS) {
@@ -74,7 +68,6 @@ int katra_lifecycle_init(void) {
         g_session_state = NULL;
         return E_INTERNAL_LOGIC;
     }
-
     /* Read environment variables */
     const char* breath_interval_str = getenv(KATRA_ENV_BREATH_INTERVAL);
     if (breath_interval_str) {
@@ -95,7 +88,6 @@ int katra_lifecycle_init(void) {
     } else {
         g_session_state->breath_interval = KATRA_BREATH_INTERVAL_DEFAULT;
     }
-
     /* Set defaults */
     g_session_state->breathing_enabled = true;
     g_session_state->session_active = false;
@@ -140,7 +132,6 @@ void katra_lifecycle_cleanup(void) {
         free(g_session_state);
         g_session_state = NULL;
     }
-
     /* Free session end state */
     free(g_session_end_state);
     g_session_end_state = NULL;
@@ -148,7 +139,6 @@ void katra_lifecycle_cleanup(void) {
     g_lifecycle_initialized = false;
     LOG_INFO("Lifecycle layer cleanup complete");
 }
-
 /* ============================================================================
  * MESSAGE AWARENESS (NON-CONSUMING)
  * ============================================================================ */
@@ -159,7 +149,6 @@ void katra_lifecycle_cleanup(void) {
 /* ============================================================================
  * AUTONOMIC BREATHING WITH RATE LIMITING
  * ============================================================================ */
-
 int katra_breath(breath_context_t* context_out) {
     KATRA_CHECK_NULL(context_out);
 
@@ -176,7 +165,6 @@ int katra_breath(breath_context_t* context_out) {
         memcpy(context_out, &g_session_state->cached_context, sizeof(breath_context_t));
         return KATRA_SUCCESS;
     }
-
     /* Lock for thread safety */
     (void)pthread_mutex_lock(&g_session_state->breath_lock);
 
@@ -191,7 +179,6 @@ int katra_breath(breath_context_t* context_out) {
         LOG_DEBUG("Breath (cached): %zu messages waiting", context_out->unread_messages);
         return KATRA_SUCCESS;
     }
-
     /* Time to breathe - perform actual checks */
     LOG_DEBUG("Breath (actual check) - %ld seconds since last breath", (long)elapsed);
 
@@ -208,7 +195,6 @@ int katra_breath(breath_context_t* context_out) {
         LOG_WARN("katra_count_messages failed: %d", result);
         context.unread_messages = 0;
     }
-
     /* TODO: Add checkpoint age check (future enhancement) */
     context.last_checkpoint = KATRA_SUCCESS;
 
@@ -228,7 +214,6 @@ int katra_breath(breath_context_t* context_out) {
             /* Don't fail the breath - registration failure is non-critical */
         }
     }
-
     /* Periodic stale entry cleanup (Phase 4.5.1) */
     /* Clean up CI registrations not seen in last 5 minutes */
     int cleanup_result = katra_cleanup_stale_registrations();
@@ -236,7 +221,6 @@ int katra_breath(breath_context_t* context_out) {
         LOG_DEBUG("Stale registration cleanup failed: %d", cleanup_result);
         /* Non-critical - continue anyway */
     }
-
     /* Update cached context and last breath time */
     memcpy(&g_session_state->cached_context, &context, sizeof(breath_context_t));
     g_session_state->last_breath_time = now;
@@ -252,11 +236,9 @@ int katra_breath(breath_context_t* context_out) {
 
     return KATRA_SUCCESS;
 }
-
 /* ============================================================================
  * LIFECYCLE WRAPPERS
  * ============================================================================ */
-
 int katra_session_start(const char* ci_id) {
     KATRA_CHECK_NULL(ci_id);
 
@@ -281,7 +263,6 @@ int katra_session_start(const char* ci_id) {
     if (!role) {
         role = "developer";  /* Default role */
     }
-
     /* Store persona info for auto-registration */
     g_session_state->persona_name = strdup(persona);
     if (!g_session_state->persona_name) {
@@ -311,7 +292,6 @@ int katra_session_start(const char* ci_id) {
         g_session_state->persona_role = NULL;
         return result;
     }
-
     /* Store session identity */
     g_session_state->ci_id = strdup(ci_id);
     if (!g_session_state->ci_id) {
@@ -322,7 +302,6 @@ int katra_session_start(const char* ci_id) {
         g_session_state->persona_role = NULL;
         return E_SYSTEM_MEMORY;
     }
-
     /* Generate session ID (matching breathing layer format) */
     char session_id_buf[KATRA_BUFFER_MEDIUM];
     snprintf(session_id_buf, sizeof(session_id_buf), "%s_%ld", ci_id, (long)time(NULL));
@@ -333,7 +312,6 @@ int katra_session_start(const char* ci_id) {
         session_end();
         return E_SYSTEM_MEMORY;
     }
-
     /* Mark session as active */
     g_session_state->session_active = true;
 
@@ -348,7 +326,6 @@ int katra_session_start(const char* ci_id) {
     } else {
         LOG_DEBUG("Session end state initialized for experiential continuity");
     }
-
     /* Perform first breath (not rate-limited) */
     breath_context_t context;
     result = katra_breath(&context);
@@ -360,7 +337,6 @@ int katra_session_start(const char* ci_id) {
 
     return KATRA_SUCCESS;
 }
-
 int katra_session_end(void) {
     if (!g_lifecycle_initialized) {
         return E_INVALID_STATE;
@@ -379,7 +355,6 @@ int katra_session_end(void) {
     if (result == KATRA_SUCCESS) {
         LOG_DEBUG("Final breath: %zu messages waiting", context.unread_messages);
     }
-
     /* Capture session end state for experiential continuity */
     if (g_session_end_state && g_session_end_state->session_start > 0) {
         /* Finalize session state (sets end time, duration) */
@@ -414,7 +389,6 @@ int katra_session_end(void) {
             LOG_WARN("Failed to finalize session end state: %d", result);
         }
     }
-
     /* Call existing session_end from breathing layer */
     /* This handles: sunset, consolidation, cleanup, unregister */
     result = session_end();
@@ -422,7 +396,6 @@ int katra_session_end(void) {
         LOG_WARN("session_end failed: %d", result);
         /* Continue with cleanup anyway */
     }
-
     /* Clear session state */
     free(g_session_state->ci_id);
     free(g_session_state->session_id);
@@ -440,11 +413,9 @@ int katra_session_end(void) {
 
     return result;
 }
-
 /* ============================================================================
  * TURN BOUNDARIES (Phase 3)
  * ============================================================================ */
-
 int katra_turn_start(void) {
     if (!g_lifecycle_initialized) {
         return E_INVALID_STATE;
@@ -462,7 +433,6 @@ int katra_turn_start(void) {
         LOG_WARN("begin_turn failed: %d", result);
         /* Continue anyway - turn tracking is non-critical */
     }
-
     /* Autonomic breathing at turn start (rate-limited) */
     breath_context_t context;
     result = katra_breath(&context);
@@ -472,7 +442,6 @@ int katra_turn_start(void) {
 
     return KATRA_SUCCESS;
 }
-
 int katra_turn_end(void) {
     if (!g_lifecycle_initialized) {
         return E_INVALID_STATE;
@@ -490,7 +459,6 @@ int katra_turn_end(void) {
     if (result == KATRA_SUCCESS) {
         LOG_DEBUG("Turn end breath: %zu messages waiting", context.unread_messages);
     }
-
     /* Call underlying end_turn from breathing layer */
     result = end_turn();
     if (result != KATRA_SUCCESS) {
@@ -500,11 +468,9 @@ int katra_turn_end(void) {
 
     return KATRA_SUCCESS;
 }
-
 /* ============================================================================
  * TESTING AND DEBUGGING
  * ============================================================================ */
-
 int katra_set_breath_interval(int seconds) {
     if (!g_lifecycle_initialized) {
         return E_INVALID_STATE;
@@ -524,7 +490,6 @@ int katra_set_breath_interval(int seconds) {
 
     return KATRA_SUCCESS;
 }
-
 int katra_get_breath_interval(void) {
     if (!g_lifecycle_initialized || !g_session_state) {
         return KATRA_BREATH_INTERVAL_DEFAULT;
@@ -536,7 +501,6 @@ int katra_get_breath_interval(void) {
 
     return interval;
 }
-
 int katra_force_breath(breath_context_t* context_out) {
     KATRA_CHECK_NULL(context_out);
 
@@ -561,7 +525,6 @@ int katra_force_breath(breath_context_t* context_out) {
     /* Perform breath (will do actual check now) */
     return katra_breath(context_out);
 }
-
 int katra_update_persona(const char* ci_id, const char* name, const char* role) {
     if (!ci_id || !name || !role) {
         return E_INPUT_NULL;
@@ -582,7 +545,6 @@ int katra_update_persona(const char* ci_id, const char* name, const char* role) 
                           "Failed to allocate ci_id");
         return E_SYSTEM_MEMORY;
     }
-
     /* Free old persona strings */
     free(g_session_state->persona_name);
     free(g_session_state->persona_role);
@@ -606,7 +568,6 @@ int katra_update_persona(const char* ci_id, const char* name, const char* role) 
                           "Failed to allocate persona_role");
         return E_SYSTEM_MEMORY;
     }
-
     /* Mark session as active (needed when register bypasses katra_session_start) */
     g_session_state->session_active = true;
 
@@ -616,7 +577,6 @@ int katra_update_persona(const char* ci_id, const char* name, const char* role) 
 
     return KATRA_SUCCESS;
 }
-
 /* ============================================================================
  * SESSION STATE CAPTURE (Experiential Continuity)
  * ============================================================================ */

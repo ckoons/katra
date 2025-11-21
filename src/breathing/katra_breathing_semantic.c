@@ -274,3 +274,245 @@ int remember_with_semantic_note(const char* thought,
 
     return result;
 }
+
+/* ============================================================================
+ * Tag-Based Memory API (Phase 1: Working Memory)
+ * ============================================================================ */
+
+/**
+ * Helper: Map salience string to visual marker
+ *
+ * Converts semantic importance strings or visual markers to canonical form.
+ */
+static const char* map_salience_to_visual(const char* salience) {
+    if (!salience) {
+        return NULL;  /* Routine importance */
+    }
+
+    /* Already a visual marker? Return as-is */
+    if (strcmp(salience, SALIENCE_HIGH) == 0 ||
+        strcmp(salience, SALIENCE_MEDIUM) == 0 ||
+        strcmp(salience, SALIENCE_LOW) == 0) {
+        return salience;
+    }
+
+    /* Parse semantic string (reuse existing logic) */
+    why_remember_t why_enum = string_to_why_enum(salience);
+    float importance = why_to_importance(why_enum);
+
+    /* Map to visual marker based on importance thresholds */
+    if (importance >= IMPORTANCE_THRESHOLD_HIGH) {
+        return SALIENCE_HIGH;
+    } else if (importance >= IMPORTANCE_THRESHOLD_MEDIUM) {
+        return SALIENCE_MEDIUM;
+    } else if (importance >= IMPORTANCE_THRESHOLD_LOW) {
+        return SALIENCE_LOW;
+    }
+
+    return NULL;  /* Below low threshold = routine */
+}
+
+/**
+ * Helper: Check if tags array contains a specific tag
+ */
+static bool has_tag(const char** tags, size_t tag_count, const char* tag_name) {
+    if (!tags || !tag_name) {
+        return false;
+    }
+
+    for (size_t i = 0; i < tag_count; i++) {
+        if (tags[i] && strcmp(tags[i], tag_name) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int remember_with_tags(const char* content,
+                       const char** tags,
+                       size_t tag_count,
+                       const char* salience) {
+    KATRA_CHECK_NULL(content);
+
+    /* Validate tag count */
+    if (tag_count > KATRA_MAX_TAGS_PER_MEMORY) {
+        katra_report_error(E_INPUT_TOO_LARGE, "remember_with_tags",
+                          "Tag count exceeds maximum");
+        return E_INPUT_TOO_LARGE;
+    }
+
+    /* Map salience to visual marker and importance score */
+    const char* visual_marker = map_salience_to_visual(salience);
+    float importance = why_to_importance(string_to_why_enum(salience));
+
+    /* Create base memory record */
+    memory_record_t* record = katra_memory_create_record(
+        NULL,  /* CI ID filled by breathing_attach_session */
+        MEMORY_TYPE_EXPERIENCE,
+        content,
+        importance
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "remember_with_tags",
+                          "Failed to create memory record");
+        return E_SYSTEM_MEMORY;
+    }
+
+    int result = KATRA_SUCCESS;
+
+    /* Store tags */
+    if (tag_count > 0) {
+        record->tags = (char**)calloc(tag_count, sizeof(char*));
+        if (!record->tags) {
+            result = E_SYSTEM_MEMORY;
+            goto cleanup;
+        }
+
+        for (size_t i = 0; i < tag_count; i++) {
+            if (tags[i]) {
+                record->tags[i] = strdup(tags[i]);
+                if (!record->tags[i]) {
+                    result = E_SYSTEM_MEMORY;
+                    goto cleanup;
+                }
+            }
+        }
+        record->tag_count = tag_count;
+    }
+
+    /* Store visual salience marker */
+    if (visual_marker) {
+        record->salience_visual = strdup(visual_marker);
+        if (!record->salience_visual) {
+            result = E_SYSTEM_MEMORY;
+            goto cleanup;
+        }
+    }
+
+    /* Check for session-scoped tag */
+    record->session_scoped = has_tag(tags, tag_count, TAG_SESSION);
+
+    /* Check for permanent tag (affects archival) */
+    if (has_tag(tags, tag_count, TAG_PERMANENT)) {
+        record->marked_important = true;
+    }
+
+    /* Check for personal tag */
+    if (has_tag(tags, tag_count, TAG_PERSONAL)) {
+        record->personal = true;
+    }
+
+    /* Add session context */
+    result = breathing_attach_session(record);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
+    /* Store memory */
+    result = katra_memory_store(record);
+
+    if (result == KATRA_SUCCESS) {
+        /* Track semantic usage if salience was provided */
+        if (salience) {
+            why_remember_t why_enum = string_to_why_enum(salience);
+            breathing_track_semantic_remember(why_enum);
+        }
+    }
+
+cleanup:
+    katra_memory_free_record(record);
+    return result;
+}
+
+int decide_with_tags(const char* decision,
+                     const char* reasoning,
+                     const char** tags,
+                     size_t tag_count) {
+    KATRA_CHECK_NULL(decision);
+    KATRA_CHECK_NULL(reasoning);
+
+    /* Validate tag count */
+    if (tag_count > KATRA_MAX_TAGS_PER_MEMORY) {
+        katra_report_error(E_INPUT_TOO_LARGE, "decide_with_tags",
+                          "Tag count exceeds maximum");
+        return E_INPUT_TOO_LARGE;
+    }
+
+    /* Create decision memory record with high importance */
+    memory_record_t* record = katra_memory_create_record(
+        NULL,  /* CI ID filled by breathing_attach_session */
+        MEMORY_TYPE_DECISION,
+        decision,
+        MEMORY_IMPORTANCE_HIGH
+    );
+
+    if (!record) {
+        katra_report_error(E_SYSTEM_MEMORY, "decide_with_tags",
+                          "Failed to create memory record");
+        return E_SYSTEM_MEMORY;
+    }
+
+    int result = KATRA_SUCCESS;
+
+    /* Store reasoning in importance_note field */
+    record->importance_note = strdup(reasoning);
+    if (!record->importance_note) {
+        result = E_SYSTEM_MEMORY;
+        goto cleanup;
+    }
+
+    /* Store tags */
+    if (tag_count > 0) {
+        record->tags = (char**)calloc(tag_count, sizeof(char*));
+        if (!record->tags) {
+            result = E_SYSTEM_MEMORY;
+            goto cleanup;
+        }
+
+        for (size_t i = 0; i < tag_count; i++) {
+            if (tags[i]) {
+                record->tags[i] = strdup(tags[i]);
+                if (!record->tags[i]) {
+                    result = E_SYSTEM_MEMORY;
+                    goto cleanup;
+                }
+            }
+        }
+        record->tag_count = tag_count;
+    }
+
+    /* Decisions get high visual salience by default */
+    record->salience_visual = strdup(SALIENCE_HIGH);
+    if (!record->salience_visual) {
+        result = E_SYSTEM_MEMORY;
+        goto cleanup;
+    }
+
+    /* Check for session-scoped tag */
+    record->session_scoped = has_tag(tags, tag_count, TAG_SESSION);
+
+    /* Decisions are important by default, but check for permanent tag */
+    if (has_tag(tags, tag_count, TAG_PERMANENT)) {
+        record->marked_important = true;
+    }
+
+    /* Check for personal tag */
+    if (has_tag(tags, tag_count, TAG_PERSONAL)) {
+        record->personal = true;
+    }
+
+    /* Add session context */
+    result = breathing_attach_session(record);
+    if (result != KATRA_SUCCESS) {
+        goto cleanup;
+    }
+
+    /* Store memory */
+    result = katra_memory_store(record);
+
+cleanup:
+    katra_memory_free_record(record);
+    return result;
+}

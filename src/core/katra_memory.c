@@ -21,7 +21,7 @@
 #include "katra_env_utils.h"
 
 /* Global state */
-static bool memory_initialized = false;
+bool memory_initialized = false;  /* Exported for katra_memory_ops.c */
 static bool tier2_enabled = false;
 static char current_ci_id[KATRA_BUFFER_MEDIUM];
 

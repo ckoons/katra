@@ -481,10 +481,14 @@ int katra_tier2_digests_to_toon(const digest_record_t** digests, size_t count, c
         /* Extract summary preview (first 60 chars) */
         char summary_preview[64] = {0};
         if (d->summary) {
-            strncpy(summary_preview, d->summary, 60);
-            summary_preview[60] = '\0';
-            if (strlen(d->summary) > 60) {
-                strcat(summary_preview, "...");
+            size_t len = strlen(d->summary);
+            if (len > 60) {
+                strncpy(summary_preview, d->summary, 60);
+                summary_preview[60] = '\0';
+                strncat(summary_preview, "...", sizeof(summary_preview) - strlen(summary_preview) - 1);
+            } else {
+                strncpy(summary_preview, d->summary, sizeof(summary_preview) - 1);
+                summary_preview[sizeof(summary_preview) - 1] = '\0';
             }
             toon_escape_string(summary_preview, escaped, sizeof(escaped));
         } else {

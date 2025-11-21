@@ -21,7 +21,7 @@
 /* Global mutex for Katra API access */
 pthread_mutex_t g_katra_api_lock = PTHREAD_MUTEX_INITIALIZER;
 
-/* Tool: katra_remember */
+/* Tool: katra_remember - Enhanced with tags and salience */
 json_t* mcp_tool_remember(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
@@ -32,8 +32,12 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
     const char* content = json_string_value(json_object_get(args, MCP_PARAM_CONTENT));
     const char* context = json_string_value(json_object_get(args, MCP_PARAM_CONTEXT));
 
-    if (!content || !context) {
-        return mcp_tool_error(MCP_ERR_MISSING_ARGS, MCP_ERR_BOTH_REQUIRED);
+    /* New tag-based parameters */
+    json_t* tags_json = json_object_get(args, "tags");
+    const char* salience = json_string_value(json_object_get(args, "salience"));
+
+    if (!content) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "content is required");
     }
 
     const char* session_name = mcp_get_session_name();
@@ -42,13 +46,42 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
+    int result;
 
-    int result = remember_semantic(content, context);
+    /* Use new tag-based API if tags or salience provided, otherwise fallback to old API */
+    if (tags_json && json_is_array(tags_json)) {
+        /* Extract tags from JSON array */
+        size_t tag_count = json_array_size(tags_json);
+        if (tag_count > KATRA_MAX_TAGS_PER_MEMORY) {
+            pthread_mutex_unlock(&g_katra_api_lock);
+            return mcp_tool_error(MCP_ERR_MISSING_ARGS, "Too many tags (max 10)");
+        }
 
+        const char* tags[KATRA_MAX_TAGS_PER_MEMORY];
+        for (size_t i = 0; i < tag_count; i++) {
+            json_t* tag_elem = json_array_get(tags_json, i);
+            if (!json_is_string(tag_elem)) {
+                pthread_mutex_unlock(&g_katra_api_lock);
+                return mcp_tool_error(MCP_ERR_MISSING_ARGS, "Tags must be strings");
+            }
+            tags[i] = json_string_value(tag_elem);
+        }
+        /* Use tag-based API */
+        result = remember_with_tags(content, tags, tag_count, salience);
+    } else if (salience) {
+        /* Salience but no tags - use tag API with empty tags */
+        result = remember_with_tags(content, NULL, 0, salience);
+    } else if (context) {
+        /* Backward compatibility - use old semantic API */
+        result = remember_semantic(content, context);
+    } else {
+        /* No context, tags, or salience - use default medium importance */
+        result = remember_with_tags(content, NULL, 0, NULL);
+    }
     /* Auto-generate embedding for semantic search (Phase 6.1) */
     if (result == KATRA_SUCCESS && g_vector_store) {
         /* Generate a simple record ID from content hash (for now) */
-        /* TODO: Get actual record_id from remember_semantic */
+        /* TODO: Get actual record_id from remember functions */
         char record_id[KATRA_BUFFER_MEDIUM];
         snprintf(record_id, sizeof(record_id), "mem_%lu", (unsigned long)time(NULL));
 
@@ -70,14 +103,12 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
         return mcp_tool_error(MCP_ERR_STORE_MEMORY_FAILED, details);
     }
-
     /* Personalized response */
     char response[MCP_RESPONSE_BUFFER];
     snprintf(response, sizeof(response), "Memory stored, %s!", session_name);
 
     return mcp_tool_success(response);
 }
-
 /* Tool: katra_recall */
 json_t* mcp_tool_recall(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
@@ -100,7 +131,6 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
-
     /* Use breathing layer's recall (hybrid or keyword based on config) */
     results = recall_about(topic, &count);
 
@@ -170,7 +200,6 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
         truncated = true;
         count = MCP_MAX_RECALL_RESULTS;
     }
-
     /* Build response text with personalization */
     char response[MCP_RESPONSE_BUFFER];
     size_t offset = 0;
@@ -203,7 +232,6 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     free_memory_list(results, original_count);
     return mcp_tool_success(response);
 }
-
 /* Tool: katra_recent */
 json_t* mcp_tool_recent(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
@@ -225,7 +253,6 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
-
     /* Use breathing layer's recent_thoughts() */
     results = recent_thoughts(limit, &count);
     pthread_mutex_unlock(&g_katra_api_lock);
@@ -235,7 +262,6 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
         snprintf(response, sizeof(response), "No recent memories found, %s", session_name);
         return mcp_tool_success(response);
     }
-
     /* Build response text with personalization */
     char response[MCP_RESPONSE_BUFFER];
     size_t offset = 0;
@@ -262,7 +288,6 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
     free_memory_list(results, count);
     return mcp_tool_success(response);
 }
-
 /* Tool: katra_memory_digest */
 json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
@@ -301,7 +326,6 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
         return mcp_tool_error("Failed to generate memory digest", details);
     }
-
     /* Build comprehensive response */
     char response[MCP_RESPONSE_BUFFER];
     size_t resp_offset = 0;
@@ -330,7 +354,6 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
                                "- Last memory: %s\n", newest_date);
     }
-
     /* Topics */
     if (digest->topic_count > 0) {
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
@@ -345,7 +368,6 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
             if (resp_offset >= sizeof(response) - RESPONSE_BUFFER_RESERVE) break;
         }
     }
-
     /* Collections */
     if (digest->collection_count > 0) {
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
@@ -358,7 +380,6 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
             if (resp_offset >= sizeof(response) - RESPONSE_BUFFER_RESERVE) break;
         }
     }
-
     /* Recent memories */
     if (digest->memory_count > 0) {
         resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
@@ -377,7 +398,6 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
                                        "... (buffer limit reached, use smaller limit or recall for specific memories)\n");
                 break;
             }
-
             /* Include full memory content */
             int written = snprintf(response + resp_offset, available,
                                  "%zu. %s\n", offset + i + 1, digest->memories[i]);
@@ -392,7 +412,6 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
             }
         }
     }
-
     /* Navigation hints */
     resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
                            "\nNAVIGATION:\n");
@@ -405,8 +424,7 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
     free_memory_digest(digest);
     return mcp_tool_success(response);
 }
-
-/* Tool: katra_learn */
+/* Tool: katra_learn - Deprecated, maps to katra_remember with tags */
 json_t* mcp_tool_learn(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
@@ -422,12 +440,16 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
 
     const char* session_name = mcp_get_session_name();
 
+    /* Log deprecation warning */
+    LOG_WARN("katra_learn is deprecated - use katra_remember with tags=['insight', 'permanent'] instead");
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
-
-    int result = learn(knowledge);
+    /* Map to tag-based API with insight + permanent tags */
+    const char* tags[] = {TAG_INSIGHT, TAG_PERMANENT};
+    int result = remember_with_tags(knowledge, tags, 2, SALIENCE_HIGH);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS) {
@@ -437,15 +459,15 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
         return mcp_tool_error(MCP_ERR_STORE_KNOWLEDGE_FAILED, details);
     }
-
-    /* Personalized response */
+    /* Personalized response with deprecation notice */
     char response[MCP_RESPONSE_BUFFER];
-    snprintf(response, sizeof(response), "Learned, %s!", session_name);
+    snprintf(response, sizeof(response),
+             "Learned, %s! (Note: katra_learn is deprecated - use katra_remember with tags instead)",
+             session_name);
 
     return mcp_tool_success(response);
 }
-
-/* Tool: katra_decide */
+/* Tool: katra_decide - Enhanced with tags */
 json_t* mcp_tool_decide(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
@@ -455,6 +477,9 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
 
     const char* decision = json_string_value(json_object_get(args, MCP_PARAM_DECISION));
     const char* reasoning = json_string_value(json_object_get(args, MCP_PARAM_REASONING));
+
+    /* New tag-based parameter */
+    json_t* tags_json = json_object_get(args, "tags");
 
     if (!decision || !reasoning) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, MCP_ERR_DECISION_REASONING_REQUIRED);
@@ -466,8 +491,33 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
+    int result;
 
-    int result = decide(decision, reasoning);
+    /* Use new tag-based API if tags provided, otherwise fallback to old API */
+    if (tags_json && json_is_array(tags_json)) {
+        /* Extract tags from JSON array */
+        size_t tag_count = json_array_size(tags_json);
+        if (tag_count > KATRA_MAX_TAGS_PER_MEMORY) {
+            pthread_mutex_unlock(&g_katra_api_lock);
+            return mcp_tool_error(MCP_ERR_MISSING_ARGS, "Too many tags (max 10)");
+        }
+
+        const char* tags[KATRA_MAX_TAGS_PER_MEMORY];
+        for (size_t i = 0; i < tag_count; i++) {
+            json_t* tag_elem = json_array_get(tags_json, i);
+            if (!json_is_string(tag_elem)) {
+                pthread_mutex_unlock(&g_katra_api_lock);
+                return mcp_tool_error(MCP_ERR_MISSING_ARGS, "Tags must be strings");
+            }
+            tags[i] = json_string_value(tag_elem);
+        }
+        /* Use tag-based API */
+        result = decide_with_tags(decision, reasoning, tags, tag_count);
+    } else {
+        /* Backward compatibility - use old API */
+        result = decide(decision, reasoning);
+    }
+
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS) {
@@ -477,14 +527,12 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
         return mcp_tool_error(MCP_ERR_STORE_DECISION_FAILED, details);
     }
-
     /* Personalized response */
     char response[MCP_RESPONSE_BUFFER];
     snprintf(response, sizeof(response), "Decision recorded, %s!", session_name);
 
     return mcp_tool_success(response);
 }
-
 /* Tool: katra_update_metadata */
 json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
@@ -498,7 +546,6 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
     if (!memory_id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, "memory_id is required");
     }
-
     /* Extract optional parameters */
     json_t* personal_json = json_object_get(args, MCP_PARAM_PERSONAL);
     json_t* not_to_archive_json = json_object_get(args, MCP_PARAM_NOT_TO_ARCHIVE);
@@ -519,7 +566,6 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
         not_to_archive_value = json_is_true(not_to_archive_json);
         not_to_archive_ptr = &not_to_archive_value;
     }
-
     /* If no metadata provided, return error */
     if (!personal_ptr && !not_to_archive_ptr && !collection) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS,
@@ -533,7 +579,6 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
-
     int result = update_memory_metadata(memory_id, personal_ptr, not_to_archive_ptr, collection);
     pthread_mutex_unlock(&g_katra_api_lock);
 
@@ -544,11 +589,9 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
         return mcp_tool_error(KATRA_ERR_FAILED_TO_UPDATE_METADATA, details);
     }
-
     /* Build success response with personalization */
     char response[MCP_RESPONSE_BUFFER];
     snprintf(response, sizeof(response), "Updated metadata for memory %s, %s!", memory_id, session_name);
 
     return mcp_tool_success(response);
 }
-

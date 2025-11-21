@@ -177,6 +177,29 @@
 /* Percentage multiplier for displaying ratios */
 #define PERCENTAGE_MULTIPLIER 100.0f
 
+/* ===== Tag-Based Memory (Phase 1: Working Memory) ===== */
+
+/* Maximum tags per memory record */
+#define KATRA_MAX_TAGS_PER_MEMORY 10
+
+/* Visual salience markers (UTF-8 stars) */
+#define SALIENCE_HIGH    "\u2605\u2605\u2605"   /* ★★★ High importance (0.85-1.0) */
+#define SALIENCE_MEDIUM  "\u2605\u2605"         /* ★★   Medium importance (0.45-0.84) */
+#define SALIENCE_LOW     "\u2605"               /* ★    Low importance (0.15-0.44) */
+
+/* Importance thresholds for salience mapping */
+#define IMPORTANCE_THRESHOLD_HIGH    0.85f
+#define IMPORTANCE_THRESHOLD_MEDIUM  0.45f
+#define IMPORTANCE_THRESHOLD_LOW     0.15f
+
+/* Special tag names */
+#define TAG_SESSION      "session"      /* Working memory, auto-clear on session end */
+#define TAG_PERMANENT    "permanent"    /* Skip archival, keep forever */
+#define TAG_PERSONAL     "personal"     /* Part of personal collection */
+#define TAG_INSIGHT      "insight"      /* Reflection/learning moment */
+#define TAG_TECHNICAL    "technical"    /* Technical knowledge */
+#define TAG_COLLABORATIVE "collaborative" /* Shared insight with another CI */
+
 /* ===== Algorithm Parameters ===== */
 
 /* Cognitive workflow detection */

@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <jansson.h>
 #include "katra_session_state.h"
+#include "katra_session_state_internal.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -17,7 +17,7 @@
  * ============================================================================ */
 
 /* Get string representation of cognitive mode */
-static const char* cognitive_mode_to_string(session_cognitive_mode_t mode) {
+const char* cognitive_mode_to_string(session_cognitive_mode_t mode) {
     switch (mode) {
         case COGNITIVE_MODE_DEEP_FOCUS: return "deep_focus";
         case COGNITIVE_MODE_EXPLORING: return "exploring";
@@ -30,7 +30,7 @@ static const char* cognitive_mode_to_string(session_cognitive_mode_t mode) {
 }
 
 /* Get string representation of emotional state */
-static const char* emotional_state_to_string(session_emotional_state_t emotion) {
+const char* emotional_state_to_string(session_emotional_state_t emotion) {
     switch (emotion) {
         case EMOTIONAL_STATE_EXCITED: return "excited";
         case EMOTIONAL_STATE_CURIOUS: return "curious";
@@ -42,7 +42,7 @@ static const char* emotional_state_to_string(session_emotional_state_t emotion) 
 }
 
 /* Get string representation of insight impact */
-static const char* insight_impact_to_string(insight_impact_t impact) {
+const char* insight_impact_to_string(insight_impact_t impact) {
     switch (impact) {
         case INSIGHT_IMPACT_LOW: return "low";
         case INSIGHT_IMPACT_MEDIUM: return "medium";
@@ -52,7 +52,7 @@ static const char* insight_impact_to_string(insight_impact_t impact) {
 }
 
 /* Get string representation of insight type */
-static const char* insight_type_to_string(insight_type_t type) {
+const char* insight_type_to_string(insight_type_t type) {
     switch (type) {
         case INSIGHT_TYPE_CONCEPTUAL: return "conceptual";
         case INSIGHT_TYPE_TECHNICAL: return "technical";
@@ -64,7 +64,7 @@ static const char* insight_type_to_string(insight_type_t type) {
 }
 
 /* Parse cognitive mode from string */
-static session_cognitive_mode_t cognitive_mode_from_string(const char* str) {
+session_cognitive_mode_t cognitive_mode_from_string(const char* str) {
     if (strcmp(str, "deep_focus") == 0) return COGNITIVE_MODE_DEEP_FOCUS;
     if (strcmp(str, "exploring") == 0) return COGNITIVE_MODE_EXPLORING;
     if (strcmp(str, "debugging") == 0) return COGNITIVE_MODE_DEBUGGING;
@@ -75,7 +75,7 @@ static session_cognitive_mode_t cognitive_mode_from_string(const char* str) {
 }
 
 /* Parse emotional state from string */
-static session_emotional_state_t emotional_state_from_string(const char* str) {
+session_emotional_state_t emotional_state_from_string(const char* str) {
     if (strcmp(str, "excited") == 0) return EMOTIONAL_STATE_EXCITED;
     if (strcmp(str, "curious") == 0) return EMOTIONAL_STATE_CURIOUS;
     if (strcmp(str, "frustrated") == 0) return EMOTIONAL_STATE_FRUSTRATED;
@@ -85,7 +85,7 @@ static session_emotional_state_t emotional_state_from_string(const char* str) {
 }
 
 /* Parse insight impact from string */
-static insight_impact_t insight_impact_from_string(const char* str) {
+insight_impact_t insight_impact_from_string(const char* str) {
     if (strcmp(str, "low") == 0) return INSIGHT_IMPACT_LOW;
     if (strcmp(str, "medium") == 0) return INSIGHT_IMPACT_MEDIUM;
     if (strcmp(str, "high") == 0) return INSIGHT_IMPACT_HIGH;
@@ -93,7 +93,7 @@ static insight_impact_t insight_impact_from_string(const char* str) {
 }
 
 /* Parse insight type from string */
-static insight_type_t insight_type_from_string(const char* str) {
+insight_type_t insight_type_from_string(const char* str) {
     if (strcmp(str, "conceptual") == 0) return INSIGHT_TYPE_CONCEPTUAL;
     if (strcmp(str, "technical") == 0) return INSIGHT_TYPE_TECHNICAL;
     if (strcmp(str, "strategic") == 0) return INSIGHT_TYPE_STRATEGIC;
@@ -245,462 +245,6 @@ int katra_session_state_finalize(session_end_state_t* state) {
     LOG_INFO("Session state finalized: %d seconds, %d threads, %d intentions, %d questions, %d insights",
             state->duration_seconds, state->active_thread_count, state->next_intention_count,
             state->open_question_count, state->insight_count);
-
-    return KATRA_SUCCESS;
-}
-
-int katra_session_state_to_json(const session_end_state_t* state, char** json_out) {
-    KATRA_CHECK_NULL(state);
-    KATRA_CHECK_NULL(json_out);
-
-    json_t* root = json_object();
-    if (!root) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_session_state_to_json",
-                          "Failed to create JSON object");
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Temporal context */
-    json_object_set_new(root, "session_start", json_integer((json_int_t)state->session_start));
-    json_object_set_new(root, "session_end", json_integer((json_int_t)state->session_end));
-    json_object_set_new(root, "duration_seconds", json_integer(state->duration_seconds));
-
-    /* Cognitive/emotional state */
-    json_object_set_new(root, "cognitive_mode", json_string(cognitive_mode_to_string(state->cognitive_mode)));
-    json_object_set_new(root, "cognitive_mode_desc", json_string(state->cognitive_mode_desc));
-    json_object_set_new(root, "emotional_state", json_string(emotional_state_to_string(state->emotional_state)));
-    json_object_set_new(root, "emotional_state_desc", json_string(state->emotional_state_desc));
-
-    /* Active threads */
-    json_t* threads_array = json_array();
-    for (int i = 0; i < state->active_thread_count; i++) {
-        json_array_append_new(threads_array, json_string(state->active_threads[i]));
-    }
-    json_object_set_new(root, "active_threads", threads_array);
-
-    /* Next intentions */
-    json_t* intentions_array = json_array();
-    for (int i = 0; i < state->next_intention_count; i++) {
-        json_array_append_new(intentions_array, json_string(state->next_intentions[i]));
-    }
-    json_object_set_new(root, "next_intentions", intentions_array);
-
-    /* Open questions */
-    json_t* questions_array = json_array();
-    for (int i = 0; i < state->open_question_count; i++) {
-        json_array_append_new(questions_array, json_string(state->open_questions[i]));
-    }
-    json_object_set_new(root, "open_questions", questions_array);
-
-    /* Insights */
-    json_t* insights_array = json_array();
-    for (int i = 0; i < state->insight_count; i++) {
-        const session_insight_t* insight = &state->insights[i];
-        json_t* insight_obj = json_object();
-        json_object_set_new(insight_obj, "timestamp", json_integer((json_int_t)insight->timestamp));
-        json_object_set_new(insight_obj, "content", json_string(insight->content));
-        json_object_set_new(insight_obj, "impact", json_string(insight_impact_to_string(insight->impact)));
-        json_object_set_new(insight_obj, "type", json_string(insight_type_to_string(insight->type)));
-        json_array_append_new(insights_array, insight_obj);
-    }
-    json_object_set_new(root, "insights", insights_array);
-
-    /* Convert to string */
-    char* json_str = json_dumps(root, JSON_INDENT(2));
-    json_decref(root);
-
-    if (!json_str) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_session_state_to_json",
-                          "Failed to convert JSON to string");
-        return E_SYSTEM_MEMORY;
-    }
-
-    *json_out = json_str;
-    return KATRA_SUCCESS;
-}
-
-int katra_session_state_from_json(const char* json_str, session_end_state_t* state_out) {
-    KATRA_CHECK_NULL(json_str);
-    KATRA_CHECK_NULL(state_out);
-
-    json_error_t error;
-    json_t* root = json_loads(json_str, 0, &error);
-    if (!root) {
-        katra_report_error(E_INPUT_FORMAT, "katra_session_state_from_json",
-                          "Failed to parse JSON");
-        return E_INPUT_FORMAT;
-    }
-
-    KATRA_INIT_STRUCT(*state_out);
-
-    /* Temporal context */
-    json_t* val = json_object_get(root, "session_start");
-    if (val && json_is_integer(val)) {
-        state_out->session_start = (time_t)json_integer_value(val);
-    }
-
-    val = json_object_get(root, "session_end");
-    if (val && json_is_integer(val)) {
-        state_out->session_end = (time_t)json_integer_value(val);
-    }
-
-    val = json_object_get(root, "duration_seconds");
-    if (val && json_is_integer(val)) {
-        state_out->duration_seconds = (int)json_integer_value(val);
-    }
-
-    /* Cognitive/emotional state */
-    val = json_object_get(root, "cognitive_mode");
-    if (val && json_is_string(val)) {
-        state_out->cognitive_mode = cognitive_mode_from_string(json_string_value(val));
-    }
-
-    val = json_object_get(root, "cognitive_mode_desc");
-    if (val && json_is_string(val)) {
-        strncpy(state_out->cognitive_mode_desc, json_string_value(val),
-               SESSION_STATE_SHORT_TEXT - 1);
-        state_out->cognitive_mode_desc[SESSION_STATE_SHORT_TEXT - 1] = '\0';
-    }
-
-    val = json_object_get(root, "emotional_state");
-    if (val && json_is_string(val)) {
-        state_out->emotional_state = emotional_state_from_string(json_string_value(val));
-    }
-
-    val = json_object_get(root, "emotional_state_desc");
-    if (val && json_is_string(val)) {
-        strncpy(state_out->emotional_state_desc, json_string_value(val),
-               SESSION_STATE_SHORT_TEXT - 1);
-        state_out->emotional_state_desc[SESSION_STATE_SHORT_TEXT - 1] = '\0';
-    }
-
-    /* Active threads */
-    val = json_object_get(root, "active_threads");
-    if (val && json_is_array(val)) {
-        size_t count = json_array_size(val);
-        if (count > MAX_ACTIVE_THREADS) count = MAX_ACTIVE_THREADS;
-        for (size_t i = 0; i < count; i++) {
-            json_t* thread = json_array_get(val, i);
-            if (thread && json_is_string(thread)) {
-                strncpy(state_out->active_threads[i], json_string_value(thread),
-                       SESSION_STATE_ITEM_TEXT - 1);
-                state_out->active_threads[i][SESSION_STATE_ITEM_TEXT - 1] = '\0';
-                state_out->active_thread_count++;
-            }
-        }
-    }
-
-    /* Next intentions */
-    val = json_object_get(root, "next_intentions");
-    if (val && json_is_array(val)) {
-        size_t count = json_array_size(val);
-        if (count > MAX_NEXT_INTENTIONS) count = MAX_NEXT_INTENTIONS;
-        for (size_t i = 0; i < count; i++) {
-            json_t* intention = json_array_get(val, i);
-            if (intention && json_is_string(intention)) {
-                strncpy(state_out->next_intentions[i], json_string_value(intention),
-                       SESSION_STATE_ITEM_TEXT - 1);
-                state_out->next_intentions[i][SESSION_STATE_ITEM_TEXT - 1] = '\0';
-                state_out->next_intention_count++;
-            }
-        }
-    }
-
-    /* Open questions */
-    val = json_object_get(root, "open_questions");
-    if (val && json_is_array(val)) {
-        size_t count = json_array_size(val);
-        if (count > MAX_OPEN_QUESTIONS) count = MAX_OPEN_QUESTIONS;
-        for (size_t i = 0; i < count; i++) {
-            json_t* question = json_array_get(val, i);
-            if (question && json_is_string(question)) {
-                strncpy(state_out->open_questions[i], json_string_value(question),
-                       SESSION_STATE_ITEM_TEXT - 1);
-                state_out->open_questions[i][SESSION_STATE_ITEM_TEXT - 1] = '\0';
-                state_out->open_question_count++;
-            }
-        }
-    }
-
-    /* Insights */
-    val = json_object_get(root, "insights");
-    if (val && json_is_array(val)) {
-        size_t count = json_array_size(val);
-        if (count > MAX_SESSION_INSIGHTS) count = MAX_SESSION_INSIGHTS;
-        for (size_t i = 0; i < count; i++) {
-            json_t* insight_obj = json_array_get(val, i);
-            if (!insight_obj || !json_is_object(insight_obj)) continue;
-
-            session_insight_t* insight = &state_out->insights[state_out->insight_count];
-
-            json_t* ts = json_object_get(insight_obj, "timestamp");
-            if (ts && json_is_integer(ts)) {
-                insight->timestamp = (time_t)json_integer_value(ts);
-            }
-
-            json_t* content = json_object_get(insight_obj, "content");
-            if (content && json_is_string(content)) {
-                strncpy(insight->content, json_string_value(content),
-                       SESSION_STATE_INSIGHT_TEXT - 1);
-                insight->content[SESSION_STATE_INSIGHT_TEXT - 1] = '\0';
-            }
-
-            json_t* impact = json_object_get(insight_obj, "impact");
-            if (impact && json_is_string(impact)) {
-                insight->impact = insight_impact_from_string(json_string_value(impact));
-            }
-
-            json_t* type = json_object_get(insight_obj, "type");
-            if (type && json_is_string(type)) {
-                insight->type = insight_type_from_string(json_string_value(type));
-            }
-
-            state_out->insight_count++;
-        }
-    }
-
-    json_decref(root);
-    return KATRA_SUCCESS;
-}
-
-/* ============================================================================
- * TOON (Token-Oriented Object Notation) Serialization
- * ============================================================================
- *
- * TOON provides 50-70% token reduction compared to JSON while maintaining
- * readability for both humans and LLMs. Perfect for context efficiency.
- *
- * Format:
- *   array_name[count]:
- *     item1
- *     item2
- *
- *   struct_array[count]{field1,field2,field3}:
- *     val1,val2,val3
- *     val4,val5,val6
- */
-
-/* Helper: Escape commas and newlines in TOON strings */
-static void toon_escape_string(const char* input, char* output, size_t output_size) {
-    size_t in_idx = 0;
-    size_t out_idx = 0;
-
-    while (input[in_idx] && out_idx < output_size - 1) {
-        if (input[in_idx] == ',') {
-            if (out_idx < output_size - 3) {
-                output[out_idx++] = '\\';
-                output[out_idx++] = ',';
-            }
-        } else if (input[in_idx] == '\n') {
-            if (out_idx < output_size - 2) {
-                output[out_idx++] = ' ';  /* Replace newlines with spaces */
-            }
-        } else {
-            output[out_idx++] = input[in_idx];
-        }
-        in_idx++;
-    }
-    output[out_idx] = '\0';
-}
-
-int katra_session_state_to_toon(const session_end_state_t* state, char** toon_out) {
-    KATRA_CHECK_NULL(state);
-    KATRA_CHECK_NULL(toon_out);
-
-    /* Allocate buffer - TOON is much more compact than JSON */
-    size_t buffer_size = 8192;  /* Should be plenty for session state */
-    char* buffer = malloc(buffer_size);
-    if (!buffer) {
-        katra_report_error(E_SYSTEM_MEMORY, "katra_session_state_to_toon",
-                          "Failed to allocate buffer");
-        return E_SYSTEM_MEMORY;
-    }
-
-    size_t offset = 0;
-    int written;
-
-    /* Session metadata - compact header */
-    written = snprintf(buffer + offset, buffer_size - offset,
-                      "session[%ld,%ld,%d]:\n"
-                      "  start,end,duration\n\n",
-                      (long)state->session_start,
-                      (long)state->session_end,
-                      state->duration_seconds);
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    /* Cognitive and emotional state */
-    written = snprintf(buffer + offset, buffer_size - offset,
-                      "cognitive_mode: %s\n"
-                      "cognitive_desc: %s\n"
-                      "emotional_state: %s\n"
-                      "emotional_desc: %s\n\n",
-                      cognitive_mode_to_string(state->cognitive_mode),
-                      state->cognitive_mode_desc,
-                      emotional_state_to_string(state->emotional_state),
-                      state->emotional_state_desc);
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    /* Active threads - simple list */
-    written = snprintf(buffer + offset, buffer_size - offset,
-                      "active_threads[%d]:\n", state->active_thread_count);
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    for (int i = 0; i < state->active_thread_count; i++) {
-        written = snprintf(buffer + offset, buffer_size - offset,
-                          "  %s\n", state->active_threads[i]);
-        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-        offset += (size_t)written;
-    }
-    written = snprintf(buffer + offset, buffer_size - offset, "\n");
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    /* Next intentions */
-    written = snprintf(buffer + offset, buffer_size - offset,
-                      "next_intentions[%d]:\n", state->next_intention_count);
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    for (int i = 0; i < state->next_intention_count; i++) {
-        written = snprintf(buffer + offset, buffer_size - offset,
-                          "  %s\n", state->next_intentions[i]);
-        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-        offset += (size_t)written;
-    }
-    written = snprintf(buffer + offset, buffer_size - offset, "\n");
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    /* Open questions */
-    written = snprintf(buffer + offset, buffer_size - offset,
-                      "open_questions[%d]:\n", state->open_question_count);
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    for (int i = 0; i < state->open_question_count; i++) {
-        written = snprintf(buffer + offset, buffer_size - offset,
-                          "  %s\n", state->open_questions[i]);
-        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-        offset += (size_t)written;
-    }
-    written = snprintf(buffer + offset, buffer_size - offset, "\n");
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    /* Insights - structured records */
-    written = snprintf(buffer + offset, buffer_size - offset,
-                      "insights[%d]{timestamp,type,impact,content}:\n",
-                      state->insight_count);
-    if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-    offset += (size_t)written;
-
-    for (int i = 0; i < state->insight_count; i++) {
-        const session_insight_t* insight = &state->insights[i];
-        char escaped_content[SESSION_STATE_INSIGHT_TEXT];
-        toon_escape_string(insight->content, escaped_content, sizeof(escaped_content));
-
-        written = snprintf(buffer + offset, buffer_size - offset,
-                          "  %ld,%s,%s,%s\n",
-                          (long)insight->timestamp,
-                          insight_type_to_string(insight->type),
-                          insight_impact_to_string(insight->impact),
-                          escaped_content);
-        if (written < 0 || (size_t)written >= buffer_size - offset) goto overflow;
-        offset += (size_t)written;
-    }
-
-    *toon_out = buffer;
-    return KATRA_SUCCESS;
-
-overflow:
-    free(buffer);
-    katra_report_error(E_RESOURCE_LIMIT, "katra_session_state_to_toon",
-                      "Buffer overflow during serialization");
-    return E_RESOURCE_LIMIT;
-}
-
-int katra_session_state_from_toon(const char* toon_str, session_end_state_t* state_out) {
-    KATRA_CHECK_NULL(toon_str);
-    KATRA_CHECK_NULL(state_out);
-
-    /* Initialize state */
-    KATRA_INIT_STRUCT(*state_out);
-
-    /* Parse TOON format line by line */
-    const char* line = toon_str;
-    const char* next_line;
-    char line_buffer[1024];
-
-    while (*line) {
-        /* Find next newline */
-        next_line = strchr(line, '\n');
-        if (!next_line) next_line = line + strlen(line);
-
-        size_t line_len = (size_t)(next_line - line);
-        if (line_len >= sizeof(line_buffer)) {
-            katra_report_error(E_INPUT_FORMAT, "katra_session_state_from_toon",
-                              "Line too long");
-            return E_INPUT_FORMAT;
-        }
-
-        strncpy(line_buffer, line, line_len);
-        line_buffer[line_len] = '\0';
-
-        /* Parse session metadata */
-        if (strncmp(line_buffer, "session[", 8) == 0) {
-            long start, end;
-            int duration;
-            if (sscanf(line_buffer, "session[%ld,%ld,%d]:", &start, &end, &duration) == 3) {
-                state_out->session_start = (time_t)start;
-                state_out->session_end = (time_t)end;
-                state_out->duration_seconds = duration;
-            }
-        }
-        /* Parse cognitive mode */
-        else if (strncmp(line_buffer, "cognitive_mode: ", 16) == 0) {
-            state_out->cognitive_mode = cognitive_mode_from_string(line_buffer + 16);
-        }
-        else if (strncmp(line_buffer, "cognitive_desc: ", 16) == 0) {
-            strncpy(state_out->cognitive_mode_desc, line_buffer + 16,
-                   SESSION_STATE_SHORT_TEXT - 1);
-            state_out->cognitive_mode_desc[SESSION_STATE_SHORT_TEXT - 1] = '\0';
-        }
-        /* Parse emotional state */
-        else if (strncmp(line_buffer, "emotional_state: ", 17) == 0) {
-            state_out->emotional_state = emotional_state_from_string(line_buffer + 17);
-        }
-        else if (strncmp(line_buffer, "emotional_desc: ", 16) == 0) {
-            strncpy(state_out->emotional_state_desc, line_buffer + 16,
-                   SESSION_STATE_SHORT_TEXT - 1);
-            state_out->emotional_state_desc[SESSION_STATE_SHORT_TEXT - 1] = '\0';
-        }
-        /* Parse active threads */
-        else if (strncmp(line_buffer, "active_threads[", 15) == 0) {
-            /* Count will be in format: active_threads[N]: */
-            /* Items follow on indented lines */
-        }
-        else if (line_buffer[0] == ' ' && line_buffer[1] == ' ' && line_buffer[2] != ' ') {
-            /* This is an indented item - determine which array it belongs to */
-            const char* item = line_buffer + 2;  /* Skip "  " */
-
-            /* Add to appropriate array based on context */
-            /* For simplicity, we'll need to track context state */
-            /* This is a simplified parser - full implementation would track section */
-            if (state_out->active_thread_count < MAX_ACTIVE_THREADS) {
-                strncpy(state_out->active_threads[state_out->active_thread_count],
-                       item, SESSION_STATE_ITEM_TEXT - 1);
-                state_out->active_threads[state_out->active_thread_count][SESSION_STATE_ITEM_TEXT - 1] = '\0';
-                state_out->active_thread_count++;
-            }
-        }
-
-        /* Move to next line */
-        line = next_line;
-        if (*line == '\n') line++;
-    }
 
     return KATRA_SUCCESS;
 }

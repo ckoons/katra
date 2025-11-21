@@ -80,8 +80,8 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/lifecycle/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
-# Exception: katra_session_state.c uses jansson
-$(BUILD_DIR)/katra_session_state.o: $(SRC_DIR)/lifecycle/katra_session_state.c | $(BUILD_DIR)
+# Exception: katra_session_state_json.c uses jansson
+$(BUILD_DIR)/katra_session_state_json.o: $(SRC_DIR)/lifecycle/katra_session_state_json.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 

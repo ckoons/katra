@@ -277,6 +277,31 @@ int session_start(const char* ci_id) {
     return KATRA_SUCCESS;
 }
 
+/**
+ * clear_session_scoped_memories() - Delete all session-scoped working memories
+ *
+ * Called during session_end() to clean up temporary working memory.
+ * Session-scoped memories are marked with session_scoped=true flag.
+ *
+ * Returns:
+ *   Positive number = count of memories deleted
+ *   0 = no session-scoped memories found
+ *   Negative = error code
+ */
+static int clear_session_scoped_memories(void) {
+    /* Delete session-scoped memories via memory layer */
+    size_t deleted_count = 0;
+    int result = katra_memory_delete_session_scoped(g_context.ci_id, &deleted_count);
+
+    if (result == KATRA_SUCCESS) {
+        /* Return positive count on success */
+        return (int)deleted_count;
+    } else {
+        /* Return negative error code on failure */
+        return result;
+    }
+}
+
 int session_end(void) {
     if (!g_initialized) {
         return E_INVALID_STATE;
@@ -300,6 +325,14 @@ int session_end(void) {
 
     /* Auto-consolidate */
     auto_consolidate();
+
+    /* Clear session-scoped memories (working memory) - Phase 1: Tag-Based Memory */
+    int cleanup_result = clear_session_scoped_memories();
+    if (cleanup_result > 0) {
+        LOG_INFO("Cleared %d session-scoped memories (working memory)", cleanup_result);
+    } else if (cleanup_result < 0) {
+        LOG_WARN("Session memory cleanup failed: %d (continuing shutdown)", cleanup_result);
+    }
 
     /* Autonomic cleanup: Unregister from meeting room registry */
     int unregister_result = meeting_room_unregister_ci(g_context.ci_id);

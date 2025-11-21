@@ -183,6 +183,95 @@ int learn(const char* knowledge);
  */
 int decide(const char* decision, const char* reasoning);
 
+/* ============================================================================
+ * TAG-BASED MEMORY API (Phase 1: Working Memory)
+ * ============================================================================
+ * Unified memory storage with tag-based metadata for more natural categorization.
+ * Replaces remember_semantic() and learn() with single interface.
+ */
+
+/**
+ * remember_with_tags() - Unified memory storage with tag-based metadata
+ *
+ * Stores memory with flexible tag-based categorization. Tags control behavior
+ * and provide more natural memory organization than rigid type hierarchies.
+ *
+ * Special Tags (defined in katra_limits.h):
+ *   TAG_SESSION      - Working memory, auto-clears on session end
+ *   TAG_PERMANENT    - Skip archival, keep forever
+ *   TAG_PERSONAL     - Part of personal collection
+ *   TAG_INSIGHT      - Reflection/learning moment
+ *   TAG_TECHNICAL    - Technical knowledge
+ *   TAG_COLLABORATIVE - Shared insight with another CI
+ *
+ * Visual Salience Markers:
+ *   SALIENCE_HIGH    - "★★★" High importance (0.85-1.0)
+ *   SALIENCE_MEDIUM  - "★★"  Medium importance (0.45-0.84)
+ *   SALIENCE_LOW     - "★"   Low importance (0.15-0.44)
+ *   NULL             - Routine (< 0.15)
+ *
+ * Alternatively, salience can be a semantic string like "very important"
+ * which will be parsed and mapped to visual markers.
+ *
+ * Examples:
+ *   const char* tags[] = {"insight", "technical"};
+ *   remember_with_tags("TOON reduces tokens by 50%", tags, 2, SALIENCE_HIGH);
+ *
+ *   const char* session_tag[] = {TAG_SESSION};
+ *   remember_with_tags("Testing tag API", session_tag, 1, SALIENCE_LOW);
+ *
+ *   remember_with_tags("Found bug in tier1.c", NULL, 0, "very important");
+ *
+ * Parameters:
+ *   content - Memory content (required)
+ *   tags - Array of tag strings (may be NULL if tag_count is 0)
+ *   tag_count - Number of tags (0-KATRA_MAX_TAGS_PER_MEMORY)
+ *   salience - Visual marker (SALIENCE_*) or semantic string (may be NULL)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if content is NULL
+ *   E_INPUT_TOO_LARGE if tag_count > KATRA_MAX_TAGS_PER_MEMORY
+ *   E_SYSTEM_MEMORY if allocation fails
+ */
+int remember_with_tags(const char* content,
+                       const char** tags,
+                       size_t tag_count,
+                       const char* salience);
+
+/**
+ * decide_with_tags() - Store decision with optional tags
+ *
+ * Extended version of decide() that supports tag-based categorization.
+ * Decisions maintain their unique structure (decision + reasoning) but
+ * can now be tagged for better organization.
+ *
+ * Examples:
+ *   const char* arch_tags[] = {"architecture", TAG_PERMANENT};
+ *   decide_with_tags("Use tag-based memory API",
+ *                    "Reduces friction, more natural for CIs",
+ *                    arch_tags, 2);
+ *
+ *   decide_with_tags("Skip consolidation this cycle",
+ *                    "Low memory pressure", NULL, 0);
+ *
+ * Parameters:
+ *   decision - Decision made (required)
+ *   reasoning - Why this decision (required)
+ *   tags - Array of tag strings (may be NULL if tag_count is 0)
+ *   tag_count - Number of tags (0-KATRA_MAX_TAGS_PER_MEMORY)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if decision or reasoning is NULL
+ *   E_INPUT_TOO_LARGE if tag_count > KATRA_MAX_TAGS_PER_MEMORY
+ *   E_SYSTEM_MEMORY if allocation fails
+ */
+int decide_with_tags(const char* decision,
+                     const char* reasoning,
+                     const char** tags,
+                     size_t tag_count);
+
 /**
  * notice_pattern() - Store an observed pattern
  *
