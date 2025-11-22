@@ -33,6 +33,8 @@ include Makefile.test
 # ==============================================================================
 
 all: $(LIBKATRA_UTILS) $(MCP_SERVER)
+	@echo "Installing CLI scripts to bin/..."
+	@install -m 755 $(SCRIPTS_DIR)/katra-cli $(BIN_DIR)/katra-cli
 	@echo ""
 	@echo "========================================"
 	@echo "Katra build complete!"
@@ -41,6 +43,7 @@ all: $(LIBKATRA_UTILS) $(MCP_SERVER)
 	@echo "Built targets:"
 	@echo "  Utils library: $(LIBKATRA_UTILS)"
 	@echo "  MCP Server:    $(MCP_SERVER)"
+	@echo "  CLI tools:     $(BIN_DIR)/katra-cli"
 	@echo ""
 	@echo "Available targets:"
 	@echo "  make test-quick             - Run all tests (including MCP)"
@@ -123,14 +126,16 @@ restart-mcp:
 		echo "MCP server stopped"; \
 	fi
 
-# Install CLI tools (katra and k scripts)
+# Install CLI tools (katra, katra-cli, and k scripts)
 install-k:
 	@echo "Installing Katra developer tools..."
 	@$(MKDIR_P) $(INSTALL_DIR)
 	@install -m $(INSTALL_MODE) $(SCRIPTS_DIR)/katra $(INSTALL_DIR)/katra
+	@install -m $(INSTALL_MODE) $(SCRIPTS_DIR)/katra-cli $(INSTALL_DIR)/katra-cli
 	@install -m $(INSTALL_MODE) $(SCRIPTS_DIR)/k $(INSTALL_DIR)/k
 	@echo "Installed:"
 	@echo "  $(INSTALL_DIR)/katra - Start Claude Code with Katra environment"
+	@echo "  $(INSTALL_DIR)/katra-cli - Human CLI for meeting room participation"
 	@echo "  $(INSTALL_DIR)/k - One-shot CLI queries with Katra"
 	@echo ""
 	@echo "Make sure $(INSTALL_DIR) is in your PATH"
@@ -144,6 +149,7 @@ install-k:
 uninstall-k:
 	@echo "Uninstalling Katra developer tools..."
 	@rm -f $(INSTALL_DIR)/katra
+	@rm -f $(INSTALL_DIR)/katra-cli
 	@rm -f $(INSTALL_DIR)/k
 	@echo "Uninstalled from $(INSTALL_DIR)"
 

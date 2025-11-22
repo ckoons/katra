@@ -63,7 +63,7 @@ test-quick: test-env test-config test-error test-log test-init test-memory test-
 
 test: test-quick test-cli
 
-test-all: test-quick test-cli
+test-all: test-quick test-all-cli
 
 # Katra CLI tests
 test-cli: $(MCP_SERVER)
@@ -75,6 +75,16 @@ test-cli-clean: $(MCP_SERVER) restart-mcp
 	@sleep 2
 	@echo "Running katra-cli tests (with clean server)..."
 	@./tests/test_katra_cli.sh
+
+# Katra command integration tests
+test-katra-commands: $(MCP_SERVER)
+	@echo "Running katra command integration tests..."
+	@./tests/test_katra_commands.sh
+
+# All CLI tests (katra-cli + katra commands)
+test-all-cli: test-cli test-katra-commands
+	@echo ""
+	@echo "All CLI tests passed!"
 
 # Individual test targets
 test-env: $(TEST_ENV)

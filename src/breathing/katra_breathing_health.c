@@ -152,6 +152,13 @@ int breathe_periodic_maintenance(void) {
         return result;
     }
 
+    /* Check working memory budget (Phase 2) */
+    size_t processed_count = 0;
+    int budget_result = working_memory_check_budget(ci_id, &processed_count);
+    if (budget_result == KATRA_SUCCESS && processed_count > 0) {
+        LOG_INFO("Working memory budget enforcement: processed %zu memories", processed_count);
+    }
+
     /* No maintenance needed yet */
     LOG_DEBUG("Periodic maintenance check: no action needed "
              "(last consolidation %ld seconds ago)",

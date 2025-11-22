@@ -62,7 +62,12 @@ static context_config_t g_context_config = {
     .auto_graph_edges = true,          /* Enabled by default - builds memory associations */
     .graph_similarity_threshold = 0.5f,  /* 50% similarity for SIMILAR edges - stricter than recall */
     .graph_max_similar_edges = 5,      /* Limit to top 5 most similar memories */
-    .graph_temporal_window_sec = 300   /* 5 minutes for SEQUENTIAL edge detection */
+    .graph_temporal_window_sec = 300,  /* 5 minutes for SEQUENTIAL edge detection */
+    /* Working memory budget defaults (Phase 2) */
+    .working_memory_enabled = WORKING_MEMORY_DEFAULT_ENABLED,  /* Enabled by default */
+    .working_memory_soft_limit = WORKING_MEMORY_SOFT_LIMIT,    /* Archive at 35 */
+    .working_memory_hard_limit = WORKING_MEMORY_HARD_LIMIT,    /* Delete at 50 */
+    .working_memory_batch_size = WORKING_MEMORY_BATCH_SIZE     /* Process 10 at a time */
 };
 
 /* Global enhanced statistics */

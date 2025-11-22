@@ -177,10 +177,18 @@
 /* Percentage multiplier for displaying ratios */
 #define PERCENTAGE_MULTIPLIER 100.0f
 
-/* ===== Tag-Based Memory (Phase 1: Working Memory) ===== */
+/* ===== Tag-Based Memory (Phase 1) ===== */
 
 /* Maximum tags per memory record */
 #define KATRA_MAX_TAGS_PER_MEMORY 10
+
+/* ===== Working Memory Budget (Phase 2) ===== */
+
+/* Working memory budget limits */
+#define WORKING_MEMORY_SOFT_LIMIT 35    /* Archive oldest session memories at this count */
+#define WORKING_MEMORY_HARD_LIMIT 50    /* Delete oldest session memories at this count */
+#define WORKING_MEMORY_BATCH_SIZE 10    /* Archive/delete this many at once when over limit */
+#define WORKING_MEMORY_DEFAULT_ENABLED 1 /* Enable by default (0=disabled, 1=enabled) */
 
 /* Visual salience markers (UTF-8 stars) */
 #define SALIENCE_HIGH    "\u2605\u2605\u2605"   /* ★★★ High importance (0.85-1.0) */

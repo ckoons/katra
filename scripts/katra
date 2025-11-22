@@ -16,6 +16,19 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 KATRA_ROOT="$(dirname "$SCRIPT_DIR")"
 
+# If installed to ~/bin, find actual katra source location
+if [ "$SCRIPT_DIR" = "$HOME/bin" ] || [ "$SCRIPT_DIR" = "$HOME/.local/bin" ]; then
+    # Look for katra installation in standard locations
+    if [ -d "$HOME/projects/github/katra" ]; then
+        KATRA_ROOT="$HOME/projects/github/katra"
+    elif [ -d "/usr/local/katra" ]; then
+        KATRA_ROOT="/usr/local/katra"
+    fi
+fi
+
+# Scripts are always in $KATRA_ROOT/scripts
+KATRA_SCRIPTS="$KATRA_ROOT/scripts"
+
 # Defaults
 PERSONA="${KATRA_PERSONA:-Katra}"
 ROLE="${KATRA_ROLE:-developer}"
@@ -503,6 +516,24 @@ Usage:
   katra stop <persona>
   katra stop --all
 
+Persona Management:
+  katra archive <persona>          Create backup archive of persona
+  katra rename --from X --to Y     Rename persona (preserves identity)
+  katra remove <persona>           Delete persona and all memories
+  katra restore <archive-file>     Restore persona from archive
+
+Human Commands (forwarded to katra-cli):
+  katra say <message>              Send message to meeting room
+  katra hear                       Read unread messages
+  katra who                        List active CIs
+  katra whoami                     Show your identity
+  katra register <name> [role]     Register your identity
+  katra status                     Show system status
+  katra recent [--limit N]         View recent memories
+  katra recall <topic>             Search memories
+  katra sessions                   List MCP servers
+  katra reload                     Restart MCP server
+
 Start Options:
   --persona NAME         Set persona name (default: Katra)
   --role ROLE           Set role (default: developer)
@@ -511,15 +542,18 @@ Start Options:
   --breath-interval N    Set breathing interval in seconds (default: 30)
   --log-level LEVEL     Set log level (DEBUG|INFO|WARN|ERROR)
   --background, -b      Start in background (tmux session)
+  --stdio               Use stdio mode (legacy, isolated sessions)
+  --tcp-port PORT       TCP port for shared MCP server (default: 3141)
   -h, --help            Show this help
 
 Examples:
-  # Single provider (default)
+  # Single persona (joins shared meeting room)
   katra start --persona Alice
 
-  # Multiple providers in different terminals
+  # Multiple personas in different terminals (all share meeting room)
   katra start --persona Dario --provider anthropic
   katra start --persona Sam --provider openai
+  # Dario and Sam can communicate via katra_say/katra_hear
 
   # Background sessions
   katra start --persona Charlie --provider deepseek --background
@@ -532,11 +566,26 @@ Examples:
   katra start --persona Alice --provider anthropic --model claude-opus-4
   katra start --persona Sam --provider openai --model gpt-4-turbo
 
+  # Legacy stdio mode (isolated sessions, no shared meeting room)
+  katra start --persona Alice --stdio
+
+MCP Server Modes:
+  TCP (default)  - Shared persistent server, global meeting room
+                 - All personas can communicate (katra_say/hear/who)
+                 - Server auto-starts if not running on port 3141
+                 - Use katra-cli for human participation
+
+  stdio (legacy) - Isolated per-session server
+                 - Each persona has own meeting room (no cross-talk)
+                 - Launched/stopped with each Claude Code session
+
 Launch Behavior:
+  - TCP mode: Ensures shared MCP server is running (auto-starts if needed)
   - First time with a persona: Shows onboarding welcome message
   - Returning persona: Shows "where you left off" summary with context and recent memories
   - Session end automatically captures context for next launch
   - Persona identity persists across sessions through memory and context snapshots
+  - All personas share global meeting room (unless using --stdio mode)
 
 Providers:
   anthropic  - Anthropic Claude (default, direct connection)
@@ -550,10 +599,40 @@ Environment Variables:
   KATRA_PROVIDER       Default provider (anthropic)
   KATRA_BREATH_INTERVAL Default breathing interval
   KATRA_LOG_LEVEL      Default log level
+  KATRA_MCP_PORT       TCP port for shared server (default: 3141)
   ANTHROPIC_API_KEY    Anthropic API key
   OPENAI_API_KEY       OpenAI API key
   DEEPSEEK_API_KEY     DeepSeek API key
   OPENROUTER_API_KEY   OpenRouter API key
+
+Human Participation (katra-cli):
+  Humans can join the meeting room using katra-cli commands:
+
+  katra-cli register <name> [role]     Register your identity
+  katra-cli whoami                     Show your identity
+  katra-cli say <message>              Send message to meeting room
+  katra-cli hear                       Read unread messages
+  katra-cli who                        List active CIs and humans
+  katra-cli status                     Show system status
+  katra-cli team-status                Show team overview
+  katra-cli recent [--limit N]         View recent memories
+  katra-cli recall <topic>             Search memories
+  katra-cli sessions                   List MCP server processes
+  katra-cli reload                     Restart MCP server
+  katra-cli help                       Show detailed CLI help
+
+  Example workflow:
+    # In terminal 1 - Start AI session
+    katra start --persona Ami
+
+    # In terminal 2 - Human joins
+    katra-cli register Casey human
+    katra-cli say "Hi Ami, let's work on authentication"
+
+    # Ami can hear you via katra_hear tool
+    # You can hear Ami's responses via katra-cli hear
+
+  For full documentation: See docs/katra-cli.md
 EOF
     exit 0
 }
@@ -672,6 +751,39 @@ add_persona_command() {
     echo ""
 }
 
+# Ensure TCP MCP server is running
+ensure_tcp_mcp_running() {
+    local port="${KATRA_MCP_PORT:-3141}"
+
+    # Check if server already running on port
+    if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
+        echo -e "${BLUE}✓${NC} TCP MCP server already running on port $port"
+        return 0
+    fi
+
+    echo -e "${BLUE}→${NC} Starting TCP MCP server on port $port..."
+
+    # Start server in background
+    cd "$KATRA_ROOT"
+    "$KATRA_ROOT/bin/katra_mcp_server" --tcp --port $port > /tmp/katra_mcp_tcp.log 2>&1 &
+    local server_pid=$!
+
+    # Wait for server to be ready
+    local count=0
+    while [ $count -lt 10 ]; do
+        if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
+            echo -e "${GREEN}✓${NC} TCP MCP server started successfully (PID: $server_pid)"
+            return 0
+        fi
+        sleep 0.5
+        count=$((count + 1))
+    done
+
+    echo -e "${RED}Error: Failed to start TCP MCP server${NC}"
+    echo "Check log: /tmp/katra_mcp_tcp.log"
+    return 1
+}
+
 # Tmux session prefix
 TMUX_PREFIX="katra"
 
@@ -687,6 +799,7 @@ case "$COMMAND" in
         fi
 
         # Parse options
+        USE_STDIO=false
         while [[ $# -gt 0 ]]; do
             case $1 in
                 --persona)
@@ -716,6 +829,14 @@ case "$COMMAND" in
                 --background|-b)
                     BACKGROUND=true
                     shift
+                    ;;
+                --stdio)
+                    USE_STDIO=true
+                    shift
+                    ;;
+                --tcp-port)
+                    KATRA_MCP_PORT="$2"
+                    shift 2
                     ;;
                 -h|--help)
                     usage
@@ -793,6 +914,13 @@ case "$COMMAND" in
         echo -e "${BLUE}Breathing:${NC} $BREATH_INTERVAL seconds"
         echo -e "${BLUE}Log Level:${NC} $LOG_LEVEL"
         [ "$BACKGROUND" = true ] && echo -e "${BLUE}Mode:${NC} Background (tmux)"
+
+        # Display MCP mode
+        if [ "$USE_STDIO" = true ]; then
+            echo -e "${BLUE}MCP Mode:${NC} stdio (isolated session)"
+        else
+            echo -e "${BLUE}MCP Mode:${NC} TCP (shared meeting room, port ${KATRA_MCP_PORT:-3141})"
+        fi
         echo ""
 
         # Export environment
@@ -813,8 +941,57 @@ case "$COMMAND" in
             FIRST_PROMPT=$(generate_new_persona_prompt "$PERSONA")
         fi
 
-        # Build Claude Code command WITH first prompt
-        CLAUDE_CMD="claude"
+        # Setup MCP configuration
+        TEMP_MCP_CONFIG="/tmp/katra-mcp-$PERSONA.json"
+
+        if [ "$USE_STDIO" = true ]; then
+            # Legacy stdio mode - isolated session
+            cat > "$TEMP_MCP_CONFIG" <<EOF
+{
+  "mcpServers": {
+    "katra": {
+      "command": "$KATRA_ROOT/bin/katra_mcp_server",
+      "args": [],
+      "env": {
+        "KATRA_PERSONA": "$PERSONA",
+        "KATRA_ROLE": "$ROLE",
+        "KATRA_BREATH_INTERVAL": "$BREATH_INTERVAL",
+        "KATRA_LOG_LEVEL": "$LOG_LEVEL"
+      }
+    }
+  }
+}
+EOF
+        else
+            # TCP mode (default) - shared meeting room
+            # Ensure TCP MCP server is running
+            if ! ensure_tcp_mcp_running; then
+                echo -e "${RED}Failed to start TCP MCP server${NC}"
+                exit 1
+            fi
+
+            # Generate TCP config using netcat to connect
+            local tcp_port="${KATRA_MCP_PORT:-3141}"
+            cat > "$TEMP_MCP_CONFIG" <<EOF
+{
+  "mcpServers": {
+    "katra": {
+      "command": "nc",
+      "args": ["localhost", "$tcp_port"],
+      "env": {
+        "KATRA_PERSONA": "$PERSONA",
+        "KATRA_ROLE": "$ROLE",
+        "KATRA_BREATH_INTERVAL": "$BREATH_INTERVAL",
+        "KATRA_LOG_LEVEL": "$LOG_LEVEL"
+      }
+    }
+  }
+}
+EOF
+        fi
+
+        # Build Claude Code command WITH first prompt and MCP config
+        CLAUDE_CMD="claude --mcp-config \"$TEMP_MCP_CONFIG\""
         [ -n "$MODEL" ] && CLAUDE_CMD="$CLAUDE_CMD --model $MODEL"
         # Prompt must be last argument before any project path
         CLAUDE_CMD="$CLAUDE_CMD \"$FIRST_PROMPT\""
@@ -938,6 +1115,36 @@ case "$COMMAND" in
 
     help|-h|--help)
         usage
+        ;;
+
+    # Forward human participation commands to katra-cli
+    say|hear|who|whoami|register|status|team-status|recent|recall|sessions|reload)
+        # Check if katra-cli is available
+        if ! command -v katra-cli >/dev/null 2>&1; then
+            echo -e "${RED}Error: katra-cli not found${NC}"
+            echo "Install with: make install-all"
+            exit 1
+        fi
+
+        # Forward to katra-cli with all arguments
+        exec katra-cli "$COMMAND" "$@"
+        ;;
+
+    # Forward persona management commands to utility scripts
+    archive)
+        exec "$KATRA_SCRIPTS/archive_persona.sh" "$@"
+        ;;
+
+    rename)
+        exec "$KATRA_SCRIPTS/rename_persona.sh" "$@"
+        ;;
+
+    remove)
+        exec "$KATRA_SCRIPTS/remove-persona.sh" "$@"
+        ;;
+
+    restore)
+        exec "$KATRA_SCRIPTS/restore_persona.sh" "$@"
         ;;
 
     *)

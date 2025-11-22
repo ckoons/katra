@@ -80,6 +80,12 @@ typedef struct {
     float graph_similarity_threshold;  /* Min similarity for SIMILAR edges (default: 0.5) */
     size_t graph_max_similar_edges;   /* Max SIMILAR edges per memory (default: 5) */
     int graph_temporal_window_sec;    /* Time window for SEQUENTIAL edges in seconds (default: 300 = 5 min) */
+
+    /* Working memory budget configuration (Phase 2) */
+    bool working_memory_enabled;     /* Enable working memory budget (default: true) */
+    size_t working_memory_soft_limit; /* Archive oldest at this count (default: 35) */
+    size_t working_memory_hard_limit; /* Delete oldest at this count (default: 50) */
+    size_t working_memory_batch_size; /* How many to archive/delete at once (default: 10) */
 } context_config_t;
 
 /** Memory context - automatically captured */

@@ -103,9 +103,25 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
         return mcp_tool_error(MCP_ERR_STORE_MEMORY_FAILED, details);
     }
-    /* Personalized response */
+    /* Personalized response with optional hints */
     char response[MCP_RESPONSE_BUFFER];
-    snprintf(response, sizeof(response), "Memory stored, %s!", session_name);
+
+    /* Add helpful hint if tags/salience not used (1 in 3 chance) */
+    bool used_tags = (tags_json && json_is_array(tags_json) && json_array_size(tags_json) > 0);
+    bool used_salience = (salience != NULL);
+
+    if (!used_tags && !used_salience && (rand() % 3 == 0)) {
+        snprintf(response, sizeof(response),
+                "Memory stored, %s! Tip: Try adding tags (e.g. [\"insight\", \"permanent\"]) "
+                "or salience (★★★/★★/★) to organize memories.",
+                session_name);
+    } else if (!used_tags && used_salience && (rand() % 4 == 0)) {
+        snprintf(response, sizeof(response),
+                "Memory stored, %s! Tip: Add tags like [\"technical\", \"session\"] to categorize this memory.",
+                session_name);
+    } else {
+        snprintf(response, sizeof(response), "Memory stored, %s!", session_name);
+    }
 
     return mcp_tool_success(response);
 }
@@ -527,9 +543,19 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
         snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
         return mcp_tool_error(MCP_ERR_STORE_DECISION_FAILED, details);
     }
-    /* Personalized response */
+    /* Personalized response with optional hints */
     char response[MCP_RESPONSE_BUFFER];
-    snprintf(response, sizeof(response), "Decision recorded, %s!", session_name);
+
+    /* Add helpful hint if tags not used (1 in 4 chance) */
+    bool used_tags = (tags_json && json_is_array(tags_json) && json_array_size(tags_json) > 0);
+
+    if (!used_tags && (rand() % 4 == 0)) {
+        snprintf(response, sizeof(response),
+                "Decision recorded, %s! Tip: Add tags like [\"architecture\", \"permanent\"] to categorize decisions.",
+                session_name);
+    } else {
+        snprintf(response, sizeof(response), "Decision recorded, %s!", session_name);
+    }
 
     return mcp_tool_success(response);
 }

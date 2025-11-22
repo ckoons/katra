@@ -122,4 +122,27 @@ int breathing_create_auto_edges(graph_store_t* graph_store,
                                  const char* new_record_id,
                                  const char* content);
 
+/* ============================================================================
+ * WORKING MEMORY BUDGET (Phase 2)
+ * ============================================================================ */
+
+/**
+ * Get count of active session-scoped memories
+ */
+int working_memory_get_count(const char* ci_id, size_t* count);
+
+/**
+ * Archive or delete oldest session-scoped memories
+ * Parameters:
+ *   at_hard_limit - true=delete, false=archive (convert to permanent)
+ */
+int working_memory_archive_oldest(const char* ci_id, size_t count_to_process,
+                                   bool at_hard_limit, size_t* processed_count);
+
+/**
+ * Check and enforce working memory budget
+ * Called during periodic maintenance
+ */
+int working_memory_check_budget(const char* ci_id, size_t* processed_count);
+
 #endif /* KATRA_BREATHING_INTERNAL_H */

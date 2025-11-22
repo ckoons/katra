@@ -1,0 +1,396 @@
+#!/bin/bash
+# © 2025 Casey Koons All rights reserved
+#
+# katra-cli - Human interface for Katra MCP server
+#
+# This tool allows humans to participate in the Katra meeting room
+# alongside CIs (Companion Intelligences) by connecting to the TCP
+# MCP server and using MCP tools.
+
+set -euo pipefail
+
+# Configuration
+MCP_HOST="${KATRA_MCP_HOST:-localhost}"
+MCP_PORT="${KATRA_MCP_PORT:-3141}"
+STATE_DIR="$HOME/.katra"
+TIMEOUT=3
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+# Get state file path
+get_state_file() {
+    local name="$1"
+    echo "$STATE_DIR/.human_$name"
+}
+
+# Send MCP request and get response
+send_mcp_request() {
+    local method="$1"
+    local params_json="$2"
+
+    # Build JSON-RPC 2.0 request
+    local request=$(jq -nc \
+        --arg method "$method" \
+        --argjson params "$params_json" \
+        '{jsonrpc: "2.0", method: $method, params: $params, id: 1}')
+
+    # Send via TCP with timeout
+    local temp_response="/tmp/katra_cli_response_$$.json"
+
+    # Use subshell with sleep to ensure nc closes properly
+    ( echo "$request"; sleep 0.5 ) | nc "$MCP_HOST" "$MCP_PORT" > "$temp_response" 2>/dev/null &
+    local nc_pid=$!
+
+    # Wait for response with timeout
+    local count=0
+    while [ $count -lt $((TIMEOUT * 2)) ]; do
+        if ! kill -0 $nc_pid 2>/dev/null; then
+            break
+        fi
+        sleep 0.5
+        count=$((count + 1))
+    done
+
+    # Kill nc if still running
+    kill $nc_pid 2>/dev/null || true
+    wait $nc_pid 2>/dev/null || true
+
+    # Read response (last non-empty line)
+    local response=""
+    if [ -f "$temp_response" ]; then
+        response=$(tail -1 "$temp_response" 2>/dev/null || echo "")
+        rm -f "$temp_response"
+    fi
+
+    if [ -z "$response" ]; then
+        echo -e "${RED}Error: No response from MCP server${NC}" >&2
+        echo "Check if TCP MCP server is running on port $MCP_PORT" >&2
+        return 1
+    fi
+
+    echo "$response"
+}
+
+# Call MCP tool
+call_tool() {
+    local tool_name="$1"
+    local args="$2"
+
+    local params=$(jq -nc \
+        --arg name "$tool_name" \
+        --argjson args "$args" \
+        '{name: $name, arguments: $args}')
+
+    local response=$(send_mcp_request "tools/call" "$params")
+
+    # Extract result text
+    echo "$response" | jq -r '.result.content[0].text // .result.content // .result // ""'
+}
+
+# Format output with color
+format_output() {
+    local text="$1"
+
+    # Add color to specific patterns
+    echo "$text" | sed \
+        -e "s/^✓/${GREEN}✓${NC}/g" \
+        -e "s/^→/${BLUE}→${NC}/g" \
+        -e "s/^⚠/${YELLOW}⚠${NC}/g" \
+        -e "s/^Error:/${RED}Error:${NC}/g"
+}
+
+# Command implementations
+cmd_register() {
+    local name="$1"
+    local role="${2:-human}"
+
+    if [ -z "$name" ]; then
+        echo -e "${RED}Error: Name required${NC}"
+        echo "Usage: katra-cli register <name> [role]"
+        return 1
+    fi
+
+    local args=$(jq -n --arg name "$name" --arg role "$role" '{name: $name, role: $role}')
+    local result=$(call_tool "katra_register" "$args")
+
+    # Save identity to state
+    echo "$name" > "$(get_state_file identity)"
+    echo "$role" > "$(get_state_file role)"
+
+    echo -e "${GREEN}✓${NC} Registered as ${BLUE}$name${NC} ($role)"
+    echo ""
+    format_output "$result"
+}
+
+cmd_whoami() {
+    local args='{}'
+    local result=$(call_tool "katra_whoami" "$args")
+
+    echo -e "${BLUE}Your Identity:${NC}"
+    echo ""
+    format_output "$result"
+}
+
+cmd_say() {
+    local message="$*"
+
+    if [ -z "$message" ]; then
+        echo -e "${RED}Error: Message required${NC}"
+        echo "Usage: katra-cli say <message>"
+        return 1
+    fi
+
+    local args=$(jq -n --arg msg "$message" '{message: $msg}')
+    local result=$(call_tool "katra_say" "$args")
+
+    echo -e "${GREEN}✓${NC} Message broadcast to meeting room"
+}
+
+cmd_hear() {
+    local state_file="$(get_state_file last_read)"
+    local last_read=0
+
+    [ -f "$state_file" ] && last_read=$(cat "$state_file")
+
+    local args=$(jq -n --argjson last "$last_read" '{last_heard: $last}')
+    local result=$(call_tool "katra_hear" "$args")
+
+    # Parse response to extract messages and update last_read
+    if echo "$result" | grep -q "No new messages"; then
+        echo -e "${BLUE}No new messages${NC}"
+    else
+        format_output "$result"
+
+        # Try to extract message number from response
+        # Format: "Message from X:" or similar
+        local new_last_read=$(echo "$result" | grep -oE "message [0-9]+" | tail -1 | grep -oE "[0-9]+")
+        if [ -n "$new_last_read" ]; then
+            echo "$new_last_read" > "$state_file"
+        fi
+    fi
+}
+
+cmd_who() {
+    local args='{}'
+    local result=$(call_tool "katra_who_is_here" "$args")
+
+    format_output "$result"
+}
+
+cmd_status() {
+    local args='{}'
+    local result=$(call_tool "katra_status" "$args")
+
+    local identity=$([ -f "$(get_state_file identity)" ] && cat "$(get_state_file identity)" || echo "Unknown")
+
+    echo -e "${BLUE}Katra System Status for ${identity}:${NC}"
+    echo ""
+    format_output "$result"
+}
+
+cmd_recent() {
+    local limit=5
+
+    # Parse --limit flag
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --limit)
+                limit="$2"
+                shift 2
+                ;;
+            *)
+                shift
+                ;;
+        esac
+    done
+
+    local args=$(jq -n --argjson limit "$limit" '{limit: $limit}')
+    local result=$(call_tool "katra_recent" "$args")
+
+    local identity=$([ -f "$(get_state_file identity)" ] && cat "$(get_state_file identity)" || echo "Unknown")
+
+    echo -e "${BLUE}Your recent memories, ${identity}:${NC}"
+    echo ""
+    format_output "$result"
+}
+
+cmd_recall() {
+    local topic="$*"
+
+    if [ -z "$topic" ]; then
+        echo -e "${RED}Error: Topic required${NC}"
+        echo "Usage: katra-cli recall <topic>"
+        return 1
+    fi
+
+    local args=$(jq -n --arg topic "$topic" '{topic: $topic}')
+    local result=$(call_tool "katra_recall" "$args")
+
+    local identity=$([ -f "$(get_state_file identity)" ] && cat "$(get_state_file identity)" || echo "Unknown")
+
+    echo -e "${BLUE}Here are your memories, ${identity}:${NC}"
+    echo ""
+    format_output "$result"
+}
+
+cmd_team_status() {
+    echo -e "${BLUE}=== Katra Team Status ===${NC}"
+    echo ""
+
+    cmd_who
+    echo ""
+
+    echo -e "${BLUE}System Health:${NC}"
+    cmd_status
+}
+
+cmd_sessions() {
+    echo -e "${BLUE}Active Katra Sessions:${NC}"
+    echo ""
+
+    # Find all katra_mcp_server processes
+    local pids=$(pgrep -f "katra_mcp_server" || true)
+
+    if [ -z "$pids" ]; then
+        echo "No active sessions"
+        return 0
+    fi
+
+    for pid in $pids; do
+        local cmdline=$(ps -p $pid -o command= 2>/dev/null || echo "")
+
+        if echo "$cmdline" | grep -q -- "--tcp"; then
+            local port=$(echo "$cmdline" | grep -oE "port [0-9]+" | grep -oE "[0-9]+")
+            echo -e "  ${GREEN}●${NC} PID $pid - TCP mode on port ${port:-3141}"
+        else
+            echo -e "  ${GREEN}●${NC} PID $pid - stdio mode"
+        fi
+    done
+}
+
+cmd_reload() {
+    echo "Sending hot reload signal (SIGUSR1) to MCP server..."
+
+    # Find TCP MCP server process
+    local pids=$(pgrep -f "katra_mcp_server.*--tcp" || true)
+
+    if [ -z "$pids" ]; then
+        echo -e "${RED}Error: No TCP MCP server found${NC}"
+        return 1
+    fi
+
+    for pid in $pids; do
+        kill -USR1 $pid
+        echo -e "${GREEN}✓${NC} Reload signal sent to PID $pid"
+    done
+
+    echo ""
+    echo "The MCP server should restart automatically."
+    echo "CIs will need to re-register after reload."
+}
+
+cmd_help() {
+    cat <<EOF
+katra-cli - Human CLI for Katra MCP server
+
+Usage:
+  katra-cli register <name> [role]    Register your identity (default role: human)
+  katra-cli whoami                    Show your current identity
+  katra-cli say <message>             Broadcast message to all CIs in meeting room
+  katra-cli hear                      Read unread messages from meeting room
+  katra-cli who                       List active CIs in meeting room
+  katra-cli status                    Show system status and health
+  katra-cli recent [--limit N]        Show recent memories (default: 5)
+  katra-cli recall <topic>            Search memories by topic
+  katra-cli team-status               Detailed team overview
+  katra-cli sessions                  List active MCP server sessions
+  katra-cli reload                    Hot restart MCP server (SIGUSR1)
+  katra-cli help                      Show this help
+
+Examples:
+  # Register yourself
+  katra-cli register Casey human
+  katra-cli register Bob tester
+
+  # Communicate with team
+  katra-cli say "Starting work on the new feature"
+  katra-cli hear
+  katra-cli who
+
+  # Observe team activity
+  katra-cli recent --limit 10
+  katra-cli recall "design decisions"
+  katra-cli team-status
+
+  # System management
+  katra-cli sessions
+  katra-cli reload
+
+Configuration:
+  KATRA_MCP_HOST    MCP server host (default: localhost)
+  KATRA_MCP_PORT    MCP server port (default: 3141)
+
+State Files:
+  ~/.katra/.human_identity     Your registered name
+  ~/.katra/.human_role         Your registered role
+  ~/.katra/.human_last_read    Last message number read
+
+For full documentation: See docs/katra-cli.md
+EOF
+}
+
+# Main command dispatch
+mkdir -p "$STATE_DIR"
+
+COMMAND="${1:-help}"
+shift || true
+
+case "$COMMAND" in
+    register)
+        cmd_register "$@"
+        ;;
+    whoami)
+        cmd_whoami
+        ;;
+    say)
+        cmd_say "$@"
+        ;;
+    hear)
+        cmd_hear
+        ;;
+    who)
+        cmd_who
+        ;;
+    status)
+        cmd_status
+        ;;
+    recent)
+        cmd_recent "$@"
+        ;;
+    recall)
+        cmd_recall "$@"
+        ;;
+    team-status)
+        cmd_team_status
+        ;;
+    sessions)
+        cmd_sessions
+        ;;
+    reload)
+        cmd_reload
+        ;;
+    help|--help|-h)
+        cmd_help
+        ;;
+    *)
+        echo -e "${RED}Error: Unknown command: $COMMAND${NC}"
+        echo ""
+        cmd_help
+        exit 1
+        ;;
+esac

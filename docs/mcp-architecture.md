@@ -79,28 +79,15 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Two Operation Modes
+### Operation Modes
 
-#### 1. stdio Mode (Single Client)
+#### TCP Mode (Default)
 
-```
-Claude Code ←stdin/stdout→ katra_mcp_server ← Katra Core
-```
-
-- **Use case:** Individual CI working with Claude Code
-- **Characteristics:**
-  - One-to-one connection
-  - Process lifetime tied to Claude Code session
-  - Persona determined by environment variable
-  - Automatic startup/shutdown
-
-**Example:**
 ```bash
-export KATRA_PERSONA=Ami
-claude  # Automatically starts MCP server via config
+katra start --persona Ami    # Auto-starts shared TCP server if needed
+katra start --persona Bob    # Connects to same server
+katra-cli register Casey     # Humans join too
 ```
-
-#### 2. TCP Mode (Multi-Client)
 
 ```
 ┌─ Claude Code ───┐
@@ -112,22 +99,40 @@ claude  # Automatically starts MCP server via config
 └─ Mobile App ────┘
 ```
 
-- **Use case:** Collaborative environment, human participation
+- **Use case:** Collaborative environment, human participation (recommended)
 - **Characteristics:**
   - Multiple simultaneous clients
   - Persistent server process
+  - Auto-starts if not running
   - Each client has own identity/persona
-  - Shared meeting room
+  - Shared global meeting room
+  - All CIs can communicate via say/hear/who
 
 **Example:**
 ```bash
-# Start persistent server
-./bin/katra_mcp_server --tcp --port 3141 &
+# TCP server auto-starts on first katra start
+katra start --persona Ami     # Auto-starts TCP server on port 3141
+katra start --persona Bob     # Connects to same server
 
-# Multiple clients connect
+# Humans can join too
 katra-cli register Casey human
 katra-cli say "Hello team"
 ```
+
+#### stdio Mode (Legacy)
+
+```bash
+katra start --persona Ami --stdio    # Isolated session
+```
+
+- **Use case:** Testing, debugging, single-CI development
+- **Characteristics:**
+  - One client per server process
+  - Server starts/stops with session
+  - Isolated meeting room (no cross-persona communication)
+  - No human participation
+
+**Note:** stdio mode is deprecated. Use TCP mode for all new development.
 
 ## Key Design Decisions
 
@@ -141,17 +146,23 @@ JSON-RPC provides:
 
 **Alternative considered:** gRPC (rejected as over-engineered for our needs)
 
-### 2. Why Both stdio and TCP?
+### 2. Why TCP by Default (with stdio fallback)?
 
-**stdio:**
-- Standard MCP pattern for Claude Code integration
-- Zero configuration - works out of the box
-- Perfect for single CI + IDE workflow
-
-**TCP:**
+**TCP advantages:**
 - Enables human participation (katra-cli)
-- Multi-CI collaboration in same memory space
+- Multi-CI collaboration in shared memory space
+- Persistent server process (survives individual session restarts)
 - Future: web dashboards, mobile apps, monitoring tools
+- Global meeting room (all personas can communicate)
+- Auto-starts when needed (zero configuration for users)
+
+**stdio limitations:**
+- One client per server process
+- Isolated meeting rooms (no cross-persona communication)
+- Server dies with session (no persistence)
+- No human participation possible
+
+**Decision:** TCP is now the default mode. stdio remains available via `--stdio` flag for debugging and testing.
 
 ### 3. Why Separate Meeting Room from Memory?
 

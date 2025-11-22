@@ -53,18 +53,32 @@ export PATH="$PATH:/Users/cskoons/projects/github/katra/bin"
 
 ### 1. Start TCP-mode MCP Server
 
-The CLI requires a TCP-mode MCP server to be running:
+**Option A: Automatic (Recommended - via `katra start`)**
+
+Since Katra v2.0, TCP mode is the default. The TCP server starts automatically when you launch any CI:
+
+```bash
+katra start --persona Ami
+# Automatically starts TCP server on port 3141 if not already running
+# All subsequent katra start commands connect to the same server
+```
+
+**Option B: Manual Start (Advanced Users)**
+
+Start the server directly:
 
 ```bash
 cd /Users/cskoons/projects/github/katra
 ./bin/katra_mcp_server --tcp --port 3141 &
 ```
 
-Or start in a tmux session for persistent operation:
+Or in a tmux session for persistent operation:
 ```bash
 tmux new-session -d -s katra-tcp \
   "cd /Users/cskoons/projects/github/katra && ./bin/katra_mcp_server --tcp --port 3141"
 ```
+
+**Note:** Since Katra v2.0, TCP mode is the default. The server auto-starts when you run `katra start`, and all CI sessions share a single persistent MCP server and global meeting room. Manual start is only needed for advanced debugging.
 
 ### 2. Register Your Identity
 
