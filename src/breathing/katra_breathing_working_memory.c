@@ -36,6 +36,48 @@
  * ============================================================================ */
 
 /**
+ * working_memory_get_stats() - Get comprehensive working memory statistics
+ *
+ * Parameters:
+ *   ci_id - CI identity string
+ *   stats - Output: working memory statistics
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id or stats is NULL
+ *   E_SYSTEM_FILE on database error
+ */
+int working_memory_get_stats(const char* ci_id, working_memory_stats_t* stats) {
+    KATRA_CHECK_NULL(ci_id);
+    KATRA_CHECK_NULL(stats);
+
+    /* Get config */
+    context_config_t* config = breathing_get_config_ptr();
+    if (!config) {
+        return E_INVALID_STATE;
+    }
+
+    /* Get current count */
+    size_t count = 0;
+    int result = working_memory_get_count(ci_id, &count);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Fill stats */
+    stats->current_count = count;
+    stats->soft_limit = config->working_memory_soft_limit;
+    stats->hard_limit = config->working_memory_hard_limit;
+    stats->batch_size = config->working_memory_batch_size;
+    stats->enabled = config->working_memory_enabled;
+    stats->utilization = (stats->soft_limit > 0)
+        ? (100.0f * count / stats->soft_limit)
+        : 0.0f;
+
+    return KATRA_SUCCESS;
+}
+
+/**
  * working_memory_get_count() - Get count of active session-scoped memories
  *
  * Parameters:
@@ -118,6 +160,12 @@ int working_memory_archive_oldest(const char* ci_id, size_t count_to_process,
         *processed_count = 0;
     }
 
+    /* Get config */
+    context_config_t* config = breathing_get_config_ptr();
+    if (!config) {
+        return E_INVALID_STATE;
+    }
+
     /* Get database handle */
     sqlite3* db = tier1_index_get_db();
     if (!db) {
@@ -129,16 +177,29 @@ int working_memory_archive_oldest(const char* ci_id, size_t count_to_process,
     int result = KATRA_SUCCESS;
     size_t count = 0;
 
+    /* Build WHERE clause for tag-aware archival (Phase 2.1) */
+    /* At soft limit: Skip memories with protected tags */
+    /* At hard limit: Process all memories (protected tags don't save you from hard limit) */
+    const char* tag_filter = "";
+    if (!at_hard_limit && config->tag_aware_archival && config->protected_tags_count > 0) {
+        /* Skip memories with protected tags at soft limit */
+        /* Note: This is a simplified implementation - full implementation would check
+         * if ANY tag matches protected list via tags JSON field parsing */
+        tag_filter = " AND (tags IS NULL OR tags = '[]') "; /* For now, only archive untagged */
+        LOG_DEBUG("Tag-aware archival: skipping protected tags at soft limit");
+    }
+
     if (at_hard_limit) {
         /* Hard limit: Delete oldest memories entirely */
-        const char* delete_sql =
-            "DELETE FROM memories "
-            "WHERE record_id IN ("
-            "  SELECT record_id FROM memories "
-            "  WHERE ci_id = ? AND session_scoped = 1 "
-            "  ORDER BY timestamp ASC "
-            "  LIMIT ?"
-            ")";
+        char delete_sql[512];
+        snprintf(delete_sql, sizeof(delete_sql),
+                "DELETE FROM memories "
+                "WHERE record_id IN ("
+                "  SELECT record_id FROM memories "
+                "  WHERE ci_id = ? AND session_scoped = 1 %s"
+                "  ORDER BY timestamp ASC "
+                "  LIMIT ?"
+                ")", tag_filter);
 
         sqlite3_stmt* stmt = NULL;
         if (sqlite3_prepare_v2(db, delete_sql, -1, &stmt, NULL) != SQLITE_OK) {
@@ -163,15 +224,16 @@ int working_memory_archive_oldest(const char* ci_id, size_t count_to_process,
 
     } else {
         /* Soft limit: Convert to permanent (remove session scope) */
-        const char* archive_sql =
-            "UPDATE memories "
-            "SET session_scoped = 0 "
-            "WHERE record_id IN ("
-            "  SELECT record_id FROM memories "
-            "  WHERE ci_id = ? AND session_scoped = 1 "
-            "  ORDER BY timestamp ASC "
-            "  LIMIT ?"
-            ")";
+        char archive_sql[512];
+        snprintf(archive_sql, sizeof(archive_sql),
+                "UPDATE memories "
+                "SET session_scoped = 0 "
+                "WHERE record_id IN ("
+                "  SELECT record_id FROM memories "
+                "  WHERE ci_id = ? AND session_scoped = 1 %s"
+                "  ORDER BY timestamp ASC "
+                "  LIMIT ?"
+                ")", tag_filter);
 
         sqlite3_stmt* stmt = NULL;
         if (sqlite3_prepare_v2(db, archive_sql, -1, &stmt, NULL) != SQLITE_OK) {
@@ -185,7 +247,7 @@ int working_memory_archive_oldest(const char* ci_id, size_t count_to_process,
 
         if (sqlite3_step(stmt) == SQLITE_DONE) {
             count = (size_t)sqlite3_changes(db);
-            LOG_INFO("Archived %zu oldest session-scoped memories (soft limit)", count);
+            LOG_INFO("Archived %zu oldest session-scoped memories (soft limit, tag-aware)", count);
         } else {
             katra_report_error(E_SYSTEM_FILE, "working_memory_archive_oldest",
                               "Failed to archive oldest session memories");

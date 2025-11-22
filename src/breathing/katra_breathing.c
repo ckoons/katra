@@ -67,7 +67,22 @@ static context_config_t g_context_config = {
     .working_memory_enabled = WORKING_MEMORY_DEFAULT_ENABLED,  /* Enabled by default */
     .working_memory_soft_limit = WORKING_MEMORY_SOFT_LIMIT,    /* Archive at 35 */
     .working_memory_hard_limit = WORKING_MEMORY_HARD_LIMIT,    /* Delete at 50 */
-    .working_memory_batch_size = WORKING_MEMORY_BATCH_SIZE     /* Process 10 at a time */
+    .working_memory_batch_size = WORKING_MEMORY_BATCH_SIZE,    /* Process 10 at a time */
+    /* Tag-aware archival defaults (Phase 2.1) */
+    .tag_aware_archival = true,                 /* Enabled by default */
+    .protected_tags = NULL,                     /* Initialized below */
+    .protected_tags_count = 0                   /* Set during init */
+};
+
+/* Protected tags for tag-aware archival (Phase 2.1) */
+static const char* g_protected_tags[] = {
+    TAG_INSIGHT,        /* "insight" - Learning moments should be preserved */
+    TAG_PERMANENT,      /* "permanent" - Explicitly marked permanent */
+    TAG_PERSONAL,       /* "personal" - Identity-defining memories */
+    "decision",         /* Decisions are important */
+    "architecture",     /* Architectural decisions */
+    "important",        /* Explicitly marked important */
+    NULL                /* NULL-terminated */
 };
 
 /* Global enhanced statistics */
@@ -150,6 +165,18 @@ int breathe_init(const char* ci_id) {
         } else {
             LOG_WARN("Graph store init failed (continuing without auto-edges)");
         }
+    }
+
+    /* Initialize protected tags for tag-aware archival (Phase 2.1) */
+    if (g_context_config.tag_aware_archival) {
+        g_context_config.protected_tags = g_protected_tags;
+        /* Count protected tags */
+        size_t count = 0;
+        while (g_protected_tags[count] != NULL) {
+            count++;
+        }
+        g_context_config.protected_tags_count = count;
+        LOG_INFO("Tag-aware archival enabled with %zu protected tags", count);
     }
 
     return KATRA_SUCCESS;

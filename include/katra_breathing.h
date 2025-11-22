@@ -86,6 +86,11 @@ typedef struct {
     size_t working_memory_soft_limit; /* Archive oldest at this count (default: 35) */
     size_t working_memory_hard_limit; /* Delete oldest at this count (default: 50) */
     size_t working_memory_batch_size; /* How many to archive/delete at once (default: 10) */
+
+    /* Tag-aware archival configuration (Phase 2.1) */
+    bool tag_aware_archival;         /* Enable tag-aware archival (default: true) */
+    const char** protected_tags;     /* Tags that protect from archival (NULL-terminated array) */
+    size_t protected_tags_count;     /* Number of protected tags */
 } context_config_t;
 
 /** Memory context - automatically captured */
@@ -1251,6 +1256,44 @@ int regenerate_vectors_async(void);
  *   true if vectors are ready for use, false if still regenerating or failed
  */
 bool regenerate_vectors_is_ready(void);
+
+/* ============================================================================
+ * WORKING MEMORY BUDGET (Phase 2)
+ * ============================================================================ */
+
+/**
+ * Working memory statistics
+ */
+typedef struct {
+    size_t current_count;      /* Current session-scoped memory count */
+    size_t soft_limit;         /* Soft limit (archive threshold) */
+    size_t hard_limit;         /* Hard limit (delete threshold) */
+    size_t batch_size;         /* Batch processing size */
+    bool enabled;              /* Is budget enforcement enabled */
+    float utilization;         /* Percentage of soft limit used (0-100+) */
+} working_memory_stats_t;
+
+/**
+ * working_memory_get_stats() - Get working memory budget statistics
+ *
+ * Returns comprehensive stats about working memory usage:
+ * - current_count: How many session-scoped memories exist
+ * - soft_limit/hard_limit: Current thresholds
+ * - utilization: Percentage of soft limit used
+ * - enabled: Whether budget enforcement is active
+ *
+ * Example:
+ *   working_memory_stats_t stats;
+ *   working_memory_get_stats(ci_id, &stats);
+ *   printf("Working memory: %zu/%zu (%.1f%% utilized)\n",
+ *          stats.current_count, stats.soft_limit, stats.utilization);
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id or stats is NULL
+ *   E_SYSTEM_FILE on database error
+ */
+int working_memory_get_stats(const char* ci_id, working_memory_stats_t* stats);
 
 /* ============================================================================
  * KEYWORD ARRAYS - Pattern detection for significance detection
