@@ -121,16 +121,14 @@ static int tcp_server_handle_client(int client_fd, const struct sockaddr_in* cli
     client->registered = false;
     client->connected_at = time(NULL);
 
-    /* Initialize client session with default state */
+    /* Initialize client session - NOT registered until katra_register called */
     client->session.registered = false;
     client->session.first_call = true;
     client->session.connected_at = client->connected_at;
-    strncpy(client->session.chosen_name, "Katra", sizeof(client->session.chosen_name) - 1);
-    client->session.chosen_name[sizeof(client->session.chosen_name) - 1] = '\0';
+    client->session.chosen_name[0] = '\0';  /* Empty until registered */
     client->session.role[0] = '\0';
 
-    /* TODO: Extract persona from client handshake/environment */
-    /* For now, session will auto-register on first katra_register call */
+    /* Client must call katra_register(name, role) to set persona */
 
     /* Add to tracking array */
     if (add_client(client) < 0) {

@@ -252,20 +252,25 @@ json_t* mcp_tool_whoami(json_t* args, json_t* id) {
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "Your Identity:\n\n");
 
+    if (!session->registered) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "Status: Not registered\n");
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "\nPlease register first:\n");
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                         "  katra_register(name=\"your-name\", role=\"developer\")\n");
+        return mcp_tool_success(response);
+    }
+
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "Name: %s\n", session->chosen_name);
 
-    if (session->registered) {
-        if (strlen(session->role) > 0) {
-            offset += snprintf(response + offset, sizeof(response) - offset,
-                             "Role: %s\n", session->role);
-        }
+    if (strlen(session->role) > 0) {
         offset += snprintf(response + offset, sizeof(response) - offset,
-                         "Status: Registered\n");
-    } else {
-        offset += snprintf(response + offset, sizeof(response) - offset,
-                         "Status: Not registered (using default name)\n");
+                         "Role: %s\n", session->role);
     }
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                     "Status: Registered\n");
 
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "CI Identity: %s\n", g_ci_id);
@@ -281,11 +286,6 @@ json_t* mcp_tool_whoami(json_t* args, json_t* id) {
             offset += snprintf(response + offset, sizeof(response) - offset,
                              "Memories: %zu\n", info.memories_added);
         }
-    }
-
-    if (!session->registered) {
-        offset += snprintf(response + offset, sizeof(response) - offset,
-                         "\nTo register: katra_register(name=\"your-name\", role=\"developer\")");
     }
 
     return mcp_tool_success(response);
