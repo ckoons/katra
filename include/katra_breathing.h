@@ -151,14 +151,16 @@ typedef struct {
 /* Simple primitives - these feel natural to use */
 
 /**
- * remember() - Store a thought/experience
+ * remember() - Store a thought/experience for a specific CI
  *
  * This is what memory formation should feel like:
- *   remember("I learned that tier1 needs per-CI directories", WHY_SIGNIFICANT);
+ *   remember(ci_id, "I learned that tier1 needs per-CI directories", WHY_SIGNIFICANT);
  *
- * Not: create record, set fields, validate, store, free
+ * @param ci_id - The CI/persona this memory belongs to
+ * @param thought - The content to remember
+ * @param why - Importance/reason for remembering
  */
-int remember(const char* thought, why_remember_t why);
+int remember(const char* ci_id, const char* thought, why_remember_t why);
 
 /**
  * remember_with_note() - Store with reasoning
