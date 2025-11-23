@@ -19,7 +19,8 @@
  * Store typed memory with automatic session attachment and stats tracking
  * Returns: KATRA_SUCCESS or error code
  */
-int breathing_store_typed_memory(memory_type_t type,
+int breathing_store_typed_memory(const char* ci_id,
+                                 memory_type_t type,
                                  const char* content,
                                  float importance,
                                  const char* importance_note,

@@ -67,16 +67,16 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
             tags[i] = json_string_value(tag_elem);
         }
         /* Use tag-based API */
-        result = remember_with_tags(content, tags, tag_count, salience);
+        result = remember_with_tags(session_name, content, tags, tag_count, salience);
     } else if (salience) {
         /* Salience but no tags - use tag API with empty tags */
-        result = remember_with_tags(content, NULL, 0, salience);
+        result = remember_with_tags(session_name, content, NULL, 0, salience);
     } else if (context) {
         /* Backward compatibility - use old semantic API */
-        result = remember_semantic(content, context);
+        result = remember_semantic(session_name, content, context);
     } else {
         /* No context, tags, or salience - use default medium importance */
-        result = remember_with_tags(content, NULL, 0, NULL);
+        result = remember_with_tags(session_name, content, NULL, 0, NULL);
     }
     /* Auto-generate embedding for semantic search (Phase 6.1) */
     if (result == KATRA_SUCCESS && g_vector_store) {
@@ -148,13 +148,13 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
     /* Use breathing layer's recall (hybrid or keyword based on config) */
-    results = recall_about(topic, &count);
+    results = recall_about(session_name, topic, &count);
 
     /* If no results, provide helpful suggestions */
     if (!results || count == 0) {
         /* Get digest to show total memory count and available topics */
         memory_digest_t* digest = NULL;
-        int digest_result = memory_digest(0, 0, &digest);  /* 0,0 = just stats, no memories */
+        int digest_result = memory_digest(session_name, 0, 0, &digest);  /* 0,0 = just stats, no memories */
 
         char response[MCP_RESPONSE_BUFFER];
         size_t offset = 0;
@@ -270,7 +270,7 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
     /* Use breathing layer's recent_thoughts() */
-    results = recent_thoughts(limit, &count);
+    results = recent_thoughts(session_name, limit, &count);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (!results || count == 0) {
@@ -332,7 +332,7 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
     }
 
     memory_digest_t* digest = NULL;
-    int result = memory_digest(limit, offset, &digest);
+    int result = memory_digest(session_name, limit, offset, &digest);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS || !digest) {
@@ -528,10 +528,10 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
             tags[i] = json_string_value(tag_elem);
         }
         /* Use tag-based API */
-        result = decide_with_tags(decision, reasoning, tags, tag_count);
+        result = decide_with_tags(session_name, decision, reasoning, tags, tag_count);
     } else {
         /* Backward compatibility - use old API */
-        result = decide(decision, reasoning);
+        result = decide(session_name, decision, reasoning);
     }
 
     pthread_mutex_unlock(&g_katra_api_lock);

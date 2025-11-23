@@ -45,13 +45,17 @@ static void reset_isolation_settings(void) {
  * MEMORY FORMATION HELPERS
  * ============================================================================ */
 
-int breathing_store_typed_memory(memory_type_t type,
+int breathing_store_typed_memory(const char* ci_id,
+                                 memory_type_t type,
                                  const char* content,
                                  float importance,
                                  const char* importance_note,
                                  why_remember_t why_enum,
                                  const char* func_name) {
-    const char* ci_id = breathing_get_ci_id();
+    if (!ci_id) {
+        katra_report_error(E_INPUT_NULL, func_name, "ci_id is NULL");
+        return E_INPUT_NULL;
+    }
 
     /* Check memory pressure and enforce limits in degraded mode */
     memory_health_t* health = get_memory_health(ci_id);

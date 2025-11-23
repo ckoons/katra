@@ -158,11 +158,21 @@ int notice_pattern(const char* ci_id, const char* pattern) {
     );
 }
 
-int remember_forever(const char* ci_id, const char* thought) {
-    if (!ci_id || !thought) {
-        katra_report_error(E_INPUT_NULL, "remember_forever", "NULL parameter");
+int remember_forever(const char* thought) {
+    const char* ci_id = breathing_get_ci_id();
+
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, "remember_forever", /* GUIDELINE_APPROVED: function name */
+                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
+        return E_INVALID_STATE;
+    }
+
+    if (!thought) {
+        katra_report_error(E_INPUT_NULL, "remember_forever", "thought is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
         return E_INPUT_NULL;
     }
+
+    LOG_DEBUG("Marking for permanent preservation: %s", thought);
 
     /* Create memory record with CRITICAL importance */
     memory_record_t* record = katra_memory_create_record(

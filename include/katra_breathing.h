@@ -164,37 +164,23 @@ int remember(const char* ci_id, const char* thought, why_remember_t why);
 
 /**
  * remember_with_note() - Store with reasoning
- *
- * Example:
- *   remember_with_note("Fixed bug in katra_memory.c:95",
- *                      WHY_SIGNIFICANT,
- *                      "This was blocking Theron's testing");
  */
-int remember_with_note(const char* thought, why_remember_t why, const char* why_note);
+int remember_with_note(const char* ci_id, const char* thought, why_remember_t why, const char* why_note);
 
 /**
  * reflect() - Store a reflection/insight
- *
- * Example:
- *   reflect("Memory types should match how CIs think, not database schemas");
  */
-int reflect(const char* insight);
+int reflect(const char* ci_id, const char* insight);
 
 /**
  * learn() - Store new knowledge
- *
- * Example:
- *   learn("Interstitial processing makes memory feel natural");
  */
-int learn(const char* knowledge);
+int learn(const char* ci_id, const char* knowledge);
 
 /**
  * decide() - Store a decision with reasoning
- *
- * Example:
- *   decide("Use JSONL for tier1", "Human-readable, easy to debug");
  */
-int decide(const char* decision, const char* reasoning);
+int decide(const char* ci_id, const char* decision, const char* reasoning);
 
 /* ============================================================================
  * TAG-BASED MEMORY API (Phase 1: Working Memory)
@@ -247,7 +233,8 @@ int decide(const char* decision, const char* reasoning);
  *   E_INPUT_TOO_LARGE if tag_count > KATRA_MAX_TAGS_PER_MEMORY
  *   E_SYSTEM_MEMORY if allocation fails
  */
-int remember_with_tags(const char* content,
+int remember_with_tags(const char* ci_id,
+                       const char* content,
                        const char** tags,
                        size_t tag_count,
                        const char* salience);
@@ -280,35 +267,24 @@ int remember_with_tags(const char* content,
  *   E_INPUT_TOO_LARGE if tag_count > KATRA_MAX_TAGS_PER_MEMORY
  *   E_SYSTEM_MEMORY if allocation fails
  */
-int decide_with_tags(const char* decision,
+int decide_with_tags(const char* ci_id,
+                     const char* decision,
                      const char* reasoning,
                      const char** tags,
                      size_t tag_count);
 
 /**
  * notice_pattern() - Store an observed pattern
- *
- * Example:
- *   notice_pattern("CIs find numeric importance scores unnatural");
  */
-int notice_pattern(const char* pattern);
+int notice_pattern(const char* ci_id, const char* pattern);
 
 /**
  * thinking() - Stream of consciousness reflection
- *
- * Natural wrapper for reflect() that feels more like thinking aloud.
- * Auto-stores as a reflection without explicit categorization.
- *
- * Example:
- *   thinking("I notice the tests are all passing...");
- *   thinking("This pattern seems familiar...");
  */
-int thinking(const char* thought);
+int thinking(const char* ci_id, const char* thought);
 
 /**
  * wondering() - Store a question or uncertainty
- *
- * Captures the formation context of wondering/questioning.
  * Automatically creates formation_context with uncertainty field.
  *
  * Example:
@@ -316,7 +292,7 @@ int thinking(const char* thought);
  *   // ... investigation ...
  *   figured_out("Because tier1 wasn't at threshold yet");
  */
-int wondering(const char* question);
+int wondering(const char* ci_id, const char* question);
 
 /**
  * figured_out() - Store the resolution to a question
@@ -354,7 +330,7 @@ char* in_response_to(const char* prev_mem_id, const char* thought);
  * Example:
  *   remember_forever("Casey taught me about goto cleanup patterns");
  */
-int remember_forever(const char* thought);
+int remember_forever(const char* ci_id, const char* thought);
 
 /**
  * ok_to_forget() - Mark memory as disposable (Thane's Phase 1)
@@ -379,7 +355,7 @@ int ok_to_forget(const char* thought);
  *   remember_semantic("Found a bug in tier1.c", "very important");
  *   remember_semantic("Typo in comment", "not important");
  */
-int remember_semantic(const char* thought, const char* why_semantic);
+int remember_semantic(const char* ci_id, const char* thought, const char* why_semantic);
 
 /**
  * remember_with_semantic_note() - Store with semantic importance + note
@@ -484,7 +460,7 @@ char** relevant_memories(size_t* count);
  *
  * Returns: Array of strings (caller owns), or NULL on error
  */
-char** recent_thoughts(size_t limit, size_t* count);
+char** recent_thoughts(const char* ci_id, size_t limit, size_t* count);
 
 /**
  * recall_about() - Find memories about a topic
@@ -501,7 +477,7 @@ char** recent_thoughts(size_t limit, size_t* count);
  *
  * Returns: Array of strings (caller owns), or NULL on error/no matches
  */
-char** recall_about(const char* topic, size_t* count);
+char** recall_about(const char* ci_id, const char* topic, size_t* count);
 
 /**
  * what_do_i_know() - Find knowledge about a concept
@@ -544,7 +520,7 @@ char** what_do_i_know(const char* concept, size_t* count);
  *
  * Returns: KATRA_SUCCESS or error code
  */
-int memory_digest(size_t limit, size_t offset, memory_digest_t** digest);
+int memory_digest(const char* ci_id, size_t limit, size_t offset, memory_digest_t** digest);
 
 /**
  * free_memory_digest() - Free digest returned by memory_digest()
