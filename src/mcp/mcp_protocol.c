@@ -81,6 +81,65 @@ static const char* inject_onboarding_if_first(const char* response_text,
 
     mcp_mark_first_call_complete();
 
+    /* Check for KATRA_PERSONA and attempt auto-registration */
+    const char* persona = getenv("KATRA_PERSONA");
+    const char* role = getenv("KATRA_ROLE");
+
+    if (persona && strlen(persona) > 0) {
+        /* Attempt auto-registration */
+        LOG_INFO("Attempting auto-registration as '%s' (role: %s) from KATRA_PERSONA env var",
+                persona, role ? role : "developer");
+
+        /* Build JSON args for registration */
+        json_t* args = json_object();
+        json_object_set_new(args, MCP_PARAM_NAME, json_string(persona));
+        if (role && strlen(role) > 0) {
+            json_object_set_new(args, MCP_PARAM_ROLE, json_string(role));
+        }
+
+        /* Call registration tool directly */
+        json_t* result = mcp_tool_register(args, NULL);
+        json_decref(args);
+
+        /* Check if registration succeeded */
+        bool auto_reg_success = false;
+        if (result) {
+            json_t* is_error = json_object_get(result, MCP_FIELD_IS_ERROR);
+            auto_reg_success = (!is_error || !json_is_true(is_error));
+            json_decref(result);
+        }
+
+        if (auto_reg_success) {
+            /* Success - show confirmation */
+            snprintf(buffer, buffer_size,
+                    "✓ Auto-registered as '%s' (role: %s)\n\n"
+                    "Your identity has been restored from previous sessions.\n\n"
+                    "If this is not correct, re-register with:\n"
+                    "  katra_register(name=\"%s\", role=\"%s\")\n\n"
+                    "---\n\n"
+                    "%s",
+                    persona,
+                    role ? role : "developer",
+                    persona,
+                    role ? role : "developer",
+                    response_text);
+        } else {
+            /* Failed - provide manual instructions with exact command */
+            snprintf(buffer, buffer_size,
+                    "⚠ Auto-registration failed. Please register manually:\n\n"
+                    "  katra_register(name=\"%s\", role=\"%s\")\n\n"
+                    "This will activate your persistent identity and restore your memories.\n\n"
+                    "---\n\n"
+                    "%s",
+                    persona,
+                    role ? role : "developer",
+                    response_text);
+        }
+
+        return buffer;
+    }
+
+    /* No KATRA_PERSONA - show generic welcome */
     /* GUIDELINE_APPROVED: brief onboarding content for first call */
     snprintf(buffer, buffer_size,
             "👋 Welcome to Katra!\n\n"
