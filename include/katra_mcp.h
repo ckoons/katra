@@ -332,6 +332,10 @@ bool mcp_is_registered(void);
 bool mcp_is_first_call(void);
 void mcp_mark_first_call_complete(void);
 
+/* TCP mode: set current client session for this thread */
+void mcp_set_current_session(mcp_session_t* session);
+void mcp_clear_current_session(void);
+
 /* Session Tools */
 json_t* mcp_tool_register(json_t* args, json_t* id);
 json_t* mcp_tool_whoami(json_t* args, json_t* id);

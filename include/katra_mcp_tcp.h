@@ -5,6 +5,8 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <time.h>
+#include "katra_mcp.h"
 
 /* Default TCP port for MCP server */
 #define KATRA_MCP_DEFAULT_PORT 3141
@@ -27,6 +29,7 @@ typedef struct {
     char ci_id[64];
     bool registered;
     time_t connected_at;
+    mcp_session_t session;  /* Per-client session state */
 } mcp_tcp_client_t;
 
 /* Initialize TCP server configuration from file */

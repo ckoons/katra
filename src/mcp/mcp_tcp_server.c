@@ -121,6 +121,17 @@ static int tcp_server_handle_client(int client_fd, const struct sockaddr_in* cli
     client->registered = false;
     client->connected_at = time(NULL);
 
+    /* Initialize client session with default state */
+    client->session.registered = false;
+    client->session.first_call = true;
+    client->session.connected_at = client->connected_at;
+    strncpy(client->session.chosen_name, "Katra", sizeof(client->session.chosen_name) - 1);
+    client->session.chosen_name[sizeof(client->session.chosen_name) - 1] = '\0';
+    client->session.role[0] = '\0';
+
+    /* TODO: Extract persona from client handshake/environment */
+    /* For now, session will auto-register on first katra_register call */
+
     /* Add to tracking array */
     if (add_client(client) < 0) {
         LOG_ERROR("Failed to add client to tracking array");
@@ -241,6 +252,9 @@ void mcp_tcp_handle_client(mcp_tcp_client_t* client) {
 
     LOG_INFO("Handling client connection on fd %d", client->socket_fd);
 
+    /* Set this client's session as current for this thread */
+    mcp_set_current_session(&client->session);
+
     /* Read and process requests in a loop */
     while (!g_tcp_shutdown) {
         bytes_read = read(client->socket_fd, buffer, sizeof(buffer) - 1);
@@ -299,6 +313,9 @@ void mcp_tcp_handle_client(mcp_tcp_client_t* client) {
             json_decref(response);
         }
     }
+
+    /* Clear thread-local session */
+    mcp_clear_current_session();
 
     LOG_INFO("Client connection closed on fd %d", client->socket_fd);
 }

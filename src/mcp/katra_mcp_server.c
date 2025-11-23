@@ -44,7 +44,7 @@ char g_ci_id[KATRA_CI_ID_SIZE] = "";  /* Same as g_persona_name */
 /* Global vector store for semantic search (Phase 6.1) */
 vector_store_t* g_vector_store = NULL;
 
-/* Global session state */
+/* Global session state (stdio mode) */
 static mcp_session_t g_session = {
     .chosen_name = "Katra",  /* Default name until registered */
     .role = "",
@@ -52,6 +52,9 @@ static mcp_session_t g_session = {
     .first_call = true,
     .connected_at = 0
 };
+
+/* Thread-local session for TCP mode (per-client sessions) */
+static __thread mcp_session_t* g_current_session = NULL;
 
 /* Global shutdown flag */
 volatile sig_atomic_t g_shutdown_requested = 0;
@@ -82,23 +85,41 @@ void mcp_signal_handler(int signum) {
 
 /* Session State Access Functions */
 mcp_session_t* mcp_get_session(void) {
+    /* TCP mode: return thread-local session if set */
+    if (g_current_session) {
+        return g_current_session;
+    }
+    /* stdio mode: return global session */
     return &g_session;
 }
 
 const char* mcp_get_session_name(void) {
-    return g_session.chosen_name;
+    mcp_session_t* session = mcp_get_session();
+    return session->chosen_name;
 }
 
 bool mcp_is_registered(void) {
-    return g_session.registered;
+    mcp_session_t* session = mcp_get_session();
+    return session->registered;
 }
 
 bool mcp_is_first_call(void) {
-    return g_session.first_call;
+    mcp_session_t* session = mcp_get_session();
+    return session->first_call;
 }
 
 void mcp_mark_first_call_complete(void) {
-    g_session.first_call = false;
+    mcp_session_t* session = mcp_get_session();
+    session->first_call = false;
+}
+
+/* TCP mode: set current client session for this thread */
+void mcp_set_current_session(mcp_session_t* session) {
+    g_current_session = session;
+}
+
+void mcp_clear_current_session(void) {
+    g_current_session = NULL;
 }
 
 /* Note: generate_ci_id() moved to katra_identity.c as katra_generate_ci_id() */
