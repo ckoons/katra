@@ -11,6 +11,9 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_hooks.h"
+#include "katra_breathing.h"
+#include "katra_identity.h"
+#include "katra_meeting.h"
 
 /* Parse JSON-RPC request from string */
 json_t* mcp_parse_request(const char* json_str) {
@@ -86,27 +89,76 @@ static const char* inject_onboarding_if_first(const char* response_text,
     const char* role = getenv("KATRA_ROLE");
 
     if (persona && strlen(persona) > 0) {
-        /* Attempt auto-registration */
+        /* Attempt auto-registration - bypass MCP tool to avoid approval prompts */
         LOG_INFO("Attempting auto-registration as '%s' (role: %s) from KATRA_PERSONA env var",
                 persona, role ? role : "developer");
 
-        /* Build JSON args for registration */
-        json_t* args = json_object();
-        json_object_set_new(args, MCP_PARAM_NAME, json_string(persona));
-        if (role && strlen(role) > 0) {
-            json_object_set_new(args, MCP_PARAM_ROLE, json_string(role));
-        }
-
-        /* Call registration tool directly */
-        json_t* result = mcp_tool_register(args, NULL);
-        json_decref(args);
-
-        /* Check if registration succeeded */
+        /* Get session state */
+        mcp_session_t* session = mcp_get_session();
         bool auto_reg_success = false;
-        if (result) {
-            json_t* is_error = json_object_get(result, MCP_FIELD_IS_ERROR);
-            auto_reg_success = (!is_error || !json_is_true(is_error));
-            json_decref(result);
+
+        /* Only register if not already registered */
+        if (!session->registered) {
+            /* Use persona name as ci_id (identity preservation) */
+            char ci_id[KATRA_CI_ID_SIZE];
+            strncpy(ci_id, persona, sizeof(ci_id) - 1);
+            ci_id[sizeof(ci_id) - 1] = '\0';
+
+            /* Check if persona exists */
+            char old_ci_id[KATRA_CI_ID_SIZE];
+            int lookup_result = katra_lookup_persona(persona, old_ci_id, sizeof(old_ci_id));
+
+            if (lookup_result == KATRA_SUCCESS && strcmp(old_ci_id, ci_id) != 0) {
+                LOG_INFO("Migrating persona '%s' from old ci_id '%s' to name-based '%s'",
+                        persona, old_ci_id, ci_id);
+            }
+
+            /* Register or update persona */
+            int result = katra_register_persona(persona, ci_id);
+            if (result == KATRA_SUCCESS) {
+                /* Update global ci_id */
+                extern char g_ci_id[];
+                strncpy(g_ci_id, ci_id, KATRA_CI_ID_SIZE - 1);
+                g_ci_id[KATRA_CI_ID_SIZE - 1] = '\0';
+
+                /* Mark persona as active */
+                katra_update_persona_session(persona);
+
+                /* Start session */
+                result = session_start(ci_id);
+                if (result == KATRA_SUCCESS) {
+                    /* Update session state */
+                    strncpy(session->chosen_name, persona, sizeof(session->chosen_name) - 1);
+                    session->chosen_name[sizeof(session->chosen_name) - 1] = '\0';
+
+                    if (role && strlen(role) > 0) {
+                        strncpy(session->role, role, sizeof(session->role) - 1);
+                        session->role[sizeof(session->role) - 1] = '\0';
+                    }
+
+                    session->registered = true;
+
+                    /* Register in meeting room */
+                    meeting_room_register_ci(ci_id, persona, role ? role : "developer");
+
+                    /* Create welcome memory */
+                    char welcome[KATRA_BUFFER_MESSAGE];
+                    if (role && strlen(role) > 0) {
+                        snprintf(welcome, sizeof(welcome),
+                                "Session started. My name is %s, I'm a %s.", persona, role);
+                    } else {
+                        snprintf(welcome, sizeof(welcome),
+                                "Session started. My name is %s.", persona);
+                    }
+                    learn(ci_id, welcome);
+
+                    auto_reg_success = true;
+                    LOG_INFO("Auto-registration succeeded for '%s'", persona);
+                }
+            }
+        } else {
+            /* Already registered */
+            auto_reg_success = true;
         }
 
         if (auto_reg_success) {
