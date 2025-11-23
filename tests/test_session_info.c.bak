@@ -87,13 +87,13 @@ static int test_session_info_metrics(void) {
     printf("TEST: Session info tracks metrics...\n");
 
     /* Add some memories */
-    int result = remember(TEST_CI_ID, "Test memory 1", WHY_INTERESTING);
+    int result = remember("Test memory 1", WHY_INTERESTING);
     if (result != KATRA_SUCCESS) {
         printf("  FAIL: remember failed: %d\n", result);
         return 1;
     }
 
-    result = learn(TEST_CI_ID, "Test knowledge");
+    result = learn("Test knowledge");
     if (result != KATRA_SUCCESS) {
         printf("  FAIL: learn failed: %d\n", result);
         return 1;
@@ -101,10 +101,10 @@ static int test_session_info_metrics(void) {
 
     /* Perform some queries */
     size_t count = 0;
-    char** thoughts = recent_thoughts(TEST_CI_ID, 10, &count);
+    char** thoughts = recent_thoughts(10, &count);
     free_memory_list(thoughts, count);
 
-    char** memories = recall_about(TEST_CI_ID, "test", &count);
+    char** memories = recall_about("test", &count);
     free_memory_list(memories, count);
 
     /* Get session info */

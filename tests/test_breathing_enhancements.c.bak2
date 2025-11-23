@@ -42,7 +42,7 @@ void teardown(void) {
  * ============================================================================ */
 
 void test_thinking_basic(void) {
-    int result = thinking(CI_ID, "I notice the pattern is emerging...");
+    int result = thinking("I notice the pattern is emerging...");
     assert(result == KATRA_SUCCESS);
 
     /* Verify it's stored as reflection */
@@ -76,7 +76,7 @@ void test_thinking_basic(void) {
 }
 
 void test_thinking_null_thought(void) {
-    int result = thinking(CI_ID, NULL);
+    int result = thinking(NULL);
     assert(result == E_INPUT_NULL);
 }
 
@@ -85,7 +85,7 @@ void test_thinking_null_thought(void) {
  * ============================================================================ */
 
 void test_wondering_basic(void) {
-    int result = wondering(CI_ID, "Why isn't consolidation running?");
+    int result = wondering("Why isn't consolidation running?");
     assert(result == KATRA_SUCCESS);
 
     /* Verify it's stored with formation context */
@@ -157,7 +157,7 @@ void test_figured_out_basic(void) {
 
 void test_wondering_then_figured_out(void) {
     /* Simulate discovery flow */
-    int result = wondering(CI_ID, "Why are tests failing?");
+    int result = wondering("Why are tests failing?");
     assert(result == KATRA_SUCCESS);
 
     result = figured_out("Forgot to initialize breathing layer");
@@ -189,12 +189,12 @@ void test_wondering_then_figured_out(void) {
 
 void test_what_do_i_know_basic(void) {
     /* Store some knowledge */
-    learn(CI_ID, "Consolidation archives old memories");
-    learn(CI_ID, "Tier1 is for raw recordings");
-    learn(CI_ID, "Pattern compression preserves outliers");
+    learn(TEST_CI_ID, "Consolidation archives old memories");
+    learn(TEST_CI_ID, "Tier1 is for raw recordings");
+    learn(TEST_CI_ID, "Pattern compression preserves outliers");
 
     /* Also store non-knowledge */
-    remember(CI_ID, "Had lunch today", WHY_ROUTINE);
+    remember(TEST_CI_ID, "Had lunch today", WHY_ROUTINE);
 
     /* Query knowledge only */
     size_t count = 0;
@@ -217,7 +217,7 @@ void test_what_do_i_know_basic(void) {
 }
 
 void test_what_do_i_know_no_matches(void) {
-    learn(CI_ID, "Tier1 is for raw recordings");
+    learn(TEST_CI_ID, "Tier1 is for raw recordings");
 
     size_t count = 0;
     char** knowledge = what_do_i_know("nonexistent", &count);
@@ -240,7 +240,7 @@ void test_what_do_i_know_null_concept(void) {
 
 void test_in_response_to_basic(void) {
     /* Store initial thought */
-    int result = remember(CI_ID, "Casey asked about Phase 4", WHY_SIGNIFICANT);
+    int result = remember(TEST_CI_ID, "Casey asked about Phase 4", WHY_SIGNIFICANT);
     assert(result == KATRA_SUCCESS);
 
     /* Get the memory ID */

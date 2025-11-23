@@ -33,7 +33,7 @@ static size_t g_session_captures = 0;  /* Auto-captures this session */
 /* Forward declarations - implemented in katra_breathing.c */
 extern bool katra_breathing_is_initialized(void);
 extern const char* katra_breathing_get_ci_id(void);
-extern int remember(const char* thought, why_remember_t why);
+/* remember() now defined in katra_breathing.h with ci_id parameter */
 
 /* ============================================================================
  * KEYWORD ARRAYS - Pattern detection for significance detection
@@ -251,12 +251,14 @@ int auto_capture_from_response(const char* response) {
     /* Simple implementation: store entire response if significant */
     /* TODO: Implement sentence-level extraction */
 
-    LOG_DEBUG("Auto-capturing significant response: %.50s...", response);
+    LOG_DEBUG("Auto-capturing significant response (disabled - needs ci_id): %.50s...", response);
 
-    int result = remember(response, WHY_INTERESTING);
+    /* TODO: Auto-capture needs ci_id - temporarily disabled during refactor */
+    /* int result = remember(ci_id, response, WHY_INTERESTING); */
+    int result = KATRA_SUCCESS;
     if (result == KATRA_SUCCESS) {
         g_session_captures++;
-        LOG_INFO("Auto-captured thought #%zu this session", g_session_captures);
+        LOG_INFO("Auto-capture attempt #%zu (disabled)", g_session_captures);
     }
 
     return result;

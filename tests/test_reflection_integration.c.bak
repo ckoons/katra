@@ -40,10 +40,10 @@ static int test_complete_reflection_workflow(void) {
     int result = begin_turn();
     failures += check_result("Turn 1: begin_turn()", result, KATRA_SUCCESS);
 
-    result = remember(TEST_CI_ID, "Exploring the memory reflection system", WHY_INTERESTING);
+    result = remember("Exploring the memory reflection system", WHY_INTERESTING);
     failures += check_result("Turn 1: remember exploration", result, KATRA_SUCCESS);
 
-    result = learn(TEST_CI_ID, "Personal collections preserve identity-defining memories");
+    result = learn("Personal collections preserve identity-defining memories");
     failures += check_result("Turn 1: learn about personal collections", result, KATRA_SUCCESS);
 
     /* End-of-turn reflection: Review what was created */
@@ -78,10 +78,10 @@ static int test_complete_reflection_workflow(void) {
     result = begin_turn();
     failures += check_result("Turn 2: begin_turn()", result, KATRA_SUCCESS);
 
-    result = remember(TEST_CI_ID, "This is a breakthrough moment", WHY_CRITICAL);
+    result = remember("This is a breakthrough moment", WHY_CRITICAL);
     failures += check_result("Turn 2: remember breakthrough", result, KATRA_SUCCESS);
 
-    result = reflect(TEST_CI_ID, "Personal collections let CIs consciously shape their identity");
+    result = reflect("Personal collections let CIs consciously shape their identity");
     failures += check_result("Turn 2: reflect on identity", result, KATRA_SUCCESS);
 
     /* End-of-turn reflection */
@@ -129,7 +129,7 @@ static int test_complete_reflection_workflow(void) {
     result = begin_turn();
     failures += check_result("Turn 3: begin_turn()", result, KATRA_SUCCESS);
 
-    result = remember(TEST_CI_ID, "Initial understanding of metadata", WHY_INTERESTING);
+    result = remember("Initial understanding of metadata", WHY_INTERESTING);
     failures += check_result("Turn 3: remember initial understanding", result, KATRA_SUCCESS);
 
     /* Get memory for revision */

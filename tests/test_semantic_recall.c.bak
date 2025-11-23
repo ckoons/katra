@@ -46,28 +46,28 @@ int main(void) {
     printf("Test 2: Storing test memories...\n");
 
     /* Store memories with related semantic content */
-    result = remember_semantic(TEST_CI_ID, "The quick brown fox jumps over the lazy dog", "trivial");
+    result = remember_semantic("The quick brown fox jumps over the lazy dog", "trivial");
     if (result != KATRA_SUCCESS) {
         printf("❌ FAILED: remember_semantic() returned %d\n", result);
         breathe_cleanup();
         return 1;
     }
 
-    result = remember_semantic(TEST_CI_ID, "A fast auburn canine leaps above the sleepy hound", "trivial");
+    result = remember_semantic("A fast auburn canine leaps above the sleepy hound", "trivial");
     if (result != KATRA_SUCCESS) {
         printf("❌ FAILED: remember_semantic() returned %d\n", result);
         breathe_cleanup();
         return 1;
     }
 
-    result = remember_semantic(TEST_CI_ID, "The weather is sunny today", "trivial");
+    result = remember_semantic("The weather is sunny today", "trivial");
     if (result != KATRA_SUCCESS) {
         printf("❌ FAILED: remember_semantic() returned %d\n", result);
         breathe_cleanup();
         return 1;
     }
 
-    result = remember_semantic(TEST_CI_ID, "I learned about vector databases and embeddings", "interesting");
+    result = remember_semantic("I learned about vector databases and embeddings", "interesting");
     if (result != KATRA_SUCCESS) {
         printf("❌ FAILED: remember_semantic() returned %d\n", result);
         breathe_cleanup();
@@ -82,7 +82,7 @@ int main(void) {
     /* Test 3: Keyword-only search (semantic disabled) */
     printf("Test 3: Testing keyword-only search...\n");
     size_t count = 0;
-    char** results = recall_about(TEST_CI_ID, "fox", &count);
+    char** results = recall_about("fox", &count);
 
     if (!results || count == 0) {
         printf("❌ FAILED: No results for keyword 'fox'\n");
@@ -128,7 +128,7 @@ int main(void) {
 
     /* Test 5: Hybrid search (should find semantic matches) */
     printf("Test 5: Testing hybrid search...\n");
-    results = recall_about(TEST_CI_ID, "dog", &count);
+    results = recall_about("dog", &count);
 
     if (!results || count == 0) {
         printf("⚠️  WARNING: No results for 'dog' (vector store may need time to build)\n");
@@ -147,7 +147,7 @@ int main(void) {
 
     /* Test 6: Search for unrelated term */
     printf("Test 6: Testing search for unrelated concept...\n");
-    results = recall_about(TEST_CI_ID, "quantum physics", &count);
+    results = recall_about("quantum physics", &count);
 
     if (results && count > 0) {
         printf("   Found %zu results (unexpected matches)\n", count);
@@ -167,7 +167,7 @@ int main(void) {
         return 1;
     }
 
-    results = recall_about(TEST_CI_ID, "canine", &count);
+    results = recall_about("canine", &count);
     if (results) {
         actual_count = count_results(results, count);
         printf("   Found %zu results with 0.9 threshold\n", actual_count);
@@ -187,7 +187,7 @@ int main(void) {
         return 1;
     }
 
-    results = recall_about(TEST_CI_ID, "fox", &count);
+    results = recall_about("fox", &count);
     if (!results || count == 0) {
         printf("❌ FAILED: Keyword search not working after disable\n");
         breathe_cleanup();

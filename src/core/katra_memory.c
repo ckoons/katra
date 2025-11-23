@@ -290,6 +290,9 @@ int katra_memory_stats(const char* ci_id, memory_stats_t* stats) {
         return consent_result;
     }
 
+    /* Debug: Log what ci_id we're querying */
+    LOG_INFO("katra_memory_stats: ci_id='%s'", ci_id);
+
     /* Initialize stats */
     memset(stats, 0, sizeof(memory_stats_t));
 

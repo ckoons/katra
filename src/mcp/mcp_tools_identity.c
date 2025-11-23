@@ -139,7 +139,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
 
     lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result == 0) {
-        result = learn(welcome);
+        result = learn(ci_id, welcome);
         pthread_mutex_unlock(&g_katra_api_lock);
 
         if (result != KATRA_SUCCESS) {
@@ -167,7 +167,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
 
     lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result == 0) {
-        memory_digest(5, 0, &digest);
+        memory_digest(ci_id, 5, 0, &digest);
         pthread_mutex_unlock(&g_katra_api_lock);
     }
 

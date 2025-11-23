@@ -143,6 +143,10 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     size_t count = 0;
     char** results = NULL;
 
+    /* Debug: Log what ci_id we're using */
+    LOG_INFO("katra_recall: session_name='%s', topic='%s'",
+             session_name ? session_name : "(null)", topic);
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
@@ -326,6 +330,10 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
 
     const char* session_name = mcp_get_session_name();
 
+    /* Debug: Log what ci_id we're using */
+    LOG_INFO("katra_memory_digest: session_name='%s', limit=%zu, offset=%zu",
+             session_name ? session_name : "(null)", limit, offset);
+
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
@@ -465,7 +473,7 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
     }
     /* Map to tag-based API with insight + permanent tags */
     const char* tags[] = {TAG_INSIGHT, TAG_PERMANENT};
-    int result = remember_with_tags(knowledge, tags, 2, SALIENCE_HIGH);
+    int result = remember_with_tags(session_name, knowledge, tags, 2, SALIENCE_HIGH);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS) {

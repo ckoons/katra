@@ -627,7 +627,7 @@ static void test_integration_stats_comprehensive(void) {
     /* Perform variety of operations */
     remember(TEST_CI_ID, "Exp", WHY_ROUTINE);
     remember_semantic(TEST_CI_ID, "Sem", "important");
-    remember_with_note(TEST_CI_ID, "Note", WHY_SIGNIFICANT, "reason");
+    remember_with_note("Note", WHY_SIGNIFICANT, "reason");
     learn(TEST_CI_ID, "Learn");
     reflect(TEST_CI_ID, "Reflect");
     decide(TEST_CI_ID, "Decide", "why");

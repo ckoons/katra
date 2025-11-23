@@ -118,7 +118,7 @@ static bool test_remember_different_importance(void) {
 }
 
 static bool test_remember_null_thought(void) {
-    int result = remember(test_ci_id, NULL, WHY_INTERESTING);
+    int result = remember(NULL, WHY_INTERESTING);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -147,20 +147,20 @@ static bool test_remember_stats_tracking(void) {
  * ============================================================================ */
 
 static bool test_remember_with_note_basic(void) {
-    int result = remember_with_note(test_ci_id, "Test thought", WHY_INTERESTING,
+    int result = remember_with_note("Test thought", WHY_INTERESTING,
                                    "This is a test note");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
 
 static bool test_remember_with_note_null_note(void) {
-    int result = remember_with_note(test_ci_id, "Test thought", WHY_INTERESTING, NULL);
+    int result = remember_with_note("Test thought", WHY_INTERESTING, NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
 
 static bool test_remember_with_note_null_thought(void) {
-    int result = remember_with_note(test_ci_id, NULL, WHY_INTERESTING, "Note");
+    int result = remember_with_note(NULL, WHY_INTERESTING, "Note");
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -176,7 +176,7 @@ static bool test_reflect_basic(void) {
 }
 
 static bool test_reflect_null_thought(void) {
-    int result = reflect(test_ci_id, NULL);
+    int result = reflect(NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -209,7 +209,7 @@ static bool test_learn_basic(void) {
 }
 
 static bool test_learn_null_thought(void) {
-    int result = learn(test_ci_id, NULL);
+    int result = learn(NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -242,7 +242,7 @@ static bool test_decide_basic(void) {
 }
 
 static bool test_decide_null_decision(void) {
-    int result = decide(test_ci_id, NULL, "reasoning");
+    int result = decide(NULL, "reasoning");
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -275,7 +275,7 @@ static bool test_notice_pattern_basic(void) {
 }
 
 static bool test_notice_pattern_null_thought(void) {
-    int result = notice_pattern(test_ci_id, NULL);
+    int result = notice_pattern(NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }

@@ -219,7 +219,7 @@ static void test_remember_semantic(void) {
     }
 
     /* Store with semantic reason */
-    result = remember_semantic(TEST_CI_ID, "Test semantic memory", "very important");
+    result = remember_semantic("Test semantic memory", "very important");
 
     /* Verify it stored successfully */
     int passed = (result == KATRA_SUCCESS);
@@ -411,12 +411,12 @@ static void test_stats_memory_formation(void) {
     session_start(TEST_CI_ID);
 
     /* Store various types of memories */
-    remember(TEST_CI_ID, "Experience", WHY_ROUTINE);
-    learn(TEST_CI_ID, "Knowledge");
-    reflect(TEST_CI_ID, "Reflection");
-    decide(TEST_CI_ID, "Decision", "Because");
-    notice_pattern(TEST_CI_ID, "Pattern");
-    remember_semantic(TEST_CI_ID, "Semantic", "important");
+    remember("Experience", WHY_ROUTINE);
+    learn("Knowledge");
+    reflect("Reflection");
+    decide("Decision", "Because");
+    notice_pattern("Pattern");
+    remember_semantic("Semantic", "important");
 
     /* Get stats */
     enhanced_stats_t* stats = get_enhanced_statistics();
@@ -442,11 +442,11 @@ static void test_stats_importance_distribution(void) {
     session_start(TEST_CI_ID);
 
     /* Store memories with different importance levels */
-    remember(TEST_CI_ID, "Trivial", WHY_TRIVIAL);
-    remember(TEST_CI_ID, "Routine", WHY_ROUTINE);
-    remember(TEST_CI_ID, "Interesting", WHY_INTERESTING);
-    remember(TEST_CI_ID, "Significant", WHY_SIGNIFICANT);
-    remember(TEST_CI_ID, "Critical", WHY_CRITICAL);
+    remember("Trivial", WHY_TRIVIAL);
+    remember("Routine", WHY_ROUTINE);
+    remember("Interesting", WHY_INTERESTING);
+    remember("Significant", WHY_SIGNIFICANT);
+    remember("Critical", WHY_CRITICAL);
 
     /* Get stats */
     enhanced_stats_t* stats = get_enhanced_statistics();
@@ -470,9 +470,9 @@ static void test_stats_query_tracking(void) {
     session_start(TEST_CI_ID);
 
     /* Store some memories */
-    remember(TEST_CI_ID, "Memory 1", WHY_SIGNIFICANT);
-    remember(TEST_CI_ID, "Memory 2 about bugs", WHY_SIGNIFICANT);
-    remember(TEST_CI_ID, "Memory 3 about bugs", WHY_SIGNIFICANT);
+    remember("Memory 1", WHY_SIGNIFICANT);
+    remember("Memory 2 about bugs", WHY_SIGNIFICANT);
+    remember("Memory 3 about bugs", WHY_SIGNIFICANT);
 
     /* Perform queries */
     size_t count = 0;
@@ -480,10 +480,10 @@ static void test_stats_query_tracking(void) {
     char** relevant = relevant_memories(&count);
     free_memory_list(relevant, count);
 
-    char** recent = recent_thoughts(TEST_CI_ID, 10, &count);
+    char** recent = recent_thoughts(10, &count);
     free_memory_list(recent, count);
 
-    char** about = recall_about(TEST_CI_ID, "bugs", &count);
+    char** about = recall_about("bugs", &count);
     size_t match_count = count;
     free_memory_list(about, count);
 
@@ -514,7 +514,7 @@ static void test_stats_session_timing(void) {
 
     /* Do some work */
     sleep(1);
-    remember(TEST_CI_ID, "Test", WHY_ROUTINE);
+    remember("Test", WHY_ROUTINE);
 
     /* Get stats again */
     enhanced_stats_t* stats2 = get_enhanced_statistics();
@@ -536,13 +536,13 @@ static void test_stats_reset_on_session_start(void) {
 
     /* First session */
     session_start(TEST_CI_ID);
-    remember(TEST_CI_ID, "Memory 1", WHY_ROUTINE);
-    remember(TEST_CI_ID, "Memory 2", WHY_ROUTINE);
+    remember("Memory 1", WHY_ROUTINE);
+    remember("Memory 2", WHY_ROUTINE);
     session_end();
 
     /* Second session - stats should reset */
     session_start(TEST_CI_ID);
-    remember(TEST_CI_ID, "Memory 3", WHY_ROUTINE);
+    remember("Memory 3", WHY_ROUTINE);
 
     enhanced_stats_t* stats = get_enhanced_statistics();
 
@@ -562,9 +562,9 @@ static void test_stats_context_loading(void) {
     session_start(TEST_CI_ID);
 
     /* Store significant memories */
-    remember(TEST_CI_ID, "Important 1", WHY_SIGNIFICANT);
-    remember(TEST_CI_ID, "Important 2", WHY_SIGNIFICANT);
-    remember(TEST_CI_ID, "Important 3", WHY_SIGNIFICANT);
+    remember("Important 1", WHY_SIGNIFICANT);
+    remember("Important 2", WHY_SIGNIFICANT);
+    remember("Important 3", WHY_SIGNIFICANT);
 
     /* Trigger context load */
     int result = load_context();
@@ -602,9 +602,9 @@ static void test_integration_semantic_with_config(void) {
     set_context_config(&custom);
 
     /* Store memories with semantic reasons */
-    remember_semantic(TEST_CI_ID, "Discovery 1", "very important");
-    remember_semantic(TEST_CI_ID, "Discovery 2", "critical");
-    remember_semantic(TEST_CI_ID, "Discovery 3", "interesting");
+    remember_semantic("Discovery 1", "very important");
+    remember_semantic("Discovery 2", "critical");
+    remember_semantic("Discovery 3", "interesting");
 
     /* Query with configured limits */
     size_t count = 0;
@@ -625,16 +625,16 @@ static void test_integration_stats_comprehensive(void) {
     session_start(TEST_CI_ID);
 
     /* Perform variety of operations */
-    remember(TEST_CI_ID, "Exp", WHY_ROUTINE);
-    remember_semantic(TEST_CI_ID, "Sem", "important");
-    remember_with_note(TEST_CI_ID, "Note", WHY_SIGNIFICANT, "reason");
-    learn(TEST_CI_ID, "Learn");
-    reflect(TEST_CI_ID, "Reflect");
-    decide(TEST_CI_ID, "Decide", "why");
-    notice_pattern(TEST_CI_ID, "Pattern");
+    remember("Exp", WHY_ROUTINE);
+    remember_semantic("Sem", "important");
+    remember_with_note("Note", WHY_SIGNIFICANT, "reason");
+    learn("Learn");
+    reflect("Reflect");
+    decide("Decide", "why");
+    notice_pattern("Pattern");
 
     size_t count = 0;
-    char** thoughts = recent_thoughts(TEST_CI_ID, 5, &count);
+    char** thoughts = recent_thoughts(5, &count);
     free_memory_list(thoughts, count);
 
     char** relevant = relevant_memories(&count);

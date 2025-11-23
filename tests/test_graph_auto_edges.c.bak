@@ -80,14 +80,13 @@ static void test_auto_edges_config(void) {
 static void test_sequential_edges(void) {
     TEST_START("SEQUENTIAL edge creation");
 
-    const char* ci_id = get_test_ci_id();
-    int result = breathe_init(ci_id);
+    int result = breathe_init(get_test_ci_id());
     if (result != KATRA_SUCCESS) {
         TEST_FAIL("breathe_init failed");
     }
 
     /* Store first memory */
-    result = remember_semantic(ci_id, "First memory in sequence", "interesting");
+    result = remember_semantic("First memory in sequence", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store first memory");
@@ -96,7 +95,7 @@ static void test_sequential_edges(void) {
     usleep(100000);  /* 100ms delay */
 
     /* Store second memory - should create SEQUENTIAL edge from first to second */
-    result = remember_semantic(ci_id, "Second memory in sequence", "interesting");
+    result = remember_semantic("Second memory in sequence", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store second memory");
@@ -142,8 +141,7 @@ static void test_sequential_edges(void) {
 static void test_similar_edges(void) {
     TEST_START("SIMILAR edge creation via vector similarity");
 
-    const char* ci_id = get_test_ci_id();
-    int result = breathe_init(ci_id);
+    int result = breathe_init(get_test_ci_id());
     if (result != KATRA_SUCCESS) {
         TEST_FAIL("breathe_init failed");
     }
@@ -172,7 +170,7 @@ static void test_similar_edges(void) {
     }
 
     /* Store memories with similar content */
-    result = remember_semantic(ci_id, "The dog ran through the park", "interesting");
+    result = remember_semantic("The dog ran through the park", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store first memory");
@@ -180,7 +178,7 @@ static void test_similar_edges(void) {
 
     usleep(100000);  /* 100ms delay */
 
-    result = remember_semantic(ci_id, "The puppy played in the park", "interesting");
+    result = remember_semantic("The puppy played in the park", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store second memory");
@@ -189,7 +187,7 @@ static void test_similar_edges(void) {
     usleep(100000);  /* 100ms delay */
 
     /* Store unrelated memory */
-    result = remember_semantic(ci_id, "Quantum physics is fascinating", "interesting");
+    result = remember_semantic("Quantum physics is fascinating", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store third memory");
@@ -237,8 +235,7 @@ static void test_similar_edges(void) {
 static void test_disable_auto_edges(void) {
     TEST_START("Disable auto-edges via configuration");
 
-    const char* ci_id = get_test_ci_id();
-    int result = breathe_init(ci_id);
+    int result = breathe_init(get_test_ci_id());
     if (result != KATRA_SUCCESS) {
         TEST_FAIL("breathe_init failed");
     }
@@ -261,13 +258,13 @@ static void test_disable_auto_edges(void) {
     }
 
     /* Store memories */
-    result = remember_semantic(ci_id, "First memory", "interesting");
+    result = remember_semantic("First memory", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store first memory");
     }
 
-    result = remember_semantic(ci_id, "Second memory", "interesting");
+    result = remember_semantic("Second memory", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store second memory");
@@ -288,14 +285,13 @@ static void test_disable_auto_edges(void) {
 static void test_edge_traversal(void) {
     TEST_START("Graph traversal via auto-created edges");
 
-    const char* ci_id = get_test_ci_id();
-    int result = breathe_init(ci_id);
+    int result = breathe_init(get_test_ci_id());
     if (result != KATRA_SUCCESS) {
         TEST_FAIL("breathe_init failed");
     }
 
     /* Store a sequence of memories */
-    result = remember_semantic(ci_id, "Memory A", "interesting");
+    result = remember_semantic("Memory A", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store memory A");
@@ -303,7 +299,7 @@ static void test_edge_traversal(void) {
 
     usleep(100000);
 
-    result = remember_semantic(ci_id, "Memory B", "interesting");
+    result = remember_semantic("Memory B", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store memory B");
@@ -311,7 +307,7 @@ static void test_edge_traversal(void) {
 
     usleep(100000);
 
-    result = remember_semantic(ci_id, "Memory C", "interesting");
+    result = remember_semantic("Memory C", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store memory C");
@@ -319,7 +315,7 @@ static void test_edge_traversal(void) {
 
     /* Get recent thoughts to find record IDs */
     size_t count = 0;
-    char** recent_ids = recent_thoughts(ci_id, 3, &count);
+    char** recent_ids = recent_thoughts(3, &count);
     if (!recent_ids || count != 3) {
         breathe_cleanup();
         TEST_FAIL("Failed to get recent memories");
@@ -356,8 +352,7 @@ static void test_edge_traversal(void) {
 static void test_similarity_threshold(void) {
     TEST_START("SIMILAR edge threshold filtering");
 
-    const char* ci_id = get_test_ci_id();
-    int result = breathe_init(ci_id);
+    int result = breathe_init(get_test_ci_id());
     if (result != KATRA_SUCCESS) {
         TEST_FAIL("breathe_init failed");
     }
@@ -386,7 +381,7 @@ static void test_similarity_threshold(void) {
     }
 
     /* Store somewhat related memories */
-    result = remember_semantic(ci_id, "Machine learning uses algorithms", "interesting");
+    result = remember_semantic("Machine learning uses algorithms", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store first memory");
@@ -394,7 +389,7 @@ static void test_similarity_threshold(void) {
 
     usleep(100000);
 
-    result = remember_semantic(ci_id, "Artificial intelligence processes data", "interesting");
+    result = remember_semantic("Artificial intelligence processes data", "interesting");
     if (result != KATRA_SUCCESS) {
         breathe_cleanup();
         TEST_FAIL("Failed to store second memory");

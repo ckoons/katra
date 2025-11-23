@@ -91,13 +91,13 @@ static int test_memory_tracking_in_turn(void) {
     failures += check_result("Begin new turn", result, KATRA_SUCCESS);
 
     /* Create some memories */
-    result = remember(TEST_CI_ID, "First thought in turn", WHY_INTERESTING);
+    result = remember("First thought in turn", WHY_INTERESTING);
     failures += check_result("remember() first thought", result, KATRA_SUCCESS);
 
-    result = remember(TEST_CI_ID, "Second thought in turn", WHY_SIGNIFICANT);
+    result = remember("Second thought in turn", WHY_SIGNIFICANT);
     failures += check_result("remember() second thought", result, KATRA_SUCCESS);
 
-    result = learn(TEST_CI_ID, "Some knowledge in turn");
+    result = learn("Some knowledge in turn");
     failures += check_result("learn() in turn", result, KATRA_SUCCESS);
 
     /* Get memories from this turn */
@@ -164,7 +164,7 @@ static int test_session_memory_tracking(void) {
     int result = begin_turn();
     failures += check_result("Begin first turn", result, KATRA_SUCCESS);
 
-    result = remember(TEST_CI_ID, "Turn 1 memory", WHY_INTERESTING);
+    result = remember("Turn 1 memory", WHY_INTERESTING);
     failures += check_result("Create memory in turn 1", result, KATRA_SUCCESS);
 
     result = end_turn();
@@ -174,7 +174,7 @@ static int test_session_memory_tracking(void) {
     result = begin_turn();
     failures += check_result("Begin second turn", result, KATRA_SUCCESS);
 
-    result = remember(TEST_CI_ID, "Turn 2 memory", WHY_INTERESTING);
+    result = remember("Turn 2 memory", WHY_INTERESTING);
     failures += check_result("Create memory in turn 2", result, KATRA_SUCCESS);
 
     result = end_turn();
@@ -211,7 +211,7 @@ static int test_metadata_updates(void) {
     /* Create a memory and get its ID */
     begin_turn();
 
-    int result = remember(TEST_CI_ID, "Test memory for metadata", WHY_INTERESTING);
+    int result = remember("Test memory for metadata", WHY_INTERESTING);
     failures += check_result("Create test memory", result, KATRA_SUCCESS);
 
     size_t count = 0;
@@ -284,7 +284,7 @@ static int test_error_handling(void) {
 
     /* Test: Update with no metadata fields */
     begin_turn();
-    remember(TEST_CI_ID, "Test memory", WHY_INTERESTING);
+    remember("Test memory", WHY_INTERESTING);
     size_t count = 0;
     char** memories = get_memories_this_turn(&count);
 
@@ -319,7 +319,7 @@ static int test_content_revision(void) {
 
     begin_turn();
 
-    int result = remember(TEST_CI_ID, "Original content", WHY_INTERESTING);
+    int result = remember("Original content", WHY_INTERESTING);
     failures += check_result("Create memory for revision", result, KATRA_SUCCESS);
 
     size_t count = 0;

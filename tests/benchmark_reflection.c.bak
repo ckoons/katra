@@ -48,18 +48,18 @@ static void op_begin_end_turn(void) {
 }
 
 static void op_create_memory(void) {
-    remember(TEST_CI_ID, "Benchmark memory for performance testing", WHY_INTERESTING);
+    remember("Benchmark memory for performance testing", WHY_INTERESTING);
 }
 
 static void op_create_and_track(void) {
     begin_turn();
-    remember(TEST_CI_ID, "Benchmark memory with turn tracking", WHY_INTERESTING);
+    remember("Benchmark memory with turn tracking", WHY_INTERESTING);
     end_turn();
 }
 
 static void op_add_to_personal(void) {
     begin_turn();
-    remember(TEST_CI_ID, "Personal collection benchmark", WHY_SIGNIFICANT);
+    remember("Personal collection benchmark", WHY_SIGNIFICANT);
 
     size_t count = 0;
     char** memories = get_memories_this_turn(&count);
@@ -72,7 +72,7 @@ static void op_add_to_personal(void) {
 
 static void op_update_metadata(void) {
     begin_turn();
-    remember(TEST_CI_ID, "Metadata update benchmark", WHY_INTERESTING);
+    remember("Metadata update benchmark", WHY_INTERESTING);
 
     size_t count = 0;
     char** memories = get_memories_this_turn(&count);
@@ -87,7 +87,7 @@ static void op_update_metadata(void) {
 
 static void op_review_memory(void) {
     begin_turn();
-    remember(TEST_CI_ID, "Review benchmark", WHY_INTERESTING);
+    remember("Review benchmark", WHY_INTERESTING);
 
     size_t count = 0;
     char** memories = get_memories_this_turn(&count);
@@ -161,8 +161,8 @@ int main(void) {
     printf("Setting up benchmark environment...\n");
     for (int i = 0; i < 50; i++) {
         begin_turn();
-        remember(TEST_CI_ID, "Initial memory for benchmark setup", WHY_INTERESTING);
-        learn(TEST_CI_ID, "Knowledge for benchmark setup");
+        remember("Initial memory for benchmark setup", WHY_INTERESTING);
+        learn("Knowledge for benchmark setup");
 
         size_t count = 0;
         char** memories = get_memories_this_turn(&count);
@@ -203,7 +203,7 @@ int main(void) {
     /* Create some memories in current turn for query testing */
     begin_turn();
     for (int i = 0; i < 10; i++) {
-        remember(TEST_CI_ID, "Memory for query benchmark", WHY_INTERESTING);
+        remember("Memory for query benchmark", WHY_INTERESTING);
     }
 
     benchmark_operation("get_memories_this_turn()", op_get_turn_memories, ITERATIONS);

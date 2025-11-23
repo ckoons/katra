@@ -14,6 +14,7 @@
 /* Project includes */
 #include "katra_breathing.h"
 #include "katra_memory.h"
+#include "katra_consent.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_core_common.h"
@@ -56,6 +57,9 @@ int breathing_store_typed_memory(const char* ci_id,
         katra_report_error(E_INPUT_NULL, func_name, "ci_id is NULL");
         return E_INPUT_NULL;
     }
+
+    /* Set consent context for this CI's memory access */
+    katra_consent_set_context(ci_id);
 
     /* Check memory pressure and enforce limits in degraded mode */
     memory_health_t* health = get_memory_health(ci_id);

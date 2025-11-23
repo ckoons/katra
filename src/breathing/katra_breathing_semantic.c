@@ -129,27 +129,18 @@ why_remember_t string_to_why_enum(const char* semantic) {
  * SEMANTIC REMEMBER FUNCTIONS
  * ============================================================================ */
 
-int remember_semantic(const char* thought, const char* why_semantic) {
-    if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "remember_semantic", /* GUIDELINE_APPROVED: function name */
-                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
-        return E_INVALID_STATE;
-    }
-
-    if (!thought) {
-        katra_report_error(E_INPUT_NULL, "remember_semantic", "thought is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
+int remember_semantic(const char* ci_id, const char* thought, const char* why_semantic) {
+    if (!ci_id || !thought) {
+        katra_report_error(E_INPUT_NULL, "remember_semantic", "NULL parameter");
         return E_INPUT_NULL;
     }
 
     /* Convert semantic string to importance */
     float importance = string_to_importance(why_semantic);
 
-    LOG_DEBUG("Remembering (semantic: '%s' -> %.2f): %s",
-             why_semantic ? why_semantic : "default", importance, thought); /* GUIDELINE_APPROVED: fallback string */
-
     /* Create memory record */
     memory_record_t* record = katra_memory_create_record(
-        breathing_get_ci_id(),
+        ci_id,
         MEMORY_TYPE_EXPERIENCE,
         thought,
         importance
@@ -329,7 +320,8 @@ static bool has_tag(const char** tags, size_t tag_count, const char* tag_name) {
     return false;
 }
 
-int remember_with_tags(const char* content,
+int remember_with_tags(const char* ci_id,
+                       const char* content,
                        const char** tags,
                        size_t tag_count,
                        const char* salience) {
@@ -348,7 +340,7 @@ int remember_with_tags(const char* content,
 
     /* Create base memory record */
     memory_record_t* record = katra_memory_create_record(
-        NULL,  /* CI ID filled by breathing_attach_session */
+        ci_id,
         MEMORY_TYPE_EXPERIENCE,
         content,
         importance
@@ -426,7 +418,8 @@ cleanup:
     return result;
 }
 
-int decide_with_tags(const char* decision,
+int decide_with_tags(const char* ci_id,
+                     const char* decision,
                      const char* reasoning,
                      const char** tags,
                      size_t tag_count) {
@@ -442,7 +435,7 @@ int decide_with_tags(const char* decision,
 
     /* Create decision memory record with high importance */
     memory_record_t* record = katra_memory_create_record(
-        NULL,  /* CI ID filled by breathing_attach_session */
+        ci_id,
         MEMORY_TYPE_DECISION,
         decision,
         MEMORY_IMPORTANCE_HIGH

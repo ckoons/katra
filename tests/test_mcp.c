@@ -50,6 +50,15 @@ void mcp_mark_first_call_complete(void) {
     test_session.first_call = false;
 }
 
+/* Mock TCP session functions (not used in this test, but needed for linking) */
+void mcp_set_current_session(mcp_session_t* session) {
+    (void)session;  /* Not used in stdio mode test */
+}
+
+void mcp_clear_current_session(void) {
+    /* Not used in stdio mode test */
+}
+
 /* Test counters */
 static int tests_run = 0;
 static int tests_passed = 0;

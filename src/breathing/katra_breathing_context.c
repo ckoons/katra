@@ -15,6 +15,7 @@
 /* Project includes */
 #include "katra_breathing.h"
 #include "katra_memory.h"
+#include "katra_consent.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -75,14 +76,17 @@ char** relevant_memories(size_t* count) {
     return thoughts;
 }
 
-char** recent_thoughts(size_t limit, size_t* count) {
-    if (!breathing_get_initialized() || !count) {
+char** recent_thoughts(const char* ci_id, size_t limit, size_t* count) {
+    if (!ci_id || !count) {
         if (count) *count = 0;
         return NULL;
     }
 
+    /* Set consent context for this CI's memory access */
+    katra_consent_set_context(ci_id);
+
     memory_query_t query = {
-        .ci_id = breathing_get_ci_id(),
+        .ci_id = ci_id,
         .start_time = 0,
         .end_time = 0,
         .type = 0,
@@ -114,11 +118,14 @@ char** recent_thoughts(size_t limit, size_t* count) {
     return thoughts;
 }
 
-char** recall_about(const char* topic, size_t* count) {
-    if (!breathing_get_initialized() || !count || !topic) {
+char** recall_about(const char* ci_id, const char* topic, size_t* count) {
+    if (!ci_id || !count || !topic) {
         if (count) *count = 0;
         return NULL;
     }
+
+    /* Set consent context for this CI's memory access */
+    katra_consent_set_context(ci_id);
 
     context_config_t* config = breathing_get_config_ptr();
 
@@ -130,7 +137,7 @@ char** recall_about(const char* topic, size_t* count) {
 
     /* Query recent memories using configured search depth */
     memory_query_t query = {
-        .ci_id = breathing_get_ci_id(),
+        .ci_id = ci_id,
         .start_time = start_time,
         .end_time = 0,
         .type = 0,

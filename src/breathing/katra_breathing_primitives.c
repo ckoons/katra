@@ -272,26 +272,16 @@ int ok_to_forget(const char* thought) {
     return result;
 }
 
-int thinking(const char* thought) {
+int thinking(const char* ci_id, const char* thought) {
     /* Natural wrapper around reflect() */
-    return reflect(thought);
+    return reflect(ci_id, thought);
 }
 
-int wondering(const char* question) {
-    const char* ci_id = breathing_get_ci_id();
-
-    if (!breathing_get_initialized()) {
-        katra_report_error(E_INVALID_STATE, "wondering", /* GUIDELINE_APPROVED: function name */
-                          "Breathing layer not initialized - call breathe_init()"); /* GUIDELINE_APPROVED: error context */
-        return E_INVALID_STATE;
-    }
-
-    if (!question) {
-        katra_report_error(E_INPUT_NULL, "wondering", "question is NULL"); /* GUIDELINE_APPROVED: function name */ /* GUIDELINE_APPROVED: error context */
+int wondering(const char* ci_id, const char* question) {
+    if (!ci_id || !question) {
+        katra_report_error(E_INPUT_NULL, "wondering", "NULL parameter");
         return E_INPUT_NULL;
     }
-
-    LOG_DEBUG("Wondering: %s", question);
 
     /* Create memory with formation context (uncertainty) */
     memory_record_t* record = katra_memory_create_with_context(

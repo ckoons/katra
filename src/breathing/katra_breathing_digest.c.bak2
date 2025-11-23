@@ -21,7 +21,6 @@
 #include "katra_breathing_internal.h"
 #include "katra_breathing_helpers.h"
 #include "katra_memory.h"
-#include "katra_consent.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -258,16 +257,11 @@ int memory_digest(const char* ci_id, size_t limit, size_t offset, memory_digest_
         return E_INVALID_STATE;
     }
 
+    const char* ci_id = breathing_get_ci_id();
     if (!ci_id) {
         katra_report_error(E_INVALID_STATE, "memory_digest", "CI ID not set");
         return E_INVALID_STATE;
     }
-
-    /* Set consent context for this CI's memory access */
-    katra_consent_set_context(ci_id);
-
-    /* Debug: Log what ci_id we're querying */
-    LOG_INFO("memory_digest: ci_id='%s', limit=%zu, offset=%zu", ci_id, limit, offset);
 
     /* Allocate digest structure */
     memory_digest_t* result = calloc(1, sizeof(memory_digest_t));

@@ -37,14 +37,16 @@ int capture_significant_thoughts(const char* text) {
     /* TODO: More sophisticated natural language processing */
     /* For now, check if text contains significance markers */
 
+    /* TODO: Interstitial capture needs ci_id - temporarily disabled during refactor */
     for (int i = 0; markers[i] != NULL; i++) {
         if (strstr(text, markers[i]) != NULL) {
-            LOG_DEBUG("Captured significant thought: %.50s...", text);
-            return remember(text, WHY_INTERESTING);
+            LOG_DEBUG("Significant thought detected (interstitial capture disabled): %.50s...", text);
+            /* return remember(ci_id, text, WHY_INTERESTING); */
+            break;
         }
     }
 
-    return KATRA_SUCCESS;  /* Not significant enough to capture */
+    return KATRA_SUCCESS;  /* Interstitial capture disabled */
 }
 
 void mark_significant(void) {

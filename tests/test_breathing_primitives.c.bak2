@@ -91,7 +91,7 @@ static void teardown_test_env(void) {
  * ============================================================================ */
 
 static bool test_remember_basic(void) {
-    int result = remember(test_ci_id, "This is a test thought", WHY_INTERESTING);
+    int result = remember(TEST_CI_ID, "This is a test thought", WHY_INTERESTING);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
@@ -99,26 +99,26 @@ static bool test_remember_basic(void) {
 static bool test_remember_different_importance(void) {
     int result;
 
-    result = remember(test_ci_id, "Trivial thought", WHY_TRIVIAL);
+    result = remember(TEST_CI_ID, "Trivial thought", WHY_TRIVIAL);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
-    result = remember(test_ci_id, "Routine thought", WHY_ROUTINE);
+    result = remember(TEST_CI_ID, "Routine thought", WHY_ROUTINE);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
-    result = remember(test_ci_id, "Interesting thought", WHY_INTERESTING);
+    result = remember(TEST_CI_ID, "Interesting thought", WHY_INTERESTING);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
-    result = remember(test_ci_id, "Significant thought", WHY_SIGNIFICANT);
+    result = remember(TEST_CI_ID, "Significant thought", WHY_SIGNIFICANT);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
-    result = remember(test_ci_id, "Critical thought", WHY_CRITICAL);
+    result = remember(TEST_CI_ID, "Critical thought", WHY_CRITICAL);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     return true;
 }
 
 static bool test_remember_null_thought(void) {
-    int result = remember(test_ci_id, NULL, WHY_INTERESTING);
+    int result = remember(NULL, WHY_INTERESTING);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -131,7 +131,7 @@ static bool test_remember_stats_tracking(void) {
     size_t count_before = stats_before->total_memories_stored;
     free(stats_before);
 
-    int result = remember(test_ci_id, "Test for stats", WHY_INTERESTING);
+    int result = remember(TEST_CI_ID, "Test for stats", WHY_INTERESTING);
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     enhanced_stats_t* stats_after = get_enhanced_statistics();
@@ -147,20 +147,20 @@ static bool test_remember_stats_tracking(void) {
  * ============================================================================ */
 
 static bool test_remember_with_note_basic(void) {
-    int result = remember_with_note(test_ci_id, "Test thought", WHY_INTERESTING,
+    int result = remember_with_note("Test thought", WHY_INTERESTING,
                                    "This is a test note");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
 
 static bool test_remember_with_note_null_note(void) {
-    int result = remember_with_note(test_ci_id, "Test thought", WHY_INTERESTING, NULL);
+    int result = remember_with_note("Test thought", WHY_INTERESTING, NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
 
 static bool test_remember_with_note_null_thought(void) {
-    int result = remember_with_note(test_ci_id, NULL, WHY_INTERESTING, "Note");
+    int result = remember_with_note(NULL, WHY_INTERESTING, "Note");
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -170,13 +170,13 @@ static bool test_remember_with_note_null_thought(void) {
  * ============================================================================ */
 
 static bool test_reflect_basic(void) {
-    int result = reflect(test_ci_id, "This is a reflection on recent events");
+    int result = reflect(TEST_CI_ID, "This is a reflection on recent events");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
 
 static bool test_reflect_null_thought(void) {
-    int result = reflect(test_ci_id, NULL);
+    int result = reflect(NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -187,7 +187,7 @@ static bool test_reflect_stats_tracking(void) {
     size_t count_before = stats_before->by_type[MEMORY_TYPE_REFLECTION];
     free(stats_before);
 
-    int result = reflect(test_ci_id, "Test reflection for stats");
+    int result = reflect(TEST_CI_ID, "Test reflection for stats");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     enhanced_stats_t* stats_after = get_enhanced_statistics();
@@ -203,13 +203,13 @@ static bool test_reflect_stats_tracking(void) {
  * ============================================================================ */
 
 static bool test_learn_basic(void) {
-    int result = learn(test_ci_id, "New learning: X implies Y");
+    int result = learn(TEST_CI_ID, "New learning: X implies Y");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
 
 static bool test_learn_null_thought(void) {
-    int result = learn(test_ci_id, NULL);
+    int result = learn(NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -220,7 +220,7 @@ static bool test_learn_stats_tracking(void) {
     size_t count_before = stats_before->by_type[MEMORY_TYPE_KNOWLEDGE];
     free(stats_before);
 
-    int result = learn(test_ci_id, "Test learning for stats");
+    int result = learn(TEST_CI_ID, "Test learning for stats");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     enhanced_stats_t* stats_after = get_enhanced_statistics();
@@ -236,13 +236,13 @@ static bool test_learn_stats_tracking(void) {
  * ============================================================================ */
 
 static bool test_decide_basic(void) {
-    int result = decide(test_ci_id, "will proceed with approach A", "because it's simpler");
+    int result = decide(TEST_CI_ID, "will proceed with approach A", "because it's simpler");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
 
 static bool test_decide_null_decision(void) {
-    int result = decide(test_ci_id, NULL, "reasoning");
+    int result = decide(NULL, "reasoning");
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -253,7 +253,7 @@ static bool test_decide_stats_tracking(void) {
     size_t count_before = stats_before->by_type[MEMORY_TYPE_DECISION];
     free(stats_before);
 
-    int result = decide(test_ci_id, "test decision", "for stats tracking");
+    int result = decide(TEST_CI_ID, "test decision", "for stats tracking");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     enhanced_stats_t* stats_after = get_enhanced_statistics();
@@ -269,13 +269,13 @@ static bool test_decide_stats_tracking(void) {
  * ============================================================================ */
 
 static bool test_notice_pattern_basic(void) {
-    int result = notice_pattern(test_ci_id, "Pattern: errors occur after midnight");
+    int result = notice_pattern(TEST_CI_ID, "Pattern: errors occur after midnight");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
     return true;
 }
 
 static bool test_notice_pattern_null_thought(void) {
-    int result = notice_pattern(test_ci_id, NULL);
+    int result = notice_pattern(NULL);
     ASSERT_EQUAL(result, E_INPUT_NULL);
     return true;
 }
@@ -286,7 +286,7 @@ static bool test_notice_pattern_stats_tracking(void) {
     size_t count_before = stats_before->by_type[MEMORY_TYPE_PATTERN];
     free(stats_before);
 
-    int result = notice_pattern(test_ci_id, "Test pattern for stats");
+    int result = notice_pattern(TEST_CI_ID, "Test pattern for stats");
     ASSERT_EQUAL(result, KATRA_SUCCESS);
 
     enhanced_stats_t* stats_after = get_enhanced_statistics();
@@ -307,19 +307,19 @@ static bool test_primitives_require_initialization(void) {
 
     int result;
 
-    result = remember(test_ci_id, "Test", WHY_INTERESTING);
+    result = remember(TEST_CI_ID, "Test", WHY_INTERESTING);
     ASSERT_EQUAL(result, E_INVALID_STATE);
 
-    result = reflect(test_ci_id, "Test");
+    result = reflect(TEST_CI_ID, "Test");
     ASSERT_EQUAL(result, E_INVALID_STATE);
 
-    result = learn(test_ci_id, "Test");
+    result = learn(TEST_CI_ID, "Test");
     ASSERT_EQUAL(result, E_INVALID_STATE);
 
-    result = decide(test_ci_id, "Test", "reasoning");
+    result = decide(TEST_CI_ID, "Test", "reasoning");
     ASSERT_EQUAL(result, E_INVALID_STATE);
 
-    result = notice_pattern(test_ci_id, "Test");
+    result = notice_pattern(TEST_CI_ID, "Test");
     ASSERT_EQUAL(result, E_INVALID_STATE);
 
     /* Re-initialize for remaining tests */
