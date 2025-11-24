@@ -110,8 +110,8 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
             lookup_stmt = NULL;
         }
 
-        /* Skip sender (self-filtering by name) */
-        if (strcmp(recipient_name, sender_name) == 0) {
+        /* Skip sender (self-filtering by name, case-insensitive) */
+        if (case_insensitive_compare(recipient_name, sender_name) == 0) {
             continue;
         }
 
@@ -252,7 +252,7 @@ int katra_hear(heard_message_t* message_out) {
     const char* sql =
         "SELECT queue_id, sender_name, message, timestamp, recipients, message_id "
         "FROM katra_queues "
-        "WHERE recipient_name = ? "
+        "WHERE recipient_name = ? COLLATE NOCASE "
         "ORDER BY queue_id ASC "
         "LIMIT 1";
 
@@ -309,7 +309,7 @@ int katra_hear(heard_message_t* message_out) {
 
     /* Check if more messages available */
     const char* count_sql =
-        "SELECT COUNT(*) FROM katra_queues WHERE recipient_name = ?";
+        "SELECT COUNT(*) FROM katra_queues WHERE recipient_name = ? COLLATE NOCASE";
     rc = sqlite3_prepare_v2(g_chat_db, count_sql, -1, &stmt, NULL);
     if (rc == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, receiver_name, -1, SQLITE_STATIC);
@@ -350,7 +350,7 @@ int katra_count_messages(size_t* count_out) {
     /* Count messages in personal queue (non-consuming) */
     sqlite3_stmt* stmt = NULL;
     const char* count_sql =
-        "SELECT COUNT(*) FROM katra_queues WHERE recipient_name = ?";
+        "SELECT COUNT(*) FROM katra_queues WHERE recipient_name = ? COLLATE NOCASE";
 
     int rc = sqlite3_prepare_v2(g_chat_db, count_sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
