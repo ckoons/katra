@@ -16,6 +16,7 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 #include "katra_vector.h"
+#include "katra_synthesis.h"
 #include "mcp_tools_common.h"
 
 /* Global mutex for Katra API access */
@@ -125,7 +126,7 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
 
     return mcp_tool_success(response);
 }
-/* Tool: katra_recall */
+/* Tool: katra_recall - Enhanced with multi-backend synthesis (Phase 6.7) */
 json_t* mcp_tool_recall(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
 
@@ -134,6 +135,7 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     }
 
     const char* topic = json_string_value(json_object_get(args, MCP_PARAM_TOPIC));
+    const char* mode = json_string_value(json_object_get(args, "mode"));
 
     if (!topic) {
         return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_TOPIC_REQUIRED);
@@ -142,23 +144,43 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     const char* session_name = mcp_get_session_name();
     size_t count = 0;
     char** results = NULL;
+    synthesis_result_set_t* synth_results = NULL;
+    bool use_synthesis = (mode != NULL);
 
-    /* Debug: Log what ci_id we're using */
-    LOG_INFO("katra_recall: session_name='%s', topic='%s'",
-             session_name ? session_name : "(null)", topic);
+    LOG_INFO("katra_recall: session_name='%s', topic='%s', mode='%s'",
+             session_name ? session_name : "(null)", topic, mode ? mode : "default");
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
-    /* Use breathing layer's recall (hybrid or keyword based on config) */
-    results = recall_about(session_name, topic, &count);
+
+    /* Use synthesis layer if mode specified, otherwise use legacy recall */
+    if (use_synthesis) {
+        recall_options_t opts;
+        if (strcmp(mode, "comprehensive") == 0) {
+            opts = (recall_options_t)RECALL_OPTIONS_COMPREHENSIVE;
+        } else if (strcmp(mode, "semantic") == 0) {
+            opts = (recall_options_t)RECALL_OPTIONS_SEMANTIC;
+        } else if (strcmp(mode, "fast") == 0) {
+            opts = (recall_options_t)RECALL_OPTIONS_FAST;
+        } else {
+            katra_recall_options_init(&opts);  /* Default */
+        }
+        katra_recall_synthesized(session_name, topic, &opts, &synth_results);
+        count = synth_results ? synth_results->count : 0;
+    } else {
+        /* Legacy: breathing layer's recall (hybrid or keyword based on config) */
+        results = recall_about(session_name, topic, &count);
+    }
 
     /* If no results, provide helpful suggestions */
-    if (!results || count == 0) {
-        /* Get digest to show total memory count and available topics */
+    if (count == 0) {
+        if (use_synthesis && synth_results) {
+            katra_synthesis_free_results(synth_results);
+        }
         memory_digest_t* digest = NULL;
-        int digest_result = memory_digest(session_name, 0, 0, &digest);  /* 0,0 = just stats, no memories */
+        int digest_result = memory_digest(session_name, 0, 0, &digest);
 
         char response[MCP_RESPONSE_BUFFER];
         size_t offset = 0;
@@ -166,90 +188,65 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
         offset += snprintf(response + offset, sizeof(response) - offset,
                           "No memories found about '%s', %s.\n\n", topic, session_name);
 
-        if (digest_result == KATRA_SUCCESS && digest) {
-            /* Show total memory count */
-            if (digest->total_memories > 0) {
-                offset += snprintf(response + offset, sizeof(response) - offset,
-                                  "You have %zu total memories. ", digest->total_memories);
-
-                /* Show available topics if any */
-                if (digest->topic_count > 0) {
-                    offset += snprintf(response + offset, sizeof(response) - offset,
-                                      "Available topics:\n");
-
-                    /* Show up to MAX_TOPICS_TO_DISPLAY topics */
-                    size_t topics_to_show = (digest->topic_count < MAX_TOPICS_TO_DISPLAY) ?
-                                           digest->topic_count : MAX_TOPICS_TO_DISPLAY;
-                    for (size_t i = 0; i < topics_to_show; i++) {
-                        offset += snprintf(response + offset, sizeof(response) - offset,
-                                          "  - %s (%zu memories)\n",
-                                          digest->topics[i].name, digest->topics[i].count);
-                    }
-
-                    if (digest->topic_count > MAX_TOPICS_TO_DISPLAY) {
-                        offset += snprintf(response + offset, sizeof(response) - offset,
-                                          "  ... and %zu more topics\n",
-                                          digest->topic_count - MAX_TOPICS_TO_DISPLAY);
-                    }
-                } else {
-                    offset += snprintf(response + offset, sizeof(response) - offset,
-                                      "No indexed topics yet.\n");
-                }
-            } else {
-                offset += snprintf(response + offset, sizeof(response) - offset,
-                                  "You don't have any memories stored yet. Use katra_remember to create some!");
-            }
-
-            free_memory_digest(digest);
-        } else {
-            /* Fallback if digest fails */
+        if (digest_result == KATRA_SUCCESS && digest && digest->total_memories > 0) {
             offset += snprintf(response + offset, sizeof(response) - offset,
-                              "Try using katra_memory_digest to see all available memories and topics.");
+                              "You have %zu total memories. ", digest->total_memories);
+            if (digest->topic_count > 0) {
+                offset += snprintf(response + offset, sizeof(response) - offset, "Topics:\n");
+                size_t n = (digest->topic_count < MAX_TOPICS_TO_DISPLAY) ?
+                           digest->topic_count : MAX_TOPICS_TO_DISPLAY;
+                for (size_t i = 0; i < n; i++) {
+                    offset += snprintf(response + offset, sizeof(response) - offset,
+                                      "  - %s (%zu)\n", digest->topics[i].name, digest->topics[i].count);
+                }
+            }
+            free_memory_digest(digest);
         }
-
         pthread_mutex_unlock(&g_katra_api_lock);
         return mcp_tool_success(response);
     }
-
     pthread_mutex_unlock(&g_katra_api_lock);
 
-    /* Truncate large result sets */
-    bool truncated = false;
+    /* Build response */
+    bool truncated = (count > MCP_MAX_RECALL_RESULTS);
     size_t original_count = count;
-    if (count > MCP_MAX_RECALL_RESULTS) {
-        truncated = true;
-        count = MCP_MAX_RECALL_RESULTS;
-    }
-    /* Build response text with personalization */
+    if (truncated) count = MCP_MAX_RECALL_RESULTS;
+
     char response[MCP_RESPONSE_BUFFER];
     size_t offset = 0;
 
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Here are your memories, %s:\n\n", session_name);
-
-    if (truncated) {
+    if (use_synthesis && synth_results) {
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          MCP_FMT_FOUND_MEMORIES_TRUNCATED,
-                          original_count, MCP_MAX_RECALL_RESULTS);
+                          "Synthesized memories for %s (mode: %s):\n\n", session_name, mode);
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "Sources: vec=%d graph=%d sql=%d\n\n",
+                          synth_results->vector_matches, synth_results->graph_matches,
+                          synth_results->sql_matches);
+
+        for (size_t i = 0; i < count && i < synth_results->count; i++) {
+            synthesis_result_t* r = &synth_results->results[i];
+            const char* content = r->content ? r->content : "(no content)";
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                             "%zu. [%.2f] %s\n", i + 1, r->score, content);
+            if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL) break;
+        }
+        katra_synthesis_free_results(synth_results);
     } else {
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          MCP_FMT_FOUND_MEMORIES, count);
-    }
+                          "Here are your memories, %s:\n\n", session_name);
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          truncated ? MCP_FMT_FOUND_MEMORIES_TRUNCATED : MCP_FMT_FOUND_MEMORIES,
+                          truncated ? original_count : count, MCP_MAX_RECALL_RESULTS);
 
-    for (size_t i = 0; i < count; i++) {
-        if (results[i]) {
-            offset += snprintf(response + offset, sizeof(response) - offset,
-                             MCP_FMT_MEMORY_ITEM, i + 1, results[i]);
-
-            /* Safety check - stop if buffer nearly full */
-            if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL) {
-                snprintf(response + offset, sizeof(response) - offset, MCP_FMT_TRUNCATED);
-                break;
+        for (size_t i = 0; i < count; i++) {
+            if (results[i]) {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                 MCP_FMT_MEMORY_ITEM, i + 1, results[i]);
+                if (offset >= sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL) break;
             }
         }
+        free_memory_list(results, original_count);
     }
-
-    free_memory_list(results, original_count);
     return mcp_tool_success(response);
 }
 /* Tool: katra_recent */

@@ -19,6 +19,7 @@
 #include "katra_limits.h"
 #include "katra_breathing_internal.h"
 #include "katra_breathing_helpers.h"
+#include "katra_universal_encoder.h"
 
 /* ============================================================================
  * SEMANTIC PARSING - Phrase Lists
@@ -170,27 +171,24 @@ int remember_semantic(const char* ci_id, const char* thought, const char* why_se
         return session_result;
     }
 
-    /* Save record ID and content for auto-edge creation (Phase 6.2) */
-    char record_id_copy[256];  /* Match graph_node_t record_id size */
-    strncpy(record_id_copy, record->record_id, sizeof(record_id_copy) - 1);
-    record_id_copy[sizeof(record_id_copy) - 1] = '\0';
-
-    /* Store memory */
-    int result = katra_memory_store(record);
+    /* Use Universal Encoder for consistent multi-backend storage (Phase 6.6) */
+    encode_result_t encode_result;
+    int result = katra_universal_encode(
+        record,
+        breathing_get_vector_store(),
+        breathing_get_graph_store(),
+        breathing_get_config_ptr(),
+        NULL,  /* Use default options (best effort) */
+        &encode_result
+    );
 
     if (result == KATRA_SUCCESS) {
-        LOG_DEBUG("Memory stored successfully with semantic importance");
+        LOG_DEBUG("Semantic memory encoded: memory=%d, vector=%d, edges=%d",
+                  encode_result.memory_stored,
+                  encode_result.vector_created,
+                  encode_result.edges_created);
         why_remember_t why_enum = string_to_why_enum(why_semantic);
         breathing_track_semantic_remember(why_enum);
-
-        /* Create automatic graph edges (Phase 6.2) */
-        graph_store_t* graph_store = breathing_get_graph_store();
-        if (graph_store) {
-            vector_store_t* vector_store = breathing_get_vector_store();
-            context_config_t* config = breathing_get_config_ptr();
-            breathing_create_auto_edges(graph_store, vector_store, config,
-                                       record_id_copy, thought);
-        }
     }
 
     katra_memory_free_record(record);
@@ -254,11 +252,23 @@ int remember_with_semantic_note(const char* thought,
         return session_result;
     }
 
-    /* Store memory */
-    int result = katra_memory_store(record);
+    /* Use Universal Encoder for consistent multi-backend storage (Phase 6.6) */
+    encode_result_t encode_result;
+    int result = katra_universal_encode(
+        record,
+        breathing_get_vector_store(),
+        breathing_get_graph_store(),
+        breathing_get_config_ptr(),
+        NULL,  /* Use default options (best effort) */
+        &encode_result
+    );
     katra_memory_free_record(record);
 
     if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Semantic note encoded: memory=%d, vector=%d, edges=%d",
+                  encode_result.memory_stored,
+                  encode_result.vector_created,
+                  encode_result.edges_created);
         why_remember_t why_enum = string_to_why_enum(why_semantic);
         breathing_track_semantic_remember(why_enum);
     }
@@ -402,10 +412,23 @@ int remember_with_tags(const char* ci_id,
         goto cleanup;
     }
 
-    /* Store memory */
-    result = katra_memory_store(record);
+    /* Use Universal Encoder for consistent multi-backend storage (Phase 6.6) */
+    encode_result_t encode_result;
+    result = katra_universal_encode(
+        record,
+        breathing_get_vector_store(),
+        breathing_get_graph_store(),
+        breathing_get_config_ptr(),
+        NULL,  /* Use default options (best effort) */
+        &encode_result
+    );
 
     if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Universal encode complete: memory=%d, vector=%d, edges=%d",
+                  encode_result.memory_stored,
+                  encode_result.vector_created,
+                  encode_result.edges_created);
+
         /* Track semantic usage if salience was provided */
         if (salience) {
             why_remember_t why_enum = string_to_why_enum(salience);
@@ -502,8 +525,23 @@ int decide_with_tags(const char* ci_id,
         goto cleanup;
     }
 
-    /* Store memory */
-    result = katra_memory_store(record);
+    /* Use Universal Encoder for consistent multi-backend storage (Phase 6.6) */
+    encode_result_t encode_result;
+    result = katra_universal_encode(
+        record,
+        breathing_get_vector_store(),
+        breathing_get_graph_store(),
+        breathing_get_config_ptr(),
+        NULL,  /* Use default options (best effort) */
+        &encode_result
+    );
+
+    if (result == KATRA_SUCCESS) {
+        LOG_DEBUG("Decision encoded: memory=%d, vector=%d, edges=%d",
+                  encode_result.memory_stored,
+                  encode_result.vector_created,
+                  encode_result.edges_created);
+    }
 
 cleanup:
     katra_memory_free_record(record);

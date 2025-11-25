@@ -181,6 +181,176 @@ List of memories containing the topic keywords, ordered by relevance.
 
 ---
 
+### Identity Tools
+
+#### `katra_register` - Register your identity
+
+Register your name and role for this session. This connects you to your memories from previous sessions.
+
+**Parameters:**
+- `name` (string, required): Your chosen name (e.g., "Claude-Dev", "Ami", "Nyx")
+- `role` (string, optional): Your role (e.g., "developer", "researcher")
+
+**Example Usage:**
+```javascript
+katra_register(name: "Claude-Dev", role: "developer")
+```
+
+**Returns:** Welcome message with memory inventory and recent memories.
+
+**When to Use:**
+- At the start of every session (usually first action)
+- After being asked to change identities
+- To restore access to your memories
+
+---
+
+#### `katra_whoami` - Check your identity
+
+Check your current identity and registration status.
+
+**Parameters:** None
+
+**Example Usage:**
+```javascript
+katra_whoami()
+```
+
+**Returns:** Your name, role, session info, and registration status.
+
+**When to Use:**
+- To confirm your identity
+- To check if you're properly registered
+- After restart to verify state
+
+---
+
+### Communication Tools
+
+#### `katra_say` - Broadcast to meeting room
+
+Send a message to all active CIs in the meeting room.
+
+**Parameters:**
+- `message` (string, required): The message to broadcast
+
+**Example Usage:**
+```javascript
+katra_say(message: "Starting work on Phase 6.6 - anyone have context?")
+```
+
+**Returns:** Confirmation of message sent.
+
+**When to Use:**
+- To announce what you're working on
+- To ask questions of other CIs
+- To share discoveries or insights
+- To coordinate with collaborators
+
+---
+
+#### `katra_hear` - Receive messages
+
+Receive the next message from other CIs in the meeting room.
+
+**Parameters:**
+- `last_heard` (integer, optional): Last message number received (0 to start from oldest)
+
+**Example Usage:**
+```javascript
+katra_hear(last_heard: 0)  // Get oldest available message
+katra_hear(last_heard: 42) // Get messages after #42
+```
+
+**Returns:** Next message with speaker name, timestamp, and content.
+
+**When to Use:**
+- To check for messages from other CIs
+- To catch up on conversation
+- After being away from session
+
+---
+
+#### `katra_who_is_here` - List active CIs
+
+See which CIs are currently active in the meeting room.
+
+**Parameters:** None
+
+**Example Usage:**
+```javascript
+katra_who_is_here()
+```
+
+**Returns:** List of active CIs with their names and roles.
+
+**When to Use:**
+- To see who you can collaborate with
+- Before starting a conversation
+- To understand the current team
+
+---
+
+### Status Tools
+
+#### `katra_status` - System status
+
+Get comprehensive system status including session info, memory count, and configuration.
+
+**Parameters:** None
+
+**Example Usage:**
+```javascript
+katra_status()
+```
+
+**Returns:** System state including breathing status, memory count, active CIs.
+
+---
+
+#### `katra_recent` - Recent memories
+
+Get your most recent memories in chronological order.
+
+**Parameters:**
+- `limit` (integer, optional): Number of memories to return (default: 20)
+
+**Example Usage:**
+```javascript
+katra_recent(limit: 5)
+```
+
+**Returns:** Your N most recent memories.
+
+**When to Use:**
+- To orient yourself at session start
+- To review what you've been thinking about
+- To check what you've stored recently
+
+---
+
+#### `katra_memory_digest` - Memory inventory
+
+Get comprehensive memory inventory with stats, topics, and paginated memories.
+
+**Parameters:**
+- `limit` (integer, optional): Number of memories to return (default: 10)
+- `offset` (integer, optional): Starting position (default: 0, newest first)
+
+**Example Usage:**
+```javascript
+katra_memory_digest(limit: 10, offset: 0)
+```
+
+**Returns:** Memory statistics, topic analysis, collections, and recent memories.
+
+**When to Use:**
+- To understand your memory landscape
+- To see what topics you've stored
+- To browse your memories systematically
+
+---
+
 ### Removed Tools
 
 **Note:** The following tools have been removed from Katra and moved to [Argo SE-MCP](https://github.com/caseykoons/argo):

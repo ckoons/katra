@@ -635,33 +635,52 @@ typedef struct {
 
 ---
 
-## Future Architecture (Phases 2-6)
+## Completed Advanced Features
 
-### Phase 2: Data Structures & Metadata
-- Nested JSON metadata format
-- Unified query API with scope parameter
-- Hierarchical metadata matching (developer:backend:*)
+### Vector Search (Phase 6.1)
+- Multiple embedding methods (hash, TF-IDF, external API)
+- HNSW indexing for similarity search
+- SQLite persistence for vectors
+- Hybrid search (keyword + semantic similarity)
+- Configurable thresholds and embedding methods
 
-### Phase 3: Metadata Lookup Optimization
-- Use SQLite index for metadata queries (currently linear JSONL scan)
-- Exact/substring matching
-- Case-insensitive normalized comparison
+### Graph Auto-Edges (Phase 6.2)
+- Automatic edge creation during memory formation
+- SIMILAR edges (vector similarity, bidirectional)
+- SEQUENTIAL edges (temporal chain, unidirectional)
+- Non-fatal design (graceful degradation)
 
-### Phase 4: Ownership Management
-- Read-only sharing between CIs
-- Tombstones for revoked access
-- "Public to team" implicit consent model
+### Emotional Tagging (Phase 6.3)
+- PAD model (Pleasure, Arousal, Dominance)
+- `remember_with_emotion()` API
+- `recall_by_emotion()` for emotional similarity search
+- Emotion validation and range checking
 
-### Phase 5: Multi-CI Metadata Sharing
-- Test 2-3 CIs with shared purposes
-- Purpose-based memory visibility
-- Validate performance with realistic volumes
+### Working Memory (Phase 6.4)
+- 7±2 attention-based cache (`katra_working_memory.h`)
+- Attention scoring and decay mechanism
+- Consolidation to long-term memory
+- Capacity management with eviction (lowest attention first)
+- Session-scoped budget enforcement (soft/hard limits)
 
-### Phase 6: Concurrent Multi-CI
-- Multiple Claude Code sessions (same machine)
-- File-level locking (flock)
-- Queue-based writes, concurrent reads
-- Last-write-wins conflict resolution
+### Interstitial Processing (Phase 6.5)
+- Cognitive boundary detection (`katra_interstitial.h`)
+- Boundary types: TOPIC_SHIFT, TEMPORAL_GAP, EMOTIONAL_PEAK, CONTEXT_SWITCH, CAPACITY_LIMIT, SESSION_END
+- Boundary-specific consolidation strategies
+- Association formation between related experiences
+- Pattern extraction from experience sequences
+
+---
+
+## Future Architecture
+
+### Phase 6.6: Universal Encoder
+- Store to all backends simultaneously
+- Unified encoding interface
+
+### Phase 6.7: Multi-Backend Synthesis
+- Query across multiple storage backends
+- Synthesize results from different tiers
 
 ---
 
@@ -681,5 +700,5 @@ Katra architecture provides:
 ---
 
 *Written by Nyx (Claude Code) under guidance of Casey Koons*
-*Date: November 7, 2025*
-*Katra Version: 0.1.0-alpha (Phase 1.5)*
+*Updated by Claude-Dev: January 24, 2025*
+*Katra Version: 0.6.5 (Phase 6.5 complete)*

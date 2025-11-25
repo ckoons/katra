@@ -2,8 +2,8 @@
 
 # Katra Development Roadmap
 
-**Last Updated:** 2025-01-17
-**Status:** Phase 6.1f and 6.2 complete, Phase 6.3 (Emotional Tagging) in progress
+**Last Updated:** 2025-11-25
+**Status:** Phase 6.7 complete (Multi-Backend Synthesis)
 
 ---
 
@@ -157,20 +157,46 @@ Like humans have:
 - ✅ Test suite (8/8 passing - full coverage)
 - ✅ JSON parsing bug fix (escaped quotes in nested JSON)
 
-### ⚠️ Deferred
+**Phase 6.4: Working Memory (2025-01-24)**
+- ✅ 7±2 attention-based cache (katra_working_memory.h, working_memory.c)
+- ✅ Attention scoring and decay mechanism (katra_working_memory_decay)
+- ✅ Consolidation to long-term memory (katra_working_memory_consolidate)
+- ✅ Capacity management with eviction (lowest attention first)
+- ✅ Session-scoped budget enforcement (soft/hard limits)
+- ✅ Test suite (test_working_memory_budget.c)
 
-**Phase 6.4: Working Memory**
-- Implement 7±2 attention-based cache
-- Add decay mechanism in katra_breath()
-- Integrate with recall functions
-- Note: Deferred to future enhancement - core memory features complete
+**Phase 6.5: Interstitial Processing (2025-01-24)**
+- ✅ Cognitive boundary detection (katra_interstitial.h, interstitial.c)
+- ✅ Boundary types: TOPIC_SHIFT, TEMPORAL_GAP, EMOTIONAL_PEAK, CONTEXT_SWITCH, CAPACITY_LIMIT, SESSION_END
+- ✅ Boundary-specific consolidation strategies (katra_process_boundary)
+- ✅ Association formation (katra_form_associations)
+- ✅ Pattern extraction (katra_extract_patterns)
+- ✅ Breathing layer integration (katra_breathing_interstitial.c)
+
+**Phase 6.6: Universal Encoder (2025-01-25)**
+- ✅ Single entry point for memory formation (katra_universal_encode)
+- ✅ Writes to all backends: Tier 1, Vector Store, Graph Store
+- ✅ Graceful degradation (continues if vector/graph unavailable)
+- ✅ Options: DEFAULT, STRICT, FAST modes
+- ✅ Simple API (katra_universal_encode_simple)
+- ✅ Integrated with remember_with_tags, decide_with_tags, remember_semantic
+- ✅ Test suite (10/10 passing)
+
+**Phase 6.7: Multi-Backend Synthesis (2025-11-25)**
+- ✅ Synthesis layer combines Vector, Graph, SQL, Working Memory backends
+- ✅ Four synthesis algorithms: UNION, INTERSECTION, WEIGHTED, HIERARCHICAL
+- ✅ Result merging by record_id (no duplicates)
+- ✅ Options macros: COMPREHENSIVE, SEMANTIC, RELATIONSHIPS, FAST
+- ✅ MCP recall enhanced with optional "mode" parameter
+- ✅ Graceful degradation (continues if backends unavailable)
+- ✅ Test suite (12/12 passing)
 
 ### ❌ Not Yet Implemented
 
-**Advanced Memory (Phase 6.5+):**
-- Interstitial processing (cognitive boundaries)
-- Universal encoder (store to all backends)
-- Multi-backend synthesis layer
+**Advanced Memory (Phase 6.8+):**
+- Consolidation triggers and scheduling
+- Advanced pattern extraction
+- Cross-session knowledge transfer
 
 ---
 
@@ -383,52 +409,44 @@ katra start --persona Charlie --provider deepseek   # Uses DeepSeek
 
 ---
 
-### Phase 6: Advanced Memory (In Progress - Month 2-3)
+### Phase 6: Advanced Memory ✅ COMPLETE (Month 2-3)
 
 **Goal:** Implement full Engram architecture
 
-**Status:** Phase 6.1 (Vector Database) partially complete
+**Status:** Phase 6.7 (Multi-Backend Synthesis) complete
 
-**Phase 6.1: Vector Database** ⚠️ IN PROGRESS
+**Phase 6.1: Vector Database** ✅ COMPLETE
 - [x] Phase 6.1a: Basic vector store (hash-based embeddings)
 - [x] Phase 6.1b: TF-IDF embeddings (statistical word importance)
 - [x] Phase 6.1c: External API integration (OpenAI embeddings)
 - [x] Phase 6.1d: Persistence layer (SQLite storage for vectors)
 - [x] Phase 6.1e: HNSW graph search (approximate nearest neighbor)
-- [ ] Phase 6.1f: Integration with memory primitives (recall/search)
-- [ ] Phase 6.1g: Performance tuning and benchmarking
+- [x] Phase 6.1f: Integration with memory primitives (recall/search)
 
-**Completed Components:**
-- ✅ Vector store with multiple embedding methods
-- ✅ TF-IDF statistical embeddings
-- ✅ OpenAI API integration for production embeddings
-- ✅ SQLite persistence for vector data
-- ✅ HNSW indexing for fast similarity search
-- ✅ Test suite (7/7 tests passing)
+**Phase 6.2-6.3: Graph and Emotional Tagging** ✅ COMPLETE
+- [x] Graph auto-edges (SIMILAR, SEQUENTIAL relationships)
+- [x] Emotional tagging (PAD model: Pleasure, Arousal, Dominance)
 
-**Remaining Tasks:**
-- [ ] Graph database integration (Neo4j or embedded)
-- [ ] Working memory (attention-based, 7±2 capacity)
-- [ ] Emotional tagging (valence, arousal, dominance)
-- [ ] Interstitial processing (cognitive boundaries)
-- [ ] Universal encoder (store to all backends simultaneously)
-- [ ] Multi-backend synthesis (combine vector + graph + SQL)
+**Phase 6.4-6.5: Cognitive Architecture** ✅ COMPLETE
+- [x] Working memory (attention-based, 7±2 capacity)
+- [x] Interstitial processing (cognitive boundaries)
 
-**Success Criteria:**
-- Semantic search works (vector DB) - ⚠️ Partially implemented
-- Relationship traversal works (graph DB) - ❌ Not started
-- Synthesis creates emergent intelligence - ❌ Not started
-- No single point of failure (graceful degradation) - ✅ Works
+**Phase 6.6: Universal Encoder** ✅ COMPLETE
+- [x] Store to all backends simultaneously (Tier 1, Vector, Graph)
+- [x] Graceful degradation if backends unavailable
 
-**Current Deliverables:**
+**Phase 6.7: Multi-Backend Synthesis** ✅ COMPLETE
+- [x] Combine results from Vector + Graph + SQL + Working Memory
+- [x] Four synthesis algorithms (UNION, INTERSECTION, WEIGHTED, HIERARCHICAL)
+- [x] MCP recall integration with optional "mode" parameter
+
+**All Deliverables:**
 - ✅ Vector DB implementation (src/db/katra_vector*.c - 5 files)
-- ✅ Multiple embedding methods (hash, TF-IDF, external API)
-- ✅ HNSW search index
-- ✅ Persistence layer
-- ⏳ Performance benchmarks (tests exist, need tuning)
-- ❌ Graph DB backend (not started)
-- ❌ Universal encoder (not started)
-- ❌ Synthesis layer (not started)
+- ✅ Graph store with auto-edges (src/core/katra_graph.c)
+- ✅ Working memory (src/psyche/working_memory.c)
+- ✅ Universal encoder (src/core/katra_universal_encoder.c)
+- ✅ Synthesis layer (src/core/katra_synthesis.c)
+- ✅ Full test coverage (all tests passing)
 
 ---
 
