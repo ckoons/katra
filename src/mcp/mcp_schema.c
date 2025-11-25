@@ -167,6 +167,32 @@ json_t* mcp_build_semantic_config_schema(void) {
     return schema;
 }
 
+/* Build schema: 1 required string, 1 optional number */
+json_t* mcp_build_schema_1req_string_1opt_number(const char* req_name, const char* req_desc,
+                                                   const char* opt_name, const char* opt_desc) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_string_property(props, req_name, req_desc);
+    add_number_property(props, opt_name, opt_desc);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(req_name));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+    return schema;
+}
+
+/* Build schema: 1 optional number parameter */
+json_t* mcp_build_schema_optional_number(const char* param_name, const char* param_desc) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_number_property(props, param_name, param_desc);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+    return schema;
+}
+
 /* Build complete tool definition */
 json_t* mcp_build_tool(const char* name, const char* description, json_t* schema) {
     json_t* tool = json_object();

@@ -94,6 +94,17 @@
 #define MCP_TOOL_GET_CONFIG "katra_get_config"
 #define MCP_TOOL_REGENERATE_VECTORS "katra_regenerate_vectors"
 
+/* Working Memory Tools (Phase 6.4) */
+#define MCP_TOOL_WM_STATUS "katra_wm_status"
+#define MCP_TOOL_WM_ADD "katra_wm_add"
+#define MCP_TOOL_WM_DECAY "katra_wm_decay"
+#define MCP_TOOL_WM_CONSOLIDATE "katra_wm_consolidate"
+
+/* Interstitial Processing Tools (Phase 6.5) */
+#define MCP_TOOL_DETECT_BOUNDARY "katra_detect_boundary"
+#define MCP_TOOL_PROCESS_BOUNDARY "katra_process_boundary"
+#define MCP_TOOL_COGNITIVE_STATUS "katra_cognitive_status"
+
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
 #define MCP_DESC_RECALL "Find memories about a topic"
@@ -113,6 +124,17 @@
 #define MCP_DESC_GET_SEMANTIC_CONFIG "Get current semantic search configuration"
 #define MCP_DESC_GET_CONFIG "Get comprehensive breathing configuration"
 #define MCP_DESC_REGENERATE_VECTORS "Rebuild semantic search vectors from all existing memories"
+
+/* Working Memory Tool Descriptions (Phase 6.4) */
+#define MCP_DESC_WM_STATUS "Get working memory status (count, capacity, attention scores, consolidation state)"
+#define MCP_DESC_WM_ADD "Add content to working memory with attention score"
+#define MCP_DESC_WM_DECAY "Apply decay to working memory attention scores"
+#define MCP_DESC_WM_CONSOLIDATE "Force consolidation of low-attention items to long-term memory"
+
+/* Interstitial Processing Tool Descriptions (Phase 6.5) */
+#define MCP_DESC_DETECT_BOUNDARY "Detect cognitive boundary from content (topic shift, temporal gap, emotional peak)"
+#define MCP_DESC_PROCESS_BOUNDARY "Process detected boundary with appropriate consolidation strategy"
+#define MCP_DESC_COGNITIVE_STATUS "Get interstitial processor status (boundaries detected, associations, patterns)"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -134,6 +156,11 @@
 #define MCP_PARAM_THRESHOLD "threshold"
 #define MCP_PARAM_METHOD "method"
 
+/* Working Memory Parameter Names */
+#define MCP_PARAM_ATTENTION "attention_score"
+#define MCP_PARAM_DECAY_RATE "decay_rate"
+#define MCP_PARAM_BOUNDARY_TYPE "boundary_type"
+
 /* Tool Parameter Descriptions */
 #define MCP_PARAM_DESC_CONTENT "The thought or experience to remember"
 #define MCP_PARAM_DESC_CONTEXT "Why this is important (trivial, interesting, significant, critical)"
@@ -152,6 +179,11 @@
 #define MCP_PARAM_DESC_ENABLED "Enable or disable semantic search (true/false)"
 #define MCP_PARAM_DESC_THRESHOLD "Similarity threshold for semantic search (0.0 to 1.0, optional)"
 #define MCP_PARAM_DESC_METHOD "Embedding method: 'hash', 'tfidf', or 'external' (optional)"
+
+/* Working Memory Parameter Descriptions */
+#define MCP_PARAM_DESC_ATTENTION "Initial attention score (0.0-1.0, default: 0.5)"
+#define MCP_PARAM_DESC_DECAY_RATE "Decay rate (0.0-1.0, default: 0.1)"
+#define MCP_PARAM_DESC_BOUNDARY_TYPE "Boundary type to process (topic_shift, temporal_gap, emotional_peak, etc.)"
 
 /* Resource URIs */
 #define MCP_RESOURCE_URI_WELCOME "katra://welcome"
@@ -279,6 +311,9 @@ json_t* mcp_build_schema_1req_1opt_string(const char* req_name, const char* req_
                                            const char* opt_name, const char* opt_desc);
 json_t* mcp_build_metadata_schema(void);
 json_t* mcp_build_semantic_config_schema(void);
+json_t* mcp_build_schema_1req_string_1opt_number(const char* req_name, const char* req_desc,
+                                                   const char* opt_name, const char* opt_desc);
+json_t* mcp_build_schema_optional_number(const char* param_name, const char* param_desc);
 json_t* mcp_build_tool(const char* name, const char* description, json_t* schema);
 json_t* mcp_build_resource(const char* uri, const char* name,
                            const char* description, const char* mime_type);
@@ -351,6 +386,17 @@ json_t* mcp_tool_configure_semantic(json_t* args, json_t* id);
 json_t* mcp_tool_get_semantic_config(json_t* args, json_t* id);
 json_t* mcp_tool_get_config(json_t* args, json_t* id);
 json_t* mcp_tool_regenerate_vectors(json_t* args, json_t* id);
+
+/* Working Memory Tools (Phase 6.4) */
+json_t* mcp_tool_wm_status(json_t* args, json_t* id);
+json_t* mcp_tool_wm_add(json_t* args, json_t* id);
+json_t* mcp_tool_wm_decay(json_t* args, json_t* id);
+json_t* mcp_tool_wm_consolidate(json_t* args, json_t* id);
+
+/* Interstitial Processing Tools (Phase 6.5) */
+json_t* mcp_tool_detect_boundary(json_t* args, json_t* id);
+json_t* mcp_tool_process_boundary(json_t* args, json_t* id);
+json_t* mcp_tool_cognitive_status(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;

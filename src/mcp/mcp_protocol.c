@@ -379,6 +379,37 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_REGENERATE_VECTORS, MCP_DESC_REGENERATE_VECTORS,
             mcp_build_tool_schema_0params()));
 
+    /* Working Memory Tools (Phase 6.4) */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WM_STATUS, MCP_DESC_WM_STATUS,
+            mcp_build_tool_schema_0params()));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WM_ADD, MCP_DESC_WM_ADD,
+            mcp_build_schema_1req_string_1opt_number(MCP_PARAM_CONTENT, MCP_PARAM_DESC_CONTENT,
+                                                      MCP_PARAM_ATTENTION, MCP_PARAM_DESC_ATTENTION)));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WM_DECAY, MCP_DESC_WM_DECAY,
+            mcp_build_schema_optional_number(MCP_PARAM_DECAY_RATE, MCP_PARAM_DESC_DECAY_RATE)));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WM_CONSOLIDATE, MCP_DESC_WM_CONSOLIDATE,
+            mcp_build_tool_schema_0params()));
+
+    /* Interstitial Processing Tools (Phase 6.5) */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_DETECT_BOUNDARY, MCP_DESC_DETECT_BOUNDARY,
+            mcp_build_tool_schema_1param(MCP_PARAM_CONTENT, MCP_PARAM_DESC_CONTENT)));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_PROCESS_BOUNDARY, MCP_DESC_PROCESS_BOUNDARY,
+            mcp_build_tool_schema_1param(MCP_PARAM_BOUNDARY_TYPE, MCP_PARAM_DESC_BOUNDARY_TYPE)));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_COGNITIVE_STATUS, MCP_DESC_COGNITIVE_STATUS,
+            mcp_build_tool_schema_0params()));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
@@ -510,6 +541,22 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_get_config(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_REGENERATE_VECTORS) == 0) {
         tool_result = mcp_tool_regenerate_vectors(args, id);
+    /* Working Memory Tools (Phase 6.4) */
+    } else if (strcmp(tool_name, MCP_TOOL_WM_STATUS) == 0) {
+        tool_result = mcp_tool_wm_status(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WM_ADD) == 0) {
+        tool_result = mcp_tool_wm_add(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WM_DECAY) == 0) {
+        tool_result = mcp_tool_wm_decay(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WM_CONSOLIDATE) == 0) {
+        tool_result = mcp_tool_wm_consolidate(args, id);
+    /* Interstitial Processing Tools (Phase 6.5) */
+    } else if (strcmp(tool_name, MCP_TOOL_DETECT_BOUNDARY) == 0) {
+        tool_result = mcp_tool_detect_boundary(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_PROCESS_BOUNDARY) == 0) {
+        tool_result = mcp_tool_process_boundary(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_COGNITIVE_STATUS) == 0) {
+        tool_result = mcp_tool_cognitive_status(args, id);
     } else {
         katra_hook_turn_end();  /* Trigger turn end hook before error return */
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
