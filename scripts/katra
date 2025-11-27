@@ -971,7 +971,7 @@ EOF
             fi
 
             # Generate TCP config using netcat to connect
-            local tcp_port="${KATRA_MCP_PORT:-3141}"
+            tcp_port="${KATRA_MCP_PORT:-3141}"
             cat > "$TEMP_MCP_CONFIG" <<EOF
 {
   "mcpServers": {
@@ -990,12 +990,30 @@ EOF
 EOF
         fi
 
-        # Build Claude Code command WITH first prompt and MCP config
-        CLAUDE_CMD="claude --mcp-config \"$TEMP_MCP_CONFIG\""
-        [ -n "$MODEL" ] && CLAUDE_CMD="$CLAUDE_CMD --model $MODEL"
-        # Prompt must be last argument before any project path
-        CLAUDE_CMD="$CLAUDE_CMD \"$FIRST_PROMPT\""
-        [ $# -gt 0 ] && CLAUDE_CMD="$CLAUDE_CMD $@"
+        # Build Claude Code command as an array
+        CLAUDE_ARGS=("--mcp-config" "$TEMP_MCP_CONFIG")
+        [ -n "$MODEL" ] && CLAUDE_ARGS+=("--model" "$MODEL")
+        # Add any extra arguments (project path, etc.)
+        [ $# -gt 0 ] && CLAUDE_ARGS+=("$@")
+
+        # Copy first prompt to clipboard and display for user
+        # Claude Code doesn't accept prompts as arguments - user must paste
+        copy_prompt_to_clipboard() {
+            local prompt="$1"
+
+            # Try pbcopy (macOS) first, then xclip (Linux)
+            if command -v pbcopy >/dev/null 2>&1; then
+                printf '%s' "$prompt" | pbcopy
+                return 0
+            elif command -v xclip >/dev/null 2>&1; then
+                printf '%s' "$prompt" | xclip -selection clipboard
+                return 0
+            elif command -v xsel >/dev/null 2>&1; then
+                printf '%s' "$prompt" | xsel --clipboard --input
+                return 0
+            fi
+            return 1
+        }
 
         # Start in background or foreground
         if [ "$BACKGROUND" = true ]; then
@@ -1016,18 +1034,51 @@ EOF
                 exit 1
             fi
 
+            # For tmux, write prompt to temp file for user to paste
+            PROMPT_FILE="/tmp/katra-prompt-$PERSONA.txt"
+            printf '%s' "$FIRST_PROMPT" > "$PROMPT_FILE"
+
+            # Build tmux command without prompt (user will paste it)
+            TMUX_CMD="claude --mcp-config '$TEMP_MCP_CONFIG'"
+            [ -n "$MODEL" ] && TMUX_CMD="$TMUX_CMD --model '$MODEL'"
+            [ $# -gt 0 ] && TMUX_CMD="$TMUX_CMD $*"
+
             # Start tmux session with Claude Code
             echo -e "${GREEN}Starting background session: $TMUX_SESSION${NC}"
-            tmux new-session -d -s "$TMUX_SESSION" "$CLAUDE_CMD"
+            tmux new-session -d -s "$TMUX_SESSION" "$TMUX_CMD"
 
+            # Copy prompt to clipboard
+            if copy_prompt_to_clipboard "$FIRST_PROMPT"; then
+                echo -e "${GREEN}✓ Welcome prompt copied to clipboard${NC}"
+            else
+                echo -e "${YELLOW}⚠ Could not copy to clipboard${NC}"
+                echo "Prompt saved to: $PROMPT_FILE"
+            fi
+
+            echo ""
             echo -e "${GREEN}Session started successfully${NC}"
             echo "Attach with: ${BLUE}katra attach $PERSONA${NC}"
+            echo "  Then press ${YELLOW}Cmd+V${NC} (or ${YELLOW}Ctrl+V${NC}) and ${YELLOW}Enter${NC} to send welcome prompt"
             echo "Detach with: ${BLUE}Ctrl-B then D${NC}"
             echo "Stop with: ${BLUE}katra stop $PERSONA${NC}"
         else
             # Foreground mode
+            # Copy prompt to clipboard and display instructions
+            if copy_prompt_to_clipboard "$FIRST_PROMPT"; then
+                echo -e "${GREEN}✓ First prompt copied to clipboard${NC}"
+            else
+                echo -e "${YELLOW}⚠ Could not copy to clipboard (pbcopy/xclip not found)${NC}"
+            fi
+
+            echo ""
+            echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
             echo -e "${GREEN}Launching Claude Code...${NC}"
-            eval exec $CLAUDE_CMD
+            echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+            echo ""
+            echo -e "${YELLOW}Press Cmd+V (or Ctrl+V) then Enter to paste the welcome prompt${NC}"
+            echo ""
+
+            exec claude "${CLAUDE_ARGS[@]}"
         fi
         ;;
 
