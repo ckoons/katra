@@ -21,6 +21,7 @@
 #include "katra_vector.h"
 #include "katra_log.h"
 #include "katra_error.h"
+#include "katra_limits.h"
 
 /* ============================================================================
  * INTERNAL STRUCTURES
@@ -73,7 +74,7 @@ static int add_or_update_result(search_result_t** results,
 
     /* Add new result */
     if (*count >= *capacity) {
-        size_t new_capacity = (*capacity == 0) ? 10 : (*capacity * 2);
+        size_t new_capacity = (*capacity == 0) ? INITIAL_CAPACITY_FALLBACK : (*capacity * 2);
         search_result_t* new_results = realloc(*results,
                                                new_capacity * sizeof(search_result_t));
         if (!new_results) {

@@ -38,6 +38,7 @@ static const char* MEMORY_SCHEMA_SQL =
     "  marked_important INTEGER DEFAULT 0," /* GUIDELINE_APPROVED */
     "  marked_forgettable INTEGER DEFAULT 0," /* GUIDELINE_APPROVED */
     "  archived INTEGER DEFAULT 0," /* GUIDELINE_APPROVED */
+    "  session_scoped INTEGER DEFAULT 0," /* GUIDELINE_APPROVED: Phase 1a tag system */
     "  file_path TEXT NOT NULL," /* GUIDELINE_APPROVED */
     "  file_offset INTEGER NOT NULL" /* GUIDELINE_APPROVED */
     ");" /* GUIDELINE_APPROVED */
@@ -46,6 +47,7 @@ static const char* MEMORY_SCHEMA_SQL =
     "CREATE INDEX IF NOT EXISTS idx_centrality ON memories(graph_centrality DESC);" /* GUIDELINE_APPROVED */
     "CREATE INDEX IF NOT EXISTS idx_type ON memories(memory_type);" /* GUIDELINE_APPROVED */
     "CREATE INDEX IF NOT EXISTS idx_archived ON memories(archived);" /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_session_scoped ON memories(session_scoped);" /* GUIDELINE_APPROVED: Phase 1a */
     "" /* GUIDELINE_APPROVED */
     "CREATE VIRTUAL TABLE IF NOT EXISTS memory_content_fts USING fts5(" /* GUIDELINE_APPROVED */
     "  record_id UNINDEXED," /* GUIDELINE_APPROVED */
@@ -137,6 +139,18 @@ int tier1_index_init(const char* ci_id) {
         sqlite3_close(g_memory_db);
         g_memory_db = NULL;
         return E_SYSTEM_FILE;
+    }
+
+    /* Schema migration: add session_scoped column if missing (Phase 1a) */
+    /* GUIDELINE_APPROVED: SQL migration string */
+    const char* migration_sql = "ALTER TABLE memories ADD COLUMN session_scoped INTEGER DEFAULT 0";
+    rc = sqlite3_exec(g_memory_db, migration_sql, NULL, NULL, &err_msg);
+    if (rc != SQLITE_OK) {
+        /* Column already exists is expected - silently ignore */
+        sqlite3_free(err_msg);
+        err_msg = NULL;
+    } else {
+        LOG_INFO("Schema migrated: added session_scoped column");
     }
 
     LOG_INFO("Tier 1 memory index initialized: %s", db_path);
@@ -475,7 +489,7 @@ int tier1_index_find_similar(const char* content,
 
     /* Calculate cutoff time if window specified */
     if (time_window_hours > 0) {
-        cutoff_time = time(NULL) - (time_window_hours * 3600);  /* 3600 seconds per hour */
+        cutoff_time = time(NULL) - (time_window_hours * SECONDS_PER_HOUR);
     }
 
     /* Build FTS query */

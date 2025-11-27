@@ -57,7 +57,7 @@ int katra_session_state_to_toon(const session_end_state_t* state, char** toon_ou
     KATRA_CHECK_NULL(toon_out);
 
     /* Allocate buffer - TOON is much more compact than JSON */
-    size_t buffer_size = 8192;  /* Should be plenty for session state */
+    size_t buffer_size = KATRA_BUFFER_ENHANCED;  /* Should be plenty for session state */
     char* buffer = malloc(buffer_size);
     if (!buffer) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_session_state_to_toon",
@@ -181,7 +181,7 @@ int katra_session_state_from_toon(const char* toon_str, session_end_state_t* sta
     /* Parse TOON format line by line */
     const char* line = toon_str;
     const char* next_line;
-    char line_buffer[1024];
+    char line_buffer[KATRA_BUFFER_TEXT];
 
     while (*line) {
         /* Find next newline */

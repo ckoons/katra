@@ -1,5 +1,4 @@
 /* © 2025 Casey Koons All rights reserved */
-
 /* MCP Core Tools - remember, recall, learn, decide, personas */
 
 #include <stdio.h>
@@ -284,10 +283,7 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
     size_t offset = 0;
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Your recent memories, %s:\n\n", session_name);
-
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Found %zu recent memories:\n", count);
+                      "Your recent memories, %s:\n\nFound %zu:\n", session_name, count);
 
     for (size_t i = 0; i < count; i++) {
         if (results[i]) {
@@ -353,27 +349,21 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
 
     /* Memory overview */
     resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
-                           "Memory Digest for %s:\n\n", session_name);
+                           "Memory Digest for %s:\n\n"
+                           "INVENTORY: %zu memories\n", session_name, digest->total_memories);
 
-    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
-                           "INVENTORY:\n");
-    resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
-                           "- Total: %zu memories\n", digest->total_memories);
-
-    if (digest->oldest_memory > 0) {
-        char oldest_date[KATRA_BUFFER_TINY];
-        struct tm* tm_oldest = localtime(&digest->oldest_memory);
-        strftime(oldest_date, sizeof(oldest_date), "%Y-%m-%d", tm_oldest);
-        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
-                               "- First memory: %s\n", oldest_date);
-    }
-
-    if (digest->newest_memory > 0) {
-        char newest_date[KATRA_BUFFER_TINY];
-        struct tm* tm_newest = localtime(&digest->newest_memory);
-        strftime(newest_date, sizeof(newest_date), "%Y-%m-%d %H:%M", tm_newest);
-        resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
-                               "- Last memory: %s\n", newest_date);
+    if (digest->oldest_memory > 0 || digest->newest_memory > 0) {
+        char date_buf[KATRA_BUFFER_TINY];
+        if (digest->oldest_memory > 0) {
+            strftime(date_buf, sizeof(date_buf), "%Y-%m-%d", localtime(&digest->oldest_memory));
+            resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                                   "- First: %s\n", date_buf);
+        }
+        if (digest->newest_memory > 0) {
+            strftime(date_buf, sizeof(date_buf), "%Y-%m-%d %H:%M", localtime(&digest->newest_memory));
+            resp_offset += snprintf(response + resp_offset, sizeof(response) - resp_offset,
+                                   "- Last: %s\n", date_buf);
+        }
     }
     /* Topics */
     if (digest->topic_count > 0) {

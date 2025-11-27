@@ -55,14 +55,14 @@ static context_config_t g_context_config = {
     .max_context_age_days = BREATHING_DEFAULT_CONTEXT_AGE_DAYS,
     /* Semantic search defaults (Phase 6.1f) */
     .use_semantic_search = true,       /* Enabled by default - core feature */
-    .semantic_threshold = 0.3f,        /* 30% similarity - Ami's testing shows optimal balance */
-    .max_semantic_results = 20,        /* Reasonable limit */
+    .semantic_threshold = SEMANTIC_DEFAULT_THRESHOLD,  /* 30% - Ami's testing shows optimal */
+    .max_semantic_results = SEMANTIC_DEFAULT_MAX_RESULTS,
     .embedding_method = 1,             /* EMBEDDING_TFIDF */
     /* Graph auto-edges defaults (Phase 6.2) */
     .auto_graph_edges = true,          /* Enabled by default - builds memory associations */
-    .graph_similarity_threshold = 0.5f,  /* 50% similarity for SIMILAR edges - stricter than recall */
+    .graph_similarity_threshold = GRAPH_DEFAULT_SIMILARITY_THRESHOLD,  /* 50% for SIMILAR edges */
     .graph_max_similar_edges = 5,      /* Limit to top 5 most similar memories */
-    .graph_temporal_window_sec = 300,  /* 5 minutes for SEQUENTIAL edge detection */
+    .graph_temporal_window_sec = GRAPH_DEFAULT_TEMPORAL_WINDOW_SEC,  /* 5 min for SEQUENTIAL */
     /* Working memory budget defaults (Phase 2) */
     .working_memory_enabled = WORKING_MEMORY_DEFAULT_ENABLED,  /* Enabled by default */
     .working_memory_soft_limit = WORKING_MEMORY_SOFT_LIMIT,    /* Archive at 35 */

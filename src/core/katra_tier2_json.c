@@ -305,7 +305,7 @@ int katra_tier2_digest_to_toon(const digest_record_t* digest, char** toon_out) {
     KATRA_CHECK_NULL(toon_out);
 
     /* Allocate buffer - tier-2 digests can be larger than session state */
-    size_t buffer_size = 16384;  /* 16KB should handle most digests */
+    size_t buffer_size = KATRA_BUFFER_LARGE;  /* 16KB should handle most digests */
     char* buffer = malloc(buffer_size);
     if (!buffer) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_tier2_digest_to_toon",
@@ -454,7 +454,7 @@ int katra_tier2_digests_to_toon(const digest_record_t** digests, size_t count, c
     }
 
     /* Allocate buffer - multiple digests need more space */
-    size_t buffer_size = 32768;  /* 32KB for multiple digests */
+    size_t buffer_size = KATRA_BUFFER_XLARGE;  /* 32KB for multiple digests */
     char* buffer = malloc(buffer_size);
     if (!buffer) {
         katra_report_error(E_SYSTEM_MEMORY, "katra_tier2_digests_to_toon",

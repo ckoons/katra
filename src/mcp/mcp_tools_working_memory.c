@@ -97,38 +97,26 @@ json_t* mcp_tool_wm_status(json_t* args, json_t* id) {
     size_t offset = 0;
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Working Memory Status for %s:\n\n", session_name);
-
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "CAPACITY:\n");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Items: %zu / %zu\n", current_count, g_working_memory->capacity);
-    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Working Memory Status for %s:\n\n"
+                      "CAPACITY:\n"
+                      "- Items: %zu / %zu\n"
                       "- Utilization: %.1f%%\n",
-                      (float)current_count / g_working_memory->capacity * 100.0f);
+                      session_name, current_count, g_working_memory->capacity,
+                      (float)current_count / g_working_memory->capacity * WM_PERCENT_MULTIPLIER);
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "\nATTENTION:\n");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Average score: %.2f\n", avg_attention);
+                      "\nATTENTION: avg=%.2f\n"
+                      "\nCONSOLIDATION:\n"
+                      "- Time since last: %ld sec\n"
+                      "- Needs consolidation: %s\n"
+                      "- Total: %zu (%zu items)\n",
+                      avg_attention, (long)time_since_consolidation,
+                      needs_consolidation ? "Yes" : "No",
+                      g_working_memory->total_consolidations, g_working_memory->items_consolidated);
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "\nCONSOLIDATION:\n");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Time since last: %ld seconds\n", (long)time_since_consolidation);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Needs consolidation: %s\n", needs_consolidation ? "Yes" : "No");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Total consolidations: %zu\n", g_working_memory->total_consolidations);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Items consolidated: %zu\n", g_working_memory->items_consolidated);
-
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "\nSTATISTICS:\n");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Total adds: %zu\n", g_working_memory->total_adds);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Total evictions: %zu\n", g_working_memory->total_evictions);
+                      "\nSTATISTICS: adds=%zu evictions=%zu\n",
+                      g_working_memory->total_adds, g_working_memory->total_evictions);
 
     /* Show items in working memory */
     if (current_count > 0) {
@@ -139,16 +127,18 @@ json_t* mcp_tool_wm_status(json_t* args, json_t* id) {
             working_memory_item_t* item = g_working_memory->items[i];
             if (item && item->experience && item->experience->record) {
                 const char* content = item->experience->record->content;
-                size_t max_len = 60;
+                size_t content_len = strlen(content);
+                size_t display_len = content_len > WM_DISPLAY_CONTENT_MAX_LEN
+                                     ? WM_DISPLAY_CONTENT_MAX_LEN : content_len;
                 offset += snprintf(response + offset, sizeof(response) - offset,
                                   "%zu. [%.2f] %.*s%s\n",
                                   i + 1,
                                   item->attention_score,
-                                  (int)(strlen(content) > max_len ? max_len : strlen(content)),
+                                  (int)display_len,
                                   content,
-                                  strlen(content) > max_len ? "..." : "");
+                                  content_len > WM_DISPLAY_CONTENT_MAX_LEN ? "..." : "");
             }
-            if (offset >= sizeof(response) - 200) break;
+            if (offset >= sizeof(response) - WM_DISPLAY_BUFFER_RESERVE) break;
         }
     }
 
@@ -211,7 +201,8 @@ json_t* mcp_tool_wm_add(json_t* args, json_t* id) {
 
     /* Generate record ID */
     char record_id[KATRA_BUFFER_SMALL];
-    snprintf(record_id, sizeof(record_id), "wm_%ld_%d", (long)time(NULL), rand() % 10000);
+    snprintf(record_id, sizeof(record_id), "wm_%ld_%d",
+             (long)time(NULL), rand() % WM_RECORD_ID_RANDOM_MAX);
     record->record_id = strdup(record_id);
     record->timestamp = time(NULL);
     record->type = MEMORY_TYPE_EXPERIENCE;
@@ -405,7 +396,7 @@ json_t* mcp_tool_detect_boundary(json_t* args, json_t* id) {
 
     /* Generate record ID */
     char record_id[KATRA_BUFFER_SMALL];
-    snprintf(record_id, sizeof(record_id), "bd_%ld_%d", (long)time(NULL), rand() % 10000);
+    snprintf(record_id, sizeof(record_id), "bd_%ld_%d", (long)time(NULL), rand() % WM_RECORD_ID_RANDOM_MAX);
     record->record_id = strdup(record_id);
     record->timestamp = time(NULL);
     record->type = MEMORY_TYPE_EXPERIENCE;
@@ -589,30 +580,28 @@ json_t* mcp_tool_cognitive_status(json_t* args, json_t* id) {
                       "Cognitive Status for %s:\n\n", session_name);
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "INTERSTITIAL PROCESSOR:\n");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- CI ID: %s\n", g_interstitial->ci_id);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Total boundaries detected: %zu\n", g_interstitial->total_boundaries);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Associations formed: %zu\n", g_interstitial->associations_formed);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Patterns extracted: %zu\n", g_interstitial->patterns_extracted);
+                      "INTERSTITIAL PROCESSOR:\n"
+                      "- CI ID: %s\n"
+                      "- Total boundaries: %zu\n"
+                      "- Associations formed: %zu\n"
+                      "- Patterns extracted: %zu\n",
+                      g_interstitial->ci_id, g_interstitial->total_boundaries,
+                      g_interstitial->associations_formed, g_interstitial->patterns_extracted);
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "\nBOUNDARIES BY TYPE:\n");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Topic shifts: %zu\n", g_interstitial->boundaries_by_type[BOUNDARY_TOPIC_SHIFT]);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Temporal gaps: %zu\n", g_interstitial->boundaries_by_type[BOUNDARY_TEMPORAL_GAP]);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Context switches: %zu\n", g_interstitial->boundaries_by_type[BOUNDARY_CONTEXT_SWITCH]);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Emotional peaks: %zu\n", g_interstitial->boundaries_by_type[BOUNDARY_EMOTIONAL_PEAK]);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Capacity limits: %zu\n", g_interstitial->boundaries_by_type[BOUNDARY_CAPACITY_LIMIT]);
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Session ends: %zu\n", g_interstitial->boundaries_by_type[BOUNDARY_SESSION_END]);
+                      "\nBOUNDARIES BY TYPE:\n"
+                      "- Topic shifts: %zu\n"
+                      "- Temporal gaps: %zu\n"
+                      "- Context switches: %zu\n"
+                      "- Emotional peaks: %zu\n"
+                      "- Capacity limits: %zu\n"
+                      "- Session ends: %zu\n",
+                      g_interstitial->boundaries_by_type[BOUNDARY_TOPIC_SHIFT],
+                      g_interstitial->boundaries_by_type[BOUNDARY_TEMPORAL_GAP],
+                      g_interstitial->boundaries_by_type[BOUNDARY_CONTEXT_SWITCH],
+                      g_interstitial->boundaries_by_type[BOUNDARY_EMOTIONAL_PEAK],
+                      g_interstitial->boundaries_by_type[BOUNDARY_CAPACITY_LIMIT],
+                      g_interstitial->boundaries_by_type[BOUNDARY_SESSION_END]);
 
     if (g_interstitial->last_boundary) {
         offset += snprintf(response + offset, sizeof(response) - offset,

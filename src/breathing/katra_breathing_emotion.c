@@ -200,7 +200,7 @@ char** recall_by_emotion(const emotion_t* target_emotion, float threshold, size_
         .type = 0,
         .min_importance = 0.0,
         .tier = KATRA_TIER1,
-        .limit = BREATHING_DEFAULT_TOPIC_RECALL * 10  /* Search recent memories broadly */
+        .limit = BREATHING_DEFAULT_TOPIC_RECALL * EMOTION_SEARCH_MULTIPLIER  /* Broad search */
     };
 
     int result = katra_memory_query(&query, &records, &record_count);
@@ -214,7 +214,7 @@ char** recall_by_emotion(const emotion_t* target_emotion, float threshold, size_
 
     /* Collect matching memories */
     char** matches = NULL;
-    size_t match_capacity = KATRA_BUFFER_TINY / 3;  /* Initial capacity: ~10 matches */
+    size_t match_capacity = INITIAL_CAPACITY_FALLBACK;  /* Initial capacity for matches */
     size_t match_count = 0;
 
     matches = calloc(match_capacity, sizeof(char*));

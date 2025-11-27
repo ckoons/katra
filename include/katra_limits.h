@@ -33,6 +33,28 @@
 /* Growth buffer for streaming operations */
 #define KATRA_BUFFER_GROWTH_THRESHOLD 1024  /* Reserve 1KB margin when growing buffers */
 
+/* Extra large buffers for JSON serialization */
+#define KATRA_BUFFER_XLARGE 32768           /* 32KB for large JSON structures */
+
+/* HTTP/Network constants */
+#define HTTP_STATUS_LINE_OK "HTTP/1.1 200 OK\r\n"
+#define MAX_TCP_PORT 65535                  /* Maximum valid TCP port number */
+
+/* Semantic search defaults (breathing layer) */
+#define SEMANTIC_DEFAULT_MAX_RESULTS 20     /* Default max semantic search results */
+#define SEMANTIC_DEFAULT_THRESHOLD 0.3f     /* 30% similarity threshold */
+
+/* Graph edge detection defaults */
+#define GRAPH_DEFAULT_SIMILARITY_THRESHOLD 0.5f   /* 50% for SIMILAR edges */
+#define GRAPH_DEFAULT_TEMPORAL_WINDOW_SEC 300     /* 5 minutes for SEQUENTIAL edges */
+
+/* Time unit constants */
+#define SECONDS_PER_HOUR 3600               /* For time calculations */
+
+/* Search and recall multipliers */
+#define EMOTION_SEARCH_MULTIPLIER 10        /* Multiplier for emotion-based search */
+#define INITIAL_CAPACITY_FALLBACK 10        /* Default initial capacity for arrays */
+
 /* ===== Memory Tier Sizes ===== */
 
 /* Tier 1: Raw recordings */
@@ -265,6 +287,12 @@
 /* Exit codes */
 #define EXIT_CODE_SUCCESS 0
 #define EXIT_CODE_FAILURE 1
+
+/* ===== Working Memory MCP Constants ===== */
+#define WM_DISPLAY_CONTENT_MAX_LEN 60       /* Max content length in status display */
+#define WM_DISPLAY_BUFFER_RESERVE 200       /* Buffer reserve for status display */
+#define WM_RECORD_ID_RANDOM_MAX 10000       /* Random component for working memory record IDs */
+#define WM_PERCENT_MULTIPLIER 100.0f        /* Multiplier for percentage calculation */
 
 /* ===== Breathing Layer Configuration ===== */
 

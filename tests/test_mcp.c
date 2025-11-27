@@ -168,8 +168,9 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    if (tool_count != 17) {
-        printf("  ✗ Expected 17 tools, got %zu\n", tool_count);
+    /* 17 base tools + 7 Phase 6 working memory/interstitial tools = 24 */
+    if (tool_count != 24) {
+        printf("  ✗ Expected 24 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }

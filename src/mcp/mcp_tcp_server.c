@@ -348,7 +348,7 @@ int mcp_tcp_load_config(mcp_tcp_config_t* config, const char* config_file) {
     config->port = KATRA_MCP_DEFAULT_PORT;
     int env_port = 0;
     if (katra_getenvint("KATRA_MCP_TCP_PORT", &env_port) == KATRA_SUCCESS) {
-        if (env_port > 0 && env_port <= 65535) {
+        if (env_port > 0 && env_port <= MAX_TCP_PORT) {
             config->port = (uint16_t)env_port;
         }
     }

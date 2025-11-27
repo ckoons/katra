@@ -299,6 +299,10 @@ json_t* mcp_tool_success(const char* text);
 json_t* mcp_tool_success_with_data(const char* text, json_t* data);
 json_t* mcp_tool_error(const char* message, const char* details);
 
+/* Onboarding Functions */
+const char* mcp_inject_onboarding_if_first(const char* response_text,
+                                            char* buffer, size_t buffer_size);
+
 /* Schema Builders */
 json_t* mcp_build_tool_schema_0params(void);
 json_t* mcp_build_tool_schema_1param(const char* param_name, const char* param_desc);

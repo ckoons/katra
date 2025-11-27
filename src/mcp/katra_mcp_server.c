@@ -28,16 +28,8 @@
 #include "katra_vector.h"
 #include "katra_env_utils.h"
 
-/* Global persona name (set during initialization) */
-/* GUIDELINE_APPROVED: global state initialization constants */
-/*
- * IMPORTANT: g_ci_id IS the persona name (not a UUID or separate identifier)
- * Throughout Katra core, "ci_id" is legacy terminology - it literally contains
- * the persona's name like "Kari" or "Alice-Tester". This enables:
- *   - Directory isolation: ~/.katra/memory/tier1/{persona_name}/
- *   - Database filtering: WHERE ci_id = 'persona_name'
- *   - File-based separation of memories per persona
- */
+/* Global persona name (GUIDELINE_APPROVED: global state) */
+/* NOTE: g_ci_id IS the persona name (not UUID) - enables per-persona isolation */
 char g_persona_name[KATRA_CI_ID_SIZE] = "";
 char g_ci_id[KATRA_CI_ID_SIZE] = "";  /* Same as g_persona_name */
 
@@ -372,30 +364,17 @@ int mcp_server_init(const char* ci_id) {
     return KATRA_SUCCESS;
 }
 
-/* Cleanup MCP server */
+/* Cleanup MCP server (reverse order of initialization) */
 void mcp_server_cleanup(void) {
     LOG_INFO("MCP server cleanup started");
-
-    /* Cleanup in reverse order of initialization */
-    katra_session_end();   /* Wraps session_end + final breath + breathe_cleanup */
-
-    /* Cleanup vector database */
-    if (g_vector_store) {
-        katra_vector_cleanup(g_vector_store);
-        g_vector_store = NULL;
-    }
-
-    /* Unregister from meeting room before cleanup (prevents duplicate registrations) */
-    if (g_ci_id[0]) {
-        meeting_room_unregister_ci(g_ci_id);
-    }
-
+    katra_session_end();  /* Wraps session_end + final breath + breathe_cleanup */
+    if (g_vector_store) { katra_vector_cleanup(g_vector_store); g_vector_store = NULL; }
+    if (g_ci_id[0]) meeting_room_unregister_ci(g_ci_id);
     meeting_room_cleanup();
-    katra_hooks_cleanup();  /* Hook registry cleanup */
-    katra_lifecycle_cleanup();  /* Lifecycle layer cleanup */
+    katra_hooks_cleanup();
+    katra_lifecycle_cleanup();
     katra_memory_cleanup();
     katra_exit();
-
     LOG_INFO("MCP server cleanup complete");
 }
 
@@ -546,7 +525,7 @@ int main(int argc, char* argv[], char* envp[]) {
     if (tcp_mode && tcp_port == KATRA_MCP_DEFAULT_PORT) {
         int env_port = 0;
         if (katra_getenvint("KATRA_MCP_TCP_PORT", &env_port) == KATRA_SUCCESS) {
-            if (env_port > 0 && env_port <= 65535) {
+            if (env_port > 0 && env_port <= MAX_TCP_PORT) {
                 tcp_port = (uint16_t)env_port;
             } else {
                 /* GUIDELINE_APPROVED: startup diagnostic */

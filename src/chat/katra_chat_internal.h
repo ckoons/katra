@@ -21,7 +21,7 @@
 
 #define CHAT_DB_FILENAME "chat.db"
 #define CHAT_SQL_BUFFER_SIZE 4096
-#define SECONDS_PER_HOUR (MINUTES_PER_HOUR * SECONDS_PER_MINUTE)
+/* SECONDS_PER_HOUR defined in katra_limits.h */
 
 /* Phase 4.5.1: Registry heartbeat timeout (5 minutes) */
 #define STALE_REGISTRATION_TIMEOUT_MINUTES 5
