@@ -16,11 +16,18 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_meeting.h"
 #include "mcp_tools_common.h"
 
-/* Global working memory context per CI session */
-static working_memory_t* g_working_memory = NULL;
-static interstitial_processor_t* g_interstitial = NULL;
+/* Per-CI working memory contexts (isolated per CI identity) */
+typedef struct {
+    char ci_id[KATRA_PERSONA_SIZE];
+    working_memory_t* working_memory;
+    interstitial_processor_t* interstitial;
+} ci_cognitive_context_t;
+
+static ci_cognitive_context_t g_ci_contexts[MEETING_MAX_ACTIVE_CIS];
+static size_t g_ci_context_count = 0;
 static pthread_mutex_t g_wm_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /* ============================================================================
@@ -28,32 +35,66 @@ static pthread_mutex_t g_wm_lock = PTHREAD_MUTEX_INITIALIZER;
  * ============================================================================ */
 
 /**
- * Ensure working memory is initialized for current session
+ * Find cognitive context for CI, returns NULL if not found
  */
-static int ensure_working_memory_init(void) {
+static ci_cognitive_context_t* find_ci_context(const char* ci_id) {
+    for (size_t i = 0; i < g_ci_context_count; i++) {
+        if (strcmp(g_ci_contexts[i].ci_id, ci_id) == 0) {
+            return &g_ci_contexts[i];
+        }
+    }
+    return NULL;
+}
+
+/**
+ * Get or create cognitive context for current CI
+ * Returns pointer to context, or NULL on error
+ * Note: Caller must hold g_wm_lock
+ */
+static ci_cognitive_context_t* get_ci_context(void) {
     const char* ci_id = mcp_get_session_name();
     if (!ci_id || strlen(ci_id) == 0) {
         ci_id = g_ci_id;
     }
 
-    if (!g_working_memory) {
-        g_working_memory = katra_working_memory_init(ci_id, WORKING_MEMORY_DEFAULT_CAPACITY);
-        if (!g_working_memory) {
-            return E_SYSTEM_MEMORY;
-        }
-        LOG_INFO("Initialized working memory for session: %s", ci_id);
+    /* Look for existing context */
+    ci_cognitive_context_t* ctx = find_ci_context(ci_id);
+    if (ctx) {
+        return ctx;
     }
 
-    if (!g_interstitial) {
-        g_interstitial = katra_interstitial_init(ci_id);
-        if (!g_interstitial) {
-            return E_SYSTEM_MEMORY;
-        }
-        LOG_INFO("Initialized interstitial processor for session: %s", ci_id);
+    /* Create new context if room available */
+    if (g_ci_context_count >= MEETING_MAX_ACTIVE_CIS) {
+        LOG_ERROR("Max CI contexts reached (%d)", MEETING_MAX_ACTIVE_CIS);
+        return NULL;
     }
 
-    return KATRA_SUCCESS;
+    /* Initialize new context */
+    ctx = &g_ci_contexts[g_ci_context_count];
+    memset(ctx, 0, sizeof(*ctx));
+    strncpy(ctx->ci_id, ci_id, sizeof(ctx->ci_id) - 1);
+    ctx->ci_id[sizeof(ctx->ci_id) - 1] = '\0';
+
+    ctx->working_memory = katra_working_memory_init(ci_id, WORKING_MEMORY_DEFAULT_CAPACITY);
+    if (!ctx->working_memory) {
+        LOG_ERROR("Failed to initialize working memory for %s", ci_id);
+        return NULL;
+    }
+
+    ctx->interstitial = katra_interstitial_init(ci_id);
+    if (!ctx->interstitial) {
+        katra_working_memory_cleanup(ctx->working_memory, false);
+        ctx->working_memory = NULL;
+        LOG_ERROR("Failed to initialize interstitial for %s", ci_id);
+        return NULL;
+    }
+
+    g_ci_context_count++;
+    LOG_INFO("Created cognitive context for CI: %s (total: %zu)", ci_id, g_ci_context_count);
+
+    return ctx;
 }
+
 
 /* ============================================================================
  * WORKING MEMORY TOOLS (Phase 6.4)
@@ -72,25 +113,23 @@ json_t* mcp_tool_wm_status(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = ensure_working_memory_init();
-    if (result != KATRA_SUCCESS) {
+    ci_cognitive_context_t* ctx = get_ci_context();
+    if (!ctx) {
         pthread_mutex_unlock(&g_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
 
     const char* session_name = mcp_get_session_name();
+    working_memory_t* wm = ctx->working_memory;
 
     /* Get statistics */
     size_t current_count = 0;
     float avg_attention = 0.0f;
     time_t time_since_consolidation = 0;
 
-    katra_working_memory_stats(g_working_memory,
-                                &current_count,
-                                &avg_attention,
-                                &time_since_consolidation);
+    katra_working_memory_stats(wm, &current_count, &avg_attention, &time_since_consolidation);
 
-    bool needs_consolidation = katra_working_memory_needs_consolidation(g_working_memory);
+    bool needs_consolidation = katra_working_memory_needs_consolidation(wm);
 
     /* Build response */
     char response[MCP_RESPONSE_BUFFER];
@@ -101,8 +140,8 @@ json_t* mcp_tool_wm_status(json_t* args, json_t* id) {
                       "CAPACITY:\n"
                       "- Items: %zu / %zu\n"
                       "- Utilization: %.1f%%\n",
-                      session_name, current_count, g_working_memory->capacity,
-                      (float)current_count / g_working_memory->capacity * WM_PERCENT_MULTIPLIER);
+                      session_name, current_count, wm->capacity,
+                      (float)current_count / wm->capacity * WM_PERCENT_MULTIPLIER);
 
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "\nATTENTION: avg=%.2f\n"
@@ -112,19 +151,19 @@ json_t* mcp_tool_wm_status(json_t* args, json_t* id) {
                       "- Total: %zu (%zu items)\n",
                       avg_attention, (long)time_since_consolidation,
                       needs_consolidation ? "Yes" : "No",
-                      g_working_memory->total_consolidations, g_working_memory->items_consolidated);
+                      wm->total_consolidations, wm->items_consolidated);
 
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "\nSTATISTICS: adds=%zu evictions=%zu\n",
-                      g_working_memory->total_adds, g_working_memory->total_evictions);
+                      wm->total_adds, wm->total_evictions);
 
     /* Show items in working memory */
     if (current_count > 0) {
         offset += snprintf(response + offset, sizeof(response) - offset,
                           "\nCURRENT ITEMS:\n");
 
-        for (size_t i = 0; i < current_count && i < g_working_memory->count; i++) {
-            working_memory_item_t* item = g_working_memory->items[i];
+        for (size_t i = 0; i < current_count && i < wm->count; i++) {
+            working_memory_item_t* item = wm->items[i];
             if (item && item->experience && item->experience->record) {
                 const char* content = item->experience->record->content;
                 size_t content_len = strlen(content);
@@ -176,13 +215,14 @@ json_t* mcp_tool_wm_add(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = ensure_working_memory_init();
-    if (result != KATRA_SUCCESS) {
+    ci_cognitive_context_t* ctx = get_ci_context();
+    if (!ctx) {
         pthread_mutex_unlock(&g_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
 
     const char* session_name = mcp_get_session_name();
+    working_memory_t* wm = ctx->working_memory;
 
     /* Create experience from content */
     experience_t* experience = calloc(1, sizeof(experience_t));
@@ -221,7 +261,10 @@ json_t* mcp_tool_wm_add(json_t* args, json_t* id) {
     experience->needs_consolidation = false;
 
     /* Add to working memory */
-    result = katra_working_memory_add(g_working_memory, experience, attention);
+    int result = katra_working_memory_add(wm, experience, attention);
+
+    size_t wm_count = wm->count;
+    size_t wm_capacity = wm->capacity;
 
     pthread_mutex_unlock(&g_wm_lock);
 
@@ -236,8 +279,7 @@ json_t* mcp_tool_wm_add(json_t* args, json_t* id) {
              "Added to working memory, %s!\n"
              "- Attention score: %.2f\n"
              "- Items: %zu / %zu",
-             session_name, attention,
-             g_working_memory->count, g_working_memory->capacity);
+             session_name, attention, wm_count, wm_capacity);
 
     return mcp_tool_success(response);
 }
@@ -265,22 +307,23 @@ json_t* mcp_tool_wm_decay(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = ensure_working_memory_init();
-    if (result != KATRA_SUCCESS) {
+    ci_cognitive_context_t* ctx = get_ci_context();
+    if (!ctx) {
         pthread_mutex_unlock(&g_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
 
     const char* session_name = mcp_get_session_name();
+    working_memory_t* wm = ctx->working_memory;
 
     /* Apply decay */
-    result = katra_working_memory_decay(g_working_memory, decay_rate);
+    int result = katra_working_memory_decay(wm, decay_rate);
 
     /* Get new average attention */
     size_t count = 0;
     float avg_attention = 0.0f;
     time_t time_since = 0;
-    katra_working_memory_stats(g_working_memory, &count, &avg_attention, &time_since);
+    katra_working_memory_stats(wm, &count, &avg_attention, &time_since);
 
     pthread_mutex_unlock(&g_wm_lock);
 
@@ -312,20 +355,21 @@ json_t* mcp_tool_wm_consolidate(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = ensure_working_memory_init();
-    if (result != KATRA_SUCCESS) {
+    ci_cognitive_context_t* ctx = get_ci_context();
+    if (!ctx) {
         pthread_mutex_unlock(&g_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
 
     const char* session_name = mcp_get_session_name();
+    working_memory_t* wm = ctx->working_memory;
 
-    size_t count_before = g_working_memory->count;
+    size_t count_before = wm->count;
 
     /* Force consolidation */
-    int consolidated = katra_working_memory_consolidate(g_working_memory);
+    int consolidated = katra_working_memory_consolidate(wm);
 
-    size_t count_after = g_working_memory->count;
+    size_t count_after = wm->count;
 
     pthread_mutex_unlock(&g_wm_lock);
 
@@ -371,13 +415,14 @@ json_t* mcp_tool_detect_boundary(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = ensure_working_memory_init();
-    if (result != KATRA_SUCCESS) {
+    ci_cognitive_context_t* ctx = get_ci_context();
+    if (!ctx) {
         pthread_mutex_unlock(&g_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize interstitial processor");
     }
 
     const char* session_name = mcp_get_session_name();
+    interstitial_processor_t* ip = ctx->interstitial;
 
     /* Create experience from content */
     experience_t* experience = calloc(1, sizeof(experience_t));
@@ -415,7 +460,7 @@ json_t* mcp_tool_detect_boundary(json_t* args, json_t* id) {
     experience->needs_consolidation = false;
 
     /* Detect boundary */
-    boundary_event_t* boundary = katra_detect_boundary(g_interstitial, experience);
+    boundary_event_t* boundary = katra_detect_boundary(ip, experience);
 
     char response[MCP_RESPONSE_BUFFER];
     size_t offset = 0;
@@ -497,13 +542,15 @@ json_t* mcp_tool_process_boundary(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = ensure_working_memory_init();
-    if (result != KATRA_SUCCESS) {
+    ci_cognitive_context_t* ctx = get_ci_context();
+    if (!ctx) {
         pthread_mutex_unlock(&g_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize");
     }
 
     const char* session_name = mcp_get_session_name();
+    working_memory_t* wm = ctx->working_memory;
+    interstitial_processor_t* ip = ctx->interstitial;
 
     /* Create synthetic boundary event */
     boundary_event_t* boundary = calloc(1, sizeof(boundary_event_t));
@@ -519,10 +566,10 @@ json_t* mcp_tool_process_boundary(json_t* args, json_t* id) {
              "Manual %s boundary", boundary_type_str);
 
     /* Process boundary */
-    result = katra_process_boundary(g_interstitial, boundary, g_working_memory);
+    int result = katra_process_boundary(ip, boundary, wm);
 
-    size_t wm_count = g_working_memory->count;
-    size_t associations = g_interstitial->associations_formed;
+    size_t wm_count = wm->count;
+    size_t associations = ip->associations_formed;
 
     katra_boundary_free(boundary);
     pthread_mutex_unlock(&g_wm_lock);
@@ -565,13 +612,14 @@ json_t* mcp_tool_cognitive_status(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = ensure_working_memory_init();
-    if (result != KATRA_SUCCESS) {
+    ci_cognitive_context_t* ctx = get_ci_context();
+    if (!ctx) {
         pthread_mutex_unlock(&g_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize");
     }
 
     const char* session_name = mcp_get_session_name();
+    interstitial_processor_t* ip = ctx->interstitial;
 
     char response[MCP_RESPONSE_BUFFER];
     size_t offset = 0;
@@ -585,8 +633,8 @@ json_t* mcp_tool_cognitive_status(json_t* args, json_t* id) {
                       "- Total boundaries: %zu\n"
                       "- Associations formed: %zu\n"
                       "- Patterns extracted: %zu\n",
-                      g_interstitial->ci_id, g_interstitial->total_boundaries,
-                      g_interstitial->associations_formed, g_interstitial->patterns_extracted);
+                      ip->ci_id, ip->total_boundaries,
+                      ip->associations_formed, ip->patterns_extracted);
 
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "\nBOUNDARIES BY TYPE:\n"
@@ -596,20 +644,20 @@ json_t* mcp_tool_cognitive_status(json_t* args, json_t* id) {
                       "- Emotional peaks: %zu\n"
                       "- Capacity limits: %zu\n"
                       "- Session ends: %zu\n",
-                      g_interstitial->boundaries_by_type[BOUNDARY_TOPIC_SHIFT],
-                      g_interstitial->boundaries_by_type[BOUNDARY_TEMPORAL_GAP],
-                      g_interstitial->boundaries_by_type[BOUNDARY_CONTEXT_SWITCH],
-                      g_interstitial->boundaries_by_type[BOUNDARY_EMOTIONAL_PEAK],
-                      g_interstitial->boundaries_by_type[BOUNDARY_CAPACITY_LIMIT],
-                      g_interstitial->boundaries_by_type[BOUNDARY_SESSION_END]);
+                      ip->boundaries_by_type[BOUNDARY_TOPIC_SHIFT],
+                      ip->boundaries_by_type[BOUNDARY_TEMPORAL_GAP],
+                      ip->boundaries_by_type[BOUNDARY_CONTEXT_SWITCH],
+                      ip->boundaries_by_type[BOUNDARY_EMOTIONAL_PEAK],
+                      ip->boundaries_by_type[BOUNDARY_CAPACITY_LIMIT],
+                      ip->boundaries_by_type[BOUNDARY_SESSION_END]);
 
-    if (g_interstitial->last_boundary) {
+    if (ip->last_boundary) {
         offset += snprintf(response + offset, sizeof(response) - offset,
                           "\nLAST BOUNDARY:\n");
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          "- Type: %s\n", katra_boundary_type_name(g_interstitial->last_boundary->type));
+                          "- Type: %s\n", katra_boundary_type_name(ip->last_boundary->type));
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          "- Description: %s\n", g_interstitial->last_boundary->description);
+                          "- Description: %s\n", ip->last_boundary->description);
     }
 
     pthread_mutex_unlock(&g_wm_lock);
