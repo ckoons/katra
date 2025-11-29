@@ -212,3 +212,54 @@ json_t* mcp_build_resource(const char* uri, const char* name,
     json_object_set_new(resource, MCP_FIELD_MIME_TYPE, json_string(mime_type));
     return resource;
 }
+
+/* Build schema for katra_archive: 2 required strings (memory_id, reason) */
+json_t* mcp_build_archive_schema(void) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_string_property(props, MCP_PARAM_MEMORY_ID, MCP_PARAM_DESC_MEMORY_ID);
+    add_string_property(props, MCP_PARAM_REASON, MCP_PARAM_DESC_REASON);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(MCP_PARAM_MEMORY_ID));
+    json_array_append_new(required, json_string(MCP_PARAM_REASON));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+    return schema;
+}
+
+/* Build schema for katra_fade: 2 required strings, 1 optional number */
+json_t* mcp_build_fade_schema(void) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_string_property(props, MCP_PARAM_MEMORY_ID, MCP_PARAM_DESC_MEMORY_ID);
+    add_string_property(props, MCP_PARAM_REASON, MCP_PARAM_DESC_REASON);
+    add_number_property(props, MCP_PARAM_TARGET_IMPORTANCE, MCP_PARAM_DESC_TARGET_IMPORTANCE);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(MCP_PARAM_MEMORY_ID));
+    json_array_append_new(required, json_string(MCP_PARAM_REASON));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+    return schema;
+}
+
+/* Build schema for katra_forget: 2 required strings, 1 required bool */
+json_t* mcp_build_forget_schema(void) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+    add_string_property(props, MCP_PARAM_MEMORY_ID, MCP_PARAM_DESC_MEMORY_ID);
+    add_string_property(props, MCP_PARAM_REASON, MCP_PARAM_DESC_REASON);
+    add_bool_property(props, MCP_PARAM_CI_CONSENT, MCP_PARAM_DESC_CI_CONSENT);
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    json_t* required = json_array();
+    json_array_append_new(required, json_string(MCP_PARAM_MEMORY_ID));
+    json_array_append_new(required, json_string(MCP_PARAM_REASON));
+    json_array_append_new(required, json_string(MCP_PARAM_CI_CONSENT));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+    return schema;
+}

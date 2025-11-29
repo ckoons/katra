@@ -168,9 +168,9 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    /* 17 base tools + 7 Phase 6 working memory/interstitial tools = 24 */
-    if (tool_count != 24) {
-        printf("  ✗ Expected 24 tools, got %zu\n", tool_count);
+    /* 17 base tools + 7 Phase 6 tools + 3 Phase 7.1 lifecycle tools = 27 */
+    if (tool_count != 27) {
+        printf("  ✗ Expected 27 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }
@@ -189,7 +189,7 @@ static int test_tools_list(void) {
 
     json_decref(response);
     tests_passed++;
-    printf("  ✓ tools/list returns 10 tools\n");
+    printf("  ✓ tools/list returns %zu tools\n", tool_count);
     return 0;
 }
 

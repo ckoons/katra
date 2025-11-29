@@ -38,6 +38,8 @@ static const char* MEMORY_SCHEMA_SQL =
     "  marked_important INTEGER DEFAULT 0," /* GUIDELINE_APPROVED */
     "  marked_forgettable INTEGER DEFAULT 0," /* GUIDELINE_APPROVED */
     "  archived INTEGER DEFAULT 0," /* GUIDELINE_APPROVED */
+    "  archived_at INTEGER," /* GUIDELINE_APPROVED: Phase 7.1 */
+    "  archive_reason TEXT," /* GUIDELINE_APPROVED: Phase 7.1 */
     "  session_scoped INTEGER DEFAULT 0," /* GUIDELINE_APPROVED: Phase 1a tag system */
     "  file_path TEXT NOT NULL," /* GUIDELINE_APPROVED */
     "  file_offset INTEGER NOT NULL" /* GUIDELINE_APPROVED */
@@ -70,7 +72,20 @@ static const char* MEMORY_SCHEMA_SQL =
     "  FOREIGN KEY (to_id) REFERENCES memories(record_id)" /* GUIDELINE_APPROVED */
     ");" /* GUIDELINE_APPROVED */
     "CREATE INDEX IF NOT EXISTS idx_connections_from ON memory_connections(from_id);" /* GUIDELINE_APPROVED */
-    "CREATE INDEX IF NOT EXISTS idx_connections_to ON memory_connections(to_id);"; /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_connections_to ON memory_connections(to_id);" /* GUIDELINE_APPROVED */
+    "" /* GUIDELINE_APPROVED */
+    "CREATE TABLE IF NOT EXISTS memory_forget_log (" /* GUIDELINE_APPROVED: Phase 7.1 */
+    "  id TEXT PRIMARY KEY," /* GUIDELINE_APPROVED */
+    "  ci_id TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  memory_id TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  memory_content TEXT NOT NULL," /* GUIDELINE_APPROVED: preserved for audit */
+    "  memory_type INTEGER," /* GUIDELINE_APPROVED */
+    "  memory_importance REAL," /* GUIDELINE_APPROVED */
+    "  reason TEXT NOT NULL," /* GUIDELINE_APPROVED */
+    "  ci_consented INTEGER NOT NULL," /* GUIDELINE_APPROVED */
+    "  forgotten_at INTEGER NOT NULL" /* GUIDELINE_APPROVED */
+    ");" /* GUIDELINE_APPROVED */
+    "CREATE INDEX IF NOT EXISTS idx_forget_log_ci ON memory_forget_log(ci_id);"; /* GUIDELINE_APPROVED */
 
 /* Get database handle */
 sqlite3* tier1_index_get_db(void) {

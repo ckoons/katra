@@ -105,6 +105,11 @@
 #define MCP_TOOL_PROCESS_BOUNDARY "katra_process_boundary"
 #define MCP_TOOL_COGNITIVE_STATUS "katra_cognitive_status"
 
+/* Memory Lifecycle Tools (Phase 7.1) */
+#define MCP_TOOL_ARCHIVE "katra_archive"
+#define MCP_TOOL_FADE "katra_fade"
+#define MCP_TOOL_FORGET "katra_forget"
+
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
 #define MCP_DESC_RECALL "Find memories about a topic"
@@ -135,6 +140,11 @@
 #define MCP_DESC_DETECT_BOUNDARY "Detect cognitive boundary from content (topic shift, temporal gap, emotional peak)"
 #define MCP_DESC_PROCESS_BOUNDARY "Process detected boundary with appropriate consolidation strategy"
 #define MCP_DESC_COGNITIVE_STATUS "Get interstitial processor status (boundaries detected, associations, patterns)"
+
+/* Memory Lifecycle Tool Descriptions (Phase 7.1) */
+#define MCP_DESC_ARCHIVE "Move memory to cold storage (won't appear in normal recall)"
+#define MCP_DESC_FADE "Reduce memory importance, letting natural consolidation handle it"
+#define MCP_DESC_FORGET "True memory removal (requires explicit CI consent, logged for audit)"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -184,6 +194,16 @@
 #define MCP_PARAM_DESC_ATTENTION "Initial attention score (0.0-1.0, default: 0.5)"
 #define MCP_PARAM_DESC_DECAY_RATE "Decay rate (0.0-1.0, default: 0.1)"
 #define MCP_PARAM_DESC_BOUNDARY_TYPE "Boundary type to process (topic_shift, temporal_gap, emotional_peak, etc.)"
+
+/* Memory Lifecycle Parameter Names (Phase 7.1) */
+#define MCP_PARAM_REASON "reason"
+#define MCP_PARAM_TARGET_IMPORTANCE "target_importance"
+#define MCP_PARAM_CI_CONSENT "ci_consent"
+
+/* Memory Lifecycle Parameter Descriptions (Phase 7.1) */
+#define MCP_PARAM_DESC_REASON "Reason for the memory lifecycle operation"
+#define MCP_PARAM_DESC_TARGET_IMPORTANCE "Target importance after fade (0.0-1.0, default: 0.1)"
+#define MCP_PARAM_DESC_CI_CONSENT "CI consent for memory deletion (must be true)"
 
 /* Resource URIs */
 #define MCP_RESOURCE_URI_WELCOME "katra://welcome"
@@ -322,6 +342,11 @@ json_t* mcp_build_tool(const char* name, const char* description, json_t* schema
 json_t* mcp_build_resource(const char* uri, const char* name,
                            const char* description, const char* mime_type);
 
+/* Memory Lifecycle Schema Builders (Phase 7.1) */
+json_t* mcp_build_archive_schema(void);
+json_t* mcp_build_fade_schema(void);
+json_t* mcp_build_forget_schema(void);
+
 /* Tool Implementations */
 json_t* mcp_tool_remember(json_t* args, json_t* id);
 json_t* mcp_tool_recall(json_t* args, json_t* id);
@@ -337,6 +362,11 @@ json_t* mcp_tool_list_personas(json_t* args, json_t* id);
 /* Reflection Tool Implementations */
 json_t* mcp_tool_review_turn(json_t* args, json_t* id);
 json_t* mcp_tool_update_metadata(json_t* args, json_t* id);
+
+/* Memory Lifecycle Tool Implementations (Phase 7.1) */
+json_t* mcp_tool_archive(json_t* args, json_t* id);
+json_t* mcp_tool_fade(json_t* args, json_t* id);
+json_t* mcp_tool_forget(json_t* args, json_t* id);
 
 /* Resource Implementations */
 json_t* mcp_resource_welcome(json_t* id);

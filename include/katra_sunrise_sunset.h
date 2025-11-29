@@ -8,6 +8,8 @@
 #include "katra_cognitive.h"
 #include "katra_vector.h"
 #include "katra_graph.h"
+#include "katra_working_memory.h"
+#include "katra_limits.h"
 #include <time.h>
 
 /* Advanced Sunrise/Sunset Protocol with vector and graph integration */
@@ -20,6 +22,27 @@
 #define SUNRISE_EMOTIONAL_ARC_SAMPLES 10       /* Samples for emotional arc */
 #define SUNRISE_MAX_RECORDS_TO_PROCESS 100     /* Max records to cluster */
 #define SUNRISE_GRAPH_TRAVERSAL_DEPTH 10       /* Max depth for graph traversal */
+
+/* Working memory snapshot for sunset/sunrise (Phase 7.2)
+ *
+ * Captures the state of working memory items for persistence across sessions.
+ * The actual experience data is stored separately; this tracks attention state.
+ */
+typedef struct {
+    char content[KATRA_BUFFER_TEXT];     /* Content summary */
+    float attention_score;               /* Current attention weight */
+    time_t added_time;                   /* When originally added */
+    time_t last_accessed;                /* When last accessed */
+} wm_item_snapshot_t;
+
+/* Working memory state for sunset/sunrise (Phase 7.2) */
+typedef struct {
+    wm_item_snapshot_t* items;           /* Array of item snapshots */
+    size_t item_count;                   /* Number of items */
+    size_t capacity;                     /* Working memory capacity setting */
+    time_t last_consolidation;           /* Last consolidation timestamp */
+    size_t total_consolidations;         /* Total consolidations performed */
+} wm_state_snapshot_t;
 
 /* Topic cluster (from vector similarity) */
 typedef struct {
@@ -80,6 +103,9 @@ typedef struct {
     /* Tomorrow's intentions */
     char** intentions;          /* Plans for tomorrow */
     size_t intention_count;     /* Number of intentions */
+
+    /* Working memory state (Phase 7.2) */
+    wm_state_snapshot_t* working_memory;  /* Current working memory snapshot */
 } sundown_context_t;
 
 /* Enhanced sunrise context */
@@ -106,6 +132,9 @@ typedef struct {
     /* Familiar context (vector similarity) */
     char** familiar_topics;     /* Topics from recent days */
     size_t familiar_count;      /* Number of familiar topics */
+
+    /* Working memory to restore (Phase 7.2) */
+    wm_state_snapshot_t* working_memory;  /* Working memory from previous session */
 } sunrise_context_t;
 
 /* Enhanced sundown: Create comprehensive end-of-day summary */
@@ -114,11 +143,45 @@ int katra_sundown(const char* ci_id,
                   graph_store_t* graph,
                   sundown_context_t** context_out);
 
+/* Enhanced sundown with working memory capture (Phase 7.2)
+ *
+ * Same as katra_sundown but also captures working memory state.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   vectors - Vector store for semantic search
+ *   graph - Graph store for relationship traversal
+ *   wm - Working memory to capture (can be NULL)
+ *   context_out - Output context with captured state
+ */
+int katra_sundown_with_wm(const char* ci_id,
+                          vector_store_t* vectors,
+                          graph_store_t* graph,
+                          working_memory_t* wm,
+                          sundown_context_t** context_out);
+
 /* Enhanced sunrise: Load context for new day */
 int katra_sunrise(const char* ci_id,
                   vector_store_t* vectors,
                   graph_store_t* graph,
                   sunrise_context_t** context_out);
+
+/* Enhanced sunrise with working memory restore (Phase 7.2)
+ *
+ * Same as katra_sunrise but also restores working memory state.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   vectors - Vector store for semantic search
+ *   graph - Graph store for relationship traversal
+ *   wm - Working memory to restore into (can be NULL)
+ *   context_out - Output context with restored state
+ */
+int katra_sunrise_with_wm(const char* ci_id,
+                          vector_store_t* vectors,
+                          graph_store_t* graph,
+                          working_memory_t* wm,
+                          sunrise_context_t** context_out);
 
 /* Extract topic clusters from day's memories */
 int katra_extract_topics(const char* ci_id,
@@ -166,5 +229,36 @@ void katra_threads_free(conversation_thread_t** threads, size_t count);
 
 /* Free insights */
 void katra_insights_free(daily_insight_t** insights, size_t count);
+
+/* Working memory snapshot functions (Phase 7.2) */
+
+/* Capture working memory state for sunset
+ *
+ * Creates a snapshot of current working memory state for persistence.
+ *
+ * Parameters:
+ *   wm - Working memory context to capture
+ *
+ * Returns:
+ *   Snapshot structure or NULL on failure
+ */
+wm_state_snapshot_t* katra_wm_capture(working_memory_t* wm);
+
+/* Restore working memory from snapshot
+ *
+ * Populates working memory with items from snapshot.
+ *
+ * Parameters:
+ *   wm - Working memory context to restore into
+ *   snapshot - Snapshot to restore from
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   Error code on failure
+ */
+int katra_wm_restore(working_memory_t* wm, const wm_state_snapshot_t* snapshot);
+
+/* Free working memory snapshot */
+void katra_wm_snapshot_free(wm_state_snapshot_t* snapshot);
 
 #endif /* KATRA_SUNRISE_SUNSET_H */

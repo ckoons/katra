@@ -112,6 +112,9 @@ const char* katra_audit_event_type_string(audit_event_type_t type) {
         case AUDIT_EVENT_ACCESS_DENIED:     return "access_denied";
         case AUDIT_EVENT_CONSENT_GRANT:     return "consent_grant";
         case AUDIT_EVENT_CONSENT_DENY:      return "consent_deny";
+        case AUDIT_EVENT_MEMORY_ARCHIVE:    return "memory_archive";
+        case AUDIT_EVENT_MEMORY_FADE:       return "memory_fade";
+        case AUDIT_EVENT_MEMORY_FORGET:     return "memory_forget";
         default:                            return "unknown";
     }
 }

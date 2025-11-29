@@ -50,6 +50,7 @@ TEST_ACCESS_CONTROL := $(BIN_DIR)/tests/test_access_control
 TEST_PERSONA_PATHS := $(BIN_DIR)/tests/test_persona_paths
 TEST_UNIVERSAL_ENCODER := $(BIN_DIR)/tests/test_universal_encoder
 TEST_SYNTHESIS := $(BIN_DIR)/tests/test_synthesis
+TEST_PHASE7 := $(BIN_DIR)/tests/test_phase7
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
@@ -257,6 +258,10 @@ test-synthesis: $(TEST_SYNTHESIS)
 	@echo "Running synthesis tests..."
 	@$(TEST_SYNTHESIS)
 
+test-phase7: $(TEST_PHASE7)
+	@echo "Running Phase 7 tests..."
+	@$(TEST_PHASE7)
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
@@ -419,6 +424,10 @@ $(TEST_UNIVERSAL_ENCODER): $(TEST_DIR)/test_universal_encoder.c $(LIBKATRA_UTILS
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
 
 $(TEST_SYNTHESIS): $(TEST_DIR)/test_synthesis.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+
+$(TEST_PHASE7): $(TEST_DIR)/test_phase7.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
 

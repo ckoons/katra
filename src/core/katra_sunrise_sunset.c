@@ -13,8 +13,11 @@
 #include "katra_tier1.h"
 #include "katra_psyche_common.h"
 #include "katra_core_common.h"
+#include "katra_experience.h"
+#include "katra_working_memory.h"
 #include "katra_error.h"
 #include "katra_log.h"
+#include "katra_limits.h"
 
 /* Constants */
 #define MIN_CLUSTER_SIZE 2
@@ -321,11 +324,12 @@ int katra_detect_insights(const char* ci_id,
     return KATRA_SUCCESS;
 }
 
-/* Enhanced sundown */
-int katra_sundown(const char* ci_id,
-                  vector_store_t* vectors,
-                  graph_store_t* graph,
-                  sundown_context_t** context_out) {
+/* Enhanced sundown with working memory capture (Phase 7.2) */
+int katra_sundown_with_wm(const char* ci_id,
+                          vector_store_t* vectors,
+                          graph_store_t* graph,
+                          working_memory_t* wm,
+                          sundown_context_t** context_out) {
     PSYCHE_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
 
     sundown_context_t* context;
@@ -365,6 +369,16 @@ int katra_sundown(const char* ci_id,
                          context->threads, context->thread_count,
                          &context->insights, &context->insight_count);
 
+    /* Capture working memory state (Phase 7.2) */
+    if (wm) {
+        context->working_memory = katra_wm_capture(wm);
+        if (context->working_memory) {
+            LOG_INFO("Captured working memory: %zu items", context->working_memory->item_count);
+        }
+    } else {
+        context->working_memory = NULL;
+    }
+
     *context_out = context;
 
     LOG_INFO("Sundown complete for %s: %d interactions, %zu topics, %zu threads",
@@ -374,12 +388,22 @@ int katra_sundown(const char* ci_id,
     return KATRA_SUCCESS;
 }
 
-/* Enhanced sunrise */
-int katra_sunrise(const char* ci_id,
+/* Enhanced sundown (backward-compatible wrapper) */
+int katra_sundown(const char* ci_id,
                   vector_store_t* vectors,
                   graph_store_t* graph,
-                  sunrise_context_t** context_out) {
+                  sundown_context_t** context_out) {
+    return katra_sundown_with_wm(ci_id, vectors, graph, NULL, context_out);
+}
+
+/* Enhanced sunrise with working memory restore (Phase 7.2) */
+int katra_sunrise_with_wm(const char* ci_id,
+                          vector_store_t* vectors,
+                          graph_store_t* graph,
+                          working_memory_t* wm,
+                          sunrise_context_t** context_out) {
     PSYCHE_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
+    /* Note: wm can be NULL */
 
     sunrise_context_t* context;
     ALLOC_OR_RETURN(context, sunrise_context_t);
@@ -397,10 +421,33 @@ int katra_sunrise(const char* ci_id,
     context->baseline_mood.dominance = 0.5f;
     SAFE_STRNCPY(context->baseline_mood.emotion, EMOTION_NEUTRAL);
 
+    /* Restore working memory from previous session (Phase 7.2)
+     * If we have a previous sundown context with working memory, restore it */
+    if (wm && context->yesterday && context->yesterday->working_memory) {
+        int result = katra_wm_restore(wm, context->yesterday->working_memory);
+        if (result == KATRA_SUCCESS) {
+            LOG_INFO("Restored working memory from previous session");
+            /* Store reference to the snapshot for context */
+            context->working_memory = context->yesterday->working_memory;
+            /* Clear reference in yesterday so it doesn't get double-freed */
+            context->yesterday->working_memory = NULL;
+        }
+    } else {
+        context->working_memory = NULL;
+    }
+
     *context_out = context;
 
     LOG_INFO("Sunrise complete for %s", ci_id);
     return KATRA_SUCCESS;
+}
+
+/* Enhanced sunrise (backward-compatible wrapper) */
+int katra_sunrise(const char* ci_id,
+                  vector_store_t* vectors,
+                  graph_store_t* graph,
+                  sunrise_context_t** context_out) {
+    return katra_sunrise_with_wm(ci_id, vectors, graph, NULL, context_out);
 }
 
 /* Free sundown context */
@@ -415,6 +462,9 @@ void katra_sundown_free(sundown_context_t* context) {
     katra_free_string_array(context->open_questions, context->question_count);
     katra_free_string_array(context->intentions, context->intention_count);
 
+    /* Free working memory snapshot (Phase 7.2) */
+    katra_wm_snapshot_free(context->working_memory);
+
     free(context);
 }
 
@@ -428,6 +478,9 @@ void katra_sunrise_free(sunrise_context_t* context) {
     katra_free_string_array(context->pending_questions, context->pending_count);
     katra_free_string_array(context->carry_forward, context->carry_count);
     katra_free_string_array(context->familiar_topics, context->familiar_count);
+
+    /* Free working memory snapshot (Phase 7.2) */
+    katra_wm_snapshot_free(context->working_memory);
 
     free(context);
 }
@@ -478,4 +531,141 @@ void katra_insights_free(daily_insight_t** insights, size_t count) {
         }
     }
     free(insights);
+}
+
+/* ============================================================================
+ * WORKING MEMORY SNAPSHOT FUNCTIONS (Phase 7.2)
+ * ============================================================================ */
+
+/* Capture working memory state for sunset */
+wm_state_snapshot_t* katra_wm_capture(working_memory_t* wm) {
+    if (!wm) {
+        return NULL;
+    }
+
+    wm_state_snapshot_t* snapshot = calloc(1, sizeof(wm_state_snapshot_t));
+    if (!snapshot) {
+        return NULL;
+    }
+
+    snapshot->capacity = wm->capacity;
+    snapshot->last_consolidation = wm->last_consolidation;
+    snapshot->total_consolidations = wm->total_consolidations;
+    snapshot->item_count = wm->count;
+
+    if (wm->count == 0) {
+        snapshot->items = NULL;
+        return snapshot;
+    }
+
+    snapshot->items = calloc(wm->count, sizeof(wm_item_snapshot_t));
+    if (!snapshot->items) {
+        free(snapshot);
+        return NULL;
+    }
+
+    for (size_t i = 0; i < wm->count; i++) {
+        if (wm->items[i] && wm->items[i]->experience && wm->items[i]->experience->record) {
+            /* Copy content summary - content is in the cognitive record */
+            const char* content = wm->items[i]->experience->record->content;
+            if (content) {
+                strncpy(snapshot->items[i].content, content,
+                        sizeof(snapshot->items[i].content) - 1);
+                snapshot->items[i].content[sizeof(snapshot->items[i].content) - 1] = '\0';
+            }
+            snapshot->items[i].attention_score = wm->items[i]->attention_score;
+            snapshot->items[i].added_time = wm->items[i]->added_time;
+            snapshot->items[i].last_accessed = wm->items[i]->last_accessed;
+        }
+    }
+
+    LOG_INFO("Captured working memory snapshot: %zu items", wm->count);
+    return snapshot;
+}
+
+/* Helper: Create experience from content for restore */
+static experience_t* create_experience_from_content(const char* ci_id, const char* content) {
+    if (!content) {
+        return NULL;
+    }
+
+    /* Allocate experience */
+    experience_t* experience = calloc(1, sizeof(experience_t));
+    if (!experience) {
+        return NULL;
+    }
+
+    /* Allocate cognitive record */
+    cognitive_record_t* record = calloc(1, sizeof(cognitive_record_t));
+    if (!record) {
+        free(experience);
+        return NULL;
+    }
+
+    /* Generate unique record ID */
+    char record_id[KATRA_BUFFER_SMALL];
+    snprintf(record_id, sizeof(record_id), "wm_restore_%ld_%d",
+             (long)time(NULL), rand() % 10000);
+    record->record_id = katra_safe_strdup(record_id);
+    record->timestamp = time(NULL);
+    record->type = MEMORY_TYPE_EXPERIENCE;
+    record->importance = 0.5f;
+    record->content = katra_safe_strdup(content);
+    record->ci_id = katra_safe_strdup(ci_id);
+    record->thought_type = THOUGHT_TYPE_OBSERVATION;
+    record->confidence = 0.8f;
+    record->access_count = 0;
+    record->last_accessed = time(NULL);
+
+    experience->record = record;
+
+    /* Detect emotion from content */
+    katra_detect_emotion(content, &experience->emotion);
+    experience->in_working_memory = false;
+    experience->needs_consolidation = false;
+
+    return experience;
+}
+
+/* Restore working memory from snapshot */
+int katra_wm_restore(working_memory_t* wm, const wm_state_snapshot_t* snapshot) {
+    if (!wm || !snapshot) {
+        return E_INPUT_NULL;
+    }
+
+    /* Clear current working memory first */
+    katra_working_memory_clear(wm, false);
+
+    /* Restore metadata */
+    wm->last_consolidation = snapshot->last_consolidation;
+    wm->total_consolidations = snapshot->total_consolidations;
+
+    /* Restore items */
+    for (size_t i = 0; i < snapshot->item_count && i < wm->capacity; i++) {
+        if (strlen(snapshot->items[i].content) > 0) {
+            /* Create experience from snapshot content */
+            experience_t* exp = create_experience_from_content(
+                wm->ci_id,
+                snapshot->items[i].content
+            );
+            if (exp) {
+                katra_working_memory_add(wm, exp, snapshot->items[i].attention_score);
+                /* Note: attention score and timestamps may not be fully restored
+                 * due to katra_working_memory_add resetting some fields */
+            }
+        }
+    }
+
+    LOG_INFO("Restored working memory: %zu items (from %zu in snapshot)",
+             wm->count, snapshot->item_count);
+    return KATRA_SUCCESS;
+}
+
+/* Free working memory snapshot */
+void katra_wm_snapshot_free(wm_state_snapshot_t* snapshot) {
+    if (!snapshot) {
+        return;
+    }
+    free(snapshot->items);
+    free(snapshot);
 }

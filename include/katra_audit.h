@@ -27,7 +27,10 @@ typedef enum {
     AUDIT_EVENT_MEMORY_ACCESS,
     AUDIT_EVENT_ACCESS_DENIED,
     AUDIT_EVENT_CONSENT_GRANT,
-    AUDIT_EVENT_CONSENT_DENY
+    AUDIT_EVENT_CONSENT_DENY,
+    AUDIT_EVENT_MEMORY_ARCHIVE,    /* Phase 7.1: Memory moved to cold storage */
+    AUDIT_EVENT_MEMORY_FADE,       /* Phase 7.1: Memory importance reduced */
+    AUDIT_EVENT_MEMORY_FORGET      /* Phase 7.1: Memory deleted with consent */
 } audit_event_type_t;
 
 /* Audit record structure */

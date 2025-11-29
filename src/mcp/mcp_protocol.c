@@ -277,6 +277,19 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_COGNITIVE_STATUS, MCP_DESC_COGNITIVE_STATUS,
             mcp_build_tool_schema_0params()));
 
+    /* Memory Lifecycle Tools (Phase 7.1) */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_ARCHIVE, MCP_DESC_ARCHIVE,
+            mcp_build_archive_schema()));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_FADE, MCP_DESC_FADE,
+            mcp_build_fade_schema()));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_FORGET, MCP_DESC_FORGET,
+            mcp_build_forget_schema()));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
@@ -424,6 +437,13 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_process_boundary(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_COGNITIVE_STATUS) == 0) {
         tool_result = mcp_tool_cognitive_status(args, id);
+    /* Memory Lifecycle Tools (Phase 7.1) */
+    } else if (strcmp(tool_name, MCP_TOOL_ARCHIVE) == 0) {
+        tool_result = mcp_tool_archive(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_FADE) == 0) {
+        tool_result = mcp_tool_fade(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_FORGET) == 0) {
+        tool_result = mcp_tool_forget(args, id);
     } else {
         katra_hook_turn_end();  /* Trigger turn end hook before error return */
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);
