@@ -204,9 +204,13 @@ int katra_daemon_load_config(daemon_config_t* config) {
 
         char key[64], value[128];
         if (sscanf(line, "%63[^=]=%127s", key, value) == 2) {
-            /* Trim whitespace */
+            /* Trim leading whitespace */
             char* k = key;
             while (*k == ' ') k++;
+            /* Trim trailing whitespace from key */
+            char* end = k + strlen(k) - 1;
+            while (end > k && (*end == ' ' || *end == '\t')) end--;
+            *(end + 1) = '\0';
             char* v = value;
             while (*v == ' ') v++;
 

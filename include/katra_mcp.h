@@ -122,6 +122,11 @@
 #define MCP_TOOL_WB_REVIEW "katra_whiteboard_review"
 #define MCP_TOOL_WB_RECONSIDER "katra_whiteboard_reconsider"
 
+/* Daemon Tools (Phase 9) */
+#define MCP_TOOL_DAEMON_INSIGHTS "katra_daemon_insights"
+#define MCP_TOOL_DAEMON_ACKNOWLEDGE "katra_daemon_acknowledge"
+#define MCP_TOOL_DAEMON_RUN "katra_daemon_run"
+
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
 #define MCP_DESC_RECALL "Find memories about a topic"
@@ -169,6 +174,11 @@
 #define MCP_DESC_WB_DESIGN "Submit or update the design document (during designing phase)"
 #define MCP_DESC_WB_REVIEW "Add review comment on the design"
 #define MCP_DESC_WB_RECONSIDER "Request reconsideration (regression to earlier phase)"
+
+/* Daemon Tool Descriptions (Phase 9) */
+#define MCP_DESC_DAEMON_INSIGHTS "Get unacknowledged insights from interstitial processing"
+#define MCP_DESC_DAEMON_ACKNOWLEDGE "Acknowledge an insight (mark as seen)"
+#define MCP_DESC_DAEMON_RUN "Trigger daemon processing cycle (pattern/theme/insight extraction)"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -468,6 +478,11 @@ json_t* mcp_tool_whiteboard_vote(json_t* args, json_t* id);
 json_t* mcp_tool_whiteboard_design(json_t* args, json_t* id);
 json_t* mcp_tool_whiteboard_review(json_t* args, json_t* id);
 json_t* mcp_tool_whiteboard_reconsider(json_t* args, json_t* id);
+
+/* Daemon Tools (Phase 9) */
+json_t* mcp_tool_daemon_insights(json_t* args, json_t* id);
+json_t* mcp_tool_daemon_acknowledge(json_t* args, json_t* id);
+json_t* mcp_tool_daemon_run(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;

@@ -168,9 +168,9 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    /* 17 base tools + 7 Phase 6 tools + 3 Phase 7.1 lifecycle tools + 10 Phase 8 whiteboard tools = 37 */
-    if (tool_count != 37) {
-        printf("  ✗ Expected 37 tools, got %zu\n", tool_count);
+    /* 17 base + 7 Phase 6 + 3 Phase 7.1 + 10 Phase 8 + 3 Phase 9 daemon = 40 */
+    if (tool_count != 40) {
+        printf("  ✗ Expected 40 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }

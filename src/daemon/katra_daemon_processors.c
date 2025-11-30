@@ -17,8 +17,8 @@
 #include "katra_synthesis.h"
 #include "katra_core_common.h"
 
-/* External vector store */
-extern vector_store_t* g_vector_store;
+/* Get vector store from breathing layer */
+extern vector_store_t* breathing_get_vector_store(void);
 
 /* ============================================================================
  * PATTERN EXTRACTION
@@ -162,7 +162,8 @@ int katra_daemon_form_associations(const char* ci_id, size_t max_memories,
     *associations_formed = 0;
 
     /* Use vector store for semantic similarity if available */
-    if (!g_vector_store) {
+    vector_store_t* vector_store = breathing_get_vector_store();
+    if (!vector_store) {
         LOG_DEBUG("No vector store available for association formation");
         return KATRA_SUCCESS;
     }
@@ -187,7 +188,7 @@ int katra_daemon_form_associations(const char* ci_id, size_t max_memories,
         vector_match_t** matches = NULL;
         size_t match_count = 0;
 
-        int rc = katra_vector_search(g_vector_store, memories[i], 5, &matches, &match_count);
+        int rc = katra_vector_search(vector_store, memories[i], 5, &matches, &match_count);
         if (rc != KATRA_SUCCESS) continue;
 
         /* Count high-similarity matches (potential associations) */
