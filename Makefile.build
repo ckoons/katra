@@ -55,6 +55,11 @@ $(BUILD_DIR)/katra_identity.o: $(SRC_DIR)/core/katra_identity.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 
+# Exception: katra_sunrise_sunset_json.c uses jansson
+$(BUILD_DIR)/katra_sunrise_sunset_json.o: $(SRC_DIR)/core/katra_sunrise_sunset_json.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
 # Compile DB backend sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/db/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"

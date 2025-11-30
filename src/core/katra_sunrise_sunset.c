@@ -396,14 +396,17 @@ int katra_sundown(const char* ci_id,
     return katra_sundown_with_wm(ci_id, vectors, graph, NULL, context_out);
 }
 
-/* Enhanced sunrise with working memory restore (Phase 7.2) */
+/* Enhanced sunrise with working memory restore (Phase 7.2-7.6) */
 int katra_sunrise_with_wm(const char* ci_id,
                           vector_store_t* vectors,
                           graph_store_t* graph,
                           working_memory_t* wm,
                           sunrise_context_t** context_out) {
-    PSYCHE_CHECK_PARAMS_4(ci_id, vectors, graph, context_out);
-    /* Note: wm can be NULL */
+    /* Note: vectors and graph can be NULL - we use them if available */
+    (void)graph;  /* Reserved for future graph-based analysis */
+    if (!ci_id || !context_out) {
+        return E_INPUT_NULL;
+    }
 
     sunrise_context_t* context;
     ALLOC_OR_RETURN(context, sunrise_context_t);
@@ -411,15 +414,68 @@ int katra_sunrise_with_wm(const char* ci_id,
     SAFE_STRNCPY(context->ci_id, ci_id);
     context->timestamp = time(NULL);
 
-    /* Load yesterday's sundown if available */
-    /* For MVP, just create empty context */
-    context->yesterday = NULL;
+    /* Load yesterday's sundown if available (Phase 7.4) */
+    int load_result = katra_sundown_load_latest(ci_id, &context->yesterday);
+    if (load_result == KATRA_SUCCESS && context->yesterday) {
+        LOG_INFO("Loaded previous sundown context for %s", ci_id);
 
-    /* Set baseline mood to neutral */
-    context->baseline_mood.valence = 0.0f;
-    context->baseline_mood.arousal = 0.0f;
-    context->baseline_mood.dominance = 0.5f;
-    SAFE_STRNCPY(context->baseline_mood.emotion, EMOTION_NEUTRAL);
+        /* Use yesterday's dominant mood as baseline */
+        context->baseline_mood = context->yesterday->dominant_mood;
+    } else {
+        /* No previous sundown - set baseline mood to neutral */
+        context->yesterday = NULL;
+        context->baseline_mood.valence = 0.0f;
+        context->baseline_mood.arousal = 0.0f;
+        context->baseline_mood.dominance = 0.5f;
+        SAFE_STRNCPY(context->baseline_mood.emotion, EMOTION_NEUTRAL);
+    }
+
+    /* Find recurring themes across recent days (Phase 7.5) */
+    katra_find_recurring_themes(ci_id, 7,
+                               &context->recurring_themes,
+                               &context->theme_count);
+    if (context->theme_count > 0) {
+        LOG_INFO("Found %zu recurring themes for %s", context->theme_count, ci_id);
+    }
+
+    /* Build familiar topics using vector similarity (Phase 7.6) */
+    katra_build_familiar_topics(ci_id, vectors, 7,
+                               &context->familiar_topics,
+                               &context->familiar_count);
+    if (context->familiar_count > 0) {
+        LOG_INFO("Built %zu familiar topics for %s", context->familiar_count, ci_id);
+    }
+
+    /* Carry forward open questions and intentions from yesterday */
+    if (context->yesterday) {
+        /* Carry forward unresolved questions */
+        if (context->yesterday->question_count > 0 && context->yesterday->open_questions) {
+            context->pending_questions = calloc(context->yesterday->question_count, sizeof(char*));
+            if (context->pending_questions) {
+                for (size_t i = 0; i < context->yesterday->question_count; i++) {
+                    if (context->yesterday->open_questions[i]) {
+                        context->pending_questions[i] =
+                            katra_safe_strdup(context->yesterday->open_questions[i]);
+                    }
+                }
+                context->pending_count = context->yesterday->question_count;
+            }
+        }
+
+        /* Carry forward intentions as items to continue */
+        if (context->yesterday->intention_count > 0 && context->yesterday->intentions) {
+            context->carry_forward = calloc(context->yesterday->intention_count, sizeof(char*));
+            if (context->carry_forward) {
+                for (size_t i = 0; i < context->yesterday->intention_count; i++) {
+                    if (context->yesterday->intentions[i]) {
+                        context->carry_forward[i] =
+                            katra_safe_strdup(context->yesterday->intentions[i]);
+                    }
+                }
+                context->carry_count = context->yesterday->intention_count;
+            }
+        }
+    }
 
     /* Restore working memory from previous session (Phase 7.2)
      * If we have a previous sundown context with working memory, restore it */
@@ -438,7 +494,8 @@ int katra_sunrise_with_wm(const char* ci_id,
 
     *context_out = context;
 
-    LOG_INFO("Sunrise complete for %s", ci_id);
+    LOG_INFO("Sunrise complete for %s (themes: %zu, familiar: %zu)",
+             ci_id, context->theme_count, context->familiar_count);
     return KATRA_SUCCESS;
 }
 

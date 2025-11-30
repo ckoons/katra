@@ -261,4 +261,89 @@ int katra_wm_restore(working_memory_t* wm, const wm_state_snapshot_t* snapshot);
 /* Free working memory snapshot */
 void katra_wm_snapshot_free(wm_state_snapshot_t* snapshot);
 
+/* ============================================================================
+ * SUNRISE/SUNSET PERSISTENCE (Phase 7.3-7.4)
+ * ============================================================================ */
+
+/* Save sundown context to disk (Phase 7.3)
+ *
+ * Persists the sundown context as JSON for later retrieval during sunrise.
+ * File is stored at: ~/.katra/{ci_id}/sundown_{date}.json
+ *
+ * Parameters:
+ *   context - Sundown context to save
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   Error code on failure
+ */
+int katra_sundown_save(const sundown_context_t* context);
+
+/* Load most recent sundown context (Phase 7.4)
+ *
+ * Loads the most recent sundown context for a CI.
+ * Used by sunrise to restore previous day's state.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   context_out - Output: loaded context (caller must free)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_FILE_NOT_FOUND if no previous sundown exists
+ *   Error code on other failures
+ */
+int katra_sundown_load_latest(const char* ci_id, sundown_context_t** context_out);
+
+/* Load sundown context for specific date
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   date - Date to load (YYYYMMDD format)
+ *   context_out - Output: loaded context (caller must free)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_FILE_NOT_FOUND if sundown doesn't exist for that date
+ */
+int katra_sundown_load_date(const char* ci_id, const char* date, sundown_context_t** context_out);
+
+/* Find recurring themes across multiple sundown contexts (Phase 7.5)
+ *
+ * Analyzes topic clusters from multiple days to identify recurring themes.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   days_back - Number of days to analyze
+ *   themes_out - Output: array of theme strings (caller must free)
+ *   count_out - Output: number of themes found
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ */
+int katra_find_recurring_themes(const char* ci_id,
+                                int days_back,
+                                char*** themes_out,
+                                size_t* count_out);
+
+/* Build familiar topics from vector similarity (Phase 7.6)
+ *
+ * Uses vector DB to find topics that appear frequently across recent days.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   vectors - Vector store for similarity search
+ *   days_back - Number of days to analyze
+ *   topics_out - Output: array of familiar topic strings
+ *   count_out - Output: number of topics found
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ */
+int katra_build_familiar_topics(const char* ci_id,
+                                vector_store_t* vectors,
+                                int days_back,
+                                char*** topics_out,
+                                size_t* count_out);
+
 #endif /* KATRA_SUNRISE_SUNSET_H */

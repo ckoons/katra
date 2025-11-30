@@ -265,184 +265,184 @@ test-phase7: $(TEST_PHASE7)
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_CONFIG): $(TEST_DIR)/unit/test_config.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_ERROR): $(TEST_DIR)/unit/test_error.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_LOG): $(TEST_DIR)/unit/test_log.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_INIT): $(TEST_DIR)/unit/test_init.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_MEMORY): $(TEST_DIR)/unit/test_memory.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_TIER1): $(TEST_DIR)/unit/test_tier1.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_TIER2): $(TEST_DIR)/unit/test_tier2.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_TIER2_INDEX): $(TEST_DIR)/unit/test_tier2_index.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_CHECKPOINT): $(TEST_DIR)/unit/test_checkpoint.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_CONTINUITY): $(TEST_DIR)/unit/test_continuity.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_VECTOR): $(TEST_DIR)/unit/test_vector.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_VECTOR_PERSIST): $(TEST_DIR)/test_vector_persist.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_VECTOR_TFIDF): $(TEST_DIR)/test_vector_tfidf.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_VECTOR_EXTERNAL): $(TEST_DIR)/test_vector_external.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_VECTOR_HNSW): $(TEST_DIR)/test_vector_hnsw.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_GRAPH): $(TEST_DIR)/unit/test_graph.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_GRAPH_AUTO_EDGES): $(TEST_DIR)/test_graph_auto_edges.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_EMOTIONAL_TAGGING): $(TEST_DIR)/test_emotional_tagging.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_SUNRISE_SUNSET): $(TEST_DIR)/unit/test_sunrise_sunset.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_CONSENT): $(TEST_DIR)/ethical/test_consent_enforcement.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_CORRUPTION): $(TEST_DIR)/failure/test_corruption_recovery.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_LIFECYCLE): $(TEST_DIR)/integration/test_memory_lifecycle.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_MOCK_CI): $(TEST_DIR)/integration/test_mock_ci.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_BREATHING_PHASE2): $(TEST_DIR)/test_breathing_phase2.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_BREATHING_PRIMITIVES): $(TEST_DIR)/test_breathing_primitives.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_BREATHING_ENHANCEMENTS): $(TEST_DIR)/test_breathing_enhancements.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_SESSION_INFO): $(TEST_DIR)/test_session_info.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_CONTEXT_PERSIST): $(TEST_DIR)/test_context_persist.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) $(TEST_LDFLAGS)
 
 $(TEST_TCP_SERVER): $(TEST_DIR)/test_tcp_server.c $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) $(TEST_LDFLAGS)
 
 $(TEST_TURN_TRACKING): $(TEST_DIR)/test_turn_tracking.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_REFLECTION_INTEGRATION): $(TEST_DIR)/test_reflection_integration.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_TEAM_MANAGEMENT): $(TEST_DIR)/test_team_management.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_ISOLATION_FILTERING): $(TEST_DIR)/test_isolation_filtering.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_SEMANTIC_RECALL): $(TEST_DIR)/test_semantic_recall.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 $(TEST_AUDIT): $(TEST_DIR)/test_audit.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_ACCESS_CONTROL): $(TEST_DIR)/test_access_control.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_PERSONA_PATHS): $(TEST_DIR)/unit/test_persona_paths.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_UNIVERSAL_ENCODER): $(TEST_DIR)/test_universal_encoder.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_SYNTHESIS): $(TEST_DIR)/test_synthesis.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(TEST_PHASE7): $(TEST_DIR)/test_phase7.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 # Benchmark executables
 $(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_UTILS) | $(BIN_DIR)
 	@echo "Building benchmark: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(BENCHMARK_REFLECTION): $(TEST_DIR)/benchmark_reflection.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building benchmark: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
 $(BENCHMARK_VECTOR): $(TEST_DIR)/benchmark_vector.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building benchmark: $@"
-	@$(CC) $(CFLAGS_DEBUG) -o $@ $< -L$(BUILD_DIR) -lkatra_utils -lsqlite3 -lpthread -lcurl -lm -lcurl
+	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
 
 # Benchmark targets
 benchmark: $(BENCHMARK_TIER2_QUERY)
@@ -463,6 +463,6 @@ benchmark-vector: $(BENCHMARK_VECTOR)
 test-memory-digest: $(LIBKATRA_UTILS)
 	@echo "Building test: bin/tests/test_memory_digest"
 	@$(MKDIR_P) bin/tests
-	@$(CC) $(CFLAGS_DEBUG) -o bin/tests/test_memory_digest tests/unit/test_memory_digest.c $(LIBKATRA_UTILS) $(LIBS) -lsqlite3
+	@$(CC) $(CFLAGS_DEBUG) -o bin/tests/test_memory_digest tests/unit/test_memory_digest.c $(TEST_LDFLAGS)
 	@echo "Running memory digest tests..."
 	@bin/tests/test_memory_digest
