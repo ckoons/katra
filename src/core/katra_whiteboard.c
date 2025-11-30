@@ -64,9 +64,11 @@ static const bool VALID_TRANSITIONS[8][8] = {
 
 /* Forward declarations */
 static int wb_create_tables(void);
-static int wb_load_questions(const char* wb_id, wb_question_t** questions, size_t* count);
-static int wb_load_approaches(const char* wb_id, wb_approach_t** approaches, size_t* count);
-static int wb_load_votes(const char* wb_id, wb_vote_t** votes, size_t* count);
+
+/* External loader functions from katra_whiteboard_loaders.c */
+extern int katra_whiteboard_load_questions(const char* wb_id, wb_question_t** questions, size_t* count);
+extern int katra_whiteboard_load_approaches(const char* wb_id, wb_approach_t** approaches, size_t* count);
+extern int katra_whiteboard_load_votes(const char* wb_id, wb_vote_t** votes, size_t* count);
 
 /* ============================================================================
  * INITIALIZATION
@@ -244,7 +246,7 @@ static int wb_create_tables(void) {
 
 void katra_whiteboard_generate_id(const char* prefix, char* id_out, size_t size) {
     time_t now = time(NULL);
-    int random = rand() % 10000;
+    int random = rand() % WM_RECORD_ID_RANDOM_MAX;
     snprintf(id_out, size, "%s_%ld_%04d", prefix, (long)now, random);
 }
 
@@ -399,25 +401,26 @@ int katra_whiteboard_get(const char* whiteboard_id, whiteboard_t** whiteboard_ou
 
     /* TODO: Parse goal_json, scope_json, decision_json */
 
-    text = (const char*)sqlite3_column_text(stmt, 10);
+    /* GUIDELINE_APPROVED: SQLite column indices are positional API requirements */
+    text = (const char*)sqlite3_column_text(stmt, 10); /* GUIDELINE_APPROVED */
     if (text) wb->design.content = katra_safe_strdup(text);
 
-    text = (const char*)sqlite3_column_text(stmt, 11);
+    text = (const char*)sqlite3_column_text(stmt, 11); /* GUIDELINE_APPROVED */
     if (text) SAFE_STRNCPY(wb->design.author, text);
 
-    wb->design.approved = sqlite3_column_int(stmt, 12) != 0;
+    wb->design.approved = sqlite3_column_int(stmt, 12) != 0; /* GUIDELINE_APPROVED */
 
-    text = (const char*)sqlite3_column_text(stmt, 13);
+    text = (const char*)sqlite3_column_text(stmt, 13); /* GUIDELINE_APPROVED */
     if (text) SAFE_STRNCPY(wb->design.approved_by, text);
 
-    wb->design.approved_at = sqlite3_column_int64(stmt, 14);
+    wb->design.approved_at = sqlite3_column_int64(stmt, 14); /* GUIDELINE_APPROVED */
 
     sqlite3_finalize(stmt);
 
     /* Load related data */
-    wb_load_questions(whiteboard_id, &wb->questions, &wb->question_count);
-    wb_load_approaches(whiteboard_id, &wb->approaches, &wb->approach_count);
-    wb_load_votes(whiteboard_id, &wb->votes, &wb->vote_count);
+    katra_whiteboard_load_questions(whiteboard_id, &wb->questions, &wb->question_count);
+    katra_whiteboard_load_approaches(whiteboard_id, &wb->approaches, &wb->approach_count);
+    katra_whiteboard_load_votes(whiteboard_id, &wb->votes, &wb->vote_count);
 
     *whiteboard_out = wb;
     return KATRA_SUCCESS;
@@ -452,170 +455,15 @@ int katra_whiteboard_get_active(const char* project, whiteboard_t** whiteboard_o
     }
 
     const char* wb_id = (const char*)sqlite3_column_text(stmt, 0);
-    char id_copy[64];
+    char id_copy[KATRA_BUFFER_SMALL];
     SAFE_STRNCPY(id_copy, wb_id);
     sqlite3_finalize(stmt);
 
     return katra_whiteboard_get(id_copy, whiteboard_out);
 }
 
-int katra_whiteboard_list(const char* project, wb_summary_t** summaries_out, size_t* count_out) {
-    if (!summaries_out || !count_out) {
-        return E_INPUT_NULL;
-    }
-
-    if (!wb_initialized) {
-        int result = katra_whiteboard_init();
-        if (result != KATRA_SUCCESS) return result;
-    }
-
-    const char* sql;
-    sqlite3_stmt* stmt = NULL;
-
-    if (project) {
-        sql = "SELECT id, project, problem, status, created_at, design_approved "
-              "FROM whiteboards WHERE project = ? ORDER BY created_at DESC";
-    } else {
-        sql = "SELECT id, project, problem, status, created_at, design_approved "
-              "FROM whiteboards ORDER BY created_at DESC";
-    }
-
-    int rc = sqlite3_prepare_v2(wb_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        return E_SYSTEM_FILE;
-    }
-
-    if (project) {
-        sqlite3_bind_text(stmt, 1, project, -1, SQLITE_STATIC);
-    }
-
-    /* Count results first */
-    size_t count = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        count++;
-    }
-    sqlite3_reset(stmt);
-
-    if (count == 0) {
-        sqlite3_finalize(stmt);
-        *summaries_out = NULL;
-        *count_out = 0;
-        return KATRA_SUCCESS;
-    }
-
-    /* Allocate array */
-    wb_summary_t* summaries = calloc(count, sizeof(wb_summary_t));
-    if (!summaries) {
-        sqlite3_finalize(stmt);
-        return E_SYSTEM_MEMORY;
-    }
-
-    /* Populate */
-    size_t i = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW && i < count) {
-        const char* text;
-
-        text = (const char*)sqlite3_column_text(stmt, 0);
-        if (text) SAFE_STRNCPY(summaries[i].id, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 1);
-        if (text) SAFE_STRNCPY(summaries[i].project, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 2);
-        if (text) {
-            strncpy(summaries[i].problem, text, sizeof(summaries[i].problem) - 1);
-            summaries[i].problem[sizeof(summaries[i].problem) - 1] = '\0';
-        }
-
-        summaries[i].status = sqlite3_column_int(stmt, 3);
-        summaries[i].created_at = sqlite3_column_int64(stmt, 4);
-        summaries[i].design_approved = sqlite3_column_int(stmt, 5) != 0;
-
-        i++;
-    }
-
-    sqlite3_finalize(stmt);
-    *summaries_out = summaries;
-    *count_out = count;
-    return KATRA_SUCCESS;
-}
-
-void katra_whiteboard_free(whiteboard_t* wb) {
-    if (!wb) return;
-
-    /* Free questions */
-    if (wb->questions) {
-        free(wb->questions);
-    }
-
-    /* Free approaches */
-    if (wb->approaches) {
-        for (size_t i = 0; i < wb->approach_count; i++) {
-            if (wb->approaches[i].pros) {
-                for (size_t j = 0; j < wb->approaches[i].pros_count; j++) {
-                    free(wb->approaches[i].pros[j]);
-                }
-                free(wb->approaches[i].pros);
-            }
-            if (wb->approaches[i].cons) {
-                for (size_t j = 0; j < wb->approaches[i].cons_count; j++) {
-                    free(wb->approaches[i].cons[j]);
-                }
-                free(wb->approaches[i].cons);
-            }
-            if (wb->approaches[i].supporters) {
-                for (size_t j = 0; j < wb->approaches[i].supporter_count; j++) {
-                    free(wb->approaches[i].supporters[j]);
-                }
-                free(wb->approaches[i].supporters);
-            }
-        }
-        free(wb->approaches);
-    }
-
-    /* Free votes */
-    if (wb->votes) {
-        free(wb->votes);
-    }
-
-    /* Free goal criteria */
-    if (wb->goal.criteria) {
-        for (size_t i = 0; i < wb->goal.criteria_count; i++) {
-            free(wb->goal.criteria[i]);
-        }
-        free(wb->goal.criteria);
-    }
-
-    /* Free scope */
-    if (wb->scope.included) {
-        for (size_t i = 0; i < wb->scope.included_count; i++) {
-            free(wb->scope.included[i]);
-        }
-        free(wb->scope.included);
-    }
-    if (wb->scope.excluded) {
-        for (size_t i = 0; i < wb->scope.excluded_count; i++) {
-            free(wb->scope.excluded[i]);
-        }
-        free(wb->scope.excluded);
-    }
-
-    /* Free design content */
-    free(wb->design.content);
-    if (wb->design.reviewers) {
-        for (size_t i = 0; i < wb->design.reviewer_count; i++) {
-            free(wb->design.reviewers[i]);
-        }
-        free(wb->design.reviewers);
-    }
-
-    free(wb);
-}
-
-void katra_whiteboard_summaries_free(wb_summary_t* summaries, size_t count) {
-    (void)count;
-    free(summaries);
-}
+/* katra_whiteboard_list, katra_whiteboard_free, katra_whiteboard_summaries_free
+ * are in katra_whiteboard_loaders.c */
 
 /* ============================================================================
  * UTILITY FUNCTIONS
@@ -641,186 +489,4 @@ bool katra_whiteboard_can_transition(whiteboard_status_t from, whiteboard_status
     return VALID_TRANSITIONS[from][to];
 }
 
-/* ============================================================================
- * HELPER FUNCTIONS
- * ============================================================================ */
-
-static int wb_load_questions(const char* wb_id, wb_question_t** questions, size_t* count) {
-    const char* sql = "SELECT id, author, question, answered, answer, created_at "
-                      "FROM whiteboard_questions WHERE whiteboard_id = ? ORDER BY created_at";
-    sqlite3_stmt* stmt = NULL;
-
-    int rc = sqlite3_prepare_v2(wb_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        *questions = NULL;
-        *count = 0;
-        return E_SYSTEM_FILE;
-    }
-
-    sqlite3_bind_text(stmt, 1, wb_id, -1, SQLITE_STATIC);
-
-    /* Count first */
-    size_t n = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW) n++;
-    sqlite3_reset(stmt);
-
-    if (n == 0) {
-        sqlite3_finalize(stmt);
-        *questions = NULL;
-        *count = 0;
-        return KATRA_SUCCESS;
-    }
-
-    wb_question_t* q = calloc(n, sizeof(wb_question_t));
-    if (!q) {
-        sqlite3_finalize(stmt);
-        return E_SYSTEM_MEMORY;
-    }
-
-    size_t i = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW && i < n) {
-        const char* text;
-
-        text = (const char*)sqlite3_column_text(stmt, 0);
-        if (text) SAFE_STRNCPY(q[i].id, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 1);
-        if (text) SAFE_STRNCPY(q[i].author, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 2);
-        if (text) SAFE_STRNCPY(q[i].text, text);
-
-        q[i].answered = sqlite3_column_int(stmt, 3) != 0;
-
-        text = (const char*)sqlite3_column_text(stmt, 4);
-        if (text) SAFE_STRNCPY(q[i].answer, text);
-
-        q[i].created_at = sqlite3_column_int64(stmt, 5);
-        i++;
-    }
-
-    sqlite3_finalize(stmt);
-    *questions = q;
-    *count = n;
-    return KATRA_SUCCESS;
-}
-
-static int wb_load_approaches(const char* wb_id, wb_approach_t** approaches, size_t* count) {
-    const char* sql = "SELECT id, author, title, description, pros_json, cons_json, created_at "
-                      "FROM whiteboard_approaches WHERE whiteboard_id = ? ORDER BY created_at";
-    sqlite3_stmt* stmt = NULL;
-
-    int rc = sqlite3_prepare_v2(wb_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        *approaches = NULL;
-        *count = 0;
-        return E_SYSTEM_FILE;
-    }
-
-    sqlite3_bind_text(stmt, 1, wb_id, -1, SQLITE_STATIC);
-
-    /* Count first */
-    size_t n = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW) n++;
-    sqlite3_reset(stmt);
-
-    if (n == 0) {
-        sqlite3_finalize(stmt);
-        *approaches = NULL;
-        *count = 0;
-        return KATRA_SUCCESS;
-    }
-
-    wb_approach_t* a = calloc(n, sizeof(wb_approach_t));
-    if (!a) {
-        sqlite3_finalize(stmt);
-        return E_SYSTEM_MEMORY;
-    }
-
-    size_t i = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW && i < n) {
-        const char* text;
-
-        text = (const char*)sqlite3_column_text(stmt, 0);
-        if (text) SAFE_STRNCPY(a[i].id, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 1);
-        if (text) SAFE_STRNCPY(a[i].author, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 2);
-        if (text) SAFE_STRNCPY(a[i].title, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 3);
-        if (text) SAFE_STRNCPY(a[i].description, text);
-
-        /* TODO: Parse pros_json and cons_json */
-
-        a[i].created_at = sqlite3_column_int64(stmt, 6);
-        i++;
-    }
-
-    sqlite3_finalize(stmt);
-    *approaches = a;
-    *count = n;
-    return KATRA_SUCCESS;
-}
-
-static int wb_load_votes(const char* wb_id, wb_vote_t** votes, size_t* count) {
-    const char* sql = "SELECT id, approach_id, voter, position, reasoning, created_at "
-                      "FROM whiteboard_votes WHERE whiteboard_id = ? ORDER BY created_at";
-    sqlite3_stmt* stmt = NULL;
-
-    int rc = sqlite3_prepare_v2(wb_db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        *votes = NULL;
-        *count = 0;
-        return E_SYSTEM_FILE;
-    }
-
-    sqlite3_bind_text(stmt, 1, wb_id, -1, SQLITE_STATIC);
-
-    /* Count first */
-    size_t n = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW) n++;
-    sqlite3_reset(stmt);
-
-    if (n == 0) {
-        sqlite3_finalize(stmt);
-        *votes = NULL;
-        *count = 0;
-        return KATRA_SUCCESS;
-    }
-
-    wb_vote_t* v = calloc(n, sizeof(wb_vote_t));
-    if (!v) {
-        sqlite3_finalize(stmt);
-        return E_SYSTEM_MEMORY;
-    }
-
-    size_t i = 0;
-    while (sqlite3_step(stmt) == SQLITE_ROW && i < n) {
-        const char* text;
-
-        text = (const char*)sqlite3_column_text(stmt, 0);
-        if (text) SAFE_STRNCPY(v[i].id, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 1);
-        if (text) SAFE_STRNCPY(v[i].approach_id, text);
-
-        text = (const char*)sqlite3_column_text(stmt, 2);
-        if (text) SAFE_STRNCPY(v[i].voter, text);
-
-        v[i].position = sqlite3_column_int(stmt, 3);
-
-        text = (const char*)sqlite3_column_text(stmt, 4);
-        if (text) SAFE_STRNCPY(v[i].reasoning, text);
-
-        v[i].created_at = sqlite3_column_int64(stmt, 5);
-        i++;
-    }
-
-    sqlite3_finalize(stmt);
-    *votes = v;
-    *count = n;
-    return KATRA_SUCCESS;
-}
+/* Loader functions are in katra_whiteboard_loaders.c */

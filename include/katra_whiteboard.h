@@ -57,6 +57,7 @@ typedef enum {
 #define WB_MAX_SCOPE_ITEMS 20
 #define WB_MAX_PROS_CONS 10
 #define WB_MAX_REVIEWERS 10
+#define WB_ID_SIZE 64
 
 /* Question structure */
 typedef struct {

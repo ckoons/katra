@@ -51,14 +51,14 @@ json_t* mcp_tool_daemon_insights(json_t* args, json_t* id) {
         offset += snprintf(response + offset, sizeof(response) - offset,
             "=== Pending Insights (%zu) ===\n\n", count);
 
-        for (size_t i = 0; i < count && offset < sizeof(response) - 200; i++) {
+        for (size_t i = 0; i < count && offset < sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_LARGE; i++) {
             const char* type_name = katra_insight_type_name(insights[i].type);
             offset += snprintf(response + offset, sizeof(response) - offset,
                 "[%s] %s\n"
                 "  ID: %s\n"
                 "  Confidence: %.0f%%\n\n",
                 type_name, insights[i].content,
-                insights[i].id, insights[i].confidence * 100);
+                insights[i].id, insights[i].confidence * PERCENTAGE_MULTIPLIER);
         }
 
         offset += snprintf(response + offset, sizeof(response) - offset,
@@ -95,7 +95,7 @@ json_t* mcp_tool_daemon_acknowledge(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, katra_error_message(result));
     }
 
-    char response[256];
+    char response[KATRA_BUFFER_MEDIUM];
     snprintf(response, sizeof(response),
         "Insight acknowledged: %s\n"
         "This insight won't appear in future katra_daemon_insights calls.",

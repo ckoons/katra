@@ -48,7 +48,7 @@ static void format_whiteboard_status(char* buffer, size_t size, const whiteboard
     /* Show questions */
     if (wb->question_count > 0) {
         offset += snprintf(buffer + offset, size - offset, "Questions (%zu):\n", wb->question_count);
-        for (size_t i = 0; i < wb->question_count && offset < size - 100; i++) {
+        for (size_t i = 0; i < wb->question_count && offset < size - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL; i++) {
             offset += snprintf(buffer + offset, size - offset, "  %zu. [%s] %s\n",
                 i + 1, wb->questions[i].answered ? "A" : "?", wb->questions[i].text);
         }
@@ -58,7 +58,7 @@ static void format_whiteboard_status(char* buffer, size_t size, const whiteboard
     /* Show approaches */
     if (wb->approach_count > 0) {
         offset += snprintf(buffer + offset, size - offset, "Approaches (%zu):\n", wb->approach_count);
-        for (size_t i = 0; i < wb->approach_count && offset < size - 100; i++) {
+        for (size_t i = 0; i < wb->approach_count && offset < size - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL; i++) {
             offset += snprintf(buffer + offset, size - offset, "  %zu. %s by %s\n",
                 i + 1, wb->approaches[i].title, wb->approaches[i].author);
         }
@@ -68,7 +68,7 @@ static void format_whiteboard_status(char* buffer, size_t size, const whiteboard
     /* Show votes */
     if (wb->vote_count > 0) {
         offset += snprintf(buffer + offset, size - offset, "Votes (%zu):\n", wb->vote_count);
-        for (size_t i = 0; i < wb->vote_count && offset < size - 100; i++) {
+        for (size_t i = 0; i < wb->vote_count && offset < size - RESPONSE_BUFFER_SAFETY_MARGIN_SMALL; i++) {
             offset += snprintf(buffer + offset, size - offset, "  %s: %s (%s)\n",
                 wb->votes[i].voter, katra_vote_position_name(wb->votes[i].position),
                 wb->votes[i].approach_id);
@@ -206,7 +206,7 @@ json_t* mcp_tool_whiteboard_list(json_t* args, json_t* id) {
     offset += snprintf(response + offset, sizeof(response) - offset,
         "Whiteboards (%zu):\n\n", count);
 
-    for (size_t i = 0; i < count && offset < sizeof(response) - 200; i++) {
+    for (size_t i = 0; i < count && offset < sizeof(response) - RESPONSE_BUFFER_SAFETY_MARGIN_LARGE; i++) {
         offset += snprintf(response + offset, sizeof(response) - offset,
             "%zu. [%s] %s\n   Problem: %s\n   Questions: %zu, Approaches: %zu\n\n",
             i + 1, katra_whiteboard_status_name(summaries[i].status),
@@ -301,7 +301,7 @@ json_t* mcp_tool_whiteboard_propose(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    char approach_id[64];
+    char approach_id[KATRA_BUFFER_SMALL];
     int result = katra_whiteboard_propose(wb_id, g_ci_id, title, description,
                                           pros, pros_count, cons, cons_count, approach_id);
 

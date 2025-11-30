@@ -342,7 +342,7 @@ void katra_tier1_detect_patterns(memory_record_t** records, size_t count) {
         }
 
         /* Find similar memories */
-        size_t pattern_members[TIER1_MAX_PATTERN_MEMBERS];  /* Simplified: max 256 pattern members */
+        size_t pattern_members[TIER1_MAX_PATTERN_MEMBERS];  /* GUIDELINE_APPROVED: Simplified: max 256 pattern members */
         size_t member_count = 0;
         pattern_members[member_count++] = i;
 

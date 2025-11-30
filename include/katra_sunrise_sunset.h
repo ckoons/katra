@@ -22,6 +22,9 @@
 #define SUNRISE_EMOTIONAL_ARC_SAMPLES 10       /* Samples for emotional arc */
 #define SUNRISE_MAX_RECORDS_TO_PROCESS 100     /* Max records to cluster */
 #define SUNRISE_GRAPH_TRAVERSAL_DEPTH 10       /* Max depth for graph traversal */
+#define SUNRISE_RAND_MODULO 10000              /* Random ID modulo */
+#define SUNRISE_DEFAULT_IMPORTANCE 0.5f        /* Default memory importance */
+#define SUNRISE_DEFAULT_CONFIDENCE 0.8f        /* Default memory confidence */
 
 /* Working memory snapshot for sunset/sunrise (Phase 7.2)
  *

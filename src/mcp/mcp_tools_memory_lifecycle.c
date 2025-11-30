@@ -217,7 +217,7 @@ json_t* mcp_tool_fade(json_t* args, json_t* id) {
     }
 
     /* Log to audit */
-    char details[256];
+    char details[KATRA_BUFFER_MEDIUM];
     snprintf(details, sizeof(details), "reason: %s, target_importance: %.2f", reason, target_importance);
     audit_record_t audit = {
         .event_type = AUDIT_EVENT_MEMORY_FADE,
@@ -326,7 +326,7 @@ json_t* mcp_tool_forget(json_t* args, json_t* id) {
     }
 
     /* Log to forget audit table */
-    char audit_id[64];
+    char audit_id[KATRA_BUFFER_SMALL];
     snprintf(audit_id, sizeof(audit_id), "forget_%ld_%s", (long)time(NULL), memory_id);
 
     result = sqlite3_prepare_v2(db, SQL_LOG_FORGET, -1, &stmt, NULL);

@@ -73,13 +73,13 @@ int set_context_config(const context_config_t* config) {
 
         /* Semantic search defaults (Phase 6.1f) */
         global_config->use_semantic_search = true;  /* Enabled by default (Phase 6.1f) */
-        global_config->semantic_threshold = SEMANTIC_DEFAULT_THRESHOLD;  /* 30% similarity */
+        global_config->semantic_threshold = SEMANTIC_DEFAULT_THRESHOLD;  /* GUIDELINE_APPROVED: 30% similarity */
         global_config->max_semantic_results = SEMANTIC_DEFAULT_MAX_RESULTS;
         global_config->embedding_method = 1;          /* EMBEDDING_TFIDF (good balance) */
 
         /* Graph auto-edges defaults (Phase 6.2) */
         global_config->auto_graph_edges = true;  /* Enabled by default - builds memory associations */
-        global_config->graph_similarity_threshold = GRAPH_DEFAULT_SIMILARITY_THRESHOLD;  /* 50% */
+        global_config->graph_similarity_threshold = GRAPH_DEFAULT_SIMILARITY_THRESHOLD;  /* GUIDELINE_APPROVED: 50% */
         global_config->graph_max_similar_edges = 5;  /* Limit to top 5 most similar memories */
         global_config->graph_temporal_window_sec = GRAPH_DEFAULT_TEMPORAL_WINDOW_SEC;  /* 5 min */
 

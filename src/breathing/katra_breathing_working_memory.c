@@ -71,7 +71,7 @@ int working_memory_get_stats(const char* ci_id, working_memory_stats_t* stats) {
     stats->batch_size = config->working_memory_batch_size;
     stats->enabled = config->working_memory_enabled;
     stats->utilization = (stats->soft_limit > 0)
-        ? (100.0f * count / stats->soft_limit)
+        ? (PERCENTAGE_MULTIPLIER * count / stats->soft_limit)
         : 0.0f;
 
     return KATRA_SUCCESS;
@@ -191,7 +191,7 @@ int working_memory_archive_oldest(const char* ci_id, size_t count_to_process,
 
     if (at_hard_limit) {
         /* Hard limit: Delete oldest memories entirely */
-        char delete_sql[512];
+        char delete_sql[KATRA_BUFFER_MESSAGE];
         snprintf(delete_sql, sizeof(delete_sql),
                 "DELETE FROM memories "
                 "WHERE record_id IN ("
@@ -224,7 +224,7 @@ int working_memory_archive_oldest(const char* ci_id, size_t count_to_process,
 
     } else {
         /* Soft limit: Convert to permanent (remove session scope) */
-        char archive_sql[512];
+        char archive_sql[KATRA_BUFFER_MESSAGE];
         snprintf(archive_sql, sizeof(archive_sql),
                 "UPDATE memories "
                 "SET session_scoped = 0 "

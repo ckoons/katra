@@ -353,6 +353,8 @@
 /* ===== Buffer Safety Margins ===== */
 
 /* Safety margins for response buffer overflow prevention */
+#define JSON_ARRAY_CLOSE_RESERVE 10               /* Reserve for closing JSON array brackets */
+#define JSON_ARRAY_ELEMENT_RESERVE 50             /* Reserve for JSON array element completion */
 #define RESPONSE_BUFFER_SAFETY_MARGIN_SMALL 100   /* Reserve 100 bytes for completion */
 #define RESPONSE_BUFFER_SAFETY_MARGIN_LARGE 200   /* Reserve 200 bytes for longer completions */
 #define RESPONSE_BUFFER_RESERVE 500               /* Reserve 500 bytes for MCP tool responses */

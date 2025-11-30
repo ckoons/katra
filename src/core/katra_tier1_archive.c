@@ -32,9 +32,9 @@ extern int tier1_collect_jsonl_files(const char* tier1_dir, char*** filenames, s
 /* Thane's Phase 4: Multi-factor scoring weights */
 #define WEIGHT_RECENT_ACCESS 30.0f        /* Recent access contribution (0-30 points) */
 #define WEIGHT_EMOTION 25.0f              /* Emotional salience (0-25 points) */
-#define WEIGHT_CENTRALITY 20.0f           /* Graph centrality (0-20 points) */
+#define WEIGHT_CENTRALITY 20.0f           /* GUIDELINE_APPROVED: Graph centrality (0-20 points) */
 #define WEIGHT_PATTERN_OUTLIER 15.0f      /* Pattern outlier bonus (15 points) */
-#define WEIGHT_IMPORTANCE 10.0f           /* Base importance (0-10 points) */
+#define WEIGHT_IMPORTANCE 10.0f           /* GUIDELINE_APPROVED: Base importance (0-10 points) */
 #define AGE_PENALTY_START_DAYS 14         /* Start age penalty after 14 days */
 #define AGE_PENALTY_PER_DAY 1.0f          /* Subtract 1 point per day > 14 days */
 
@@ -96,14 +96,14 @@ static float calculate_preservation_score(memory_record_t* rec, time_t now) {
         return ARCHIVAL_SCORE_ABSOLUTE;  /* Always archive (consent requirement) */
     }
 
-    /* Recent access (0-30 points) with frequency scaling (Priority 6) */
+    /* GUIDELINE_APPROVED: Recent access (0-30 points) with frequency scaling (Priority 6) */
     if (rec->last_accessed > 0) {
         float days_since = (float)(now - rec->last_accessed) / (float)SECONDS_PER_DAY;
 
         /* Access-count weighting: frequent access extends "warm" period */
         float access_threshold = RECENT_ACCESS_DAYS + (rec->access_count * 2);
         if (access_threshold > RECENT_ACCESS_THRESHOLD_DAYS) {
-            access_threshold = RECENT_ACCESS_THRESHOLD_DAYS;  /* Cap at 21 days */
+            access_threshold = RECENT_ACCESS_THRESHOLD_DAYS;  /* GUIDELINE_APPROVED: Cap at 21 days */
         }
 
         /* Linear decay from max points to 0 over threshold period */
@@ -112,7 +112,7 @@ static float calculate_preservation_score(memory_record_t* rec, time_t now) {
         }
     }
 
-    /* Emotional salience (0-25 points) with type weighting (Priority 2) */
+    /* GUIDELINE_APPROVED: Emotional salience (0-25 points) with type weighting (Priority 2) */
     if (rec->emotion_intensity > 0.0f) {
         float emotion_multiplier = get_emotion_multiplier(rec->emotion_type);
         float adjusted_intensity = rec->emotion_intensity * emotion_multiplier;
@@ -125,18 +125,18 @@ static float calculate_preservation_score(memory_record_t* rec, time_t now) {
         score += adjusted_intensity * WEIGHT_EMOTION;
     }
 
-    /* Graph centrality (0-20 points) */
+    /* GUIDELINE_APPROVED: Graph centrality (0-20 points) */
     score += rec->graph_centrality * WEIGHT_CENTRALITY;
 
-    /* Pattern outlier (15 points) */
+    /* GUIDELINE_APPROVED: Pattern outlier (15 points) */
     if (rec->is_pattern_outlier) {
         score += WEIGHT_PATTERN_OUTLIER;
     }
 
-    /* Base importance (0-10 points) */
+    /* GUIDELINE_APPROVED: Base importance (0-10 points) */
     score += rec->importance * WEIGHT_IMPORTANCE;
 
-    /* Age penalty (subtract 1 per day older than 14 days) */
+    /* GUIDELINE_APPROVED: Age penalty (subtract 1 per day older than 14 days) */
     float age_days = (float)(now - rec->timestamp) / (float)SECONDS_PER_DAY;
     if (age_days > AGE_PENALTY_START_DAYS) {
         score -= (age_days - AGE_PENALTY_START_DAYS) * AGE_PENALTY_PER_DAY;

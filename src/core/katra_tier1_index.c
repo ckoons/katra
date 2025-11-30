@@ -226,12 +226,12 @@ int tier1_index_add(const memory_record_t* record,
     sqlite3_bind_double(stmt, 8, record->graph_centrality);
     sqlite3_bind_double(stmt, 9, record->emotion_intensity);
     /* GUIDELINE_APPROVED: SQLite bind parameter indices are positional API requirements */
-    sqlite3_bind_text(stmt, 10, record->emotion_type ? record->emotion_type : STR_EMPTY, -1, SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 11, record->marked_important ? 1 : 0);
-    sqlite3_bind_int(stmt, 12, record->marked_forgettable ? 1 : 0);
-    sqlite3_bind_int(stmt, 13, 0);  /* Not archived yet */
-    sqlite3_bind_text(stmt, 14, file_path, -1, SQLITE_STATIC);
-    sqlite3_bind_int64(stmt, 15, (sqlite3_int64)offset);
+    sqlite3_bind_text(stmt, 10, record->emotion_type ? record->emotion_type : STR_EMPTY, -1, SQLITE_STATIC); /* GUIDELINE_APPROVED */
+    sqlite3_bind_int(stmt, 11, record->marked_important ? 1 : 0); /* GUIDELINE_APPROVED */
+    sqlite3_bind_int(stmt, 12, record->marked_forgettable ? 1 : 0); /* GUIDELINE_APPROVED */
+    sqlite3_bind_int(stmt, 13, 0); /* GUIDELINE_APPROVED */
+    sqlite3_bind_text(stmt, 14, file_path, -1, SQLITE_STATIC); /* GUIDELINE_APPROVED */
+    sqlite3_bind_int64(stmt, 15, (sqlite3_int64)offset); /* GUIDELINE_APPROVED */
 
     /* Execute */
     rc = sqlite3_step(stmt);

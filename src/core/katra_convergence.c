@@ -300,7 +300,7 @@ int katra_detect_convergence(convergence_detector_t* detector,
         size_t match_count = 0;
 
         ret = katra_vector_search(detector->vectors, candidate->content,
-                                 10, &matches, &match_count);
+                                 KATRA_INITIAL_CAPACITY_SMALL, &matches, &match_count);
 
         if (ret == KATRA_SUCCESS && match_count > 0) {
             /* Check for high similarity matches */
