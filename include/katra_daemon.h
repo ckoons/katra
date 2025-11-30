@@ -36,6 +36,27 @@
 #define DAEMON_PATTERN_MIN_OCCURRENCES 3
 #define DAEMON_ASSOCIATION_SIMILARITY_THRESHOLD 0.7
 
+/* Internal processing limits */
+#define DAEMON_MAX_WORD_FREQS 1000
+#define DAEMON_MAX_PATTERNS 10
+#define DAEMON_MAX_COMPARISONS 20
+#define DAEMON_THEME_WORD_FREQS 100
+#define DAEMON_CLUSTER_WORD_FREQS 50
+#define DAEMON_PENDING_INSIGHTS_LIMIT 10
+#define DAEMON_HISTORY_LIMIT 20
+#define DAEMON_ID_MODULO 10000
+
+/* Default quiet hours (22:00 - 06:00) */
+#define DAEMON_DEFAULT_QUIET_START 22
+#define DAEMON_DEFAULT_QUIET_END 6
+
+/* Buffer sizes for daemon internals */
+#define DAEMON_WORD_SIZE 64
+#define DAEMON_LINE_SIZE 256
+#define DAEMON_KEY_SIZE 64
+#define DAEMON_VALUE_SIZE 128
+#define DAEMON_RESPONSE_RESERVE 100
+
 /* Tags for transparency */
 #define DAEMON_TAG_INSIGHT "daemon-insight"
 #define DAEMON_TAG_PATTERN "daemon-pattern"

@@ -10,6 +10,10 @@
  * to ensure consistency and maintainability.
  */
 
+/* Stringify macro for embedding constants in strings */
+#define KATRA_STRINGIFY_HELPER(x) #x
+#define KATRA_STRINGIFY(x) KATRA_STRINGIFY_HELPER(x)
+
 /* ===== Buffer Sizes ===== */
 
 /* Small buffers for names, identifiers, and short strings */

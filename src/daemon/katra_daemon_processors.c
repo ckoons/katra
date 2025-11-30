@@ -26,7 +26,7 @@ extern vector_store_t* breathing_get_vector_store(void);
 
 /* Simple word frequency for pattern detection */
 typedef struct {
-    char word[64];
+    char word[DAEMON_WORD_SIZE];
     size_t count;
 } word_freq_t;
 
@@ -95,7 +95,7 @@ int katra_daemon_extract_patterns(const char* ci_id, size_t max_memories,
     }
 
     /* Build word frequency table */
-    word_freq_t* word_freqs = calloc(1000, sizeof(word_freq_t));
+    word_freq_t* word_freqs = calloc(DAEMON_MAX_WORD_FREQS, sizeof(word_freq_t));
     if (!word_freqs) {
         free_memory_list(memories, mem_count);
         return E_SYSTEM_MEMORY;
@@ -104,7 +104,7 @@ int katra_daemon_extract_patterns(const char* ci_id, size_t max_memories,
     size_t word_count = 0;
     for (size_t i = 0; i < mem_count; i++) {
         if (memories[i]) {
-            extract_words(memories[i], word_freqs, &word_count, 1000);
+            extract_words(memories[i], word_freqs, &word_count, DAEMON_MAX_WORD_FREQS);
         }
     }
 
@@ -112,7 +112,7 @@ int katra_daemon_extract_patterns(const char* ci_id, size_t max_memories,
     qsort(word_freqs, word_count, sizeof(word_freq_t), compare_word_freq);
 
     /* Find patterns (words appearing in multiple memories) */
-    size_t max_patterns = 10;
+    size_t max_patterns = DAEMON_MAX_PATTERNS;
     daemon_pattern_t* result = calloc(max_patterns, sizeof(daemon_pattern_t));
     if (!result) {
         free(word_freqs);
@@ -181,7 +181,7 @@ int katra_daemon_form_associations(const char* ci_id, size_t max_memories,
     size_t formed = 0;
 
     /* Compare each pair of memories for similarity */
-    for (size_t i = 0; i < mem_count && i < 20; i++) {  /* Limit comparisons */
+    for (size_t i = 0; i < mem_count && i < DAEMON_MAX_COMPARISONS; i++) {
         if (!memories[i]) continue;
 
         /* Search for similar memories */
@@ -218,12 +218,12 @@ int katra_daemon_form_associations(const char* ci_id, size_t max_memories,
 static float word_overlap(const char* a, const char* b) {
     if (!a || !b) return 0.0f;
 
-    word_freq_t freqs_a[100];
-    word_freq_t freqs_b[100];
+    word_freq_t freqs_a[DAEMON_THEME_WORD_FREQS];
+    word_freq_t freqs_b[DAEMON_THEME_WORD_FREQS];
     size_t count_a = 0, count_b = 0;
 
-    extract_words(a, freqs_a, &count_a, 100);
-    extract_words(b, freqs_b, &count_b, 100);
+    extract_words(a, freqs_a, &count_a, DAEMON_THEME_WORD_FREQS);
+    extract_words(b, freqs_b, &count_b, DAEMON_THEME_WORD_FREQS);
 
     if (count_a == 0 || count_b == 0) return 0.0f;
 
@@ -297,9 +297,9 @@ int katra_daemon_detect_themes(const char* ci_id, size_t max_memories,
             assigned[i] = true;
 
             /* Extract dominant word for theme name */
-            word_freq_t freqs[50];
+            word_freq_t freqs[DAEMON_CLUSTER_WORD_FREQS];
             size_t freq_count = 0;
-            extract_words(memories[i], freqs, &freq_count, 50);
+            extract_words(memories[i], freqs, &freq_count, DAEMON_CLUSTER_WORD_FREQS);
 
             if (freq_count > 0) {
                 qsort(freqs, freq_count, sizeof(word_freq_t), compare_word_freq);
