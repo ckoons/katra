@@ -290,6 +290,47 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_FORGET, MCP_DESC_FORGET,
             mcp_build_forget_schema()));
 
+    /* Whiteboard Tools (Phase 8) */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_CREATE, MCP_DESC_WB_CREATE,
+            mcp_build_tool_schema_2params("project", "Project name", "problem", "Problem statement")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_STATUS, MCP_DESC_WB_STATUS,
+            mcp_build_tool_schema_1param("whiteboard_id", "Whiteboard ID or project name")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_LIST, MCP_DESC_WB_LIST,
+            mcp_build_schema_optional_string("project", "Optional project filter")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_QUESTION, MCP_DESC_WB_QUESTION,
+            mcp_build_tool_schema_2params("whiteboard_id", "Whiteboard ID", "question", "Question text")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_PROPOSE, MCP_DESC_WB_PROPOSE,
+            mcp_build_tool_schema_2params("whiteboard_id", "Whiteboard ID", "title", "Approach title")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_SUPPORT, MCP_DESC_WB_SUPPORT,
+            mcp_build_tool_schema_2params("whiteboard_id", "Whiteboard ID", "approach_id", "Approach ID")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_VOTE, MCP_DESC_WB_VOTE,
+            mcp_build_tool_schema_2params("whiteboard_id", "Whiteboard ID", "approach_id", "Approach ID")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_DESIGN, MCP_DESC_WB_DESIGN,
+            mcp_build_tool_schema_2params("whiteboard_id", "Whiteboard ID", "content", "Design content")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_REVIEW, MCP_DESC_WB_REVIEW,
+            mcp_build_tool_schema_2params("whiteboard_id", "Whiteboard ID", "comment", "Review comment")));
+
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_WB_RECONSIDER, MCP_DESC_WB_RECONSIDER,
+            mcp_build_tool_schema_2params("whiteboard_id", "Whiteboard ID", "reason", "Reason")));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);
@@ -444,6 +485,27 @@ static json_t* handle_tools_call(json_t* request) {
         tool_result = mcp_tool_fade(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_FORGET) == 0) {
         tool_result = mcp_tool_forget(args, id);
+    /* Whiteboard Tools (Phase 8) */
+    } else if (strcmp(tool_name, MCP_TOOL_WB_CREATE) == 0) {
+        tool_result = mcp_tool_whiteboard_create(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_STATUS) == 0) {
+        tool_result = mcp_tool_whiteboard_status(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_LIST) == 0) {
+        tool_result = mcp_tool_whiteboard_list(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_QUESTION) == 0) {
+        tool_result = mcp_tool_whiteboard_question(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_PROPOSE) == 0) {
+        tool_result = mcp_tool_whiteboard_propose(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_SUPPORT) == 0) {
+        tool_result = mcp_tool_whiteboard_support(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_VOTE) == 0) {
+        tool_result = mcp_tool_whiteboard_vote(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_DESIGN) == 0) {
+        tool_result = mcp_tool_whiteboard_design(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_REVIEW) == 0) {
+        tool_result = mcp_tool_whiteboard_review(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_WB_RECONSIDER) == 0) {
+        tool_result = mcp_tool_whiteboard_reconsider(args, id);
     } else {
         katra_hook_turn_end();  /* Trigger turn end hook before error return */
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);

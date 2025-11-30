@@ -28,7 +28,7 @@ $(BIN_DIR)/tests:
 
 # Build utils library
 # Note: Delete library first to ensure deterministic rebuild
-$(LIBKATRA_UTILS): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(HOOKS_OBJS) $(NOUS_OBJS)
+$(LIBKATRA_UTILS): $(FOUNDATION_OBJS) $(CORE_OBJS) $(DB_OBJS) $(ENGRAM_OBJS) $(BREATHING_OBJS) $(CHAT_OBJS) $(LIFECYCLE_OBJS) $(HOOKS_OBJS) $(NOUS_OBJS) $(DAEMON_OBJS)
 	@echo "Creating utils library: $@"
 	@rm -f $@
 	@ar rcs $@ $^
@@ -97,6 +97,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/hooks/%.c | $(BUILD_DIR)
 
 # Compile Phase 5 sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/nous/%.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Compile daemon sources
+$(BUILD_DIR)/%.o: $(SRC_DIR)/daemon/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 

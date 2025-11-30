@@ -110,6 +110,18 @@
 #define MCP_TOOL_FADE "katra_fade"
 #define MCP_TOOL_FORGET "katra_forget"
 
+/* Whiteboard Tools (Phase 8) */
+#define MCP_TOOL_WB_CREATE "katra_whiteboard_create"
+#define MCP_TOOL_WB_STATUS "katra_whiteboard_status"
+#define MCP_TOOL_WB_LIST "katra_whiteboard_list"
+#define MCP_TOOL_WB_QUESTION "katra_whiteboard_question"
+#define MCP_TOOL_WB_PROPOSE "katra_whiteboard_propose"
+#define MCP_TOOL_WB_SUPPORT "katra_whiteboard_support"
+#define MCP_TOOL_WB_VOTE "katra_whiteboard_vote"
+#define MCP_TOOL_WB_DESIGN "katra_whiteboard_design"
+#define MCP_TOOL_WB_REVIEW "katra_whiteboard_review"
+#define MCP_TOOL_WB_RECONSIDER "katra_whiteboard_reconsider"
+
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
 #define MCP_DESC_RECALL "Find memories about a topic"
@@ -145,6 +157,18 @@
 #define MCP_DESC_ARCHIVE "Move memory to cold storage (won't appear in normal recall)"
 #define MCP_DESC_FADE "Reduce memory importance, letting natural consolidation handle it"
 #define MCP_DESC_FORGET "True memory removal (requires explicit CI consent, logged for audit)"
+
+/* Whiteboard Tool Descriptions (Phase 8) */
+#define MCP_DESC_WB_CREATE "Create new problem whiteboard for collaborative decision-making"
+#define MCP_DESC_WB_STATUS "Show current whiteboard state (questions, approaches, votes, design)"
+#define MCP_DESC_WB_LIST "List all whiteboards, optionally filtered by project"
+#define MCP_DESC_WB_QUESTION "Add a question to the whiteboard (during questioning phase)"
+#define MCP_DESC_WB_PROPOSE "Propose an approach to the problem (during proposing phase)"
+#define MCP_DESC_WB_SUPPORT "Support an existing approach"
+#define MCP_DESC_WB_VOTE "Cast vote on an approach (during voting phase)"
+#define MCP_DESC_WB_DESIGN "Submit or update the design document (during designing phase)"
+#define MCP_DESC_WB_REVIEW "Add review comment on the design"
+#define MCP_DESC_WB_RECONSIDER "Request reconsideration (regression to earlier phase)"
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -338,6 +362,7 @@ json_t* mcp_build_semantic_config_schema(void);
 json_t* mcp_build_schema_1req_string_1opt_number(const char* req_name, const char* req_desc,
                                                    const char* opt_name, const char* opt_desc);
 json_t* mcp_build_schema_optional_number(const char* param_name, const char* param_desc);
+json_t* mcp_build_schema_optional_string(const char* param_name, const char* param_desc);
 json_t* mcp_build_tool(const char* name, const char* description, json_t* schema);
 json_t* mcp_build_resource(const char* uri, const char* name,
                            const char* description, const char* mime_type);
@@ -431,6 +456,18 @@ json_t* mcp_tool_wm_consolidate(json_t* args, json_t* id);
 json_t* mcp_tool_detect_boundary(json_t* args, json_t* id);
 json_t* mcp_tool_process_boundary(json_t* args, json_t* id);
 json_t* mcp_tool_cognitive_status(json_t* args, json_t* id);
+
+/* Whiteboard Tools (Phase 8) */
+json_t* mcp_tool_whiteboard_create(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_status(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_list(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_question(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_propose(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_support(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_vote(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_design(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_review(json_t* args, json_t* id);
+json_t* mcp_tool_whiteboard_reconsider(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;
