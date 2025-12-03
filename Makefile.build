@@ -136,6 +136,27 @@ $(MCP_SERVER): $(MCP_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)
 mcp-server: $(MCP_SERVER)
 
 # ==============================================================================
+# DAEMON RUNNER BUILD
+# ==============================================================================
+
+# Compile daemon runner main (separate from library objects)
+$(DAEMON_RUNNER_OBJ): $(SRC_DIR)/daemon/katra_daemon_runner.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+
+# Build daemon runner binary
+$(DAEMON_RUNNER): $(DAEMON_RUNNER_OBJ) $(LIBKATRA_UTILS) | $(BIN_DIR)
+	@echo "Building daemon runner: $@"
+	@$(CC) -o $@ $(DAEMON_RUNNER_OBJ) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread $(LIBS)
+	@echo "Copying daemon wrapper script to bin/..."
+	@cp $(SCRIPTS_DIR)/katra_daemon.sh $(BIN_DIR)/
+	@chmod +x $(BIN_DIR)/katra_daemon.sh
+	@echo "Daemon runner built successfully"
+
+# Convenience target
+daemon: $(DAEMON_RUNNER)
+
+# ==============================================================================
 # AUTOMATIC DEPENDENCY INCLUSION
 # ==============================================================================
 # Include auto-generated .d files (header dependencies)

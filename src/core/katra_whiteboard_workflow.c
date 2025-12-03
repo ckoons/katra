@@ -47,15 +47,15 @@ int katra_whiteboard_set_goal(const char* whiteboard_id,
         return E_INVALID_STATE;
     }
 
-    /* Build JSON array of criteria */
+    /* Build JSON object with criteria array */
     char goal_json[KATRA_BUFFER_TEXT];
     size_t offset = 0;
-    offset += snprintf(goal_json + offset, sizeof(goal_json) - offset, "[");
+    offset += snprintf(goal_json + offset, sizeof(goal_json) - offset, "{\"criteria\":[");
     for (size_t i = 0; i < count && offset < sizeof(goal_json) - JSON_ARRAY_CLOSE_RESERVE; i++) {
         if (i > 0) offset += snprintf(goal_json + offset, sizeof(goal_json) - offset, ",");
         offset += snprintf(goal_json + offset, sizeof(goal_json) - offset, "\"%s\"", criteria[i]);
     }
-    snprintf(goal_json + offset, sizeof(goal_json) - offset, "]");
+    snprintf(goal_json + offset, sizeof(goal_json) - offset, "]}");
 
     /* Update database */
     const char* sql = "UPDATE whiteboards SET goal_json = ?, status = ? WHERE id = ?";

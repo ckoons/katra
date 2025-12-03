@@ -15,6 +15,7 @@
 #include "katra_core_common.h"
 #include "katra_experience.h"
 #include "katra_working_memory.h"
+#include "katra_daemon.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -480,8 +481,8 @@ int katra_sunrise_with_wm(const char* ci_id,
     /* Restore working memory from previous session (Phase 7.2)
      * If we have a previous sundown context with working memory, restore it */
     if (wm && context->yesterday && context->yesterday->working_memory) {
-        int result = katra_wm_restore(wm, context->yesterday->working_memory);
-        if (result == KATRA_SUCCESS) {
+        int wm_result = katra_wm_restore(wm, context->yesterday->working_memory);
+        if (wm_result == KATRA_SUCCESS) {
             LOG_INFO("Restored working memory from previous session");
             /* Store reference to the snapshot for context */
             context->working_memory = context->yesterday->working_memory;
@@ -490,6 +491,28 @@ int katra_sunrise_with_wm(const char* ci_id,
         }
     } else {
         context->working_memory = NULL;
+    }
+
+    /* Fetch pending daemon insights (Phase 9 integration)
+     * These are discoveries made while the CI was asleep */
+    daemon_insight_t* insights = NULL;
+    size_t insight_count = 0;
+    int daemon_result = katra_daemon_get_pending_insights(ci_id, &insights, &insight_count);
+    if (daemon_result == KATRA_SUCCESS && insight_count > 0) {
+        context->daemon_insights = calloc(insight_count, sizeof(char*));
+        if (context->daemon_insights) {
+            for (size_t i = 0; i < insight_count; i++) {
+                context->daemon_insights[i] = katra_safe_strdup(insights[i].content);
+                /* Mark insight as acknowledged */
+                katra_daemon_acknowledge_insight(insights[i].id);
+            }
+            context->daemon_insight_count = insight_count;
+            LOG_INFO("Loaded %zu daemon insights for sunrise", insight_count);
+        }
+        katra_daemon_free_insights(insights, insight_count);
+    } else {
+        context->daemon_insights = NULL;
+        context->daemon_insight_count = 0;
     }
 
     *context_out = context;
@@ -535,6 +558,9 @@ void katra_sunrise_free(sunrise_context_t* context) {
     katra_free_string_array(context->pending_questions, context->pending_count);
     katra_free_string_array(context->carry_forward, context->carry_count);
     katra_free_string_array(context->familiar_topics, context->familiar_count);
+
+    /* Free daemon insights (Phase 9 integration) */
+    katra_free_string_array(context->daemon_insights, context->daemon_insight_count);
 
     /* Free working memory snapshot (Phase 7.2) */
     katra_wm_snapshot_free(context->working_memory);

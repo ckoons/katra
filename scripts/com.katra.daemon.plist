@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!--
+  © 2025 Casey Koons All rights reserved
+
+  Katra Daemon - macOS launchd service
+
+  Installation:
+    cp com.katra.daemon.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.katra.daemon.plist
+
+  Control:
+    launchctl start com.katra.daemon
+    launchctl stop com.katra.daemon
+    launchctl unload ~/Library/LaunchAgents/com.katra.daemon.plist
+
+  Logs:
+    tail -f ~/.katra/daemon/katra_daemon.log
+-->
+<dict>
+    <key>Label</key>
+    <string>com.katra.daemon</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <!-- Update this path to your katra installation -->
+        <string>/Users/cskoons/projects/github/katra/bin/katra_daemon</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/cskoons/.katra/daemon/katra_daemon.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/cskoons/.katra/daemon/katra_daemon.log</string>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/cskoons/projects/github/katra</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key>
+        <string>/Users/cskoons</string>
+        <key>KATRA_DATA_PATH</key>
+        <string>/Users/cskoons/.katra</string>
+    </dict>
+
+    <!-- Don't start until system is fully booted -->
+    <key>LaunchOnlyOnce</key>
+    <false/>
+
+    <!-- Resource limits -->
+    <key>Nice</key>
+    <integer>10</integer>
+</dict>
+</plist>

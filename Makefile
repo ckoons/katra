@@ -20,12 +20,13 @@ include Makefile.test
 # PHONY TARGETS
 # ==============================================================================
 
-.PHONY: all clean help test test-quick test-cli mcp-server \
+.PHONY: all clean help test test-quick test-cli mcp-server daemon \
         benchmark benchmark-reflection benchmark-vector \
         count-report programming-guidelines check check-ready improvement-scan \
         install-mcp restart-mcp install-k install-all uninstall-k \
         install-systemd uninstall-systemd status-systemd \
         install-launchd uninstall-launchd status-launchd \
+        install-daemon uninstall-daemon status-daemon \
         test-tcp-integration
 
 # ==============================================================================
@@ -253,6 +254,54 @@ status-launchd:
 	@launchctl list | grep katra || echo "Service not loaded"
 
 # ==============================================================================
+# DAEMON INTEGRATION
+# ==============================================================================
+
+install-daemon: daemon
+	@echo "Installing Katra daemon..."
+	@if [ "$$(uname -s)" = "Darwin" ]; then \
+		$(MKDIR_P) ~/Library/LaunchAgents; \
+		cp $(SCRIPTS_DIR)/com.katra.daemon.plist ~/Library/LaunchAgents/; \
+		sed -i '' "s|/Users/cskoons/projects/github/katra|$(PWD)|g" ~/Library/LaunchAgents/com.katra.daemon.plist; \
+		sed -i '' "s|/Users/cskoons|$(HOME)|g" ~/Library/LaunchAgents/com.katra.daemon.plist; \
+		$(MKDIR_P) $(HOME)/.katra/daemon; \
+		echo ""; \
+		echo "Katra daemon installed!"; \
+		echo ""; \
+		echo "Usage:"; \
+		echo "  launchctl load ~/Library/LaunchAgents/com.katra.daemon.plist    # Enable"; \
+		echo "  launchctl start com.katra.daemon                                 # Start"; \
+		echo "  launchctl stop com.katra.daemon                                  # Stop"; \
+		echo "  ./bin/katra_daemon.sh status                                     # Status"; \
+		echo ""; \
+		echo "Or use the wrapper script:"; \
+		echo "  ./bin/katra_daemon.sh start    # Start daemon"; \
+		echo "  ./bin/katra_daemon.sh stop     # Stop daemon"; \
+		echo "  ./bin/katra_daemon.sh status   # Show status"; \
+		echo "  ./bin/katra_daemon.sh run-once # Run one cycle"; \
+	else \
+		echo "Linux daemon installation not yet implemented"; \
+		echo "Use ./bin/katra_daemon.sh to manage the daemon manually"; \
+	fi
+
+uninstall-daemon:
+	@echo "Uninstalling Katra daemon..."
+	@if [ "$$(uname -s)" = "Darwin" ]; then \
+		launchctl unload ~/Library/LaunchAgents/com.katra.daemon.plist 2>/dev/null || true; \
+		rm -f ~/Library/LaunchAgents/com.katra.daemon.plist; \
+		echo "Daemon uninstalled"; \
+	else \
+		echo "Linux daemon uninstallation not yet implemented"; \
+	fi
+
+status-daemon:
+	@if [ -f $(BIN_DIR)/katra_daemon.sh ]; then \
+		$(BIN_DIR)/katra_daemon.sh status; \
+	else \
+		echo "Daemon not built. Run 'make daemon' first."; \
+	fi
+
+# ==============================================================================
 # CLEAN TARGETS
 # ==============================================================================
 
@@ -285,6 +334,7 @@ help:
 	@echo "  make                    - Build all targets (default)"
 	@echo "  make all                - Build all targets"
 	@echo "  make mcp-server         - Build MCP server only"
+	@echo "  make daemon             - Build daemon runner only"
 	@echo "  make clean              - Remove build artifacts"
 	@echo "  make clean-tests        - Remove test executables only"
 	@echo "  make clean-all          - Deep clean (including .d files)"
@@ -321,6 +371,12 @@ help:
 	@echo "  make install-launchd    - Install launchd service (macOS)"
 	@echo "  make uninstall-launchd  - Uninstall launchd service"
 	@echo "  make status-launchd     - Check launchd service status"
+	@echo ""
+	@echo "Daemon (autonomous processing):"
+	@echo "  make daemon             - Build daemon runner"
+	@echo "  make install-daemon     - Install daemon (macOS launchd)"
+	@echo "  make uninstall-daemon   - Uninstall daemon"
+	@echo "  make status-daemon      - Check daemon status"
 	@echo ""
 	@echo "Help:"
 	@echo "  make help               - Show this help message"

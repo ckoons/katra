@@ -86,21 +86,35 @@ int katra_whiteboard_init(void) {
     int result = KATRA_SUCCESS;
     char db_path[KATRA_PATH_MAX];
 
-    /* Build database path */
+    /* Build database path - use home-based path or KATRA_DATA_PATH */
     const char* base_path = katra_config_get("KATRA_DATA_PATH");
-    if (!base_path) {
-        base_path = "/tmp/katra";
-    }
-
-    result = katra_build_path(db_path, sizeof(db_path), base_path, "whiteboard.db", NULL);
-    if (result != KATRA_SUCCESS) {
-        return result;
-    }
-
-    /* Ensure directory exists */
-    result = katra_ensure_dir(base_path);
-    if (result != KATRA_SUCCESS) {
-        return result;
+    if (base_path && strlen(base_path) > 0) {
+        /* Custom path specified - use katra_path_join */
+        result = katra_path_join(db_path, sizeof(db_path), base_path, "whiteboard.db");
+        if (result != KATRA_SUCCESS) {
+            return result;
+        }
+        /* Ensure directory exists */
+        result = katra_ensure_dir(base_path);
+        if (result != KATRA_SUCCESS) {
+            return result;
+        }
+    } else {
+        /* Default: use ~/.katra/whiteboard.db */
+        result = katra_build_path(db_path, sizeof(db_path), "whiteboard.db", NULL);
+        if (result != KATRA_SUCCESS) {
+            return result;
+        }
+        /* Ensure ~/.katra directory exists */
+        char katra_dir[KATRA_PATH_MAX];
+        result = katra_build_path(katra_dir, sizeof(katra_dir), NULL);
+        if (result != KATRA_SUCCESS) {
+            return result;
+        }
+        result = katra_ensure_dir(katra_dir);
+        if (result != KATRA_SUCCESS) {
+            return result;
+        }
     }
 
     /* Open database */

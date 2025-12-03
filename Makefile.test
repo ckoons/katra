@@ -52,6 +52,7 @@ TEST_UNIVERSAL_ENCODER := $(BIN_DIR)/tests/test_universal_encoder
 TEST_SYNTHESIS := $(BIN_DIR)/tests/test_synthesis
 TEST_PHASE7 := $(BIN_DIR)/tests/test_phase7
 TEST_DAEMON := $(BIN_DIR)/tests/test_daemon
+TEST_WHITEBOARD := $(BIN_DIR)/tests/test_whiteboard
 
 # Benchmark executables
 BENCHMARK_TIER2_QUERY := $(BIN_DIR)/benchmark_tier2_query
@@ -59,7 +60,7 @@ BENCHMARK_REFLECTION := $(BIN_DIR)/tests/benchmark_reflection
 BENCHMARK_VECTOR := $(BIN_DIR)/tests/benchmark_vector
 
 # Test targets
-test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-graph-auto-edges test-emotional-tagging test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-tcp-server test-turn-tracking test-reflection-integration test-team-management test-isolation-filtering test-semantic-recall test-audit test-access-control test-persona-paths test-universal-encoder test-synthesis test-daemon
+test-quick: test-env test-config test-error test-log test-init test-memory test-tier1 test-tier2 test-tier2-index test-checkpoint test-continuity test-vector test-vector-persist test-vector-tfidf test-vector-external test-vector-hnsw test-graph test-graph-auto-edges test-emotional-tagging test-sunrise-sunset test-consent test-corruption test-lifecycle test-mock-ci test-breathing-phase2 test-breathing-primitives test-breathing-enhancements test-session-info test-context-persist test-mcp test-tcp-server test-turn-tracking test-reflection-integration test-team-management test-isolation-filtering test-semantic-recall test-audit test-access-control test-persona-paths test-universal-encoder test-synthesis test-daemon test-whiteboard
 	@echo ""
 	@echo "========================================"
 	@echo "All tests passed!"
@@ -267,6 +268,10 @@ test-daemon: $(TEST_DAEMON)
 	@echo "Running Phase 9 daemon tests..."
 	@$(TEST_DAEMON)
 
+test-whiteboard: $(TEST_WHITEBOARD)
+	@echo "Running whiteboard tests..."
+	@$(TEST_WHITEBOARD)
+
 # Build test executables
 $(TEST_ENV): $(TEST_DIR)/unit/test_env.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
@@ -439,6 +444,10 @@ $(TEST_PHASE7): $(TEST_DIR)/test_phase7.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 $(TEST_DAEMON): $(TEST_DIR)/test_daemon.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS) -lm
+
+$(TEST_WHITEBOARD): $(TEST_DIR)/unit/test_whiteboard.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+	@echo "Building test: $@"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(TEST_LDFLAGS)
 
 # Benchmark executables
 $(BENCHMARK_TIER2_QUERY): $(TEST_DIR)/performance/benchmark_tier2_query.c $(LIBKATRA_UTILS) | $(BIN_DIR)
