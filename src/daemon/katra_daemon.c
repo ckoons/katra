@@ -25,6 +25,75 @@ bool daemon_initialized = false;
 static int daemon_create_tables(void);
 
 /* ============================================================================
+ * SECURITY VALIDATION FUNCTIONS
+ * ============================================================================ */
+
+/* Dangerous environment variables that should never be set by external input */
+static const char* DANGEROUS_ENV_VARS[] = {
+    "LD_PRELOAD", "LD_LIBRARY_PATH", "PATH", "HOME", "USER",
+    "SHELL", "IFS", "CDPATH", "ENV", "BASH_ENV", NULL
+};
+
+/* Check if an environment variable name is safe to set
+ * Returns true if safe, false if the variable is dangerous */
+bool is_safe_env_var(const char* var_name) {
+    if (!var_name || strlen(var_name) == 0) {
+        return false;
+    }
+
+    /* Check against blocklist */
+    for (int i = 0; DANGEROUS_ENV_VARS[i] != NULL; i++) {
+        if (strcmp(var_name, DANGEROUS_ENV_VARS[i]) == 0) {
+            LOG_WARN("Blocked dangerous environment variable: %s", var_name);
+            return false;
+        }
+    }
+
+    /* Check for suspicious characters */
+    for (const char* p = var_name; *p; p++) {
+        if (*p == '=' || *p == '\n' || *p == '\0') {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/* Validate a script path to prevent command injection
+ * Returns true if the path is safe, false otherwise */
+bool validate_script_path(const char* path) {
+    if (!path || strlen(path) == 0) {
+        return false;
+    }
+
+    /* Check for command injection characters */
+    const char* dangerous_chars = ";|&$`\\\"'<>(){}[]!#";
+    for (const char* p = path; *p; p++) {
+        if (strchr(dangerous_chars, *p) != NULL) {
+            LOG_WARN("Blocked script path with dangerous characters: %s", path);
+            return false;
+        }
+    }
+
+    /* Check for path traversal attempts */
+    if (strstr(path, "..") != NULL) {
+        LOG_WARN("Blocked script path with traversal attempt: %s", path);
+        return false;
+    }
+
+    /* Must be absolute path or relative to known safe directory */
+    if (path[0] != '/' && path[0] != '.') {
+        /* Relative path - check it doesn't start with dangerous patterns */
+        if (strncmp(path, "~", 1) == 0) {
+            LOG_WARN("Blocked script path with tilde expansion: %s", path);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/* ============================================================================
  * INITIALIZATION
  * ============================================================================ */
 

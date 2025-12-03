@@ -72,6 +72,19 @@ static const char* get_error_description(int code) {
     }
 }
 
+/* Error type strings for formatting */
+const char* katra_error_type_string(int type) {
+    switch(type) {
+        case ERR_SYSTEM:     return "SYSTEM";     /* GUIDELINE_APPROVED */
+        case ERR_MEMORY:     return "MEMORY";     /* GUIDELINE_APPROVED */
+        case ERR_INPUT:      return "INPUT";      /* GUIDELINE_APPROVED */
+        case ERR_CONSENT:    return "CONSENT";    /* GUIDELINE_APPROVED */
+        case ERR_INTERNAL:   return "INTERNAL";   /* GUIDELINE_APPROVED */
+        case ERR_CHECKPOINT: return "CHECKPOINT"; /* GUIDELINE_APPROVED */
+        default:             return "UNKNOWN";    /* GUIDELINE_APPROVED */
+    }
+}
+
 /* Format error as human-readable string */
 const char* katra_error_string(int code) {
     static char buffer[KATRA_BUFFER_MEDIUM];

@@ -128,17 +128,7 @@ void katra_report_error(int code, const char* context, const char* fmt, ...);
     } while(0)
 
 /* Error type strings for formatting */
-static inline const char* katra_error_type_string(int type) {
-    switch(type) {
-        case ERR_SYSTEM:     return "SYSTEM";
-        case ERR_MEMORY:     return "MEMORY";
-        case ERR_INPUT:      return "INPUT";
-        case ERR_CONSENT:    return "CONSENT";
-        case ERR_INTERNAL:   return "INTERNAL";
-        case ERR_CHECKPOINT: return "CHECKPOINT";
-        default:             return "UNKNOWN";
-    }
-}
+const char* katra_error_type_string(int type);
 
 /* Common error message strings (externalized for consistency) */
 #define KATRA_ERR_NULL_PARAMETER "NULL parameter"

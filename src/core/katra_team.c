@@ -452,4 +452,3 @@ int katra_team_delete(const char* team_name, const char* owner_ci_id) {
                              team_name, NULL, true, KATRA_SUCCESS);
     return KATRA_SUCCESS;
 }
-

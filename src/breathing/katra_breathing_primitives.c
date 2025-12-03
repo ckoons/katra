@@ -146,7 +146,6 @@ int notice_pattern(const char* ci_id, const char* pattern) {
         return E_INPUT_NULL;
     }
 
-
     return breathing_store_typed_memory(
         ci_id,
         MEMORY_TYPE_PATTERN,
