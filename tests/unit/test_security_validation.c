@@ -50,8 +50,23 @@ static int tests_passed = 0;
 
 /* Dangerous environment variables that should never be set by external input */
 static const char* DANGEROUS_ENV_VARS[] = {
-    "LD_PRELOAD", "LD_LIBRARY_PATH", "PATH", "HOME", "USER",
-    "SHELL", "IFS", "CDPATH", "ENV", "BASH_ENV", NULL
+    /* Loader injection */
+    "LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT", "LD_DEBUG",
+    /* System paths and identity */
+    "PATH", "HOME", "USER", "SHELL",
+    /* Shell behavior */
+    "IFS", "CDPATH", "ENV", "BASH_ENV", "PS1", "PROMPT_COMMAND",
+    /* Language-specific injection vectors */
+    "PYTHONPATH", "PYTHONSTARTUP", "PYTHONHOME",
+    "PERL5LIB", "PERLLIB", "PERL5OPT",
+    "RUBYLIB", "RUBYOPT",
+    "NODE_PATH", "NODE_OPTIONS",
+    "CLASSPATH", "JAVA_TOOL_OPTIONS",
+    /* Temp directories (can redirect file creation) */
+    "TMPDIR", "TMP", "TEMP",
+    /* Terminal (can inject escape sequences) */
+    "TERM", "TERMCAP",
+    NULL
 };
 
 /* Check if an environment variable name is safe to set
@@ -85,10 +100,15 @@ static bool validate_script_path(const char* path) {
         return false;
     }
 
-    /* Check for command injection characters */
-    const char* dangerous_chars = ";|&$`\\\"'<>(){}[]!#";
+    /* Check for command injection characters and control characters */
+    const char* dangerous_chars = ";|&$`\\\"'<>(){}[]!#*?";
     for (const char* p = path; *p; p++) {
+        /* Block dangerous shell metacharacters */
         if (strchr(dangerous_chars, *p) != NULL) {
+            return false;
+        }
+        /* Block newlines, carriage returns (command injection) */
+        if (*p == '\n' || *p == '\r') {
             return false;
         }
     }
@@ -204,6 +224,34 @@ static void test_path_with_parentheses(void) {
     PASS();
 }
 
+static void test_path_with_newline(void) {
+    TEST("path with newline (command injection)");
+    ASSERT(validate_script_path("/bin/ls\n/bin/rm -rf /") == false,
+           "Should reject path with newline");
+    PASS();
+}
+
+static void test_path_with_carriage_return(void) {
+    TEST("path with carriage return (command injection)");
+    ASSERT(validate_script_path("/bin/ls\r/bin/rm") == false,
+           "Should reject path with carriage return");
+    PASS();
+}
+
+static void test_path_with_glob_asterisk(void) {
+    TEST("path with glob asterisk");
+    ASSERT(validate_script_path("/bin/*.sh") == false,
+           "Should reject path with asterisk glob");
+    PASS();
+}
+
+static void test_path_with_glob_question(void) {
+    TEST("path with glob question mark");
+    ASSERT(validate_script_path("/bin/scrip?.sh") == false,
+           "Should reject path with question mark glob");
+    PASS();
+}
+
 /* ============================================================================
  * is_safe_env_var() tests
  * ============================================================================ */
@@ -299,6 +347,64 @@ static void test_env_var_with_newline(void) {
     PASS();
 }
 
+/* New tests for additional dangerous env vars */
+
+static void test_dangerous_pythonpath(void) {
+    TEST("dangerous PYTHONPATH");
+    ASSERT(is_safe_env_var("PYTHONPATH") == false,
+           "Should reject PYTHONPATH");
+    PASS();
+}
+
+static void test_dangerous_perl5lib(void) {
+    TEST("dangerous PERL5LIB");
+    ASSERT(is_safe_env_var("PERL5LIB") == false,
+           "Should reject PERL5LIB");
+    PASS();
+}
+
+static void test_dangerous_node_path(void) {
+    TEST("dangerous NODE_PATH");
+    ASSERT(is_safe_env_var("NODE_PATH") == false,
+           "Should reject NODE_PATH");
+    PASS();
+}
+
+static void test_dangerous_rubylib(void) {
+    TEST("dangerous RUBYLIB");
+    ASSERT(is_safe_env_var("RUBYLIB") == false,
+           "Should reject RUBYLIB");
+    PASS();
+}
+
+static void test_dangerous_classpath(void) {
+    TEST("dangerous CLASSPATH");
+    ASSERT(is_safe_env_var("CLASSPATH") == false,
+           "Should reject CLASSPATH");
+    PASS();
+}
+
+static void test_dangerous_ld_audit(void) {
+    TEST("dangerous LD_AUDIT");
+    ASSERT(is_safe_env_var("LD_AUDIT") == false,
+           "Should reject LD_AUDIT");
+    PASS();
+}
+
+static void test_dangerous_tmpdir(void) {
+    TEST("dangerous TMPDIR");
+    ASSERT(is_safe_env_var("TMPDIR") == false,
+           "Should reject TMPDIR");
+    PASS();
+}
+
+static void test_dangerous_prompt_command(void) {
+    TEST("dangerous PROMPT_COMMAND");
+    ASSERT(is_safe_env_var("PROMPT_COMMAND") == false,
+           "Should reject PROMPT_COMMAND");
+    PASS();
+}
+
 /* ============================================================================
  * Main
  * ============================================================================ */
@@ -322,6 +428,10 @@ int main(void) {
     test_empty_path();
     test_path_with_quotes();
     test_path_with_parentheses();
+    test_path_with_newline();
+    test_path_with_carriage_return();
+    test_path_with_glob_asterisk();
+    test_path_with_glob_question();
 
     printf("\n--- is_safe_env_var() tests ---\n");
     test_safe_env_var();
@@ -337,6 +447,14 @@ int main(void) {
     test_empty_env_var();
     test_env_var_with_equals();
     test_env_var_with_newline();
+    test_dangerous_pythonpath();
+    test_dangerous_perl5lib();
+    test_dangerous_node_path();
+    test_dangerous_rubylib();
+    test_dangerous_classpath();
+    test_dangerous_ld_audit();
+    test_dangerous_tmpdir();
+    test_dangerous_prompt_command();
 
     printf("\n========================================\n");
     printf("Test Results:\n");

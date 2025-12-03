@@ -7,16 +7,62 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <jansson.h>
 
 /* Project includes */
 #include "katra_whiteboard.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_core_common.h"
+#include "katra_psyche_common.h"
 
 /* External database handle from katra_whiteboard.c */
 extern sqlite3* wb_db;
 extern bool wb_initialized;
+
+/* ============================================================================
+ * JSON PARSING HELPERS
+ * ============================================================================ */
+
+/* Parse a JSON array of strings into a char** array */
+static void wb_parse_string_array(const char* json_str, char*** out, size_t* count, size_t max) {
+    if (!json_str || !out || !count) return;
+
+    *out = NULL;
+    *count = 0;
+
+    json_error_t error;
+    json_t* root = json_loads(json_str, 0, &error);
+    if (!root || !json_is_array(root)) {
+        if (root) json_decref(root);
+        return;
+    }
+
+    size_t n = json_array_size(root);
+    if (n > max) n = max;
+    if (n == 0) {
+        json_decref(root);
+        return;
+    }
+
+    *out = calloc(n, sizeof(char*));
+    if (!*out) {
+        json_decref(root);
+        return;
+    }
+
+    for (size_t i = 0; i < n; i++) {
+        json_t* item = json_array_get(root, i);
+        if (json_is_string(item)) {
+            (*out)[*count] = katra_safe_strdup(json_string_value(item));
+            if ((*out)[*count]) {
+                (*count)++;
+            }
+        }
+    }
+
+    json_decref(root);
+}
 
 /* ============================================================================
  * QUESTION LOADING
@@ -144,7 +190,16 @@ int katra_whiteboard_load_approaches(const char* wb_id, wb_approach_t** approach
         text = (const char*)sqlite3_column_text(stmt, 3);
         if (text) SAFE_STRNCPY(a[i].description, text);
 
-        /* TODO: Parse pros_json and cons_json */
+        /* Parse pros_json (column 4) and cons_json (column 5) */
+        text = (const char*)sqlite3_column_text(stmt, 4);
+        if (text) {
+            wb_parse_string_array(text, &a[i].pros, &a[i].pros_count, WB_MAX_PROS_CONS);
+        }
+
+        text = (const char*)sqlite3_column_text(stmt, 5);
+        if (text) {
+            wb_parse_string_array(text, &a[i].cons, &a[i].cons_count, WB_MAX_PROS_CONS);
+        }
 
         a[i].created_at = sqlite3_column_int64(stmt, 6);
         i++;

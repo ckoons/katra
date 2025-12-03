@@ -30,8 +30,23 @@ static int daemon_create_tables(void);
 
 /* Dangerous environment variables that should never be set by external input */
 static const char* DANGEROUS_ENV_VARS[] = {
-    "LD_PRELOAD", "LD_LIBRARY_PATH", "PATH", "HOME", "USER",
-    "SHELL", "IFS", "CDPATH", "ENV", "BASH_ENV", NULL
+    /* Loader injection */
+    "LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT", "LD_DEBUG",
+    /* System paths and identity */
+    "PATH", "HOME", "USER", "SHELL",
+    /* Shell behavior */
+    "IFS", "CDPATH", "ENV", "BASH_ENV", "PS1", "PROMPT_COMMAND",
+    /* Language-specific injection vectors */
+    "PYTHONPATH", "PYTHONSTARTUP", "PYTHONHOME",
+    "PERL5LIB", "PERLLIB", "PERL5OPT",
+    "RUBYLIB", "RUBYOPT",
+    "NODE_PATH", "NODE_OPTIONS",
+    "CLASSPATH", "JAVA_TOOL_OPTIONS",
+    /* Temp directories (can redirect file creation) */
+    "TMPDIR", "TMP", "TEMP",
+    /* Terminal (can inject escape sequences) */
+    "TERM", "TERMCAP",
+    NULL
 };
 
 /* Check if an environment variable name is safe to set
@@ -66,13 +81,22 @@ bool validate_script_path(const char* path) {
         return false;
     }
 
-    /* Check for command injection characters */
-    const char* dangerous_chars = ";|&$`\\\"'<>(){}[]!#";
+    /* Check for command injection characters and control characters */
+    const char* dangerous_chars = ";|&$`\\\"'<>(){}[]!#*?";
     for (const char* p = path; *p; p++) {
+        /* Block dangerous shell metacharacters */
         if (strchr(dangerous_chars, *p) != NULL) {
             LOG_WARN("Blocked script path with dangerous characters: %s", path);
             return false;
         }
+        /* Block newlines, carriage returns (command injection) */
+        if (*p == '\n' || *p == '\r') {
+            LOG_WARN("Blocked script path with newline/CR: %s", path);
+            return false;
+        }
+        /* Block null bytes (string truncation attacks) */
+        /* Note: This check is technically unreachable since strlen stops at \0,
+         * but we include it for documentation and in case of binary data */
     }
 
     /* Check for path traversal attempts */
