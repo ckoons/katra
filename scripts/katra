@@ -970,13 +970,13 @@ EOF
                 exit 1
             fi
 
-            # Generate TCP config using netcat to connect
+            # Generate TCP config using our TCP client wrapper
             tcp_port="${KATRA_MCP_PORT:-3141}"
             cat > "$TEMP_MCP_CONFIG" <<EOF
 {
   "mcpServers": {
     "katra": {
-      "command": "nc",
+      "command": "$KATRA_ROOT/bin/katra_mcp_tcp_client.sh",
       "args": ["localhost", "$tcp_port"],
       "env": {
         "KATRA_PERSONA": "$PERSONA",
