@@ -2,8 +2,8 @@
 
 # Katra Development Roadmap
 
-**Last Updated:** 2025-11-25
-**Status:** Phase 6.7 complete (Multi-Backend Synthesis)
+**Last Updated:** 2025-12-06
+**Status:** Phase 10 complete (Memory Promises, Turn-Level Context)
 
 ---
 
@@ -37,7 +37,7 @@ Like humans have:
 
 ---
 
-## Current State (2025-01-17)
+## Current State (2025-12-06)
 
 ### ✅ Implemented and Working
 
@@ -191,9 +191,39 @@ Like humans have:
 - ✅ Graceful degradation (continues if backends unavailable)
 - ✅ Test suite (12/12 passing)
 
+**Phase 7: Sunrise/Sunset Refinement (2025-12-01)**
+- ✅ Working memory persistence across sessions
+- ✅ Session startup retrieves previous working memory state
+- ✅ Session shutdown persists working memory to tier storage
+- ✅ Session-level sunrise/sunset protocol complete
+- ✅ Integration with checkpoint system
+
+**Phase 8: Whiteboard System (2025-12-03)**
+- ✅ Design discussion persistence (whiteboard.db)
+- ✅ Named whiteboards with multiple entries
+- ✅ Chronological entry tracking
+- ✅ MCP tools: whiteboard_write, whiteboard_read, whiteboard_list
+- ✅ Support for multi-CI collaborative design sessions
+
+**Phase 9: Daemon Process Runner (2025-12-04)**
+- ✅ Interstitial autonomy via background processing
+- ✅ Daemon process management (start/stop/status)
+- ✅ Hot reload via SIGUSR1 signal
+- ✅ TCP MCP server mode for multi-client connections
+- ✅ Human CLI interface (katra-cli)
+
+**Phase 10: Memory Promises & Turn-Level Context (2025-12-06)**
+- ✅ Memory promises (async recall operations)
+- ✅ Turn-level sunrise/sunset (katra_turn_context, katra_turn_consolidate)
+- ✅ Hybrid search for turn context (keyword + semantic + graph)
+- ✅ Token budget estimation and context fill tracking
+- ✅ Memory reinforcement on access
+- ✅ Test suite (13/13 passing)
+
 ### ❌ Not Yet Implemented
 
-**Advanced Memory (Phase 6.8+):**
+**Advanced Memory (Phase 11+):**
+- MCP unification (consolidate tool interfaces)
 - Consolidation triggers and scheduling
 - Advanced pattern extraction
 - Cross-session knowledge transfer
@@ -409,11 +439,11 @@ katra start --persona Charlie --provider deepseek   # Uses DeepSeek
 
 ---
 
-### Phase 6: Advanced Memory ✅ COMPLETE (Month 2-3)
+### Phase 6-10: Advanced Memory & Autonomy ✅ COMPLETE (Month 2-3)
 
-**Goal:** Implement full Engram architecture
+**Goal:** Implement full Engram architecture with autonomous processing
 
-**Status:** Phase 6.7 (Multi-Backend Synthesis) complete
+**Status:** Phase 10 (Memory Promises, Turn-Level Context) complete
 
 **Phase 6.1: Vector Database** ✅ COMPLETE
 - [x] Phase 6.1a: Basic vector store (hash-based embeddings)
@@ -440,12 +470,25 @@ katra start --persona Charlie --provider deepseek   # Uses DeepSeek
 - [x] Four synthesis algorithms (UNION, INTERSECTION, WEIGHTED, HIERARCHICAL)
 - [x] MCP recall integration with optional "mode" parameter
 
+**Phase 7-10: Sunrise/Sunset, Whiteboard, Daemon, Promises** ✅ COMPLETE
+- [x] Sunrise/sunset refinement with working memory persistence
+- [x] Whiteboard system for design discussions
+- [x] Daemon process runner with TCP MCP server
+- [x] Human CLI interface (katra-cli)
+- [x] Memory promises (async recall)
+- [x] Turn-level context injection
+
 **All Deliverables:**
 - ✅ Vector DB implementation (src/db/katra_vector*.c - 5 files)
 - ✅ Graph store with auto-edges (src/core/katra_graph.c)
 - ✅ Working memory (src/psyche/working_memory.c)
 - ✅ Universal encoder (src/core/katra_universal_encoder.c)
 - ✅ Synthesis layer (src/core/katra_synthesis.c)
+- ✅ Sunrise/sunset system (src/core/katra_sunrise_sunset.c)
+- ✅ Turn-level context (src/core/katra_turn_context.c)
+- ✅ Whiteboard system (src/core/katra_whiteboard.c)
+- ✅ Daemon runner (bin/katra-daemon, bin/katra-cli)
+- ✅ TCP MCP server mode (src/mcp/mcp_tcp.c)
 - ✅ Full test coverage (all tests passing)
 
 ---
@@ -616,7 +659,7 @@ katra start --persona Charlie --provider deepseek   # Uses DeepSeek
 **Primary CI Collaborators:** Claude (Nyx), Alice
 **Repository:** /Users/cskoons/projects/github/katra
 
-**Current Status:** Phase 1 testing begins tomorrow with Alice
+**Current Status:** Phase 10 complete; MCP unification next
 
 ---
 

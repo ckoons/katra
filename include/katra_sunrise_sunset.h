@@ -355,4 +355,176 @@ int katra_build_familiar_topics(const char* ci_id,
                                 char*** topics_out,
                                 size_t* count_out);
 
+/* ============================================================================
+ * TURN-LEVEL CONTEXT (Phase 10 - Turn Sunrise/Sunset)
+ * ============================================================================
+ *
+ * Per-turn memory injection that surfaces relevant memories automatically.
+ * Uses hybrid keyword + semantic search with sliding window context.
+ *
+ * Design:
+ * - Fires every turn (not just session boundaries)
+ * - Combines keyword and semantic similarity for relevance
+ * - Maintains sliding window (old turn context replaced by new)
+ * - Targets 50-60% context capacity
+ * - Noticed but not intrusive (CI sees what surfaced)
+ */
+
+/* Turn context configuration */
+#define TURN_CONTEXT_MAX_MEMORIES 10       /* Max memories per turn */
+#define TURN_CONTEXT_KEYWORD_WEIGHT 0.4f   /* Weight for keyword matches */
+#define TURN_CONTEXT_SEMANTIC_WEIGHT 0.4f  /* Weight for semantic similarity */
+#define TURN_CONTEXT_GRAPH_WEIGHT 0.2f     /* Weight for graph relationships */
+#define TURN_CONTEXT_MIN_SCORE 0.3f        /* Minimum relevance score */
+
+/* Turn context result - what surfaced for this turn */
+typedef struct {
+    char* record_id;              /* Memory record ID */
+    char* content_preview;        /* First 200 chars of content */
+    char* topic_hint;             /* Brief topic description */
+    float relevance_score;        /* Combined relevance (0.0-1.0) */
+    time_t memory_timestamp;      /* When memory was created */
+    bool from_keyword;            /* Matched via keyword */
+    bool from_semantic;           /* Matched via semantic similarity */
+    bool from_graph;              /* Matched via graph relationship */
+} turn_memory_t;
+
+/* Turn context - the complete context for a turn */
+typedef struct {
+    char ci_id[256];              /* CI identifier */
+    int turn_number;              /* Current turn number */
+    time_t timestamp;             /* When context was generated */
+
+    /* Input that triggered this context */
+    char* turn_input;             /* The user input for this turn */
+
+    /* Surfaced memories */
+    turn_memory_t* memories;      /* Array of relevant memories */
+    size_t memory_count;          /* Number of memories surfaced */
+
+    /* Context budget tracking */
+    size_t estimated_tokens;      /* Estimated token count for this context */
+    float context_fill_ratio;     /* Estimated fill ratio (0.0-1.0) */
+
+    /* Brief summary for CI awareness */
+    char context_summary[512];    /* "3 memories surfaced: project planning, ..." */
+} turn_context_t;
+
+/* Turn consolidation - what to remember from this turn */
+typedef struct {
+    char ci_id[256];              /* CI identifier */
+    int turn_number;              /* Turn that was consolidated */
+    time_t timestamp;             /* When consolidation occurred */
+
+    /* What mattered from this turn */
+    char** key_topics;            /* Topics discussed */
+    size_t topic_count;           /* Number of topics */
+
+    /* Memories that were accessed/reinforced */
+    char** accessed_memories;     /* Record IDs that were used */
+    size_t accessed_count;        /* Number accessed */
+
+    /* New memories formed */
+    char** new_memories;          /* Record IDs created this turn */
+    size_t new_count;             /* Number created */
+} turn_consolidation_t;
+
+/**
+ * katra_turn_context() - Generate context for the current turn
+ *
+ * Analyzes the turn input and surfaces relevant memories using
+ * hybrid keyword + semantic search. Should be called at turn start.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   turn_input - The user's input for this turn
+ *   turn_number - Current turn number (for tracking)
+ *   context_out - Output: turn context (caller must free)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   Error code on failure
+ */
+int katra_turn_context(const char* ci_id,
+                       const char* turn_input,
+                       int turn_number,
+                       turn_context_t** context_out);
+
+/**
+ * katra_turn_context_async() - Generate turn context asynchronously
+ *
+ * Same as katra_turn_context but returns immediately with a promise.
+ * Use this to avoid blocking turn start.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   turn_input - The user's input for this turn
+ *   turn_number - Current turn number
+ *   callback - Optional completion callback
+ *   user_data - User context for callback
+ *
+ * Returns:
+ *   Promise pointer on success (use katra_promise_await)
+ *   NULL on failure
+ */
+struct katra_promise* katra_turn_context_async(const char* ci_id,
+                                                const char* turn_input,
+                                                int turn_number,
+                                                void (*callback)(struct katra_promise*, void*),
+                                                void* user_data);
+
+/**
+ * katra_turn_consolidate() - Mark what mattered from this turn
+ *
+ * Called at turn end to record which memories were useful and
+ * what new information emerged. Updates memory relevance scores.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   turn_number - Turn being consolidated
+ *   accessed_ids - Record IDs of memories that were used (can be NULL)
+ *   accessed_count - Number of accessed memories
+ *   key_topics - Topics that were discussed (can be NULL)
+ *   topic_count - Number of topics
+ *   consolidation_out - Output: consolidation record (can be NULL)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ */
+int katra_turn_consolidate(const char* ci_id,
+                           int turn_number,
+                           const char** accessed_ids,
+                           size_t accessed_count,
+                           const char** key_topics,
+                           size_t topic_count,
+                           turn_consolidation_t** consolidation_out);
+
+/**
+ * katra_turn_context_format() - Format turn context for display
+ *
+ * Creates a human-readable summary of the turn context suitable
+ * for injection into the CI's working context.
+ *
+ * Parameters:
+ *   context - Turn context to format
+ *   buffer - Output buffer
+ *   buffer_size - Size of output buffer
+ *
+ * Returns:
+ *   Number of characters written (excluding null terminator)
+ */
+int katra_turn_context_format(const turn_context_t* context,
+                              char* buffer,
+                              size_t buffer_size);
+
+/**
+ * katra_turn_context_free() - Free turn context
+ */
+void katra_turn_context_free(turn_context_t* context);
+
+/**
+ * katra_turn_consolidation_free() - Free turn consolidation
+ */
+void katra_turn_consolidation_free(turn_consolidation_t* consolidation);
+
 #endif /* KATRA_SUNRISE_SUNSET_H */
