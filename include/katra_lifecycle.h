@@ -58,6 +58,10 @@ typedef struct {
     /* Future: other autonomic state hints */
 } breath_context_t;
 
+/* Forward declaration for turn context
+ * The actual type is defined in katra_sunrise_sunset.h
+ * We use void* here to avoid circular dependency */
+
 /**
  * session_state_t - In-memory session state for autonomic breathing
  *
@@ -84,6 +88,11 @@ typedef struct {
     /* Persona info (for auto-registration) */
     char* persona_name;            /* Persistent persona name */
     char* persona_role;            /* CI role (developer, researcher, etc.) */
+
+    /* Turn-level context (Phase 10) */
+    int current_turn_number;       /* Current turn counter */
+    void* current_turn_context;    /* Surfaced memories (turn_context_t*) */
+    char* last_turn_input;         /* Input that triggered current context */
 } session_state_t;
 
 /* ============================================================================
@@ -343,5 +352,69 @@ int katra_update_persona(const char* ci_id, const char* name, const char* role);
  *   Pointer to session_end_state_t (or NULL if not initialized)
  */
 session_end_state_t* katra_get_session_state(void);
+
+/* ============================================================================
+ * TURN-LEVEL CONTEXT (Phase 10)
+ * ============================================================================ */
+
+/**
+ * katra_turn_start_with_input() - Begin turn with input for context generation
+ *
+ * Enhanced version of katra_turn_start() that accepts the user input
+ * and automatically generates turn context by surfacing relevant memories.
+ *
+ * Parameters:
+ *   turn_input: The user's input for this turn (used for memory search)
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Turn started, context generated
+ *   E_INPUT_NULL - NULL turn_input
+ *   E_INVALID_STATE - No active session
+ *
+ * Side effects:
+ * - Increments turn counter
+ * - Generates turn context via katra_turn_context()
+ * - Stores context for retrieval via katra_get_turn_context()
+ */
+int katra_turn_start_with_input(const char* turn_input);
+
+/**
+ * katra_get_turn_context() - Get the current turn's memory context
+ *
+ * Returns the turn context that was generated at turn start.
+ * Contains surfaced memories relevant to the current turn input.
+ *
+ * Returns:
+ *   Pointer to turn_context_t (or NULL if no context available)
+ *
+ * Note: The returned pointer is owned by the lifecycle layer.
+ *       Do not free it; it will be freed at next turn start.
+ *       Caller must include katra_sunrise_sunset.h to use the type.
+ */
+void* katra_get_turn_context(void);
+
+/**
+ * katra_get_turn_context_formatted() - Get formatted turn context string
+ *
+ * Returns a human-readable summary of the turn context suitable for
+ * injection into tool responses.
+ *
+ * Parameters:
+ *   buffer: Output buffer
+ *   buffer_size: Size of output buffer
+ *
+ * Returns:
+ *   Number of characters written (excluding null terminator)
+ *   0 if no context available or buffer too small
+ */
+int katra_get_turn_context_formatted(char* buffer, size_t buffer_size);
+
+/**
+ * katra_get_current_turn_number() - Get current turn number
+ *
+ * Returns:
+ *   Current turn number (0 if no active session)
+ */
+int katra_get_current_turn_number(void);
 
 #endif /* KATRA_LIFECYCLE_H */

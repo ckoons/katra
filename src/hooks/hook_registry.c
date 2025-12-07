@@ -165,6 +165,20 @@ int katra_hook_turn_start(void) {
     return katra_turn_start();
 }
 
+int katra_hook_turn_start_with_input(const char* turn_input) {
+    KATRA_CHECK_NULL(turn_input);
+
+    if (!g_registry_initialized) {
+        katra_report_error(E_INVALID_STATE, "katra_hook_turn_start_with_input",
+                          "Registry not initialized");
+        return E_INVALID_STATE;
+    }
+
+    /* Always call the lifecycle function with input for context generation */
+    LOG_DEBUG("Turn start with input-based context generation");
+    return katra_turn_start_with_input(turn_input);
+}
+
 int katra_hook_turn_end(void) {
     if (!g_registry_initialized) {
         katra_report_error(E_INVALID_STATE, "katra_hook_turn_end",

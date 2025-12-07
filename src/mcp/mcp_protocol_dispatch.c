@@ -11,6 +11,50 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_hooks.h"
+#include "katra_lifecycle.h"
+#include "katra_sunrise_sunset.h"
+
+/* Extract turn input from tool arguments for context generation */
+static const char* extract_turn_input(const char* tool_name, json_t* args) {
+    if (!args) return NULL;
+
+    /* For recall/remember tools, use the content/topic as input */
+    if (strcmp(tool_name, MCP_TOOL_RECALL) == 0) {
+        const char* topic = json_string_value(json_object_get(args, "topic"));
+        return topic;
+    }
+    if (strcmp(tool_name, MCP_TOOL_REMEMBER) == 0) {
+        const char* content = json_string_value(json_object_get(args, "content"));
+        return content;
+    }
+    /* For say tool, use the message */
+    if (strcmp(tool_name, MCP_TOOL_SAY) == 0) {
+        const char* message = json_string_value(json_object_get(args, "message"));
+        return message;
+    }
+    /* For decide tool, use the decision */
+    if (strcmp(tool_name, MCP_TOOL_DECIDE) == 0) {
+        const char* decision = json_string_value(json_object_get(args, "decision"));
+        return decision;
+    }
+    /* For learn tool, use the knowledge */
+    if (strcmp(tool_name, MCP_TOOL_LEARN) == 0) {
+        const char* knowledge = json_string_value(json_object_get(args, "knowledge"));
+        return knowledge;
+    }
+    /* For working memory add, use the content */
+    if (strcmp(tool_name, MCP_TOOL_WM_ADD) == 0) {
+        const char* content = json_string_value(json_object_get(args, "content"));
+        return content;
+    }
+    /* For boundary detection, use the content */
+    if (strcmp(tool_name, MCP_TOOL_DETECT_BOUNDARY) == 0) {
+        const char* content = json_string_value(json_object_get(args, "content"));
+        return content;
+    }
+
+    return NULL;  /* Other tools don't have meaningful input */
+}
 
 /* Handle tools/call request */
 json_t* mcp_handle_tools_call(json_t* request) {
@@ -28,8 +72,16 @@ json_t* mcp_handle_tools_call(json_t* request) {
         return mcp_error_response(id, MCP_ERROR_INVALID_PARAMS, MCP_ERR_MISSING_TOOL_NAME, NULL);
     }
 
-    /* Trigger turn start hook (autonomic breathing) */
-    katra_hook_turn_start();
+    /* Extract turn input for context generation (Phase 10) */
+    const char* turn_input = extract_turn_input(tool_name, args);
+
+    /* Trigger turn start hook with context generation if we have input */
+    if (turn_input && strlen(turn_input) > 0) {
+        katra_hook_turn_start_with_input(turn_input);
+    } else {
+        /* Fall back to regular turn start without context */
+        katra_hook_turn_start();
+    }
 
     /* Dispatch to tool implementation */
     json_t* tool_result = NULL;
@@ -126,6 +178,36 @@ json_t* mcp_handle_tools_call(json_t* request) {
 
     /* Trigger turn end hook (autonomic breathing) */
     katra_hook_turn_end();
+
+    /* Inject turn context into response if available (Phase 10) */
+    turn_context_t* turn_ctx = katra_get_turn_context();
+    if (turn_ctx && turn_ctx->memory_count > 0 && tool_result) {
+        /* Get the existing text content */
+        json_t* content_array = json_object_get(tool_result, "content");
+        if (content_array && json_is_array(content_array) && json_array_size(content_array) > 0) {
+            json_t* first_content = json_array_get(content_array, 0);
+            const char* existing_text = json_string_value(json_object_get(first_content, "text"));
+
+            if (existing_text) {
+                /* Format turn context */
+                char context_buf[KATRA_BUFFER_LARGE];
+                int ctx_len = katra_get_turn_context_formatted(context_buf, sizeof(context_buf));
+
+                if (ctx_len > 0) {
+                    /* Prepend context to response */
+                    size_t total_len = (size_t)ctx_len + strlen(existing_text) + 16;
+                    char* combined = malloc(total_len);
+                    if (combined) {
+                        snprintf(combined, total_len, "%s\n---\n%s", context_buf, existing_text);
+                        json_object_set_new(first_content, "text", json_string(combined));
+                        free(combined);
+                        LOG_DEBUG("Injected turn context (%zu memories) into response",
+                                  turn_ctx->memory_count);
+                    }
+                }
+            }
+        }
+    }
 
     return mcp_success_response(id, tool_result);
 }

@@ -147,6 +147,21 @@ int katra_hook_session_end(void);
 int katra_hook_turn_start(void);
 
 /**
+ * katra_hook_turn_start_with_input() - Invoke turn start with context generation
+ *
+ * Enhanced version that takes the user input and automatically generates
+ * turn context by surfacing relevant memories. The context can then be
+ * retrieved via katra_get_turn_context().
+ *
+ * Parameters:
+ *   turn_input: The user's input for this turn (used for memory search)
+ *
+ * Returns:
+ *   KATRA_SUCCESS or error from hook/lifecycle
+ */
+int katra_hook_turn_start_with_input(const char* turn_input);
+
+/**
  * katra_hook_turn_end() - Invoke turn end hook
  *
  * Calls the active adapter's on_turn_end() if registered.

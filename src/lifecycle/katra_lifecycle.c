@@ -30,6 +30,7 @@
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_sunrise_sunset.h"
 
 /* ============================================================================
  * GLOBAL STATE - One per MCP server process
@@ -99,6 +100,11 @@ int katra_lifecycle_init(void) {
     g_session_state->persona_name = NULL;
     g_session_state->persona_role = NULL;
 
+    /* Initialize turn context fields (Phase 10) */
+    g_session_state->current_turn_number = 0;
+    g_session_state->current_turn_context = NULL;
+    g_session_state->last_turn_input = NULL;
+
     /* Initialize cached context */
     memset(&g_session_state->cached_context, 0, sizeof(breath_context_t));
 
@@ -127,6 +133,12 @@ void katra_lifecycle_cleanup(void) {
         /* Free persona strings */
         free(g_session_state->persona_name);
         free(g_session_state->persona_role);
+
+        /* Free turn context (Phase 10) */
+        if (g_session_state->current_turn_context) {
+            katra_turn_context_free((turn_context_t*)g_session_state->current_turn_context);
+        }
+        free(g_session_state->last_turn_input);
 
         /* Free state */
         free(g_session_state);
@@ -587,4 +599,113 @@ session_end_state_t* katra_get_session_state(void) {
     }
 
     return g_session_end_state;
+}
+
+/* ============================================================================
+ * TURN-LEVEL CONTEXT (Phase 10)
+ * ============================================================================ */
+
+int katra_turn_start_with_input(const char* turn_input) {
+    KATRA_CHECK_NULL(turn_input);
+
+    if (!g_lifecycle_initialized) {
+        return E_INVALID_STATE;
+    }
+
+    if (!g_session_state->session_active) {
+        return E_INVALID_STATE;
+    }
+
+    LOG_DEBUG("Turn starting with input-based context generation");
+
+    /* Lock for thread safety */
+    (void)pthread_mutex_lock(&g_session_state->breath_lock);
+
+    /* Increment turn counter */
+    g_session_state->current_turn_number++;
+    int turn_num = g_session_state->current_turn_number;
+
+    /* Free previous turn context */
+    if (g_session_state->current_turn_context) {
+        katra_turn_context_free((turn_context_t*)g_session_state->current_turn_context);
+        g_session_state->current_turn_context = NULL;
+    }
+    free(g_session_state->last_turn_input);
+    g_session_state->last_turn_input = NULL;
+
+    /* Store input for later reference */
+    g_session_state->last_turn_input = strdup(turn_input);
+
+    /* Get CI ID for context generation */
+    const char* ci_id = g_session_state->ci_id;
+    if (!ci_id) {
+        ci_id = "default-ci";
+    }
+
+    pthread_mutex_unlock(&g_session_state->breath_lock);
+
+    /* Generate turn context (outside lock to avoid blocking) */
+    turn_context_t* context = NULL;
+    int result = katra_turn_context(ci_id, turn_input, turn_num, &context);
+
+    /* Store result */
+    (void)pthread_mutex_lock(&g_session_state->breath_lock);
+
+    if (result == KATRA_SUCCESS && context) {
+        g_session_state->current_turn_context = (void*)context;
+        LOG_INFO("Turn %d: surfaced %zu memories for input", turn_num, context->memory_count);
+    } else {
+        LOG_DEBUG("Turn %d: no context generated (rc=%d)", turn_num, result);
+    }
+
+    pthread_mutex_unlock(&g_session_state->breath_lock);
+
+    /* Call underlying begin_turn from breathing layer */
+    result = begin_turn();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("begin_turn failed: %d", result);
+    }
+
+    /* Autonomic breathing at turn start (rate-limited) */
+    breath_context_t breath;
+    result = katra_breath(&breath);
+    if (result == KATRA_SUCCESS && breath.unread_messages > KATRA_SUCCESS) {
+        LOG_DEBUG("Turn awareness: %zu unread messages", breath.unread_messages);
+    }
+
+    return KATRA_SUCCESS;
+}
+
+void* katra_get_turn_context(void) {
+    if (!g_lifecycle_initialized || !g_session_state || !g_session_state->session_active) {
+        return NULL;
+    }
+
+    /* No lock needed for simple pointer read */
+    return g_session_state->current_turn_context;
+}
+
+int katra_get_turn_context_formatted(char* buffer, size_t buffer_size) {
+    if (!buffer || buffer_size == 0) {
+        return 0;
+    }
+
+    if (!g_lifecycle_initialized || !g_session_state || !g_session_state->session_active) {
+        return 0;
+    }
+
+    turn_context_t* context = (turn_context_t*)g_session_state->current_turn_context;
+    if (!context) {
+        return 0;
+    }
+
+    return katra_turn_context_format(context, buffer, buffer_size);
+}
+
+int katra_get_current_turn_number(void) {
+    if (!g_lifecycle_initialized || !g_session_state) {
+        return 0;
+    }
+
+    return g_session_state->current_turn_number;
 }
