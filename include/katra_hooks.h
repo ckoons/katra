@@ -154,12 +154,13 @@ int katra_hook_turn_start(void);
  * retrieved via katra_get_turn_context().
  *
  * Parameters:
+ *   ci_id: CI identifier to use for memory search (from current session)
  *   turn_input: The user's input for this turn (used for memory search)
  *
  * Returns:
  *   KATRA_SUCCESS or error from hook/lifecycle
  */
-int katra_hook_turn_start_with_input(const char* turn_input);
+int katra_hook_turn_start_with_input(const char* ci_id, const char* turn_input);
 
 /**
  * katra_hook_turn_end() - Invoke turn end hook

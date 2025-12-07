@@ -75,9 +75,12 @@ json_t* mcp_handle_tools_call(json_t* request) {
     /* Extract turn input for context generation (Phase 10) */
     const char* turn_input = extract_turn_input(tool_name, args);
 
-    /* Trigger turn start hook with context generation if we have input */
-    if (turn_input && strlen(turn_input) > 0) {
-        katra_hook_turn_start_with_input(turn_input);
+    /* Get CI ID from current session for scoped context generation */
+    const char* ci_id = mcp_get_session_name();
+
+    /* Trigger turn start hook with context generation if we have input and CI ID */
+    if (turn_input && strlen(turn_input) > 0 && ci_id && strlen(ci_id) > 0) {
+        katra_hook_turn_start_with_input(ci_id, turn_input);
     } else {
         /* Fall back to regular turn start without context */
         katra_hook_turn_start();

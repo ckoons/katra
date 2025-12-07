@@ -364,11 +364,12 @@ session_end_state_t* katra_get_session_state(void);
  * and automatically generates turn context by surfacing relevant memories.
  *
  * Parameters:
+ *   ci_id: CI identifier to use for memory search (from current session)
  *   turn_input: The user's input for this turn (used for memory search)
  *
  * Returns:
  *   KATRA_SUCCESS - Turn started, context generated
- *   E_INPUT_NULL - NULL turn_input
+ *   E_INPUT_NULL - NULL parameters
  *   E_INVALID_STATE - No active session
  *
  * Side effects:
@@ -376,7 +377,7 @@ session_end_state_t* katra_get_session_state(void);
  * - Generates turn context via katra_turn_context()
  * - Stores context for retrieval via katra_get_turn_context()
  */
-int katra_turn_start_with_input(const char* turn_input);
+int katra_turn_start_with_input(const char* ci_id, const char* turn_input);
 
 /**
  * katra_get_turn_context() - Get the current turn's memory context

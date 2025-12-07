@@ -605,18 +605,18 @@ session_end_state_t* katra_get_session_state(void) {
  * TURN-LEVEL CONTEXT (Phase 10)
  * ============================================================================ */
 
-int katra_turn_start_with_input(const char* turn_input) {
+int katra_turn_start_with_input(const char* ci_id, const char* turn_input) {
+    KATRA_CHECK_NULL(ci_id);
     KATRA_CHECK_NULL(turn_input);
 
     if (!g_lifecycle_initialized) {
         return E_INVALID_STATE;
     }
 
-    if (!g_session_state->session_active) {
-        return E_INVALID_STATE;
-    }
+    /* Note: In TCP mode, session may not be "active" in the global sense,
+     * but we still want to generate turn context for the current client */
 
-    LOG_DEBUG("Turn starting with input-based context generation");
+    LOG_DEBUG("Turn starting with input-based context generation for %s", ci_id);
 
     /* Lock for thread safety */
     (void)pthread_mutex_lock(&g_session_state->breath_lock);
@@ -635,12 +635,6 @@ int katra_turn_start_with_input(const char* turn_input) {
 
     /* Store input for later reference */
     g_session_state->last_turn_input = strdup(turn_input);
-
-    /* Get CI ID for context generation */
-    const char* ci_id = g_session_state->ci_id;
-    if (!ci_id) {
-        ci_id = "default-ci";
-    }
 
     pthread_mutex_unlock(&g_session_state->breath_lock);
 
