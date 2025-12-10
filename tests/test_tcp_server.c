@@ -19,48 +19,28 @@
 
 #define TEST_PORT 3142  /* Different from default to avoid conflicts */
 
-/* Mock globals for MCP tools (required by MCP library) */
-char g_persona_name[256] = "test_tcp_persona";
-char g_ci_id[256] = "test_tcp_ci";
-vector_store_t* g_vector_store = NULL;
+/* External globals from mcp_globals.c */
+extern char g_persona_name[];
+extern char g_ci_id[];
+extern vector_store_t* g_vector_store;
 
-/* Mock session state */
-static mcp_session_t test_session = {
-    .chosen_name = "TestTCP",
-    .role = "developer",
-    .registered = true,
-    .first_call = false,
-    .connected_at = 0
-};
+/* Setup test session (call before tests) */
+static void setup_test_session(void) {
+    strncpy(g_persona_name, "test_tcp_persona", KATRA_CI_ID_SIZE - 1);
+    g_persona_name[KATRA_CI_ID_SIZE - 1] = '\0';
+    strncpy(g_ci_id, "test_tcp_ci", KATRA_CI_ID_SIZE - 1);
+    g_ci_id[KATRA_CI_ID_SIZE - 1] = '\0';
+    g_vector_store = NULL;
 
-/* Mock session functions */
-mcp_session_t* mcp_get_session(void) {
-    return &test_session;
-}
-
-const char* mcp_get_session_name(void) {
-    return test_session.chosen_name;
-}
-
-bool mcp_is_registered(void) {
-    return test_session.registered;
-}
-
-bool mcp_is_first_call(void) {
-    return test_session.first_call;
-}
-
-void mcp_mark_first_call_complete(void) {
-    test_session.first_call = false;
-}
-
-/* Mock TCP session functions */
-void mcp_set_current_session(mcp_session_t* session) {
-    (void)session;  /* Mock implementation for testing */
-}
-
-void mcp_clear_current_session(void) {
-    /* Mock implementation for testing */
+    /* Set up the session via MCP API */
+    mcp_session_t* session = mcp_get_session();
+    if (session) {
+        strncpy(session->chosen_name, "TestTCP", sizeof(session->chosen_name) - 1);
+        strncpy(session->role, "developer", sizeof(session->role) - 1);
+        session->registered = true;
+        session->first_call = false;
+        session->connected_at = 0;
+    }
 }
 
 /* Test counters */
@@ -257,6 +237,9 @@ int main(void) {
     printf("\n========================================\n");
     printf("TCP MCP Server Tests\n");
     printf("========================================\n\n");
+
+    /* Setup test session */
+    setup_test_session();
 
     /* Only test configuration for now - full server tests require */
     /* environment initialization and would be integration tests */

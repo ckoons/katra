@@ -344,6 +344,11 @@ static json_t* handle_tools_list(json_t* request) {
         mcp_build_tool(MCP_TOOL_DAEMON_RUN, MCP_DESC_DAEMON_RUN,
             mcp_build_schema_optional_int("max_memories", "Maximum memories to process (default: 100)")));
 
+    /* Unified Operation Tool (Phase 11) */
+    json_array_append_new(tools_array,
+        mcp_build_tool(MCP_TOOL_OPERATION, MCP_DESC_OPERATION,
+            mcp_build_operation_schema()));
+
     /* Build result */
     json_t* result = json_object();
     json_object_set_new(result, MCP_FIELD_TOOLS, tools_array);

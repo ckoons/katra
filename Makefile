@@ -20,7 +20,7 @@ include Makefile.test
 # PHONY TARGETS
 # ==============================================================================
 
-.PHONY: all clean help test test-quick test-cli mcp-server daemon \
+.PHONY: all clean help test test-quick test-cli mcp-server daemon unified-daemon \
         benchmark benchmark-reflection benchmark-vector \
         count-report programming-guidelines check check-ready improvement-scan \
         install-mcp restart-mcp install-k install-all uninstall-k \
@@ -335,6 +335,7 @@ help:
 	@echo "  make all                - Build all targets"
 	@echo "  make mcp-server         - Build MCP server only"
 	@echo "  make daemon             - Build daemon runner only"
+	@echo "  make unified-daemon     - Build unified HTTP daemon (new!)"
 	@echo "  make clean              - Remove build artifacts"
 	@echo "  make clean-tests        - Remove test executables only"
 	@echo "  make clean-all          - Deep clean (including .d files)"

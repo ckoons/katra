@@ -12,51 +12,29 @@
 #include "katra_memory.h"
 #include "katra_error.h"
 #include "katra_vector.h"
+#include "katra_limits.h"
 
 #define TEST_CI_ID "test_mcp_ci"
 
-/* Mock globals for MCP tools (normally defined in katra_mcp_server.c) */
-char g_persona_name[256] = "test_persona";
-char g_ci_id[256] = TEST_CI_ID;
-vector_store_t* g_vector_store = NULL;  /* Mock vector store */
+/* Use globals defined in mcp_globals.c */
+extern char g_persona_name[];
+extern char g_ci_id[];
+extern vector_store_t* g_vector_store;
 
-/* Mock session state for testing */
-static mcp_session_t test_session = {
-    .chosen_name = "TestUser",
-    .role = "developer",
-    .registered = true,
-    .first_call = false,
-    .connected_at = 0
-};
+/* Setup test session via mcp_globals.c functions */
+static void setup_test_session(void) {
+    /* Initialize persona/ci_id for testing */
+    strncpy(g_persona_name, "test_persona", KATRA_CI_ID_SIZE - 1);
+    g_persona_name[KATRA_CI_ID_SIZE - 1] = '\0';
+    strncpy(g_ci_id, TEST_CI_ID, KATRA_CI_ID_SIZE - 1);
+    g_ci_id[KATRA_CI_ID_SIZE - 1] = '\0';
 
-/* Mock session state functions */
-mcp_session_t* mcp_get_session(void) {
-    return &test_session;
-}
-
-const char* mcp_get_session_name(void) {
-    return test_session.chosen_name;
-}
-
-bool mcp_is_registered(void) {
-    return test_session.registered;
-}
-
-bool mcp_is_first_call(void) {
-    return test_session.first_call;
-}
-
-void mcp_mark_first_call_complete(void) {
-    test_session.first_call = false;
-}
-
-/* Mock TCP session functions (not used in this test, but needed for linking) */
-void mcp_set_current_session(mcp_session_t* session) {
-    (void)session;  /* Not used in stdio mode test */
-}
-
-void mcp_clear_current_session(void) {
-    /* Not used in stdio mode test */
+    /* Setup session state via mcp_globals.c */
+    mcp_session_t* session = mcp_get_session();
+    strncpy(session->chosen_name, "TestUser", sizeof(session->chosen_name) - 1);
+    strncpy(session->role, "developer", sizeof(session->role) - 1);
+    session->registered = true;
+    session->first_call = false;
 }
 
 /* Test counters */
@@ -168,9 +146,9 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    /* 17 base + 7 Phase 6 + 3 Phase 7.1 + 10 Phase 8 + 3 Phase 9 daemon = 40 */
-    if (tool_count != 40) {
-        printf("  ✗ Expected 40 tools, got %zu\n", tool_count);
+    /* 17 base + 7 Phase 6 + 3 Phase 7.1 + 10 Phase 8 + 3 Phase 9 daemon + 1 Phase 11 unified = 41 */
+    if (tool_count != 41) {
+        printf("  ✗ Expected 41 tools, got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }
@@ -540,6 +518,9 @@ int main(void) {
     printf("========================================\n");
     printf("Katra MCP Server Tests\n");
     printf("========================================\n\n");
+
+    /* Setup test session (uses mcp_globals.c) */
+    setup_test_session();
 
     /* Initialize Katra */
     int result = katra_init();

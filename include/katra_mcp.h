@@ -127,6 +127,9 @@
 #define MCP_TOOL_DAEMON_ACKNOWLEDGE "katra_daemon_acknowledge"
 #define MCP_TOOL_DAEMON_RUN "katra_daemon_run"
 
+/* Unified Operation Tool (Phase 11) */
+#define MCP_TOOL_OPERATION "katra_operation"
+
 /* Tool Descriptions */
 #define MCP_DESC_REMEMBER "Store a memory with natural language importance"
 #define MCP_DESC_RECALL "Find memories about a topic"
@@ -179,6 +182,29 @@
 #define MCP_DESC_DAEMON_INSIGHTS "Get unacknowledged insights from interstitial processing"
 #define MCP_DESC_DAEMON_ACKNOWLEDGE "Acknowledge an insight (mark as seen)"
 #define MCP_DESC_DAEMON_RUN "Trigger daemon processing cycle (pattern/theme/insight extraction)"
+
+/* Unified Operation Tool Description (Phase 11)
+ *
+ * The unified interface provides a single entry point for all Katra operations,
+ * reducing token overhead by ~94% compared to individual tool definitions.
+ *
+ * Usage:
+ *   {"method": "recall", "params": {"topic": "Casey"}}
+ *   {"method": "remember", "params": {"content": "...", "context": "..."}}
+ *
+ * Options (optional):
+ *   {"method": "...", "options": {"namespace": "coder-a", "dry_run": true}}
+ *
+ * Supported methods: remember, recall, recent, digest, learn, decide, register,
+ *   whoami, status, update_metadata, say, hear, who_is_here, configure_semantic,
+ *   get_semantic_config, get_config, regenerate_vectors, wm_status, wm_add,
+ *   wm_decay, wm_consolidate, detect_boundary, process_boundary, cognitive_status,
+ *   archive, fade, forget, whiteboard_create, whiteboard_status, whiteboard_list,
+ *   whiteboard_question, whiteboard_propose, whiteboard_support, whiteboard_vote,
+ *   whiteboard_design, whiteboard_review, whiteboard_reconsider, daemon_insights,
+ *   daemon_acknowledge, daemon_run
+ */
+#define MCP_DESC_OPERATION "Execute any Katra operation via unified interface. Preferred over individual tools for efficiency."
 
 /* Tool Parameter Names */
 #define MCP_PARAM_CONTENT "content"
@@ -273,6 +299,7 @@
 #define MCP_RESOURCE_DESC_PERSONA_DISCOVERIES "Your reflections on who you are and what you've learned"
 
 /* Error Messages */
+#define MCP_ERR_DAEMON_ERROR "Katra daemon error"
 #define MCP_ERR_MISSING_PARAMS "Missing params"
 #define MCP_ERR_MISSING_TOOL_NAME "Missing tool name"
 #define MCP_ERR_UNKNOWN_TOOL "Unknown tool"
@@ -381,6 +408,7 @@ json_t* mcp_build_resource(const char* uri, const char* name,
 json_t* mcp_build_archive_schema(void);
 json_t* mcp_build_fade_schema(void);
 json_t* mcp_build_forget_schema(void);
+json_t* mcp_build_operation_schema(void);
 
 /* Tool Implementations */
 json_t* mcp_tool_remember(json_t* args, json_t* id);
@@ -483,6 +511,9 @@ json_t* mcp_tool_whiteboard_reconsider(json_t* args, json_t* id);
 json_t* mcp_tool_daemon_insights(json_t* args, json_t* id);
 json_t* mcp_tool_daemon_acknowledge(json_t* args, json_t* id);
 json_t* mcp_tool_daemon_run(json_t* args, json_t* id);
+
+/* Unified Operation Tool (Phase 11) */
+json_t* mcp_tool_operation(json_t* args, json_t* id);
 
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;

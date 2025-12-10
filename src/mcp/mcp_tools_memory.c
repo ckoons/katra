@@ -18,8 +18,8 @@
 #include "katra_synthesis.h"
 #include "mcp_tools_common.h"
 
-/* Global mutex for Katra API access */
-pthread_mutex_t g_katra_api_lock = PTHREAD_MUTEX_INITIALIZER;
+/* Global mutex for Katra API access (defined in mcp_globals.c) */
+extern pthread_mutex_t g_katra_api_lock;
 
 /* Tool: katra_remember - Enhanced with tags and salience */
 json_t* mcp_tool_remember(json_t* args, json_t* id) {

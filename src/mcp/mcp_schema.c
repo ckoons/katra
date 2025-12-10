@@ -273,3 +273,29 @@ json_t* mcp_build_forget_schema(void) {
     json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
     return schema;
 }
+
+/* Build schema for katra_operation: unified interface (Phase 11) */
+json_t* mcp_build_operation_schema(void) {
+    json_t* schema = json_object();
+    json_object_set_new(schema, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_t* props = json_object();
+
+    /* method - required */
+    add_string_property(props, "method", "Operation method (e.g., recall, remember, status)");
+
+    /* params - optional object */
+    json_t* params_prop = json_object();
+    json_object_set_new(params_prop, MCP_FIELD_TYPE, json_string(MCP_TYPE_OBJECT));
+    json_object_set_new(params_prop, MCP_FIELD_DESCRIPTION,
+                        json_string("Parameters for the operation"));
+    json_object_set_new(props, "params", params_prop);
+
+    json_object_set_new(schema, MCP_FIELD_PROPERTIES, props);
+
+    /* method is required, params is optional */
+    json_t* required = json_array();
+    json_array_append_new(required, json_string("method"));
+    json_object_set_new(schema, MCP_FIELD_REQUIRED, required);
+
+    return schema;
+}

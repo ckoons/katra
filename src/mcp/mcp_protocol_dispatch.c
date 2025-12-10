@@ -174,6 +174,9 @@ json_t* mcp_handle_tools_call(json_t* request) {
         tool_result = mcp_tool_daemon_acknowledge(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_DAEMON_RUN) == 0) {
         tool_result = mcp_tool_daemon_run(args, id);
+    /* Unified Operation Tool (Phase 11) */
+    } else if (strcmp(tool_name, MCP_TOOL_OPERATION) == 0) {
+        tool_result = mcp_tool_operation(args, id);
     } else {
         katra_hook_turn_end();  /* Trigger turn end hook before error return */
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_UNKNOWN_TOOL, tool_name);

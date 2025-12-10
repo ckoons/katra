@@ -157,6 +157,33 @@ $(DAEMON_RUNNER): $(DAEMON_RUNNER_OBJ) $(LIBKATRA_UTILS) | $(BIN_DIR)
 daemon: $(DAEMON_RUNNER)
 
 # ==============================================================================
+# UNIFIED HTTP DAEMON BUILD
+# ==============================================================================
+
+# Compile unified daemon sources (requires jansson and MCP headers)
+$(BUILD_DIR)/katra_unified_dispatch.o: $(SRC_DIR)/unified/katra_unified_dispatch.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/katra_http_daemon.o: $(SRC_DIR)/unified/katra_http_daemon.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/katra_daemon_main.o: $(SRC_DIR)/unified/katra_daemon_main.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+# Build unified HTTP daemon binary
+# Requires: libkatra_utils + MCP library objects (for tool handlers)
+$(UNIFIED_DAEMON): $(UNIFIED_OBJS) $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)
+	@echo "Building unified HTTP daemon: $@"
+	@$(CC) -o $@ $(UNIFIED_OBJS) $(MCP_LIB_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread $(LIBS)
+	@echo "Unified daemon built successfully"
+
+# Convenience target
+unified-daemon: $(UNIFIED_DAEMON)
+
+# ==============================================================================
 # AUTOMATIC DEPENDENCY INCLUSION
 # ==============================================================================
 # Include auto-generated .d files (header dependencies)

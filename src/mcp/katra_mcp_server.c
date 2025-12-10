@@ -28,30 +28,13 @@
 #include "katra_vector.h"
 #include "katra_env_utils.h"
 
-/* Global persona name (GUIDELINE_APPROVED: global state) */
-/* NOTE: g_ci_id IS the persona name (not UUID) - enables per-persona isolation */
-char g_persona_name[KATRA_CI_ID_SIZE] = "";
-char g_ci_id[KATRA_CI_ID_SIZE] = "";  /* Same as g_persona_name */
+/* Global state (defined in mcp_globals.c) */
+extern char g_persona_name[];
+extern char g_ci_id[];
+extern vector_store_t* g_vector_store;
+extern volatile sig_atomic_t g_shutdown_requested;
 
-/* Global vector store for semantic search (Phase 6.1) */
-vector_store_t* g_vector_store = NULL;
-
-/* Global session state (stdio mode) */
-static mcp_session_t g_session = {
-    .chosen_name = "Katra",  /* Default name until registered */
-    .role = "",
-    .registered = false,
-    .first_call = true,
-    .connected_at = 0
-};
-
-/* Thread-local session for TCP mode (per-client sessions) */
-static __thread mcp_session_t* g_current_session = NULL;
-
-/* Global shutdown flag */
-volatile sig_atomic_t g_shutdown_requested = 0;
-
-/* Global reload flag (SIGUSR1) */
+/* Global reload flag (SIGUSR1) - MCP server specific */
 volatile sig_atomic_t g_reload_requested = 0;
 
 /* Binary modification time for hot reload detection */
@@ -75,44 +58,7 @@ void mcp_signal_handler(int signum) {
     }
 }
 
-/* Session State Access Functions */
-mcp_session_t* mcp_get_session(void) {
-    /* TCP mode: return thread-local session if set */
-    if (g_current_session) {
-        return g_current_session;
-    }
-    /* stdio mode: return global session */
-    return &g_session;
-}
-
-const char* mcp_get_session_name(void) {
-    mcp_session_t* session = mcp_get_session();
-    return session->chosen_name;
-}
-
-bool mcp_is_registered(void) {
-    mcp_session_t* session = mcp_get_session();
-    return session->registered;
-}
-
-bool mcp_is_first_call(void) {
-    mcp_session_t* session = mcp_get_session();
-    return session->first_call;
-}
-
-void mcp_mark_first_call_complete(void) {
-    mcp_session_t* session = mcp_get_session();
-    session->first_call = false;
-}
-
-/* TCP mode: set current client session for this thread */
-void mcp_set_current_session(mcp_session_t* session) {
-    g_current_session = session;
-}
-
-void mcp_clear_current_session(void) {
-    g_current_session = NULL;
-}
+/* Session state access functions are in mcp_globals.c */
 
 /* Note: generate_ci_id() moved to katra_identity.c as katra_generate_ci_id() */
 
@@ -241,7 +187,8 @@ int mcp_server_init(const char* ci_id) {
     }
 
     /* Initialize session timestamp */
-    g_session.connected_at = time(NULL);
+    mcp_session_t* session = mcp_get_session();
+    session->connected_at = time(NULL);
 
     /* Step 1: Initialize Katra */
     int result = katra_init();
@@ -546,15 +493,15 @@ int main(int argc, char* argv[], char* envp[]) {
 
     /* Determine CI identity using persona system (priority cascade) */
     /* Priority 1: KATRA_PERSONA environment variable */
-    result = resolve_persona_from_env(g_persona_name, g_ci_id, sizeof(g_persona_name));
+    result = resolve_persona_from_env(g_persona_name, g_ci_id, KATRA_CI_ID_SIZE);
 
     if (result != KATRA_SUCCESS) {
         /* Priority 2: last_active from persona registry */
-        result = resolve_persona_from_last_active(g_persona_name, g_ci_id, sizeof(g_persona_name));
+        result = resolve_persona_from_last_active(g_persona_name, g_ci_id, KATRA_CI_ID_SIZE);
 
         if (result != KATRA_SUCCESS) {
             /* Priority 3: Create anonymous persona */
-            result = create_anonymous_persona(g_persona_name, g_ci_id, sizeof(g_persona_name));
+            result = create_anonymous_persona(g_persona_name, g_ci_id, KATRA_CI_ID_SIZE);
             if (result != KATRA_SUCCESS) {
                 return EXIT_FAILURE;
             }
@@ -562,11 +509,12 @@ int main(int argc, char* argv[], char* envp[]) {
     }
 
     /* Update session name from resolved persona */
-    strncpy(g_session.chosen_name, g_persona_name, sizeof(g_session.chosen_name) - 1);
-    g_session.chosen_name[sizeof(g_session.chosen_name) - 1] = '\0';
+    mcp_session_t* session = mcp_get_session();
+    strncpy(session->chosen_name, g_persona_name, sizeof(session->chosen_name) - 1);
+    session->chosen_name[sizeof(session->chosen_name) - 1] = '\0';
 
     /* Auto-register when KATRA_PERSONA is set (prevents "Katra" default name) */
-    g_session.registered = true;
+    session->registered = true;
 
     /* Initialize server with determined ci_id */
     result = mcp_server_init(g_ci_id);
