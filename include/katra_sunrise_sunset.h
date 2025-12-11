@@ -25,6 +25,10 @@
 #define SUNRISE_RAND_MODULO 10000              /* Random ID modulo */
 #define SUNRISE_DEFAULT_IMPORTANCE 0.5f        /* Default memory importance */
 #define SUNRISE_DEFAULT_CONFIDENCE 0.8f        /* Default memory confidence */
+#define SUNRISE_MIN_CLUSTER_SIZE 2             /* Min memories per topic cluster */
+#define SUNRISE_MIN_THREAD_LENGTH 2            /* Min thread continuation length */
+#define SUNRISE_SIMILARITY_THRESHOLD 0.6f      /* Topic similarity threshold */
+#define SUNRISE_INSIGHT_CONFIDENCE 0.5f        /* Insight confidence threshold */
 
 /* Working memory snapshot for sunset/sunrise (Phase 7.2)
  *

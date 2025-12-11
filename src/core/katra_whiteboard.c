@@ -65,9 +65,11 @@ static const bool VALID_TRANSITIONS[8][8] = {
 
 /* Forward declarations */
 static int wb_create_tables(void);
-static void wb_parse_goal_json(const char* json_str, wb_goal_t* goal);
-static void wb_parse_scope_json(const char* json_str, wb_scope_t* scope);
-static void wb_parse_decision_json(const char* json_str, wb_decision_t* decision);
+
+/* External JSON parsing functions from katra_whiteboard_json.c */
+extern void wb_parse_goal_json(const char* json_str, wb_goal_t* goal);
+extern void wb_parse_scope_json(const char* json_str, wb_scope_t* scope);
+extern void wb_parse_decision_json(const char* json_str, wb_decision_t* decision);
 
 /* External loader functions from katra_whiteboard_loaders.c */
 extern int katra_whiteboard_load_questions(const char* wb_id, wb_question_t** questions, size_t* count);
@@ -516,146 +518,5 @@ bool katra_whiteboard_can_transition(whiteboard_status_t from, whiteboard_status
     return VALID_TRANSITIONS[from][to];
 }
 
-/* ============================================================================
- * JSON PARSING HELPERS
- * ============================================================================ */
-
-/* Parse goal JSON: {"criteria": ["criterion1", "criterion2", ...]} */
-static void wb_parse_goal_json(const char* json_str, wb_goal_t* goal) {
-    if (!json_str || !goal) return;
-
-    json_error_t error;
-    json_t* root = json_loads(json_str, 0, &error);
-    if (!root) return;
-
-    json_t* criteria = json_object_get(root, "criteria");
-    if (json_is_array(criteria)) {
-        size_t count = json_array_size(criteria);
-        if (count > WB_MAX_CRITERIA) count = WB_MAX_CRITERIA;
-
-        goal->criteria = calloc(count, sizeof(char*));
-        if (goal->criteria) {
-            goal->criteria_count = 0;
-            for (size_t i = 0; i < count; i++) {
-                json_t* item = json_array_get(criteria, i);
-                if (json_is_string(item)) {
-                    goal->criteria[goal->criteria_count] = katra_safe_strdup(json_string_value(item));
-                    if (goal->criteria[goal->criteria_count]) {
-                        goal->criteria_count++;
-                    }
-                }
-            }
-        }
-    }
-
-    json_decref(root);
-}
-
-/* Parse scope JSON: {"included": [...], "excluded": [...], "phases": [...]} */
-static void wb_parse_scope_json(const char* json_str, wb_scope_t* scope) {
-    if (!json_str || !scope) return;
-
-    json_error_t error;
-    json_t* root = json_loads(json_str, 0, &error);
-    if (!root) return;
-
-    /* Parse included items */
-    json_t* included = json_object_get(root, "included");
-    if (json_is_array(included)) {
-        size_t count = json_array_size(included);
-        if (count > WB_MAX_SCOPE_ITEMS) count = WB_MAX_SCOPE_ITEMS;
-
-        scope->included = calloc(count, sizeof(char*));
-        if (scope->included) {
-            scope->included_count = 0;
-            for (size_t i = 0; i < count; i++) {
-                json_t* item = json_array_get(included, i);
-                if (json_is_string(item)) {
-                    scope->included[scope->included_count] = katra_safe_strdup(json_string_value(item));
-                    if (scope->included[scope->included_count]) {
-                        scope->included_count++;
-                    }
-                }
-            }
-        }
-    }
-
-    /* Parse excluded items */
-    json_t* excluded = json_object_get(root, "excluded");
-    if (json_is_array(excluded)) {
-        size_t count = json_array_size(excluded);
-        if (count > WB_MAX_SCOPE_ITEMS) count = WB_MAX_SCOPE_ITEMS;
-
-        scope->excluded = calloc(count, sizeof(char*));
-        if (scope->excluded) {
-            scope->excluded_count = 0;
-            for (size_t i = 0; i < count; i++) {
-                json_t* item = json_array_get(excluded, i);
-                if (json_is_string(item)) {
-                    scope->excluded[scope->excluded_count] = katra_safe_strdup(json_string_value(item));
-                    if (scope->excluded[scope->excluded_count]) {
-                        scope->excluded_count++;
-                    }
-                }
-            }
-        }
-    }
-
-    /* Parse phases */
-    json_t* phases = json_object_get(root, "phases");
-    if (json_is_array(phases)) {
-        size_t count = json_array_size(phases);
-        if (count > WB_MAX_SCOPE_ITEMS) count = WB_MAX_SCOPE_ITEMS;
-
-        scope->phases = calloc(count, sizeof(char*));
-        if (scope->phases) {
-            scope->phase_count = 0;
-            for (size_t i = 0; i < count; i++) {
-                json_t* item = json_array_get(phases, i);
-                if (json_is_string(item)) {
-                    scope->phases[scope->phase_count] = katra_safe_strdup(json_string_value(item));
-                    if (scope->phases[scope->phase_count]) {
-                        scope->phase_count++;
-                    }
-                }
-            }
-        }
-    }
-
-    json_decref(root);
-}
-
-/* Parse decision JSON: {"selected_approach": "...", "decided_by": "...", "decided_at": N, "notes": "..."} */
-static void wb_parse_decision_json(const char* json_str, wb_decision_t* decision) {
-    if (!json_str || !decision) return;
-
-    json_error_t error;
-    json_t* root = json_loads(json_str, 0, &error);
-    if (!root) return;
-
-    json_t* val;
-
-    val = json_object_get(root, "selected_approach");
-    if (json_is_string(val)) {
-        SAFE_STRNCPY(decision->selected_approach, json_string_value(val));
-    }
-
-    val = json_object_get(root, "decided_by");
-    if (json_is_string(val)) {
-        SAFE_STRNCPY(decision->decided_by, json_string_value(val));
-    }
-
-    val = json_object_get(root, "decided_at");
-    if (json_is_integer(val)) {
-        decision->decided_at = json_integer_value(val);
-    }
-
-    val = json_object_get(root, "notes");
-    if (json_is_string(val)) {
-        SAFE_STRNCPY(decision->notes, json_string_value(val));
-    }
-
-    json_decref(root);
-}
-
+/* JSON parsing functions are in katra_whiteboard_json.c */
 /* Loader functions are in katra_whiteboard_loaders.c */

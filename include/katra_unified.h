@@ -73,6 +73,11 @@
 #define KATRA_UNIFIED_TIMEOUT_SECS 30
 #define KATRA_UNIFIED_CONNECT_TIMEOUT 5
 
+/* Endpoint URLs (for internal daemon communication) */
+#define KATRA_UNIFIED_OPERATION_ENDPOINT "/operation"
+#define KATRA_UNIFIED_SOCKET_URL "http://localhost" KATRA_UNIFIED_OPERATION_ENDPOINT
+#define KATRA_UNIFIED_HTTP_URL_FMT "http://127.0.0.1:%d" KATRA_UNIFIED_OPERATION_ENDPOINT
+
 /* Maximum request/response size */
 #define KATRA_UNIFIED_MAX_REQUEST 65536    /* 64KB */
 #define KATRA_UNIFIED_MAX_RESPONSE 131072  /* 128KB */

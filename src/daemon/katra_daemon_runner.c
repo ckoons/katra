@@ -88,17 +88,20 @@ static int parse_args(int argc, char** argv, runner_options_t* opts) {
             exit(0);
         } else if (strcmp(argv[i], "--ci") == 0) {
             if (i + 1 >= argc) {
+                /* GUIDELINE_APPROVED: CLI arg error before logging init */
                 fprintf(stderr, "Error: --ci requires an argument\n");
                 return -1;
             }
             strncpy(opts->ci_id, argv[++i], sizeof(opts->ci_id) - 1);
         } else if (strcmp(argv[i], "--config") == 0) {
             if (i + 1 >= argc) {
+                /* GUIDELINE_APPROVED: CLI arg error before logging init */
                 fprintf(stderr, "Error: --config requires an argument\n");
                 return -1;
             }
             strncpy(opts->config_path, argv[++i], sizeof(opts->config_path) - 1);
         } else {
+            /* GUIDELINE_APPROVED: CLI arg error before logging init */
             fprintf(stderr, "Unknown option: %s\n", argv[i]);
             return -1;
         }
@@ -197,6 +200,7 @@ static int daemon_main_loop(const runner_options_t* opts) {
     katra_daemon_default_config(&config);
     result = katra_daemon_load_config(&config);
     if (result != KATRA_SUCCESS && result != E_NOT_FOUND) {
+        /* GUIDELINE_APPROVED: Non-fatal startup warning, logging may not be ready */
         fprintf(stderr, "Warning: Failed to load config, using defaults\n");
     }
 
@@ -270,6 +274,7 @@ int main(int argc, char** argv) {
     /* Initialize Katra subsystems */
     result = katra_daemon_init();
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: Critical startup error before logging available */
         fprintf(stderr, "Failed to initialize daemon: %s\n", katra_error_message(result));
         return 1;
     }

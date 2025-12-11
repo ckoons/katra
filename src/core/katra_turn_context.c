@@ -37,14 +37,14 @@ static size_t estimate_tokens(const char* text) {
 static char* extract_topic_hint(const char* content, size_t max_words) {
     if (!content) return NULL;
 
-    char* hint = calloc(256, 1);
+    char* hint = calloc(HINT_BUFFER_SIZE, 1);
     if (!hint) return NULL;
 
     size_t word_count = 0;
     size_t hint_pos = 0;
     bool in_word = false;
 
-    for (size_t i = 0; content[i] && hint_pos < 255 && word_count < max_words; i++) {
+    for (size_t i = 0; content[i] && hint_pos < CONTENT_HINT_MAX_LENGTH && word_count < max_words; i++) {
         char c = content[i];
         if (c == ' ' || c == '\n' || c == '\t') {
             if (in_word) {
@@ -60,9 +60,12 @@ static char* extract_topic_hint(const char* content, size_t max_words) {
         }
     }
 
-    /* Add ellipsis if truncated */
-    if (content[hint_pos] && hint_pos < 252) {
-        strcat(hint, "...");
+    /* Add ellipsis if truncated (safe: hint_pos < HINT_BUFFER_SIZE - HINT_ELLIPSIS_MARGIN ensures room for "..." + null) */
+    if (content[hint_pos] && hint_pos < HINT_BUFFER_SIZE - HINT_ELLIPSIS_MARGIN) {
+        hint[hint_pos] = '.';
+        hint[hint_pos + 1] = '.';
+        hint[hint_pos + 2] = '.';
+        hint[hint_pos + 3] = '\0';
     }
 
     return hint;
@@ -79,8 +82,13 @@ static char* create_preview(const char* content, size_t max_len) {
     if (!preview) return NULL;
 
     strncpy(preview, content, preview_len);
+    preview[preview_len] = '\0';  /* Ensure null termination */
     if (len > max_len) {
-        strcat(preview, "...");
+        /* Safe: allocated preview_len + 4 bytes, so room for "..." */
+        preview[preview_len] = '.';
+        preview[preview_len + 1] = '.';
+        preview[preview_len + 2] = '.';
+        preview[preview_len + 3] = '\0';
     }
 
     return preview;
@@ -207,7 +215,7 @@ int katra_turn_context(const char* ci_id,
         turn_memory_t* tm = &context->memories[context->memory_count];
 
         tm->record_id = katra_safe_strdup(r->record_id);
-        tm->content_preview = create_preview(r->content, 200);
+        tm->content_preview = create_preview(r->content, CONTENT_PREVIEW_MAX_LENGTH);
         tm->topic_hint = extract_topic_hint(r->content, 5);
         tm->relevance_score = r->score;
         tm->memory_timestamp = r->timestamp;
@@ -225,9 +233,9 @@ int katra_turn_context(const char* ci_id,
 
     katra_synthesis_free_results(results);
 
-    /* Calculate context fill ratio (assuming 100k token context) */
+    /* Calculate context fill ratio */
     context->estimated_tokens = total_tokens;
-    context->context_fill_ratio = (float)total_tokens / 100000.0f;
+    context->context_fill_ratio = (float)total_tokens / (float)CONTEXT_TOKEN_BUDGET;
 
     /* Build summary */
     build_context_summary(context);
@@ -336,10 +344,12 @@ int katra_turn_context_format(const turn_context_t* context,
         struct tm* tm = localtime(&m->memory_timestamp);
         strftime(date_buf, sizeof(date_buf), "%b %d", tm);
 
-        char sources[32] = "";
-        if (m->from_keyword) strcat(sources, "K");
-        if (m->from_semantic) strcat(sources, "S");
-        if (m->from_graph) strcat(sources, "G");
+        char sources[32];
+        int src_pos = 0;
+        if (m->from_keyword) sources[src_pos++] = 'K';
+        if (m->from_semantic) sources[src_pos++] = 'S';
+        if (m->from_graph) sources[src_pos++] = 'G';
+        sources[src_pos] = '\0';
 
         offset += snprintf(buffer + offset, buffer_size - offset,
                            "- %s (%s): %s [%s, %.0f%%]\n",

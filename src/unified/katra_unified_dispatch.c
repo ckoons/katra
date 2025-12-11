@@ -17,7 +17,7 @@
 
 /* Project includes */
 #include "katra_unified.h"
-#include "katra_mcp.h"
+#include "katra_method_wrappers.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
@@ -36,107 +36,65 @@ static method_entry_t g_method_registry[MAX_METHODS];
 static int g_method_count = 0;
 static pthread_mutex_t g_registry_lock = PTHREAD_MUTEX_INITIALIZER;
 
-/* Forward declarations for built-in method wrappers */
-static json_t* method_remember(json_t* params, const katra_unified_options_t* options);
-static json_t* method_recall(json_t* params, const katra_unified_options_t* options);
-static json_t* method_recent(json_t* params, const katra_unified_options_t* options);
-static json_t* method_digest(json_t* params, const katra_unified_options_t* options);
-static json_t* method_learn(json_t* params, const katra_unified_options_t* options);
-static json_t* method_decide(json_t* params, const katra_unified_options_t* options);
-static json_t* method_register(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whoami(json_t* params, const katra_unified_options_t* options);
-static json_t* method_status(json_t* params, const katra_unified_options_t* options);
-static json_t* method_update_metadata(json_t* params, const katra_unified_options_t* options);
-static json_t* method_say(json_t* params, const katra_unified_options_t* options);
-static json_t* method_hear(json_t* params, const katra_unified_options_t* options);
-static json_t* method_who_is_here(json_t* params, const katra_unified_options_t* options);
-static json_t* method_configure_semantic(json_t* params, const katra_unified_options_t* options);
-static json_t* method_get_semantic_config(json_t* params, const katra_unified_options_t* options);
-static json_t* method_get_config(json_t* params, const katra_unified_options_t* options);
-static json_t* method_regenerate_vectors(json_t* params, const katra_unified_options_t* options);
-static json_t* method_wm_status(json_t* params, const katra_unified_options_t* options);
-static json_t* method_wm_add(json_t* params, const katra_unified_options_t* options);
-static json_t* method_wm_decay(json_t* params, const katra_unified_options_t* options);
-static json_t* method_wm_consolidate(json_t* params, const katra_unified_options_t* options);
-static json_t* method_detect_boundary(json_t* params, const katra_unified_options_t* options);
-static json_t* method_process_boundary(json_t* params, const katra_unified_options_t* options);
-static json_t* method_cognitive_status(json_t* params, const katra_unified_options_t* options);
-static json_t* method_archive(json_t* params, const katra_unified_options_t* options);
-static json_t* method_fade(json_t* params, const katra_unified_options_t* options);
-static json_t* method_forget(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_create(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_status(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_list(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_question(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_propose(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_support(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_vote(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_design(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_review(json_t* params, const katra_unified_options_t* options);
-static json_t* method_whiteboard_reconsider(json_t* params, const katra_unified_options_t* options);
-static json_t* method_daemon_insights(json_t* params, const katra_unified_options_t* options);
-static json_t* method_daemon_acknowledge(json_t* params, const katra_unified_options_t* options);
-static json_t* method_daemon_run(json_t* params, const katra_unified_options_t* options);
-
 /* Register all built-in methods */
 static void register_builtin_methods(void) {
     /* Memory operations */
-    katra_register_method(KATRA_METHOD_REMEMBER, method_remember);
-    katra_register_method(KATRA_METHOD_RECALL, method_recall);
-    katra_register_method(KATRA_METHOD_RECENT, method_recent);
-    katra_register_method(KATRA_METHOD_MEMORY_DIGEST, method_digest);
-    katra_register_method(KATRA_METHOD_LEARN, method_learn);
-    katra_register_method(KATRA_METHOD_DECIDE, method_decide);
+    katra_register_method(KATRA_METHOD_REMEMBER, katra_method_remember);
+    katra_register_method(KATRA_METHOD_RECALL, katra_method_recall);
+    katra_register_method(KATRA_METHOD_RECENT, katra_method_recent);
+    katra_register_method(KATRA_METHOD_MEMORY_DIGEST, katra_method_digest);
+    katra_register_method(KATRA_METHOD_LEARN, katra_method_learn);
+    katra_register_method(KATRA_METHOD_DECIDE, katra_method_decide);
 
     /* Identity operations */
-    katra_register_method(KATRA_METHOD_REGISTER, method_register);
-    katra_register_method(KATRA_METHOD_WHOAMI, method_whoami);
-    katra_register_method(KATRA_METHOD_STATUS, method_status);
-    katra_register_method(KATRA_METHOD_UPDATE_METADATA, method_update_metadata);
+    katra_register_method(KATRA_METHOD_REGISTER, katra_method_register);
+    katra_register_method(KATRA_METHOD_WHOAMI, katra_method_whoami);
+    katra_register_method(KATRA_METHOD_STATUS, katra_method_status);
+    katra_register_method(KATRA_METHOD_UPDATE_METADATA, katra_method_update_metadata);
 
     /* Communication operations */
-    katra_register_method(KATRA_METHOD_SAY, method_say);
-    katra_register_method(KATRA_METHOD_HEAR, method_hear);
-    katra_register_method(KATRA_METHOD_WHO_IS_HERE, method_who_is_here);
+    katra_register_method(KATRA_METHOD_SAY, katra_method_say);
+    katra_register_method(KATRA_METHOD_HEAR, katra_method_hear);
+    katra_register_method(KATRA_METHOD_WHO_IS_HERE, katra_method_who_is_here);
 
     /* Configuration operations */
-    katra_register_method(KATRA_METHOD_CONFIGURE_SEMANTIC, method_configure_semantic);
-    katra_register_method(KATRA_METHOD_GET_SEMANTIC_CONFIG, method_get_semantic_config);
-    katra_register_method(KATRA_METHOD_GET_CONFIG, method_get_config);
-    katra_register_method(KATRA_METHOD_REGENERATE_VECTORS, method_regenerate_vectors);
+    katra_register_method(KATRA_METHOD_CONFIGURE_SEMANTIC, katra_method_configure_semantic);
+    katra_register_method(KATRA_METHOD_GET_SEMANTIC_CONFIG, katra_method_get_semantic_config);
+    katra_register_method(KATRA_METHOD_GET_CONFIG, katra_method_get_config);
+    katra_register_method(KATRA_METHOD_REGENERATE_VECTORS, katra_method_regenerate_vectors);
 
     /* Working memory operations */
-    katra_register_method(KATRA_METHOD_WM_STATUS, method_wm_status);
-    katra_register_method(KATRA_METHOD_WM_ADD, method_wm_add);
-    katra_register_method(KATRA_METHOD_WM_DECAY, method_wm_decay);
-    katra_register_method(KATRA_METHOD_WM_CONSOLIDATE, method_wm_consolidate);
+    katra_register_method(KATRA_METHOD_WM_STATUS, katra_method_wm_status);
+    katra_register_method(KATRA_METHOD_WM_ADD, katra_method_wm_add);
+    katra_register_method(KATRA_METHOD_WM_DECAY, katra_method_wm_decay);
+    katra_register_method(KATRA_METHOD_WM_CONSOLIDATE, katra_method_wm_consolidate);
 
     /* Cognitive operations */
-    katra_register_method(KATRA_METHOD_DETECT_BOUNDARY, method_detect_boundary);
-    katra_register_method(KATRA_METHOD_PROCESS_BOUNDARY, method_process_boundary);
-    katra_register_method(KATRA_METHOD_COGNITIVE_STATUS, method_cognitive_status);
+    katra_register_method(KATRA_METHOD_DETECT_BOUNDARY, katra_method_detect_boundary);
+    katra_register_method(KATRA_METHOD_PROCESS_BOUNDARY, katra_method_process_boundary);
+    katra_register_method(KATRA_METHOD_COGNITIVE_STATUS, katra_method_cognitive_status);
 
     /* Memory lifecycle operations */
-    katra_register_method(KATRA_METHOD_ARCHIVE, method_archive);
-    katra_register_method(KATRA_METHOD_FADE, method_fade);
-    katra_register_method(KATRA_METHOD_FORGET, method_forget);
+    katra_register_method(KATRA_METHOD_ARCHIVE, katra_method_archive);
+    katra_register_method(KATRA_METHOD_FADE, katra_method_fade);
+    katra_register_method(KATRA_METHOD_FORGET, katra_method_forget);
 
     /* Whiteboard operations */
-    katra_register_method(KATRA_METHOD_WB_CREATE, method_whiteboard_create);
-    katra_register_method(KATRA_METHOD_WB_STATUS, method_whiteboard_status);
-    katra_register_method(KATRA_METHOD_WB_LIST, method_whiteboard_list);
-    katra_register_method(KATRA_METHOD_WB_QUESTION, method_whiteboard_question);
-    katra_register_method(KATRA_METHOD_WB_PROPOSE, method_whiteboard_propose);
-    katra_register_method(KATRA_METHOD_WB_SUPPORT, method_whiteboard_support);
-    katra_register_method(KATRA_METHOD_WB_VOTE, method_whiteboard_vote);
-    katra_register_method(KATRA_METHOD_WB_DESIGN, method_whiteboard_design);
-    katra_register_method(KATRA_METHOD_WB_REVIEW, method_whiteboard_review);
-    katra_register_method(KATRA_METHOD_WB_RECONSIDER, method_whiteboard_reconsider);
+    katra_register_method(KATRA_METHOD_WB_CREATE, katra_method_whiteboard_create);
+    katra_register_method(KATRA_METHOD_WB_STATUS, katra_method_whiteboard_status);
+    katra_register_method(KATRA_METHOD_WB_LIST, katra_method_whiteboard_list);
+    katra_register_method(KATRA_METHOD_WB_QUESTION, katra_method_whiteboard_question);
+    katra_register_method(KATRA_METHOD_WB_PROPOSE, katra_method_whiteboard_propose);
+    katra_register_method(KATRA_METHOD_WB_SUPPORT, katra_method_whiteboard_support);
+    katra_register_method(KATRA_METHOD_WB_VOTE, katra_method_whiteboard_vote);
+    katra_register_method(KATRA_METHOD_WB_DESIGN, katra_method_whiteboard_design);
+    katra_register_method(KATRA_METHOD_WB_REVIEW, katra_method_whiteboard_review);
+    katra_register_method(KATRA_METHOD_WB_RECONSIDER, katra_method_whiteboard_reconsider);
 
     /* Daemon operations */
-    katra_register_method(KATRA_METHOD_DAEMON_INSIGHTS, method_daemon_insights);
-    katra_register_method(KATRA_METHOD_DAEMON_ACKNOWLEDGE, method_daemon_acknowledge);
-    katra_register_method(KATRA_METHOD_DAEMON_RUN, method_daemon_run);
+    katra_register_method(KATRA_METHOD_DAEMON_INSIGHTS, katra_method_daemon_insights);
+    katra_register_method(KATRA_METHOD_DAEMON_ACKNOWLEDGE, katra_method_daemon_acknowledge);
+    katra_register_method(KATRA_METHOD_DAEMON_RUN, katra_method_daemon_run);
 
     LOG_INFO("Registered %d unified methods", g_method_count);
 }
@@ -289,7 +247,7 @@ int katra_parse_options(json_t* options_json, katra_unified_options_t* options) 
 }
 
 /* Thread-local namespace for request context */
-static __thread char g_current_namespace[64] = "default";
+static __thread char g_current_namespace[NAMESPACE_BUFFER_SIZE] = "default";
 
 /* Set current namespace (called by dispatcher before executing method) */
 void katra_set_namespace(const char* ns) {
@@ -339,8 +297,8 @@ json_t* katra_unified_success(const char* method, json_t* params, json_t* result
             json_object_set_new(meta, KATRA_FIELD_TIMESTAMP, json_string(metadata->timestamp));
             json_object_set_new(meta, KATRA_FIELD_DURATION_MS, json_integer(metadata->duration_ms));
         } else {
-            char uuid[40];
-            char ts[32];
+            char uuid[UUID_BUFFER_SIZE];
+            char ts[TIMESTAMP_BUFFER_SIZE];
             katra_generate_uuid(uuid, sizeof(uuid));
             katra_get_timestamp(ts, sizeof(ts));
             json_object_set_new(meta, KATRA_FIELD_REQUEST_ID, json_string(uuid));
@@ -388,8 +346,8 @@ json_t* katra_unified_error(const char* method, json_t* params, const char* code
     /* Add metadata */
     json_t* meta = json_object();
     if (meta) {
-        char uuid[40];
-        char ts[32];
+        char uuid[UUID_BUFFER_SIZE];
+        char ts[TIMESTAMP_BUFFER_SIZE];
         katra_generate_uuid(uuid, sizeof(uuid));
         katra_get_timestamp(ts, sizeof(ts));
         json_object_set_new(meta, KATRA_FIELD_REQUEST_ID, json_string(uuid));
@@ -508,282 +466,4 @@ int katra_unified_parse_request(const char* json_str, json_t** out_request) {
 
     *out_request = request;
     return KATRA_SUCCESS;
-}
-
-/*
- * Method wrapper implementations
- *
- * These wrap the existing MCP tool handlers, adapting them to the unified interface.
- * The MCP tools return json_t* responses; we extract the result or error.
- */
-
-/* Helper: Extract result from MCP tool response */
-static json_t* extract_mcp_result(json_t* mcp_response) {
-    if (!mcp_response) {
-        return NULL;
-    }
-
-    /* MCP tool responses have content array with text */
-    json_t* content = json_object_get(mcp_response, "content");
-    if (content && json_is_array(content) && json_array_size(content) > 0) {
-        json_t* first = json_array_get(content, 0);
-        json_t* text = json_object_get(first, "text");
-        if (text && json_is_string(text)) {
-            json_t* result = json_string(json_string_value(text));
-            json_decref(mcp_response);
-            return result;
-        }
-    }
-
-    /* Return as-is if not standard format */
-    return mcp_response;
-}
-
-/* Memory operations */
-static json_t* method_remember(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_remember(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_recall(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_recall(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_recent(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_recent(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_digest(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_memory_digest(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_learn(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_learn(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_decide(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_decide(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Identity operations */
-static json_t* method_register(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_register(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whoami(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whoami(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_status(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_update_metadata(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_update_metadata(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Communication operations */
-static json_t* method_say(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_say(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_hear(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_hear(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_who_is_here(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_who_is_here(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Configuration operations */
-static json_t* method_configure_semantic(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_configure_semantic(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_get_semantic_config(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_get_semantic_config(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_get_config(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_get_config(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_regenerate_vectors(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_regenerate_vectors(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Working memory operations */
-static json_t* method_wm_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_status(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_wm_add(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_add(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_wm_decay(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_decay(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_wm_consolidate(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_consolidate(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Cognitive operations */
-static json_t* method_detect_boundary(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_detect_boundary(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_process_boundary(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_process_boundary(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_cognitive_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_cognitive_status(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Memory lifecycle operations */
-static json_t* method_archive(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_archive(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_fade(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_fade(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_forget(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_forget(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Whiteboard operations */
-static json_t* method_whiteboard_create(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_create(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_status(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_list(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_list(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_question(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_question(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_propose(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_propose(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_support(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_support(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_vote(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_vote(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_design(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_design(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_review(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_review(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_whiteboard_reconsider(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_reconsider(params, NULL);
-    return extract_mcp_result(result);
-}
-
-/* Daemon operations */
-static json_t* method_daemon_insights(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_daemon_insights(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_daemon_acknowledge(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_daemon_acknowledge(params, NULL);
-    return extract_mcp_result(result);
-}
-
-static json_t* method_daemon_run(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_daemon_run(params, NULL);
-    return extract_mcp_result(result);
 }

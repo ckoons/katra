@@ -20,12 +20,6 @@
 #include "katra_log.h"
 #include "katra_limits.h"
 
-/* Constants */
-#define MIN_CLUSTER_SIZE 2
-#define MIN_THREAD_LENGTH 2
-#define SIMILARITY_THRESHOLD 0.6f
-#define INSIGHT_CONFIDENCE_THRESHOLD 0.5f
-
 /* Extract topic clusters from day's memories using vector similarity */
 int katra_extract_topics(const char* ci_id,
                          vector_store_t* vectors,
@@ -103,7 +97,7 @@ int katra_extract_topics(const char* ci_id,
         }
 
         /* Add to cluster if similar enough, otherwise create new cluster */
-        if (best_similarity >= SIMILARITY_THRESHOLD) {
+        if (best_similarity >= SUNRISE_SIMILARITY_THRESHOLD) {
             topic_cluster_t* cluster = clusters[best_cluster];
             cluster->record_ids[cluster->record_count] =
                 katra_safe_strdup(records[i]->record_id);
@@ -178,7 +172,7 @@ int katra_trace_threads(const char* ci_id,
         result = katra_graph_traverse(graph, records[i]->record_id, SUNRISE_GRAPH_TRAVERSAL_DEPTH,
                                       &path, &path_len);
 
-        if (result == KATRA_SUCCESS && path_len >= MIN_THREAD_LENGTH) {
+        if (result == KATRA_SUCCESS && path_len >= SUNRISE_MIN_THREAD_LENGTH) {
             conversation_thread_t* thread = calloc(1, sizeof(conversation_thread_t));
             if (thread) {
                 snprintf(thread->thread_id, sizeof(thread->thread_id),

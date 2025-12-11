@@ -65,6 +65,10 @@ $(BUILD_DIR)/katra_whiteboard.o: $(SRC_DIR)/core/katra_whiteboard.c | $(BUILD_DI
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 
+$(BUILD_DIR)/katra_whiteboard_json.o: $(SRC_DIR)/core/katra_whiteboard_json.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
 $(BUILD_DIR)/katra_whiteboard_loaders.o: $(SRC_DIR)/core/katra_whiteboard_loaders.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
@@ -162,6 +166,10 @@ daemon: $(DAEMON_RUNNER)
 
 # Compile unified daemon sources (requires jansson and MCP headers)
 $(BUILD_DIR)/katra_unified_dispatch.o: $(SRC_DIR)/unified/katra_unified_dispatch.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/katra_method_wrappers.o: $(SRC_DIR)/unified/katra_method_wrappers.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 

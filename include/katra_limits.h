@@ -143,6 +143,9 @@
 /* File permissions for private files (e.g., persona registry) */
 #define KATRA_FILE_PERMISSIONS_PRIVATE 0600
 
+/* Unix socket file permissions (group/world writable for IPC) */
+#define KATRA_SOCKET_PERMISSIONS 0666
+
 /* Directory names for Katra standard directories */
 #define KATRA_DIR_CONFIG "config"
 #define KATRA_DIR_LOGS "logs"
@@ -169,6 +172,7 @@
 #define PERCENTAGE_DIVISOR 100
 
 /* Time conversions */
+#define NANOSECONDS_PER_SECOND 1000000000L   /* For timespec calculations */
 #define MICROSECONDS_PER_MILLISECOND 1000
 #define MILLISECONDS_PER_SECOND 1000
 #define SECONDS_PER_MINUTE 60
@@ -285,8 +289,42 @@
 /* Timestamp buffer size */
 #define TIMESTAMP_BUFFER_SIZE 32
 
+/* UUID and identifier buffer sizes */
+#define UUID_BUFFER_SIZE 40                   /* Standard UUID (36 chars + padding) */
+#define NAMESPACE_BUFFER_SIZE 64              /* Namespace identifier buffer */
+
+/* Content preview limits */
+#define CONTENT_PREVIEW_MAX_LENGTH 200        /* Maximum content preview length */
+#define CONTENT_HINT_MAX_LENGTH 255           /* Maximum hint/snippet length */
+
+/* Default query limits */
+#define DEFAULT_MEMORY_QUERY_LIMIT 20         /* Default memory query limit */
+#define DEFAULT_RECENT_MEMORIES_LIMIT 10      /* Default recent memories limit */
+#define DEFAULT_MAX_TAGS 10                   /* Maximum tags per memory */
+#define DEFAULT_MAX_CLIENTS 32                /* Maximum HTTP daemon clients */
+#define DEFAULT_HTTP_PORT 9742                /* Default HTTP daemon port */
+
 /* Error message buffer size */
 #define ERROR_MSG_BUFFER_SIZE 256
+
+/* Context token budget */
+#define CONTEXT_TOKEN_BUDGET 100000      /* Total token budget for context (100k) */
+
+/* Hint buffer sizes */
+#define HINT_BUFFER_SIZE 256             /* Buffer for content hints */
+#define HINT_ELLIPSIS_MARGIN 4           /* Room for "..." + null */
+
+/* Initial collection capacity */
+#define INITIAL_COLLECTION_CAPACITY 16   /* Initial array capacity for collections */
+
+/* Date/time format widths */
+#define YEAR_WIDTH 4                     /* Width for year in date formats */
+#define MONTH_WIDTH 2                    /* Width for month in date formats */
+#define DAY_WIDTH 2                      /* Width for day in date formats */
+#define WEEK_WIDTH 2                     /* Width for week number in week IDs */
+
+/* Checksum formatting */
+#define CHECKSUM_WIDTH 16                /* Width for checksum hex output */
 
 /* Exit codes */
 #define EXIT_CODE_SUCCESS 0

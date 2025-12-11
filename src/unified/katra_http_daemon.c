@@ -292,32 +292,18 @@ static void* client_thread(void* arg) {
     return NULL;
 }
 
-/* Start HTTP daemon (blocks until shutdown) */
-int katra_http_daemon_start(const katra_daemon_config_t* config) {
+/* Create and bind HTTP socket */
+static int create_http_socket(const katra_daemon_config_t* config) {
     int server_fd = -1;
-    int result = KATRA_SUCCESS;
     struct sockaddr_in server_addr;
     int opt = 1;
-
-    KATRA_CHECK_NULL(config);
-
-    /* Initialize dispatcher */
-    result = katra_unified_init(config);
-    if (result != KATRA_SUCCESS) {
-        return result;
-    }
-
-    /* Setup signal handlers */
-    signal(SIGTERM, http_signal_handler);
-    signal(SIGINT, http_signal_handler);
-    signal(SIGPIPE, SIG_IGN);
 
     /* Create socket */
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd < 0) {
-        katra_report_error(E_SYSTEM_IO, "katra_http_daemon_start",
+        katra_report_error(E_SYSTEM_IO, "create_http_socket",
                           "Failed to create socket");
-        return E_SYSTEM_IO;
+        return -1;
     }
 
     /* Set socket options */
@@ -332,60 +318,121 @@ int katra_http_daemon_start(const katra_daemon_config_t* config) {
 
     if (inet_pton(AF_INET, config->bind_address, &server_addr.sin_addr) <= 0) {
         close(server_fd);
-        katra_report_error(E_INPUT_INVALID, "katra_http_daemon_start",
+        katra_report_error(E_INPUT_INVALID, "create_http_socket",
                           "Invalid bind address");
-        return E_INPUT_INVALID;
+        return -1;
     }
 
     if (bind(server_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
         close(server_fd);
-        katra_report_error(E_SYSTEM_IO, "katra_http_daemon_start",
+        katra_report_error(E_SYSTEM_IO, "create_http_socket",
                           "Failed to bind socket");
-        return E_SYSTEM_IO;
+        return -1;
     }
 
     /* Listen */
     if (listen(server_fd, config->max_clients) < 0) {
         close(server_fd);
-        katra_report_error(E_SYSTEM_IO, "katra_http_daemon_start",
+        katra_report_error(E_SYSTEM_IO, "create_http_socket",
                           "Failed to listen on socket");
-        return E_SYSTEM_IO;
+        return -1;
     }
 
     LOG_INFO("Katra HTTP daemon listening on %s:%d",
              config->bind_address, config->http_port);
 
-    /* Create Unix socket for local fast path (optional) */
+    return server_fd;
+}
+
+/* Create and bind Unix socket for local fast path */
+static int create_unix_socket(const katra_daemon_config_t* config) {
     int unix_fd = -1;
-    if (config->enable_unix_socket && config->socket_path) {
-        unix_fd = socket(AF_UNIX, SOCK_STREAM, 0);
-        if (unix_fd < 0) {
-            LOG_WARN("Failed to create Unix socket: %s", strerror(errno));
-        } else {
-            /* Remove old socket if exists */
-            unlink(config->socket_path);
 
-            struct sockaddr_un unix_addr;
-            memset(&unix_addr, 0, sizeof(unix_addr));
-            unix_addr.sun_family = AF_UNIX;
-            strncpy(unix_addr.sun_path, config->socket_path,
-                    sizeof(unix_addr.sun_path) - 1);
-
-            if (bind(unix_fd, (struct sockaddr*)&unix_addr, sizeof(unix_addr)) < 0) {
-                LOG_WARN("Failed to bind Unix socket: %s", strerror(errno));
-                close(unix_fd);
-                unix_fd = -1;
-            } else if (listen(unix_fd, config->max_clients) < 0) {
-                LOG_WARN("Failed to listen on Unix socket: %s", strerror(errno));
-                close(unix_fd);
-                unix_fd = -1;
-            } else {
-                /* Set socket permissions (world readable/writable) */
-                chmod(config->socket_path, 0666);
-                LOG_INFO("Katra Unix socket listening on %s", config->socket_path);
-            }
-        }
+    if (!config->enable_unix_socket || !config->socket_path) {
+        return -1;
     }
+
+    unix_fd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (unix_fd < 0) {
+        LOG_WARN("Failed to create Unix socket: %s", strerror(errno));
+        return -1;
+    }
+
+    /* Remove old socket if exists */
+    unlink(config->socket_path);
+
+    struct sockaddr_un unix_addr;
+    memset(&unix_addr, 0, sizeof(unix_addr));
+    unix_addr.sun_family = AF_UNIX;
+    strncpy(unix_addr.sun_path, config->socket_path, sizeof(unix_addr.sun_path) - 1);
+
+    if (bind(unix_fd, (struct sockaddr*)&unix_addr, sizeof(unix_addr)) < 0) {
+        LOG_WARN("Failed to bind Unix socket: %s", strerror(errno));
+        close(unix_fd);
+        return -1;
+    }
+
+    if (listen(unix_fd, config->max_clients) < 0) {
+        LOG_WARN("Failed to listen on Unix socket: %s", strerror(errno));
+        close(unix_fd);
+        return -1;
+    }
+
+    /* Set socket permissions (world readable/writable) */
+    chmod(config->socket_path, KATRA_SOCKET_PERMISSIONS);
+    LOG_INFO("Katra Unix socket listening on %s", config->socket_path);
+
+    return unix_fd;
+}
+
+/* Accept and handle a single client connection */
+static void accept_client(int socket_fd, const char* socket_name) {
+    struct sockaddr_storage client_addr;
+    socklen_t client_len = sizeof(client_addr);
+
+    int client_fd = accept(socket_fd, (struct sockaddr*)&client_addr, &client_len);
+    if (client_fd >= 0) {
+        /* Spawn thread to handle client */
+        pthread_t thread;
+        if (pthread_create(&thread, NULL, client_thread, (void*)(intptr_t)client_fd) != 0) {
+            LOG_ERROR("Failed to create client thread");
+            close(client_fd);
+        } else {
+            pthread_detach(thread);
+        }
+    } else if (errno != EINTR) {
+        LOG_ERROR("accept() failed on %s socket: %s", socket_name, strerror(errno));
+    }
+}
+
+/* Start HTTP daemon (blocks until shutdown) */
+int katra_http_daemon_start(const katra_daemon_config_t* config) {
+    int server_fd = -1;
+    int unix_fd = -1;
+    int result = KATRA_SUCCESS;
+
+    KATRA_CHECK_NULL(config);
+
+    /* Initialize dispatcher */
+    result = katra_unified_init(config);
+    if (result != KATRA_SUCCESS) {
+        return result;
+    }
+
+    /* Setup signal handlers */
+    signal(SIGTERM, http_signal_handler);
+    signal(SIGINT, http_signal_handler);
+    signal(SIGPIPE, SIG_IGN);
+
+    /* Create HTTP socket */
+    server_fd = create_http_socket(config);
+    if (server_fd < 0) {
+        katra_unified_shutdown();
+        return E_SYSTEM_IO;
+    }
+
+    /* Create Unix socket for local fast path (optional) */
+    unix_fd = create_unix_socket(config);
 
     /* Accept loop */
     int max_fd = server_fd;
@@ -419,40 +466,12 @@ int katra_http_daemon_start(const katra_daemon_config_t* config) {
 
         /* Accept connection on HTTP socket */
         if (FD_ISSET(server_fd, &read_fds)) {
-            struct sockaddr_in client_addr;
-            socklen_t client_len = sizeof(client_addr);
-            int client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &client_len);
-            if (client_fd >= 0) {
-                /* Spawn thread to handle client */
-                pthread_t thread;
-                if (pthread_create(&thread, NULL, client_thread, (void*)(intptr_t)client_fd) != 0) {
-                    LOG_ERROR("Failed to create client thread");
-                    close(client_fd);
-                } else {
-                    pthread_detach(thread);
-                }
-            } else if (errno != EINTR) {
-                LOG_ERROR("accept() failed on HTTP socket: %s", strerror(errno));
-            }
+            accept_client(server_fd, "HTTP");
         }
 
         /* Accept connection on Unix socket */
         if (unix_fd >= 0 && FD_ISSET(unix_fd, &read_fds)) {
-            struct sockaddr_un client_addr;
-            socklen_t client_len = sizeof(client_addr);
-            int client_fd = accept(unix_fd, (struct sockaddr*)&client_addr, &client_len);
-            if (client_fd >= 0) {
-                /* Spawn thread to handle client */
-                pthread_t thread;
-                if (pthread_create(&thread, NULL, client_thread, (void*)(intptr_t)client_fd) != 0) {
-                    LOG_ERROR("Failed to create client thread");
-                    close(client_fd);
-                } else {
-                    pthread_detach(thread);
-                }
-            } else if (errno != EINTR) {
-                LOG_ERROR("accept() failed on Unix socket: %s", strerror(errno));
-            }
+            accept_client(unix_fd, "Unix");
         }
     }
 

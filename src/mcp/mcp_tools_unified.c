@@ -104,12 +104,12 @@ static json_t* forward_to_daemon(json_t* shared_state) {
     if (use_unix_socket) {
         /* Use Unix socket for local communication */
         curl_easy_setopt(curl, CURLOPT_UNIX_SOCKET_PATH, KATRA_UNIFIED_SOCKET_PATH);
-        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost/operation");
+        curl_easy_setopt(curl, CURLOPT_URL, KATRA_UNIFIED_SOCKET_URL);
         LOG_DEBUG("Using Unix socket: %s", KATRA_UNIFIED_SOCKET_PATH);
     } else {
         /* Fall back to HTTP */
         char url[KATRA_PATH_MAX];
-        snprintf(url, sizeof(url), "http://127.0.0.1:%d/operation",
+        snprintf(url, sizeof(url), KATRA_UNIFIED_HTTP_URL_FMT,
                  KATRA_UNIFIED_DEFAULT_PORT);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         LOG_DEBUG("Using HTTP: port %d", KATRA_UNIFIED_DEFAULT_PORT);

@@ -31,6 +31,7 @@
 
 /* Usage message */
 static void print_usage(const char* program_name) {
+    /* GUIDELINE_APPROVED: CLI help output to stderr is standard practice */
     fprintf(stderr,
         "Katra Unified Daemon v%s\n"
         "\n"
@@ -90,6 +91,7 @@ static int parse_args(int argc, char* argv[], katra_daemon_config_t* config) {
             case 'p':
                 config->http_port = (uint16_t)atoi(optarg);
                 if (config->http_port == 0) {
+                    /* GUIDELINE_APPROVED: CLI arg error before logging init */
                     fprintf(stderr, "Invalid port: %s\n", optarg);
                     return E_INPUT_INVALID;
                 }
@@ -173,6 +175,7 @@ int main(int argc, char* argv[]) {
     /* Initialize Katra core (for MCP tools to work) */
     result = katra_lifecycle_init();
     if (result != KATRA_SUCCESS) {
+        /* GUIDELINE_APPROVED: Critical startup error before katra_report_error available */
         fprintf(stderr, "Failed to initialize Katra lifecycle\n");
         return EXIT_CODE_FAILURE;
     }
@@ -183,7 +186,7 @@ int main(int argc, char* argv[]) {
         .bind_address = "127.0.0.1",
         .enable_unix_socket = true,  /* Unix socket enabled by default */
         .socket_path = KATRA_UNIFIED_SOCKET_PATH,
-        .max_clients = 32,
+        .max_clients = DEFAULT_MAX_CLIENTS,
         .default_namespace = "default"
     };
 
