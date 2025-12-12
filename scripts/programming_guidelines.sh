@@ -1,6 +1,66 @@
 #!/bin/bash
 # © 2025 Casey Koons All rights reserved
 # Programming Guidelines Checker for Katra
+#
+# 44 automated checks for code quality and safety:
+#
+# CODE STYLE & ORGANIZATION (1-6):
+#   1. Magic numbers - numeric constants should be in headers
+#   2. Unsafe string functions - no strcpy, sprintf, strcat, gets
+#   3. File size limits - max 618 lines per .c file
+#   4. Error reporting - centralized via katra_report_error()
+#   5. Copyright headers - required on all files
+#   6. TODO comments - tracked but limited
+#
+# BUILD & TEST (7-11):
+#   7. Memory management patterns - goto cleanup verification
+#   8. Compilation check - clean build with -Werror
+#   9. Test suite - all tests must pass
+#  10. Code size budget - lines and file count limits
+#  11. Binary size - monitored for bloat
+#
+# SECURITY & SAFETY (12-18):
+#  12. Signal handler safety - async-signal-safe functions only
+#  13. Hard-coded URLs - no embedded endpoints
+#  14. Input validation - script path validation
+#  15. Environment sanitization - dangerous env vars blocked
+#  16. AI provider timeouts - curl --max-time enforcement
+#  17. Thread safety annotations - mutex documentation
+#  18. Return value checking - critical functions checked
+#
+# RESOURCE MANAGEMENT (19-26):
+#  19. File descriptor leaks - open/close balance
+#  20. Workflow state transitions - registry API usage
+#  21. NULL pointer checks - coverage verification
+#  22. Function complexity - cyclomatic complexity limits
+#  23. String externalization - literals in headers
+#  24. Resource cleanup - cleanup block verification
+#  25. Memory initialization - calloc/memset coverage
+#  26. Buffer size validation - sizeof() usage
+#
+# DEFENSIVE PROGRAMMING (27-35):
+#  27. Defensive checks - KATRA_CHECK_NULL, early returns
+#  28. Error path coverage - error handling in all files
+#  29. Mutex lock/unlock balance - threading safety
+#  30. Include guard coverage - all headers protected
+#  31. Error reporting consistency - katra_report_error usage
+#  32. String allocation safety - strdup return checking
+#  33. Unsafe conversions - atoi/atof flagged
+#  34. Process execution safety - system/exec monitoring
+#  35. Switch completeness - default cases required
+#
+# CODE QUALITY (37-44):
+#  37. File I/O error checking - fread/fwrite/fgets
+#  38. Function length limits - max 150 lines
+#  39. Inline function usage - limited, let compiler decide
+#  40. Double-free prevention - NULL after free
+#  41. Const correctness - const char* for read-only strings
+#  42. Sizeof pointer check - detect sizeof(ptr) mistakes
+#  43. Unused parameter marking - (void)param or UNUSED()
+#  44. Header dependency depth - coupling limits
+#
+# Usage: ./scripts/programming_guidelines.sh [report_file]
+# Exit codes: 0 = pass, 1 = errors found
 
 REPORT_FILE="${1:-/tmp/katra_programming_guidelines_report.txt}"
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
@@ -1284,6 +1344,163 @@ elif [ "$INLINE_FUNCS" -gt 0 ]; then
   echo "Note: Prefer regular functions; compiler will optimize as needed"
 else
   echo "✓ PASS: No inline functions (compiler will inline as needed)"
+fi
+echo ""
+
+# 40. Double-free prevention check
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "40. DOUBLE-FREE PREVENTION CHECK"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# Check that free() calls are followed by NULL assignment to prevent double-free
+# Pattern: free(ptr) without ptr = NULL nearby
+FREE_CALLS=$(grep -rn '\bfree\s*(' src/ --include="*.c" 2>/dev/null | grep -v "//" | grep -v "/\*" | wc -l | tr -d ' ')
+# Count free calls that have = NULL on same or next line (within 2 lines)
+# This is a heuristic - look for files with free() and check NULL assignment ratio
+FREE_WITH_NULL=$(grep -rn '\bfree\s*(' src/ --include="*.c" 2>/dev/null | grep -v "//" | grep -v "/\*" | \
+  while read line; do
+    file=$(echo "$line" | cut -d: -f1)
+    linenum=$(echo "$line" | cut -d: -f2)
+    # Check if = NULL appears within 2 lines after free
+    sed -n "$((linenum)),$((linenum+2))p" "$file" 2>/dev/null | grep -q "= NULL" && echo "1"
+  done | wc -l | tr -d ' ')
+if [ "$FREE_CALLS" -gt 0 ]; then
+  NULL_RATIO=$((FREE_WITH_NULL * 100 / FREE_CALLS))
+  echo "Free calls: $FREE_CALLS"
+  echo "Free with NULL assignment: $FREE_WITH_NULL ($NULL_RATIO%)"
+  # Note: Many free() calls are in cleanup blocks at function end where
+  # setting to NULL is unnecessary (pointer goes out of scope).
+  # A low ratio is acceptable if goto cleanup pattern is used consistently.
+  if [ "$NULL_RATIO" -ge 20 ]; then
+    echo "✓ PASS: Reasonable double-free prevention ($NULL_RATIO%)"
+  elif [ "$NULL_RATIO" -ge 5 ]; then
+    echo "ℹ INFO: Consider NULL assignment for reusable pointers ($NULL_RATIO%)"
+    echo "Note: Cleanup-block free() calls don't need NULL assignment"
+    INFOS=$((INFOS + 1))
+  else
+    echo "⚠ WARN: Very low NULL assignment after free ($NULL_RATIO%)"
+    echo "Action: Add 'ptr = NULL;' after free(ptr) for reusable pointers"
+    WARNINGS=$((WARNINGS + 1))
+  fi
+else
+  echo "✓ PASS: No free() calls found"
+fi
+echo ""
+
+# 41. Const correctness for string parameters
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "41. CONST CORRECTNESS CHECK"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# Check function declarations with char* parameters that should be const char*
+# Look for function params like (char *name) that don't modify the string
+NON_CONST_CHAR=$(grep -rn '([^)]*\bchar\s*\*[^)]*)\s*{' src/ --include="*.c" 2>/dev/null | \
+  grep -v "const char" | grep -v "//" | grep -v "main(" | wc -l | tr -d ' ')
+CONST_CHAR=$(grep -rn '([^)]*\bconst\s*char\s*\*[^)]*)\s*{' src/ --include="*.c" 2>/dev/null | \
+  grep -v "//" | wc -l | tr -d ' ')
+TOTAL_CHAR_PARAMS=$((NON_CONST_CHAR + CONST_CHAR))
+if [ "$TOTAL_CHAR_PARAMS" -gt 0 ]; then
+  CONST_RATIO=$((CONST_CHAR * 100 / TOTAL_CHAR_PARAMS))
+  echo "Functions with char* params: $TOTAL_CHAR_PARAMS"
+  echo "Using const char*: $CONST_CHAR ($CONST_RATIO%)"
+  if [ "$CONST_RATIO" -ge 70 ]; then
+    echo "✓ PASS: Good const correctness ($CONST_RATIO%)"
+  elif [ "$CONST_RATIO" -ge 50 ]; then
+    echo "ℹ INFO: Consider more const char* for read-only strings ($CONST_RATIO%)"
+    INFOS=$((INFOS + 1))
+  else
+    echo "⚠ WARN: Low const correctness ($CONST_RATIO%)"
+    echo "Action: Use 'const char*' for string parameters not modified"
+    WARNINGS=$((WARNINGS + 1))
+  fi
+else
+  echo "✓ PASS: No char* parameters found"
+fi
+echo ""
+
+# 42. Sizeof pointer warning
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "42. SIZEOF POINTER CHECK"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# Detect sizeof(ptr) where ptr is a pointer - common mistake
+# Focus on high-risk patterns: sizeof on variables ending in _ptr or ptr (not _buf which are often arrays)
+# Also catch malloc(sizeof(ptr)) which should be malloc(sizeof(*ptr))
+SIZEOF_PTR_VAR=$(grep -rn 'sizeof\s*(\s*[a-z_]*\(ptr\|_ptr\)\s*)' src/ --include="*.c" 2>/dev/null | \
+  grep -v "sizeof(\s*\*" | grep -v "//" | grep -v "GUIDELINE_APPROVED" | wc -l | tr -d ' ')
+# Also check for malloc(sizeof(var)) where var looks like a pointer
+MALLOC_SIZEOF_VAR=$(grep -rn 'alloc\s*(\s*sizeof\s*(\s*[a-z_][a-z0-9_]*\s*)\s*)' src/ --include="*.c" 2>/dev/null | \
+  grep -v "sizeof(\s*\*" | grep -v "sizeof(struct" | grep -v "sizeof(char)" | \
+  grep -v "sizeof(int)" | grep -v "sizeof(graph_" | grep -v "sizeof(memory_" | \
+  grep -v "sizeof(synthesis_" | grep -v "sizeof(recall_" | grep -v "sizeof(tier" | \
+  grep -v "sizeof(checkpoint" | grep -v "sizeof(session" | grep -v "sizeof(turn_" | \
+  grep -v "sizeof(mcp_" | grep -v "sizeof(json_" | grep -v "sizeof(whiteboard" | \
+  grep -v "sizeof(promise" | grep -v "sizeof(katra_" | grep -v "//" | wc -l | tr -d ' ')
+SIZEOF_SUSPICIOUS=$((SIZEOF_PTR_VAR + MALLOC_SIZEOF_VAR))
+if [ "$SIZEOF_SUSPICIOUS" -gt 5 ]; then
+  echo "⚠ WARN: Found $SIZEOF_SUSPICIOUS potentially suspicious sizeof() uses"
+  echo "  sizeof(ptr_var): $SIZEOF_PTR_VAR"
+  echo "  malloc(sizeof(var)): $MALLOC_SIZEOF_VAR"
+  echo "Action: Verify sizeof(var) isn't meant to be sizeof(*var) or sizeof(type)"
+  WARNINGS=$((WARNINGS + 1))
+elif [ "$SIZEOF_SUSPICIOUS" -gt 0 ]; then
+  echo "ℹ INFO: Found $SIZEOF_SUSPICIOUS sizeof(variable) patterns to review"
+  echo "Note: Verify these aren't sizeof(pointer) mistakes"
+  INFOS=$((INFOS + 1))
+else
+  echo "✓ PASS: No suspicious sizeof() patterns detected"
+fi
+echo ""
+
+# 43. Unused parameter marking
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "43. UNUSED PARAMETER CHECK"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# Check for (void)param or UNUSED(param) patterns for intentionally unused params
+VOID_CAST=$(grep -rn '(void)[a-z_]' src/ --include="*.c" 2>/dev/null | wc -l | tr -d ' ')
+UNUSED_MACRO=$(grep -rn 'UNUSED\s*(' src/ --include="*.c" 2>/dev/null | wc -l | tr -d ' ')
+TOTAL_UNUSED_MARKED=$((VOID_CAST + UNUSED_MACRO))
+if [ "$TOTAL_UNUSED_MARKED" -gt 0 ]; then
+  echo "Unused parameter markers found: $TOTAL_UNUSED_MARKED"
+  echo "  (void)param casts: $VOID_CAST"
+  echo "  UNUSED() macros: $UNUSED_MACRO"
+  echo "✓ PASS: Unused parameters are being marked"
+else
+  echo "ℹ INFO: No unused parameter markers found"
+  echo "Note: Use (void)param; to silence warnings for intentionally unused params"
+  INFOS=$((INFOS + 1))
+fi
+echo ""
+
+# 44. Header dependency depth
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "44. HEADER DEPENDENCY CHECK"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+# Check if any header includes too many other project headers
+# High coupling indicates potential architecture issues
+MAX_INCLUDES=0
+WORST_HEADER=""
+for header in include/*.h; do
+  if [ -f "$header" ]; then
+    # Count includes of project headers (not system headers)
+    INCLUDES=$(grep -c '#include *"' "$header" 2>/dev/null)
+    # Handle grep returning empty or error
+    if [ -z "$INCLUDES" ]; then
+      INCLUDES=0
+    fi
+    if [ "$INCLUDES" -gt "$MAX_INCLUDES" ]; then
+      MAX_INCLUDES=$INCLUDES
+      WORST_HEADER=$(basename "$header")
+    fi
+  fi
+done
+echo "Maximum project #includes in single header: $MAX_INCLUDES ($WORST_HEADER)"
+if [ "$MAX_INCLUDES" -le 5 ]; then
+  echo "✓ PASS: Header dependencies are well-contained"
+elif [ "$MAX_INCLUDES" -le 8 ]; then
+  echo "ℹ INFO: Consider reducing includes in $WORST_HEADER"
+  INFOS=$((INFOS + 1))
+else
+  echo "⚠ WARN: High header coupling in $WORST_HEADER ($MAX_INCLUDES includes)"
+  echo "Action: Consider splitting header or reducing dependencies"
+  WARNINGS=$((WARNINGS + 1))
 fi
 echo ""
 

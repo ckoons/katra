@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "katra": {
+      "command": "/Users/cskoons/projects/github/katra/bin/katra_mcp_server_wrapper.sh",
+      "args": [],
+      "env": {
+        "KATRA_PERSONA": "Katra",
+        "KATRA_ROLE": "developer"
+      }
+    }
+  }
+}

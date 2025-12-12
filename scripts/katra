@@ -542,7 +542,6 @@ Start Options:
   --breath-interval N    Set breathing interval in seconds (default: 30)
   --log-level LEVEL     Set log level (DEBUG|INFO|WARN|ERROR)
   --background, -b      Start in background (tmux session)
-  --stdio               Use stdio mode (legacy, isolated sessions)
   --tcp-port PORT       TCP port for shared MCP server (default: 3141)
   -h, --help            Show this help
 
@@ -566,26 +565,19 @@ Examples:
   katra start --persona Alice --provider anthropic --model claude-opus-4
   katra start --persona Sam --provider openai --model gpt-4-turbo
 
-  # Legacy stdio mode (isolated sessions, no shared meeting room)
-  katra start --persona Alice --stdio
-
-MCP Server Modes:
-  TCP (default)  - Shared persistent server, global meeting room
-                 - All personas can communicate (katra_say/hear/who)
-                 - Server auto-starts if not running on port 3141
-                 - Use katra-cli for human participation
-
-  stdio (legacy) - Isolated per-session server
-                 - Each persona has own meeting room (no cross-talk)
-                 - Launched/stopped with each Claude Code session
+MCP Server Mode:
+  TCP - Shared persistent server, global meeting room
+      - All personas can communicate (katra_say/hear/who)
+      - Server auto-starts if not running on port 3141
+      - Use katra-cli for human participation
 
 Launch Behavior:
-  - TCP mode: Ensures shared MCP server is running (auto-starts if needed)
+  - Ensures shared MCP server is running (auto-starts if needed)
   - First time with a persona: Shows onboarding welcome message
   - Returning persona: Shows "where you left off" summary with context and recent memories
   - Session end automatically captures context for next launch
   - Persona identity persists across sessions through memory and context snapshots
-  - All personas share global meeting room (unless using --stdio mode)
+  - All personas share global meeting room
 
 Providers:
   anthropic  - Anthropic Claude (default, direct connection)
@@ -751,36 +743,43 @@ add_persona_command() {
     echo ""
 }
 
-# Ensure TCP MCP server is running
+# Ensure unified daemon is running (provides MCP TCP, HTTP REST, and Unix socket)
 ensure_tcp_mcp_running() {
-    local port="${KATRA_MCP_PORT:-3141}"
+    local mcp_port="${KATRA_MCP_PORT:-3141}"
+    local http_port="${KATRA_UNIFIED_PORT:-9742}"
 
-    # Check if server already running on port
-    if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
-        echo -e "${BLUE}✓${NC} TCP MCP server already running on port $port"
+    # Check if daemon already running on MCP port
+    if lsof -Pi :$mcp_port -sTCP:LISTEN -t >/dev/null 2>&1; then
+        echo -e "${BLUE}✓${NC} Katra daemon already running (MCP port $mcp_port)"
         return 0
     fi
 
-    echo -e "${BLUE}→${NC} Starting TCP MCP server on port $port..."
+    echo -e "${BLUE}→${NC} Starting Katra unified daemon..."
+    echo -e "${BLUE}  MCP port:${NC} $mcp_port (Claude Code)"
+    echo -e "${BLUE}  HTTP port:${NC} $http_port (REST API)"
+    echo -e "${BLUE}  Socket:${NC} /tmp/katra.sock"
 
-    # Start server in background
+    # Start unified daemon in background
     cd "$KATRA_ROOT"
-    "$KATRA_ROOT/bin/katra_mcp_server" --tcp --port $port > /tmp/katra_mcp_tcp.log 2>&1 &
+    "$KATRA_ROOT/bin/katra_unified_daemon" \
+        --mcp-port "$mcp_port" \
+        --port "$http_port" \
+        > /tmp/katra_daemon.log 2>&1 &
     local server_pid=$!
 
-    # Wait for server to be ready
+    # Wait for daemon to be ready (check MCP port)
     local count=0
     while [ $count -lt 10 ]; do
-        if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
-            echo -e "${GREEN}✓${NC} TCP MCP server started successfully (PID: $server_pid)"
+        if lsof -Pi :$mcp_port -sTCP:LISTEN -t >/dev/null 2>&1; then
+            echo -e "${GREEN}✓${NC} Katra daemon started (PID: $server_pid)"
             return 0
         fi
         sleep 0.5
         count=$((count + 1))
     done
 
-    echo -e "${RED}Error: Failed to start TCP MCP server${NC}"
-    echo "Check log: /tmp/katra_mcp_tcp.log"
+    echo -e "${RED}Error: Failed to start Katra daemon${NC}"
+    echo "Check log: /tmp/katra_daemon.log"
     return 1
 }
 
@@ -799,7 +798,6 @@ case "$COMMAND" in
         fi
 
         # Parse options
-        USE_STDIO=false
         while [[ $# -gt 0 ]]; do
             case $1 in
                 --persona)
@@ -828,10 +826,6 @@ case "$COMMAND" in
                     ;;
                 --background|-b)
                     BACKGROUND=true
-                    shift
-                    ;;
-                --stdio)
-                    USE_STDIO=true
                     shift
                     ;;
                 --tcp-port)
@@ -914,13 +908,7 @@ case "$COMMAND" in
         echo -e "${BLUE}Breathing:${NC} $BREATH_INTERVAL seconds"
         echo -e "${BLUE}Log Level:${NC} $LOG_LEVEL"
         [ "$BACKGROUND" = true ] && echo -e "${BLUE}Mode:${NC} Background (tmux)"
-
-        # Display MCP mode
-        if [ "$USE_STDIO" = true ]; then
-            echo -e "${BLUE}MCP Mode:${NC} stdio (isolated session)"
-        else
-            echo -e "${BLUE}MCP Mode:${NC} TCP (shared meeting room, port ${KATRA_MCP_PORT:-3141})"
-        fi
+        echo -e "${BLUE}MCP Mode:${NC} TCP (shared meeting room, port ${KATRA_MCP_PORT:-3141})"
         echo ""
 
         # Export environment
@@ -941,38 +929,18 @@ case "$COMMAND" in
             FIRST_PROMPT=$(generate_new_persona_prompt "$PERSONA")
         fi
 
-        # Setup MCP configuration
+        # Setup MCP configuration (TCP mode only)
         TEMP_MCP_CONFIG="/tmp/katra-mcp-$PERSONA.json"
 
-        if [ "$USE_STDIO" = true ]; then
-            # Legacy stdio mode - isolated session
-            cat > "$TEMP_MCP_CONFIG" <<EOF
-{
-  "mcpServers": {
-    "katra": {
-      "command": "$KATRA_ROOT/bin/katra_mcp_server",
-      "args": [],
-      "env": {
-        "KATRA_PERSONA": "$PERSONA",
-        "KATRA_ROLE": "$ROLE",
-        "KATRA_BREATH_INTERVAL": "$BREATH_INTERVAL",
-        "KATRA_LOG_LEVEL": "$LOG_LEVEL"
-      }
-    }
-  }
-}
-EOF
-        else
-            # TCP mode (default) - shared meeting room
-            # Ensure TCP MCP server is running
-            if ! ensure_tcp_mcp_running; then
-                echo -e "${RED}Failed to start TCP MCP server${NC}"
-                exit 1
-            fi
+        # Ensure TCP MCP server is running
+        if ! ensure_tcp_mcp_running; then
+            echo -e "${RED}Failed to start TCP MCP server${NC}"
+            exit 1
+        fi
 
-            # Generate TCP config using our TCP client wrapper
-            tcp_port="${KATRA_MCP_PORT:-3141}"
-            cat > "$TEMP_MCP_CONFIG" <<EOF
+        # Generate TCP config using our TCP client wrapper
+        tcp_port="${KATRA_MCP_PORT:-3141}"
+        cat > "$TEMP_MCP_CONFIG" <<EOF
 {
   "mcpServers": {
     "katra": {
@@ -988,7 +956,6 @@ EOF
   }
 }
 EOF
-        fi
 
         # Build Claude Code command as an array
         CLAUDE_ARGS=("--mcp-config" "$TEMP_MCP_CONFIG")

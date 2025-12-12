@@ -146,9 +146,16 @@ static int test_tools_list(void) {
     }
 
     size_t tool_count = json_array_size(tools);
-    /* 17 base + 7 Phase 6 + 3 Phase 7.1 + 10 Phase 8 + 3 Phase 9 daemon + 1 Phase 11 unified = 41 */
-    if (tool_count != 41) {
-        printf("  ✗ Expected 41 tools, got %zu\n", tool_count);
+    /*
+     * Phase 11 Consolidation (December 2025):
+     * Reduced from 41 individual tools to 1 unified katra_operation tool.
+     * This saves ~24k tokens (97% reduction) in MCP tool overhead.
+     *
+     * To re-enable legacy tools, uncomment add_legacy_tools() in mcp_protocol.c
+     * and change this test to expect 42 tools (41 legacy + 1 unified).
+     */
+    if (tool_count != 1) {
+        printf("  ✗ Expected 1 tool (katra_operation), got %zu\n", tool_count);
         json_decref(response);
         return 1;
     }

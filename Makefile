@@ -33,22 +33,32 @@ include Makefile.test
 # DEFAULT TARGET
 # ==============================================================================
 
-all: $(LIBKATRA_UTILS) $(MCP_SERVER)
+all: $(LIBKATRA_UTILS) $(UNIFIED_DAEMON)
 	@echo "Installing CLI scripts to bin/..."
 	@install -m 755 $(SCRIPTS_DIR)/katra-cli $(BIN_DIR)/katra-cli
+	@install -m 755 $(SCRIPTS_DIR)/katra_mcp_tcp_client.sh $(BIN_DIR)/katra_mcp_tcp_client.sh
 	@echo ""
 	@echo "========================================"
 	@echo "Katra build complete!"
 	@echo "========================================"
 	@echo ""
 	@echo "Built targets:"
-	@echo "  Utils library: $(LIBKATRA_UTILS)"
-	@echo "  MCP Server:    $(MCP_SERVER)"
-	@echo "  CLI tools:     $(BIN_DIR)/katra-cli"
+	@echo "  Utils library:    $(LIBKATRA_UTILS)"
+	@echo "  Unified daemon:   $(UNIFIED_DAEMON)"
+	@echo "  CLI tools:        $(BIN_DIR)/katra-cli"
+	@echo ""
+	@echo "The unified daemon provides:"
+	@echo "  - MCP JSON-RPC on port 3141 (Claude Code)"
+	@echo "  - HTTP REST API on port 9742"
+	@echo "  - Unix socket at /tmp/katra.sock"
+	@echo ""
+	@echo "Start with: ./bin/katra_unified_daemon"
+	@echo "  Or use:   katra start --persona <name>"
 	@echo ""
 	@echo "Available targets:"
 	@echo "  make test-quick             - Run all tests (including MCP)"
-	@echo "  make mcp-server             - Build MCP server only"
+	@echo "  make unified-daemon         - Build unified daemon only"
+	@echo "  make mcp-server             - Build standalone MCP server (legacy)"
 	@echo "  make count-report           - Run line count (diet-aware)"
 	@echo "  make programming-guidelines - Run code discipline checks"
 	@echo "  make check                  - Run both reports"

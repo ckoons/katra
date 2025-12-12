@@ -21,12 +21,15 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include <time.h>
 
 /* Project includes */
 #include "katra_unified.h"
+#include "katra_mcp.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"
+#include "katra_strings.h"
 
 /* Shutdown flag */
 static volatile sig_atomic_t g_http_shutdown = 0;
@@ -385,6 +388,183 @@ static int create_unix_socket(const katra_daemon_config_t* config) {
     return unix_fd;
 }
 
+/* Create and bind MCP TCP socket for JSON-RPC (Claude Code connections) */
+static int create_mcp_socket(const katra_daemon_config_t* config) {
+    int mcp_fd = -1;
+    struct sockaddr_in mcp_addr;
+    int opt = 1;
+
+    if (config->mcp_port == 0) {
+        return -1;  /* MCP disabled */
+    }
+
+    /* Create socket */
+    mcp_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (mcp_fd < 0) {
+        LOG_WARN("Failed to create MCP socket: %s", strerror(errno));
+        return -1;
+    }
+
+    /* Set socket options */
+    if (setsockopt(mcp_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+        LOG_WARN("Failed to set SO_REUSEADDR on MCP socket: %s", strerror(errno));
+    }
+
+    /* Bind to address */
+    memset(&mcp_addr, 0, sizeof(mcp_addr));
+    mcp_addr.sin_family = AF_INET;
+    mcp_addr.sin_port = htons(config->mcp_port);
+
+    if (inet_pton(AF_INET, config->bind_address, &mcp_addr.sin_addr) <= 0) {
+        close(mcp_fd);
+        LOG_WARN("Invalid MCP bind address");
+        return -1;
+    }
+
+    if (bind(mcp_fd, (struct sockaddr*)&mcp_addr, sizeof(mcp_addr)) < 0) {
+        close(mcp_fd);
+        LOG_WARN("Failed to bind MCP socket to port %d: %s",
+                 config->mcp_port, strerror(errno));
+        return -1;
+    }
+
+    /* Listen */
+    if (listen(mcp_fd, config->max_clients) < 0) {
+        close(mcp_fd);
+        LOG_WARN("Failed to listen on MCP socket: %s", strerror(errno));
+        return -1;
+    }
+
+    LOG_INFO("Katra MCP server listening on %s:%d",
+             config->bind_address, config->mcp_port);
+
+    return mcp_fd;
+}
+
+/* MCP client thread context */
+typedef struct {
+    int client_fd;
+    mcp_session_t session;
+} mcp_client_context_t;
+
+/* MCP client handler thread - handles JSON-RPC messages */
+static void* mcp_client_thread(void* arg) {
+    mcp_client_context_t* ctx = (mcp_client_context_t*)arg;
+    char buffer[MCP_MAX_LINE];
+    ssize_t bytes_read;
+
+    if (!ctx) {
+        return NULL;
+    }
+
+    LOG_INFO("MCP client connected on fd %d", ctx->client_fd);
+
+    /* Set this client's session as current for this thread */
+    mcp_set_current_session(&ctx->session);
+
+    /* Read and process JSON-RPC requests in a loop */
+    while (!g_http_shutdown) {
+        bytes_read = read(ctx->client_fd, buffer, sizeof(buffer) - 1);
+
+        if (bytes_read <= 0) {
+            if (bytes_read < 0 && errno != EINTR) {
+                LOG_WARN("MCP client read error: %s", strerror(errno));
+            }
+            break;  /* Client disconnected or error */
+        }
+
+        buffer[bytes_read] = '\0';
+
+        /* Strip newline */
+        buffer[strcspn(buffer, MCP_CHAR_NEWLINE)] = '\0';
+
+        if (strlen(buffer) == 0) {
+            continue;
+        }
+
+        LOG_DEBUG("MCP request: %.100s...", buffer);
+
+        /* Parse JSON-RPC request */
+        json_t* request = mcp_parse_request(buffer);
+        if (!request) {
+            json_t* error_response = mcp_error_response(NULL, MCP_ERROR_PARSE,
+                                                        MCP_ERR_PARSE_ERROR,
+                                                        MCP_ERR_INVALID_REQUEST);
+            if (error_response) {
+                char* response_str = json_dumps(error_response, JSON_COMPACT);
+                if (response_str) {
+                    dprintf(ctx->client_fd, "%s\n", response_str);
+                    free(response_str);
+                }
+                json_decref(error_response);
+            }
+            continue;
+        }
+
+        /* Dispatch request to MCP handler */
+        json_t* response = mcp_dispatch_request(request);
+        json_decref(request);
+
+        if (response) {
+            char* response_str = json_dumps(response, JSON_COMPACT);
+            if (response_str) {
+                dprintf(ctx->client_fd, "%s\n", response_str);
+                free(response_str);
+            }
+            json_decref(response);
+        }
+    }
+
+    /* Clear thread-local session */
+    mcp_clear_current_session();
+
+    LOG_INFO("MCP client disconnected on fd %d", ctx->client_fd);
+    close(ctx->client_fd);
+    free(ctx);
+    return NULL;
+}
+
+/* Accept MCP client connection */
+static void accept_mcp_client(int mcp_fd) {
+    struct sockaddr_in client_addr;
+    socklen_t client_len = sizeof(client_addr);
+
+    int client_fd = accept(mcp_fd, (struct sockaddr*)&client_addr, &client_len);
+    if (client_fd < 0) {
+        if (errno != EINTR) {
+            LOG_ERROR("accept() failed on MCP socket: %s", strerror(errno));
+        }
+        return;
+    }
+
+    /* Allocate context for this client */
+    mcp_client_context_t* ctx = calloc(1, sizeof(mcp_client_context_t));
+    if (!ctx) {
+        LOG_ERROR("Failed to allocate MCP client context");
+        close(client_fd);
+        return;
+    }
+
+    ctx->client_fd = client_fd;
+    ctx->session.registered = false;
+    ctx->session.first_call = true;
+    ctx->session.connected_at = time(NULL);
+    ctx->session.chosen_name[0] = '\0';
+    ctx->session.role[0] = '\0';
+
+    /* Spawn thread to handle client */
+    pthread_t thread;
+    if (pthread_create(&thread, NULL, mcp_client_thread, ctx) != 0) {
+        LOG_ERROR("Failed to create MCP client thread");
+        close(client_fd);
+        free(ctx);
+        return;
+    }
+    pthread_detach(thread);
+
+    LOG_DEBUG("Accepted MCP client from %s", inet_ntoa(client_addr.sin_addr));
+}
+
 /* Accept and handle a single client connection */
 static void accept_client(int socket_fd, const char* socket_name) {
     struct sockaddr_storage client_addr;
@@ -409,6 +589,7 @@ static void accept_client(int socket_fd, const char* socket_name) {
 int katra_http_daemon_start(const katra_daemon_config_t* config) {
     int server_fd = -1;
     int unix_fd = -1;
+    int mcp_fd = -1;
     int result = KATRA_SUCCESS;
 
     KATRA_CHECK_NULL(config);
@@ -434,9 +615,13 @@ int katra_http_daemon_start(const katra_daemon_config_t* config) {
     /* Create Unix socket for local fast path (optional) */
     unix_fd = create_unix_socket(config);
 
+    /* Create MCP TCP socket for Claude Code (optional) */
+    mcp_fd = create_mcp_socket(config);
+
     /* Accept loop */
     int max_fd = server_fd;
     if (unix_fd > max_fd) max_fd = unix_fd;
+    if (mcp_fd > max_fd) max_fd = mcp_fd;
 
     while (!g_http_shutdown) {
         fd_set read_fds;
@@ -447,6 +632,9 @@ int katra_http_daemon_start(const katra_daemon_config_t* config) {
         FD_SET(server_fd, &read_fds);
         if (unix_fd >= 0) {
             FD_SET(unix_fd, &read_fds);
+        }
+        if (mcp_fd >= 0) {
+            FD_SET(mcp_fd, &read_fds);
         }
         timeout.tv_sec = 1;
         timeout.tv_usec = 0;
@@ -473,16 +661,24 @@ int katra_http_daemon_start(const katra_daemon_config_t* config) {
         if (unix_fd >= 0 && FD_ISSET(unix_fd, &read_fds)) {
             accept_client(unix_fd, "Unix");
         }
+
+        /* Accept connection on MCP socket */
+        if (mcp_fd >= 0 && FD_ISSET(mcp_fd, &read_fds)) {
+            accept_mcp_client(mcp_fd);
+        }
     }
 
     /* Cleanup */
-    LOG_INFO("HTTP daemon shutting down...");
+    LOG_INFO("Unified daemon shutting down...");
     close(server_fd);
     if (unix_fd >= 0) {
         close(unix_fd);
         if (config->socket_path) {
             unlink(config->socket_path);
         }
+    }
+    if (mcp_fd >= 0) {
+        close(mcp_fd);
     }
     katra_unified_shutdown();
 

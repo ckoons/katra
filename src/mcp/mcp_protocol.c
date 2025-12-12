@@ -165,11 +165,38 @@ static json_t* handle_initialize(json_t* request) {
     return mcp_success_response(id, result);
 }
 
-/* Handle tools/list request */
-static json_t* handle_tools_list(json_t* request) {
-    json_t* id = json_object_get(request, MCP_FIELD_ID);
-    json_t* tools_array = json_array();
-
+/*
+ * LEGACY TOOL REGISTRATION (Phase 11 Consolidation - December 2025)
+ *
+ * These individual tool registrations are preserved but disabled.
+ * All functionality is now available through the unified katra_operation tool.
+ *
+ * RATIONALE (from UNIFIED_MCP_DESIGN.md):
+ * - 41 individual tools consumed ~24k tokens (12% of 200k context)
+ * - Single unified tool consumes ~600 tokens (97% reduction)
+ * - All methods still work via: katra_operation(method="recall", params={...})
+ *
+ * TO RE-ENABLE LEGACY TOOLS:
+ * - Call add_legacy_tools(tools_array) in handle_tools_list()
+ * - This may be useful for debugging or gradual migration
+ *
+ * METHODS AVAILABLE VIA katra_operation:
+ * - Memory: remember, recall, recent, digest, learn, decide
+ * - Identity: register, whoami, status, update_metadata
+ * - Communication: say, hear, who_is_here
+ * - Cognitive: wm_add, wm_status, wm_decay, wm_consolidate,
+ *              detect_boundary, process_boundary, cognitive_status
+ * - Lifecycle: archive, fade, forget
+ * - Whiteboard: whiteboard_create, whiteboard_status, whiteboard_list,
+ *               whiteboard_question, whiteboard_propose, whiteboard_support,
+ *               whiteboard_vote, whiteboard_design, whiteboard_review,
+ *               whiteboard_reconsider
+ * - Daemon: daemon_insights, daemon_acknowledge, daemon_run
+ * - Config: configure_semantic, get_semantic_config, get_config,
+ *           regenerate_vectors
+ */
+__attribute__((unused))
+static void add_legacy_tools(json_t* tools_array) {
     /* Memory tools */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_REMEMBER, MCP_DESC_REMEMBER,
@@ -343,8 +370,24 @@ static json_t* handle_tools_list(json_t* request) {
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_DAEMON_RUN, MCP_DESC_DAEMON_RUN,
             mcp_build_schema_optional_int("max_memories", "Maximum memories to process (default: 100)")));
+}
 
-    /* Unified Operation Tool (Phase 11) */
+/* Handle tools/list request */
+static json_t* handle_tools_list(json_t* request) {
+    json_t* id = json_object_get(request, MCP_FIELD_ID);
+    json_t* tools_array = json_array();
+
+    /*
+     * Phase 11 Consolidation (December 2025):
+     * Only expose the unified katra_operation tool to reduce token overhead.
+     *
+     * Token savings: ~24k -> ~600 tokens (97% reduction)
+     *
+     * To re-enable legacy tools for debugging, uncomment:
+     *   add_legacy_tools(tools_array);
+     */
+
+    /* Unified Operation Tool - single entry point for all Katra operations */
     json_array_append_new(tools_array,
         mcp_build_tool(MCP_TOOL_OPERATION, MCP_DESC_OPERATION,
             mcp_build_operation_schema()));

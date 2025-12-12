@@ -66,6 +66,9 @@
 /* Default HTTP daemon port */
 #define KATRA_UNIFIED_DEFAULT_PORT 9742
 
+/* Default MCP TCP port (JSON-RPC for Claude Code) */
+#define KATRA_UNIFIED_MCP_PORT 3141
+
 /* Unix socket path */
 #define KATRA_UNIFIED_SOCKET_PATH "/tmp/katra.sock"
 
@@ -186,6 +189,7 @@ typedef struct {
  */
 typedef struct {
     uint16_t http_port;       /* HTTP server port */
+    uint16_t mcp_port;        /* MCP JSON-RPC TCP port (0 = disabled) */
     const char* bind_address; /* Bind address (127.0.0.1, 0.0.0.0) */
     bool enable_unix_socket;  /* Enable Unix socket? */
     const char* socket_path;  /* Unix socket path */

@@ -39,6 +39,8 @@ static void print_usage(const char* program_name) {
         "\n"
         "Options:\n"
         "  -p, --port PORT      HTTP port (default: 9742)\n"
+        "  -m, --mcp-port PORT  MCP JSON-RPC port for Claude Code (default: 3141)\n"
+        "  -M, --no-mcp         Disable MCP listener\n"
         "  -b, --bind ADDRESS   Bind address (default: 127.0.0.1)\n"
         "  -n, --namespace NS   Default namespace (default: default)\n"
         "  -s, --socket PATH    Unix socket path (default: /tmp/katra.sock)\n"
@@ -48,24 +50,23 @@ static void print_usage(const char* program_name) {
         "\n"
         "Environment variables:\n"
         "  KATRA_UNIFIED_PORT   HTTP port\n"
+        "  KATRA_MCP_PORT       MCP JSON-RPC port (0 to disable)\n"
         "  KATRA_UNIFIED_BIND   Bind address\n"
         "  KATRA_NAMESPACE      Default namespace\n"
         "  KATRA_SOCKET_PATH    Unix socket path (empty to disable)\n"
         "\n"
-        "Endpoints:\n"
-        "  POST /operation      Execute unified operation\n"
-        "  GET  /health         Health check\n"
-        "  GET  /methods        List available methods\n"
+        "Protocols:\n"
+        "  HTTP REST API        POST /operation, GET /health, GET /methods\n"
+        "  MCP JSON-RPC         Claude Code protocol (initialize, tools/list, tools/call)\n"
+        "  Unix socket          Same as HTTP (fast local path)\n"
         "\n"
-        "Example:\n"
+        "HTTP Example:\n"
         "  curl -X POST http://localhost:9742/operation \\\n"
         "    -H 'Content-Type: application/json' \\\n"
         "    -d '{\"method\":\"recall\",\"params\":{\"topic\":\"Casey\"}}'\n"
         "\n"
-        "Unix socket example:\n"
-        "  curl --unix-socket /tmp/katra.sock -X POST http://localhost/operation \\\n"
-        "    -H 'Content-Type: application/json' \\\n"
-        "    -d '{\"method\":\"status\"}'\n"
+        "MCP Example (Claude Code):\n"
+        "  echo '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\"}' | nc localhost 3141\n"
         "\n",
         DAEMON_VERSION, program_name);
 }
@@ -74,6 +75,8 @@ static void print_usage(const char* program_name) {
 static int parse_args(int argc, char* argv[], katra_daemon_config_t* config) {
     static struct option long_options[] = {
         {"port",      required_argument, 0, 'p'},
+        {"mcp-port",  required_argument, 0, 'm'},
+        {"no-mcp",    no_argument,       0, 'M'},
         {"bind",      required_argument, 0, 'b'},
         {"namespace", required_argument, 0, 'n'},
         {"socket",    required_argument, 0, 's'},
@@ -86,7 +89,7 @@ static int parse_args(int argc, char* argv[], katra_daemon_config_t* config) {
     int opt;
     int option_index = 0;
 
-    while ((opt = getopt_long(argc, argv, "p:b:n:s:Shv", long_options, &option_index)) != -1) {
+    while ((opt = getopt_long(argc, argv, "p:m:Mb:n:s:Shv", long_options, &option_index)) != -1) {
         switch (opt) {
             case 'p':
                 config->http_port = (uint16_t)atoi(optarg);
@@ -95,6 +98,14 @@ static int parse_args(int argc, char* argv[], katra_daemon_config_t* config) {
                     fprintf(stderr, "Invalid port: %s\n", optarg);
                     return E_INPUT_INVALID;
                 }
+                break;
+
+            case 'm':
+                config->mcp_port = (uint16_t)atoi(optarg);
+                break;
+
+            case 'M':
+                config->mcp_port = 0;  /* Disable MCP */
                 break;
 
             case 'b':
@@ -133,11 +144,19 @@ static int parse_args(int argc, char* argv[], katra_daemon_config_t* config) {
 
 /* Load configuration from environment */
 static void load_env_config(katra_daemon_config_t* config) {
-    /* Port */
+    /* HTTP Port */
     int port = 0;
     if (katra_getenvint("KATRA_UNIFIED_PORT", &port) == KATRA_SUCCESS) {
         if (port > 0 && port <= MAX_TCP_PORT) {
             config->http_port = (uint16_t)port;
+        }
+    }
+
+    /* MCP Port (0 disables) */
+    int mcp_port = 0;
+    if (katra_getenvint("KATRA_MCP_PORT", &mcp_port) == KATRA_SUCCESS) {
+        if (mcp_port >= 0 && mcp_port <= MAX_TCP_PORT) {
+            config->mcp_port = (uint16_t)mcp_port;
         }
     }
 
@@ -183,6 +202,7 @@ int main(int argc, char* argv[]) {
     /* Set default configuration */
     katra_daemon_config_t config = {
         .http_port = KATRA_UNIFIED_DEFAULT_PORT,
+        .mcp_port = KATRA_UNIFIED_MCP_PORT,  /* MCP enabled by default */
         .bind_address = "127.0.0.1",
         .enable_unix_socket = true,  /* Unix socket enabled by default */
         .socket_path = KATRA_UNIFIED_SOCKET_PATH,
@@ -200,10 +220,13 @@ int main(int argc, char* argv[]) {
     }
 
     LOG_INFO("Starting Katra Unified Daemon v%s", DAEMON_VERSION);
-    LOG_INFO("Configuration: port=%d, bind=%s, namespace=%s",
-             config.http_port, config.bind_address, config.default_namespace);
+    LOG_INFO("Configuration: HTTP=%d, MCP=%d, bind=%s, namespace=%s",
+             config.http_port, config.mcp_port, config.bind_address, config.default_namespace);
     if (config.enable_unix_socket) {
         LOG_INFO("Unix socket: %s", config.socket_path);
+    }
+    if (config.mcp_port > 0) {
+        LOG_INFO("MCP JSON-RPC: port %d (for Claude Code)", config.mcp_port);
     }
 
     /* Start HTTP daemon (blocks until shutdown) */
