@@ -21,17 +21,32 @@ const char* mcp_inject_onboarding_if_first(const char* response_text,
 
     mcp_mark_first_call_complete();
 
-    /* Check for KATRA_PERSONA and attempt auto-registration */
-    const char* persona = getenv("KATRA_PERSONA");
-    const char* role = getenv("KATRA_ROLE");
+    /*
+     * Get CI persona from session (set by handle_initialize from clientInfo).
+     * The TCP client injects clientInfo.name from KATRA_PERSONA env var.
+     * By the time we get here, handle_initialize has already extracted it.
+     *
+     * IMPORTANT: We read from session, NOT from getenv(), because:
+     * - The daemon process has its own KATRA_PERSONA (whoever started it)
+     * - Each MCP client passes their persona via clientInfo.name
+     * - The session holds the correct per-client persona
+     */
+    mcp_session_t* session = mcp_get_session();
+    const char* persona = NULL;
+    const char* role = NULL;
+
+    /* Get persona from session (set by MCP initialize from clientInfo) */
+    if (session && session->chosen_name[0] != '\0') {
+        persona = session->chosen_name;
+        role = session->role[0] != '\0' ? session->role : NULL;
+        LOG_INFO("Using persona '%s' from MCP session (role: %s)",
+                persona, role ? role : "developer");
+    }
 
     if (persona && strlen(persona) > 0) {
-        /* Attempt auto-registration - bypass MCP tool to avoid approval prompts */
-        LOG_INFO("Attempting auto-registration as '%s' (role: %s) from KATRA_PERSONA env var",
+        /* Session already set by handle_initialize - just confirm registration */
+        LOG_INFO("Confirming registration as '%s' (role: %s)",
                 persona, role ? role : "developer");
-
-        /* Get session state */
-        mcp_session_t* session = mcp_get_session();
         bool auto_reg_success = false;
 
         /* Only register if not already registered */

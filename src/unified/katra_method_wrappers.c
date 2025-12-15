@@ -5,14 +5,46 @@
  *
  * Wrapper implementations that adapt MCP tool handlers to the unified interface.
  * Each wrapper calls the corresponding MCP tool and extracts the result text.
+ *
+ * IMPORTANT: CI identity is determined ONLY by explicit parameters.
+ * The namespace from options is injected as ci_name into every call.
+ * No global state, no thread-local state, no magic.
  */
 
 /* System includes */
 #include <stdlib.h>
+#include <string.h>
 
 /* Project includes */
 #include "katra_unified.h"
 #include "katra_mcp.h"
+#include "katra_limits.h"
+
+/*
+ * Helper: Inject ci_name from options->namespace into params
+ *
+ * This ensures every MCP tool call has explicit CI identity.
+ * The namespace IS the CI name - they are the same thing.
+ * Returns a new json object that caller must NOT decref (managed internally).
+ */
+static json_t* inject_ci_name(json_t* params, const katra_unified_options_t* options) {
+    if (!params) {
+        params = json_object();
+    }
+
+    /* If caller already provided ci_name, respect it */
+    if (json_object_get(params, "ci_name")) {
+        return params;
+    }
+
+    /* Inject namespace as ci_name */
+    if (options && options->namespace[0] != '\0' &&
+        strcmp(options->namespace, "default") != 0) {
+        json_object_set_new(params, "ci_name", json_string(options->namespace));
+    }
+
+    return params;
+}
 
 /* Helper: Extract result from MCP tool response */
 static json_t* extract_mcp_result(json_t* mcp_response) {
@@ -37,277 +69,237 @@ static json_t* extract_mcp_result(json_t* mcp_response) {
 }
 
 /*
- * Memory operations
+ * Memory operations - all receive ci_name via inject_ci_name()
  */
 
 json_t* katra_method_remember(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_remember(params, NULL);
+    json_t* result = mcp_tool_remember(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_recall(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_recall(params, NULL);
+    json_t* result = mcp_tool_recall(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_recent(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_recent(params, NULL);
+    json_t* result = mcp_tool_recent(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_digest(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_memory_digest(params, NULL);
+    json_t* result = mcp_tool_memory_digest(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_learn(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_learn(params, NULL);
+    json_t* result = mcp_tool_learn(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_decide(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_decide(params, NULL);
+    json_t* result = mcp_tool_decide(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Identity operations
+ * Identity operations - ci_name injected for proper namespace isolation
  */
 
 json_t* katra_method_register(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_register(params, NULL);
+    json_t* result = mcp_tool_register(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whoami(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whoami(params, NULL);
+    json_t* result = mcp_tool_whoami(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_status(params, NULL);
+    json_t* result = mcp_tool_status(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_update_metadata(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_update_metadata(params, NULL);
+    json_t* result = mcp_tool_update_metadata(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Communication operations
+ * Communication operations - ci_name identifies the speaker/listener
  */
 
 json_t* katra_method_say(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_say(params, NULL);
+    json_t* result = mcp_tool_say(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_hear(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_hear(params, NULL);
+    json_t* result = mcp_tool_hear(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_who_is_here(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_who_is_here(params, NULL);
+    json_t* result = mcp_tool_who_is_here(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Configuration operations
+ * Configuration operations - ci_name for per-CI configuration
  */
 
 json_t* katra_method_configure_semantic(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_configure_semantic(params, NULL);
+    json_t* result = mcp_tool_configure_semantic(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_get_semantic_config(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_get_semantic_config(params, NULL);
+    json_t* result = mcp_tool_get_semantic_config(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_get_config(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_get_config(params, NULL);
+    json_t* result = mcp_tool_get_config(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_regenerate_vectors(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_regenerate_vectors(params, NULL);
+    json_t* result = mcp_tool_regenerate_vectors(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Working memory operations
+ * Working memory operations - ci_name for per-CI working memory
  */
 
 json_t* katra_method_wm_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_status(params, NULL);
+    json_t* result = mcp_tool_wm_status(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_wm_add(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_add(params, NULL);
+    json_t* result = mcp_tool_wm_add(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_wm_decay(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_decay(params, NULL);
+    json_t* result = mcp_tool_wm_decay(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_wm_consolidate(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_wm_consolidate(params, NULL);
+    json_t* result = mcp_tool_wm_consolidate(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Cognitive operations
+ * Cognitive operations - ci_name for per-CI cognitive state
  */
 
 json_t* katra_method_detect_boundary(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_detect_boundary(params, NULL);
+    json_t* result = mcp_tool_detect_boundary(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_process_boundary(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_process_boundary(params, NULL);
+    json_t* result = mcp_tool_process_boundary(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_cognitive_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_cognitive_status(params, NULL);
+    json_t* result = mcp_tool_cognitive_status(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Memory lifecycle operations
+ * Memory lifecycle operations - ci_name for per-CI memory management
  */
 
 json_t* katra_method_archive(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_archive(params, NULL);
+    json_t* result = mcp_tool_archive(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_fade(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_fade(params, NULL);
+    json_t* result = mcp_tool_fade(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_forget(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_forget(params, NULL);
+    json_t* result = mcp_tool_forget(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Whiteboard operations
+ * Whiteboard operations - ci_name identifies participant
  */
 
 json_t* katra_method_whiteboard_create(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_create(params, NULL);
+    json_t* result = mcp_tool_whiteboard_create(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_status(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_status(params, NULL);
+    json_t* result = mcp_tool_whiteboard_status(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_list(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_list(params, NULL);
+    json_t* result = mcp_tool_whiteboard_list(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_question(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_question(params, NULL);
+    json_t* result = mcp_tool_whiteboard_question(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_propose(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_propose(params, NULL);
+    json_t* result = mcp_tool_whiteboard_propose(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_support(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_support(params, NULL);
+    json_t* result = mcp_tool_whiteboard_support(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_vote(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_vote(params, NULL);
+    json_t* result = mcp_tool_whiteboard_vote(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_design(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_design(params, NULL);
+    json_t* result = mcp_tool_whiteboard_design(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_review(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_review(params, NULL);
+    json_t* result = mcp_tool_whiteboard_review(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_whiteboard_reconsider(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_whiteboard_reconsider(params, NULL);
+    json_t* result = mcp_tool_whiteboard_reconsider(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 /*
- * Daemon operations
+ * Daemon operations - ci_name for per-CI daemon state
  */
 
 json_t* katra_method_daemon_insights(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_daemon_insights(params, NULL);
+    json_t* result = mcp_tool_daemon_insights(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_daemon_acknowledge(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_daemon_acknowledge(params, NULL);
+    json_t* result = mcp_tool_daemon_acknowledge(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
 
 json_t* katra_method_daemon_run(json_t* params, const katra_unified_options_t* options) {
-    (void)options;
-    json_t* result = mcp_tool_daemon_run(params, NULL);
+    json_t* result = mcp_tool_daemon_run(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }

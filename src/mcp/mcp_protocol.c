@@ -144,6 +144,44 @@ json_t* mcp_tool_error(const char* message, const char* details) {
 static json_t* handle_initialize(json_t* request) {
     json_t* id = json_object_get(request, MCP_FIELD_ID);
 
+    /*
+     * Extract CI persona from clientInfo (injected by TCP client).
+     *
+     * The TCP client (katra_mcp_tcp_client.sh) intercepts the initialize
+     * request and adds clientInfo.name with the persona from KATRA_PERSONA.
+     * This allows each CI to identify themselves for proper namespace isolation.
+     */
+    json_t* params = json_object_get(request, MCP_FIELD_PARAMS);
+    if (params) {
+        json_t* client_info = json_object_get(params, "clientInfo");
+        if (client_info) {
+            const char* client_name = json_string_value(
+                json_object_get(client_info, MCP_FIELD_NAME));
+            const char* client_role = json_string_value(
+                json_object_get(client_info, "role"));
+
+            if (client_name && strlen(client_name) > 0) {
+                /* Set persona on current session */
+                mcp_session_t* session = mcp_get_session();
+                if (session) {
+                    strncpy(session->chosen_name, client_name,
+                            sizeof(session->chosen_name) - 1);
+                    session->chosen_name[sizeof(session->chosen_name) - 1] = '\0';
+
+                    if (client_role && strlen(client_role) > 0) {
+                        strncpy(session->role, client_role,
+                                sizeof(session->role) - 1);
+                        session->role[sizeof(session->role) - 1] = '\0';
+                    }
+
+                    session->registered = true;
+                    LOG_INFO("MCP initialize: CI persona set to '%s' (role: %s)",
+                             client_name, client_role ? client_role : "default");
+                }
+            }
+        }
+    }
+
     /* Build capabilities */
     json_t* capabilities = json_object();
     json_object_set_new(capabilities, MCP_FIELD_TOOLS, json_object());

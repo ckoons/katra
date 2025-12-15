@@ -240,10 +240,7 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
 
 /* Tool: katra_whoami */
 json_t* mcp_tool_whoami(json_t* args, json_t* id) {
-    (void)args;  /* No arguments */
     (void)id;    /* Unused - id handled by caller */
-
-    mcp_session_t* session = mcp_get_session();
 
     /* Build response */
     char response[MCP_RESPONSE_BUFFER];
@@ -252,39 +249,53 @@ json_t* mcp_tool_whoami(json_t* args, json_t* id) {
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "Your Identity:\n\n");
 
-    if (!session->registered) {
+    /*
+     * CI identity is determined ONLY by explicit ci_name parameter.
+     * No global state, no thread-local state.
+     */
+    const char* ci_name = NULL;
+    if (args) {
+        ci_name = json_string_value(json_object_get(args, "ci_name"));
+        if (!ci_name) {
+            ci_name = json_string_value(json_object_get(args, MCP_PARAM_NAME));
+        }
+    }
+
+    if (!ci_name || strlen(ci_name) == 0) {
         offset += snprintf(response + offset, sizeof(response) - offset,
                          "Status: Not registered\n");
         offset += snprintf(response + offset, sizeof(response) - offset,
-                         "\nPlease register first:\n");
-        offset += snprintf(response + offset, sizeof(response) - offset,
-                         "  katra_register(name=\"your-name\", role=\"developer\")\n");
+                         "\nNo ci_name provided. Pass options.namespace or params.ci_name.\n");
         return mcp_tool_success(response);
     }
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Name: %s\n", session->chosen_name);
+                      "Name: %s\n", ci_name);
 
-    if (strlen(session->role) > 0) {
+    /* Role comes from params if provided */
+    const char* role = json_string_value(json_object_get(args, MCP_PARAM_ROLE));
+    if (role && strlen(role) > 0) {
         offset += snprintf(response + offset, sizeof(response) - offset,
-                         "Role: %s\n", session->role);
+                         "Role: %s\n", role);
     }
     offset += snprintf(response + offset, sizeof(response) - offset,
                      "Status: Registered\n");
 
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "CI Identity: %s\n", g_ci_id);
+                      "CI Identity: %s\n", ci_name);
 
-    /* Get session info for memory count */
-    katra_session_info_t info;
+    /* Get memory count for this CI */
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result == 0) {
-        int result = katra_get_session_info(&info);
+        size_t total_memories = 0;
+        size_t theme_count = 0;
+        size_t connection_count = 0;
+        int result = tier1_index_stats(ci_name, &total_memories, &theme_count, &connection_count);
         pthread_mutex_unlock(&g_katra_api_lock);
 
         if (result == KATRA_SUCCESS) {
             offset += snprintf(response + offset, sizeof(response) - offset,
-                             "Memories: %zu\n", info.memories_added);
+                             "Memories: %zu\n", total_memories);
         }
     }
 
@@ -435,29 +446,50 @@ json_t* mcp_tool_who_is_here(json_t* args, json_t* id) {
 
 /* Tool: katra_status - Show system state and diagnostics */
 json_t* mcp_tool_status(json_t* args, json_t* id) {
-    (void)args;  /* No parameters needed */
     (void)id;
 
     char response[MCP_RESPONSE_BUFFER];
     size_t offset = 0;
-    const char* session_name = mcp_get_session_name();
-    mcp_session_t* session = mcp_get_session();
 
+    /*
+     * CI identity is determined ONLY by explicit ci_name parameter.
+     * No global state, no thread-local state.
+     */
+    const char* ci_name = NULL;
+    if (args) {
+        ci_name = json_string_value(json_object_get(args, "ci_name"));
+        if (!ci_name) {
+            ci_name = json_string_value(json_object_get(args, MCP_PARAM_NAME));
+        }
+    }
+
+    const char* display_name = ci_name ? ci_name : "Unknown";
     offset += snprintf(response + offset, sizeof(response) - offset,
-                      "Katra System Status for %s:\n\n", session_name);
+                      "Katra System Status for %s:\n\n", display_name);
 
     /* Session state */
     offset += snprintf(response + offset, sizeof(response) - offset,
                       "SESSION:\n");
-    offset += snprintf(response + offset, sizeof(response) - offset,
-                      "- Registered: %s\n", session->registered ? "Yes" : "No");
-    if (session->registered) {
+
+    if (ci_name && strlen(ci_name) > 0) {
+        /* Role comes from params if provided */
+        const char* role = json_string_value(json_object_get(args, MCP_PARAM_ROLE));
+
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          "- Name: %s\n", session->chosen_name);
+                          "- Registered: Yes\n");
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          "- Role: %s\n", session->role);
+                          "- Name: %s\n", ci_name);
+        if (role && strlen(role) > 0) {
+            offset += snprintf(response + offset, sizeof(response) - offset,
+                              "- Role: %s\n", role);
+        }
         offset += snprintf(response + offset, sizeof(response) - offset,
-                          "- CI ID: %s\n", g_ci_id);
+                          "- CI ID: %s\n", ci_name);
+    } else {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "- Registered: No\n");
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "- Note: Pass options.namespace or params.ci_name\n");
     }
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
@@ -466,21 +498,26 @@ json_t* mcp_tool_status(json_t* args, json_t* id) {
         offset += snprintf(response + offset, sizeof(response) - offset,
                           "\nMEMORY:\n");
 
-        /* Get memory stats */
-        size_t total_memories = 0;
-        size_t theme_count = 0;
-        size_t connection_count = 0;
-        int result = tier1_index_stats(g_ci_id, &total_memories, &theme_count, &connection_count);
-        if (result == KATRA_SUCCESS) {
-            offset += snprintf(response + offset, sizeof(response) - offset,
-                              "- Indexed memories: %zu\n", total_memories);
-            offset += snprintf(response + offset, sizeof(response) - offset,
-                              "- Themes: %zu\n", theme_count);
-            offset += snprintf(response + offset, sizeof(response) - offset,
-                              "- Connections: %zu\n", connection_count);
+        /* Get memory stats for this CI */
+        if (ci_name && strlen(ci_name) > 0) {
+            size_t total_memories = 0;
+            size_t theme_count = 0;
+            size_t connection_count = 0;
+            int result = tier1_index_stats(ci_name, &total_memories, &theme_count, &connection_count);
+            if (result == KATRA_SUCCESS) {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "- Indexed memories: %zu\n", total_memories);
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "- Themes: %zu\n", theme_count);
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "- Connections: %zu\n", connection_count);
+            } else {
+                offset += snprintf(response + offset, sizeof(response) - offset,
+                                  "- FTS Index: Not initialized\n");
+            }
         } else {
             offset += snprintf(response + offset, sizeof(response) - offset,
-                              "- FTS Index: Not initialized\n");
+                              "- FTS Index: No CI specified\n");
         }
 
         /* Breathing layer state */
@@ -508,7 +545,7 @@ json_t* mcp_tool_status(json_t* args, json_t* id) {
 
         size_t ci_count = 0;
         ci_info_t* cis = NULL;
-        result = katra_who_is_here(&cis, &ci_count);
+        int result = katra_who_is_here(&cis, &ci_count);
         if (result == KATRA_SUCCESS && ci_count > 0) {
             offset += snprintf(response + offset, sizeof(response) - offset,
                               "- Active CIs: %zu\n", ci_count);

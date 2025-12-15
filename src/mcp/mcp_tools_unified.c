@@ -189,6 +189,16 @@ json_t* mcp_tool_operation(json_t* args, json_t* id) {
                            json_string(KATRA_UNIFIED_VERSION));
     }
 
+    /*
+     * CI identity is determined ONLY by explicit parameters.
+     * The CI must pass their name with every operation call.
+     * No thread-local state, no auto-registration, no magic.
+     *
+     * The daemon uses options.ci_name or params.name to determine
+     * which namespace/identity to use. If not provided, operations
+     * will fail or use a default namespace.
+     */
+
     /* Forward to daemon */
     json_t* daemon_response = forward_to_daemon(shared_state);
     json_decref(shared_state);
