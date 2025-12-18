@@ -127,24 +127,34 @@ json_t* mcp_tool_register(json_t* args, json_t* id) {
         /* Non-fatal - auto-registration will use defaults */
     }
 
-    /* Create welcome memory */
-    char welcome[KATRA_BUFFER_MESSAGE];
-    if (role && strlen(role) > 0) {
-        snprintf(welcome, sizeof(welcome),
-                "Session started. My name is %s, I'm a %s.", name, role);
-    } else {
-        snprintf(welcome, sizeof(welcome),
-                "Session started. My name is %s.", name);
+    /* Create welcome memory (skipped by default to avoid noise) */
+    json_t* skip_memory_json = json_object_get(args, "skip_welcome_memory");
+    bool skip_welcome_memory = true;  /* Default to true (no auto-memory) */
+    if (skip_memory_json && json_is_boolean(skip_memory_json)) {
+        skip_welcome_memory = json_boolean_value(skip_memory_json);
+    } else if (skip_memory_json && json_is_false(skip_memory_json)) {
+        skip_welcome_memory = false;  /* Explicitly requested welcome memory */
     }
 
-    lock_result = pthread_mutex_lock(&g_katra_api_lock);
-    if (lock_result == 0) {
-        result = learn(ci_id, welcome);
-        pthread_mutex_unlock(&g_katra_api_lock);
+    if (!skip_welcome_memory) {
+        char welcome[KATRA_BUFFER_MESSAGE];
+        if (role && strlen(role) > 0) {
+            snprintf(welcome, sizeof(welcome),
+                    "Session started. My name is %s, I'm a %s.", name, role);
+        } else {
+            snprintf(welcome, sizeof(welcome),
+                    "Session started. My name is %s.", name);
+        }
 
-        if (result != KATRA_SUCCESS) {
-            LOG_ERROR("Failed to create welcome memory");
-            /* Don't fail registration if memory creation fails */
+        lock_result = pthread_mutex_lock(&g_katra_api_lock);
+        if (lock_result == 0) {
+            result = learn(ci_id, welcome);
+            pthread_mutex_unlock(&g_katra_api_lock);
+
+            if (result != KATRA_SUCCESS) {
+                LOG_ERROR("Failed to create welcome memory");
+                /* Don't fail registration if memory creation fails */
+            }
         }
     }
 

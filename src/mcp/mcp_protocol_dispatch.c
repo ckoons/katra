@@ -114,6 +114,8 @@ json_t* mcp_handle_tools_call(json_t* request) {
         tool_result = mcp_tool_say(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_HEAR) == 0) {
         tool_result = mcp_tool_hear(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_HEAR_ALL) == 0) {
+        tool_result = mcp_tool_hear_all(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_WHO_IS_HERE) == 0) {
         tool_result = mcp_tool_who_is_here(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_CONFIGURE_SEMANTIC) == 0) {
@@ -147,6 +149,13 @@ json_t* mcp_handle_tools_call(json_t* request) {
         tool_result = mcp_tool_fade(args, id);
     } else if (strcmp(tool_name, MCP_TOOL_FORGET) == 0) {
         tool_result = mcp_tool_forget(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_FORGET_BY_PATTERN) == 0) {
+        tool_result = mcp_tool_forget_by_pattern(args, id);
+    } else if (strcmp(tool_name, MCP_TOOL_DEDUP_CHECK) == 0) {
+        tool_result = mcp_tool_dedup_check(args, id);
+    /* Memory Query Tools with IDs (CI Enhancement) */
+    } else if (strcmp(tool_name, MCP_TOOL_RECALL_WITH_IDS) == 0) {
+        tool_result = mcp_tool_recall_with_ids(args, id);
     /* Whiteboard Tools (Phase 8) */
     } else if (strcmp(tool_name, MCP_TOOL_WB_CREATE) == 0) {
         tool_result = mcp_tool_whiteboard_create(args, id);

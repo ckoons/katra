@@ -284,3 +284,82 @@ json_t* mcp_tool_set_isolation(json_t* args) {
 
     return mcp_tool_success(response);
 }
+
+/* ============================================================================
+ * TOOL: katra_hear_all - Batch receive messages
+ * ============================================================================ */
+
+/**
+ * Tool: katra_hear_all
+ * Receive multiple messages from personal queue in one call.
+ * More efficient than calling katra_hear repeatedly.
+ */
+json_t* mcp_tool_hear_all(json_t* args, json_t* id) {
+    (void)id;
+
+    /* Get receiver identity from args (explicit CI name) */
+    const char* ci_name = mcp_get_ci_name_from_args(args);
+    if (!ci_name || strlen(ci_name) == 0) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "CI name required - pass ci_name or register first");
+    }
+
+    /* Optional max_count (default 0 = all available up to 100) */
+    size_t max_count = 0;
+    json_t* max_json = json_object_get(args, "max_count");
+    if (max_json && json_is_integer(max_json)) {
+        max_count = (size_t)json_integer_value(max_json);
+    }
+
+    heard_messages_t batch;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    int result = katra_hear_all(ci_name, max_count, &batch);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    if (result != KATRA_SUCCESS) {
+        const char* msg = katra_error_message(result);
+        const char* suggestion = katra_error_suggestion(result);
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details), MCP_FMT_KATRA_ERROR, msg, suggestion);
+        return mcp_tool_error("Failed to hear messages", details);
+    }
+
+    if (batch.count == 0) {
+        katra_free_heard_messages(&batch);
+        return mcp_tool_success("No new messages from other CIs");
+    }
+
+    /* Format messages */
+    char response[MCP_RESPONSE_BUFFER];
+    size_t offset = 0;
+
+    offset += snprintf(response + offset, sizeof(response) - offset,
+                      "Received %zu message%s:\n\n",
+                      batch.count, batch.count == 1 ? "" : "s");
+
+    for (size_t i = 0; i < batch.count && offset < sizeof(response) - 100; i++) {
+        heard_message_t* msg = &batch.messages[i];
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "[%zu] From %s", i + 1, msg->speaker_name);
+
+        if (msg->is_direct_message) {
+            offset += snprintf(response + offset, sizeof(response) - offset, " (DM)");
+        }
+
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          ":\n%s\n\n", msg->content);
+    }
+
+    if (batch.more_available) {
+        offset += snprintf(response + offset, sizeof(response) - offset,
+                          "(More messages waiting - call hear_all again)");
+    }
+
+    katra_free_heard_messages(&batch);
+    return mcp_tool_success(response);
+}

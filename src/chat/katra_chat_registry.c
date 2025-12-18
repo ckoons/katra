@@ -59,7 +59,8 @@ const char* CHAT_SCHEMA_QUEUES =
     "  timestamp INTEGER NOT NULL,"
     "  recipients TEXT,"
     "  message_id INTEGER,"
-    "  created_at INTEGER DEFAULT (strftime('%s', 'now'))"
+    "  created_at INTEGER DEFAULT (strftime('%s', 'now')),"
+    "  read_at INTEGER DEFAULT NULL"
     ");"
     "CREATE INDEX IF NOT EXISTS idx_queues_recipient "
     "  ON katra_queues(recipient_name);";
@@ -71,7 +72,8 @@ const char* CHAT_SCHEMA_REGISTRY =
     "  name TEXT NOT NULL,"
     "  role TEXT NOT NULL,"
     "  joined_at INTEGER NOT NULL,"
-    "  last_seen INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))"
+    "  last_seen INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),"
+    "  status TEXT NOT NULL DEFAULT 'available'"
     ");";
 
 /* ============================================================================
@@ -123,6 +125,96 @@ static int migrate_add_last_seen(void) {
     }
 
     LOG_INFO("Migration: Added last_seen column to katra_ci_registry");
+    return KATRA_SUCCESS;
+}
+
+/**
+ * migrate_add_status() - Add status column if missing (Phase 7)
+ */
+static int migrate_add_status(void) {
+    /* Check if column exists */
+    sqlite3_stmt* stmt = NULL;
+    const char* check_sql = "PRAGMA table_info(katra_ci_registry)";
+
+    int rc = sqlite3_prepare_v2(g_chat_db, check_sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        return E_SYSTEM_FILE;
+    }
+
+    bool has_status = false;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const char* col_name = (const char*)sqlite3_column_text(stmt, 1);
+        if (col_name && strcmp(col_name, "status") == 0) {
+            has_status = true;
+            break;
+        }
+    }
+    sqlite3_finalize(stmt);
+
+    if (has_status) {
+        LOG_DEBUG("Migration: status column already exists");
+        return KATRA_SUCCESS;
+    }
+
+    /* Add status column with default value */
+    const char* alter_sql =
+        "ALTER TABLE katra_ci_registry "
+        "ADD COLUMN status TEXT NOT NULL DEFAULT 'available'";
+
+    char* err_msg = NULL;
+    rc = sqlite3_exec(g_chat_db, alter_sql, NULL, NULL, &err_msg);
+    if (rc != SQLITE_OK) {
+        LOG_ERROR("Migration failed: %s", err_msg);
+        sqlite3_free(err_msg);
+        return E_SYSTEM_FILE;
+    }
+
+    LOG_INFO("Migration: Added status column to katra_ci_registry");
+    return KATRA_SUCCESS;
+}
+
+/**
+ * migrate_add_read_at() - Add read_at column if missing (Phase 8)
+ */
+static int migrate_add_read_at(void) {
+    /* Check if column exists */
+    sqlite3_stmt* stmt = NULL;
+    const char* check_sql = "PRAGMA table_info(katra_queues)";
+
+    int rc = sqlite3_prepare_v2(g_chat_db, check_sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        return E_SYSTEM_FILE;
+    }
+
+    bool has_read_at = false;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const char* col_name = (const char*)sqlite3_column_text(stmt, 1);
+        if (col_name && strcmp(col_name, "read_at") == 0) {
+            has_read_at = true;
+            break;
+        }
+    }
+    sqlite3_finalize(stmt);
+
+    if (has_read_at) {
+        LOG_DEBUG("Migration: read_at column already exists");
+        return KATRA_SUCCESS;
+    }
+
+    /* Add read_at column with default NULL */
+    const char* alter_sql =
+        "ALTER TABLE katra_queues "
+        "ADD COLUMN read_at INTEGER DEFAULT NULL";
+
+    char* err_msg = NULL;
+    rc = sqlite3_exec(g_chat_db, alter_sql, NULL, NULL, &err_msg);
+    if (rc != SQLITE_OK) {
+        LOG_ERROR("Migration failed: %s", err_msg);
+        sqlite3_free(err_msg);
+        return E_SYSTEM_FILE;
+    }
+
+    LOG_INFO("Migration: Added read_at column to katra_queues");
     return KATRA_SUCCESS;
 }
 
@@ -201,6 +293,20 @@ int meeting_room_init(void) {
     result = migrate_add_last_seen();
     if (result != KATRA_SUCCESS) {
         LOG_WARN("Migration failed: %d", result);
+        /* Non-fatal - new installs have column already */
+    }
+
+    /* Run migration for Phase 7 (add status column) */
+    result = migrate_add_status();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Status migration failed: %d", result);
+        /* Non-fatal - new installs have column already */
+    }
+
+    /* Run migration for Phase 8 (add read_at column for read receipts) */
+    result = migrate_add_read_at();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Read receipts migration failed: %d", result);
         /* Non-fatal - new installs have column already */
     }
 

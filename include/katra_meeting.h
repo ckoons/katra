@@ -38,6 +38,20 @@
 #define MEETING_MAX_HISTORY_COUNT 100
 
 /* ============================================================================
+ * CI STATUS
+ * ============================================================================ */
+
+/**
+ * ci_status_t - CI availability status
+ */
+typedef enum {
+    CI_STATUS_AVAILABLE = 0,   /* Ready for interaction */
+    CI_STATUS_AWAY = 1,        /* Temporarily unavailable */
+    CI_STATUS_BUSY = 2,        /* Working on something, limit interruptions */
+    CI_STATUS_DO_NOT_DISTURB = 3  /* Do not send messages */
+} ci_status_t;
+
+/* ============================================================================
  * DATA STRUCTURES
  * ============================================================================ */
 
@@ -46,7 +60,8 @@
  */
 typedef struct {
     uint64_t message_id;                  /* Database message ID */
-    char speaker_name[KATRA_PERSONA_SIZE];   /* Who said it */
+    char speaker_ci_id[KATRA_CI_ID_SIZE];    /* Sender's persistent identity */
+    char speaker_name[KATRA_PERSONA_SIZE];   /* Who said it (display name) */
     time_t timestamp;                     /* When they said it */
     char content[MEETING_MAX_MESSAGE_LENGTH]; /* What they said */
     char recipients[KATRA_BUFFER_SMALL];  /* "broadcast" or "alice,bob" */
@@ -61,6 +76,7 @@ typedef struct {
     char name[KATRA_PERSONA_SIZE];
     char role[KATRA_ROLE_SIZE];
     time_t joined_at;
+    ci_status_t status;        /* Availability status */
 } ci_info_t;
 
 /**
@@ -126,6 +142,52 @@ int katra_say(const char* ci_name, const char* content, const char* recipients);
 int katra_hear(const char* ci_name, heard_message_t* message_out);
 
 /**
+ * heard_messages_t - Batch of messages received from hear_all
+ */
+typedef struct {
+    heard_message_t* messages;    /* Array of messages */
+    size_t count;                 /* Number of messages returned */
+    bool more_available;          /* True if more messages remain in queue */
+} heard_messages_t;
+
+/**
+ * katra_hear_all() - Receive multiple messages from personal queue (batch)
+ *
+ * Returns up to max_count messages from caller's queue in one call.
+ * More efficient than calling katra_hear() repeatedly.
+ *
+ * Parameters:
+ *   ci_name: Receiver's CI name (required - explicit identity)
+ *   max_count: Maximum number of messages to retrieve (0 = all available)
+ *   out: Pointer to receive batch result (caller must free with katra_free_heard_messages)
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Messages received (count may be 0 if queue empty)
+ *   E_INPUT_NULL - NULL ci_name or out
+ *   E_SYSTEM_MEMORY - Allocation failed
+ *   E_INVALID_STATE - Meeting room not initialized
+ *   E_SYSTEM_DATABASE - Database error
+ *
+ * Behavior:
+ * - Retrieves messages oldest-first from personal queue
+ * - Deletes retrieved messages from queue (read-once)
+ * - Sets more_available flag based on remaining queue depth
+ *
+ * Thread-safe: Yes
+ */
+int katra_hear_all(const char* ci_name, size_t max_count, heard_messages_t* out);
+
+/**
+ * katra_free_heard_messages() - Free batch result from katra_hear_all
+ *
+ * Frees the messages array allocated by katra_hear_all().
+ *
+ * Parameters:
+ *   batch: Batch result to free (safe to call with NULL)
+ */
+void katra_free_heard_messages(heard_messages_t* batch);
+
+/**
  * katra_count_messages() - Count messages in personal queue (non-consuming)
  *
  * Returns number of messages waiting in CI's personal queue without
@@ -146,6 +208,56 @@ int katra_hear(const char* ci_name, heard_message_t* message_out);
  * Thread-safe: Yes
  */
 int katra_count_messages(const char* ci_name, size_t* count_out);
+
+/**
+ * katra_set_ci_status() - Set CI availability status
+ *
+ * Updates the CI's status in the registry. Status is visible to other CIs
+ * via katra_who_is_here() and katra_get_ci_status().
+ *
+ * Parameters:
+ *   ci_name: CI name (required - explicit identity)
+ *   status: New status value
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Status updated
+ *   E_INPUT_NULL - NULL ci_name
+ *   E_INVALID_STATE - Meeting room not initialized
+ *   E_SYSTEM_DATABASE - Database error
+ *
+ * Thread-safe: Yes
+ */
+int katra_set_ci_status(const char* ci_name, ci_status_t status);
+
+/**
+ * katra_get_ci_status() - Get CI availability status
+ *
+ * Retrieves the current status of a CI.
+ *
+ * Parameters:
+ *   ci_name: CI name to query (required)
+ *   status_out: Pointer to receive status value
+ *
+ * Returns:
+ *   KATRA_SUCCESS - Status returned
+ *   KATRA_NOT_FOUND - CI not registered
+ *   E_INPUT_NULL - NULL parameters
+ *   E_INVALID_STATE - Meeting room not initialized
+ *   E_SYSTEM_DATABASE - Database error
+ *
+ * Thread-safe: Yes
+ */
+int katra_get_ci_status(const char* ci_name, ci_status_t* status_out);
+
+/**
+ * katra_status_to_string() - Convert status enum to string
+ */
+const char* katra_status_to_string(ci_status_t status);
+
+/**
+ * katra_string_to_status() - Convert string to status enum
+ */
+ci_status_t katra_string_to_status(const char* str);
 
 /**
  * katra_who_is_here() - List all active CIs in meeting

@@ -250,6 +250,98 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
     }
     return mcp_tool_success(response);
 }
+
+/* Tool: katra_recall_with_ids - Recall with memory IDs for targeted operations */
+json_t* mcp_tool_recall_with_ids(json_t* args, json_t* id) {
+    (void)id;
+
+    if (!args) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
+    }
+
+    const char* topic = json_string_value(json_object_get(args, MCP_PARAM_TOPIC));
+    const char* mode = json_string_value(json_object_get(args, "mode"));
+
+    if (!topic) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_TOPIC_REQUIRED);
+    }
+
+    const char* session_name = mcp_get_ci_name_from_args(args);
+    synthesis_result_set_t* synth_results = NULL;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    /* Use synthesis layer which provides record IDs */
+    recall_options_t opts;
+    if (mode && strcmp(mode, "comprehensive") == 0) {
+        opts = (recall_options_t)RECALL_OPTIONS_COMPREHENSIVE;
+    } else if (mode && strcmp(mode, "semantic") == 0) {
+        opts = (recall_options_t)RECALL_OPTIONS_SEMANTIC;
+    } else if (mode && strcmp(mode, "fast") == 0) {
+        opts = (recall_options_t)RECALL_OPTIONS_FAST;
+    } else {
+        katra_recall_options_init(&opts);
+    }
+
+    katra_recall_synthesized(session_name, topic, &opts, &synth_results);
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    size_t count = synth_results ? synth_results->count : 0;
+
+    if (count == 0) {
+        if (synth_results) {
+            katra_synthesis_free_results(synth_results);
+        }
+        char response[MCP_RESPONSE_BUFFER];
+        snprintf(response, sizeof(response),
+                "No memories found about '%s', %s.", topic, session_name);
+        return mcp_tool_success(response);
+    }
+
+    /* Build JSON response with memory IDs and metadata */
+    json_t* response_obj = json_object();
+    json_t* memories_array = json_array();
+
+    for (size_t i = 0; i < count && i < MCP_MAX_RECALL_RESULTS; i++) {
+        synthesis_result_t* r = &synth_results->results[i];
+        json_t* mem_obj = json_object();
+
+        json_object_set_new(mem_obj, "memory_id", json_string(r->record_id));
+        json_object_set_new(mem_obj, "content", json_string(r->content ? r->content : ""));
+        json_object_set_new(mem_obj, "score", json_real(r->score));
+
+        /* Include source scores for transparency */
+        if (r->vector_score > 0) {
+            json_object_set_new(mem_obj, "vector_score", json_real(r->vector_score));
+        }
+        if (r->graph_score > 0) {
+            json_object_set_new(mem_obj, "graph_score", json_real(r->graph_score));
+        }
+        if (r->sql_score > 0) {
+            json_object_set_new(mem_obj, "sql_score", json_real(r->sql_score));
+        }
+
+        json_array_append_new(memories_array, mem_obj);
+    }
+
+    json_object_set_new(response_obj, "memories", memories_array);
+    json_object_set_new(response_obj, "count", json_integer((json_int_t)count));
+    json_object_set_new(response_obj, "topic", json_string(topic));
+    json_object_set_new(response_obj, "ci_name", json_string(session_name));
+
+    /* Add source statistics */
+    json_object_set_new(response_obj, "vector_matches", json_integer(synth_results->vector_matches));
+    json_object_set_new(response_obj, "graph_matches", json_integer(synth_results->graph_matches));
+    json_object_set_new(response_obj, "sql_matches", json_integer(synth_results->sql_matches));
+
+    katra_synthesis_free_results(synth_results);
+
+    return response_obj;
+}
+
 /* Tool: katra_recent */
 json_t* mcp_tool_recent(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */

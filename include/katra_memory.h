@@ -195,6 +195,40 @@ void katra_memory_cleanup(void);
  */
 int katra_memory_store(const memory_record_t* record);
 
+/* Duplicate check result structure */
+typedef struct {
+    bool has_exact_duplicate;        /* True if exact content match exists */
+    bool has_semantic_duplicate;     /* True if semantic match above threshold */
+    char* exact_match_id;            /* Record ID of exact match (NULL if none) */
+    char* semantic_match_id;         /* Record ID of best semantic match (NULL if none) */
+    float semantic_similarity;       /* Similarity score of best match (0.0-1.0) */
+    char* match_preview;             /* Preview of matching content */
+} dedup_result_t;
+
+/* Check for duplicate memory content
+ *
+ * Checks if content already exists in CI's memories (exact or semantic match).
+ * Useful to prevent memory noise from repeated storage of same information.
+ *
+ * Parameters:
+ *   ci_id - CI identifier
+ *   content - Content to check for duplicates
+ *   semantic_threshold - Minimum similarity for semantic match (0.0-1.0, 0 = exact only)
+ *   result - Result structure to fill (caller owns strings, must free)
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_id, content, or result is NULL
+ *   E_SYSTEM_MEMORY if allocation fails
+ */
+int katra_memory_dedup_check(const char* ci_id,
+                             const char* content,
+                             float semantic_threshold,
+                             dedup_result_t* result);
+
+/* Free dedup result strings */
+void katra_memory_dedup_result_free(dedup_result_t* result);
+
 /* Query memory records
  *
  * Searches memory tiers based on query parameters.

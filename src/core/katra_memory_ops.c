@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sqlite3.h>
 
 /* Project includes */
 #include "katra_memory.h"
@@ -93,4 +94,194 @@ int katra_memory_delete_session_scoped(const char* ci_id, size_t* deleted_count)
     /* They are effectively deleted from index, so won't appear in queries */
 
     return result;
+}
+
+/* SQL for exact content match using FTS5 */
+static const char* SQL_EXACT_MATCH =
+    "SELECT m.record_id, f.content "
+    "FROM memories m "
+    "JOIN memory_content_fts f ON m.record_id = f.record_id "
+    "WHERE m.ci_id = ? AND f.content = ? "
+    "LIMIT 1";
+
+/* SQL for semantic match using FTS5 (for similar content) */
+static const char* SQL_SEMANTIC_CANDIDATES =
+    "SELECT m.record_id, f.content "
+    "FROM memories m "
+    "JOIN memory_content_fts f ON m.record_id = f.record_id "
+    "WHERE m.ci_id = ? AND f.content MATCH ? "
+    "LIMIT 20";
+
+/**
+ * katra_memory_dedup_check() - Check for duplicate memory content
+ *
+ * Performs exact and semantic duplicate detection:
+ * 1. Exact: Checks if identical content exists
+ * 2. Semantic: Uses FTS5 to find similar content, calculates similarity
+ */
+int katra_memory_dedup_check(const char* ci_id,
+                             const char* content,
+                             float semantic_threshold,
+                             dedup_result_t* result) {
+    if (!ci_id || !content || !result) {
+        katra_report_error(E_INPUT_NULL, "katra_memory_dedup_check",
+                          "ci_id, content, or result is NULL");
+        return E_INPUT_NULL;
+    }
+
+    if (!memory_initialized) {
+        katra_report_error(E_INVALID_STATE, "katra_memory_dedup_check",
+                          "Memory subsystem not initialized");
+        return E_INVALID_STATE;
+    }
+
+    /* Initialize result */
+    memset(result, 0, sizeof(dedup_result_t));
+
+    sqlite3* db = tier1_index_get_db();
+    if (!db) {
+        katra_report_error(E_SYSTEM_FILE, "katra_memory_dedup_check",
+                          "Failed to get database handle");
+        return E_SYSTEM_FILE;
+    }
+
+    sqlite3_stmt* stmt = NULL;
+    int sql_result;
+
+    /* Step 1: Check for exact match */
+    sql_result = sqlite3_prepare_v2(db, SQL_EXACT_MATCH, -1, &stmt, NULL);
+    if (sql_result == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, content, -1, SQLITE_STATIC);
+
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            result->has_exact_duplicate = true;
+            const char* match_id = (const char*)sqlite3_column_text(stmt, 0);
+            const char* match_content = (const char*)sqlite3_column_text(stmt, 1);
+
+            if (match_id) {
+                result->exact_match_id = strdup(match_id);
+            }
+            if (match_content) {
+                /* Create preview (first 100 chars) */
+                size_t preview_len = strlen(match_content);
+                if (preview_len > MEMORY_PREVIEW_LENGTH) {
+                    preview_len = MEMORY_PREVIEW_LENGTH;
+                }
+                result->match_preview = malloc(preview_len + 4);
+                if (result->match_preview) {
+                    strncpy(result->match_preview, match_content, preview_len);
+                    result->match_preview[preview_len] = '\0';
+                    if (strlen(match_content) > MEMORY_PREVIEW_LENGTH) {
+                        strcat(result->match_preview, "...");
+                    }
+                }
+            }
+            result->semantic_similarity = 1.0f;  /* Exact match = 100% similarity */
+            LOG_DEBUG("Found exact duplicate for ci=%s: %s", ci_id, result->exact_match_id);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    /* Step 2: Check for semantic match (if threshold > 0 and no exact match) */
+    if (!result->has_exact_duplicate && semantic_threshold > 0.0f) {
+        /* Extract keywords for FTS5 MATCH query */
+        /* Simple approach: use first few words as query terms */
+        char query_terms[KATRA_BUFFER_SMALL];
+        strncpy(query_terms, content, sizeof(query_terms) - 1);
+        query_terms[sizeof(query_terms) - 1] = '\0';
+
+        /* Truncate to first 100 chars for search efficiency */
+        if (strlen(query_terms) > 100) {
+            query_terms[100] = '\0';
+        }
+
+        sql_result = sqlite3_prepare_v2(db, SQL_SEMANTIC_CANDIDATES, -1, &stmt, NULL);
+        if (sql_result == SQLITE_OK) {
+            sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 2, query_terms, -1, SQLITE_STATIC);
+
+            float best_similarity = 0.0f;
+            char* best_match_id = NULL;
+            char* best_content = NULL;
+
+            while (sqlite3_step(stmt) == SQLITE_ROW) {
+                const char* candidate_id = (const char*)sqlite3_column_text(stmt, 0);
+                const char* candidate_content = (const char*)sqlite3_column_text(stmt, 1);
+
+                if (!candidate_content) continue;
+
+                /* Calculate simple word-overlap similarity */
+                size_t content_len = strlen(content);
+                size_t candidate_len = strlen(candidate_content);
+                size_t min_len = content_len < candidate_len ? content_len : candidate_len;
+                size_t max_len = content_len > candidate_len ? content_len : candidate_len;
+
+                /* Count matching characters (simple but fast) */
+                size_t matching = 0;
+                for (size_t i = 0; i < min_len; i++) {
+                    if (content[i] == candidate_content[i]) {
+                        matching++;
+                    }
+                }
+
+                float similarity = (float)matching / (float)max_len;
+
+                if (similarity > best_similarity && similarity >= semantic_threshold) {
+                    best_similarity = similarity;
+                    free(best_match_id);
+                    free(best_content);
+                    best_match_id = candidate_id ? strdup(candidate_id) : NULL;
+                    best_content = candidate_content ? strdup(candidate_content) : NULL;
+                }
+            }
+            sqlite3_finalize(stmt);
+
+            if (best_similarity >= semantic_threshold) {
+                result->has_semantic_duplicate = true;
+                result->semantic_match_id = best_match_id;
+                result->semantic_similarity = best_similarity;
+
+                /* Create preview if we don't already have one */
+                if (!result->match_preview && best_content) {
+                    size_t preview_len = strlen(best_content);
+                    if (preview_len > MEMORY_PREVIEW_LENGTH) {
+                        preview_len = MEMORY_PREVIEW_LENGTH;
+                    }
+                    result->match_preview = malloc(preview_len + 4);
+                    if (result->match_preview) {
+                        strncpy(result->match_preview, best_content, preview_len);
+                        result->match_preview[preview_len] = '\0';
+                        if (strlen(best_content) > MEMORY_PREVIEW_LENGTH) {
+                            strcat(result->match_preview, "...");
+                        }
+                    }
+                }
+                free(best_content);
+
+                LOG_DEBUG("Found semantic duplicate for ci=%s: %s (%.2f similarity)",
+                         ci_id, result->semantic_match_id, best_similarity);
+            } else {
+                free(best_match_id);
+                free(best_content);
+            }
+        }
+    }
+
+    return KATRA_SUCCESS;
+}
+
+/**
+ * katra_memory_dedup_result_free() - Free dedup result strings
+ */
+void katra_memory_dedup_result_free(dedup_result_t* result) {
+    if (!result) return;
+
+    free(result->exact_match_id);
+    free(result->semantic_match_id);
+    free(result->match_preview);
+
+    result->exact_match_id = NULL;
+    result->semantic_match_id = NULL;
+    result->match_preview = NULL;
 }

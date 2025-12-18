@@ -88,6 +88,7 @@
 #define MCP_TOOL_STATUS "katra_status"
 #define MCP_TOOL_SAY "katra_say"
 #define MCP_TOOL_HEAR "katra_hear"
+#define MCP_TOOL_HEAR_ALL "katra_hear_all"
 #define MCP_TOOL_WHO_IS_HERE "katra_who_is_here"
 #define MCP_TOOL_CONFIGURE_SEMANTIC "katra_configure_semantic"
 #define MCP_TOOL_GET_SEMANTIC_CONFIG "katra_get_semantic_config"
@@ -109,6 +110,11 @@
 #define MCP_TOOL_ARCHIVE "katra_archive"
 #define MCP_TOOL_FADE "katra_fade"
 #define MCP_TOOL_FORGET "katra_forget"
+
+/* Memory Query Tools with IDs (CI Enhancement) */
+#define MCP_TOOL_RECALL_WITH_IDS "katra_recall_with_ids"
+#define MCP_TOOL_FORGET_BY_PATTERN "katra_forget_by_pattern"
+#define MCP_TOOL_DEDUP_CHECK "katra_dedup_check"
 
 /* Whiteboard Tools (Phase 8) */
 #define MCP_TOOL_WB_CREATE "katra_whiteboard_create"
@@ -413,6 +419,7 @@ json_t* mcp_build_operation_schema(void);
 /* Tool Implementations */
 json_t* mcp_tool_remember(json_t* args, json_t* id);
 json_t* mcp_tool_recall(json_t* args, json_t* id);
+json_t* mcp_tool_recall_with_ids(json_t* args, json_t* id);
 json_t* mcp_tool_recent(json_t* args, json_t* id);
 json_t* mcp_tool_memory_digest(json_t* args, json_t* id);
 json_t* mcp_tool_learn(json_t* args, json_t* id);
@@ -430,6 +437,8 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id);
 json_t* mcp_tool_archive(json_t* args, json_t* id);
 json_t* mcp_tool_fade(json_t* args, json_t* id);
 json_t* mcp_tool_forget(json_t* args, json_t* id);
+json_t* mcp_tool_forget_by_pattern(json_t* args, json_t* id);
+json_t* mcp_tool_dedup_check(json_t* args, json_t* id);
 
 /* Resource Implementations */
 json_t* mcp_resource_welcome(json_t* id);
@@ -476,6 +485,7 @@ json_t* mcp_tool_status(json_t* args, json_t* id);
 /* Meeting Room Tools - Inter-CI Communication */
 json_t* mcp_tool_say(json_t* args, json_t* id);
 json_t* mcp_tool_hear(json_t* args, json_t* id);
+json_t* mcp_tool_hear_all(json_t* args, json_t* id);
 json_t* mcp_tool_who_is_here(json_t* args, json_t* id);
 
 /* Configuration Tools */

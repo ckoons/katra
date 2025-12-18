@@ -398,3 +398,222 @@ json_t* mcp_tool_forget(json_t* args, json_t* id) {
 
     return mcp_tool_success(response);
 }
+
+/* ============================================================================
+ * TOOL: katra_forget_by_pattern
+ * ============================================================================ */
+
+/* SQL to find memories matching FTS pattern */
+static const char* SQL_FIND_BY_PATTERN =
+    "SELECT m.record_id, m.memory_type, m.importance, f.content "
+    "FROM memories m LEFT JOIN memory_content_fts f ON m.record_id = f.record_id "
+    "WHERE m.ci_id = ? AND f.content MATCH ? "
+    "LIMIT 1000";
+
+/**
+ * Tool: katra_forget_by_pattern
+ * Delete memories matching content pattern. Requires explicit CI consent.
+ * Uses FTS5 MATCH for pattern queries.
+ */
+json_t* mcp_tool_forget_by_pattern(json_t* args, json_t* id) {
+    (void)id;
+
+    if (!args) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "");
+    }
+
+    const char* pattern = json_string_value(json_object_get(args, "pattern"));
+    const char* reason = json_string_value(json_object_get(args, "reason"));
+    json_t* consent_json = json_object_get(args, "ci_consent");
+    json_t* dry_run_json = json_object_get(args, "dry_run");
+
+    if (!pattern) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "pattern is required");
+    }
+    if (!reason) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "reason is required");
+    }
+    if (!consent_json || !json_is_true(consent_json)) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS,
+            "ci_consent must be true. Bulk memory deletion is identity-affecting. "
+            "Confirm you understand and consent to permanent removal.");
+    }
+
+    bool dry_run = false;
+    if (dry_run_json && json_is_true(dry_run_json)) {
+        dry_run = true;
+    }
+
+    const char* session_name = mcp_get_ci_name_from_args(args);
+    const char* ci_id = session_name;
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
+    }
+
+    sqlite3* db = tier1_index_get_db();
+    if (!db) {
+        pthread_mutex_unlock(&g_katra_api_lock);
+        return mcp_tool_error(MCP_ERR_INTERNAL, "Database not initialized");
+    }
+
+    /* Find matching memories */
+    sqlite3_stmt* stmt = NULL;
+    int result = sqlite3_prepare_v2(db, SQL_FIND_BY_PATTERN, -1, &stmt, NULL);
+    if (result != SQLITE_OK) {
+        pthread_mutex_unlock(&g_katra_api_lock);
+        return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to prepare pattern query");
+    }
+
+    sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, pattern, -1, SQLITE_STATIC);
+
+    /* Collect matching memory IDs */
+    char** memory_ids = NULL;
+    size_t count = 0;
+    size_t capacity = 0;
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        const char* record_id = (const char*)sqlite3_column_text(stmt, 0);
+        if (!record_id) continue;
+
+        /* Grow array if needed */
+        if (count >= capacity) {
+            size_t new_capacity = capacity == 0 ? 16 : capacity * 2;
+            char** new_ids = realloc(memory_ids, new_capacity * sizeof(char*));
+            if (!new_ids) {
+                /* Cleanup on allocation failure */
+                for (size_t i = 0; i < count; i++) {
+                    free(memory_ids[i]);
+                }
+                free(memory_ids);
+                sqlite3_finalize(stmt);
+                pthread_mutex_unlock(&g_katra_api_lock);
+                return mcp_tool_error(MCP_ERR_INTERNAL, "Memory allocation failed");
+            }
+            memory_ids = new_ids;
+            capacity = new_capacity;
+        }
+
+        memory_ids[count] = strdup(record_id);
+        if (!memory_ids[count]) {
+            /* Cleanup on strdup failure */
+            for (size_t i = 0; i < count; i++) {
+                free(memory_ids[i]);
+            }
+            free(memory_ids);
+            sqlite3_finalize(stmt);
+            pthread_mutex_unlock(&g_katra_api_lock);
+            return mcp_tool_error(MCP_ERR_INTERNAL, "Memory allocation failed");
+        }
+        count++;
+    }
+    sqlite3_finalize(stmt);
+
+    if (count == 0) {
+        pthread_mutex_unlock(&g_katra_api_lock);
+        free(memory_ids);
+        char response[MCP_RESPONSE_BUFFER];
+        snprintf(response, sizeof(response),
+                 "No memories found matching pattern: %s", pattern);
+        return mcp_tool_success(response);
+    }
+
+    /* Dry run mode - just report what would be deleted */
+    if (dry_run) {
+        pthread_mutex_unlock(&g_katra_api_lock);
+        char response[MCP_RESPONSE_BUFFER];
+        snprintf(response, sizeof(response),
+                 "DRY RUN - Would delete %zu memories matching pattern: %s\n"
+                 "Set dry_run=false to actually delete.",
+                 count, pattern);
+        for (size_t i = 0; i < count; i++) {
+            free(memory_ids[i]);
+        }
+        free(memory_ids);
+        return mcp_tool_success(response);
+    }
+
+    /* Delete each matching memory (with audit logging) */
+    size_t deleted = 0;
+    char batch_audit_id[KATRA_BUFFER_SMALL];
+    snprintf(batch_audit_id, sizeof(batch_audit_id), "batch_%ld_%s",
+             (long)time(NULL), pattern);
+
+    for (size_t i = 0; i < count; i++) {
+        /* Log to forget audit table */
+        char audit_id[KATRA_BUFFER_SMALL];
+        snprintf(audit_id, sizeof(audit_id), "forget_%ld_%s",
+                 (long)time(NULL), memory_ids[i]);
+
+        result = sqlite3_prepare_v2(db, SQL_LOG_FORGET, -1, &stmt, NULL);
+        if (result == SQLITE_OK) {
+            time_t now = time(NULL);
+            sqlite3_bind_text(stmt, 1, audit_id, -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 2, ci_id, -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 3, memory_ids[i], -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 4, "[batch delete by pattern]", -1, SQLITE_STATIC);
+            sqlite3_bind_int(stmt, 5, 0);  /* memory_type unknown in batch */
+            sqlite3_bind_double(stmt, 6, 0.0);  /* importance unknown */
+            sqlite3_bind_text(stmt, 7, reason, -1, SQLITE_STATIC);
+            sqlite3_bind_int(stmt, 8, 1);  /* ci_consented = true */
+            sqlite3_bind_int64(stmt, 9, (sqlite3_int64)now);
+            sqlite3_step(stmt);
+            sqlite3_finalize(stmt);
+        }
+
+        /* Delete from FTS */
+        result = sqlite3_prepare_v2(db, SQL_DELETE_FTS, -1, &stmt, NULL);
+        if (result == SQLITE_OK) {
+            sqlite3_bind_text(stmt, 1, memory_ids[i], -1, SQLITE_STATIC);
+            sqlite3_step(stmt);
+            sqlite3_finalize(stmt);
+        }
+
+        /* Delete from memories table */
+        result = sqlite3_prepare_v2(db, SQL_DELETE_MEMORY, -1, &stmt, NULL);
+        if (result == SQLITE_OK) {
+            sqlite3_bind_text(stmt, 1, memory_ids[i], -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 2, ci_id, -1, SQLITE_STATIC);
+            if (sqlite3_step(stmt) == SQLITE_DONE && sqlite3_changes(db) > 0) {
+                deleted++;
+            }
+            sqlite3_finalize(stmt);
+        }
+
+        free(memory_ids[i]);
+    }
+    free(memory_ids);
+
+    /* Log batch operation to main audit system */
+    char details[KATRA_BUFFER_MEDIUM];
+    snprintf(details, sizeof(details), "pattern: %s, deleted: %zu, reason: %s",
+             pattern, deleted, reason);
+    audit_record_t audit = {
+        .event_type = AUDIT_EVENT_MEMORY_FORGET,
+        .timestamp = time(NULL),
+        .ci_id = (char*)ci_id,
+        .memory_id = batch_audit_id,
+        .details = details,
+        .success = true,
+        .error_code = KATRA_SUCCESS
+    };
+    katra_audit_log(&audit);
+
+    pthread_mutex_unlock(&g_katra_api_lock);
+
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response),
+             "Batch delete complete, %s.\n"
+             "- Pattern: %s\n"
+             "- Matched: %zu memories\n"
+             "- Deleted: %zu memories\n"
+             "- Reason: %s\n"
+             "- Consent: verified\n"
+             "- Batch Audit ID: %s\n\n"
+             "All deleted memories have been logged in the audit table.",
+             session_name, pattern, count, deleted, reason, batch_audit_id);
+
+    return mcp_tool_success(response);
+}
