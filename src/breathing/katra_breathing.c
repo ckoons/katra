@@ -366,13 +366,12 @@ int session_end(void) {
         LOG_WARN("Session memory cleanup failed: %d (continuing shutdown)", cleanup_result);
     }
 
-    /* Autonomic cleanup: Unregister from meeting room registry */
-    int unregister_result = meeting_room_unregister_ci(g_context.ci_id);
-    if (unregister_result == KATRA_SUCCESS) {
-        LOG_DEBUG("Unregistered from meeting room");
-    } else {
-        LOG_WARN("Meeting room unregister failed: %d (continuing shutdown)", unregister_result);
-    }
+    /* NOTE: Do NOT unregister from meeting room on session_end.
+     * Multiple CIs share session state in daemon mode, so session_end()
+     * during re-registration would incorrectly remove the previous CI.
+     * Stale entries are cleaned up by katra_cleanup_stale_registrations()
+     * which removes CIs not seen for 5+ minutes.
+     */
 
     /* Cleanup breathing layer to allow re-initialization with new identity */
     breathe_cleanup();

@@ -156,26 +156,7 @@ void katra_lifecycle_cleanup(void);
  */
 int katra_breath(breath_context_t* context_out);
 
-/**
- * katra_count_messages() - Non-consuming message count
- *
- * Returns number of messages waiting in personal queue without consuming them.
- * Used by katra_breath() for ambient awareness.
- *
- * Unlike katra_hear() which consumes messages, this is read-only.
- *
- * Parameters:
- *   count_out: Pointer to receive message count
- *
- * Returns:
- *   KATRA_SUCCESS - Count returned
- *   E_INPUT_NULL - NULL parameter
- *   E_INVALID_STATE - Not initialized
- *   E_SYSTEM_DATABASE - Database error
- *
- * Thread-safe: Yes
- */
-int katra_count_messages(size_t* count_out);
+/* katra_count_messages() is defined in katra_meeting.h - see that header for documentation */
 
 /* ============================================================================
  * LIFECYCLE WRAPPERS

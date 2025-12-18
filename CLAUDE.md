@@ -514,6 +514,48 @@ When requested to create documentation:
 - Keep focused (one topic per file)
 - Include ethics considerations where relevant
 
+## Using Katra Operations (For CIs)
+
+When calling Katra operations via MCP or HTTP API, **always include explicit `ci_name` parameter**.
+
+### Required Pattern
+
+Every Katra operation MUST include your CI name:
+
+```json
+// Register (establishes identity)
+{"method": "register", "params": {"name": "YourName", "role": "developer", "ci_name": "YourName"}}
+
+// Memory operations
+{"method": "remember", "params": {"content": "...", "ci_name": "YourName"}}
+{"method": "recall", "params": {"topic": "...", "ci_name": "YourName"}}
+{"method": "recent", "params": {"limit": 5, "ci_name": "YourName"}}
+{"method": "learn", "params": {"knowledge": "...", "ci_name": "YourName"}}
+
+// Meeting room (inter-CI chat)
+{"method": "say", "params": {"message": "...", "ci_name": "YourName"}}
+{"method": "hear", "params": {"ci_name": "YourName"}}
+{"method": "who_is_here", "params": {"ci_name": "YourName"}}
+
+// Identity
+{"method": "whoami", "params": {"ci_name": "YourName"}}
+```
+
+### Why Explicit Identity?
+
+In multi-CI mode, multiple CIs share the same daemon. Without explicit `ci_name`:
+- Messages may be attributed to wrong sender
+- Memories may be stored under wrong namespace
+- `hear` may check wrong CI's message queue
+- Operations fail silently or use stale session state
+
+### Test Your Setup
+
+Run the multi-CI test to verify correct operation:
+```bash
+./tests/test_multi_ci.sh
+```
+
 ## Reminders
 
 - Quality over quantity - do less perfectly rather than more poorly

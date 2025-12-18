@@ -49,12 +49,12 @@ static ci_cognitive_context_t* find_ci_context(const char* ci_id) {
 }
 
 /**
- * Get or create cognitive context for current CI
+ * Get or create cognitive context for specified CI
  * Returns pointer to context, or NULL on error
  * Note: Caller must hold mcp_wm_lock
+ * @param ci_id CI identifier (required, falls back to g_ci_id if NULL/empty)
  */
-static ci_cognitive_context_t* get_ci_context(void) {
-    const char* ci_id = mcp_get_session_name();
+static ci_cognitive_context_t* get_ci_context_for(const char* ci_id) {
     if (!ci_id || strlen(ci_id) == 0) {
         ci_id = g_ci_id;
     }
@@ -103,9 +103,10 @@ static ci_cognitive_context_t* get_ci_context(void) {
 
 /**
  * Get CI cognitive context - exported for mcp_tools_interstitial.c
+ * @param ci_id CI identifier to get context for
  */
-void* mcp_get_ci_cognitive_context(void) {
-    return get_ci_context();
+void* mcp_get_ci_cognitive_context_for(const char* ci_id) {
+    return get_ci_context_for(ci_id);
 }
 
 /**
@@ -133,21 +134,20 @@ interstitial_processor_t* mcp_ctx_get_interstitial(void* ctx) {
  * Get working memory status (count, capacity, attention scores, consolidation state)
  */
 json_t* mcp_tool_wm_status(json_t* args, json_t* id) {
-    (void)args;
     (void)id;
+
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     int lock_result = pthread_mutex_lock(&mcp_wm_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    ci_cognitive_context_t* ctx = get_ci_context();
+    ci_cognitive_context_t* ctx = get_ci_context_for(session_name);
     if (!ctx) {
         pthread_mutex_unlock(&mcp_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
-
-    const char* session_name = mcp_get_session_name();
     working_memory_t* wm = ctx->working_memory;
 
     /* Get statistics */
@@ -238,18 +238,19 @@ json_t* mcp_tool_wm_add(json_t* args, json_t* id) {
         if (attention > 1.0f) attention = 1.0f;
     }
 
+    const char* session_name = mcp_get_ci_name_from_args(args);
+
     int lock_result = pthread_mutex_lock(&mcp_wm_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    ci_cognitive_context_t* ctx = get_ci_context();
+    ci_cognitive_context_t* ctx = get_ci_context_for(session_name);
     if (!ctx) {
         pthread_mutex_unlock(&mcp_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
 
-    const char* session_name = mcp_get_session_name();
     working_memory_t* wm = ctx->working_memory;
 
     /* Create experience from content */
@@ -330,18 +331,19 @@ json_t* mcp_tool_wm_decay(json_t* args, json_t* id) {
         }
     }
 
+    const char* session_name = mcp_get_ci_name_from_args(args);
+
     int lock_result = pthread_mutex_lock(&mcp_wm_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    ci_cognitive_context_t* ctx = get_ci_context();
+    ci_cognitive_context_t* ctx = get_ci_context_for(session_name);
     if (!ctx) {
         pthread_mutex_unlock(&mcp_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
 
-    const char* session_name = mcp_get_session_name();
     working_memory_t* wm = ctx->working_memory;
 
     /* Apply decay */
@@ -375,21 +377,21 @@ json_t* mcp_tool_wm_decay(json_t* args, json_t* id) {
  * Force consolidation of low-attention items to long-term memory
  */
 json_t* mcp_tool_wm_consolidate(json_t* args, json_t* id) {
-    (void)args;
     (void)id;
+
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     int lock_result = pthread_mutex_lock(&mcp_wm_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    ci_cognitive_context_t* ctx = get_ci_context();
+    ci_cognitive_context_t* ctx = get_ci_context_for(session_name);
     if (!ctx) {
         pthread_mutex_unlock(&mcp_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize working memory");
     }
 
-    const char* session_name = mcp_get_session_name();
     working_memory_t* wm = ctx->working_memory;
 
     size_t count_before = wm->count;

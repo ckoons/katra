@@ -139,6 +139,15 @@ int katra_lifecycle_init(void) {
     LOG_INFO("Lifecycle layer initialized (breath interval: %d seconds)",
              g_session_state->breath_interval);
 
+    /* Initialize meeting room (chat subsystem for who_is_here, say, etc.) */
+    result = meeting_room_init();
+    if (result != KATRA_SUCCESS && result != E_ALREADY_INITIALIZED) {
+        LOG_WARN("Meeting room initialization failed: %d (chat features disabled)", result);
+        /* Non-fatal - continue without meeting room */
+    } else {
+        LOG_INFO("Meeting room initialized");
+    }
+
     return KATRA_SUCCESS;
 }
 
@@ -229,11 +238,16 @@ int katra_breath(breath_context_t* context_out) {
     context.last_breath = now;
 
     /* Check for unread messages (non-consuming) */
-    result = katra_count_messages(&message_count);
-    if (result == KATRA_SUCCESS) {
-        context.unread_messages = message_count;
+    const char* ci_name = g_session_state->persona_name;
+    if (ci_name && strlen(ci_name) > 0) {
+        result = katra_count_messages(ci_name, &message_count);
+        if (result == KATRA_SUCCESS) {
+            context.unread_messages = message_count;
+        } else {
+            LOG_WARN("katra_count_messages failed: %d", result);
+            context.unread_messages = 0;
+        }
     } else {
-        LOG_WARN("katra_count_messages failed: %d", result);
         context.unread_messages = 0;
     }
 

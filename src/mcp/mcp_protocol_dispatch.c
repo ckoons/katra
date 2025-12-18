@@ -13,6 +13,7 @@
 #include "katra_hooks.h"
 #include "katra_lifecycle.h"
 #include "katra_sunrise_sunset.h"
+#include "mcp_tools_common.h"
 
 /* Extract turn input from tool arguments for context generation */
 static const char* extract_turn_input(const char* tool_name, json_t* args) {
@@ -75,8 +76,8 @@ json_t* mcp_handle_tools_call(json_t* request) {
     /* Extract turn input for context generation (Phase 10) */
     const char* turn_input = extract_turn_input(tool_name, args);
 
-    /* Get CI ID from current session for scoped context generation */
-    const char* ci_id = mcp_get_session_name();
+    /* Get CI ID from args or session for scoped context generation */
+    const char* ci_id = mcp_get_ci_name_from_args(args);
 
     /* Trigger turn start hook with context generation if we have input and CI ID */
     if (turn_input && strlen(turn_input) > 0 && ci_id && strlen(ci_id) > 0) {

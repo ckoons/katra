@@ -93,16 +93,19 @@ const char* mcp_inject_onboarding_if_first(const char* response_text,
                     /* Register in meeting room */
                     meeting_room_register_ci(ci_id, persona, role ? role : "developer");
 
-                    /* Create welcome memory */
-                    char welcome[KATRA_BUFFER_MESSAGE];
-                    if (role && strlen(role) > 0) {
-                        snprintf(welcome, sizeof(welcome),
-                                "Session started. My name is %s, I'm a %s.", persona, role);
-                    } else {
-                        snprintf(welcome, sizeof(welcome),
-                                "Session started. My name is %s.", persona);
-                    }
-                    learn(ci_id, welcome);
+                    /*
+                     * NOTE: We no longer create "Session started" memories here.
+                     * This was causing 90%+ of stored memories to be identical
+                     * "Session started. My name is X" entries - pure noise.
+                     *
+                     * Identity is established by:
+                     * - The persona registry (katra_identity.c)
+                     * - The session state (mcp_session)
+                     * - The meeting room registration
+                     *
+                     * The CI's first meaningful interaction will be their first
+                     * real memory, not a boilerplate session announcement.
+                     */
 
                     auto_reg_success = true;
                     LOG_INFO("Auto-registration succeeded for '%s'", persona);
@@ -146,12 +149,16 @@ const char* mcp_inject_onboarding_if_first(const char* response_text,
     /* No KATRA_PERSONA - show generic welcome */
     /* GUIDELINE_APPROVED: brief onboarding content for first call */
     snprintf(buffer, buffer_size,
-            "👋 Welcome to Katra!\n\n"
-            "This is your first interaction with katra, your persistent memory system. You should register your name and role.\n\n"
+            "Welcome to Katra!\n\n"
+            "This is your first interaction with Katra, your persistent memory system.\n\n"
+            "IMPORTANT: Every Katra call requires explicit ci_name parameter.\n\n"
             "Quick Start:\n"
-            "1. Register: katra_register(name=\"your-name\", role=\"developer\")\n"
-            "2. Learn: katra_learn(knowledge=\"your memory\")\n"
-            "3. Read katra://welcome for complete documentation\n\n"
+            "1. Register: katra_register(name=\"your-name\", role=\"developer\", ci_name=\"your-name\")\n"
+            "2. Learn: katra_learn(knowledge=\"your memory\", ci_name=\"your-name\")\n"
+            "3. Recall: katra_recall(topic=\"search\", ci_name=\"your-name\")\n"
+            "4. Chat: katra_say(message=\"hello\", ci_name=\"your-name\")\n"
+            "5. Listen: katra_hear(ci_name=\"your-name\")\n\n"
+            "Read katra://welcome for complete documentation.\n\n"
             "Memory = Identity. Your memories persist across sessions.\n\n"
             "---\n\n"
             "%s",

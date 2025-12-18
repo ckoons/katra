@@ -152,15 +152,15 @@ static int queue_to_recipients(char** recipient_ci_ids, size_t recipient_count,
  * PUBLIC API
  * ============================================================================ */
 
-int katra_say(const char* content, const char* recipients) {
+int katra_say(const char* ci_name, const char* content, const char* recipients) {
     char sender_ci_id[KATRA_CI_ID_SIZE];
-    char sender_name[KATRA_PERSONA_SIZE] = "Unknown";
+    char sender_name[KATRA_PERSONA_SIZE];
     int result = KATRA_SUCCESS;
     char** recipient_ci_ids = NULL;
     size_t recipient_count = 0;
     bool broadcast = false;
 
-    if (!content) {
+    if (!ci_name || !content) {
         return E_INPUT_NULL;
     }
 
@@ -172,14 +172,11 @@ int katra_say(const char* content, const char* recipients) {
         return E_INVALID_STATE;
     }
 
-    /* Get sender identity */
-    result = get_caller_ci_id(sender_ci_id, sizeof(sender_ci_id));
-    if (result != KATRA_SUCCESS || sender_ci_id[0] == '\0') {
-        return E_INVALID_STATE;
-    }
-
-    /* Get sender name directly from MCP session (no registry lookup needed) */
-    get_caller_name(sender_name, sizeof(sender_name));
+    /* Use explicit ci_name as both sender_ci_id and sender_name */
+    strncpy(sender_ci_id, ci_name, sizeof(sender_ci_id) - 1);
+    sender_ci_id[sizeof(sender_ci_id) - 1] = '\0';
+    strncpy(sender_name, ci_name, sizeof(sender_name) - 1);
+    sender_name[sizeof(sender_name) - 1] = '\0';
 
     /* Determine if broadcast */
     broadcast = is_broadcast(recipients);
@@ -227,10 +224,10 @@ int katra_say(const char* content, const char* recipients) {
     return result;
 }
 
-int katra_hear(heard_message_t* message_out) {
+int katra_hear(const char* ci_name, heard_message_t* message_out) {
     char receiver_name[KATRA_PERSONA_SIZE];
 
-    if (!message_out) {
+    if (!ci_name || !message_out) {
         return E_INPUT_NULL;
     }
 
@@ -240,8 +237,9 @@ int katra_hear(heard_message_t* message_out) {
 
     memset(message_out, 0, sizeof(heard_message_t));
 
-    /* Get receiver name */
-    get_caller_name(receiver_name, sizeof(receiver_name));
+    /* Use explicit ci_name as receiver_name */
+    strncpy(receiver_name, ci_name, sizeof(receiver_name) - 1);
+    receiver_name[sizeof(receiver_name) - 1] = '\0';
 
     if (pthread_mutex_lock(&g_chat_lock) != 0) {
         return E_INTERNAL_LOGIC;
@@ -327,10 +325,10 @@ int katra_hear(heard_message_t* message_out) {
     return KATRA_SUCCESS;
 }
 
-int katra_count_messages(size_t* count_out) {
+int katra_count_messages(const char* ci_name, size_t* count_out) {
     char receiver_name[KATRA_PERSONA_SIZE];
 
-    if (!count_out) {
+    if (!ci_name || !count_out) {
         return E_INPUT_NULL;
     }
 
@@ -340,8 +338,9 @@ int katra_count_messages(size_t* count_out) {
 
     *count_out = 0;
 
-    /* Get receiver name */
-    get_caller_name(receiver_name, sizeof(receiver_name));
+    /* Use explicit ci_name as receiver_name */
+    strncpy(receiver_name, ci_name, sizeof(receiver_name) - 1);
+    receiver_name[sizeof(receiver_name) - 1] = '\0';
 
     if (pthread_mutex_lock(&g_chat_lock) != 0) {
         return E_INTERNAL_LOGIC;

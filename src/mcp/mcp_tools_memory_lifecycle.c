@@ -76,7 +76,7 @@ json_t* mcp_tool_archive(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, "reason is required");
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
     const char* ci_id = session_name;  /* Session name IS the CI identity */
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
@@ -177,7 +177,7 @@ json_t* mcp_tool_fade(json_t* args, json_t* id) {
         if (target_importance > 1.0f) target_importance = 1.0f;
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
     const char* ci_id = session_name;  /* Session name IS the CI identity */
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
@@ -275,7 +275,7 @@ json_t* mcp_tool_forget(json_t* args, json_t* id) {
             "Confirm you understand and consent to permanent removal.");
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
     const char* ci_id = session_name;  /* Session name IS the CI identity */
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);

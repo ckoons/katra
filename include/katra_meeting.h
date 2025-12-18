@@ -83,20 +83,21 @@ typedef struct {
  * in global history (2-hour TTL), direct messages only in recipient queues.
  *
  * Parameters:
+ *   ci_name: Sender's CI name (required - explicit identity)
  *   content: Message to send (max MEETING_MAX_MESSAGE_LENGTH)
  *   recipients: NULL/""/broadcast" for all, or "alice,bob,charlie" for specific CIs
  *               (case-insensitive, forgiving parse)
  *
  * Returns:
  *   KATRA_SUCCESS - Message sent (unknown recipients are logged and skipped)
- *   E_INPUT_NULL - NULL content
+ *   E_INPUT_NULL - NULL ci_name or content
  *   E_INPUT_TOO_LARGE - Content exceeds max length
  *   E_INVALID_STATE - Meeting room not initialized
  *   E_SYSTEM_DATABASE - Database error
  *
  * Thread-safe: Yes
  */
-int katra_say(const char* content, const char* recipients);
+int katra_say(const char* ci_name, const char* content, const char* recipients);
 
 /**
  * katra_hear() - Receive next message from personal queue
@@ -105,44 +106,46 @@ int katra_say(const char* content, const char* recipients);
  * Sets more_available flag if additional messages are queued.
  *
  * Parameters:
+ *   ci_name: Receiver's CI name (required - explicit identity)
  *   message_out: Pointer to receive message
  *
  * Returns:
  *   KATRA_SUCCESS - Message received and deleted from queue
  *   KATRA_NO_NEW_MESSAGES - Queue is empty
- *   E_INPUT_NULL - NULL message_out
+ *   E_INPUT_NULL - NULL ci_name or message_out
  *   E_INVALID_STATE - Meeting room not initialized
  *   E_SYSTEM_DATABASE - Database error
  *
  * Behavior:
- * - Retrieves oldest message from personal queue
+ * - Retrieves oldest message from personal queue for ci_name
  * - Deletes message from queue (read-once)
  * - Sets more_available flag based on remaining queue depth
  *
  * Thread-safe: Yes
  */
-int katra_hear(heard_message_t* message_out);
+int katra_hear(const char* ci_name, heard_message_t* message_out);
 
 /**
  * katra_count_messages() - Count messages in personal queue (non-consuming)
  *
- * Returns number of messages waiting in caller's personal queue without
+ * Returns number of messages waiting in CI's personal queue without
  * consuming them. Used for ambient awareness (autonomic breathing).
  *
  * Unlike katra_hear() which deletes messages, this is read-only awareness.
  *
  * Parameters:
+ *   ci_name: CI name to check queue for (required - explicit identity)
  *   count_out: Pointer to receive message count
  *
  * Returns:
  *   KATRA_SUCCESS - Count returned
- *   E_INPUT_NULL - NULL count_out
+ *   E_INPUT_NULL - NULL ci_name or count_out
  *   E_INVALID_STATE - Meeting room not initialized
  *   E_SYSTEM_DATABASE - Database error
  *
  * Thread-safe: Yes
  */
-int katra_count_messages(size_t* count_out);
+int katra_count_messages(const char* ci_name, size_t* count_out);
 
 /**
  * katra_who_is_here() - List all active CIs in meeting

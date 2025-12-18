@@ -342,7 +342,24 @@ NO_SNAPSHOT
     fi
 
     # Add footer
-    cat >> "$sunrise_file" <<'SUNRISE_FOOTER'
+    cat >> "$sunrise_file" <<SUNRISE_FOOTER
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Important: Explicit Identity Required
+
+**Every Katra operation MUST include your ci_name parameter.**
+
+Example calls for $persona:
+\`\`\`
+katra_register(name="$persona", role="developer", ci_name="$persona")
+katra_remember(content="...", ci_name="$persona")
+katra_recall(topic="...", ci_name="$persona")
+katra_say(message="...", ci_name="$persona")
+katra_hear(ci_name="$persona")
+\`\`\`
+
+Without explicit ci_name, messages and memories may be misattributed.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

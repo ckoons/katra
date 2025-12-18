@@ -320,6 +320,12 @@ json_t* mcp_tool_say(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, "'message' is required");
     }
 
+    /* Get sender identity from args (explicit CI name) */
+    const char* ci_name = mcp_get_ci_name_from_args(args);
+    if (!ci_name || strlen(ci_name) == 0) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "CI name required - pass ci_name or register first");
+    }
+
     /* Optional recipients parameter (NULL/""/broadcast or "alice,bob") */
     const char* recipients = json_string_value(json_object_get(args, "recipients"));
 
@@ -328,7 +334,7 @@ json_t* mcp_tool_say(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = katra_say(message, recipients);
+    int result = katra_say(ci_name, message, recipients);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result != KATRA_SUCCESS) {
@@ -339,13 +345,12 @@ json_t* mcp_tool_say(json_t* args, json_t* id) {
         return mcp_tool_error("Failed to send message", details);
     }
 
-    const char* session_name = mcp_get_session_name();
     char response[MCP_RESPONSE_BUFFER];
 
     if (!recipients || strlen(recipients) == 0 || strcmp(recipients, "broadcast") == 0) {
-        snprintf(response, sizeof(response), "Message broadcast to meeting room, %s!", session_name);
+        snprintf(response, sizeof(response), "Message broadcast to meeting room, %s!", ci_name);
     } else {
-        snprintf(response, sizeof(response), "Message sent to %s, %s!", recipients, session_name);
+        snprintf(response, sizeof(response), "Message sent to %s, %s!", recipients, ci_name);
     }
 
     return mcp_tool_success(response);
@@ -354,7 +359,12 @@ json_t* mcp_tool_say(json_t* args, json_t* id) {
 /* Tool: katra_hear - Receive next message from personal queue */
 json_t* mcp_tool_hear(json_t* args, json_t* id) {
     (void)id;
-    (void)args;
+
+    /* Get receiver identity from args (explicit CI name) */
+    const char* ci_name = mcp_get_ci_name_from_args(args);
+    if (!ci_name || strlen(ci_name) == 0) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "CI name required - pass ci_name or register first");
+    }
 
     heard_message_t message;
 
@@ -363,7 +373,7 @@ json_t* mcp_tool_hear(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    int result = katra_hear(&message);
+    int result = katra_hear(ci_name, &message);
     pthread_mutex_unlock(&g_katra_api_lock);
 
     if (result == KATRA_NO_NEW_MESSAGES) {

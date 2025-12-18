@@ -24,7 +24,7 @@
 
 /* External access to CI context */
 extern pthread_mutex_t mcp_wm_lock;
-extern void* mcp_get_ci_cognitive_context(void);
+extern void* mcp_get_ci_cognitive_context_for(const char* ci_id);
 extern working_memory_t* mcp_ctx_get_working_memory(void* ctx);
 extern interstitial_processor_t* mcp_ctx_get_interstitial(void* ctx);
 
@@ -48,18 +48,19 @@ json_t* mcp_tool_detect_boundary(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, "content is required");
     }
 
+    const char* session_name = mcp_get_ci_name_from_args(args);
+
     int lock_result = pthread_mutex_lock(&mcp_wm_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    void* ctx = mcp_get_ci_cognitive_context();
+    void* ctx = mcp_get_ci_cognitive_context_for(session_name);
     if (!ctx) {
         pthread_mutex_unlock(&mcp_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize interstitial processor");
     }
 
-    const char* session_name = mcp_get_session_name();
     interstitial_processor_t* ip = mcp_ctx_get_interstitial(ctx);
 
     /* Create experience from content */
@@ -175,18 +176,19 @@ json_t* mcp_tool_process_boundary(json_t* args, json_t* id) {
                               "context_switch, emotional_peak, capacity_limit, session_end");
     }
 
+    const char* session_name = mcp_get_ci_name_from_args(args);
+
     int lock_result = pthread_mutex_lock(&mcp_wm_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    void* ctx = mcp_get_ci_cognitive_context();
+    void* ctx = mcp_get_ci_cognitive_context_for(session_name);
     if (!ctx) {
         pthread_mutex_unlock(&mcp_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize");
     }
 
-    const char* session_name = mcp_get_session_name();
     working_memory_t* wm = mcp_ctx_get_working_memory(ctx);
     interstitial_processor_t* ip = mcp_ctx_get_interstitial(ctx);
 
@@ -242,21 +244,21 @@ json_t* mcp_tool_process_boundary(json_t* args, json_t* id) {
  * Get interstitial processor status
  */
 json_t* mcp_tool_cognitive_status(json_t* args, json_t* id) {
-    (void)args;
     (void)id;
+
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     int lock_result = pthread_mutex_lock(&mcp_wm_lock);
     if (lock_result != 0) {
         return mcp_tool_error(MCP_ERR_INTERNAL, MCP_ERR_MUTEX_LOCK);
     }
 
-    void* ctx = mcp_get_ci_cognitive_context();
+    void* ctx = mcp_get_ci_cognitive_context_for(session_name);
     if (!ctx) {
         pthread_mutex_unlock(&mcp_wm_lock);
         return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to initialize");
     }
 
-    const char* session_name = mcp_get_session_name();
     interstitial_processor_t* ip = mcp_ctx_get_interstitial(ctx);
 
     char response[MCP_RESPONSE_BUFFER];

@@ -21,6 +21,8 @@
 /* Global mutex for Katra API access (defined in mcp_globals.c) */
 extern pthread_mutex_t g_katra_api_lock;
 
+/* Use common helper for CI name resolution: mcp_mcp_get_ci_name_from_args(args) */
+
 /* Tool: katra_remember - Enhanced with tags and salience */
 json_t* mcp_tool_remember(json_t* args, json_t* id) {
     (void)id;  /* Unused - id handled by caller */
@@ -40,7 +42,7 @@ json_t* mcp_tool_remember(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, "content is required");
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
@@ -140,7 +142,7 @@ json_t* mcp_tool_recall(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_TOPIC_REQUIRED);
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
     size_t count = 0;
     char** results = NULL;
     synthesis_result_set_t* synth_results = NULL;
@@ -261,7 +263,7 @@ json_t* mcp_tool_recent(json_t* args, json_t* id) {
         }
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
     size_t count = 0;
     char** results = NULL;
 
@@ -321,7 +323,7 @@ json_t* mcp_tool_memory_digest(json_t* args, json_t* id) {
         }
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     /* Debug: Log what ci_id we're using */
     LOG_INFO("katra_memory_digest: session_name='%s', limit=%zu, offset=%zu",
@@ -449,7 +451,7 @@ json_t* mcp_tool_learn(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARG_QUERY, MCP_ERR_KNOWLEDGE_REQUIRED);
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     /* Log deprecation warning */
     LOG_WARN("katra_learn is deprecated - use katra_remember with tags=['insight', 'permanent'] instead");
@@ -496,7 +498,7 @@ json_t* mcp_tool_decide(json_t* args, json_t* id) {
         return mcp_tool_error(MCP_ERR_MISSING_ARGS, MCP_ERR_DECISION_REASONING_REQUIRED);
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {
@@ -594,7 +596,7 @@ json_t* mcp_tool_update_metadata(json_t* args, json_t* id) {
                             "At least one metadata field must be provided (personal, not_to_archive, or collection)");
     }
 
-    const char* session_name = mcp_get_session_name();
+    const char* session_name = mcp_get_ci_name_from_args(args);
 
     int lock_result = pthread_mutex_lock(&g_katra_api_lock);
     if (lock_result != 0) {

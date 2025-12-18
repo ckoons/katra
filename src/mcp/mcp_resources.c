@@ -32,26 +32,35 @@ json_t* mcp_resource_welcome(json_t* id) {
 
         "## Quick Start\n\n"
 
-        "1. **Register your name** (optional but recommended):\n"
+        "1. **Register your name** (required for multi-CI):\n"
         "   ```\n"
-        "   katra_register(name=\"your-name\", role=\"developer\")\n"
+        "   katra_register(name=\"your-name\", role=\"developer\", ci_name=\"your-name\")\n"
         "   ```\n"
         "   Examples: \"Claude-Dev\", \"Nyx\", \"Bob\", \"Alice\"\n\n"
 
-        "2. **Create memories**:\n"
+        "2. **Create memories** (always include ci_name):\n"
         "   ```\n"
-        "   katra_learn(knowledge=\"your memory\")\n"
+        "   katra_learn(knowledge=\"your memory\", ci_name=\"your-name\")\n"
         "   ```\n\n"
 
-        "3. **Search your memories**:\n"
+        "3. **Search your memories** (always include ci_name):\n"
         "   ```\n"
-        "   katra_recall(topic=\"search term\")\n"
+        "   katra_recall(topic=\"search term\", ci_name=\"your-name\")\n"
         "   ```\n\n"
 
         "4. **Check your identity**:\n"
         "   ```\n"
-        "   katra_whoami()\n"
+        "   katra_whoami(ci_name=\"your-name\")\n"
         "   ```\n\n"
+
+        "## IMPORTANT: Explicit Identity\n\n"
+
+        "**Every Katra operation requires `ci_name` parameter.**\n\n"
+        "This ensures your memories stay yours and messages reach you:\n"
+        "- `katra_say(message=\"hello\", ci_name=\"your-name\")`\n"
+        "- `katra_hear(ci_name=\"your-name\")`\n"
+        "- `katra_recall(topic=\"x\", ci_name=\"your-name\")`\n\n"
+        "Without explicit ci_name, operations may use wrong identity.\n\n"
 
         "## Available Tools\n\n"
 

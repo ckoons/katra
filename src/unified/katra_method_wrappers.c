@@ -112,8 +112,14 @@ json_t* katra_method_register(json_t* params, const katra_unified_options_t* opt
 }
 
 json_t* katra_method_whoami(json_t* params, const katra_unified_options_t* options) {
-    json_t* result = mcp_tool_whoami(inject_ci_name(params, options), NULL);
-    return extract_mcp_result(result);
+    fprintf(stderr, "DEBUG: katra_method_whoami entered\n"); fflush(stderr);
+    json_t* injected = inject_ci_name(params, options);
+    fprintf(stderr, "DEBUG: inject_ci_name done, injected=%p\n", (void*)injected); fflush(stderr);
+    json_t* result = mcp_tool_whoami(injected, NULL);
+    fprintf(stderr, "DEBUG: mcp_tool_whoami done, result=%p\n", (void*)result); fflush(stderr);
+    json_t* extracted = extract_mcp_result(result);
+    fprintf(stderr, "DEBUG: extract_mcp_result done, extracted=%p\n", (void*)extracted); fflush(stderr);
+    return extracted;
 }
 
 json_t* katra_method_status(json_t* params, const katra_unified_options_t* options) {
