@@ -14,6 +14,8 @@
 #include "katra_mcp.h"
 #include "katra_team.h"
 #include "katra_breathing.h"
+#include "katra_meeting.h"
+#include "mcp_tools_common.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_limits.h"

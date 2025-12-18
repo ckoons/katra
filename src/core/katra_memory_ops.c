@@ -191,10 +191,8 @@ int katra_memory_dedup_check(const char* ci_id,
         strncpy(query_terms, content, sizeof(query_terms) - 1);
         query_terms[sizeof(query_terms) - 1] = '\0';
 
-        /* Truncate to first 100 chars for search efficiency */
-        if (strlen(query_terms) > 100) {
-            query_terms[100] = '\0';
-        }
+        /* Already truncated by strncpy to KATRA_BUFFER_SMALL - 1 */
+        /* No additional truncation needed */
 
         sql_result = sqlite3_prepare_v2(db, SQL_SEMANTIC_CANDIDATES, -1, &stmt, NULL);
         if (sql_result == SQLITE_OK) {

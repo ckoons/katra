@@ -2,11 +2,7 @@
   "mcpServers": {
     "katra": {
       "command": "/Users/cskoons/projects/github/katra/bin/katra_mcp_tcp_client.sh",
-      "args": ["localhost", "3141"],
-      "env": {
-        "KATRA_PERSONA": "Katra",
-        "KATRA_ROLE": "developer"
-      }
+      "args": ["localhost", "3141"]
     }
   }
 }

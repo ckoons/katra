@@ -673,7 +673,7 @@ int katra_set_ci_status(const char* ci_name, ci_status_t status) {
     }
 
     if (changes == 0) {
-        return KATRA_NOT_FOUND;
+        return E_NOT_FOUND;
     }
 
     LOG_DEBUG("CI %s status set to %s", ci_name, status_str);
@@ -708,7 +708,7 @@ int katra_get_ci_status(const char* ci_name, ci_status_t* status_out) {
     if (rc != SQLITE_ROW) {
         sqlite3_finalize(stmt);
         pthread_mutex_unlock(&g_chat_lock);
-        return KATRA_NOT_FOUND;
+        return E_NOT_FOUND;
     }
 
     const char* status_str = (const char*)sqlite3_column_text(stmt, 0);

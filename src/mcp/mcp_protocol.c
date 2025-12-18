@@ -543,6 +543,11 @@ json_t* mcp_dispatch_request(json_t* request) {
         return mcp_handle_resources_read(request);
     } else {
         json_t* id = json_object_get(request, MCP_FIELD_ID);
+        /* Notifications (no id) should be silently ignored per JSON-RPC 2.0 */
+        if (!id || json_is_null(id)) {
+            LOG_DEBUG("Ignoring notification: %s", method);
+            return NULL;
+        }
         return mcp_error_response(id, MCP_ERROR_METHOD_NOT_FOUND, MCP_ERR_METHOD_NOT_FOUND, method);
     }
 }
