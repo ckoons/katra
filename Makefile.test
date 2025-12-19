@@ -399,13 +399,13 @@ $(TEST_CONTEXT_PERSIST): $(TEST_DIR)/test_context_persist.c $(LIBKATRA_UTILS) | 
 	@echo "Building test: $@"
 	@$(CC) $(CFLAGS_DEBUG) -o $@ $< $(TEST_LDFLAGS)
 
-$(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+$(TEST_MCP): $(TEST_DIR)/test_mcp.c $(MCP_LIB_OBJS) $(UNIFIED_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) $(TEST_LDFLAGS)
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) $(UNIFIED_LIB_OBJS) $(TEST_LDFLAGS)
 
-$(TEST_TCP_SERVER): $(TEST_DIR)/test_tcp_server.c $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
+$(TEST_TCP_SERVER): $(TEST_DIR)/test_tcp_server.c $(MCP_LIB_OBJS) $(UNIFIED_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
-	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) $(TEST_LDFLAGS)
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -o $@ $< $(MCP_LIB_OBJS) $(UNIFIED_LIB_OBJS) $(TEST_LDFLAGS)
 
 $(TEST_TURN_TRACKING): $(TEST_DIR)/test_turn_tracking.c $(LIBKATRA_UTILS) | $(BIN_DIR)/tests
 	@echo "Building test: $@"
