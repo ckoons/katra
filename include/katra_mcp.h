@@ -525,6 +525,15 @@ json_t* mcp_tool_daemon_run(json_t* args, json_t* id);
 /* Unified Operation Tool (Phase 11) */
 json_t* mcp_tool_operation(json_t* args, json_t* id);
 
+/* Team and Sharing Tools (Phase 7) */
+json_t* mcp_tool_team_create(json_t* args);
+json_t* mcp_tool_team_join(json_t* args);
+json_t* mcp_tool_team_leave(json_t* args);
+json_t* mcp_tool_team_list(json_t* args);
+json_t* mcp_tool_set_isolation(json_t* args);
+json_t* mcp_tool_share_with(json_t* args);
+json_t* mcp_tool_hear_all(json_t* args, json_t* id);
+
 /* Global Mutex for Katra API Access */
 extern pthread_mutex_t g_katra_api_lock;
 

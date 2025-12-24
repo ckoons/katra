@@ -71,4 +71,12 @@ json_t* katra_method_daemon_insights(json_t* params, const katra_unified_options
 json_t* katra_method_daemon_acknowledge(json_t* params, const katra_unified_options_t* options);
 json_t* katra_method_daemon_run(json_t* params, const katra_unified_options_t* options);
 
+/* Team and sharing operations (Phase 7) */
+json_t* katra_method_team_create(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_team_join(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_team_leave(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_team_list(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_set_isolation(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_share_with(json_t* params, const katra_unified_options_t* options);
+
 #endif /* KATRA_METHOD_WRAPPERS_H */

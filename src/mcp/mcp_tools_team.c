@@ -287,6 +287,78 @@ json_t* mcp_tool_set_isolation(json_t* args) {
     return mcp_tool_success(response);
 }
 
+/*
+ * katra_share_with - Explicitly share next memory with specific CIs
+ *
+ * Parameters:
+ *   ci_ids (required) - Array of CI identifiers to share with
+ *
+ * Returns: Success message
+ */
+json_t* mcp_tool_share_with(json_t* args) {
+    if (!args) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS, "args object required");
+    }
+
+    json_t* ci_ids_json = json_object_get(args, "ci_ids");
+    if (!ci_ids_json || !json_is_array(ci_ids_json)) {
+        return mcp_tool_error(MCP_ERR_MISSING_ARGS,
+                            "ci_ids array is required");
+    }
+
+    size_t count = json_array_size(ci_ids_json);
+    if (count == 0) {
+        return mcp_tool_error("Invalid parameter",
+                            "ci_ids array cannot be empty");
+    }
+
+    if (count > KATRA_MAX_SHARE_COUNT) {
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details),
+                "Too many CIs (%zu > %d max)", count, KATRA_MAX_SHARE_COUNT);
+        return mcp_tool_error("Invalid parameter", details);
+    }
+
+    /* Convert JSON array to C string array */
+    const char** ci_ids = malloc(count * sizeof(char*));
+    if (!ci_ids) {
+        return mcp_tool_error(MCP_ERR_INTERNAL, "Memory allocation failed");
+    }
+
+    for (size_t i = 0; i < count; i++) {
+        ci_ids[i] = json_string_value(json_array_get(ci_ids_json, i));
+        if (!ci_ids[i]) {
+            free(ci_ids);
+            return mcp_tool_error("Invalid parameter",
+                                "ci_ids array must contain strings");
+        }
+    }
+
+    int lock_result = pthread_mutex_lock(&g_katra_api_lock);
+    if (lock_result != 0) {
+        free(ci_ids);
+        return mcp_tool_error(MCP_ERR_INTERNAL, "Failed to acquire mutex");
+    }
+
+    int result = share_memory_with(ci_ids, count);
+    pthread_mutex_unlock(&g_katra_api_lock);
+    free(ci_ids);
+
+    if (result != KATRA_SUCCESS) {
+        const char* msg = katra_error_message(result);
+        char details[MCP_ERROR_BUFFER];
+        snprintf(details, sizeof(details), "Failed to set sharing: %s", msg);
+        return mcp_tool_error(msg, details);
+    }
+
+    char response[MCP_RESPONSE_BUFFER];
+    snprintf(response, sizeof(response),
+             "Next memory will be explicitly shared with %zu CI%s.",
+             count, count == 1 ? "" : "s");
+
+    return mcp_tool_success(response);
+}
+
 /* ============================================================================
  * TOOL: katra_hear_all - Batch receive messages
  * ============================================================================ */

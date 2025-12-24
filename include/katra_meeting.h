@@ -334,6 +334,22 @@ int meeting_room_init(void);
 void meeting_room_cleanup(void);
 
 /**
+ * meeting_room_heartbeat() - Update CI presence timestamp
+ *
+ * Called on say/hear operations to track active participation.
+ * Updates last_seen in katra_ci_registry.
+ *
+ * Parameters:
+ *   ci_name: Name of CI to update
+ *
+ * Returns:
+ *   KATRA_SUCCESS on success
+ *   E_INPUT_NULL if ci_name is NULL
+ *   E_INVALID_STATE if chat not initialized
+ */
+int meeting_room_heartbeat(const char* ci_name);
+
+/**
  * meeting_room_register_ci() - Register CI as active in meeting
  *
  * Called by katra_register MCP tool. Adds CI to active registry.

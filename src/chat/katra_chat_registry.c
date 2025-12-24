@@ -343,6 +343,45 @@ void meeting_room_cleanup(void) {
     LOG_INFO("Chat database closed");
 }
 
+int meeting_room_heartbeat(const char* ci_name) {
+    if (!ci_name) {
+        return E_INPUT_NULL;
+    }
+    if (!g_chat_initialized) {
+        return E_INVALID_STATE;
+    }
+
+    if (pthread_mutex_lock(&g_chat_lock) != 0) {
+        return E_INTERNAL_LOGIC;
+    }
+
+    sqlite3_stmt* stmt = NULL;
+    time_t now = time(NULL);
+    /* GUIDELINE_APPROVED: SQL query constant */
+    const char* sql =
+        "UPDATE katra_ci_registry SET last_seen = ? WHERE name = ? COLLATE NOCASE";
+
+    int rc = sqlite3_prepare_v2(g_chat_db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        pthread_mutex_unlock(&g_chat_lock);
+        return E_SYSTEM_FILE;
+    }
+
+    sqlite3_bind_int64(stmt, 1, (sqlite3_int64)now);
+    sqlite3_bind_text(stmt, 2, ci_name, -1, SQLITE_STATIC);
+
+    rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    pthread_mutex_unlock(&g_chat_lock);
+
+    if (rc != SQLITE_DONE) {
+        return E_SYSTEM_FILE;
+    }
+
+    return KATRA_SUCCESS;
+}
+
 int katra_cleanup_old_messages(void) {
     if (!g_chat_initialized) {
         return E_INVALID_STATE;

@@ -15,6 +15,7 @@
 #include "katra_breathing.h"
 #include "katra_memory.h"
 #include "katra_consent.h"
+#include "katra_limits.h"
 #include "katra_error.h"
 #include "katra_log.h"
 #include "katra_core_common.h"
@@ -56,6 +57,24 @@ int breathing_store_typed_memory(const char* ci_id,
     if (!ci_id) {
         katra_report_error(E_INPUT_NULL, func_name, "ci_id is NULL");
         return E_INPUT_NULL;
+    }
+
+    /* Check breathing layer is initialized before attempting memory operations */
+    if (!breathing_get_initialized()) {
+        katra_report_error(E_INVALID_STATE, func_name, "Breathing layer not initialized");
+        return E_INVALID_STATE;
+    }
+
+    /* Dedup check: skip exact duplicates within time window (Phase 4.5.1) */
+    if (content && KATRA_DEDUP_ENABLED_DEFAULT) {
+        dedup_result_t dedup;
+        int dedup_result = katra_memory_dedup_check(ci_id, content, 0.0f, &dedup);
+        if (dedup_result == KATRA_SUCCESS && dedup.has_exact_duplicate) {
+            LOG_DEBUG("Skipping duplicate memory for %s: %.40s...", ci_id, content);
+            katra_memory_dedup_result_free(&dedup);
+            return KATRA_SUCCESS;  /* Silent success - memory already exists */
+        }
+        katra_memory_dedup_result_free(&dedup);
     }
 
     /* Set consent context for this CI's memory access */

@@ -172,6 +172,9 @@ int katra_say(const char* ci_name, const char* content, const char* recipients) 
         return E_INVALID_STATE;
     }
 
+    /* Update heartbeat - shows CI is actively participating */
+    meeting_room_heartbeat(ci_name);
+
     /* Look up actual ci_id from registry, use ci_name as display name */
     int lookup_result = resolve_ci_name_to_id(ci_name, sender_ci_id, sizeof(sender_ci_id));
     if (lookup_result != KATRA_SUCCESS) {
@@ -239,6 +242,9 @@ int katra_hear(const char* ci_name, heard_message_t* message_out) {
     if (!g_chat_initialized) {
         return E_INVALID_STATE;
     }
+
+    /* Update heartbeat - shows CI is actively participating */
+    meeting_room_heartbeat(ci_name);
 
     memset(message_out, 0, sizeof(heard_message_t));
 
@@ -347,6 +353,9 @@ int katra_hear_all(const char* ci_name, size_t max_count, heard_messages_t* out)
     if (!g_chat_initialized) {
         return E_INVALID_STATE;
     }
+
+    /* Update heartbeat - shows CI is actively participating */
+    meeting_room_heartbeat(ci_name);
 
     /* Initialize output */
     memset(out, 0, sizeof(heard_messages_t));

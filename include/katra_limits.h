@@ -129,6 +129,17 @@
 /* Health monitoring interval (5 minutes) */
 #define HEALTH_CHECK_INTERVAL_SECONDS 300
 
+/* ===== Memory Deduplication (Phase 4.5.1) ===== */
+
+/* Time window for duplicate detection (5 minutes) */
+#define KATRA_DEDUP_TIME_WINDOW_SEC 300
+
+/* Enable deduplication by default */
+#define KATRA_DEDUP_ENABLED_DEFAULT true
+
+/* Maximum CIs to explicitly share memory with */
+#define KATRA_MAX_SHARE_COUNT 10
+
 /* ===== Filesystem Paths and Permissions ===== */
 
 /* Maximum path length for Katra filesystem operations */

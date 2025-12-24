@@ -96,6 +96,14 @@ static void register_builtin_methods(void) {
     katra_register_method(KATRA_METHOD_DAEMON_ACKNOWLEDGE, katra_method_daemon_acknowledge);
     katra_register_method(KATRA_METHOD_DAEMON_RUN, katra_method_daemon_run);
 
+    /* Team and sharing operations (Phase 7) */
+    katra_register_method(KATRA_METHOD_TEAM_CREATE, katra_method_team_create);
+    katra_register_method(KATRA_METHOD_TEAM_JOIN, katra_method_team_join);
+    katra_register_method(KATRA_METHOD_TEAM_LEAVE, katra_method_team_leave);
+    katra_register_method(KATRA_METHOD_TEAM_LIST, katra_method_team_list);
+    katra_register_method(KATRA_METHOD_SET_ISOLATION, katra_method_set_isolation);
+    katra_register_method(KATRA_METHOD_SHARE_WITH, katra_method_share_with);
+
     LOG_INFO("Registered %d unified methods", g_method_count);
 }
 

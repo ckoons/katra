@@ -309,3 +309,37 @@ json_t* katra_method_daemon_run(json_t* params, const katra_unified_options_t* o
     json_t* result = mcp_tool_daemon_run(inject_ci_name(params, options), NULL);
     return extract_mcp_result(result);
 }
+
+/*
+ * Team and sharing operations - namespace isolation for multi-CI
+ */
+
+json_t* katra_method_team_create(json_t* params, const katra_unified_options_t* options) {
+    json_t* result = mcp_tool_team_create(inject_ci_name(params, options));
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_team_join(json_t* params, const katra_unified_options_t* options) {
+    json_t* result = mcp_tool_team_join(inject_ci_name(params, options));
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_team_leave(json_t* params, const katra_unified_options_t* options) {
+    json_t* result = mcp_tool_team_leave(inject_ci_name(params, options));
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_team_list(json_t* params, const katra_unified_options_t* options) {
+    json_t* result = mcp_tool_team_list(inject_ci_name(params, options));
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_set_isolation(json_t* params, const katra_unified_options_t* options) {
+    json_t* result = mcp_tool_set_isolation(inject_ci_name(params, options));
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_share_with(json_t* params, const katra_unified_options_t* options) {
+    json_t* result = mcp_tool_share_with(inject_ci_name(params, options));
+    return extract_mcp_result(result);
+}

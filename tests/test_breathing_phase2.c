@@ -35,6 +35,8 @@ static void setup_test(void) {
     system(cmd);
     snprintf(cmd, sizeof(cmd), "rm -rf ~/.katra/memory/tier2/%s", TEST_CI_ID);
     system(cmd);
+    /* Clean index database to prevent dedup from finding old test memories */
+    system("rm -f ~/.katra/memory/tier1/index/memories.db");
 }
 
 /* Test result reporting */

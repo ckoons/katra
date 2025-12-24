@@ -131,6 +131,14 @@
 #define KATRA_METHOD_DAEMON_ACKNOWLEDGE "daemon_acknowledge"
 #define KATRA_METHOD_DAEMON_RUN "daemon_run"
 
+/* Team and sharing operations (Phase 7) */
+#define KATRA_METHOD_TEAM_CREATE "team_create"
+#define KATRA_METHOD_TEAM_JOIN "team_join"
+#define KATRA_METHOD_TEAM_LEAVE "team_leave"
+#define KATRA_METHOD_TEAM_LIST "team_list"
+#define KATRA_METHOD_SET_ISOLATION "set_isolation"
+#define KATRA_METHOD_SHARE_WITH "share_with"
+
 /* JSON field names for shared state */
 #define KATRA_FIELD_VERSION "version"
 #define KATRA_FIELD_METHOD "method"

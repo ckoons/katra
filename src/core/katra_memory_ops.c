@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <sqlite3.h>
 
 /* Project includes */
@@ -96,12 +97,12 @@ int katra_memory_delete_session_scoped(const char* ci_id, size_t* deleted_count)
     return result;
 }
 
-/* SQL for exact content match using FTS5 */
+/* SQL for exact content match using FTS5 with time window */
 static const char* SQL_EXACT_MATCH =
     "SELECT m.record_id, f.content "
     "FROM memories m "
     "JOIN memory_content_fts f ON m.record_id = f.record_id "
-    "WHERE m.ci_id = ? AND f.content = ? "
+    "WHERE m.ci_id = ? AND f.content = ? AND m.timestamp >= ? "
     "LIMIT 1";
 
 /* SQL for semantic match using FTS5 (for similar content) */
@@ -148,11 +149,13 @@ int katra_memory_dedup_check(const char* ci_id,
     sqlite3_stmt* stmt = NULL;
     int sql_result;
 
-    /* Step 1: Check for exact match */
+    /* Step 1: Check for exact match within time window */
     sql_result = sqlite3_prepare_v2(db, SQL_EXACT_MATCH, -1, &stmt, NULL);
     if (sql_result == SQLITE_OK) {
+        time_t cutoff_time = time(NULL) - KATRA_DEDUP_TIME_WINDOW_SEC;
         sqlite3_bind_text(stmt, 1, ci_id, -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, content, -1, SQLITE_STATIC);
+        sqlite3_bind_int64(stmt, 3, (sqlite3_int64)cutoff_time);
 
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             result->has_exact_duplicate = true;

@@ -62,6 +62,9 @@ static char test_ci_id[64];
 
 /* Setup and teardown */
 static void setup_test_env(void) {
+    /* Clean index database to prevent stale data issues (dedup, etc.) */
+    system("rm -f ~/.katra/memory/tier1/index/memories.db");
+
     /* Generate unique CI ID for this test run */
     snprintf(test_ci_id, sizeof(test_ci_id), "test_primitives_%ld", (long)time(NULL));
 
