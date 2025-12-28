@@ -73,6 +73,11 @@ $(BUILD_DIR)/katra_whiteboard_loaders.o: $(SRC_DIR)/core/katra_whiteboard_loader
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 
+# Exception: katra_module_loader.c uses jansson for MCP handlers
+$(BUILD_DIR)/katra_module_loader.o: $(SRC_DIR)/core/katra_module_loader.c | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
 # Compile DB backend sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/db/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
@@ -118,10 +123,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/daemon/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
 	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
-# Compile softdev module sources
+# Compile softdev module sources (requires jansson for MCP handlers)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/modules/softdev/%.c | $(BUILD_DIR)
 	@echo "Compiling: $<"
-	@$(CC) $(CFLAGS_DEBUG) -c $< -o $@
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
 
 # Compile MCP sources (requires jansson headers)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/mcp/%.c | $(BUILD_DIR)

@@ -104,6 +104,13 @@ static void register_builtin_methods(void) {
     katra_register_method(KATRA_METHOD_SET_ISOLATION, katra_method_set_isolation);
     katra_register_method(KATRA_METHOD_SHARE_WITH, katra_method_share_with);
 
+    /* Dynamic module operations */
+    katra_register_method(KATRA_METHOD_MODULES_LIST, katra_method_modules_list);
+    katra_register_method(KATRA_METHOD_MODULES_LOAD, katra_method_modules_load);
+    katra_register_method(KATRA_METHOD_MODULES_UNLOAD, katra_method_modules_unload);
+    katra_register_method(KATRA_METHOD_MODULES_RELOAD, katra_method_modules_reload);
+    katra_register_method(KATRA_METHOD_MODULES_INFO, katra_method_modules_info);
+
     LOG_INFO("Registered %d unified methods", g_method_count);
 }
 

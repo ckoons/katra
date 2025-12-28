@@ -79,4 +79,11 @@ json_t* katra_method_team_list(json_t* params, const katra_unified_options_t* op
 json_t* katra_method_set_isolation(json_t* params, const katra_unified_options_t* options);
 json_t* katra_method_share_with(json_t* params, const katra_unified_options_t* options);
 
+/* Dynamic module operations */
+json_t* katra_method_modules_list(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_modules_load(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_modules_unload(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_modules_reload(json_t* params, const katra_unified_options_t* options);
+json_t* katra_method_modules_info(json_t* params, const katra_unified_options_t* options);
+
 #endif /* KATRA_METHOD_WRAPPERS_H */

@@ -139,6 +139,13 @@
 #define KATRA_METHOD_SET_ISOLATION "set_isolation"
 #define KATRA_METHOD_SHARE_WITH "share_with"
 
+/* Dynamic module operations */
+#define KATRA_METHOD_MODULES_LIST "modules_list"
+#define KATRA_METHOD_MODULES_LOAD "modules_load"
+#define KATRA_METHOD_MODULES_UNLOAD "modules_unload"
+#define KATRA_METHOD_MODULES_RELOAD "modules_reload"
+#define KATRA_METHOD_MODULES_INFO "modules_info"
+
 /* JSON field names for shared state */
 #define KATRA_FIELD_VERSION "version"
 #define KATRA_FIELD_METHOD "method"

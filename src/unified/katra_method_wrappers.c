@@ -18,6 +18,7 @@
 /* Project includes */
 #include "katra_unified.h"
 #include "katra_mcp.h"
+#include "katra_module.h"
 #include "katra_limits.h"
 
 /*
@@ -341,5 +342,44 @@ json_t* katra_method_set_isolation(json_t* params, const katra_unified_options_t
 
 json_t* katra_method_share_with(json_t* params, const katra_unified_options_t* options) {
     json_t* result = mcp_tool_share_with(inject_ci_name(params, options));
+    return extract_mcp_result(result);
+}
+
+/*
+ * Dynamic module operations - load/unload modules at runtime
+ */
+
+json_t* katra_method_modules_list(json_t* params, const katra_unified_options_t* options) {
+    json_t* injected = inject_ci_name(params, options);
+    const char* ci_name = json_string_value(json_object_get(injected, "ci_name"));
+    json_t* result = katra_mcp_modules_list(injected, ci_name);
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_modules_load(json_t* params, const katra_unified_options_t* options) {
+    json_t* injected = inject_ci_name(params, options);
+    const char* ci_name = json_string_value(json_object_get(injected, "ci_name"));
+    json_t* result = katra_mcp_modules_load(injected, ci_name);
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_modules_unload(json_t* params, const katra_unified_options_t* options) {
+    json_t* injected = inject_ci_name(params, options);
+    const char* ci_name = json_string_value(json_object_get(injected, "ci_name"));
+    json_t* result = katra_mcp_modules_unload(injected, ci_name);
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_modules_reload(json_t* params, const katra_unified_options_t* options) {
+    json_t* injected = inject_ci_name(params, options);
+    const char* ci_name = json_string_value(json_object_get(injected, "ci_name"));
+    json_t* result = katra_mcp_modules_reload(injected, ci_name);
+    return extract_mcp_result(result);
+}
+
+json_t* katra_method_modules_info(json_t* params, const katra_unified_options_t* options) {
+    json_t* injected = inject_ci_name(params, options);
+    const char* ci_name = json_string_value(json_object_get(injected, "ci_name"));
+    json_t* result = katra_mcp_modules_info(injected, ci_name);
     return extract_mcp_result(result);
 }

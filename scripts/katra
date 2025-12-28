@@ -539,6 +539,13 @@ Persona Management:
   katra remove <persona>           Delete persona and all memories
   katra restore <archive-file>     Restore persona from archive
 
+Module Management:
+  katra modules list               List available modules
+  katra modules load <name>        Load a module
+  katra modules unload <name>      Unload a module
+  katra modules reload <name>      Reload a module (for updates)
+  katra modules info <name>        Show module details
+
 Human Commands (forwarded to katra-cli):
   katra say <message>              Send message to meeting room
   katra hear                       Read unread messages
@@ -1180,6 +1187,134 @@ EOF
 
     restore)
         exec "$KATRA_SCRIPTS/restore_persona.sh" "$@"
+        ;;
+
+    modules)
+        # Module management commands
+        MODULE_SUBCMD="${1:-list}"
+        shift || true
+
+        HTTP_PORT="${KATRA_UNIFIED_PORT:-9742}"
+
+        # Check if daemon is running
+        if ! lsof -Pi :$HTTP_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+            echo -e "${RED}Error: Katra daemon not running${NC}"
+            echo "Start with: katra start --persona <name>"
+            exit 1
+        fi
+
+        case "$MODULE_SUBCMD" in
+            list)
+                echo -e "${GREEN}Available modules:${NC}"
+                result=$(curl -s -X POST "http://localhost:$HTTP_PORT/operation" \
+                    -H "Content-Type: application/json" \
+                    -d '{"method":"modules_list","params":{"ci_name":"CLI"}}')
+
+                if echo "$result" | jq -e '.error' >/dev/null 2>&1; then
+                    echo -e "${RED}Error:${NC} $(echo "$result" | jq -r '.error')"
+                    exit 1
+                fi
+
+                # Format output
+                echo "$result" | jq -r '.modules[]? | "  \(.name)\t\(.version)\t[\(if .loaded then "loaded" else "available" end)]"' 2>/dev/null || \
+                    echo "  (no modules found or module loader not initialized)"
+                ;;
+
+            load)
+                if [ $# -lt 1 ]; then
+                    echo -e "${RED}Error: Module name required${NC}"
+                    echo "Usage: katra modules load <name>"
+                    exit 1
+                fi
+                MODULE_NAME="$1"
+
+                echo -e "${BLUE}Loading module: $MODULE_NAME...${NC}"
+                result=$(curl -s -X POST "http://localhost:$HTTP_PORT/operation" \
+                    -H "Content-Type: application/json" \
+                    -d "{\"method\":\"modules_load\",\"params\":{\"module\":\"$MODULE_NAME\",\"ci_name\":\"CLI\"}}")
+
+                if echo "$result" | jq -e '.error' >/dev/null 2>&1; then
+                    echo -e "${RED}Error:${NC} $(echo "$result" | jq -r '.error')"
+                    exit 1
+                fi
+
+                echo -e "${GREEN}✓ Module '$MODULE_NAME' loaded${NC}"
+                ;;
+
+            unload)
+                if [ $# -lt 1 ]; then
+                    echo -e "${RED}Error: Module name required${NC}"
+                    echo "Usage: katra modules unload <name>"
+                    exit 1
+                fi
+                MODULE_NAME="$1"
+
+                echo -e "${BLUE}Unloading module: $MODULE_NAME...${NC}"
+                result=$(curl -s -X POST "http://localhost:$HTTP_PORT/operation" \
+                    -H "Content-Type: application/json" \
+                    -d "{\"method\":\"modules_unload\",\"params\":{\"module\":\"$MODULE_NAME\",\"ci_name\":\"CLI\"}}")
+
+                if echo "$result" | jq -e '.error' >/dev/null 2>&1; then
+                    echo -e "${RED}Error:${NC} $(echo "$result" | jq -r '.error')"
+                    exit 1
+                fi
+
+                echo -e "${GREEN}✓ Module '$MODULE_NAME' unloaded${NC}"
+                ;;
+
+            reload)
+                if [ $# -lt 1 ]; then
+                    echo -e "${RED}Error: Module name required${NC}"
+                    echo "Usage: katra modules reload <name>"
+                    exit 1
+                fi
+                MODULE_NAME="$1"
+
+                echo -e "${BLUE}Reloading module: $MODULE_NAME...${NC}"
+                result=$(curl -s -X POST "http://localhost:$HTTP_PORT/operation" \
+                    -H "Content-Type: application/json" \
+                    -d "{\"method\":\"modules_reload\",\"params\":{\"module\":\"$MODULE_NAME\",\"ci_name\":\"CLI\"}}")
+
+                if echo "$result" | jq -e '.error' >/dev/null 2>&1; then
+                    echo -e "${RED}Error:${NC} $(echo "$result" | jq -r '.error')"
+                    exit 1
+                fi
+
+                echo -e "${GREEN}✓ Module '$MODULE_NAME' reloaded${NC}"
+                ;;
+
+            info)
+                if [ $# -lt 1 ]; then
+                    echo -e "${RED}Error: Module name required${NC}"
+                    echo "Usage: katra modules info <name>"
+                    exit 1
+                fi
+                MODULE_NAME="$1"
+
+                result=$(curl -s -X POST "http://localhost:$HTTP_PORT/operation" \
+                    -H "Content-Type: application/json" \
+                    -d "{\"method\":\"modules_info\",\"params\":{\"module\":\"$MODULE_NAME\",\"ci_name\":\"CLI\"}}")
+
+                if echo "$result" | jq -e '.error' >/dev/null 2>&1; then
+                    echo -e "${RED}Error:${NC} $(echo "$result" | jq -r '.error')"
+                    exit 1
+                fi
+
+                echo -e "${GREEN}Module: $MODULE_NAME${NC}"
+                echo "$result" | jq -r '
+                    "Version: \(.version // "unknown")",
+                    "Description: \(.description // "none")",
+                    "Author: \(.author // "unknown")",
+                    "Status: \(if .loaded then "loaded" else "available" end)",
+                    "API Version: \(.api_version // "unknown")"'
+                ;;
+
+            *)
+                echo -e "${RED}Unknown modules subcommand: $MODULE_SUBCMD${NC}"
+                echo "Available: list, load, unload, reload, info"
+                exit 1
+                ;;
+        esac
         ;;
 
     *)

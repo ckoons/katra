@@ -10,6 +10,13 @@
  *   - Concept layer for semantic understanding
  *   - Impact analysis for safe editing
  *   - Query operations for CI navigation
+ *
+ * This file also implements the module interface for dynamic loading.
+ * Required exports:
+ *   - katra_module_info()
+ *   - katra_module_init()
+ *   - katra_module_shutdown()
+ *   - katra_module_register_ops()
  */
 
 #include <stdio.h>
@@ -20,8 +27,10 @@
 
 #include "katra_softdev.h"
 #include "katra_metamemory.h"
+#include "katra_module.h"
 #include "katra_error.h"
 #include "katra_limits.h"
+#include <jansson.h>
 
 /* ============================================================================
  * Module State
@@ -29,6 +38,34 @@
 
 /* Module initialization state */
 static bool g_softdev_initialized = false;
+
+/* Module context (from loader) */
+static katra_module_context_t* g_module_context = NULL;
+
+/* ============================================================================
+ * Module Information (for dynamic loading)
+ * ============================================================================ */
+
+/* Capabilities this module provides */
+static const char* g_provides[] = {
+    "metamemory",
+    "code_analysis",
+    "impact_analysis"
+};
+
+/* Module information structure */
+static katra_module_info_t g_module_info = {
+    .name = SOFTDEV_MODULE_NAME,
+    .version = SOFTDEV_MODULE_VERSION,
+    .description = "Software development metamemory - indexed code understanding",
+    .author = "Casey Koons",
+    .api_version = KATRA_MODULE_API_VERSION,
+    .min_katra_version = "0.1.0",
+    .requires = NULL,
+    .requires_count = 0,
+    .provides = g_provides,
+    .provides_count = 3
+};
 
 /* ============================================================================
  * Forward Declarations
@@ -38,6 +75,15 @@ static bool g_softdev_initialized = false;
 static int softdev_init_index(void);
 static void softdev_cleanup_index(void);
 static int softdev_register_operations(void);
+
+/* MCP Operation handlers */
+static json_t* handle_analyze_project(json_t* params, const char* ci_name);
+static json_t* handle_find_concept(json_t* params, const char* ci_name);
+static json_t* handle_find_code(json_t* params, const char* ci_name);
+static json_t* handle_impact(json_t* params, const char* ci_name);
+static json_t* handle_refresh(json_t* params, const char* ci_name);
+static json_t* handle_add_concept(json_t* params, const char* ci_name);
+static json_t* handle_status(json_t* params, const char* ci_name);
 
 /* ============================================================================
  * Module Lifecycle
@@ -466,4 +512,358 @@ void softdev_free_status(softdev_status_t* status)
 
     /* Status contains const pointers, nothing to free */
     memset(status, 0, sizeof(*status));
+}
+
+/* ============================================================================
+ * Module Interface Exports (Required for Dynamic Loading)
+ * ============================================================================ */
+
+/**
+ * Get module information.
+ * Called during discovery (before full load).
+ */
+katra_module_info_t* katra_module_info(void)
+{
+    return &g_module_info;
+}
+
+/**
+ * Initialize module.
+ * Called when module is loaded.
+ */
+int katra_module_init(katra_module_context_t* ctx)
+{
+    if (!ctx) {
+        katra_report_error(E_INPUT_NULL, "katra_module_init",
+                          "module context is NULL");
+        return E_INPUT_NULL;
+    }
+
+    /* Store context for later use */
+    g_module_context = ctx;
+
+    /* Initialize softdev subsystem */
+    return softdev_init();
+}
+
+/**
+ * Shutdown module.
+ * Called when module is unloaded.
+ */
+void katra_module_shutdown(void)
+{
+    softdev_shutdown();
+    g_module_context = NULL;
+}
+
+/**
+ * Register module operations with MCP dispatch.
+ * Called after init, before module is considered ready.
+ */
+int katra_module_register_ops(katra_op_registry_t* registry)
+{
+    int result = KATRA_SUCCESS;
+
+    if (!registry) {
+        katra_report_error(E_INPUT_NULL, "katra_module_register_ops",
+                          "registry is NULL");
+        return E_INPUT_NULL;
+    }
+
+    /* Register all softdev operations */
+    result = registry->register_op(
+        SOFTDEV_OP_ANALYZE,
+        "Analyze a project and build metamemory index",
+        handle_analyze_project,
+        NULL  /* TODO: Add JSON schema */
+    );
+    if (result != KATRA_SUCCESS) return result;
+
+    result = registry->register_op(
+        SOFTDEV_OP_FIND_CONCEPT,
+        "Find concepts matching a query",
+        handle_find_concept,
+        NULL
+    );
+    if (result != KATRA_SUCCESS) return result;
+
+    result = registry->register_op(
+        SOFTDEV_OP_FIND_CODE,
+        "Find code elements matching a query",
+        handle_find_code,
+        NULL
+    );
+    if (result != KATRA_SUCCESS) return result;
+
+    result = registry->register_op(
+        SOFTDEV_OP_IMPACT,
+        "Analyze impact of changing a code element",
+        handle_impact,
+        NULL
+    );
+    if (result != KATRA_SUCCESS) return result;
+
+    result = registry->register_op(
+        SOFTDEV_OP_REFRESH,
+        "Refresh metamemory for changed files",
+        handle_refresh,
+        NULL
+    );
+    if (result != KATRA_SUCCESS) return result;
+
+    result = registry->register_op(
+        SOFTDEV_OP_ADD_CONCEPT,
+        "Add a concept to the project",
+        handle_add_concept,
+        NULL
+    );
+    if (result != KATRA_SUCCESS) return result;
+
+    result = registry->register_op(
+        SOFTDEV_OP_STATUS,
+        "Get project metamemory status",
+        handle_status,
+        NULL
+    );
+
+    return result;
+}
+
+/* ============================================================================
+ * MCP Operation Handlers
+ * ============================================================================ */
+
+static json_t* handle_analyze_project(json_t* params, const char* ci_name)
+{
+    (void)ci_name;  /* CI attribution for logging */
+
+    const char* project_id = json_string_value(json_object_get(params, "project_id"));
+    const char* root_path = json_string_value(json_object_get(params, "root_path"));
+    const char* depth_str = json_string_value(json_object_get(params, "depth"));
+
+    if (!project_id || !root_path) {
+        return json_pack("{s:s}", "error", "project_id and root_path required");
+    }
+
+    softdev_project_config_t config = {0};
+    config.project_id = project_id;
+    config.root_path = root_path;
+    config.depth = SOFTDEV_DEPTH_FULL;
+
+    /* Parse depth if provided */
+    if (depth_str) {
+        if (strcmp(depth_str, "structure") == 0) {
+            config.depth = SOFTDEV_DEPTH_STRUCTURE;
+        } else if (strcmp(depth_str, "signatures") == 0) {
+            config.depth = SOFTDEV_DEPTH_SIGNATURES;
+        } else if (strcmp(depth_str, "relationships") == 0) {
+            config.depth = SOFTDEV_DEPTH_RELATIONSHIPS;
+        }
+    }
+
+    softdev_analysis_result_t result = {0};
+    int rc = softdev_analyze_project(&config, &result);
+
+    if (rc != KATRA_SUCCESS) {
+        return json_pack("{s:s,s:i}", "error", "Analysis failed", "code", rc);
+    }
+
+    json_t* response = json_pack("{s:s,s:i,s:i,s:i,s:i,s:i}",
+        "project_id", result.project_id,
+        "directories", (int)result.directories_scanned,
+        "files", (int)result.files_scanned,
+        "functions", (int)result.functions_indexed,
+        "structs", (int)result.structs_indexed,
+        "concepts", (int)result.concepts_created
+    );
+
+    softdev_free_analysis_result(&result);
+    return response;
+}
+
+static json_t* handle_find_concept(json_t* params, const char* ci_name)
+{
+    (void)ci_name;
+
+    const char* project_id = json_string_value(json_object_get(params, "project_id"));
+    const char* query = json_string_value(json_object_get(params, "query"));
+
+    if (!project_id || !query) {
+        return json_pack("{s:s}", "error", "project_id and query required");
+    }
+
+    metamemory_node_t** results = NULL;
+    size_t count = 0;
+
+    int rc = softdev_find_concept(project_id, query, &results, &count);
+    if (rc != KATRA_SUCCESS) {
+        return json_pack("{s:s,s:i}", "error", "Find failed", "code", rc);
+    }
+
+    json_t* nodes = json_array();
+    for (size_t i = 0; i < count; i++) {
+        json_t* node = json_pack("{s:s,s:s,s:s}",
+            "id", results[i]->id,
+            "name", results[i]->name,
+            "purpose", results[i]->purpose ? results[i]->purpose : ""
+        );
+        json_array_append_new(nodes, node);
+    }
+
+    metamemory_free_nodes(results, count);
+    return json_pack("{s:o,s:i}", "results", nodes, "count", (int)count);
+}
+
+static json_t* handle_find_code(json_t* params, const char* ci_name)
+{
+    (void)ci_name;
+
+    const char* project_id = json_string_value(json_object_get(params, "project_id"));
+    const char* query = json_string_value(json_object_get(params, "query"));
+
+    if (!project_id || !query) {
+        return json_pack("{s:s}", "error", "project_id and query required");
+    }
+
+    metamemory_node_t** results = NULL;
+    size_t count = 0;
+
+    int rc = softdev_find_code(project_id, query, NULL, 0, &results, &count);
+    if (rc != KATRA_SUCCESS) {
+        return json_pack("{s:s,s:i}", "error", "Find failed", "code", rc);
+    }
+
+    json_t* nodes = json_array();
+    for (size_t i = 0; i < count; i++) {
+        json_t* node = json_pack("{s:s,s:s,s:s,s:s}",
+            "id", results[i]->id,
+            "name", results[i]->name,
+            "signature", results[i]->signature ? results[i]->signature : "",
+            "file", results[i]->location.file_path ? results[i]->location.file_path : ""
+        );
+        json_array_append_new(nodes, node);
+    }
+
+    metamemory_free_nodes(results, count);
+    return json_pack("{s:o,s:i}", "results", nodes, "count", (int)count);
+}
+
+static json_t* handle_impact(json_t* params, const char* ci_name)
+{
+    (void)ci_name;
+
+    const char* project_id = json_string_value(json_object_get(params, "project_id"));
+    const char* node_id = json_string_value(json_object_get(params, "node_id"));
+
+    if (!project_id || !node_id) {
+        return json_pack("{s:s}", "error", "project_id and node_id required");
+    }
+
+    softdev_impact_result_t* result = NULL;
+    int rc = softdev_impact(project_id, node_id, &result);
+
+    if (rc != KATRA_SUCCESS) {
+        return json_pack("{s:s,s:i}", "error", "Impact analysis failed", "code", rc);
+    }
+
+    /* Build response */
+    json_t* response = json_pack("{s:i,s:i,s:i,s:s}",
+        "directly_affected", result ? (int)result->directly_affected_count : 0,
+        "transitively_affected", result ? (int)result->transitively_affected_count : 0,
+        "affected_files", result ? (int)result->affected_file_count : 0,
+        "summary", result && result->summary ? result->summary : "No impact data"
+    );
+
+    softdev_free_impact_result(result);
+    return response;
+}
+
+static json_t* handle_refresh(json_t* params, const char* ci_name)
+{
+    (void)ci_name;
+
+    const char* project_id = json_string_value(json_object_get(params, "project_id"));
+
+    if (!project_id) {
+        return json_pack("{s:s}", "error", "project_id required");
+    }
+
+    size_t files_updated = 0;
+    int rc = softdev_refresh(project_id, &files_updated);
+
+    if (rc != KATRA_SUCCESS) {
+        return json_pack("{s:s,s:i}", "error", "Refresh failed", "code", rc);
+    }
+
+    return json_pack("{s:s,s:i}",
+        "project_id", project_id,
+        "files_updated", (int)files_updated
+    );
+}
+
+static json_t* handle_add_concept(json_t* params, const char* ci_name)
+{
+    (void)ci_name;
+
+    const char* project_id = json_string_value(json_object_get(params, "project_id"));
+    const char* name = json_string_value(json_object_get(params, "name"));
+    const char* purpose = json_string_value(json_object_get(params, "purpose"));
+
+    if (!project_id || !name) {
+        return json_pack("{s:s}", "error", "project_id and name required");
+    }
+
+    /* Create concept node (no tasks for now) */
+    metamemory_node_t* concept = metamemory_create_concept(project_id, name, purpose,
+                                                            NULL, 0);
+    if (!concept) {
+        return json_pack("{s:s}", "error", "Failed to create concept");
+    }
+
+    int rc = softdev_add_concept(project_id, concept);
+    char* concept_id = concept->id ? strdup(concept->id) : NULL;
+    metamemory_free_node(concept);
+
+    if (rc != KATRA_SUCCESS) {
+        free(concept_id);
+        return json_pack("{s:s,s:i}", "error", "Add concept failed", "code", rc);
+    }
+
+    json_t* response = json_pack("{s:s,s:s}",
+        "status", "created",
+        "id", concept_id ? concept_id : "unknown"
+    );
+    free(concept_id);
+    return response;
+}
+
+static json_t* handle_status(json_t* params, const char* ci_name)
+{
+    (void)ci_name;
+
+    const char* project_id = json_string_value(json_object_get(params, "project_id"));
+
+    if (!project_id) {
+        return json_pack("{s:s}", "error", "project_id required");
+    }
+
+    softdev_status_t status = {0};
+    int rc = softdev_get_status(project_id, &status);
+
+    if (rc != KATRA_SUCCESS) {
+        return json_pack("{s:s,s:i}", "error", "Get status failed", "code", rc);
+    }
+
+    json_t* response = json_pack("{s:s,s:i,s:i,s:i,s:i,s:i,s:b}",
+        "project_id", status.project_id,
+        "concepts", (int)status.concept_count,
+        "components", (int)status.component_count,
+        "functions", (int)status.function_count,
+        "structs", (int)status.struct_count,
+        "total_nodes", (int)status.total_nodes,
+        "needs_refresh", status.needs_refresh
+    );
+
+    softdev_free_status(&status);
+    return response;
 }
