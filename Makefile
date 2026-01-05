@@ -27,7 +27,8 @@ include Makefile.test
         install-systemd uninstall-systemd status-systemd \
         install-launchd uninstall-launchd status-launchd \
         install-daemon uninstall-daemon status-daemon \
-        test-tcp-integration
+        test-tcp-integration \
+        modules install-modules
 
 # ==============================================================================
 # DEFAULT TARGET
@@ -388,6 +389,10 @@ help:
 	@echo "  make install-daemon     - Install daemon (macOS launchd)"
 	@echo "  make uninstall-daemon   - Uninstall daemon"
 	@echo "  make status-daemon      - Check daemon status"
+	@echo ""
+	@echo "Loadable modules:"
+	@echo "  make modules            - Build all loadable modules"
+	@echo "  make install-modules    - Install modules to ~/.katra/modules/"
 	@echo ""
 	@echo "Help:"
 	@echo "  make help               - Show this help message"

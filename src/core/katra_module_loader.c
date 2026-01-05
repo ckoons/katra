@@ -712,7 +712,11 @@ json_t* katra_mcp_modules_load(json_t* params, const char* ci_name)
 {
     (void)ci_name;
 
-    const char* name = json_string_value(json_object_get(params, "module"));
+    /* Accept either "name" or "module" parameter */
+    const char* name = json_string_value(json_object_get(params, "name"));
+    if (!name) {
+        name = json_string_value(json_object_get(params, "module"));
+    }
     if (!name) {
         return json_pack("{s:s}", "error", "module name required");
     }
@@ -729,7 +733,11 @@ json_t* katra_mcp_modules_unload(json_t* params, const char* ci_name)
 {
     (void)ci_name;
 
-    const char* name = json_string_value(json_object_get(params, "module"));
+    /* Accept either "name" or "module" parameter */
+    const char* name = json_string_value(json_object_get(params, "name"));
+    if (!name) {
+        name = json_string_value(json_object_get(params, "module"));
+    }
     if (!name) {
         return json_pack("{s:s}", "error", "module name required");
     }
@@ -746,7 +754,11 @@ json_t* katra_mcp_modules_reload(json_t* params, const char* ci_name)
 {
     (void)ci_name;
 
-    const char* name = json_string_value(json_object_get(params, "module"));
+    /* Accept either "name" or "module" parameter */
+    const char* name = json_string_value(json_object_get(params, "name"));
+    if (!name) {
+        name = json_string_value(json_object_get(params, "module"));
+    }
     if (!name) {
         return json_pack("{s:s}", "error", "module name required");
     }
@@ -763,7 +775,11 @@ json_t* katra_mcp_modules_info(json_t* params, const char* ci_name)
 {
     (void)ci_name;
 
-    const char* name = json_string_value(json_object_get(params, "module"));
+    /* Accept either "name" or "module" parameter */
+    const char* name = json_string_value(json_object_get(params, "name"));
+    if (!name) {
+        name = json_string_value(json_object_get(params, "module"));
+    }
     if (!name) {
         return json_pack("{s:s}", "error", "module name required");
     }

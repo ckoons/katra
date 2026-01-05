@@ -204,6 +204,52 @@ $(UNIFIED_DAEMON): $(UNIFIED_OBJS) $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR
 unified-daemon: $(UNIFIED_DAEMON)
 
 # ==============================================================================
+# LOADABLE MODULE BUILD
+# ==============================================================================
+
+# Create module directory
+$(MODULE_DIR):
+	@$(MKDIR_P) $(MODULE_DIR)
+
+# Compile softdev sources with -fPIC for shared library
+$(BUILD_DIR)/katra_softdev_pic.o: $(SRC_DIR)/modules/softdev/katra_softdev.c | $(BUILD_DIR)
+	@echo "Compiling (PIC): $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -fPIC -c $< -o $@
+
+$(BUILD_DIR)/katra_metamemory_pic.o: $(SRC_DIR)/modules/softdev/katra_metamemory.c | $(BUILD_DIR)
+	@echo "Compiling (PIC): $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -fPIC -c $< -o $@
+
+# Build softdev shared library module
+# Links against libkatra_utils for error reporting, logging, etc.
+$(SOFTDEV_MODULE): $(SOFTDEV_MODULE_OBJS) $(LIBKATRA_UTILS) | $(MODULE_DIR)
+	@echo "Building module: $@"
+	@$(CC) $(MODULE_LDFLAGS) -o $@ $(SOFTDEV_MODULE_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3
+	@echo "Module built: katra_softdev$(MODULE_EXT)"
+
+# Convenience target for building modules
+modules: $(SOFTDEV_MODULE)
+	@echo ""
+	@echo "========================================"
+	@echo "Katra modules built!"
+	@echo "========================================"
+	@echo ""
+	@echo "Install with:"
+	@echo "  make install-modules"
+	@echo ""
+
+# Install modules to ~/.katra/modules/
+install-modules: $(SOFTDEV_MODULE)
+	@echo "Installing modules to ~/.katra/modules/..."
+	@$(MKDIR_P) $(HOME)/.katra/modules
+	@cp $(SOFTDEV_MODULE) $(HOME)/.katra/modules/
+	@echo "Installed: katra_softdev$(MODULE_EXT)"
+	@echo ""
+	@echo "Module ready for loading:"
+	@echo "  katra modules list"
+	@echo "  katra modules load softdev"
+
+# ==============================================================================
 # AUTOMATIC DEPENDENCY INCLUSION
 # ==============================================================================
 # Include auto-generated .d files (header dependencies)

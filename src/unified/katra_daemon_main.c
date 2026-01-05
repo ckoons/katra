@@ -25,6 +25,7 @@
 #include "katra_log.h"
 #include "katra_env_utils.h"
 #include "katra_lifecycle.h"
+#include "katra_module.h"
 
 /* Version info */
 #define DAEMON_VERSION "1.0.0"
@@ -199,6 +200,18 @@ int main(int argc, char* argv[]) {
         return EXIT_CODE_FAILURE;
     }
 
+    /* Initialize module loader (non-fatal if fails) */
+    result = katra_module_loader_init();
+    if (result != KATRA_SUCCESS) {
+        LOG_WARN("Module loader init failed (non-fatal): %d", result);
+    } else {
+        /* Discover available modules */
+        int discovered = katra_module_loader_discover();
+        if (discovered > 0) {
+            LOG_INFO("Discovered %d loadable module(s)", discovered);
+        }
+    }
+
     /* Set default configuration */
     katra_daemon_config_t config = {
         .http_port = KATRA_UNIFIED_DEFAULT_PORT,
@@ -233,6 +246,7 @@ int main(int argc, char* argv[]) {
     result = katra_http_daemon_start(&config);
 
     /* Cleanup */
+    katra_module_loader_shutdown();
     katra_lifecycle_cleanup();
     log_cleanup();
 
