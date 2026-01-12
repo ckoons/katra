@@ -442,7 +442,23 @@ int katra_module_unload(const char* name)
         module->_shutdown_fn();
     }
 
-    /* TODO: Unregister operations */
+    /* Unregister all operations belonging to this module */
+    pthread_mutex_lock(&g_ops_mutex);
+    for (size_t i = 0; i < g_module_op_count; ) {
+        if (strcmp(g_module_ops[i].module_name, name) == 0) {
+            /* Unregister from unified dispatch */
+            katra_unregister_method(g_module_ops[i].name);
+            /* Remove from local registry */
+            for (size_t j = i; j < g_module_op_count - 1; j++) {
+                g_module_ops[j] = g_module_ops[j + 1];
+            }
+            g_module_op_count--;
+            /* Don't increment i - next entry shifted into current position */
+        } else {
+            i++;
+        }
+    }
+    pthread_mutex_unlock(&g_ops_mutex);
 
     /* Close library */
     if (module->_handle) {
@@ -644,7 +660,7 @@ static katra_module_context_t* build_module_context(const char* name)
         return NULL;
     }
 
-    ctx->katra_version = "0.1.0";  /* TODO: Get from config */
+    ctx->katra_version = KATRA_VERSION;
     ctx->api_version = KATRA_MODULE_API_VERSION;
 
     /* Build paths */
@@ -666,10 +682,12 @@ static katra_module_context_t* build_module_context(const char* name)
     snprintf(cmd, sizeof(cmd), "mkdir -p '%s'", module_data_dir);
     system(cmd);
 
-    /* TODO: Populate service APIs */
-    ctx->memory = NULL;
-    ctx->log = NULL;
-    ctx->db = NULL;
+    /* Service APIs - modules can access core Katra functionality through these.
+     * Currently NULL as modules use direct function calls via linked library.
+     * Future: Provide vtable APIs for true isolation/versioning. */
+    ctx->memory = NULL;  /* Would provide: store, recall, recent, etc. */
+    ctx->log = NULL;     /* Would provide: debug, info, warn, error */
+    ctx->db = NULL;      /* Would provide: exec, query, prepare */
 
     return ctx;
 }
@@ -745,9 +763,34 @@ static int registry_register_op(const char* name, const char* description,
 
 static int registry_unregister_op(const char* name)
 {
-    (void)name;
-    /* TODO: Unregister from unified dispatch */
-    return KATRA_SUCCESS;
+    if (!name) {
+        return E_INPUT_NULL;
+    }
+
+    /* Unregister from unified dispatch first */
+    int result = katra_unregister_method(name);
+    if (result != KATRA_SUCCESS && result != E_NOT_FOUND) {
+        LOG_WARN("Failed to unregister %s from unified dispatch", name);
+    }
+
+    /* Remove from module operations registry */
+    pthread_mutex_lock(&g_ops_mutex);
+
+    for (size_t i = 0; i < g_module_op_count; i++) {
+        if (strcmp(g_module_ops[i].name, name) == 0) {
+            /* Shift remaining entries down */
+            for (size_t j = i; j < g_module_op_count - 1; j++) {
+                g_module_ops[j] = g_module_ops[j + 1];
+            }
+            g_module_op_count--;
+            pthread_mutex_unlock(&g_ops_mutex);
+            LOG_INFO("Unregistered operation: %s", name);
+            return KATRA_SUCCESS;
+        }
+    }
+
+    pthread_mutex_unlock(&g_ops_mutex);
+    return E_NOT_FOUND;
 }
 
 /* Find a module operation by name */

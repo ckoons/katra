@@ -10,6 +10,12 @@
  * to ensure consistency and maintainability.
  */
 
+/* ===== Version Information ===== */
+#define KATRA_VERSION_MAJOR 0
+#define KATRA_VERSION_MINOR 1
+#define KATRA_VERSION_PATCH 0
+#define KATRA_VERSION "0.1.0"
+
 /* Stringify macro for embedding constants in strings */
 #define KATRA_STRINGIFY_HELPER(x) #x
 #define KATRA_STRINGIFY(x) KATRA_STRINGIFY_HELPER(x)

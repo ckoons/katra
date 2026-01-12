@@ -160,6 +160,31 @@ int katra_register_method(const char* method_name, katra_method_handler_t handle
     return KATRA_SUCCESS;
 }
 
+/* Unregister a method handler */
+int katra_unregister_method(const char* method_name) {
+    if (!method_name) {
+        return E_INPUT_NULL;
+    }
+
+    pthread_mutex_lock(&g_registry_lock);
+
+    for (int i = 0; i < g_method_count; i++) {
+        if (strcmp(g_method_registry[i].name, method_name) == 0) {
+            /* Shift remaining entries down */
+            for (int j = i; j < g_method_count - 1; j++) {
+                g_method_registry[j] = g_method_registry[j + 1];
+            }
+            g_method_count--;
+            pthread_mutex_unlock(&g_registry_lock);
+            LOG_INFO("Unregistered method: %s", method_name);
+            return KATRA_SUCCESS;
+        }
+    }
+
+    pthread_mutex_unlock(&g_registry_lock);
+    return E_NOT_FOUND;
+}
+
 /* Get handler for method */
 katra_method_handler_t katra_get_method_handler(const char* method_name) {
     if (!method_name) {

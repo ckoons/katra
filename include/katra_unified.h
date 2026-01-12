@@ -269,6 +269,9 @@ int katra_unix_handle_client(int client_fd);
 /* Register a method handler */
 int katra_register_method(const char* method_name, katra_method_handler_t handler);
 
+/* Unregister a method handler */
+int katra_unregister_method(const char* method_name);
+
 /* Get handler for method */
 katra_method_handler_t katra_get_method_handler(const char* method_name);
 

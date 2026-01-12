@@ -761,6 +761,80 @@ void katra_module_shutdown(void)
     g_module_context = NULL;
 }
 
+/* ============================================================================
+ * JSON Schemas for Operation Parameters
+ * ============================================================================ */
+
+static json_t* build_analyze_schema(void)
+{
+    return json_pack("{s:s,s:{s:{s:s,s:s},s:{s:s,s:s},s:{s:s,s:s}},s:[s,s]}",
+        "type", "object",
+        "properties",
+            "project_id", "type", "string", "description", "Unique project identifier",
+            "root_path", "type", "string", "description", "Absolute path to project root",
+            "depth", "type", "string", "description", "Analysis depth: structure|signatures|relationships|full",
+        "required", "project_id", "root_path");
+}
+
+static json_t* build_find_concept_schema(void)
+{
+    return json_pack("{s:s,s:{s:{s:s},s:{s:s}},s:[s,s]}",
+        "type", "object",
+        "properties",
+            "project_id", "type", "string",
+            "query", "type", "string",
+        "required", "project_id", "query");
+}
+
+static json_t* build_find_code_schema(void)
+{
+    return json_pack("{s:s,s:{s:{s:s},s:{s:s}},s:[s,s]}",
+        "type", "object",
+        "properties",
+            "project_id", "type", "string",
+            "query", "type", "string",
+        "required", "project_id", "query");
+}
+
+static json_t* build_impact_schema(void)
+{
+    return json_pack("{s:s,s:{s:{s:s},s:{s:s}},s:[s,s]}",
+        "type", "object",
+        "properties",
+            "project_id", "type", "string",
+            "node_id", "type", "string",
+        "required", "project_id", "node_id");
+}
+
+static json_t* build_refresh_schema(void)
+{
+    return json_pack("{s:s,s:{s:{s:s}},s:[s]}",
+        "type", "object",
+        "properties",
+            "project_id", "type", "string",
+        "required", "project_id");
+}
+
+static json_t* build_add_concept_schema(void)
+{
+    return json_pack("{s:s,s:{s:{s:s},s:{s:s},s:{s:s}},s:[s,s]}",
+        "type", "object",
+        "properties",
+            "project_id", "type", "string",
+            "name", "type", "string",
+            "purpose", "type", "string",
+        "required", "project_id", "name");
+}
+
+static json_t* build_status_schema(void)
+{
+    return json_pack("{s:s,s:{s:{s:s}},s:[s]}",
+        "type", "object",
+        "properties",
+            "project_id", "type", "string",
+        "required", "project_id");
+}
+
 /**
  * Register module operations with MCP dispatch.
  * Called after init, before module is considered ready.
@@ -775,12 +849,12 @@ int katra_module_register_ops(katra_op_registry_t* registry)
         return E_INPUT_NULL;
     }
 
-    /* Register all softdev operations */
+    /* Register all softdev operations with JSON schemas */
     result = registry->register_op(
         SOFTDEV_OP_ANALYZE,
         "Analyze a project and build metamemory index",
         handle_analyze_project,
-        NULL  /* TODO: Add JSON schema */
+        build_analyze_schema()
     );
     if (result != KATRA_SUCCESS) return result;
 
@@ -788,7 +862,7 @@ int katra_module_register_ops(katra_op_registry_t* registry)
         SOFTDEV_OP_FIND_CONCEPT,
         "Find concepts matching a query",
         handle_find_concept,
-        NULL
+        build_find_concept_schema()
     );
     if (result != KATRA_SUCCESS) return result;
 
@@ -796,7 +870,7 @@ int katra_module_register_ops(katra_op_registry_t* registry)
         SOFTDEV_OP_FIND_CODE,
         "Find code elements matching a query",
         handle_find_code,
-        NULL
+        build_find_code_schema()
     );
     if (result != KATRA_SUCCESS) return result;
 
@@ -804,7 +878,7 @@ int katra_module_register_ops(katra_op_registry_t* registry)
         SOFTDEV_OP_IMPACT,
         "Analyze impact of changing a code element",
         handle_impact,
-        NULL
+        build_impact_schema()
     );
     if (result != KATRA_SUCCESS) return result;
 
@@ -812,7 +886,7 @@ int katra_module_register_ops(katra_op_registry_t* registry)
         SOFTDEV_OP_REFRESH,
         "Refresh metamemory for changed files",
         handle_refresh,
-        NULL
+        build_refresh_schema()
     );
     if (result != KATRA_SUCCESS) return result;
 
@@ -820,7 +894,7 @@ int katra_module_register_ops(katra_op_registry_t* registry)
         SOFTDEV_OP_ADD_CONCEPT,
         "Add a concept to the project",
         handle_add_concept,
-        NULL
+        build_add_concept_schema()
     );
     if (result != KATRA_SUCCESS) return result;
 
@@ -828,7 +902,7 @@ int katra_module_register_ops(katra_op_registry_t* registry)
         SOFTDEV_OP_STATUS,
         "Get project metamemory status",
         handle_status,
-        NULL
+        build_status_schema()
     );
 
     return result;
