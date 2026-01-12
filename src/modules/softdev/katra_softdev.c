@@ -81,7 +81,7 @@ static int softdev_init_index(void);
 static void softdev_cleanup_index(void);
 static int softdev_register_operations(void);
 
-/* MCP Operation handlers */
+/* MCP Operation handlers - signature matches katra_op_handler_t */
 static json_t* handle_analyze_project(json_t* params, const char* ci_name);
 static json_t* handle_find_concept(json_t* params, const char* ci_name);
 static json_t* handle_find_code(json_t* params, const char* ci_name);
@@ -162,17 +162,11 @@ static void softdev_cleanup_index(void)
 
 static int softdev_register_operations(void)
 {
-    /* TODO: Register operations with unified dispatch
-     *
-     * Operations to register:
-     *   - softdev_analyze_project
-     *   - softdev_find_concept
-     *   - softdev_find_code
-     *   - softdev_impact
-     *   - softdev_refresh
-     *   - softdev_add_concept
-     *   - softdev_status
+    /* Operations are registered via katra_module_register_ops() callback
+     * when the module is loaded. This function is kept for initialization
+     * flow consistency but actual registration happens in the module loader.
      */
+    LOG_INFO("Softdev module: operations ready for registration");
     return KATRA_SUCCESS;
 }
 

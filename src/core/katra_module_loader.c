@@ -19,6 +19,7 @@
 #include <pthread.h>
 
 #include "katra_module.h"
+#include "katra_unified.h"
 #include "katra_error.h"
 #include "katra_limits.h"
 #include "katra_log.h"
@@ -31,6 +32,23 @@
 
 #define MAX_MODULES 64
 #define DEFAULT_MODULE_SUBDIR "modules"
+#define MAX_MODULE_OPS 256
+
+/* ============================================================================
+ * Operation Registry for Module-to-Dispatcher Bridge
+ * ============================================================================ */
+
+/* Entry for a registered module operation */
+typedef struct {
+    char name[128];                  /* Operation name */
+    katra_op_handler_t handler;      /* Module's handler */
+    char module_name[64];            /* Owning module */
+} module_op_entry_t;
+
+/* Registry of module operations */
+static module_op_entry_t g_module_ops[MAX_MODULE_OPS];
+static size_t g_module_op_count = 0;
+static pthread_mutex_t g_ops_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* ============================================================================
  * Module Registry State
@@ -67,6 +85,10 @@ static void free_module_context(katra_module_context_t* ctx);
 static int registry_register_op(const char* name, const char* description,
                                 katra_op_handler_t handler, json_t* schema);
 static int registry_unregister_op(const char* name);
+
+/* Adapter to bridge unified dispatcher to module handlers */
+static json_t* module_op_adapter(json_t* params, const katra_unified_options_t* options);
+static module_op_entry_t* find_module_op(const char* name);
 
 /* ============================================================================
  * Loader Initialization
@@ -667,11 +689,55 @@ static int registry_register_op(const char* name, const char* description,
                                 katra_op_handler_t handler, json_t* schema)
 {
     (void)description;
-    (void)handler;
     (void)schema;
 
-    /* TODO: Register with unified dispatch */
-    LOG_INFO("Registering operation: %s (module: %s)",
+    if (!name || !handler) {
+        return E_INPUT_NULL;
+    }
+
+    pthread_mutex_lock(&g_ops_mutex);
+
+    /* Check for duplicates */
+    for (size_t i = 0; i < g_module_op_count; i++) {
+        if (strcmp(g_module_ops[i].name, name) == 0) {
+            pthread_mutex_unlock(&g_ops_mutex);
+            LOG_WARN("Operation already registered: %s", name);
+            return E_DUPLICATE;
+        }
+    }
+
+    /* Check capacity */
+    if (g_module_op_count >= MAX_MODULE_OPS) {
+        pthread_mutex_unlock(&g_ops_mutex);
+        katra_report_error(E_RESOURCE_LIMIT, "registry_register_op",
+                          "Maximum module operations reached");
+        return E_RESOURCE_LIMIT;
+    }
+
+    /* Store the operation */
+    module_op_entry_t* entry = &g_module_ops[g_module_op_count];
+    strncpy(entry->name, name, sizeof(entry->name) - 1);
+    entry->name[sizeof(entry->name) - 1] = '\0';
+    entry->handler = handler;
+    if (g_op_registry._module_name) {
+        strncpy(entry->module_name, g_op_registry._module_name,
+                sizeof(entry->module_name) - 1);
+        entry->module_name[sizeof(entry->module_name) - 1] = '\0';
+    } else {
+        entry->module_name[0] = '\0';
+    }
+    g_module_op_count++;
+
+    pthread_mutex_unlock(&g_ops_mutex);
+
+    /* Register with unified dispatcher using the adapter */
+    int result = katra_register_method(name, module_op_adapter);
+    if (result != KATRA_SUCCESS) {
+        LOG_ERROR("Failed to register %s with unified dispatcher", name);
+        return result;
+    }
+
+    LOG_INFO("Registered operation: %s (module: %s)",
              name, g_op_registry._module_name ? g_op_registry._module_name : "?");
 
     return KATRA_SUCCESS;
@@ -682,6 +748,54 @@ static int registry_unregister_op(const char* name)
     (void)name;
     /* TODO: Unregister from unified dispatch */
     return KATRA_SUCCESS;
+}
+
+/* Find a module operation by name */
+static module_op_entry_t* find_module_op(const char* name)
+{
+    if (!name) return NULL;
+
+    pthread_mutex_lock(&g_ops_mutex);
+    for (size_t i = 0; i < g_module_op_count; i++) {
+        if (strcmp(g_module_ops[i].name, name) == 0) {
+            module_op_entry_t* entry = &g_module_ops[i];
+            pthread_mutex_unlock(&g_ops_mutex);
+            return entry;
+        }
+    }
+    pthread_mutex_unlock(&g_ops_mutex);
+    return NULL;
+}
+
+/* Adapter that bridges unified dispatcher to module handler */
+static json_t* module_op_adapter(json_t* params, const katra_unified_options_t* options)
+{
+    (void)options;
+
+    /* Get the method name from thread-local context */
+    const char* method_name = katra_get_current_method();
+    if (!method_name || method_name[0] == '\0') {
+        return json_pack("{s:s}", "error", "No method name in dispatch context");
+    }
+
+    /* Find the module operation */
+    module_op_entry_t* op = find_module_op(method_name);
+    if (!op || !op->handler) {
+        return json_pack("{s:s,s:s}", "error", "Module operation not found",
+                        "method", method_name);
+    }
+
+    /* Extract ci_name from params */
+    const char* ci_name = NULL;
+    if (params) {
+        ci_name = json_string_value(json_object_get(params, "ci_name"));
+    }
+    if (!ci_name) {
+        ci_name = "anonymous";
+    }
+
+    /* Call the module's handler with the module signature */
+    return op->handler(params, ci_name);
 }
 
 /* ============================================================================

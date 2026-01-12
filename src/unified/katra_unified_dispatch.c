@@ -264,6 +264,24 @@ int katra_parse_options(json_t* options_json, katra_unified_options_t* options) 
 /* Thread-local namespace for request context */
 static __thread char g_current_namespace[NAMESPACE_BUFFER_SIZE] = "default";
 
+/* Thread-local method name for request context */
+static __thread char g_current_method[128] = "";
+
+/* Set current method (called by dispatcher before executing handler) */
+void katra_set_current_method(const char* method) {
+    if (method) {
+        strncpy(g_current_method, method, sizeof(g_current_method) - 1);
+        g_current_method[sizeof(g_current_method) - 1] = '\0';
+    } else {
+        g_current_method[0] = '\0';
+    }
+}
+
+/* Get current method */
+const char* katra_get_current_method(void) {
+    return g_current_method;
+}
+
 /* Set current namespace (called by dispatcher before executing method) */
 void katra_set_namespace(const char* ns) {
     if (ns) {
@@ -426,7 +444,9 @@ json_t* katra_unified_dispatch(json_t* shared_state) {
 
     /* Execute handler */
     LOG_DEBUG("Dispatching method: %s (namespace: %s)", method, options.namespace);
+    katra_set_current_method(method);
     json_t* result = handler(params, &options);
+    katra_set_current_method(NULL);
 
     /* Calculate duration */
     gettimeofday(&end_time, NULL);

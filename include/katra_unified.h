@@ -298,4 +298,11 @@ void katra_set_namespace(const char* ns);
 /* Get current namespace (thread-local) */
 const char* katra_get_namespace(void);
 
+/*
+ * Method context (for adapters/bridges)
+ */
+
+/* Get current method name (thread-local, set during dispatch) */
+const char* katra_get_current_method(void);
+
 #endif /* KATRA_UNIFIED_H */
