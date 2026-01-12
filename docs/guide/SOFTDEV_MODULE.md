@@ -220,20 +220,24 @@ Metamemory is stored separately from regular Katra memories:
         └── metamemory.db
 ```
 
-SQLite schema (planned):
+SQLite schema (implemented in `katra_mm_index.c`):
 
 ```sql
 -- Metamemory nodes
 CREATE TABLE nodes (
     id TEXT PRIMARY KEY,
-    type INTEGER,
-    project_id TEXT,
-    name TEXT,
+    type INTEGER NOT NULL,
+    project_id TEXT NOT NULL,
+    name TEXT NOT NULL,
     purpose TEXT,
     file_path TEXT,
     line_start INTEGER,
     line_end INTEGER,
+    column_start INTEGER,
+    column_end INTEGER,
     signature TEXT,
+    return_type TEXT,
+    visibility INTEGER,
     source_hash TEXT,
     created_at INTEGER,
     updated_at INTEGER,
@@ -244,24 +248,69 @@ CREATE TABLE nodes (
 
 -- Node relationships
 CREATE TABLE links (
-    source_id TEXT,
-    link_type TEXT,
-    target_id TEXT,
-    PRIMARY KEY (source_id, link_type, target_id)
+    source_id TEXT NOT NULL,
+    link_type TEXT NOT NULL,
+    target_id TEXT NOT NULL,
+    PRIMARY KEY (source_id, link_type, target_id),
+    FOREIGN KEY (source_id) REFERENCES nodes(id) ON DELETE CASCADE
+);
+
+-- Typical tasks for concepts
+CREATE TABLE tasks (
+    node_id TEXT NOT NULL,
+    task TEXT NOT NULL,
+    PRIMARY KEY (node_id, task),
+    FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+);
+
+-- Function parameters
+CREATE TABLE params (
+    node_id TEXT NOT NULL,
+    param_index INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    description TEXT,
+    PRIMARY KEY (node_id, param_index),
+    FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+);
+
+-- Struct fields
+CREATE TABLE fields (
+    node_id TEXT NOT NULL,
+    field_index INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    PRIMARY KEY (node_id, field_index),
+    FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
 );
 
 -- Full-text search
 CREATE VIRTUAL TABLE nodes_fts USING fts5(
-    name, purpose, typical_tasks,
-    content=nodes
+    name, purpose, tasks,
+    content=nodes,
+    content_rowid=rowid
 );
 
 -- File change detection
 CREATE TABLE file_hashes (
     file_path TEXT PRIMARY KEY,
-    hash TEXT,
-    indexed_at INTEGER
+    hash TEXT NOT NULL,
+    indexed_at INTEGER NOT NULL
 );
+
+-- Project metadata
+CREATE TABLE project_meta (
+    key TEXT PRIMARY KEY,
+    value TEXT
+);
+
+-- Performance indexes
+CREATE INDEX idx_nodes_project ON nodes(project_id);
+CREATE INDEX idx_nodes_type ON nodes(type);
+CREATE INDEX idx_nodes_file ON nodes(file_path);
+CREATE INDEX idx_links_source ON links(source_id);
+CREATE INDEX idx_links_target ON links(target_id);
+CREATE INDEX idx_links_type ON links(link_type);
 ```
 
 ## Usage Patterns
@@ -325,17 +374,30 @@ Without softdev, the CI would need to:
 
 ## Current Status
 
-**Implemented**:
+**Fully Implemented**:
 - metamemory_node_t and all creation/linking functions
-- Module lifecycle (init, shutdown)
-- Build system integration
+- Module lifecycle (init, shutdown, dynamic loading)
+- Build system integration (static library + shared module)
 - Header documentation
+- SQLite index (`katra_mm_index.c`) - FTS5 full-text search
+- Code scanner (`katra_mm_scanner.c`) - C language parser
+- MCP operation handlers - all 7 operations registered
+- File hash tracking for incremental updates
 
-**Planned**:
-- SQLite index (katra_mm_index.c)
-- Code scanner (katra_mm_scanner.c)
-- MCP operation handlers
-- C language parser
+**MCP Operations Available**:
+- `softdev_analyze_project` - Scan and index a codebase
+- `softdev_find_concept` - Search concepts by query
+- `softdev_find_code` - Search functions/structs by query
+- `softdev_impact` - Analyze change impact
+- `softdev_refresh` - Update index for changed files
+- `softdev_add_concept` - Add a CI-curated concept
+- `softdev_status` - Get project metamemory statistics
+
+**Future Enhancements**:
+- JSON schema validation for operation parameters
+- Additional language parsers (Python, JavaScript)
+- Concept auto-extraction from directory structure
+- Call graph visualization
 
 ## Design Philosophy
 
