@@ -274,6 +274,42 @@ sqlite3 ~/.katra/memory/tier2/index/digests.db "SELECT * FROM digests LIMIT 5;"
 - ⏳ **katra_recovery**: Enhanced catastrophic failure protocols
 - ⏳ **katra_audit**: Enhanced operation logging
 
+### Loadable Modules
+
+Katra supports dynamic module loading, allowing functionality to be extended at runtime without recompiling the daemon. Modules are shared libraries (.dylib on macOS, .so on Linux) that implement a standard interface.
+
+**Built-in Module:**
+- ✅ **softdev**: Software development metamemory - indexed code understanding
+
+**Module Management:**
+```bash
+# Build modules
+make modules
+
+# Install to ~/.katra/modules/
+make install-modules
+
+# List available modules (via API)
+curl -X POST http://localhost:9742/operation \
+  -d '{"method":"modules_list"}'
+
+# Load a module
+curl -X POST http://localhost:9742/operation \
+  -d '{"method":"modules_load","params":{"name":"softdev"}}'
+
+# Unload a module
+curl -X POST http://localhost:9742/operation \
+  -d '{"method":"modules_unload","params":{"name":"softdev"}}'
+
+# Reload a module (for development)
+curl -X POST http://localhost:9742/operation \
+  -d '{"method":"modules_reload","params":{"name":"softdev"}}'
+```
+
+**Creating Custom Modules:**
+
+See [`docs/guide/MODULE_DEVELOPMENT.md`](docs/guide/MODULE_DEVELOPMENT.md) for the complete module developer guide.
+
 ## Code Discipline
 
 Katra inherits proven practices from the Argo project:

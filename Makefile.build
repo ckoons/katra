@@ -220,6 +220,14 @@ $(BUILD_DIR)/katra_metamemory_pic.o: $(SRC_DIR)/modules/softdev/katra_metamemory
 	@echo "Compiling (PIC): $<"
 	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -fPIC -c $< -o $@
 
+$(BUILD_DIR)/katra_mm_index_pic.o: $(SRC_DIR)/modules/softdev/katra_mm_index.c | $(BUILD_DIR)
+	@echo "Compiling (PIC): $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -fPIC -c $< -o $@
+
+$(BUILD_DIR)/katra_mm_scanner_pic.o: $(SRC_DIR)/modules/softdev/katra_mm_scanner.c | $(BUILD_DIR)
+	@echo "Compiling (PIC): $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -fPIC -c $< -o $@
+
 # Build softdev shared library module
 # Links against libkatra_utils for error reporting, logging, etc.
 $(SOFTDEV_MODULE): $(SOFTDEV_MODULE_OBJS) $(LIBKATRA_UTILS) | $(MODULE_DIR)

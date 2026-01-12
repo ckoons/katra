@@ -109,6 +109,9 @@ Key references:
 | `TROUBLESHOOTING.md` | Error recovery and debugging guide | ✅ Complete |
 | `guide/CI_INTEGRATION.md` | Complete integration guide for CIs | ✅ Complete |
 | `guide/ERROR_HANDLING.md` | Production error handling patterns | ✅ Complete |
+| `guide/KATRA_MODULES.md` | Module architecture overview | ✅ Complete |
+| `guide/MODULE_DEVELOPMENT.md` | Creating custom loadable modules | ✅ Complete |
+| `guide/SOFTDEV_MODULE.md` | Software development metamemory module | ✅ Complete |
 | `guide/NOUS_USAGE.md` | AI-assisted code composition | ⏳ Planned |
 | `guide/ARCHITECTURE.md` | System design and memory tiers | ⏳ Planned |
 | `guide/MEMORY_OPERATIONS.md` | Safe memory manipulation | ⏳ Planned |

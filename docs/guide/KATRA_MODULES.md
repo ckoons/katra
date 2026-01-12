@@ -234,13 +234,28 @@ See [SOFTDEV_MODULE.md](SOFTDEV_MODULE.md) for detailed documentation.
 - Skip error reporting
 - Ignore memory safety patterns
 
+## Dynamic Module Loading
+
+Katra now supports **dynamic module loading** - modules can be loaded, unloaded, and reloaded at runtime without restarting the daemon.
+
+**Implemented Features:**
+- ✅ **Dynamic loading**: Load modules on demand via `modules_load`
+- ✅ **Module discovery**: List available modules via `modules_list`
+- ✅ **Hot reload**: Reload modules during development via `modules_reload`
+- ✅ **Module info**: Query module metadata via `modules_info`
+
+**API Operations:**
+- `modules_list` - List all discovered modules and their status
+- `modules_load` - Load a module by name
+- `modules_unload` - Unload a loaded module
+- `modules_reload` - Reload a module (for development)
+- `modules_info` - Get detailed module information
+
+**See:** [MODULE_DEVELOPMENT.md](MODULE_DEVELOPMENT.md) for the complete developer guide.
+
 ## Future Considerations
 
-The module architecture is designed to support:
-
-- **Dynamic loading**: Load modules on demand
-- **Module discovery**: List available modules
+Planned enhancements:
 - **Inter-module communication**: Modules sharing data
 - **Module versioning**: API compatibility across versions
-
-These features will be implemented as needs arise.
+- **Module dependencies**: Automatic dependency resolution

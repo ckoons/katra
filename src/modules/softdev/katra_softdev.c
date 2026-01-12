@@ -24,12 +24,17 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #include "katra_softdev.h"
 #include "katra_metamemory.h"
+#include "katra_mm_index.h"
+#include "katra_mm_scanner.h"
 #include "katra_module.h"
 #include "katra_error.h"
 #include "katra_limits.h"
+#include "katra_log.h"
 #include <jansson.h>
 
 /* ============================================================================
@@ -137,26 +142,18 @@ bool softdev_is_initialized(void)
 }
 
 /* ============================================================================
- * Internal: Index Management (Stub - implemented in katra_mm_index.c)
+ * Internal: Index Management
  * ============================================================================ */
 
 static int softdev_init_index(void)
 {
-    /* TODO: Initialize SQLite database for metamemory
-     * Location: ~/.katra/softdev/<project_id>/metamemory.db
-     *
-     * Tables:
-     *   - nodes: Main metamemory nodes
-     *   - links: Node relationships
-     *   - node_fts: Full-text search on name, purpose, tasks
-     *   - file_hashes: For change detection
-     */
+    /* Index is initialized per-project when needed */
     return KATRA_SUCCESS;
 }
 
 static void softdev_cleanup_index(void)
 {
-    /* TODO: Close database connections, free resources */
+    mm_index_close();
 }
 
 /* ============================================================================
@@ -180,12 +177,16 @@ static int softdev_register_operations(void)
 }
 
 /* ============================================================================
- * Project Analysis (Stub - implemented in katra_mm_scanner.c)
+ * Project Analysis
  * ============================================================================ */
 
 int softdev_analyze_project(const softdev_project_config_t* config,
                             softdev_analysis_result_t* result)
 {
+    int rc = KATRA_SUCCESS;
+    mm_scanner_result_t scan_result;
+    mm_scanner_options_t options;
+
     if (!config) {
         katra_report_error(E_INPUT_NULL, "softdev_analyze_project",
                           "config is NULL");
@@ -211,30 +212,41 @@ int softdev_analyze_project(const softdev_project_config_t* config,
         result->analyzed_at = time(NULL);
     }
 
-    /* TODO: Implement analysis workflow
-     *
-     * Phase 1: Structure
-     *   - Walk directory tree
-     *   - Identify build system (Makefile, CMake, etc.)
-     *   - Map module boundaries
-     *
-     * Phase 2: Symbols (if depth >= SIGNATURES)
-     *   - Parse files based on language
-     *   - Extract function signatures
-     *   - Extract struct definitions
-     *
-     * Phase 3: Relationships (if depth >= RELATIONSHIPS)
-     *   - Build call graph
-     *   - Map type usage
-     *   - Track includes
-     *
-     * Phase 4: Concepts (if extract_concepts)
-     *   - Infer concepts from directory names
-     *   - Group related functions
-     *   - Create initial concept layer
-     */
+    /* Set up scanner options */
+    memset(&options, 0, sizeof(options));
+    options.exclude_dirs = config->exclude_dirs;
+    options.exclude_dir_count = config->exclude_dir_count;
+    options.exclude_patterns = config->exclude_patterns;
+    options.exclude_pattern_count = config->exclude_pattern_count;
+    options.incremental = config->incremental;
 
-    return KATRA_SUCCESS;
+    /* Run the scanner */
+    memset(&scan_result, 0, sizeof(scan_result));
+    rc = mm_scanner_scan_project(config->project_id, config->root_path,
+                                  &options, &scan_result);
+
+    /* Copy results */
+    if (result) {
+        result->directories_scanned = scan_result.directories_scanned;
+        result->files_scanned = scan_result.files_scanned;
+        result->functions_indexed = scan_result.functions_found;
+        result->structs_indexed = scan_result.structs_found;
+        result->errors_encountered = (int)scan_result.errors_encountered;
+    }
+
+    /* Auto-create concepts from directory structure if requested */
+    if (rc == KATRA_SUCCESS && config->extract_concepts) {
+        /* Future: infer concepts from directory names */
+        /* For now, concepts are added manually via softdev_add_concept */
+    }
+
+    LOG_INFO("Project analysis complete: %s (%zu files, %zu functions, %zu structs)",
+             config->project_id,
+             scan_result.files_scanned,
+             scan_result.functions_found,
+             scan_result.structs_found);
+
+    return rc;
 }
 
 int softdev_refresh(const char* project_id, size_t* files_updated)
@@ -255,19 +267,21 @@ int softdev_refresh(const char* project_id, size_t* files_updated)
         *files_updated = 0;
     }
 
-    /* TODO: Implement incremental refresh
-     *
-     * 1. Load file hashes from database
-     * 2. Compare with current file hashes
-     * 3. Re-index changed files only
-     * 4. Update relationships affected by changes
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
+
+    /* Scanner automatically detects changed files via hash comparison */
+    /* A full refresh would re-scan all files; incremental is automatic */
+    /* For now, return success - actual refresh happens in analyze_project */
 
     return KATRA_SUCCESS;
 }
 
 /* ============================================================================
- * Query Operations (Stubs)
+ * Query Operations
  * ============================================================================ */
 
 int softdev_find_concept(const char* project_id,
@@ -284,17 +298,14 @@ int softdev_find_concept(const char* project_id,
     *results = NULL;
     *count = 0;
 
-    /* TODO: Search metamemory for concepts matching query
-     *
-     * Search in:
-     *   - Concept names
-     *   - Concept purposes
-     *   - Typical tasks
-     *
-     * Use FTS for natural language matching
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
 
-    return KATRA_SUCCESS;
+    /* Search for concepts */
+    return mm_index_search_concepts(query, results, count);
 }
 
 int softdev_find_code(const char* project_id,
@@ -304,9 +315,6 @@ int softdev_find_code(const char* project_id,
                       metamemory_node_t*** results,
                       size_t* count)
 {
-    (void)types;       /* Unused for now */
-    (void)type_count;
-
     if (!project_id || !query || !results || !count) {
         katra_report_error(E_INPUT_NULL, "softdev_find_code",
                           "NULL parameter");
@@ -316,17 +324,14 @@ int softdev_find_code(const char* project_id,
     *results = NULL;
     *count = 0;
 
-    /* TODO: Search metamemory for code elements
-     *
-     * Search in:
-     *   - Function names
-     *   - Struct names
-     *   - Signatures
-     *
-     * Filter by type if types array provided
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
 
-    return KATRA_SUCCESS;
+    /* Search for code elements */
+    return mm_index_search_code(query, types, type_count, results, count);
 }
 
 int softdev_what_implements(const char* project_id,
@@ -343,12 +348,43 @@ int softdev_what_implements(const char* project_id,
     *results = NULL;
     *count = 0;
 
-    /* TODO: Follow concept -> implements links
-     *
-     * 1. Look up concept by ID
-     * 2. Return all nodes in implements array
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
 
+    /* Get the implements links from the concept */
+    char** target_ids = NULL;
+    size_t target_count = 0;
+
+    rc = mm_index_get_links(concept_id, "implements", &target_ids, &target_count);
+    if (rc != KATRA_SUCCESS || target_count == 0) {
+        return rc;
+    }
+
+    /* Load each target node */
+    metamemory_node_t** nodes = calloc(target_count, sizeof(metamemory_node_t*));
+    if (!nodes) {
+        for (size_t i = 0; i < target_count; i++) {
+            free(target_ids[i]);
+        }
+        free(target_ids);
+        return E_SYSTEM_MEMORY;
+    }
+
+    size_t loaded = 0;
+    for (size_t i = 0; i < target_count; i++) {
+        metamemory_node_t* node = NULL;
+        if (mm_index_load_node(target_ids[i], &node) == KATRA_SUCCESS && node) {
+            nodes[loaded++] = node;
+        }
+        free(target_ids[i]);
+    }
+    free(target_ids);
+
+    *results = nodes;
+    *count = loaded;
     return KATRA_SUCCESS;
 }
 
@@ -364,20 +400,85 @@ int softdev_impact(const char* project_id,
 
     *result = NULL;
 
-    /* TODO: Trace dependencies to find impact
-     *
-     * 1. Look up target node
-     * 2. Follow called_by links for direct dependents
-     * 3. Recursively follow for transitive dependents
-     * 4. Collect affected files
-     * 5. Generate summary
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
 
+    /* Allocate result */
+    softdev_impact_result_t* impact = calloc(1, sizeof(softdev_impact_result_t));
+    if (!impact) {
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Load the target node */
+    rc = mm_index_load_node(node_id, &impact->target);
+    if (rc != KATRA_SUCCESS) {
+        free(impact);
+        return rc;
+    }
+
+    /* Get direct dependents (called_by links) */
+    char** called_by_ids = NULL;
+    size_t called_by_count = 0;
+
+    rc = mm_index_get_links(node_id, "called_by", &called_by_ids, &called_by_count);
+    if (rc == KATRA_SUCCESS && called_by_count > 0) {
+        impact->directly_affected = calloc(called_by_count, sizeof(metamemory_node_t*));
+        if (impact->directly_affected) {
+            for (size_t i = 0; i < called_by_count; i++) {
+                metamemory_node_t* node = NULL;
+                if (mm_index_load_node(called_by_ids[i], &node) == KATRA_SUCCESS && node) {
+                    impact->directly_affected[impact->directly_affected_count++] = node;
+                }
+                free(called_by_ids[i]);
+            }
+        }
+        free(called_by_ids);
+    }
+
+    /* Collect affected files */
+    if (impact->directly_affected_count > 0) {
+        impact->affected_files = calloc(impact->directly_affected_count, sizeof(char*));
+        if (impact->affected_files) {
+            for (size_t i = 0; i < impact->directly_affected_count; i++) {
+                const char* path = impact->directly_affected[i]->location.file_path;
+                if (path) {
+                    /* Check if already in list */
+                    bool found = false;
+                    for (size_t j = 0; j < impact->affected_file_count; j++) {
+                        if (strcmp(impact->affected_files[j], path) == 0) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        impact->affected_files[impact->affected_file_count] = strdup(path);
+                        if (impact->affected_files[impact->affected_file_count]) {
+                            impact->affected_file_count++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /* Generate summary */
+    char summary[KATRA_BUFFER_MESSAGE];
+    snprintf(summary, sizeof(summary),
+             "Changing '%s' would affect %zu direct callers in %zu files",
+             impact->target->name,
+             impact->directly_affected_count,
+             impact->affected_file_count);
+    impact->summary = strdup(summary);
+
+    *result = impact;
     return KATRA_SUCCESS;
 }
 
 /* ============================================================================
- * Concept Management (Stubs)
+ * Concept Management
  * ============================================================================ */
 
 int softdev_add_concept(const char* project_id,
@@ -395,14 +496,21 @@ int softdev_add_concept(const char* project_id,
         return E_INPUT_INVALID;
     }
 
-    /* TODO: Store concept in metamemory index
-     *
-     * 1. Check if concept ID already exists
-     * 2. Insert into nodes table
-     * 3. Insert into FTS index
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
 
-    return KATRA_SUCCESS;
+    /* Check if concept already exists */
+    metamemory_node_t* existing = NULL;
+    if (mm_index_load_node(concept->id, &existing) == KATRA_SUCCESS) {
+        metamemory_free_node(existing);
+        return E_DUPLICATE;
+    }
+
+    /* Store the concept */
+    return mm_index_store_node(concept);
 }
 
 int softdev_link_to_concept(const char* project_id,
@@ -415,14 +523,41 @@ int softdev_link_to_concept(const char* project_id,
         return E_INPUT_NULL;
     }
 
-    /* TODO: Create bidirectional link
-     *
-     * 1. Add concept_id to code node's implemented_by
-     * 2. Add code_id to concept node's implements
-     * 3. Update database
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
 
-    return KATRA_SUCCESS;
+    /* Load both nodes */
+    metamemory_node_t* code_node = NULL;
+    metamemory_node_t* concept_node = NULL;
+
+    rc = mm_index_load_node(code_id, &code_node);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
+
+    rc = mm_index_load_node(concept_id, &concept_node);
+    if (rc != KATRA_SUCCESS) {
+        metamemory_free_node(code_node);
+        return rc;
+    }
+
+    /* Add bidirectional links */
+    metamemory_add_link(concept_node, "implements", code_id);
+    metamemory_add_link(code_node, "implemented_by", concept_id);
+
+    /* Store updated nodes */
+    rc = mm_index_store_node(concept_node);
+    if (rc == KATRA_SUCCESS) {
+        rc = mm_index_store_node(code_node);
+    }
+
+    metamemory_free_node(code_node);
+    metamemory_free_node(concept_node);
+
+    return rc;
 }
 
 /* ============================================================================
@@ -440,18 +575,34 @@ int softdev_get_status(const char* project_id, softdev_status_t* status)
     memset(status, 0, sizeof(*status));
     status->project_id = project_id;
 
-    /* TODO: Query database for project statistics
-     *
-     * 1. Count nodes by type
-     * 2. Get last analyzed/refreshed times
-     * 3. Check for stale files
-     */
+    /* Initialize index for this project */
+    int rc = mm_index_init(project_id);
+    if (rc != KATRA_SUCCESS) {
+        return rc;
+    }
 
-    return KATRA_SUCCESS;
+    /* Get statistics from index */
+    mm_index_stats_t stats;
+    rc = mm_index_get_stats(&stats);
+    if (rc == KATRA_SUCCESS) {
+        status->concept_count = stats.concept_count;
+        status->component_count = stats.component_count;
+        status->function_count = stats.function_count;
+        status->struct_count = stats.struct_count;
+        status->total_nodes = stats.total_nodes;
+    }
+
+    return rc;
 }
 
 int softdev_list_projects(char*** project_ids, size_t* count)
 {
+    DIR* dir = NULL;
+    struct dirent* entry;
+    char** ids = NULL;
+    size_t capacity = 16;
+    size_t id_count = 0;
+
     if (!project_ids || !count) {
         katra_report_error(E_INPUT_NULL, "softdev_list_projects",
                           "NULL parameter");
@@ -461,13 +612,73 @@ int softdev_list_projects(char*** project_ids, size_t* count)
     *project_ids = NULL;
     *count = 0;
 
-    /* TODO: List all analyzed projects
-     *
-     * 1. Scan ~/.katra/softdev/ directories
-     * 2. Return project IDs
-     */
+    /* Build path to softdev directory */
+    const char* home = getenv("HOME");
+    if (!home) {
+        return E_SYSTEM_FILE;
+    }
 
+    char softdev_path[KATRA_PATH_MAX];
+    snprintf(softdev_path, sizeof(softdev_path), "%s/.katra/softdev", home);
+
+    /* Open directory */
+    dir = opendir(softdev_path);
+    if (!dir) {
+        /* Directory doesn't exist - no projects */
+        return KATRA_SUCCESS;
+    }
+
+    /* Allocate array */
+    ids = calloc(capacity, sizeof(char*));
+    if (!ids) {
+        closedir(dir);
+        return E_SYSTEM_MEMORY;
+    }
+
+    /* Scan for project directories */
+    while ((entry = readdir(dir)) != NULL) {
+        /* Skip . and .. */
+        if (entry->d_name[0] == '.') {
+            continue;
+        }
+
+        /* Check if it's a directory with a database */
+        char db_path[KATRA_PATH_MAX];
+        snprintf(db_path, sizeof(db_path), "%s/%s/metamemory.db",
+                 softdev_path, entry->d_name);
+
+        struct stat st;
+        if (stat(db_path, &st) == 0 && S_ISREG(st.st_mode)) {
+            /* Found a project */
+            if (id_count >= capacity) {
+                capacity *= 2;
+                char** new_ids = realloc(ids, capacity * sizeof(char*));
+                if (!new_ids) {
+                    goto cleanup;
+                }
+                ids = new_ids;
+            }
+
+            ids[id_count] = strdup(entry->d_name);
+            if (!ids[id_count]) {
+                goto cleanup;
+            }
+            id_count++;
+        }
+    }
+
+    closedir(dir);
+    *project_ids = ids;
+    *count = id_count;
     return KATRA_SUCCESS;
+
+cleanup:
+    for (size_t i = 0; i < id_count; i++) {
+        free(ids[i]);
+    }
+    free(ids);
+    if (dir) closedir(dir);
+    return E_SYSTEM_MEMORY;
 }
 
 /* ============================================================================
