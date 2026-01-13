@@ -26,7 +26,7 @@ include Makefile.test
         install-mcp restart-mcp install-k install-all uninstall-k \
         install-systemd uninstall-systemd status-systemd \
         install-launchd uninstall-launchd status-launchd \
-        install-daemon uninstall-daemon status-daemon \
+        install-daemon uninstall-daemon status-daemon start-daemon stop-daemon \
         test-tcp-integration \
         modules install-modules
 
@@ -310,6 +310,26 @@ status-daemon:
 		$(BIN_DIR)/katra_daemon.sh status; \
 	else \
 		echo "Daemon not built. Run 'make daemon' first."; \
+	fi
+
+start-daemon: unified-daemon
+	@pkill -f katra_unified_daemon 2>/dev/null || true
+	@sleep 1
+	@$(BIN_DIR)/katra_unified_daemon --port 9742 --mcp-port 3141 > /tmp/katra_daemon.log 2>&1 &
+	@sleep 2
+	@if lsof -Pi :9742 -sTCP:LISTEN -t >/dev/null 2>&1; then \
+		echo "Daemon started on port 9742 (HTTP) and 3141 (MCP)"; \
+		echo "Log: /tmp/katra_daemon.log"; \
+	else \
+		echo "Failed to start daemon. Check /tmp/katra_daemon.log"; \
+		exit 1; \
+	fi
+
+stop-daemon:
+	@if pkill -f katra_unified_daemon 2>/dev/null; then \
+		echo "Daemon stopped"; \
+	else \
+		echo "Daemon not running"; \
 	fi
 
 # ==============================================================================
