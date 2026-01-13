@@ -235,7 +235,9 @@ typedef struct {
     char name[KATRA_MODULE_NAME_MAX];
     char version[KATRA_MODULE_VERSION_MAX];
     char description[KATRA_MODULE_DESC_MAX];
+    char author[KATRA_MODULE_AUTHOR_MAX];
     char path[512];                  /* Path to shared library */
+    int api_version;                 /* Module API version */
 
     katra_module_state_t state;
     time_t loaded_at;                /* When loaded (0 if not loaded) */

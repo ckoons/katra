@@ -632,7 +632,10 @@ static int probe_module(const char* path, katra_module_entry_t* entry)
             sizeof(entry->version) - 1);
     strncpy(entry->description, info->description ? info->description : "",
             sizeof(entry->description) - 1);
+    strncpy(entry->author, info->author ? info->author : "",
+            sizeof(entry->author) - 1);
     strncpy(entry->path, path, sizeof(entry->path) - 1);
+    entry->api_version = info->api_version;
 
     entry->state = KATRA_MODULE_STATE_AVAILABLE;
     entry->loaded_at = 0;
@@ -947,10 +950,12 @@ json_t* katra_mcp_modules_info(json_t* params, const char* ci_name)
         return json_pack("{s:s,s:i}", "error", "module not found", "code", result);
     }
 
-    return json_pack("{s:s,s:s,s:s,s:b,s:i}",
+    return json_pack("{s:s,s:s,s:s,s:s,s:i,s:b,s:i}",
         "name", entry.name,
         "version", entry.version,
         "description", entry.description,
+        "author", entry.author,
+        "api_version", entry.api_version,
         "loaded", entry.state == KATRA_MODULE_STATE_LOADED,
         "loaded_at", (int)entry.loaded_at
     );

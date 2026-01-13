@@ -1210,13 +1210,13 @@ EOF
                     -H "Content-Type: application/json" \
                     -d '{"method":"modules_list","params":{"ci_name":"CLI"}}')
 
-                if echo "$result" | jq -e '.error' >/dev/null 2>&1; then
+                if echo "$result" | jq -e '.error != null' >/dev/null 2>&1 && [ "$(echo "$result" | jq -r '.error')" != "null" ]; then
                     echo -e "${RED}Error:${NC} $(echo "$result" | jq -r '.error')"
                     exit 1
                 fi
 
                 # Format output
-                echo "$result" | jq -r '.modules[]? | "  \(.name)\t\(.version)\t[\(if .loaded then "loaded" else "available" end)]"' 2>/dev/null || \
+                echo "$result" | jq -r '.result.modules[]? | "  \(.name)\t\(.version)\t[\(if .loaded then "loaded" else "available" end)]"' 2>/dev/null || \
                     echo "  (no modules found or module loader not initialized)"
                 ;;
 
@@ -1302,11 +1302,11 @@ EOF
 
                 echo -e "${GREEN}Module: $MODULE_NAME${NC}"
                 echo "$result" | jq -r '
-                    "Version: \(.version // "unknown")",
-                    "Description: \(.description // "none")",
-                    "Author: \(.author // "unknown")",
-                    "Status: \(if .loaded then "loaded" else "available" end)",
-                    "API Version: \(.api_version // "unknown")"'
+                    "Version: \(.result.version // "unknown")",
+                    "Description: \(.result.description // "none")",
+                    "Author: \(.result.author // "unknown")",
+                    "Status: \(if .result.loaded then "loaded" else "available" end)",
+                    "API Version: \(.result.api_version // "unknown")"'
                 ;;
 
             *)
