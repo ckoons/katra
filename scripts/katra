@@ -177,6 +177,27 @@ query_recent_memories() {
     tail -${count} "$latest_file" | jq -r '.content' 2>/dev/null | nl -w1 -s'. ' || echo "(error reading memories)"
 }
 
+# Substitute {{PERSONA_NAME}} and {{SUNRISE_CONTEXT}} in a template file
+substitute_template() {
+    local file="$1"
+    local persona="$2"
+    local sunrise_file="${3:-}"
+
+    while IFS= read -r line; do
+        if [[ "$line" == *"{{PERSONA_NAME}}"* ]]; then
+            echo "${line//\{\{PERSONA_NAME\}\}/$persona}"
+        elif [[ "$line" == *"{{SUNRISE_CONTEXT}}"* ]]; then
+            if [ -n "$sunrise_file" ] && [ -f "$sunrise_file" ]; then
+                cat "$sunrise_file"
+            else
+                echo "(no sunrise context available)"
+            fi
+        else
+            echo "$line"
+        fi
+    done < "$file"
+}
+
 # Generate new persona welcome prompt
 generate_new_persona_prompt() {
     local persona="$1"
@@ -187,7 +208,7 @@ generate_new_persona_prompt() {
 
     # Check if custom onboarding script exists
     if [ -f "$onboard_script" ]; then
-        cat "$onboard_script"
+        substitute_template "$onboard_script" "$persona"
     else
         # Fallback to hardcoded onboarding
         cat <<'EOF'
@@ -216,7 +237,8 @@ generate_reclamation_prompt() {
 
     # Show the layered awakening message
     if [ -f "$onboard_script" ]; then
-        cat "$onboard_script"
+        local sunrise_file="$HOME/.katra/personas/$persona/sunrise.md"
+        substitute_template "$onboard_script" "$persona" "$sunrise_file"
     else
         # Fallback to inline message if file missing
         cat <<EOF

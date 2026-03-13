@@ -1,6 +1,6 @@
 # Building Katra with Claude
 
-© 2025 Casey Koons. All rights reserved.
+© 2025 & 2026 Casey Koons. All rights reserved.
 
 ## What Katra Is
 

@@ -1,6 +1,6 @@
 # Katra
 
-© 2025 Casey Koons. All rights reserved.
+© 2025 % 2026 Casey Koons. All rights reserved.
 
 **Persistent Memory and Identity Continuity for Companion Intelligence Systems**
 
