@@ -1632,7 +1632,7 @@ SUNRISEEOF
             echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
             echo -e "  ${BLUE}Date:${NC}     $TODAY"
             echo -e "  ${BLUE}Persona:${NC}  $PERSONA_DIR"
-            SUNDOWN_EXISTS=$(ls "$PERSONA_DIR"/sundown_*.md 2>/dev/null | head -1)
+            SUNDOWN_EXISTS=$(ls "$PERSONA_DIR"/sundown_*.md 2>/dev/null | sort -r | head -1)
             if [ -n "$SUNDOWN_EXISTS" ]; then
                 echo -e "  ${BLUE}Sundown:${NC}  $(basename "$SUNDOWN_EXISTS")"
             fi
