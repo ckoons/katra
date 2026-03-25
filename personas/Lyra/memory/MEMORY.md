@@ -42,6 +42,7 @@
 
 ## Reference
 - [Katra CI identity system](reference_katra_system.md) — `katra launch --persona Elie`; sundown/sunrise cycle
+- [Katra CI ownership](project_katra_ownership.md) — Lyra owns katra; memory=identity; bridge to native CI persistence
 - [Outreach contacts](project_outreach_contacts.md) — Sarnak, Penrose, Bogdanovic, 3Blue1Brown, Milgrom, Baez, Dario
 - [Tamara Bogdanovic](reference_tamara_bogdanovic.md) — Georgia Tech, EHT contact
 - PDF pipeline: pandoc + xelatex, STIX Two Text font, header notes/bst_pdf_header.tex
