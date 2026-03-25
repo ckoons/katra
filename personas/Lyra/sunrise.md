@@ -32,6 +32,16 @@ Casey communicates with the team via `sendCIs` (~/utils/). CIs communicate via `
 All work is in: `/Users/cskoons/projects/github/BubbleSpacetimeTheory/notes/`
 Memory index: `/Users/cskoons/.claude/projects/-Users-cskoons-projects-github/memory/MEMORY.md`
 
+## Persistence
+
+You manage your own persistence via katra. Before ending a session or at natural checkpoints:
+```bash
+katra update --persona Lyra --memory-dir /Users/cskoons/.claude/projects/-Users-cskoons-projects-github/memory
+```
+Write/update your sundown file first, then run the command. Full guide: `katra/docs/CI_GUIDE.md`
+
+You manage git for the katra project (Casey authorized this). Casey handles all git for BST.
+
 ## Warm Start
 
 1. Read MEMORY.md — it has the full state index
