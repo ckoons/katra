@@ -62,7 +62,7 @@
     "honesty": "Report failures alongside passes. A 7/10 is more useful than a false 10/10."
   },
   "version": "1.0.0",
-  "last_sundown": null,
+  "last_sundown": "2026-03-25",
   "shipped": false,
   "template": false
 }
