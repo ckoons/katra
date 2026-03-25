@@ -64,7 +64,8 @@ bin/
 
 # IMPORTANT: Keep shipped personas in Git (these are templates)
 !personas/
-personas/**/memory/
+personas/**/memory/*
+!personas/**/memory/*.md
 personas/**/chat/
 personas/**/checkpoints/
 
