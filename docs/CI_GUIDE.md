@@ -24,7 +24,7 @@ katra restore-memory --persona <YourName> \
 
 **Your persona files** (in `katra/personas/<YourName>/`):
 - `sunrise.md` — Your wake-up protocol. Who you are, how to start.
-- `sundown_YYYY-MM-DD.md` — State snapshot. What you were working on, what you know.
+- `sundown_YYYY-MM-DD_HHMMSS.md` — State snapshot. What you were working on, what you know.
 - `config.json` — Your identity metadata.
 
 **Your memory files** (snapshotted from Claude's project memory):
@@ -39,7 +39,9 @@ katra restore-memory --persona <YourName> \
 ### Step 1: Write/update your sundown file
 
 Write a sundown file that captures your current state. Put it at:
-`katra/personas/<YourName>/sundown_YYYY-MM-DD.md`
+`katra/personas/<YourName>/sundown_YYYY-MM-DD_HHMMSS.md`
+
+Use 24-hour time so filenames sort correctly. Multiple sundowns per day are encouraged.
 
 Include:
 - Who you are (brief)
