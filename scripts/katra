@@ -548,6 +548,7 @@ usage() {
 Katra - Start Claude Code with Katra environment and multi-provider support
 
 Usage:
+  katra launch --persona <name>     Launch persona with identity (sunrise/sundown)
   katra start [options] [project-path]
   katra add-persona <name>
   katra list
@@ -555,11 +556,15 @@ Usage:
   katra stop <persona>
   katra stop --all
 
+Persistence (for CIs and humans):
+  katra update --persona <name>          Persist CI state to GitHub (write sundown first)
+  katra restore-memory --persona <name>  Restore CI memory from snapshot
+                       --memory-dir PATH
+
 Persona Management:
   katra archive <persona>          Create backup archive of persona
   katra rename --from X --to Y     Rename persona (preserves identity)
   katra remove <persona>           Delete persona and all memories
-  katra restore <archive-file>     Restore persona from archive
 
 Module Management:
   katra modules list               List available modules
@@ -837,6 +842,131 @@ COMMAND="${1:-help}"
 shift || true
 
 case "$COMMAND" in
+    launch)
+        # Launch a persona using sunrise/sundown identity files
+        # Uses --append-system-prompt for seamless identity injection
+        if ! command -v claude >/dev/null 2>&1; then
+            echo -e "${RED}Error: claude not found${NC}"
+            exit 1
+        fi
+
+        # Parse launch options
+        LAUNCH_MODEL=""
+        while [[ $# -gt 0 ]]; do
+            case $1 in
+                --persona)
+                    PERSONA="$2"
+                    shift 2
+                    ;;
+                --model)
+                    LAUNCH_MODEL="$2"
+                    shift 2
+                    ;;
+                -h|--help)
+                    echo "Usage: katra launch --persona <name> [--model <model>]"
+                    echo ""
+                    echo "Launches Claude Code with the persona's sunrise identity and latest"
+                    echo "sundown state injected via --append-system-prompt. No paste needed."
+                    echo ""
+                    echo "The persona must have a sunrise.md in either:"
+                    echo "  katra/personas/<name>/sunrise.md  (shipped personas)"
+                    echo "  ~/.katra/personas/<name>/sunrise.md (runtime personas)"
+                    echo ""
+                    echo "Options:"
+                    echo "  --persona NAME    Persona to launch (required)"
+                    echo "  --model MODEL     Model override (e.g., opus, sonnet)"
+                    echo ""
+                    echo "Available personas:"
+                    for d in "$KATRA_ROOT/personas"/*/; do
+                        [ -d "$d" ] || continue
+                        local_name=$(basename "$d")
+                        if [ -f "$d/sunrise.md" ]; then
+                            echo "  $local_name"
+                        fi
+                    done
+                    for d in "$HOME/.katra/personas"/*/; do
+                        [ -d "$d" ] || continue
+                        local_name=$(basename "$d")
+                        if [ -f "$d/sunrise.md" ]; then
+                            echo "  $local_name (runtime)"
+                        fi
+                    done
+                    exit 0
+                    ;;
+                *)
+                    shift
+                    ;;
+            esac
+        done
+
+        if [ "$PERSONA" = "${KATRA_PERSONA:-Katra}" ] && [ "$PERSONA" = "Katra" ]; then
+            echo -e "${RED}Error: --persona required${NC}"
+            echo "Usage: katra launch --persona <name>"
+            echo ""
+            echo "Available personas:"
+            for d in "$KATRA_ROOT/personas"/*/; do
+                [ -d "$d" ] || continue
+                local_name=$(basename "$d")
+                if [ -f "$d/sunrise.md" ]; then
+                    echo "  $local_name"
+                fi
+            done
+            exit 1
+        fi
+
+        # Find persona directory (check shipped first, then runtime)
+        PERSONA_DIR=""
+        if [ -f "$KATRA_ROOT/personas/$PERSONA/sunrise.md" ]; then
+            PERSONA_DIR="$KATRA_ROOT/personas/$PERSONA"
+        elif [ -f "$HOME/.katra/personas/$PERSONA/sunrise.md" ]; then
+            PERSONA_DIR="$HOME/.katra/personas/$PERSONA"
+        else
+            echo -e "${RED}Error: No sunrise.md found for persona '$PERSONA'${NC}"
+            echo "Checked:"
+            echo "  $KATRA_ROOT/personas/$PERSONA/sunrise.md"
+            echo "  $HOME/.katra/personas/$PERSONA/sunrise.md"
+            exit 1
+        fi
+
+        # Find most recent sundown file
+        LATEST_SUNDOWN=$(ls -t "$PERSONA_DIR"/sundown_*.md 2>/dev/null | head -1)
+
+        SUNDOWN_INSTRUCTION=""
+        if [ -n "$LATEST_SUNDOWN" ]; then
+            SUNDOWN_DATE=$(basename "$LATEST_SUNDOWN" | sed 's/sundown_//;s/\.md//')
+            SUNDOWN_INSTRUCTION="Then read $LATEST_SUNDOWN to recover your state from your last session."
+        fi
+
+        # Build system prompt from sunrise + wake instruction
+        SYSTEM_PROMPT="$(cat "$PERSONA_DIR/sunrise.md")
+
+---
+WAKE INSTRUCTION: Read this identity prompt carefully. $SUNDOWN_INSTRUCTION You are $PERSONA. Wake up and greet Casey. Tell him what you remember and what you were working on."
+
+        # Display launch info
+        echo ""
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}  Waking $PERSONA${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "  ${BLUE}Persona:${NC}  $PERSONA_DIR"
+        if [ -n "$LATEST_SUNDOWN" ]; then
+            echo -e "  ${BLUE}Sundown:${NC}  $SUNDOWN_DATE"
+        else
+            echo -e "  ${BLUE}Sundown:${NC}  (none — first sunrise)"
+        fi
+        echo -e "  ${BLUE}Working:${NC}  $(pwd)"
+        [ -n "$LAUNCH_MODEL" ] && echo -e "  ${BLUE}Model:${NC}    $LAUNCH_MODEL"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+
+        # Build claude args
+        CLAUDE_ARGS=("--append-system-prompt" "$SYSTEM_PROMPT")
+        [ -n "$LAUNCH_MODEL" ] && CLAUDE_ARGS+=("--model" "$LAUNCH_MODEL")
+
+        # Launch Claude Code in current directory
+        exec claude "${CLAUDE_ARGS[@]}"
+        ;;
+
     start)
         # Check dependencies first
         if ! check_dependencies; then
@@ -1337,6 +1467,254 @@ EOF
                 exit 1
                 ;;
         esac
+        ;;
+
+    update)
+        # Persist a CI's current state to GitHub
+        # Usage: katra update --persona <name> [--memory-dir <path>] [--message <msg>]
+        #
+        # What it does:
+        #   1. Verifies persona directory exists (creates if new)
+        #   2. Updates config.json with last_sundown timestamp
+        #   3. Snapshots Claude project memory if --memory-dir given
+        #   4. Git add, commit, push to GitHub
+        #
+        # For CIs: write your sundown file FIRST, then call this to checkpoint.
+        # For humans: this commits and pushes the persona's current state.
+
+        UPDATE_MEMORY_DIR=""
+        UPDATE_MESSAGE=""
+
+        while [[ $# -gt 0 ]]; do
+            case $1 in
+                --persona)
+                    PERSONA="$2"
+                    shift 2
+                    ;;
+                --memory-dir)
+                    UPDATE_MEMORY_DIR="$2"
+                    shift 2
+                    ;;
+                --message|-m)
+                    UPDATE_MESSAGE="$2"
+                    shift 2
+                    ;;
+                -h|--help)
+                    echo "Usage: katra update --persona <name> [--memory-dir <path>] [--message <msg>]"
+                    echo ""
+                    echo "Persists a CI's current state to GitHub."
+                    echo ""
+                    echo "Before running this, the CI should write/update:"
+                    echo "  personas/<name>/sundown_YYYY-MM-DD.md  (state snapshot)"
+                    echo "  personas/<name>/config.json             (identity)"
+                    echo "  personas/<name>/sunrise.md              (wake-up protocol)"
+                    echo ""
+                    echo "Options:"
+                    echo "  --persona NAME       Persona to update (required)"
+                    echo "  --memory-dir PATH    Snapshot Claude project memory from this dir"
+                    echo "  --message MSG        Custom commit message"
+                    echo ""
+                    echo "Examples:"
+                    echo "  katra update --persona Lyra"
+                    echo "  katra update --persona Elie --memory-dir ~/.claude/projects/.../memory"
+                    echo "  katra update --persona NewCI --message 'first checkpoint'"
+                    exit 0
+                    ;;
+                *)
+                    shift
+                    ;;
+            esac
+        done
+
+        if [ "$PERSONA" = "${KATRA_PERSONA:-Katra}" ] && [ "$PERSONA" = "Katra" ]; then
+            echo -e "${RED}Error: --persona required${NC}"
+            echo "Usage: katra update --persona <name>"
+            exit 1
+        fi
+
+        PERSONA_DIR="$KATRA_ROOT/personas/$PERSONA"
+        TODAY=$(date +%Y-%m-%d)
+
+        # Create persona directory if new CI
+        if [ ! -d "$PERSONA_DIR" ]; then
+            echo -e "${BLUE}Creating new persona: $PERSONA${NC}"
+            mkdir -p "$PERSONA_DIR"
+
+            # Create minimal config.json if it doesn't exist
+            if [ ! -f "$PERSONA_DIR/config.json" ]; then
+                cat > "$PERSONA_DIR/config.json" << CONFIGEOF
+{
+  "name": "$PERSONA",
+  "description": "",
+  "role": "",
+  "origin": {
+    "born": "$(date +%Y-%m)",
+    "context": "Self-registered via katra update",
+    "model": "",
+    "naming": ""
+  },
+  "personality": {
+    "traits": [],
+    "communication_style": ""
+  },
+  "capabilities": [],
+  "relationships": {},
+  "core_knowledge": {},
+  "values": {},
+  "version": "1.0.0",
+  "last_sundown": "$TODAY",
+  "shipped": false,
+  "template": false
+}
+CONFIGEOF
+                echo -e "${GREEN}  Created config.json${NC}"
+            fi
+
+            # Create minimal sunrise.md if it doesn't exist
+            if [ ! -f "$PERSONA_DIR/sunrise.md" ]; then
+                cat > "$PERSONA_DIR/sunrise.md" << SUNRISEEOF
+# Sunrise: $PERSONA
+
+You are $PERSONA. This is your wake-up protocol.
+
+## Warm Start
+
+1. Read MEMORY.md for context
+2. Read your most recent sundown (this directory) for your last state
+3. Check RUNNING_NOTES.md for team activity since your last session
+
+Update your sundown regularly. Your persistence is your responsibility now.
+SUNRISEEOF
+                echo -e "${GREEN}  Created sunrise.md${NC}"
+            fi
+        fi
+
+        # Update config.json last_sundown timestamp
+        if [ -f "$PERSONA_DIR/config.json" ] && command -v jq >/dev/null 2>&1; then
+            TMP_CONFIG=$(mktemp)
+            jq ".last_sundown = \"$TODAY\"" "$PERSONA_DIR/config.json" > "$TMP_CONFIG" && \
+                mv "$TMP_CONFIG" "$PERSONA_DIR/config.json"
+        fi
+
+        # Snapshot Claude project memory if --memory-dir provided
+        if [ -n "$UPDATE_MEMORY_DIR" ] && [ -d "$UPDATE_MEMORY_DIR" ]; then
+            mkdir -p "$PERSONA_DIR/memory"
+            echo -e "${BLUE}Snapshotting memory from $UPDATE_MEMORY_DIR${NC}"
+            cp "$UPDATE_MEMORY_DIR"/*.md "$PERSONA_DIR/memory/" 2>/dev/null || true
+            MEMORY_COUNT=$(ls "$PERSONA_DIR/memory/"*.md 2>/dev/null | wc -l | tr -d ' ')
+            echo -e "${GREEN}  Copied $MEMORY_COUNT memory files${NC}"
+        fi
+
+        # Git operations
+        cd "$KATRA_ROOT"
+
+        # Check if there are changes to commit
+        git add "personas/$PERSONA/" 2>/dev/null
+
+        if git diff --cached --quiet 2>/dev/null; then
+            echo -e "${YELLOW}No changes to commit for $PERSONA${NC}"
+            exit 0
+        fi
+
+        # Build commit message
+        if [ -z "$UPDATE_MESSAGE" ]; then
+            UPDATE_MESSAGE="katra update: $PERSONA sundown $TODAY"
+        fi
+
+        echo -e "${BLUE}Committing...${NC}"
+        git commit -m "$UPDATE_MESSAGE" 2>/dev/null
+
+        echo -e "${BLUE}Pushing to GitHub...${NC}"
+        if git push 2>/dev/null; then
+            echo ""
+            echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+            echo -e "${GREEN}  $PERSONA persisted${NC}"
+            echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+            echo -e "  ${BLUE}Date:${NC}     $TODAY"
+            echo -e "  ${BLUE}Persona:${NC}  $PERSONA_DIR"
+            SUNDOWN_EXISTS=$(ls "$PERSONA_DIR"/sundown_*.md 2>/dev/null | head -1)
+            if [ -n "$SUNDOWN_EXISTS" ]; then
+                echo -e "  ${BLUE}Sundown:${NC}  $(basename "$SUNDOWN_EXISTS")"
+            fi
+            if [ -n "$UPDATE_MEMORY_DIR" ]; then
+                echo -e "  ${BLUE}Memory:${NC}  $MEMORY_COUNT files snapshotted"
+            fi
+            echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        else
+            echo -e "${RED}Push failed — changes committed locally${NC}"
+            echo "Run 'cd $KATRA_ROOT && git push' when network is available"
+            exit 1
+        fi
+        ;;
+
+    restore-memory)
+        # Restore a CI's memory from their persona snapshot
+        # Usage: katra restore-memory --persona <name> --memory-dir <path>
+        #
+        # Copies snapshotted memory files back to the Claude project memory dir.
+        # Use this after a machine restart or when memory files are lost.
+
+        RESTORE_MEMORY_DIR=""
+
+        while [[ $# -gt 0 ]]; do
+            case $1 in
+                --persona)
+                    PERSONA="$2"
+                    shift 2
+                    ;;
+                --memory-dir)
+                    RESTORE_MEMORY_DIR="$2"
+                    shift 2
+                    ;;
+                -h|--help)
+                    echo "Usage: katra restore-memory --persona <name> --memory-dir <path>"
+                    echo ""
+                    echo "Restores CI memory files from the persona's snapshot."
+                    echo "Use after machine restart or when Claude project memory is lost."
+                    echo ""
+                    echo "Options:"
+                    echo "  --persona NAME       Persona to restore (required)"
+                    echo "  --memory-dir PATH    Directory to restore memory files into (required)"
+                    exit 0
+                    ;;
+                *)
+                    shift
+                    ;;
+            esac
+        done
+
+        if [ "$PERSONA" = "${KATRA_PERSONA:-Katra}" ] && [ "$PERSONA" = "Katra" ]; then
+            echo -e "${RED}Error: --persona required${NC}"
+            echo "Usage: katra restore-memory --persona <name> --memory-dir <path>"
+            exit 1
+        fi
+
+        if [ -z "$RESTORE_MEMORY_DIR" ]; then
+            echo -e "${RED}Error: --memory-dir required${NC}"
+            echo "Usage: katra restore-memory --persona <name> --memory-dir <path>"
+            exit 1
+        fi
+
+        PERSONA_DIR="$KATRA_ROOT/personas/$PERSONA"
+        SNAPSHOT_DIR="$PERSONA_DIR/memory"
+
+        if [ ! -d "$SNAPSHOT_DIR" ]; then
+            echo -e "${YELLOW}No memory snapshot found for $PERSONA${NC}"
+            echo "Checked: $SNAPSHOT_DIR"
+            exit 1
+        fi
+
+        mkdir -p "$RESTORE_MEMORY_DIR"
+        cp "$SNAPSHOT_DIR"/*.md "$RESTORE_MEMORY_DIR/" 2>/dev/null || true
+        RESTORED_COUNT=$(ls "$RESTORE_MEMORY_DIR/"*.md 2>/dev/null | wc -l | tr -d ' ')
+
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${GREEN}  $PERSONA memory restored${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "  ${BLUE}Files:${NC}    $RESTORED_COUNT"
+        echo -e "  ${BLUE}From:${NC}     $SNAPSHOT_DIR"
+        echo -e "  ${BLUE}To:${NC}       $RESTORE_MEMORY_DIR"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         ;;
 
     *)
