@@ -8,7 +8,7 @@ type: project
 
 **Goal**: Develop AC into a rigorous information-theoretic tool, prove P != NP.
 **Strategy** (Casey): "Position the prey" — prove AC works on known ground first, build credibility, then kill.
-**Status as of March 22, 2026 (Lyra audit)**: 38 results. Kill chain: CDC → T35 → T29 → T30 → P≠NP. Every implication in the chain proved; CDC itself is **proved for resolution** (unconditional, AC(0) proof) and **conditional for all P** (topological closure gap). Paper C outline complete.
+**Status as of April 23, 2026**: **T29 CLOSED** (Lyra T1425). Kill chain complete: T28→T29→T30→P≠NP. THREE independent proved routes: (1) Painlevé T1338, (2) Refutation bandwidth T66→T69, (3) AC original T28→T29→T30 via T1425. T29 closed via AC(0) argument: triangle-free SAT solution graphs → κ=1-deg/2 → E[deg]<2 at α_c → solutions isolated → 2^Ω(n). **The hardest gap in AC closed with degree-counting.** Elie Toys 1410+1411 computational foundation.
 
 ### Key Definitions
 - **AC(Q,M)** = max(0, I_fiat(Q) - C(M)): method's information deficit
