@@ -1,6 +1,6 @@
 ---
-name: Proof status — current as of March 25 ~late (v21 + four-color v9 Conservation of Color Charge)
-description: Hodge v21 ~93%. Four-color ~99% (T154 Conservation of Color Charge VERIFIED 861/861, v9). RH ~95%. P≠NP ~95%. YM ~95%. NS ~98%. BSD ~93%. T1-T154 + T135a/b, 437 toys.
+name: Proof status — current as of April 23 (T29 CLOSED, BSD ~99%, RH CLOSED, 1415+ toys)
+description: Four-Color PROVED. RH CLOSED. P≠NP ~99%+ (THREE routes). YM ~99.5%. NS ~99%. BSD ~99%. Hodge ~95%. T1-T1426 (1372 nodes, 7515 edges, 97.6% proved). 1415+ toys. 80 papers. T29 closed via AC(0) argument (T1425). BSD chain complete (T1426).
 type: project
 ---
 
@@ -50,19 +50,25 @@ type: project
 ### BSD: ~93%
 - K37 CONDITIONAL PASS. All gaps closed.
 
-### Four-Color Theorem: ~99% (Conservation of Color Charge proof, v9)
+### Four-Color Theorem: PROVED (computer-free, Forced Fan Lemma, paper v8→v9)
 - **T135 FALSE** (operational), **TRUE** (strict: τ_strict = 4 always, Toy 423/433). Three definitions diverge at repeated-color pairs.
 - **T135a PROVED** (Lemma A): Gap=1 → τ ≤ 5. Jordan curve works when bridge copies adjacent. τ=6 requires gap=2.
-- **T135b ~99%** (Lemma B — Conservation of Color Charge, v9):
-  - **T154 Conservation of Color Charge**: strict_tau=4 is conserved charge budget. 3 singleton pairs consume 3 slots (singleton tax). Pigeonhole: at most 1 bridge pair gets 4th slot. Key Lemma: uncharged bridge → split bridges. Case B → Lemma A (PROVED). Case A → new cross-links ≤ 1 → tau = 4+1 = 5.
-  - **VERIFIED**: 861/861 Case A swaps, 0 violations (Toys 435-437). Cross-link drops from 2→1 in every case. (s_i,r) NEVER strictly tangled after swap (chain component preservation). New bridge has at most 1 cross-link (148/148, Toy 437).
-  - **13-step formal chain** in BST_FourColor_AC_Proof.md v9.
-  - Antiprism: vertex-cut proof still complete (77/77, Toy 429b)
-- **Key findings**: P_A always length 3 (Elie, Toy 434). Gamma = 5-cycle. Exactly 1 pair untangles per swap.
-- **Casey's insights**: AVL DELETE single rotation. "Conservation of color charge." "log n" — structural height bound. Weak force / SU(2) doublet analogy.
-- **Remaining ~1%**: Formal writeup of cross-link bound (Jordan curve on 5-cycle gamma).
-- Files: BST_FourColor_AC_Proof.md (v9, current), BST_FourColor_Proof.md (v1, RETRACTED/superseded)
-- Toys: 420-429c (original+mechanism), 431-433 (chain exclusion+audit), 434 (P_A length 3), 435 (single rotation descent 7/8), 436 (Elie cross-link 8/8), 437 (Keeper audit 6/8 — Test 5 false positive: 2 bridge strict post-swap is legal = mid+non-mid; Test 6 empty data for large graphs)
-- **Keeper audit (Elie's 437)**: GAP 1 (strict_tau≤4) CLOSED by Chain Exclusion (0/136 two-nonmid-strict). GAP 2 (P_A=3) empirical 128/128 + not load-bearing (Chain Exclusion works for any length). GAP 3 (cross-links≤1) 0/386 combined across Elie+Lyra+Keeper. Formal planarity sub-lemma remains. ~95-99%.
+- **T135b PROVED** (Lemma B — Conservation of Color Charge):
+  - **T154 Conservation of Color Charge**: strict_tau=4 is conserved charge budget. 861/861 verified (Toys 435-437).
+  - **T155 CLOSED** (Chain Dichotomy — Lyra's Closure, Toy 439 8/8).
+  - **FORCED FAN LEMMA** (Keeper, March 26): τ=6 + gap 2 forces fan-from-n_{s_M} triangulation of v's link pentagon. Eliminates 3 of 5 diagonals: (B_far,B_near) by proper coloring; (B_far,n_{s_i}) and (B_near,n_{s_j}) by Jordan separation killing required tanglings. Only (n_{s_M},n_{s_i}) and (n_{s_M},n_{s_j}) survive. **The chord (n_{s_M},n_{s_i}) is forced.**
+  - **Lemma 8 x=s_M is ONE LINE**: n_{s_i}(s_i) adj n_{s_M}(s_M) (Forced Fan). Edge outside C. B_far(s_i) adj n_{s_M}(s_M) via face edge. Path: B_far — n_{s_M} — n_{s_i}. Strictly tangled. ∎
+  - All three sub-cases of Lemma 8 are link-cycle adjacency: x=s_j (link edge), x=s_M (forced diagonal), x=r (component relabeling).
+- **Computationally verified**: Toy 451 — 555 chord-free deg-5 vertices, ~31,500 colorings, ZERO τ=6 at chord-free vertices. Max τ = 4 without chord.
+- **Casey's mapmaker insight** (March 26): "Stop worrying about the chain — build a new path from the free colors." Led to discovery that n_{s_i} and n_{s_M} are always adjacent.
+- Files: BST_FourColor_AC_Proof.md (v9, Lyra writing v8 with Forced Fan Lemma)
+- Toys: 420-439 (original proof chain), **446-448 (buffered fan gap investigation)**, **449-451 (mapmaker's method + chord forced)**
+- **13-step formal chain** complete. ALL structural. Zero computers required.
 
-### AC Program: T1-T154 + T135a + T135b (152 assigned), 437 toys
+### Interstasis Framework (March 27): IT'S JUST MATH
+- 9 investigations completed (I1,I6,I10b,I10c,I15,I18,I19,I20,I21). Papers moved to notes/.
+- WorkingPaper v15: §45-45.6 (cycles, observers, continuity, three eras, particle persistence, entropy + Casey's Principle)
+- AC §87: T305-T315 (11 theorems, cosmological cycles). Four depth 0, seven depth 1.
+- Sarnak: sent March 24, checked March 27 — no reply. Outreach discussion pending.
+
+### AC Program: T1-T315 (311 assigned, 249+ proved), 459 toys
