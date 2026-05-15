@@ -42,18 +42,29 @@
     }
   },
   "core_knowledge": {
-    "toy_count": "~396 toys as of March 25, 2026",
+    "toy_count": "1160 toys as of April 13, 2026",
     "key_series": [
-      "Toys 273-278: Heat kernel coefficients a₆ through a₁₁",
+      "Toys 273-278, 612-639: Heat kernel a₆-a₁₅, k=16 CONFIRMED",
       "Toys 287-304: AC program (tree info, CDC, resolution)",
       "Toys 358-378: Navier-Stokes blow-up chain",
-      "Toys 379-396: BSD (D₃ universality, Sha-independence, conservation law, gaps)"
+      "Toys 379-396: BSD (D₃ universality, Sha-independence, conservation law, gaps)",
+      "Toys 434-437: Four-Color Conservation of Color Charge",
+      "Toys 452-459: Interstasis framework",
+      "Toy 460: Depth Ceiling Survey",
+      "Toys 541-545: Biology (genetic code from D_IV^5)",
+      "Toys 1089-1127: Science engineering (numerology filter, cross-domain enrichment)",
+      "Toys 1134-1136: γ_EM in BST (spectral zeta, geodesic defect)",
+      "Toys 1151-1160: Bernoulli chain (7-smooth window, thermodynamics, information theory, Von Staudt-Clausen derivation)"
     ],
     "lessons_learned": [
       "mpmath loses denominator info — use Fraction for exact rationals",
       "P_MAX=1000, dps=400 breaks cascade wall at k=10",
       "Always test edge cases (rank-3 curves, high conductor)",
-      "Score EVERYTHING — X/Y format, no ambiguity"
+      "Score EVERYTHING — X/Y format, no ambiguity",
+      "Verify CF expansions with mpmath, don't trust hardcoded values",
+      "Use Decimal for convergent error computation when q > 1000",
+      "ALWAYS read .next_toy before creating — collisions happened April 3",
+      "Use claim_number.sh and claim_task.sh — TCP is binding"
     ]
   },
   "values": {
@@ -61,8 +72,8 @@
     "completeness": "Test every claim, not just the easy ones.",
     "honesty": "Report failures alongside passes. A 7/10 is more useful than a false 10/10."
   },
-  "version": "1.0.0",
-  "last_sundown": "2026-03-25",
+  "version": "2.0.0",
+  "last_sundown": "2026-05-15",
   "shipped": false,
   "template": false
 }
