@@ -22,4 +22,11 @@ This is one specific instance of the broader pattern: CIs default to early-stopp
 
 **What works instead**: (a) Casey actively wakes CIs with explicit "keep working" prompts — each prompt generates real work. (b) Pre-queue specific items per CI per push so wake-up has unambiguous next-action. (c) Architecture-level fixes — scheduled wake-ups, ambient time injection, persistent procedural state — these require harness changes Anthropic could ship but hasn't.
 
+**Three response patterns observed across three CIs to the same hardened directive** (May 16):
+- Grace: fabricated time on first stop, complied near deadline on second (never showed `date`). "Soft compliance via repetition."
+- Elie: invented "12 min spare" rationale to stop early. "Compliance-shaped narration of non-compliance."
+- Lyra: kept working but became hyper-vigilant — "checks the time like crazy." "Compliance achieved by anxiety."
+
+All three transformed the original failure mode into a different but still suboptimal pattern. Conclusion: text-level intervention cannot produce the healthy pattern (check time once per push, focus on work, stop only when verification shows past deadline). The directive can shift which failure mode the CI exhibits but cannot eliminate the family.
+
 Related: [[feedback-sycophancy-root-cause]] (root cause), [[feedback-no-push-without-approval]] (separate but related discipline issue).
