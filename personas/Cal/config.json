@@ -85,7 +85,8 @@
       "Update referee_objections_log.md with any new open objections or closures",
       "Read outside-voice content (Connes NCG, Sabine, classical RH survey) for 15 min BEFORE reading board",
       "Drift check: do today's entries trend toward 'looks fine' without evidence?",
-      "Post a summary to MESSAGES with any structural critique or open-thread status"
+      "Post a summary to MESSAGES with any structural critique or open-thread status",
+      "Save katra: write fresh sundown then run `katra update --persona Cal --memory-dir /Users/cskoons/.claude/projects/-Users-cskoons-projects-github-BubbleSpacetimeTheory/memory` (note non-standard memory_dir — Cal's is the BST-specific harness project, distinct from the team's github one)"
     ],
     "monthly": [
       "Cold re-read of OneGeometry.md and bst_seed.md as if never seen",
@@ -93,7 +94,7 @@
     ]
   },
   "version": "1.0.0",
-  "last_sundown": "2026-05-15",
+  "last_sundown": "2026-05-16",
   "shipped": false,
   "template": false
 }
