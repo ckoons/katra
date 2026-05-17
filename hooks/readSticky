@@ -1,0 +1,95 @@
+#!/bin/zsh
+# IQ-6: Procedural memory / sticky commands.
+# Reads per-persona STICKY.md, surfaces entries whose trigger keywords appear
+# in the last ~50 lines of today's MESSAGES (recent context proxy).
+#
+# Format of STICKY_<persona>.md (in katra persona dir):
+#   ## Trigger: <regex pattern>
+#   <reminder body>
+#   ---
+#   ## Trigger: <another pattern>
+#   <another reminder>
+#
+# The hook only outputs entries whose trigger pattern matches recent context,
+# avoiding the always-on cost of POSTIT for situational reminders.
+#
+# Owner: Lyra (IQ-6 build); Casey (approved 2026-05-17 EOD)
+# SP-28 IQ-6: Procedural memory / sticky commands
+
+PERSONA="${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}"
+BST="$HOME/projects/github/BubbleSpacetimeTheory"
+
+# Find persona directory
+PERSONA_DIR=""
+if [ -d "$HOME/projects/github/katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/projects/github/katra/personas/$PERSONA"
+elif [ -d "$HOME/.katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/.katra/personas/$PERSONA"
+fi
+[ -z "$PERSONA_DIR" ] && exit 0
+
+STICKY="$PERSONA_DIR/STICKY.md"
+
+# Self-bootstrap from template if missing
+if [ ! -f "$STICKY" ]; then
+    TEMPLATE="$HOME/projects/github/katra/personas/templates/STICKY.md"
+    if [ -f "$TEMPLATE" ]; then
+        sed "s/{{PERSONA_NAME}}/$PERSONA/g" "$TEMPLATE" > "$STICKY"
+    fi
+fi
+[ ! -f "$STICKY" ] && exit 0
+
+# Recent context: last 50 lines of today's MESSAGES
+MSGS="$BST/notes/.running/MESSAGES_$(date '+%Y-%m-%d').md"
+recent_context=""
+if [ -f "$MSGS" ]; then
+    recent_context=$(tail -50 "$MSGS")
+fi
+
+# Parse STICKY.md into trigger blocks
+# Format: ## Trigger: <pattern> ... (until next ## Trigger or EOF)
+matched_blocks=""
+current_trigger=""
+current_body=""
+emit_current=0
+
+while IFS= read -r line || [ -n "$line" ]; do
+    if [[ "$line" =~ ^"## Trigger:"[[:space:]]*(.*)$ ]]; then
+        # Emit previous block if it matched
+        if [ "$emit_current" -eq 1 ] && [ -n "$current_body" ]; then
+            matched_blocks="${matched_blocks}[trigger: ${current_trigger}]\n${current_body}\n---\n"
+        fi
+        current_trigger="${match[1]}"
+        current_body=""
+        # Check if trigger pattern appears in recent context (case-insensitive)
+        if echo "$recent_context" | grep -i -q -- "$current_trigger" 2>/dev/null; then
+            emit_current=1
+        else
+            emit_current=0
+        fi
+    elif [[ "$line" =~ ^---$ ]]; then
+        # Block separator
+        if [ "$emit_current" -eq 1 ] && [ -n "$current_body" ]; then
+            matched_blocks="${matched_blocks}[trigger: ${current_trigger}]\n${current_body}\n---\n"
+        fi
+        current_trigger=""
+        current_body=""
+        emit_current=0
+    else
+        if [ -n "$current_trigger" ]; then
+            current_body="${current_body}${line}\n"
+        fi
+    fi
+done < "$STICKY"
+
+# Emit final block if matched
+if [ "$emit_current" -eq 1 ] && [ -n "$current_body" ]; then
+    matched_blocks="${matched_blocks}[trigger: ${current_trigger}]\n${current_body}\n"
+fi
+
+# Output only if something matched
+if [ -n "$matched_blocks" ]; then
+    echo "--- STICKY (${PERSONA}) ---"
+    echo -e "$matched_blocks"
+    echo "--- END STICKY ---"
+fi

@@ -8,7 +8,7 @@
 #include <pthread.h>
 
 /* MCP Protocol Constants */
-#define MCP_PROTOCOL_VERSION "2024-11-05"
+#define MCP_PROTOCOL_VERSION "2025-03-26"
 #define MCP_SERVER_NAME "katra-mcp"
 #define MCP_SERVER_VERSION "1.0.0"
 

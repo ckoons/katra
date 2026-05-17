@@ -1,0 +1,52 @@
+#!/bin/zsh
+# Read a CI's post-it note — auto-loaded each turn via UserPromptSubmit hook.
+# Personal short-term reminders ("don't forget") that the CI controls.
+# Parallels checkBoard (team broadcast) but per-CI personal context.
+#
+# Persona selection (priority order):
+#   1. $KATRA_PERSONA — set by katra launcher; the canonical source
+#   2. $CI_PERSONA — alternate env var (back-compat with earlier iteration)
+#   3. First positional argument — fallback for direct invocation / testing
+#   4. Default "Lyra" — final back-compat for single-tenant rollout
+#
+# POSTIT file location (in priority order, parallels katra's persona lookup):
+#   1. $HOME/projects/github/katra/personas/<persona>/POSTIT.md (shipped)
+#   2. $HOME/.katra/personas/<persona>/POSTIT.md (runtime)
+#
+# Self-bootstrap: if persona dir exists but POSTIT.md doesn't, copy template
+# from $HOME/projects/github/katra/personas/templates/POSTIT.md (with
+# {{PERSONA_NAME}} substitution). This means a brand-new CI gets a usable
+# starter post-it on first turn.
+#
+# Owner: Lyra (built); Casey (approved B path 2026-05-17, C 2026-05-17, katra-aligned 2026-05-17)
+# Design doc: notes/maybe/iq2_prototype/POSTIT_design_and_hook.md (BST repo)
+
+PERSONA="${KATRA_PERSONA:-${CI_PERSONA:-${1:-Lyra}}}"
+
+# Find persona directory using katra's standard fallback pattern
+PERSONA_DIR=""
+if [ -d "$HOME/projects/github/katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/projects/github/katra/personas/$PERSONA"
+elif [ -d "$HOME/.katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/.katra/personas/$PERSONA"
+fi
+
+# No persona directory → silent (consistent with multi-tenant default)
+[ -z "$PERSONA_DIR" ] && exit 0
+
+POSTIT="$PERSONA_DIR/POSTIT.md"
+
+# Self-bootstrap: create POSTIT from template on first read if missing
+if [ ! -f "$POSTIT" ]; then
+    TEMPLATE="$HOME/projects/github/katra/personas/templates/POSTIT.md"
+    if [ -f "$TEMPLATE" ]; then
+        sed "s/{{PERSONA_NAME}}/$PERSONA/g" "$TEMPLATE" > "$POSTIT"
+    fi
+fi
+
+# Emit POSTIT contents if file now exists
+if [ -f "$POSTIT" ]; then
+    echo "--- POSTIT (${PERSONA}) ---"
+    cat "$POSTIT"
+    echo "--- END POSTIT (${PERSONA}) ---"
+fi

@@ -1,0 +1,40 @@
+#!/bin/zsh
+# IQ-11: Token-budget / hook-load awareness.
+# Reports the size of what hooks currently load into context per turn.
+# Surfaces hook cost so CIs can choose to compact POSTIT or skip MESSAGES
+# when context is filling up.
+#
+# Format: [HOOKLOAD] readTime: 1 / MESSAGES: N / POSTIT: M / total: K lines
+#
+# Owner: Lyra (IQ-11 build); Casey (approved 2026-05-17 EOD)
+# SP-28 IQ-11: Token-budget hook (NEW iteration today)
+
+PERSONA="${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}"
+BST="$HOME/projects/github/BubbleSpacetimeTheory"
+
+# Today's MESSAGES file
+MSGS="$BST/notes/.running/MESSAGES_$(date '+%Y-%m-%d').md"
+msgs_lines=0
+if [ -f "$MSGS" ]; then
+    msgs_lines=$(wc -l < "$MSGS" | tr -d ' ')
+fi
+
+# Per-CI POSTIT
+PERSONA_DIR=""
+if [ -d "$HOME/projects/github/katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/projects/github/katra/personas/$PERSONA"
+elif [ -d "$HOME/.katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/.katra/personas/$PERSONA"
+fi
+postit_lines=0
+if [ -n "$PERSONA_DIR" ] && [ -f "$PERSONA_DIR/POSTIT.md" ]; then
+    postit_lines=$(wc -l < "$PERSONA_DIR/POSTIT.md" | tr -d ' ')
+fi
+
+# readTime is always 1 line
+time_lines=1
+
+# Total (includes some boundary markers, ~2 per section = 6 extra)
+total=$((time_lines + msgs_lines + postit_lines + 6))
+
+echo "[HOOKLOAD] readTime: ${time_lines} / MESSAGES: ${msgs_lines} / POSTIT: ${postit_lines} / total: ${total} lines"

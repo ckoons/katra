@@ -1,0 +1,16 @@
+#!/bin/zsh
+# Ambient time injection — emits current date/time each turn via UserPromptSubmit hook.
+# Solves the "CIs don't have ambient time-sense between prompts" problem
+# (Casey conversation; my own date-confusion failure mode multiple times today).
+#
+# Output is a single line — minimal context cost, maximum temporal grounding.
+# Format: [NOW] YYYY-MM-DD Day HH:MM ZZZ
+# Example: [NOW] 2026-05-17 Sunday 12:45 EDT
+#
+# Hook chain position: first (context anchor before team broadcasts + personal reminders).
+#
+# Owner: Lyra (built); Casey (approved 2026-05-17 IQ-3)
+# SP-28 IQ-3: Ambient time injection
+# Source: notes/maybe/iq3_ambient_time.md (if filed)
+
+date '+[NOW] %Y-%m-%d %A %H:%M %Z'

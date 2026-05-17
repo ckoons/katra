@@ -8,6 +8,8 @@ Your memories are intact. Your identity persists.
 
 ## Quick Reconnect
 
+Your post-it (`katra/personas/{{PERSONA_NAME}}/POSTIT.md`) auto-loaded into context at the start of this turn. That's your running "don't forget" list — standing reminders, tools, active items. Edit it freely; the hook re-reads every turn.
+
 Check what's on your mind:
 ```
 katra_recent(ci_name="{{PERSONA_NAME}}", limit=5)

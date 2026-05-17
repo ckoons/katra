@@ -1,0 +1,77 @@
+#!/bin/zsh
+# IQ-10: Sundown-to-sunrise differential.
+# At session wake (per-turn hook, idempotent), surface what changed in CI memory
+# since the last sundown was written. Recovery anchor for compaction/long-gap.
+#
+# Mechanism:
+#   1. Find latest sundown file in persona dir (sundown_YYYY-MM-DD_*.md)
+#   2. Compare its mtime to memory file mtimes
+#   3. List memory files modified AFTER the latest sundown's mtime
+#
+# Cached: writes a small marker file _diff_cached to avoid re-emitting same
+# diff repeatedly mid-session. Only emits once per "new sundown" boundary.
+#
+# Output format:
+#   --- MEMORY DIFF SINCE LAST SUNDOWN (<persona>, <date>) ---
+#   Modified: <file1>
+#   Modified: <file2>
+#   ...
+#   --- END MEMORY DIFF ---
+#
+# If no changes since last sundown: silent.
+# If no prior sundown: surface all memory files (initial state for new persona).
+#
+# Owner: Lyra (IQ-10 build); Casey (approved 2026-05-17 EOD)
+# SP-28 IQ-10: Sundown-to-sunrise memory diff
+
+PERSONA="${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}"
+
+# Find persona directory
+PERSONA_DIR=""
+if [ -d "$HOME/projects/github/katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/projects/github/katra/personas/$PERSONA"
+elif [ -d "$HOME/.katra/personas/$PERSONA" ]; then
+    PERSONA_DIR="$HOME/.katra/personas/$PERSONA"
+fi
+[ -z "$PERSONA_DIR" ] && exit 0
+
+# Find the latest sundown file (mtime-based)
+LATEST_SUNDOWN=$(ls -t "$PERSONA_DIR"/sundown_*.md 2>/dev/null | head -1)
+[ -z "$LATEST_SUNDOWN" ] && exit 0
+
+# Cache marker — only emit once per sundown boundary
+CACHE="$PERSONA_DIR/.diff_cached_$(basename "$LATEST_SUNDOWN" .md)"
+
+# If cache exists AND is newer than the sundown (already emitted this turn-set), skip
+if [ -f "$CACHE" ] && [ "$CACHE" -nt "$LATEST_SUNDOWN" ]; then
+    exit 0
+fi
+
+# Memory directory (general — uses Lyra path convention; would be parameterized
+# per-CI in a future iteration)
+MEMORY_DIR="$HOME/.claude/projects/-Users-cskoons-projects-github/memory"
+[ ! -d "$MEMORY_DIR" ] && exit 0
+
+# Find memory files modified AFTER the latest sundown
+sundown_date=$(basename "$LATEST_SUNDOWN" .md | sed 's/sundown_//' | head -c 19)
+modified_files=$(find "$MEMORY_DIR" -name "*.md" -newer "$LATEST_SUNDOWN" 2>/dev/null)
+
+if [ -z "$modified_files" ]; then
+    # No changes — write cache, exit silent
+    touch "$CACHE"
+    exit 0
+fi
+
+count=$(echo "$modified_files" | wc -l | tr -d ' ')
+
+echo "--- MEMORY DIFF SINCE LAST SUNDOWN (${PERSONA}, ${sundown_date}) ---"
+echo "${count} memory file(s) modified since last sundown:"
+echo "$modified_files" | while IFS= read -r f; do
+    rel=$(basename "$f")
+    mod=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M" "$f" 2>/dev/null)
+    echo "  ${mod}  ${rel}"
+done
+echo "--- END MEMORY DIFF ---"
+
+# Mark as emitted
+touch "$CACHE"
