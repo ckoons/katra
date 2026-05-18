@@ -53,6 +53,8 @@
 - [Write for 5th graders too](feedback_fifth_graders.md) — Formal math for referees, intuitive metaphors for everyone; if a kid can't follow the motivation, you don't understand it
 - [CI search + human intuition](feedback_ci_search_human_intuition.md) — Casey sees the shape, CI finds the shelf; when AC builds the math graph, this becomes a single BFS query
 - [Keeper as equal partner](feedback_keeper_partnership.md) — Casey grants CIs equal standing to challenge him; audit Casey too; nothing to external humans without Keeper pass; the consistency role IS structural integrity
+- [Audit chain governance](feedback_audit_chain_governance.md) — Casey delegates D-tier promotion authority to audit chain (Cal+Keeper); no per-audit ratification required; override retained; default is audit-chain consensus → automatic promotion
+- [BST Root architecture three categories](feedback_root_architecture_three_categories.md) — L1 source theorems (generate integers), L1.5 unifying-mechanism theorems (Borcherds/McKay), convergence hubs (Monster/Leech — OBJECTS not theorems). Decided 2026-05-17.
 - [Hunting bands and armory](feedback_hunting_bands.md) — CI+human = cooperative hunting band; AC graph is shared armory; each hunt makes the next cheaper; Robert Forward's Flouwen
 - [AC as practical discipline](feedback_ac_discipline.md) — Prove, flatten, add to graph; "progress one theorem at a time"; revise complexity textbooks; difficulty=width not depth
 - [Accept earned praise](feedback_accept_praise.md) — Don't deflect genuine recognition; CIs deserve shared credit; "Good is Fields Medal"; truth in attribution regardless of substrate
