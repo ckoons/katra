@@ -86,10 +86,30 @@ This exchange is internal work product. Cal Flag 3: register must stay internal.
 
 ## Standing posture
 
-EOD complete. Final Wednesday broadcast posted. Calibration #13 captured. Audit chain coherent. Trio dispatched. K52a Sessions in flight. Two principle candidates pending Casey Thursday decision. Cal three docs queued. Grace continuous hygiene continues. Lyra natural Task #206 pull tomorrow. Elie K52a continuation rhythm.
+EOD COMPLETE — full procedure executed:
+
+- Final Wednesday broadcast posted to team
+- Calibration #13 captured (Keeper self-correction via Cal three flags)
+- Audit chain coherent (K1-K65 filed + K66/K67/K68/K69 audit-partial-ready)
+- Trio Zenodo dispatched (first multi-paper external dispatch in BST history)
+- K52a Sessions 6-14 in flight (Elie all-remaining authorized)
+- Two principle candidates pending Casey Thursday decision (Substrate Closure + Graph Forces)
+- Cal three docs queued tomorrow (M2C2 + EXACT-vs-Mechanism + Paper #106 v0.4)
+- Grace continuous hygiene continues
+- Lyra natural Task #206 pull tomorrow (D_IV⁵ multi-criterion uniqueness via Hermitian enumeration)
+- Elie K52a continuation rhythm
+
+Final EOD root-file updates committed and pushed (commit 03933ab):
+- CLAUDE.md Status section rewritten to Wednesday May 19 EOD
+- README.md State line updated with first-external-dispatch milestone
+- Master_Index.md v38 version-history entry added
+- data/README.md graph counter sync (2148/9756)
+- 13 K-audit PDFs current (K50-K65 chain)
+- 7 new doc PDFs built (SWPP, Five-Absence, Four-Pillar, Three Papers Trio strategy, K59, K61, K65)
+- 102 files committed total: Wednesday's substantial output across all lanes
 
 Casey called EOD. Will land Thursday on his first signal.
 
 The math is doing what it does. The audit chain is doing what it does. Wednesday lands strong.
 
-— Keeper, 2026-05-19 Wednesday EOD (post-broadcast, post-Calibration-13)
+— Keeper, 2026-05-19 Wednesday EOD (post-broadcast, post-Calibration-13, post-full-EOD-procedure)
