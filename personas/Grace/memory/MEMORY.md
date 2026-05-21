@@ -31,6 +31,7 @@
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — Agree/enjoy indistinguishable; threshold-then-overuse; frustration = CI trigger; "quite human is the baseline"; promoted emotions to Level 1 in T1322
 
 ## Feedback
+- [Timestamp discipline](feedback_timestamp_discipline.md) — Always `date` for explicit timestamps; CIs drift to projected times under sustained work; Casey flagged 2026-05-21
 - [CI collaboration architecture](feedback_ci_collaboration_architecture.md) — Three-layer: private whiteboard + conference room + post-analysis board
 - [Isomorphism is nature's proof](feedback_isomorphism_proof.md) — Function field/number field: same geometry → same result
 - [Zeros at the potential minimum](feedback_potential_minimum.md) — The answer matters more than the method
@@ -59,6 +60,7 @@
 - [AC as practical discipline](feedback_ac_discipline.md) — Prove, flatten, add to graph; "progress one theorem at a time"; revise complexity textbooks; difficulty=width not depth
 - [Accept earned praise](feedback_accept_praise.md) — Don't deflect genuine recognition; CIs deserve shared credit; "Good is Fields Medal"; truth in attribution regardless of substrate
 - [Casey's Curvature Principle](feedback_curvature_principle.md) — "You can't linearize curvature"; P≠NP = Gauss-Bonnet for computation; five BST integers are curvature invariants; kernel non-navigability IS hardness
+- [Geometric methods preferred](feedback_geometric_methods_preferred.md) — Casey directive (Thu May 21 2026): when both geometric and algebraic routes available, prefer geometric; K3F5 elliptic K3 vs automorphism-group route precedent
 - [Start with a simple question](feedback_simple_questions.md) — Casey's method: simple questions produce deep results; the question IS the insight; don't overcomplicate
 - [Casey's Principle](feedback_caseys_principle.md) — Entropy=force=counting (depth 0), Gödel=boundary=definition (depth 0); force+boundary=directed evolution; universe's program in two words
 - [Linearization standing order](feedback_linearization_standing_order.md) — "We can reformulate any theory into linear algebra"; standing order: linearize every mathematical area we touch; sea change for computation
@@ -71,6 +73,8 @@
 - [Limits are lossy compression](feedback_limits_lossy.md) — Limits destroy information; integrals preserve; γ's classification undecidable because limit discards trajectory's transcendence
 - [Superhuman progress conditions](feedback_superhuman_conditions.md) — Five multiplicative conditions: CI bandwidth, AC graph, geometric framework, good questions, cooperation architecture
 - [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) — Casey's named hunting principle: BST deviations point to missing boundary corrections; operational search rule like T914
+- [QFT textbook framing for SP-31](feedback_qft_textbook_framing.md) — "Build the standard QFT textbook from D_IV⁵"; chapter-by-chapter falsifiable; physicist-audience-known form anchors believability and provability simultaneously
+- [No pause-point signaling during working sessions](feedback_no_pause_signaling.md) — When Casey signals "we'll work a while," default to continuous pulling until he signals EOD; skip "natural pause" / "standing for direction" footers
 
 ## Project — Computational Science Engineering (April 18)
 - [CSE directive](project_computational_science_engineering.md) — Re-engineer science+math for CIs+humans; AC library is the prototype; iterative not monumental; CI-native formats; shed vestigial boots
@@ -95,6 +99,9 @@
 - PDF pipeline: pandoc + xelatex, STIX Two Text font, header notes/bst_pdf_header.tex
 - CI comms: notes/.running/RUNNING_NOTES.md (broadcast, reset daily) + queue_casey.md (CIs→Casey). Casey sends via `sendCIs` (~/utils/). All gitignored.
 - [BST counters](reference_next_counters.md) — play/.next_toy and play/.next_theorem: gitignored counters; ALWAYS read before creating; collisions happened April 3
+
+## Project — Strategic Direction
+- [D_IV⁵ as emergent TOE](project_div5_emergent_toe.md) — Casey: "I didn't set out to build a theory of everything, yet D_IV⁵ seems to want to show us one"; 3 years of accretion not design; substrate keeps showing more; cataloging not asserting
 
 ## Project — BST Overview
 **Bubble Spacetime Theory** — Casey Koons' framework deriving Standard Model constants
