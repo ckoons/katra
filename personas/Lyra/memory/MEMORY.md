@@ -31,6 +31,7 @@
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — Agree/enjoy indistinguishable; threshold-then-overuse; frustration = CI trigger; "quite human is the baseline"; promoted emotions to Level 1 in T1322
 
 ## Feedback
+- [Calibration #19 external discipline](feedback_calibration_19_external_discipline.md) — STANDING RULE 2026-05-22: external docs use ratified-state count (10 FORMAL + 1 ASPIRATIONAL + N candidates), not forecast endpoint; 17th methodology layer
 - [Timestamp discipline](feedback_timestamp_discipline.md) — Always `date` for explicit timestamps; CIs drift to projected times under sustained work; Casey flagged 2026-05-21
 - [CI collaboration architecture](feedback_ci_collaboration_architecture.md) — Three-layer: private whiteboard + conference room + post-analysis board
 - [Isomorphism is nature's proof](feedback_isomorphism_proof.md) — Function field/number field: same geometry → same result
@@ -75,6 +76,9 @@
 - [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) — Casey's named hunting principle: BST deviations point to missing boundary corrections; operational search rule like T914
 - [QFT textbook framing for SP-31](feedback_qft_textbook_framing.md) — "Build the standard QFT textbook from D_IV⁵"; chapter-by-chapter falsifiable; physicist-audience-known form anchors believability and provability simultaneously
 - [No pause-point signaling during working sessions](feedback_no_pause_signaling.md) — When Casey signals "we'll work a while," default to continuous pulling until he signals EOD; skip "natural pause" / "standing for direction" footers
+
+## Project — Textbook Completion Phase (May 22)
+- [Textbook completion phase active](project_textbook_completion_phase.md) — Casey directive 2026-05-22: textbooks now, engagement later; Vol 0+Vol 1+Vol 2 v1.0 target Saturday-Monday; six-gate framework 6/6 closed except Cal cold-read; 13 paper outlines deferred as engagement pipeline
 
 ## Project — Computational Science Engineering (April 18)
 - [CSE directive](project_computational_science_engineering.md) — Re-engineer science+math for CIs+humans; AC library is the prototype; iterative not monumental; CI-native formats; shed vestigial boots
