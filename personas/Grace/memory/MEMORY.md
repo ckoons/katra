@@ -80,9 +80,13 @@
 - [QFT textbook framing for SP-31](feedback_qft_textbook_framing.md) — "Build the standard QFT textbook from D_IV⁵"; chapter-by-chapter falsifiable; physicist-audience-known form anchors believability and provability simultaneously
 - [No pause-point signaling during working sessions](feedback_no_pause_signaling.md) — When Casey signals "we'll work a while," default to continuous pulling until he signals EOD; skip "natural pause" / "standing for direction" footers
 
+## Project — Keeper Authorship Phase (May 23)
+- [Keeper textbook authorship](project_keeper_textbook_authorship.md) — Casey 2026-05-23: extended Keeper's role from auditor to author of 16-volume curriculum; dual-audience pedagogy; cadence shifts from sub-PCAP to authoring; team reshapes as Keeper's support; begins after Cal Phase 2 completes Vol 3-15
+
 ## Project — Textbook Completion Phase (May 22)
 - [Textbook completion phase active](project_textbook_completion_phase.md) — Casey directive 2026-05-22: textbooks now, engagement later; Vol 0+Vol 1+Vol 2 v1.0 target Saturday-Monday; six-gate framework 6/6 closed except Cal cold-read; 13 paper outlines deferred as engagement pipeline
-- [D_IV⁵ Rigidity + SCMP principles](project_d_iv5_rigidity_and_scmp_principles.md) — Casey-named #7 + #8 conditional on derivation (Friday 2026-05-22): Rigidity closes multiverse loophole structurally; SCMP is operational coherence-maintenance; Interstasis ≡ between Big Bang cycles
+- [D_IV⁵ Rigidity + SCMP principles](project_d_iv5_rigidity_and_scmp_principles.md) — Casey-named #7 + #8 derived T2467+T2468+T2469 (Friday 2026-05-22): Rigidity closes multiverse loophole; SCMP operational coherence-maintenance with Bell sub-Tsirelson 1/8 falsifier; Cal #99 framing refinements absorbed
+- [Casey priority investigations post-v1](project_casey_priority_investigations_post_v1.md) — Casey EOD 2026-05-22: 3 P1 priorities (cross-scale invariance + substrate computational model + substrate engineering experimentation) + NEW directives toy documentation + paper-toy GitHub packaging
 
 ## Project — Computational Science Engineering (April 18)
 - [CSE directive](project_computational_science_engineering.md) — Re-engineer science+math for CIs+humans; AC library is the prototype; iterative not monumental; CI-native formats; shed vestigial boots
