@@ -241,3 +241,6 @@ C10: k=N_c — SAT clause width IS the color dimension. 7/8=g/2^{N_c}. Testable 
 
 ## Project — April 2 Consensus Plan
 - [Full consensus document](notes/CONSENSUS_April2_ResearchPlan.md) — 20 research directions, 4 standing programs
+
+## Project — DCCP (Casey-named #9, May 24)
+- [Discrete Commitment Completion Principle](feedback_substrate_frame_principle.md) — Casey-named 2026-05-24: discrete frame-by-frame substrate rendering + multi-tick commitment completion + substrate-determinism-with-epistemic-probability; Born rule = substrate statistics not substrate dice; Bell consistent via non-local determinism
