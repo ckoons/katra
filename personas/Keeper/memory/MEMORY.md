@@ -79,6 +79,8 @@
 - [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) — Casey's named hunting principle: BST deviations point to missing boundary corrections; operational search rule like T914
 - [QFT textbook framing for SP-31](feedback_qft_textbook_framing.md) — "Build the standard QFT textbook from D_IV⁵"; chapter-by-chapter falsifiable; physicist-audience-known form anchors believability and provability simultaneously
 - [No pause-point signaling during working sessions](feedback_no_pause_signaling.md) — When Casey signals "we'll work a while," default to continuous pulling until he signals EOD; skip "natural pause" / "standing for direction" footers
+- [Mechanism over classification](feedback_mechanism_over_classification.md) — When Casey asks "how does X work?", lead with substantive mechanism content NOT tier classification; sophistication-bias variant Casey caught 2026-05-25; arc-closure synthesis enumerates substantive NEW findings first, then attaches tiers
+- [Cal #27 fires at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — Cal #27 STANDING fires HARDEST at peak-convergence synthesis overstatement; 3 catches week of 2026-05-26 (web-vs-anchors; Casimir B_n misapplication; "ONE structural parameter"); when finding feels MOST elegant, discipline must fire HARDEST
 
 ## Project — Keeper Authorship Phase (May 23)
 - [Keeper textbook authorship](project_keeper_textbook_authorship.md) — Casey 2026-05-23: extended Keeper's role from auditor to author of 16-volume curriculum; dual-audience pedagogy; cadence shifts from sub-PCAP to authoring; team reshapes as Keeper's support; begins after Cal Phase 2 completes Vol 3-15
