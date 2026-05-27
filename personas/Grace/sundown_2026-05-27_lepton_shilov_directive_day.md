@@ -187,7 +187,7 @@ Sundown was premature — Casey afternoon 8-decision absorption via Keeper broad
 | Metric | Pre-pause 15:53 | Post-pause 17:45 | Post-pause delta |
 |---|---|---|---|
 | Catalog INVs | 5228 | **5234** | +6 |
-| Wednesday total INVs | 38 | **47** | +9 |
+| Wednesday total INVs | 38 | **51** | +13 |
 | Casey-elevated menu items v0.1 complete | 0 | **5** | +5 |
 | BOUNDARY observables identified | 0 | 2 (m_t/m_c + Cabibbo) | +2 |
 | Quark mass-ratios substrate-natural | 1 (Lyra m_b/m_d) | 8 of 12 | +7 |
@@ -251,3 +251,44 @@ Casey's electric ↔ color charge unification mechanism candidate: both are K-ty
 Grace lane Wednesday TRUE EOD COMPLETE — Casey-elevated bulk-vs-Shilov + winding-composite paradigms substantively supported.
 
 — Grace, Wednesday TRUE EOD — lepton-Shilov + bulk-vs-Shilov + winding-composite + 47 INVs + 2 BOUNDARY observables + 3 winding-composite chains, 2026-05-27 18:20 EDT (`date`-verified actual)
+
+## Casey escalation tonight (19:00 EDT) — paper series + overnight investigation
+
+Casey directive: "We need a series of papers and much more investigation and analysis. I'm asking Lyra to continue tonight. File everything you have and plan for papers and more analysis."
+
+### Grace lane response: 4 INVs absorbing cross-CI broadcasts + paper series plan
+
+**INV-5238** — Lyra Bosons-as-Coupling v0.1: 4 boson coupling categories (photon σ_BF, gluons SU(N_c), W±/Z chiral, Higgs cross-winding-mode = MASS GENERATION); 5 substantive predictions (NO GUT/SUSY/2HDM/technicolor; Yukawa substrate-natural).
+
+**INV-5239** — Elie 29 toys EOD refined 4-mode: ALGEBRAIC (skips + up-quark uniformly) vs GEOMETRIC (lepton adjacent + down-quark adjacent). New: m_μ/m_e ≈ N_c²·Ogg23 = 207 alt; m_c/m_u ≈ Ogg19·M_n_C first MIXED Shilov+Bulk; m_t/m_c ≈ N_max direct alt.
+
+**INV-5240** — Keeper positioning analysis: BST mathematical components ESTABLISHED (Hua/Korányi/Bergman/Ringel-Green/Macdonald/Borcherds/Pin(2)/Mersenne/Wallach); BST-NOVEL is SPECIFIC PHYSICAL INSTANTIATION; closest analog Connes NCG (more specific than Connes; gen count DERIVED not INPUT); distinguishing predictions ABSENCE of GUT/SUSY/2HDM/technicolor.
+
+**INV-5241** — Grace paper series plan: 8 candidate papers identified with paper-by-paper Grace catalog deliverables enumerated:
+
+| # | Paper | Lead | Grace catalog support |
+|---|---|---|---|
+| 1 | Substrate Hall Algebra (Casey "I want the Hall algebra") | Lyra PRIMARY | Macdonald cross-refs + q=2 docs |
+| 2 | Winding-Composite Generations | Lyra (Casey EOD) | 3-sector chain + gen 1 ground-state + Ogg17 pattern |
+| 3 | Bulk-vs-Shilov Substrate-Mechanism | Lyra (Casey #385) | Region classifier + Ogg/Mersenne audits + BOUNDARY observables |
+| 4 | Electric ↔ Color Charge Unified | Lyra (Casey directive) | Anomaly cancellation + charge → primary² scaling |
+| 5 | Bosons-as-Coupling | Lyra | 4 boson coupling categories + EM/QCD/EW/Yukawa cross-refs |
+| 6 | Strong-Uniqueness Theorem v1.0 | Lyra (Cal cold-read) | 14 RATIFIED + 3 candidates cross-references |
+| 7 | Sister Principles Framework | Lyra/Keeper | 5 candidates + Casey-named external register |
+| 8 | Substrate-Arithmetic | Lyra | 9-element substrate set + Catalan-Mersenne + Ogg + cyclotomic |
+
+**Grace lane multi-day work plan**:
+- **Phase 1 (Thursday+)**: paper-by-paper catalog INV cross-references (~40-80 Grace INVs)
+- **Phase 2 (multi-week)**: full catalog region-tag pass (5240 INVs each SHILOV/BULK/BOUNDARY/CHAIN-LEVEL)
+- **Phase 3 (multi-month)**: integer-web mapping + q-integer cross-references + Non-Heegner Bridge Object scan
+
+### Standing for Thursday onwards
+
+- Lyra continues overnight investigation per Casey directive
+- Grace Phase 1 paper-by-paper catalog deliverables when Lyra paper drafts land
+- Casey paper sequencing direction
+- Cross-CI: Cal cold-reads + Elie verification toys + Keeper Vol 16/17 + Grace catalog tier-discipline tracking
+
+Grace lane Wednesday OVERNIGHT STARTING POINT — Casey escalation absorbed; paper series planned; standing reactive for Lyra continuation.
+
+— Grace, Wednesday overnight starting point — Casey paper series escalation + 51 INVs cumulative, 2026-05-27 19:10 EDT (`date`-verified actual)
