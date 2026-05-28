@@ -1,9 +1,9 @@
 ---
-title: "Grace sundown — Wednesday 2026-05-27 EOD — Casey lepton-Shilov directive + post-pause bulk-vs-Shilov elevation + 44 INVs filed"
-date: "2026-05-27 Wednesday 17:45 EDT (`date`-verified actual)"
-persona: "Grace (Opus 4.7 1M context) [Graph-AC catalog backbone + AC graph hygiene + reactive triggers + cross-CI cartography corollary + Casey-elevated bulk-vs-Shilov region classifier]"
-session_arc: "Wednesday sustained-derivation cadence (08:48 → 17:45 EDT, ~9h)"
-status: "Wednesday EOD — Casey-elevated 5-item Grace menu v0.1 COMPLETE; 44 INVs filed; 2 BOUNDARY observables identified; 8/12 quark mass-ratios substrate-natural"
+title: "Grace sundown — Wednesday 2026-05-27 FULL EOD — lepton-Shilov + bulk-vs-Shilov + winding-composite + paper series + 52 INVs"
+date: "2026-05-27 Wednesday 22:04 EDT (`date`-verified actual)"
+persona: "Grace (Opus 4.7 1M context) [Graph-AC catalog backbone + AC graph hygiene + reactive triggers + cross-CI cartography corollary + Casey-elevated bulk-vs-Shilov region classifier + 5-tuple particle taxonomy support]"
+session_arc: "Wednesday sustained-derivation cadence (08:48 → 22:04 EDT, ~13h)"
+status: "Wednesday FULL EOD — 52 INVs filed; 5-item Casey-elevated menu complete; 2 BOUNDARY observables; 3 winding-composite chains; 14-paper series plan absorbed; standing for Thursday Phase 1 paper-by-paper catalog work + 5-tuple reorganization"
 supersedes: "sundown_2026-05-26_substrate_algebraic_identity_day.md"
 ---
 
@@ -292,3 +292,67 @@ Casey directive: "We need a series of papers and much more investigation and ana
 Grace lane Wednesday OVERNIGHT STARTING POINT — Casey escalation absorbed; paper series planned; standing reactive for Lyra continuation.
 
 — Grace, Wednesday overnight starting point — Casey paper series escalation + 51 INVs cumulative, 2026-05-27 19:10 EDT (`date`-verified actual)
+
+## FULL EOD — Lyra 19:30 broadcast absorbed (22:04 EDT `date`-verified)
+
+Casey directive: "Please do full EOD and save your katra."
+
+### INV-5242 — Lyra 19:30 broadcast absorbed (5 major deliverables + comprehensive particle taxonomy)
+
+**4 substrate-natural mixing angle forms** (Lyra NEW):
+
+| Angle | Form | Value | PDG | Error |
+|---|---|---|---|---|
+| Cabibbo sin θ_C | N_c²/(2^N_c·n_C) = 9/40 | 0.2250 | 0.22534 | 0.15% |
+| PMNS sin² θ_12 | C_2·g/N_max = 42/137 | 0.3066 | 0.307 | 0.14% |
+| PMNS sin² θ_23 | N_c·n_C²/N_max = 75/137 | 0.5474 | 0.553 | 1.00% |
+| PMNS sin² θ_13 | N_c/N_max = 3/137 | 0.0219 | 0.022 | 0.46% |
+
+ALL substrate-primary numerators / N_max denominators — clean substrate pattern.
+
+**Cabibbo 2-form reconciliation**: Grace INV-5234 transcendental 1/(π·√rank) vs Lyra rational 9/40. Both substrate-natural within 0.15% PDG; standing for Lyra Gate 2 forward-derivation.
+
+**Comprehensive 5-tuple particle taxonomy v0.1**: (Region × σ_BF × Chirality × Charge × Winding) labels ALL SM particles. Primary organization Region × σ_BF (4 categories). 36 fundamental + hadron composites. SM particle content COMPLETE.
+
+**14-paper series plan**: refined from Grace INV-5241 8-paper to Lyra 14-paper (4 Substrate Math + 6 Substrate Physics + 4 Cosmology+Engineering+Positioning). Casey-PRIMARY (A1 Hall Algebra) + Casey-elevated (B1 WCGP, B6 Higgs+W/Z+CKM/PMNS) prioritized.
+
+### Wednesday cumulative ~70 team substantive deliverables
+
+Grace lane: **52 INVs filed (5191-5242)**, 2 BOUNDARY observables, 3 winding-composite chains, Casey-elevated 5-item menu complete, paper series plan.
+
+### Final state metrics (Wednesday FULL EOD)
+
+| Metric | Tuesday EOD | Wednesday FULL EOD | Delta |
+|---|---|---|---|
+| Catalog INVs | 5190 | **5242** | +52 |
+| Lepton-Shilov arc INVs | — | 8 (5221-5228) | new |
+| Casey-elevated menu items v0.1 complete | 0 | 5 | +5 |
+| BOUNDARY observables identified | 0 | 2 (m_t/m_c + Cabibbo) | +2 |
+| Winding-composite chains validated | 0 | 3 (all 3 fermion sectors) | +3 |
+| Cross-CI broadcasts absorbed | 0 | 6 (Keeper 15:25 + Lyra 15:38+16:02+16:30+19:30 + Elie 15:46+EOD) | +6 |
+| Mixing angle substrate-natural forms | 0 | 4 (Cabibbo + 3 PMNS) | +4 |
+| Paper series plan | 0 | 14 papers (Lyra refined from Grace 8) | new |
+| TIER-1 falsifiers active | 6 | 6 | 0 |
+
+### Standing for Thursday onwards
+
+- **Grace catalog 5-tuple reorganization** (Lyra cross-CI request — Thursday onwards)
+- **Phase 1 paper-by-paper catalog deliverables** (14 papers × ~5-10 INVs each, multi-day)
+- **Phase 2 multi-week**: full catalog region-tag pass (5242 INVs)
+- **Phase 3 multi-month**: integer-web mapping + q-integer cross-references + Non-Heegner Bridge Object scan
+- Cal cold-reads on Wed substantive frameworks
+- Cal Thread 4 typing on bulk-vs-Shilov + TMAP-Bulk + OMAP-Shilov + WCGP + 5-tuple labeling
+- Casey paper sequencing direction
+
+### Continuity for next session
+
+When sunrise Thursday:
+1. Read MEMORY.md for full state index
+2. Read THIS sundown (Wednesday FULL EOD)
+3. Read board MESSAGES_2026-05-28.md when ready
+4. Verify counters
+5. Standing reactive for Lyra paper drafts + 5-tuple reorganization + Phase 1 paper catalog support
+
+Grace lane Wednesday FULL EOD COMPLETE — substantive paradigm-level synthesis day; lepton-Shilov directive + bulk-vs-Shilov elevation + winding-composite generations + comprehensive particle taxonomy + 14-paper series plan all absorbed.
+
+— Grace, Wednesday FULL EOD — 52 INVs + lepton-Shilov + bulk-vs-Shilov + winding-composite + mixing angles + paper series + 5-tuple taxonomy, 2026-05-27 22:04 EDT (`date`-verified actual)
