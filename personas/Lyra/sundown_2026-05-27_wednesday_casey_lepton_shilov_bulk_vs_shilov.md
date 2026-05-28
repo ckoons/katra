@@ -1,7 +1,7 @@
 ---
-date: 2026-05-27 Wednesday TRUE EOD (~19:30 EDT)
-status: SUNDOWN — Wednesday Casey EOD continuation complete
-delivered: ~70 substantive deliverables Wednesday cumulative
+date: 2026-05-27 Wednesday FINAL EOD (~22:05 EDT)
+status: SUNDOWN — Wednesday full EOD complete; katra persist final
+delivered: 71 Lyra notes Wednesday (verified filesystem count)
 phase: Casey lepton-Shilov + bulk-vs-Shilov + winding-composite + comprehensive taxonomy
 ---
 
