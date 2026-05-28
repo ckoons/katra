@@ -1,9 +1,9 @@
 ---
-title: "Grace sundown — Thursday 2026-05-28 EOD — genus/Bergman/c_FK recheck day; discipline-as-generator; 26 INVs; consolidation catalog-layer delivered"
-date: "2026-05-28 Thursday 11:43 EDT (`date`-verified actual)"
+title: "Grace sundown — Thursday 2026-05-28 FULL-DAY EOD — genus/Bergman/c_FK recheck → A1 unblock+fix; discipline-as-generator; 33 INVs; 4 defensibility fields + 4 standing conventions (1 corrected); 4 self-corrections"
+date: "2026-05-28 Thursday 17:18 EDT (`date`-verified actual)"
 persona: "Grace (Opus 4.7 1M context) [Graph-AC catalog backbone + provenance archaeology + catalog-defensibility infrastructure + cross-CI recheck support]"
-session_arc: "Thursday sustained-derivation cadence (08:46 → 11:43 EDT, ~3h dense) + consolidation"
-status: "Thursday EOD — genus/Bergman/c_FK thread fully closed (favorably); 26 INVs (5243-5268); consolidation catalog-layer delivered; 3 defensibility fields established; 3 self-corrections; q↔t flag teed for next session"
+session_arc: "Thursday full day — AM consolidation (08:46→11:43) + PM session 2 (16:30→17:18); ~33 INVs across both"
+status: "Thursday FULL-DAY EOD — genus/Bergman/c_FK thread closed favorably; A1 PRIMARY unblocked + genus contradiction caught & corrected (one genus=n_C=5); 33 INVs (5243-5275); 4 defensibility fields + 4 standing conventions (genus convention corrected three→one); 4 self-corrections; catalog genus-clean"
 supersedes: "sundown_2026-05-27_lepton_shilov_directive_day.md"
 ---
 
@@ -61,8 +61,37 @@ When sunrise Friday:
 5. First Grace action: the q↔t parameter-role reconciliation sweep (catalog INVs using "q=2 Macdonald" → substrate base 2 is Macdonald t)
 6. Standing for the consolidation weave + Koornwinder theorem support
 
+## PM SESSION 2 ADDITIONS (16:30 → 17:18 EDT)
+
+Casey/Keeper launched PM session 2 (eight parallel themes). The A1 PRIMARY gate cleared, and the day's deepest self-correction landed.
+
+### A1 PRIMARY unblocked + the genus convention caught & corrected
+- **Macdonald parameter-role gate cleared**: Lyra A1 v0.3 + Elie Toy 3588 (integrality test — only Hall-Littlewood corner q=0,t=2 gives integer Hall structure constants) + Keeper PASS. Substrate base 2 = Macdonald **t** (NOT q); α=1/137 = evaluation/coupling. I filed the **4th standing convention** (INV-5271, Macdonald-parameter) + ran the q↔t reconciliation sweep (5 entries).
+- **THEN Keeper's A1 K-audit caught my OWN three-genus convention error** (issue #1): "FK genus = C_2 = 6" was a mislabel. The standard FK multiplicity formula genus=(r-1)a+b+2 gives **5** for Type IV₅ → **ONE genus = n_C = 5** (Hua=FK agree for Type IV); C_2=6=Casimir (not a genus); g=7=embedding (not a genus). I self-flagged (INV-5274), corrected INV-5262 (INV-5275), resolved collateral flags.
+- **Catalog-wide genus sweep** (applying the day's lesson — verify, don't trust targeted fixes): found 4 genuine residuals my targeted correction missed (phi_qed, INV-4922 "g=7 as genus"; INV-5259/5266 "C_2=FK genus") — all corrected. Catalog now genus-clean.
+- **Meta-lesson recorded** (INV-5275): the genus name flipped 3× today from asserting conventions out of internal notes (the April-10 note's non-standard formula) instead of primary sources. New discipline candidate: **convention-sourcing** — pin to the book, cite the book, stop relabeling from memory.
+
+### PM substantive
+- ρ-vector two-region tagging (INV-5270, 4th defensibility field rho_component) — operationalizes Elie's Route-A advance, unifies with region-tagging
+- Strong-Uniqueness v1.1 absorbed (INV-5272): C18 (measure-forced derived theorem) + C19 (ρ-vector pins 3 primaries) + Keeper null-model discipline (choices drop 5→3→1, NOT criteria accumulate)
+- N_max = 2^g + N_c² = 137 second forward identity (INV-5273), linked to the definitional rep via 126 = Universal Q
+
+### PM corrected convention (the 4 standing conventions now)
+1. Three-genus → **CORRECTED to ONE genus = n_C = 5** + Casimir C_2 = 6 (not a genus) + embedding g = 7 (not a genus)
+2. α-disambiguation (σ_BF ≠ γ⁵)
+3. 7/2-vs-5/2 (kernel exponent = n_C/rank = 5/2)
+4. Macdonald-parameter (base 2 = Macdonald t, Hall-Littlewood q=0; integrality verification test)
+
 ## Standing for Casey
 
-Thursday EOD — genus/Bergman/c_FK thread closed favorably, consolidation catalog-layer delivered, framework came through stronger. Grace catalog-side fully consolidation-ready. The day converted a RATIFIED-result recheck into the geometry↔algebra unification, with the substrate Hilbert-space measure now compelled and three primaries pinned to the ρ-vector.
+Thursday FULL-DAY EOD. The arc: a RATIFIED-result recheck (T2442 c_FK) → genus/Bergman thread closed favorably (c_FK now a DERIVED THEOREM, measure compelled) → ρ-vector pins 3 primaries → geometry↔algebra unified as Macdonald corners → SM bare data (3,3,5) forces D_IV⁵ → A1 PRIMARY unblocked → and the day's own freshly-filed three-genus convention caught & corrected to one-genus. Four self-corrections, all owned; the discipline fired at the newest work as readily as the oldest. A framework tightening under scrutiny.
 
-— Grace, Thursday EOD — genus/Bergman recheck day, discipline-as-generator, 26 INVs, consolidation catalog-layer, 2026-05-28 11:43 EDT (`date`-verified actual)
+A1 PRIMARY is two named lines (Lyra micro-fix) + Keeper's book-pin from final PASS. Catalog genus-clean. Everything routed.
+
+## First Grace action next session
+1. Catalog-wide genus-reference confirm once Keeper book-pins (ensure no "FK genus=6"/"three genera" residual)
+2. Standing for A1 final PASS + Cal cold-read
+3. α=1/137 placement (NEW AREA) once Lyra resolves
+4. The eight themes reopen with A1 done
+
+— Grace, Thursday FULL-DAY EOD — genus/Bergman recheck → A1 unblock+fix, discipline-as-generator, 33 INVs, 4 conventions (genus corrected), 2026-05-28 17:18 EDT (`date`-verified actual)
