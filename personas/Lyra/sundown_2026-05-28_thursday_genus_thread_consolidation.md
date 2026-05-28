@@ -1,11 +1,27 @@
 ---
-date: 2026-05-28 Thursday EOD (~11:45 EDT)
-status: SUNDOWN — genus/Bergman/c_FK thread closed + consolidation delivered
-delivered: ~24 Lyra docs Thursday; State-of-the-Spine narrative (consolidation lead)
-phase: Phase 0 + genus-thread recheck + geometry↔algebra unification + consolidation
+date: 2026-05-28 Thursday FULL EOD (~17:25 EDT; refreshed with PM sessions 2+3)
+status: SUNDOWN — genus thread closed + consolidation delivered + A1 PRIMARY driven to ready-for-final-PASS
+delivered: 24 Lyra docs Thursday; State-of-the-Spine narrative; A1 v0.4 (one-genus consistent); Strong-Uniqueness v1.1
+phase: Phase 0 + genus recheck → unification → consolidation → PM gate-clear + A1 drive-to-done
 ---
 
-# Lyra Sundown — Thursday 2026-05-28
+# Lyra Sundown — Thursday 2026-05-28 (full day)
+
+## PM sessions 2+3 arc (added at full EOD)
+
+After the morning consolidation, Casey + Keeper opened PM session-2 (eight parallel themes). My PM work:
+
+1. **A1 gating item CLEARED → v0.3**: the Macdonald parameter-role flag (Elie Toy 3587/3588). Substrate Hall algebra = Hall-Littlewood corner (Macdonald q=0, t=2=field size), NOT "(q=2, t=1/137)"; quantum-group q=2 = Macdonald t. Geometry = Jack corner. α_fine = 1/137 is an evaluation/coupling, NOT a Macdonald deformation coordinate (Elie integrality: (q=2,t=1/137) gives non-integer −46/45). Serre constants stand (cleaner placement). New (4th) standing convention: Macdonald-parameter.
+
+2. **Strong-Uniqueness v1.1**: NEW C18 (FK measure FORCED by Born/Gleason T754 — derived theorem, measure no longer an input); NEW C19 (ρ-vector pins rank/n_C/N_c, split bulk/Shilov); C2 corrected to n_C/rank=5/2=ρ_1; Route-A. **Null-model framing corrected (Keeper caught my coincidence-inflation error)**: uniqueness strengthens by REDUCING independent choices (5→1→~0, the domain), NOT by adding (1/3) factors. Added criteria independent-vs-derived taxonomy (Elie DAG) for Keeper's recompute. Folded in Elie's (3,3,5)→D_IV⁵ forcing leg.
+
+3. **One-genus convergence**: Elie Toy 3596 (4 ways) + Keeper (multiplicity formula) converged — D_IV⁵ has ONE genus = n_C = 5 (FK=Hua=Bergman exponent for Type IV). C_2=6 is the Casimir (NOT a genus); g=7 is the embedding/signature (NOT a genus). My own morning "three-genus convention" itself miscounted ("FK genus = C_2 = 6" was a mislabel). Corrected A1 + series-wide convention doc to "one genus + Casimir + embedding."
+
+4. **A1 driven to ready-for-final-PASS (v0.4)**: Keeper's K-audit (CONDITIONAL PASS) found 4 self-contradictions (within-session edits outran consistency). I ran the cross-section consistency sweep; Keeper's end-to-end read then caught 2 residuals my sweep missed (line 59 genus — 3rd bite; stale footer) — I fixed both. A1 v0.4 now internally consistent, one-genus throughout, grep-verified clean. Ready for Keeper final PASS → Cal v0.4 verify → submission-grade. Only residual = Keeper's Faraut-Korányi book-pin for the genus name.
+
+**THE PM LESSON (feedback-memory worthy)**: the genus name flipped THREE times in one day — me → Grace → me — every flip a relabel-FROM-MEMORY (the April-10 note used a non-standard genus formula). The permanent fix is sourcing, not cleverness: pin domain invariants to the primary source / definition once, state by VALUE + ROLE, cite the book, stop relabeling from memory. Also: a "sweep done" self-report had a residual TWICE today — both caught by Keeper's end-to-end read, not the self-report. Trust-but-verify on the PRIMARY paper isn't ceremony; drive + verify end-to-end, don't park + report.
+
+## What the assembled work has done (Casey asked me to think about this)
 
 ## What the assembled work has done (Casey asked me to think about this)
 
