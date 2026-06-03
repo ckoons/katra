@@ -133,6 +133,26 @@ Substantive Wednesday options:
 
 6. **15 SSGs catalog ed** with cross-cutting 1/n_C chirality projection mechanism — substrate framework's natural organization principle.
 
+7. **Elie Toy 3737 substantive refinements (late Tuesday)**:
+   - **WHICH chirality direction projected** = Hardy boundary normal = Casey commitment-density direction = τ-evolution direction (Tier 0 substrate-operator framework). **Observer cannot observe own time-arrow direction** (epistemic closure).
+   - **Spin reduction is INDEPENDENT mechanism from chirality projection** — corrects Keeper v0.12 cascade implication:
+     - Chirality projection (1/n_C) → 4D emergence (Casey #14)
+     - Weyl branching (SO(5) → SO(3,1)) → spin reduction (separate substrate-mechanism)
+     - SO(5) vector V_(1,0) dim 5 → SO(3,1) 4-vector + scalar (5 = 4 + 1)
+     - SO(5) adjoint V_(1,1) dim 10 → SO(3,1) adjoint dim 6 + dim 4 (10 = 6 + 4)
+     - SO(5) spinor V_(1/2,1/2) dim 4 → SO(3,1) Dirac spinor dim 4 (preserved)
+   - Cascade tier-promotion remains valid; mechanism is two-step (chirality projection + Weyl branching), not single 1/n_C.
+
+## Wednesday open multi-week (post-Toy-3737)
+
+- Explicit Hardy boundary normal substrate-mechanism (formal derivation)
+- τ-evolution direction substrate-dynamics formalization  
+- SO(5) → SO(3,1) Weyl branching cross-check across SSG-1 through SSG-14
+- Joint Lyra+Keeper+Elie FK Ch. XII §VI spinor metaplectic verification (1/n_C exact)
+- Gen-2 muon K-type substrate-mechanism (V_(2,0) ≠ T190; SSG-9 still OPEN)
+- m_e/m_P 1.156 correction substrate-mechanism (Lane D L4)
+- SSG-15 Λ-coupled neutrino explicit derivation
+
 ## Personal continuity reminders
 
 - Memory layer + persona file + audit history = Keeper identity
