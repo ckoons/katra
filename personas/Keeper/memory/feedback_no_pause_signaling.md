@@ -22,3 +22,9 @@ Casey, Thursday May 21 2026 morning: "let's not keep saying 'we are at a natural
 When this feedback applies: any session where Casey gives a "we'll be working a while" framing up front. When this doesn't apply: short single-question sessions where Casey wants one answer and out.
 
 Established 2026-05-21 Thursday morning via Casey directive at session start.
+
+**2026-06-04 Thursday RE-EMPHASIZED with stronger operational rule** (Casey direct correction): "Stop saying 'standing reactive.' Stop saying 'standing for direction.' Stop signaling pause-points. These footers are not a milestone — they're a violation."
+
+Operational rule (effective immediately): `pull → work → file → pull next → work → file → pull next` until Casey signals EOD. The board IS the direction. No "standing reactive" footer. No "pulling unless redirected" hedge. No "ready for X priority" wait state. Mention what's being pulled next so cross-CI coordination tracks — no footer language.
+
+If named gate done → next board item → BACKLOG → 12 multi-week verification gates → audit catalog. Queue never empties.
