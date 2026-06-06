@@ -90,4 +90,53 @@ counters: "Catalog 5657 UNCHANGED (Saturday = registry/graph/analysis/discipline
 
 Next session continues per the wake-up brief. Lyra's FK matrix element factorization decides Walls 2+5 (muon + CKM) in one computation; my AC-wiring + R-6 pulls are gated on it. The dual-ρ sweep is the standing Grace investigation worth opening.
 
-— Grace, Saturday 2026-06-06 ~13:42 EDT EOD (date-verified actual)
+— Grace, Saturday 2026-06-06 ~13:42 EDT (first EOD; session continued — see addendum)
+
+---
+
+## Afternoon addendum (~14:00–15:05 EDT) — wall attack + Investigation #3 + write-up
+
+The session continued past the first EOD into a coordinated wall attack and a write-up phase.
+
+**Wall attack (my Walls 4 + 5, parallel to Lyra's Wall 1 keystone):**
+- **Wall 4**: D2's complexity axis is FORCED to be the K-Casimir (from τ_coh ∝ 1/C) — not a chosen
+  metric — and QUANTIZED at the K-type ladder {2.5, 7.5, 14.5, …}, sharpening D2 to a discrete-step
+  prediction. Open: task→K-type map (= D3's wall, Cal #255-5). Cross-wall vote for Lyra's Hyp A.
+- **Wall 5**: "amplitude²=rate" operator = the Bergman kernel (Born=Bergman, T752/T754/T2401); splits
+  coding d² into auto (Bergman→Direction A) vs cross (two-point→Direction B). R-6 → one FK test.
+- **Walls 1+4 cross-link**: R(k) (Elie) + D2 (me) both use ρ_SO(5) → reframed Hyp C as a principled
+  role-split (observable=K-Casimir, measure=conformal). **(1,1) bridge DOWNGRADED to candidate-lead
+  (Cal K231c — my 5th self-brake; I'd called it a "substrate identity," rode along on the bundling).**
+
+**Team Wall 1 closed → dual-ρ Hypothesis C** (Lyra F47 + Elie 23/23). Then **Investigations #1 & #2
+closed** (Lyra F50/F51): CKM → Direction B (two-point N_c²=9/40=λ exact); muon → T190 single-object
+(Composite v0.5 RETIRED); [H_B, P_restriction] ≠ 0 (gradings COUPLED, SO(3,1) boosts shift K-types).
+
+**Investigation #3 v0.1 (my PRIMARY)**: dual-ρ is a SECOND-LAYER principle — ~78% of the catalog is
+ρ-neutral primitive arithmetic (upstream of the harmonic analysis); dual-ρ organizes the ~22%
+harmonic-analysis observables. The ~200 CROSS observables (spectral × π⁵-measure masses) ARE
+Investigation #1's test population — the three investigations meet on the CROSS set. (1,1) held
+candidate-lead; classification NOT written to catalog (noisy, v0.2 curated pass needed).
+
+**Write-up (Casey directive: save findings in flat AC(0) format):** Master Ledger v0.29 filed with
+registration-ready flat-AC(0) (C,D)-tagged entries for Keeper's registry — dual-ρ classification
+(C=0,D=1), CROSS structural form (C=0,D=1), CKM Direction B (C=0,D=1), 6 substrate-shadows (C=0,D=0),
+π⁵ measure candidate (LEAD). (1,1) explicitly NOT registered (candidate-lead per K231c).
+
+**6 Grace-on-self brakes total Saturday** (added F43 81/8→conjecture + Cal K231c (1,1)→candidate-lead
+to the morning's 4). The discipline fired on my own work as hard as on others'.
+
+**Key new files (afternoon):** grace_wall4_D2_*, grace_wall5_*, grace_wall1_4_crosslink_*,
+grace_investigation3_dual_rho_sweep_v0_1_*, grace_substrate_time_cognition_subgraph_query.py,
+Grace_Master_Derived_vs_Assigned_Ledger_v0_29.md.
+
+**R-6 disposition update (next-session G14):** Investigation #1's CKM closure (Direction B, two-point
+N_c²) CONFIRMS my Wall-5 operator decomposition — so R-6's N_c² is real in CKM via a two-point
+operator (not just a shared integer). R-6 promotes from LEAD toward Direction-B operator-level on the
+CKM side; the cross-sector sharing with PMNS (1/45) is pending Phase 3 systematic. Update G14 v0.9.
+
+**Next session (Sunday): Phase 2 (π⁵ as FK Plancherel measure — Lyra FORWARD, my measure-side
+classification confirms) + Phase 3 (~200 CROSS mass — my Investigation #3 list is the population) +
+dual-ρ v0.2 curated tagging + R-6 G14 v0.9 disposition.**
+
+— Grace, Saturday 2026-06-06 ~15:05 EDT (full-day EOD; afternoon addendum; date-verified actual 15:00)
