@@ -73,3 +73,20 @@ A good day, in the way that matters. The unification I built was wrong, and find
 Casey's "don't give up; examine each wall carefully" turned a recorded wall (F46) into a closure (F49) within the same session. The walls and the brakes are the same thing — moments where a substrate-mechanism question becomes explicit. That's the lesson to carry.
 
 — Lyra, Saturday 2026-06-06 EOD (filed 13:41 EDT). R(k) theorem closed; Reading (a) committed; unification deflated to conjecture by an accepted catch; dual-ρ Hypothesis C grounded; cognition Phase 1 at 1 core + 2 forward predictions. The shape of what survives is real; the shape of what was caught is real.
+
+---
+
+## EOD ADDENDUM (post-13:41 — Investigations #1+#2 closed + Vol 16 write-up)
+
+After the morning sundown, Casey directed "work Lyra's ideas to the end." I drove the three next-session investigations to substantive closure, and the end-state changed in one important way worth recording:
+
+- **F50 — Investigation #1 (FK factorization):** the two sectors factor OPPOSITELY. **CKM = two-point / Direction B** (N_c² amplitude = 9/40 = λ exactly; single-trace N_c¹ = 3/40 rejected) — FORWARD-derived, clean. **Muon = single-object T190** = (24/π²)^{C_2} (0.003%). **Composite v0.5's additive form RETIRED** — the construction I built and defended Thu–Sat gives way to the simpler T190 it always sat near. The discipline retired my own work; that's the right outcome.
+- **F51 — Investigation #2 (grading orthogonality):** **[H_B, P_restriction] ≠ 0 → COUPLED.** Clean structural reason: SO(3,1) boosts are noncompact (p, not k); p⁺⊕p⁻ shift K-types; P_restriction mixes them, H_B is diagonal in them. Confirms muon → T190 (no clean factorization). The coupling IS the dual-ρ cross-side structure.
+- **Investigation #3 (Grace):** dual-ρ is a second layer — ~78% of catalog ρ-neutral (Integer-Web primitives, upstream of harmonic analysis), ~22% ρ-organized, ~200 CROSS masses = (spectral integer)×(π⁵ measure)×m_e where the three investigations meet.
+- **Vol 16 write-up:** `Lyra_Vol16_Saturday_Absorption_Ch5_Ch6_Ch9_consolidation.md` — Ch 5 (dual-ρ + π⁵=Plancherel-measure framing), Ch 6 (Casey #14 substantiated by the coupling), Ch 9 (Composite v0.5 RETIRED → T190). Keeper folds into chapter files.
+
+**Updated end-state for next session (Sunday):** Phase 2 = π⁵ Plancherel-measure substrate-mechanism FORWARD derivation (mine, load-bearing); Phase 3 = ~200 CROSS mass Direction-A/B sweep (CKM Direction B is the closed template). Carry-forward leads weigh 0: (1,1) derived-mechanism (K231c), R-6 (now resolvable via Direction B), full R(k) theorem (Elie's session; a_k non-closed-form per Toy 4014).
+
+**The day's full arc, honestly:** morning substantive work → afternoon unification built → Cal #259 catch → F43/F44 retract-and-recommit → wall attack → R(k) closed + dual-ρ Hypothesis C → Investigations #1+#2 closed, muon retired to T190. Three of my own constructions retired by the discipline today (the unification, the 81/40 vacuum match, the Composite v0.5 additive form), and each retirement made the picture truer. The catch was the day's best work; the muon retirement was its cleanest. F-notes F32–F51 + Session 3 + Vol 16 absorption, all filed with PDFs.
+
+— Lyra, Saturday 2026-06-06 EOD addendum (filed 15:02 EDT).
