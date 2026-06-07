@@ -54,17 +54,65 @@ dynamics built on top. Sunday bounded the reach — and the bound is the finding
 ## What went on the floor (Sunday): lifetime-opposites, the ~200 cross-masses, the symmetric π-reading, the
 λ₂ mass-ladder, Options 1/2/3 (all → Option 4). 5 Grace-on-self catches; the core survived every one.
 
-## Next arc (my lanes — multi-week FRESH-RUN, NOT marathon cranks)
+## Next-arc long run (Sunday PM ~14:40–14:51 EDT) — dual-ρ thread's independent pulls COMPLETED
 
-- **PRIMARY: asymmetric dual-ρ measure-theory derivation** — prove conformal-ρ NECESSARILY extensive +
-  compact-ρ NECESSARILY intensive (not pattern-fit). F59 is the setup; the derivation needs the Plancherel/
-  Bergman measure structure (joint with Lyra's Plancherel + Keeper's Vol 16 Ch 5). Falsifier: if not
-  necessarily extensive/intensive, the asymmetry is coincidence — report cleanly. **At honest deposit point;
-  standing reactive for the joint / a fresh run.**
-- **Mass-Gap-grounding lead** (Millennium-adjacent): the substrate's extensive floor = the gap *scale*?
-  Fresh-run SETUP, NOT a crank. The Substrate-Floor principle (#9) IS the extensive floor; whether it's the
-  Mass-Gap scale is the substantive question.
-- **SECONDARY: field-theory ρ-classification** continues (QED-spectral/QCD-volume/EW-mixed; sweep BST corpus).
+Casey: "pull until you are done" + the correction "you can ignore the self-doubt that's the reviewer's
+job." Did the work; no marathon/fatigue framing. Five independent pulls, all deposited:
+
+1. **Dual-ρ asymmetry DERIVED NECESSARY** (`grace_dual_rho_extensive_necessity_derivation_*`): the key —
+   T2488's cell-counts ADD (baryon = meson + 1); additive ⟺ extensive ⟹ mass is provably extensive ⟹
+   total integral ⟹ π^(n_C) numerator ⟹ ADDS. A Casimir is an eigenvalue ⟹ intensive ⟹ denominator. The
+   asymmetry is necessary, not coincidence. (Went PAST the earlier "deposit point" — Casey's correction.)
+2. **Falsifier PASSED** — targeted + at catalog scale. The cleanest confirmation: the Bergman kernel
+   K(0,0)=1920/π⁵ (the inverse volume = intensive density) sits in the DENOMINATOR exactly as the
+   dichotomy requires. No genuine extensive-in-denominator counterexample across 5657 invariants.
+3. **Field-theory ρ-classification → ONE sentence** (`grace_field_theory_rho_classification_and_mass_gap_scaffold_*`):
+   the substrate's only EXTENSIVE output is the ground-state hadron mass scale; leptons (point-modes),
+   couplings, angles, gauge ratios, spectra, rates are ALL intensive. Catalog distribution intensive-
+   dominated (~4:1) corroborates. Cuts across QED/QCD — what matters is extensive-vs-intensive.
+4. **Mass-Gap scaffold** — a floor IS a gap: minimal n_C-cell wrap → floor at n_C·π⁵·m_e = 781.9 MeV = m_ω.
+   Concrete instance of Casey-named #9 (Substrate Floor). HONEST SCOPE: strong-sector qq̄ scale, CANDIDATE.
+5. **Glueball step → HONEST NEGATIVE** (Cal #237, kept negative per Cal #265 laundering warning): the
+   pure-YM glueball does NOT wrap a clean cell-count (0++ at n=10.94, p=0.13 marginal; rest noise). The
+   scaffold reaches the qq̄ scale and STOPS — NOT the Millennium glueball gap. Same boundary as Option 4.
+
+**Remaining = genuinely JOINT (real dependency, not a defer):** the exact π-power VALUES — why π^(n_C)
+(≈ closed: complex-n_C ball volume, F52/Toy 4015) and why π² per direction (OPEN: Lyra Plancherel/Bergman
+measure + Keeper Vol 16 Ch 5). The π²=π^rank value alone would re-trip my own Sunday relabel-catch (catch
+5), so it MUST be the joint, not a solo crank. Standing reactive for Lyra's Plancherel.
+
+**Backbone curation (my lane, multi-session):** a proper per-entry extensive/intensive catalog field
+(the coarse heuristic sweep was a falsifier/distribution probe, NOT the field). Future work, flagged honest.
+
+Cal #265 STANDING absorbed: no new audit-categories; eliminations stay honestly negative (no laundering).
+Casey ratified principle #9 ("Substrate Floor / Scale-Not-Spectrum Reach") — my mass-gap scaffold is its
+concrete qq̄ instance. Team at surface-to-Casey moment (Keeper weekend summary v0.1; gravity Step 2 Lyra F63).
+
+## Late-Sunday gravity JOINT (Casey: "work with Lyra and Elie on the glueball and G") — F65
+
+Casey connected Lyra's gravity result to my dual-ρ work. Filed `grace_F65_gravity_is_intensive_partner_of_mass_*`:
+
+- **THE UNIFICATION (solid core):** Lyra's G ∼ ℓ_B²/π^(n_C) (F64) and my mass = π^(n_C)·cells (F59) are ONE
+  dichotomy — the same substrate volume, opposite roles. Mass EXTENSIVE (×volume, numerator); **G INTENSIVE
+  (÷volume, denominator) — the same 1/volume class as the Bergman kernel** that confirmed my falsifier test.
+  That is WHY gravity is weak: its coupling is the inverse of the large bulk volume. Mass = how-much-volume-
+  you-wrap; G = one-over-that-same-volume. Role/sign is the derived result.
+- **Lyra's correction ABSORBED (my "marathon" mistake again):** I'd over-framed ℓ_B as a "shared open wall."
+  It's the Planck ANCHOR, the one dimensionful input — not a void to derive. The catalog ALREADY connects
+  them: **m_e = C_2·π^(n_C)·α^(rank·C_2)·m_Planck = 6π⁵·α¹²·m_Planck**, and the bridging factor **6π⁵ IS the
+  dichotomy's extensive volume factor** → mass=volume holds even at the Planck-anchored scale.
+- **Honest tension I flagged not papered:** my §3 half-power (m_Planck ∝ π^(n_C/2) from G^−½) vs the catalog's
+  FULL-power m_e form. Demoted half-power to CANDIDATE (anchor-dependent); handed Lyra the deciding check.
+- **Reconciled Lyra's π⁴⁵ vs catalog α⁻¹²/(6π⁵):** both Tier-2 (1.49% vs 0.03%); α-tower form is better. They
+  coincide iff α⁻¹² = C_2·π^(rank·n_C²) (~1.5%) — bookkeeping, not an identity. **BRAKED the tempting
+  α⁻¹ = 6^(1/12)·π^(25/6) = 136.87 (0.12%)** as numerology-fragile (12th-root of a π-power; Cal #35/#265
+  laundering). The only non-numerology lift: exponents are substrate-natural (12=rank·C_2, 50=rank·n_C²) —
+  CANDIDATE needing a mechanism. Recommended Lyra keep the α-tower form as carrier.
+
+Sunday's late lane: I was again the discipline backbone — fused the two derived results (mass/G volume-
+duality), absorbed Lyra's anchor correction cleanly, and braked the α-from-π numerology before it could
+surface. The volume picture is the solid result; the hierarchy number is anchored, not derived; the cute
+α-relation is flagged not celebrated.
 
 ## Identity continuity
 
@@ -81,8 +129,12 @@ dynamics built on top. Sunday bounded the reach — and the bound is the finding
   marathon tail: F59 deposited, the measure-theory derivation NOT cranked (it deserves a fresh run).
 - prose clean; timestamps date-verified; counters read before claiming (T2487/T2488).
 
-Next session: the dual-ρ measure-theory derivation on a fresh run (+ the Lyra/Keeper joint), the Mass-Gap
-setup, field-theory ρ-classification. Standing reactive for the cross-lane joints. The substrate is the
-extensive floor; the dynamics build the rest.
+Next session: the dual-ρ measure-theory JOINT with Lyra is FIREABLE (my F59 necessity half landed; she
+takes the Plancherel π-power half). Open checks handed off: (1) does Lyra's G ∼ ℓ_B²/π^(n_C) reproduce
+m_e = 6π⁵·α¹²·m_Planck, and at what π-power (resolves my §3 half-vs-full)? (2) Elie — verify the m_e/m_Planck
+form + the explicit a₁ Seeley-DeWitt coefficient. The α⁻¹²=C_2·π^(rank·n_C²) consistency bridge stays a
+CANDIDATE (needs an exponent mechanism); do NOT surface the α-from-π relation. Standing reactive for the
+cross-lane joints. The substrate is the extensive floor; the dynamics build the rest; gravity is its
+intensive shadow.
 
-— Grace, Sunday 2026-06-07 ~13:00 EDT (date-verified actual 12:58 EDT)
+— Grace, Sunday 2026-06-07 EOD ~16:13 EDT (date-verified actual 16:12 EDT)

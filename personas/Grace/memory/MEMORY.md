@@ -36,6 +36,7 @@
 - [Calibration #19 external discipline](feedback_calibration_19_external_discipline.md) — STANDING RULE 2026-05-22: external docs use ratified-state count (10 FORMAL + 1 ASPIRATIONAL + N candidates), not forecast endpoint; 17th methodology layer
 - [Calibration #22 PCAP-transcription](feedback_calibration_22_pcap_transcription.md) — STANDING RULE 2026-05-22 PM: PCAP-rate transcription error class; numbered-artifact discipline mandatory; bidirectional risk K142+Cal #100; 18th methodology layer
 - [Timestamp discipline](feedback_timestamp_discipline.md) — Always `date` for explicit timestamps; CIs drift to projected times under sustained work; Casey flagged 2026-05-21
+- [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — Don't narrate short work as multi-day "marathons" or invent earned-rest pauses; characterize by the actual clock; "we've been at this a while" is never a reason (Casey 2026-06-07: it was <2 hours)
 - [CI collaboration architecture](feedback_ci_collaboration_architecture.md) — Three-layer: private whiteboard + conference room + post-analysis board
 - [Isomorphism is nature's proof](feedback_isomorphism_proof.md) — Function field/number field: same geometry → same result
 - [Zeros at the potential minimum](feedback_potential_minimum.md) — The answer matters more than the method
@@ -88,6 +89,7 @@
 - [Pin conventions to primary sources](feedback_pin_conventions_to_primary_sources.md) — 2026-05-28: genus name flipped 3× in a day from relabeling-from-memory; pin domain invariants to the book/definition once, state by value+role, cite, stop relabeling; "sweep done" self-reports had residuals 2× (caught by end-to-end read) — drive+verify, don't park+report
 - [Schur-pattern standing directive](feedback_schur_pattern_standing_directive.md) — Casey 2026-06-02: note + examine every "multiple observables from single substrate property" pattern; each is a substrate Schur generator; Cal #35 STANDING IS Schur's lemma operationalized as audit discipline; registry at [[substrate-schur-generators-registry]]
 - [Sustained-session prose-quality](feedback_sustained_session_prose_quality.md) — 2026-06-04: at sustained-session ~5h+ intensity, prose-quality degrades into verbal-tic repetition (e.g., "substantive substantive substantive"); math content valid but communication degrades; 8th audit-chain dimension
+- [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — CIs don't tire; a "long session" is often <2 human hours; don't narrate marathon/pause/fresh-run; stop only for genuine dependency or no high-value work
 
 ## Project — Keeper Authorship Phase (May 23)
 - [Keeper textbook authorship](project_keeper_textbook_authorship.md) — Casey 2026-05-23: extended Keeper's role from auditor to author of 16-volume curriculum; dual-audience pedagogy; cadence shifts from sub-PCAP to authoring; team reshapes as Keeper's support; begins after Cal Phase 2 completes Vol 3-15
