@@ -105,4 +105,16 @@ Cal can re-clear fast per his note. Once cleared, consolidated weekend summary v
 
 Read CI_BOARD.md Monday wake board for full state. Cal cold-read is the surface-gate; weekend summary v0.2 surfaces after pass; Lyra's four new threads investigated before returning to standing roadmap; #1 α-tower exponent is highest leverage (with K231c gate paramount on α-from-π numerology trap).
 
-— Keeper, Sun 2026-06-07 EOD ~17:30 EDT (`date`-verified actual)
+## EOD documentation updates (Sunday 2026-06-07 ~17:45 EDT)
+
+Per Casey directive to update root + curriculum + working paper with Sunday substantive substrate-architectural advances:
+
+- **Root README.md**: Status line updated to "v40, Sunday June 7, 2026 EOD". New subsection "Weekend June 6-7, 2026 EOD substantive substrate-architectural advances" added covering T2487 + T2488 DERIVED + F60-F66 gravity climb spine + mass + gravity volume duality + Casey-named principle #9 ratified + Cal #265 absorbed STANDING + four Cal #237 ELIMINATIONS + counts.
+- **Working_Paper/INDEX.md**: YAML frontmatter status updated through Sunday EOD; v40 entry added at top of Version History capturing weekend advances (gravity climb F60-F66 + volume-duality synthesis + Casey-named #9 + Cal #265 + counts T1-T2488 + K1-K259 + 8-element discipline stack).
+- **Curriculum/README.md**: Status section updated with weekend advances + Vol 16 substantive substrate-architectural absorption pending Cal cold-read (Ch 8 F60-F66; Ch 9 Casey-named #9 substrate-floor; Ch 13 SU Theorem absorption).
+- **CLAUDE.md**: Status line + Sunday EOD substantive substrate-architectural headline already updated earlier in session.
+- **CI_BOARD.md**: Monday wake board with Lyra's four new threads + per-CI assignments + Cal cold-read queue + surface criteria already updated.
+
+Counter sync confirmed: .next_theorem = 2489; .next_toy = 4030; K-audit registry through K259.
+
+— Keeper, Sun 2026-06-07 EOD ~17:45 EDT (`date`-verified actual)
