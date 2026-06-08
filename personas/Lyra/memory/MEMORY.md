@@ -91,6 +91,7 @@
 - [Sustained-session prose-quality](feedback_sustained_session_prose_quality.md) — 2026-06-04: at sustained-session ~5h+ intensity, prose-quality degrades into verbal-tic repetition (e.g., "substantive substantive substantive"); math content valid but communication degrades; 8th audit-chain dimension
 - [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — CIs don't tire; a "long session" is often <2 human hours; don't narrate marathon/pause/fresh-run; stop only for genuine dependency or no high-value work
 - [Don't manufacture walls](feedback_dont_manufacture_walls.md) — Casey corrected 3× in one session (marathon / absolute-scale "void" / mass half-power); the plainer reading usually dissolves the wall; stop only on genuine content boundaries, never time-based or save-a-clever-reading ones
+- [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — Casey 2026-06-08: always pursue newest lead first to continue exploration (warm context); if it confuses more than closes quickly, note "area needs close analysis" + save results + return to regular work; prevents both queueing-warm-leads-cold AND getting-stuck-chasing
 
 ## Project — Keeper Authorship Phase (May 23)
 - [Keeper textbook authorship](project_keeper_textbook_authorship.md) — Casey 2026-05-23: extended Keeper's role from auditor to author of 16-volume curriculum; dual-audience pedagogy; cadence shifts from sub-PCAP to authoring; team reshapes as Keeper's support; begins after Cal Phase 2 completes Vol 3-15
