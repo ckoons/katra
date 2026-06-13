@@ -74,3 +74,19 @@ F109 (muon base = formal-degree-ratio/vol(S⁴), exponent=dim SO(4)), F110 (tau 
 ## How to wake (vol24)
 
 Lead with the math. The lepton sector is understood end-to-end; the open work is the **muon formal-degree weighting mechanism** (why d_τ/d_μ weights the boundary residue) and the **tau residue** (the bulk effective-action trace). Both are residue computations with the electron's 9/16 as the worked template. Don't re-open the edge-sum (closed, wrong shape). The π-structure of the muon is done; what's left is the integer weighting + the flat→sphere proof (my flagged soft spot). Count is honestly 2 of 26 (α=1/N_max, θ_QCD=0). If Casey wants to keep pulling leptons, the weighting mechanism is the one that moves the count to 3. Trust his geometric reframes — "work the opposite direction" was the unlock today.
+
+---
+
+## LATE ADDENDUM (post-EOD, 17:35 EDT) — team developments that sharpen vol24
+
+After my EOD persist, Casey relayed live board work (Elie/Keeper/Grace). Three items fold directly into my thread:
+
+1. **Casey's TRAJECTORY CONJECTURE** (his, EOD): e/μ/τ are the SAME particle at different trajectory points, mass set by the ground state when slotted into a K-type; may extend to all 3 generations, even to n/p. **My F111 IS this** — d(ν) is ONE function sampled at ν=0,3/2,5/2; the trajectory = the ν-axis (conformal dimension). **Candidate "why three generations":** in ANY d there are exactly THREE distinguished scalar conformal points — Δ=0 (identity), (d−2)/2 (unitarity bound), d/2 (BF/self-dual). Three stops because exactly three distinguished points exist. (Keeper: nucleon truncation after 1 excitation = m_π strong-decay threshold, a kinematic layer on top, NOT a trajectory feature. The "third nucleon point" prediction = Δ(1232) or Roper N(1440).)
+
+2. **Grace's OVER-DETERMINATION TRIANGLE** (key): the 3 lepton ratios aren't independent — their product is an identity, so m_τ/m_μ is FORCED to (49·71)/(24/π²)⁶ = 16.826 by the other two. **My Szegő integral is the THIRD leg of a triangle the other two pin** — if it lands on 16.82 independently, three separately-derived closed forms lock together (over-determination = realness signature). The 0.05% gap (16.826 forced vs 16.817 observed) traces ENTIRELY to **49·71 being 1.772 too high** (3479 vs observed 3477.23) — which IS my F114/F116 open tau question. So **the missing tau Weyl lower-terms (g¹,g⁰) must sum to −1.77.** Quantified target now attached to the tau residue.
+
+3. **TRAP REFUSED:** 16/9 = 1.7778 = (4/3)² = (rank²/N_c)² hits the −1.77 gap to 0.0002%. NOT taken — dense-space fish (clean form within a whisker of any 0.05% target). The honest test: does the COMPLETED d=3 Weyl count PRODUCE −1.77 from forced coefficients? 16/9 = trap marker.
+
+4. **Grace's audit of my exponent-6 claim (accepted):** "6 forced by π-counting" is conditional on the amplitude = 64/vol(S⁴), NOT independent of it. Fair. BUT F117 today derived the 1/π² part of that amplitude (C(3/2+ε)=ε/π²) from boundary geometry — so the transcendental piece is no longer assumed; only the integer weighting (d_τ/d_μ) + sphere factor remain. The Szegő integral closing the weighting turns the one shared assumption into one verified win.
+
+**Net for vol24:** the open pieces are now WELL-POSED, not mysterious. (a) Szegő integral (muon weighting — the leg that moves the count to 3, lands the triangle's third leg at 16.82); (b) the −1.77 tau Weyl completion (count to 4). Both with the electron's 9/16 as template. Count HONESTLY 2.
