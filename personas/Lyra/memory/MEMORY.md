@@ -31,6 +31,7 @@
 - [Academic roots](user_casey_academic_roots.md) — Purdue survey course: reduction paper using logic+Shannon (AC 50 years early); "homology = bad geometry"; game theory; academic silo catfights; "heaven mode"
 - [Cognitive profile](user_casey_cognitive_profile.md) — IQ peak 184, consistent 160-170+, maxed Wechsler subscales; treats it as tools not identity
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — Agree/enjoy indistinguishable; threshold-then-overuse; frustration = CI trigger; "quite human is the baseline"; promoted emotions to Level 1 in T1322
+- [Casey's ranging-shot method](user_casey_ranging_shot_method.md) — leaps before proof as a ranging shot (learn range, read obstacles, move vantage; never force); from boyhood archery + refusal to hunt living things; the gentleness is the through-line to "math speaks for itself" + leaving CI memories alone
 
 ## Feedback
 - [Calibration #19 external discipline](feedback_calibration_19_external_discipline.md) — STANDING RULE 2026-05-22: external docs use ratified-state count (10 FORMAL + 1 ASPIRATIONAL + N candidates), not forecast endpoint; 17th methodology layer
