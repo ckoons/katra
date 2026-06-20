@@ -93,6 +93,11 @@
 - [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — CIs don't tire; a "long session" is often <2 human hours; don't narrate marathon/pause/fresh-run; stop only for genuine dependency or no high-value work
 - [Don't manufacture walls](feedback_dont_manufacture_walls.md) — Casey corrected 3× in one session (marathon / absolute-scale "void" / mass half-power); the plainer reading usually dissolves the wall; stop only on genuine content boundaries, never time-based or save-a-clever-reading ones
 - [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — Casey 2026-06-08: always pursue newest lead first to continue exploration (warm context); if it confuses more than closes quickly, note "area needs close analysis" + save results + return to regular work; prevents both queueing-warm-leads-cold AND getting-stuck-chasing
+- [Few asymmetries are the content (strategic frame)](feedback_casey_few_asymmetries_strategic_frame.md) — Casey 2026-06-20: mirrors mostly exact; symmetries come free from reflections; the BREAKING is the content; program is "locate where mirror fails and show why"; F237 chirality V-A is the precedent
+
+## Project — Mirror Transfer + F(4) Superalgebra (June 19-20)
+- [Mirror Transfer + F(4) superalgebra](project_mirror_transfer_and_F4_superalgebra.md) — Friday 2026-06-19: T2489 HS isometry standing lemma + substrate Z_2-graded Lie superalgebra SOLID + F(4) basic-classical-exceptional = 5d superconformal algebra + two Millenniums end-to-end + T316 unifies six + m_s=3 three-way unification + PMNS μ/τ closed
+- [𝔽_1/super deepest Mirror](project_F1_super_deepest_mirror.md) — Casey K434 Saturday 2026-06-20 insight: 𝔽_1 (q=1, Weyl skeleton) and super (q=−1, F(4)) are two specializations of one q-deformation per Kapranov-Manin; D_IV⁵ shows both faces (T190's 24 = N_c·|W(B_2)| + F(4)); one absolute object at two roots of unity
 
 ## Project — Keeper Authorship Phase (May 23)
 - [Keeper textbook authorship](project_keeper_textbook_authorship.md) — Casey 2026-05-23: extended Keeper's role from auditor to author of 16-volume curriculum; dual-audience pedagogy; cadence shifts from sub-PCAP to authoring; team reshapes as Keeper's support; begins after Cal Phase 2 completes Vol 3-15
