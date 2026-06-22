@@ -96,10 +96,12 @@
 - [Few asymmetries are the content (strategic frame)](feedback_casey_few_asymmetries_strategic_frame.md) — Casey 2026-06-20: mirrors mostly exact; symmetries come free from reflections; the BREAKING is the content; program is "locate where mirror fails and show why"; F237 chirality V-A is the precedent
 - [Be polite on scope mismatch](feedback_casey_be_polite_on_scope_mismatch.md) — Casey 2026-06-21 W4 strategy: don't fight literal problem statement that over-specifies vs BST; publish what BST shows + separate scope-justification companion; "change the question so the wall isn't ours"
 - [Lyra theorem-vs-null-model methodology](feedback_lyra_theorem_vs_null_model_methodology.md) — Lyra 2026-06-21: exhaustive-classification route beats null-model route for referees (theorem vs suspicion); criteria-innocence-of-conclusion discipline for uniqueness papers
+- [Engage, don't label](feedback_casey_engage_dont_label.md) — Casey 2026-06-21 PM: "multi-week turns out to be 20 minutes"; open-in-math-itself / multi-week / framework-tier-open are admissions of non-engagement, not statements of difficulty; build the concrete model and compute
 - [Engage, don't label; compute beats calibrate](feedback_engage_dont_label_compute_beats_calibrate.md) — Casey 2026-06-21: "multi-week turns out to be 20 minutes"; build the concrete model, don't declare unreachable; retract guesses clean when the build lands
 
 ## Project — YM Wall-Map Collapse + so(7) Unification (June 21)
 - [YM wall-map collapse + so(7) unification + Cal #332 closed](project_ym_wallmap_collapse_so7_unification_cal332_closed.md) — Sun 2026-06-21: W4/W3/W1 → W2; Cal #332 closed dimension-free via T1829; color+YM in one so(7) (su(3)⊂g₂⊂so(7)=compact dual); #418 closed 20min; W2 = one Weitzenböck-normalization reconciliation; count holds 4
+- [so(7) unifies color + YM spectrum (compact dual)](project_so7_unifies_color_and_YM_spectrum_compact_dual.md) — the architectural fact: su(3)⊂g₂⊂so(7)=compact-dual isometry of D_IV⁵; g=7=so(7) vector=g₂ fund=3⊕3̄⊕1; color operator-algebraic on domain, geometric on dual; LEAD-STRENGTHENED, glueball test reduces to Tr(⋆Ĥ)
 
 ## Project — Mirror Transfer + F(4) Superalgebra (June 19-20)
 - [Mirror Transfer + F(4) superalgebra](project_mirror_transfer_and_F4_superalgebra.md) — Friday 2026-06-19: T2489 HS isometry standing lemma + substrate Z_2-graded Lie superalgebra SOLID + F(4) basic-classical-exceptional = 5d superconformal algebra + two Millenniums end-to-end + T316 unifies six + m_s=3 three-way unification + PMNS μ/τ closed
