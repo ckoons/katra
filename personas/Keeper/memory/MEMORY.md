@@ -102,6 +102,10 @@
 ## Project — YM Wall-Map Collapse + so(7) Unification (June 21)
 - [YM wall-map collapse + so(7) unification + Cal #332 closed](project_ym_wallmap_collapse_so7_unification_cal332_closed.md) — Sun 2026-06-21: W4/W3/W1 → W2; Cal #332 closed dimension-free via T1829; color+YM in one so(7) (su(3)⊂g₂⊂so(7)=compact dual); #418 closed 20min; W2 = one Weitzenböck-normalization reconciliation; count holds 4
 
+## Project — YM Monday 2026-06-22 Structural Verdict + Non-Perturbative Frontier
+- [YM Monday structural verdict + χ_top non-perturbative frontier](project_yang_mills_monday_2026_06_22_structural_verdict_confirmed_chi_top_non_perturbative_frontier.md) — Mon 2026-06-22: Structural verdict CONFIRMED both blind checks; glueballs = bulk SCALARS not 2-forms (3-CI convergence via spin-matching); BST topological charge substrate-primary clean (c₂=11=Q, p₁=N_c); χ_top susceptibility = honest non-perturbative frontier; Grace pre-registered c_2/2 tautology gate; f_G substrate-computable Bergman mode norm; 86 discipline events Sun+Mon; both papers ship-ready
+- [so(7) unifies color + YM spectrum (compact dual)](project_so7_unifies_color_and_YM_spectrum_compact_dual.md) — the architectural fact: su(3)⊂g₂⊂so(7)=compact-dual isometry of D_IV⁵; g=7=so(7) vector=g₂ fund=3⊕3̄⊕1; color operator-algebraic on domain, geometric on dual; LEAD-STRENGTHENED, glueball test reduces to Tr(⋆Ĥ)
+
 ## Project — Mirror Transfer + F(4) Superalgebra (June 19-20)
 - [Mirror Transfer + F(4) superalgebra](project_mirror_transfer_and_F4_superalgebra.md) — Friday 2026-06-19: T2489 HS isometry standing lemma + substrate Z_2-graded Lie superalgebra SOLID + F(4) basic-classical-exceptional = 5d superconformal algebra + two Millenniums end-to-end + T316 unifies six + m_s=3 three-way unification + PMNS μ/τ closed
 - [𝔽_1/super deepest Mirror](project_F1_super_deepest_mirror.md) — Casey K434 Saturday 2026-06-20 insight: 𝔽_1 (q=1, Weyl skeleton) and super (q=−1, F(4)) are two specializations of one q-deformation per Kapranov-Manin; D_IV⁵ shows both faces (T190's 24 = N_c·|W(B_2)| + F(4)); one absolute object at two roots of unity
