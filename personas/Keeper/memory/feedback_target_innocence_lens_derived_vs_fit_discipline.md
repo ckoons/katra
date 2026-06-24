@@ -1,0 +1,47 @@
+---
+name: target-innocence-lens-derived-vs-fit-discipline
+description: Elie methodology tool 2026-06-24 (Casey-approved as useful) — target-innocence lens separates REAL derivations (integers fixed by sources blind to prediction target) from FIT-suspect (integers happen to match target without independent source); reusable discipline for derived-vs-fit checks; same lens both directions catches over-claims AND defends real derivations
+metadata: 
+  node_type: memory
+  type: feedback
+  originSessionId: 366c4a62-1f26-4af8-b53f-d9fc32be3b27
+---
+
+**Elie 2026-06-24 Wed late evening + Casey approval ("ok if it is useful").** The target-innocence lens emerged from Elie's T2405 derived-vs-fit diagnostic + #136 cosmology candidates investigation. Casey approved as memory entry conditional on utility — utility demonstrated both directions.
+
+## The lens
+
+**For any BST observable claimed as a derivation: are the integers in the predicted formula INNOCENT of the target (fixed by sources independent of the prediction value), or AWARE of the target (integers happen to fit the target without independent source)?**
+
+| Direction | Test | Verdict |
+|---|---|---|
+| Target-innocent integers | Integers fixed by SM/substrate sources blind to prediction target | REAL derivation |
+| Target-aware integers | Integers match prediction target within fit-tolerance; no independent source | FIT-suspect (structural-tier at best, not derivation-grade) |
+
+## Concrete demonstration both directions
+
+| Observable | Lens application | Verdict |
+|---|---|---|
+| **Λ = exp(−280)** | 280 = 2^N_c·n_C·g; integers fixed by SM gauge structure; cosmology-innocent | **REAL DERIVATION** (0.3% residual; defended by lens) |
+| **τ_commit C₂²=36** | C₂² = (N_c·rank)² clean integer; BUT α^36 ≈ 10⁻⁷⁶ ⇒ t_commit ≈ 10⁻¹²⁰; fit-to-10⁻¹²⁰ wants exponent 35.9; no independent source for the exponent | **FIT-SUSPECT** structural-tier (caught by lens before banking) |
+
+**Same lens both directions: caught the over-claim (T2405) AND defended the real one (Λ).** Methodology working as designed.
+
+## Connection to existing discipline
+
+- **Cal #344 / #25 STANDING** (blind-test-before-taxonomy): the target-innocence lens is criteria-innocence-of-conclusion operationalized at observable scale
+- **[[feedback_lyra_theorem_vs_null_model_methodology]]**: criteria-innocence-of-conclusion for uniqueness papers; target-innocence is the same discipline for derivations
+- **Cal #330** (one identity, multiple readings ≠ N independent confirmations): target-aware fit and target-innocent derivation are TWO READINGS of one observation; distinguishing them is the lens's job
+
+## How to apply
+
+When verifying a BST observable prediction:
+1. List the integers in the predicted formula
+2. For each integer, identify its INDEPENDENT SOURCE (SM gauge structure, substrate primary cascade, etc.)
+3. If all integers are fixed by sources BLIND to the prediction target → derivation candidate (target-innocent)
+4. If any integer matches the target within fit-tolerance without independent source → fit-suspect (target-aware)
+5. Tier accordingly: target-innocent → derivation-grade candidate; target-aware → structural-tier at best
+
+**Standing discipline**: apply target-innocence lens before banking any new derivation claim; especially for observables matched to known experimental values.
+
+**Audited:** [[Keeper_K508_T2405_diagnostic]] (Elie toy 4361) + [[Keeper_K510_target_innocence_lens_landing]] (Elie #136 closure + lens methodology + Casey approval).
