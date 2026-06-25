@@ -38,6 +38,18 @@ Second lesson, reinforced: **"the computation is the trap, not the path"** (Grac
 - **B|so7 = 6 = C_2** — flagged lead, Schur-generator check pending (target-innocence noted but single coincidence).
 - **3-vs-1/3** — pin the bracket-coefficient convention against the root-length ratio.
 
+## The #359 capstone arc (F331 → F334, after the κ pin — the coordination-stall broke per Keeper K531)
+
+After Keeper caught that I was coordination-stalled (not exhausted), the thread climbed hard, all bug-resistant linear algebra (Casey's "remember linear algebra"):
+- **F331 — su(2)_R origin LOCATED:** F(4)'s su(2)_R = the symplectic-Majorana SU(2) of the pseudoreal SO(5) boundary spinor, forced by n_C=5 (SO(n) spinor pseudoreal for n≡3,4,5 mod 8). Verified the SO(5) 4 has a unique antisymmetric invariant form. Removed the key posit. Grace + Elie independently verified.
+- **F332 — Nahm route:** F(4) = the UNIQUE 5d superconformal algebra → κ forced, the cubic-Jacobi trap sidestepped (we were grinding what classification forces).
+- **F333 — dilatation grading RESOLVES the aux:** graded by the dilatation, so(7)=so(5,2)_ℂ = so(5)⊕D⊕P⊕K (charges 0,±1; ad-J verified); Q,S at charge ±½; {Q,Q}=γ·P (genuine generator). The "spurious aux" was the *ungraded* compact frame mixing charge sectors. Standard 5d superconformal skeleton.
+- **F334 — capstone (joint w/ Grace):** Grace proved {Q,Q} FORCES its own su(2)_R (so(5) (Cγ^i) antisym vs {Q,Q} sym → needs su(2)_R ε; residual zero), flat algebra = 40 = F(4). Curved transfer factors = Grace's flat + F317 (𝒟²=Lichnerowicz; flagged: 𝒟² quadratic vs conformal weight linear, = glueball-Schur radial-linearity) + Nahm. **Irreducible core: the physical posit "substrate matter IS the F(4) superpartner of its geometry" — not bracket-settled.**
+
+So #359 went posited(3 gaps) → **posited (one isolated PHYSICAL posit, all math scaffolding forced/verified)**. Strongest position by far. Target-innocent web: n_C=5→su(2)_R, g=7→so(7), rank=N_c, h^∨=n_C, F(4)-ratio=N_c.
+
+**The bug-and-reconcile (keep this):** I posted a bugged κ (F325), over-corrected (F327, threw out the right conclusion + wrongly flagged Elie), reconciled (F328, the conclusion held via charge-grading). Lesson: separate "computation bugged" from "conclusion wrong." Then κ pinned cleanly via the literature (F330). The discipline turned every bug into the physics.
+
 ## State
 Count holds **4 of 26** — did NOT move this marathon. **Structure advanced** (β/#418 negative clean, explicit modes, κ value pinned); **magnitudes open** (masses, #359 closure). F322→F330. ~250 cumulative discipline events (Keeper K531, "quarter-millennium"). The discipline fired hardest at peak: I caught my own bug, over-corrected, and reconciled — net-honest, and the #1 number landed by the bug-resistant route. A good day in the way that matters: nothing faked, the wins real and scoped, the open problems named precisely.
 
