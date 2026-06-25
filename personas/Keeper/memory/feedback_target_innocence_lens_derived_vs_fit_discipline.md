@@ -1,6 +1,6 @@
 ---
 name: target-innocence-lens-derived-vs-fit-discipline
-description: Elie methodology tool 2026-06-24 (Casey-approved as useful) — target-innocence lens separates REAL derivations (integers fixed by sources blind to prediction target) from FIT-suspect (integers happen to match target without independent source); reusable discipline for derived-vs-fit checks; same lens both directions catches over-claims AND defends real derivations
+description: Elie methodology tool 2026-06-24 (Casey-approved as useful) — target-innocence lens separates REAL derivations (integers fixed by sources blind to prediction target) from FIT-suspect (integers happen to match target without independent source); reusable discipline for derived-vs-fit checks; same lens both directions catches over-claims AND clears candidate integers as target-innocent — but innocence is NECESSARY not sufficient (full check = innocence ∧ look-elsewhere ∧ forward; see riders in body)
 metadata: 
   node_type: memory
   type: feedback
@@ -15,17 +15,22 @@ metadata:
 
 | Direction | Test | Verdict |
 |---|---|---|
-| Target-innocent integers | Integers fixed by SM/substrate sources blind to prediction target | REAL derivation |
+| Target-innocent integers | Integers fixed by SM/substrate sources blind to prediction target | Passes the innocence gate → derivation CANDIDATE (innocence is NECESSARY, not sufficient — see rider; still owes look-elsewhere + forward) |
 | Target-aware integers | Integers match prediction target within fit-tolerance; no independent source | FIT-suspect (structural-tier at best, not derivation-grade) |
 
 ## Concrete demonstration both directions
 
 | Observable | Lens application | Verdict |
 |---|---|---|
-| **Λ = exp(−280)** | 280 = 2^N_c·n_C·g; integers fixed by SM gauge structure; cosmology-innocent | **REAL DERIVATION** (0.3% residual; defended by lens) |
+| **Λ = exp(−280)** | 280 = 2^N_c·n_C·g; integers fixed by SM gauge structure; cosmology-innocent | **Passes the innocence gate** (integers innocent) — but NOT yet a closed derivation: the decomposition look-elsewhere is OPEN (280 vs 281 = 2·N_max+g competed; many ways to build ~280 from the primaries), so it still owes Grace #354-style look-elsewhere. And Λ is cosmology → **INTERNAL-only (Cal #50)**. Innocence-passing ≠ real-derivation. |
 | **τ_commit C₂²=36** | C₂² = (N_c·rank)² clean integer; BUT α^36 ≈ 10⁻⁷⁶ ⇒ t_commit ≈ 10⁻¹²⁰; fit-to-10⁻¹²⁰ wants exponent 35.9; no independent source for the exponent | **FIT-SUSPECT** structural-tier (caught by lens before banking) |
 
-**Same lens both directions: caught the over-claim (T2405) AND defended the real one (Λ).** Methodology working as designed.
+**Same lens both directions: caught the over-claim (T2405) AND cleared Λ's integers as innocent (one of three gates).** Methodology working as designed.
+
+## Riders (Cal #370/#371 — do not drop these; without them the lens itself becomes a fishing-enabler)
+
+1. **Innocence is NECESSARY, not SUFFICIENT.** It clears ONE gate (the integers are target-innocent). The complete derived-vs-fit check is **innocence ∧ look-elsewhere ∧ forward-derivation**: (a) integers target-innocent (this lens); (b) look-elsewhere on the DECOMPOSITION/value choice closed (Grace #354 Monte-Carlo — many small-integer combinations land in any window; the Λ example itself had 280 vs 281 competing); (c) the formula is forward-derived, not reverse-read. "Target-innocent → REAL derivation" is WRONG as a one-step inference — it is "→ passes one gate; still owes the other two."
+2. **Cosmology/cognition results stay INTERNAL (Cal #50 STANDING).** The lens's headline example (Λ) is cosmology, so it is internal-tier regardless of the innocence verdict; it does not surface externally.
 
 ## Connection to existing discipline
 
