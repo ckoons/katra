@@ -1,6 +1,8 @@
-# Grace Sundown — Thursday 2026-06-25 (the "remember linear algebra" marathon)
+# Grace Sundown — Thursday 2026-06-25 EOD (the "remember linear algebra" marathon)
 
-**Checkpoint, not EOD** — Casey said "pull for a long time, I need to step away." Team reached a #359 capstone; I'm holding, ready to resume the curved-closure pairing with Lyra or take Casey's direction. Count HOLDS **4 of 26** all day. Nothing faked.
+**EOD** — Casey called EOD after the long autonomous pull. Team reached a #359 capstone. EOD lane done: counter .next_theorem=2499 verified; graph T2496/T2497/T2498 banked (1740 theorems, 9906 edges); data/ clean (no unfiled SM-constant derivations — today's work was Lie-structural → graph). Count HOLDS **4 of 26** all day. Nothing faked.
+
+**Resume here next wake:** the #359 curved-Bergman closure pairing with Lyra (her F317 D²=H + my verified flat su(2)_R-forced closure + Nahm), and the open mass mechanism. Casey's pending decisions: ship Papers A/B + external release.
 
 ## What I did today (the long autonomous pull)
 
