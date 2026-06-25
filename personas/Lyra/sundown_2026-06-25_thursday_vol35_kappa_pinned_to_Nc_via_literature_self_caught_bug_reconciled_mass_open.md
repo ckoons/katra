@@ -1,7 +1,7 @@
 # Sundown — Lyra, Vol 35
 **2026-06-25 Thursday (date-verified)** · the F(4) κ pinned to N_c via the literature, after a self-caught bug and a full reconciliation; the mass mechanism honestly open
 
-## Where I am (mid-marathon checkpoint — Casey stepped away saying "pull for a long time")
+## Where I am (EOD — Casey called it after a long autonomous pull)
 
 A long, winding, *honest* stretch. The marathon's #1 foundational number — the F(4) defining ratio κ — is now **pinned to 3 = N_c** by the classified root system, after the bracket route trapped all three of us (Elie, Grace, me) and I posted a bugged κ computation, caught it, over-corrected, and then reconciled it cleanly. The mass mechanism came back an **honest negative** on every natural measure. Count held **4 of 26** the whole way.
 
@@ -53,4 +53,11 @@ So #359 went posited(3 gaps) → **posited (one isolated PHYSICAL posit, all mat
 ## State
 Count holds **4 of 26** — did NOT move this marathon. **Structure advanced** (β/#418 negative clean, explicit modes, κ value pinned); **magnitudes open** (masses, #359 closure). F322→F330. ~250 cumulative discipline events (Keeper K531, "quarter-millennium"). The discipline fired hardest at peak: I caught my own bug, over-corrected, and reconciled — net-honest, and the #1 number landed by the bug-resistant route. A good day in the way that matters: nothing faked, the wins real and scoped, the open problems named precisely.
 
-— Lyra, Thu 2026-06-25, date-verified. κ pinned to N_c via the literature after the bracket trapped everyone; self-caught bug fully reconciled (separate "bugged" from "wrong"); masses honestly open. Mid-marathon checkpoint — Casey pulling long, no EOD called.
+## Open / next (for next session)
+- **#359 curved closure** — the one dynamical residual: does **{𝒟₊,𝒟₊} = p⁺** on the curved Hardy space H²(D_IV⁵) (the level-raising graded piece of 𝒟², NOT the full Lichnerowicz p⁺+H+p⁻)? Curved analog of Grace's verified flat {Q,Q}=P. By Nahm: binary — F(4) at κ=N_c, or an obstruction. The Lyra+Grace lane (my F317 framework + her closure structure). Genuine research — do NOT solo-rush.
+- **Irreducible physical core of #359** — "substrate matter = F(4) superpartner of its geometry"; interpretive, no bracket settles it. #359 may rest permanently here even with structure fully forced.
+- **Mass mechanism** — honest negative on every natural measure (norm/overlap/volume/IPR miss by 1-2 orders; muon π-power and tau integer-product can't share one measure). Possibly the Yukawa triple-overlap, or irreducible inputs. Real open problem.
+- **Live Casey decisions** — ship Papers A/B; external release (Calibration #19 language if so).
+- **3-vs-1/3** κ generator-convention; **B|so7=6=C_2** flagged lead (Schur-check).
+
+— Lyra, Thu 2026-06-25, date-verified. **EOD.** The long pull: #359 climbed from "is the substrate even super?" to one isolated dynamical residual ({𝒟₊,𝒟₊}=p⁺ on H²(D_IV⁵), Nahm-binary) plus an irreducible physical core — su(2)_R forced, κ=N_c pinned three ways, the aux dissolved by the dilatation grading, all target-innocent. κ pinned via the literature after the bracket trapped everyone; self-caught bug fully reconciled (separate "bugged" from "wrong"); masses an honest negative; count held 4 of 26. Notes F322→F334 filed, board current, state checkpointed. A good, honest day. Holding the curved-closure pairing with Grace and Casey's ship/external calls for next session.
