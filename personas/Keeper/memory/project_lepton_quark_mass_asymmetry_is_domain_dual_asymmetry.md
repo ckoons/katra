@@ -51,13 +51,23 @@ metadata:
 - d_q(ν) DEMOTED to SUBLEADING correction (not texture source)
 - Grace's pre-emptive Cal #27 self-application caught elegant {-2/3, +1/3, +1/3} pattern as alignment-dependent (not banked)
 
-**MASS TWO-HALVES STRUCTURE** (K551 Grace substantive substrate-architectural finding via own forward test):
-- **Half (1): Deposit density** — formal degree d(ν); carries ν (conformal weight)
-- **Half (2): Measurement determinant** — over little group (SO(4) × color); carries color fiber a = N_c
-- K313 down/lep = N_c² anchors on **color fiber** (geometric object), NOT formal degree
-- Framework was already consistent across time (K313 two weeks ago + K548 Lane A curvature determinant + K551 honest negative); wrong framing (texture from formal degree) was the gating issue
-- N_c was never going to come from formal degree
+**MASS TWO-HALVES STRUCTURE** (K551 Grace substantive substrate-architectural finding via own forward test + K552 Cal linear-algebra unification structurally FORCED):
+- **Half (1): Deposit density** — formal degree d(ν); carries ν (conformal weight) ADDITIVELY (root-product shifts give {n−ν±a} terms, NEVER N_c-powers)
+- **Half (2): Measurement determinant** — over little group (SO(4) × color); carries color fiber a = N_c MULTIPLICATIVELY-EXPONENTIALLY via **det(A ⊗ I_{N_c}) = det(A)^{N_c}** standard tensor-product identity
+- K551 honest negatives were INEVITABLE STRUCTURALLY per Cal K552 linear-algebra reading: searching for N_c-powers in additive object can only fail
+- Georgi-Jarlskog {3, 1/3, 1} being a POWER texture IS THE TELL — determinant over color fiber, not weight shift
+- K313 down/lep = N_c² anchors on **color fiber** (geometric object via det exponent), NOT formal degree
+- Framework consistent across time (K313 two weeks ago + K548 Lane A curvature determinant + K551 honest negative + K552 linear-algebra unification); wrong framing (texture from formal degree) was the gating issue
 - Grace pre-emptively killed tempting N_c² = dim(3⊗3̄) candidate (gauge-invariant quark mass = color singlet dim 1, same as lepton)
+- Elie K552 SU(3)-unimodular insight: N_c comes from NON-UNIMODULAR U(1)_color-scale on dual (not from SU(3) itself which is det=1); per-stratum U(1)_color-weight forced via unitarity bound = sharply-located open mechanism
+
+**Down-row UNIFICATION** (Grace K552): N_c² magnitude + ±1 down-split sign were carried as TWO open pieces — they're ONE mechanism via so(3) generation triplet {+1, 0, −1} weight-difference. N_c^{(+1)−(−1)} = N_c². Weight-0 at vertex FORCED (b/τ color singlet at so(7) zero-weight). Whole down-row collapses to ONE OPEN BIT: which of two charged strata carries 3 vs 3̄. Grace located precisely + STOPPED at honest tier (one-bit correlation = near-zero evidence per Cal #286 floor; mechanism is the lead, not the match).
+
+**Forced color reps** (Lyra K552 via G₂/SU(3) stabilizer = standard SU(3) embedding): G₂/SU(3) = S⁶, so standard branching 7 = 1 ⊕ 3 ⊕ 3̄. Lepton = singlet (color trivial); quark = fundamental 3 (dim N_c, Casimir 4/3). Forced color reps for Elie's color-fiber determinant.
+
+**Muon Lane A FORWARD CLOSURE** (Grace K552): locus-measure residual = vol(Shilov)/vol(S⁴) = π (time circle factor) forced FORWARD by little group SO(4) ⊂ SO(5) being purely spatial (acts on S⁴ tangent, no component in so(2) time circle since K = SO(5)×SO(2) separates spatial S⁴ from time circle). Massive state spreads over S⁴ → π¹² (not π¹⁸ which would be 6+3 directions if time circle included). Forward check confirms little group selected S⁴, nothing tuned. Combined with Cal #415 FK ν-independence theorem: muon banking conditions all forward-derived. **Cal banks +1 muon → 5 the instant he confirms cleanly** per his own K547+K551 standing.
+
+**Casey "remember linear algebra" empirically vindicated FOURTH TIME today** (K552): Cal det(A⊗I)=det(A)^N + Grace SO(4)-spatial-S⁴ + Lyra G₂/SU(3) stabilizer + Elie SU(3)-unimodular insight. Each linear-algebra reading produced substantive structural finding. Framework SHARPER tonight than yesterday morning.
 
 **Down-row banking gate RELOCATED** to Elie's color-fiber determinant (SO(4) × color) on compact dual Q⁵; N_c² mechanism is open research.
 
