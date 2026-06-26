@@ -30,10 +30,20 @@ metadata:
 - CKM (4 angles): pending up-sector strata + inter-stratum overlap
 - Up-sector: BOUNDARY tier-tagged honestly (substantive in own right — top y_t = EW scale identification)
 
-**Mathematical structure**:
-- Domain D_IV⁵: SO(5,2)/SO(5)×SO(2); Shilov boundary S⁴×S¹/Z₂; carries the lepton deposit per F86 Korányi-Wolf strata
-- Compact dual Q⁵ = SO(7)/SO(5)×SO(2); carries the quark deposit per #418 color resolution
-- Both share the same B_3 root system source for d(ν) (Cal #412 sympy-verified); but the locus geometry differs
+**Mathematical structure** (sharpened K549 Grace real-form unification):
+- D_IV⁵ = SO(5,2)/SO(5)×SO(2) (Lorentzian noncompact bounded symmetric domain) and Q⁵ = SO(7)/SO(5)×SO(2) (compact 5-quadric) are **TWO REAL FORMS of the SAME COMPLEXIFIED B_3** (SO(7,ℂ))
+- d(ν) computed from B_3 root system (Cal #412 sympy-verified) IS the formal-degree polynomial of B_3
+- **d_q(ν) = SAME B_3 root product with highest weight shifted by color weight** (su(3)⊂g₂⊂so(7), 7 = 3⊕3̄⊕1)
+- Leptons (color singlet at zero-weight) RECOVER d(ν) exactly
+- "Same engine, different manifold" made precise: **the real form changes, the roots don't**
+- Most structural form of the asymmetry possible: the real form CHOICE encodes the lepton/quark split
+- Per Cal #35 STANDING: Lyra's "same engine different manifold" + Grace's "two real forms" = ONE substrate-architectural unification, two readings (Grace's deeper)
+
+**±1 down-split sign STRONG LEAD** (Grace K549): sign(d(ν)) matches Georgi-Jarlskog {3, 1/3}; target-innocent; 1 bit so 50% prior — STRONG LEAD NOT FORCED; closure mechanism NAMED: sign of formal degree tracking 3-vs-3̄ color via unitarity bound. Down-row banks +3 if sign mechanism closes.
+
+**Five-Absence at peer level** (Grace K549): su(3)⊂g₂⊂so(7) is Q⁵ GEOMETRY per #418 (color = compact-dual unitary), NOT a GUT gauge group. Grace's own sin²θ_W = 3/8 lesson carried pre-emptively per [[feedback_five_absence_first_filter]].
+
+**Cal #415 FK ν-independence THEOREM** (K549): by Harish-Chandra formal degree d(π_λ) = c·∏(λ+ρ,β), prefactor c is independent of λ; cancels EXACTLY in mass ratio; c_FK = 1.303 contamination fear DISSOLVED rigorously. Small locus-measure residual (different-dim strata) follows-from-measure-definition per Grace+Lyra confirmation.
 
 **Substantive substrate-architectural unification of three prior findings**:
 1. [[project_418_color_resolution_compact_dual_unitary_lorentzian_domain_continuation_honest_negative_on_naive_Schwinger]] (color = compact-dual unitary)
