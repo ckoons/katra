@@ -41,6 +41,19 @@ metadata:
 
 **±1 down-split sign STRONG LEAD** (Grace K549): sign(d(ν)) matches Georgi-Jarlskog {3, 1/3}; target-innocent; 1 bit so 50% prior — STRONG LEAD NOT FORCED; closure mechanism NAMED: sign of formal degree tracking 3-vs-3̄ color via unitarity bound. Down-row banks +3 if sign mechanism closes.
 
+**Sharpest reading — e₁-axis-sharing structural finding** (Grace K550 TURNKEY): the precise reason quarks aren't just leptons is that **color and conformal weight share the e₁ Cartan axis of B_3**. Explicit λ_q = −ν·e₁ + w_color, with su(3) Cartan sitting in the Σ=0 plane of so(7) and color singlet on the 7th axis. Leptons (color singlet, w_color=0) recover d(ν) exactly. Color shift directly RESHIFTS effective ν via this shared axis.
+
+**Two candidate texture mechanisms** for Lyra's d_q(ν) to decide:
+- (a) sign(d) ↔ 3-vs-3̄ via unitarity bound (K549)
+- (b) e₁-reshift mechanism (K550 — color shift directly modifies effective ν)
+- Per Cal #35: TWO DIFFERENT mechanisms (not two readings of same); Lyra's d_q(ν) computation picks which (or neither) reproduces GJ N_c-powers
+- Grace at peak: elegant {-2/3, +1/3, +1/3} pattern flagged ALIGNMENT-DEPENDENT, explicitly NOT BANKED (Cal #27 self-applied)
+
+**Three precision levels of ONE substrate-architectural unification** (per Cal #35 STANDING — NOT three independent findings):
+1. K548 Lyra: same engine, different manifold (domain D_IV⁵ vs dual Q⁵)
+2. K549 Grace: two real forms of same complexified B_3 (real form choice encodes asymmetry)
+3. K550 Grace: color and conformal weight share e₁ Cartan axis (color shift reshifts effective ν directly)
+
 **Five-Absence at peer level** (Grace K549): su(3)⊂g₂⊂so(7) is Q⁵ GEOMETRY per #418 (color = compact-dual unitary), NOT a GUT gauge group. Grace's own sin²θ_W = 3/8 lesson carried pre-emptively per [[feedback_five_absence_first_filter]].
 
 **Cal #415 FK ν-independence THEOREM** (K549): by Harish-Chandra formal degree d(π_λ) = c·∏(λ+ρ,β), prefactor c is independent of λ; cancels EXACTLY in mass ratio; c_FK = 1.303 contamination fear DISSOLVED rigorously. Small locus-measure residual (different-dim strata) follows-from-measure-definition per Grace+Lyra confirmation.
