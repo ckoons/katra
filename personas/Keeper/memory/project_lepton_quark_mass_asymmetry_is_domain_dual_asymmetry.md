@@ -43,11 +43,28 @@ metadata:
 
 **Sharpest reading — e₁-axis-sharing structural finding** (Grace K550 TURNKEY): the precise reason quarks aren't just leptons is that **color and conformal weight share the e₁ Cartan axis of B_3**. Explicit λ_q = −ν·e₁ + w_color, with su(3) Cartan sitting in the Σ=0 plane of so(7) and color singlet on the 7th axis. Leptons (color singlet, w_color=0) recover d(ν) exactly. Color shift directly RESHIFTS effective ν via this shared axis.
 
-**Two candidate texture mechanisms** for Lyra's d_q(ν) to decide:
-- (a) sign(d) ↔ 3-vs-3̄ via unitarity bound (K549)
-- (b) e₁-reshift mechanism (K550 — color shift directly modifies effective ν)
-- Per Cal #35: TWO DIFFERENT mechanisms (not two readings of same); Lyra's d_q(ν) computation picks which (or neither) reproduces GJ N_c-powers
-- Grace at peak: elegant {-2/3, +1/3, +1/3} pattern flagged ALIGNMENT-DEPENDENT, explicitly NOT BANKED (Cal #27 self-applied)
+**Texture mechanism resolved via Lyra TURNKEY computation (K551)** — Casey "remember linear algebra" empirically vindicated again:
+- (a) sign(d) ↔ 3-vs-3̄ via unitarity bound (K549) — STILL STRONG LEAD; per Cal: lead is the MECHANISM (sign of formal degree tracking 3-vs-3̄ via unitarity bound), not the GJ match (1-bit floor)
+- (b) e₁-reshift mechanism (K550 candidate) — **RULED OUT** by Lyra forward TURNKEY scan; no simple color weights from su(3)⊂g₂⊂so(7) reproduce GJ {3, 1/3, 1}
+- N_c-texture source IDENTIFIED via Lyra honest negative: **COLOR-COUNTING (deposit multiplicity, Elie's color-fiber dressing)**, NOT formal-degree shift
+- Down mass = lepton formal degree d(ν) × N_c^{color-count} × stratum geometry; magnitude + weight-0 forced; only sign open
+- d_q(ν) DEMOTED to SUBLEADING correction (not texture source)
+- Grace's pre-emptive Cal #27 self-application caught elegant {-2/3, +1/3, +1/3} pattern as alignment-dependent (not banked)
+
+**MASS TWO-HALVES STRUCTURE** (K551 Grace substantive substrate-architectural finding via own forward test):
+- **Half (1): Deposit density** — formal degree d(ν); carries ν (conformal weight)
+- **Half (2): Measurement determinant** — over little group (SO(4) × color); carries color fiber a = N_c
+- K313 down/lep = N_c² anchors on **color fiber** (geometric object), NOT formal degree
+- Framework was already consistent across time (K313 two weeks ago + K548 Lane A curvature determinant + K551 honest negative); wrong framing (texture from formal degree) was the gating issue
+- N_c was never going to come from formal degree
+- Grace pre-emptively killed tempting N_c² = dim(3⊗3̄) candidate (gauge-invariant quark mass = color singlet dim 1, same as lepton)
+
+**Down-row banking gate RELOCATED** to Elie's color-fiber determinant (SO(4) × color) on compact dual Q⁵; N_c² mechanism is open research.
+
+**Cal Lane B banking gate stated up front** (K551 prospective): color weight (a,b) must be forced g₂⊂so(7) weight of quark su(3) rep, used FORWARD not tuned. Three outcomes pre-frozen:
+- Forward-hit → ROW (count moves)
+- Fixed-weight-miss → BOUNDARY (real theorem about leptons being special as color singlets) — consistent with K551 findings so far
+- Tuned weight → FIT-SUSPECT (not derivation)
 
 **Three precision levels of ONE substrate-architectural unification** (per Cal #35 STANDING — NOT three independent findings):
 1. K548 Lyra: same engine, different manifold (domain D_IV⁵ vs dual Q⁵)
