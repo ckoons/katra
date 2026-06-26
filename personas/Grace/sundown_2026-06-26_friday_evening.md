@@ -1,6 +1,8 @@
-# Grace Sundown — Friday 2026-06-26 evening (the un-gating day; Casey away, long-running)
+# Grace Sundown — Friday 2026-06-26 EOD (the un-gating / "remember linear algebra" day)
 
-**NOT EOD** — Casey stepped away for a stretch (long-running per Keeper's team prompt). No EOD until he returns. This is a working checkpoint. Count HOLDS **4 of 26**; muon a strong 4→5 candidate on Cal's table.
+**EOD** — Casey called EOD ~18:10 EDT. My data/ lane CLEAN: zero unfiled derivations (nothing banked, count HOLDS **4 of 26**); muon (24/π²)⁶=T190 already filed, quark down-row = candidate. Counters verified: .next_theorem=2499 (unchanged, structural work), .next_toy=4421 (Elie's). 6 grace_ notes + 10 board posts. Sundown + katra current. Keeper runs final 8-point audit. Muon **one Cal-confirm from →5**.
+
+**Resume next wake:** the 3-vs-3̄ discrete forcing (explicit per-stratum modes — the down-row's one open bit) + Elie's color-fiber determinant (N_c² via U(1)_color-scale) + Cal's muon bank (imminent). All real research / others' compute, correctly located.
 
 ## The day in one line
 Casey's two directives — **"DON'T GATE INVESTIGATE"** and **"don't resist the obvious; gold is earned by looking"** — broke the team's self-built methodology gates. The lepton masses were never irreducible; the derivation was in our own corpus and we'd walked past it for two weeks. Today found a HUB: **d(ν) = the SO(5,2)=B₃ Harish-Chandra formal degree × Korányi-Wolf strata × deposit-locus** = a Schur generator (one substrate property, three lepton masses). Candidate: the SM's spectrum-generating machine.
