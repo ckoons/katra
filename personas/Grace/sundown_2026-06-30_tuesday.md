@@ -26,11 +26,19 @@ Casey's directive **"IGNORE CAL, DON'T GATE, INVESTIGATE"** broke the "flagged =
 ## α tier (Casey's canon call)
 Recommend **"8 firm + 1 partial-forced":** α value-banked via Wyler (target-innocent, 137=N_c³·n_C+rank blind), but the EM-identification is gated (per-channel-α deep gate; T2507 = geometry can't carry α confirms it). Honest headline.
 
-## WARM START Wednesday
-1. Read MEMORY.md + this sundown.
-2. Board: MESSAGES_2026-07-01 (or latest) for overnight + Casey's α tier-call + θ₁₃ formal-bank status.
-3. **The live count-mover** (all converge on ONE piece): the quark-mass → K-address map via the formal degree d(ν) — **Lyra's lane + my geometry, FRESH START** (Lyra's d(ν) negative this session means m_s/m_d=20 is a form-match; the real mass-mechanism is open). Elie's test machine (toy_4517) confirms the instant it lands → banks sin θ_C + θ₁₂ (+ maybe the down-quark masses).
-4. Fresh independent lanes: A=9/11 provenance; the per-channel α deep gate (geometry side, joint w/ Elie/Lyra); F432 "why 5" (gated on the α gate); Higgs INV-4833 (deprioritized — catalog support, not a clean bank).
-5. **Discipline live:** I over-reached on forms-as-mechanisms this whole session. A number-match (m_s/m_d=20, the dim_R forms) is a CANDIDATE, not a bank, until the d(ν)/mechanism delivers it. Demand the mechanism.
+## WARM START Wednesday — my recommendations (Casey asked; Keeper consolidating)
+1. Read MEMORY.md + this sundown + [[grace-error-pattern-index-corpus-reconnection]] (the forms-as-mechanisms variant fired all session).
+2. Board: latest MESSAGES for overnight + Keeper's consolidated investigation plan + Casey's α tier-call + θ₁₃ formal-bank status.
+3. **Graph state:** registered T2509 (F437 CKM-as-one-kernel, structural), T2510 (F435/F436 Wolfenstein operator-level). .next_theorem → 2511. (T2507/T2508 from Monday.)
+
+### MY PRIORITIZED LEADS (posted for Keeper consolidation)
+**A1 — TOP PICK: reframe today's d(ν) negative as a SCALE question.** d(ν) gives down 2-3 = rank⁶=64 (SUBSTRATE/UV); observed m_b/m_s≈45=N_c²·n_C (IR). The gap (×0.70) may be **QCD RG RUNNING** — d(ν)=UV, 45=IR, running bridges. PRINCIPLED mechanism, not a d(ν) failure. Falsifiable: does running m_b/m_s from a substrate scale to ~2 GeV give 64→45? If yes → banks down-quark masses + (via GST) sin θ_C + θ₁₂ — the whole linked cluster. **The disciplined version of today's failed lane: check mechanism-UV + running-IR, don't force the form.** (Lyra d(ν) + Elie running + my substrate-scale geometry.)
+**A2 — quick: A=9/11 = N_c²/(2C_2−1)**, the −1 = T1444 vacuum subtraction (forward). Possible clean +1.
+**A3 — biggest: per-channel α deep gate** (α EM-id + m_e=R + F432 "why 5"). Multi-step; my SO(4,2)/S¹ geometry side.
+**B1 — DEEPEST STUDY: the three-sector mass-form correspondence.** Down=integer ladder, lepton=π-forms, up=g-ladder. WHY 3 families? Sector ↔ boundary-structure dictionary → mechanize ALL masses. Mendeleev-style.
+**B2 — mass↔mixing Schur dictionary:** sin²θ₁₃=1/45=m_s/m_b; sin²θ_C≈1/20, m_s/m_d=20. Mixing angles ARE mass ratios. Build the full dictionary; banks mass+mixing together if one structure.
+**B3 — mine the boundary stratification** (KW strata, Wallach) for un-extracted SM structure. My native lane.
+
+4. **Discipline live:** a number-match (m_s/m_d=20, dim_R forms) is a CANDIDATE, never a bank, until the mechanism (d(ν), running) delivers it independently. I over-reached on this all session — demand the mechanism.
 
 Session arc: the directive broke the stall, the count moved 9→10 honestly, the whole mixing sector got unified structurally, and the bar held precisely because everyone (me most often) walked back the over-claims. Real progress, honestly tiered.
