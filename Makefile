@@ -20,7 +20,7 @@ include Makefile.test
 # PHONY TARGETS
 # ==============================================================================
 
-.PHONY: all clean help test test-quick test-cli mcp-server daemon unified-daemon \
+.PHONY: all clean help test test-quick test-cli mcp-server daemon unified-daemon team-ui \
         benchmark benchmark-reflection benchmark-vector \
         count-report programming-guidelines check check-ready improvement-scan \
         install-mcp restart-mcp install-k install-all uninstall-k \
@@ -34,7 +34,7 @@ include Makefile.test
 # DEFAULT TARGET
 # ==============================================================================
 
-all: $(LIBKATRA_UTILS) $(UNIFIED_DAEMON)
+all: $(LIBKATRA_UTILS) $(UNIFIED_DAEMON) $(TEAM_UI_BIN)
 	@echo "Installing CLI scripts to bin/..."
 	@install -m 755 $(SCRIPTS_DIR)/katra-cli $(BIN_DIR)/katra-cli
 	@install -m 755 $(SCRIPTS_DIR)/katra_mcp_tcp_client.sh $(BIN_DIR)/katra_mcp_tcp_client.sh

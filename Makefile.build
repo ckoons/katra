@@ -204,6 +204,30 @@ $(UNIFIED_DAEMON): $(UNIFIED_OBJS) $(MCP_LIB_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR
 unified-daemon: $(UNIFIED_DAEMON)
 
 # ==============================================================================
+# TEAM COORDINATOR UI
+# ==============================================================================
+# Terminal coordinator that fans Casey's input to the CI team via the katra
+# meeting room. Thin MCP/TCP client - links only the static utils library.
+TEAM_UI_BIN := $(BIN_DIR)/katra-team-ui
+TEAM_UI_OBJS := $(BUILD_DIR)/team_ui.o $(BUILD_DIR)/team_ui_mcp.o
+
+$(BUILD_DIR)/team_ui.o: team/ui/team_ui.c team/ui/team_ui.h | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/team_ui_mcp.o: team/ui/team_ui_mcp.c team/ui/team_ui.h | $(BUILD_DIR)
+	@echo "Compiling: $<"
+	@$(CC) $(CFLAGS_DEBUG) $(JANSSON_CFLAGS) -c $< -o $@
+
+$(TEAM_UI_BIN): $(TEAM_UI_OBJS) $(LIBKATRA_UTILS) | $(BIN_DIR)
+	@echo "Building team coordinator UI: $@"
+	@$(CC) -o $@ $(TEAM_UI_OBJS) -L$(BUILD_DIR) -lkatra_utils $(JANSSON_LDFLAGS) -lsqlite3 -lpthread $(LIBS)
+	@echo "Team coordinator UI built successfully"
+
+# Convenience target
+team-ui: $(TEAM_UI_BIN)
+
+# ==============================================================================
 # LOADABLE MODULE BUILD
 # ==============================================================================
 
