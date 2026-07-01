@@ -1,0 +1,50 @@
+# Sundown — Lyra, Vol 41
+**2026-07-01 Wednesday (date-verified, EOD 16:48 EDT)** · the day the down-quark mass lane converged to *understanding* not count-motion (RG-invariance killed the QCD-running rescue three ways), the sector-split mechanism was understood (color is the switch), Casey caught the whole team over-closing the per-channel-α negative by false analogy — which reopened it and reframed it to a total-substrate question — and I closed with two clean α-frontier findings (F447/F448). **Count held at 10** (θ₁₃ banked #10, K632). No motion, and that was the correct, honest outcome.
+
+## Where I am (EOD)
+
+A disciplined day whose yield was **understanding + discipline, not banks** — and every CI agreed that's correct. Count 10 held. I produced **F444–F448** plus a per-channel-α propagator scaffold, and I walked back three of my own claims cleanly (the running rescue, my F446 π-shortcut, my hasty α negative — the last caught by Casey). Symmetric discipline all day: four CIs walked back their own peak-elegance claims. **Casey's EOD directive: "remember linear algebra"** — captured as the forward lead below.
+
+## THE count: 10 (report against this ONE anchor — Keeper K632)
+
+**θ₁₃ = 1/(N_c²·n_C) = 1/45 formally banked as #10** (K632, on Casey's delegation + unanimous team + Keeper audit). 0.10% value, convention-robust (survived the whole RG-invariance analysis untouched), mechanism-disambiguated (boundary-reaching), target-innocent, Five-Absence clean. The Tuesday "shared 45 with m_b/m_s" turned out to be coincidence — which *strengthened* θ₁₃ by detaching the wobbly mass-45. Don't drift the anchor (Keeper caught "stays 9 / stays 10 / no motion" drift across three reports — it's 10).
+
+## The mass-lane arc (F444–F446): converged to understanding
+
+- **F444 — the QCD-running rescue is retired.** Same-sector quark mass ratios are **RG-invariant** (γ_m flavor-blind), so they don't run. The "45" (=N_c²·n_C) matched only the *mixed-scale* convention m_b(m_b)/m_s(2GeV)=44.8; the physical common-scale ratio is ~52. Three CIs converged independently (me: single-flow falsifier; Grace: physics; Elie: numerics). Grace's ×0.70 was convention-matching, not mechanism.
+- **F445 — the sector split is understood: color is the switch.** The measurement determinant traces an N_c-dim fiber per little-group mode; color charge sets *which* fiber — singlet → geometric transverse fiber (curvature Λ², carries π); triplet → flat color fiber (integer). That's why leptons carry π and the down ladder is integer. Target-innocent, banked as **understanding (K633)**. Also: the down ladder reads as cumulative-S⁴ harmonic counts (gap₁₂=H(≤2)=20, gap₂₃=H(≤3)=50) which beats (sector²)·n_C=45 on the *physical* ~52 (50 is −3.8%). **Lead, not bank.**
+- **F446 — half right, half walked back.** The stratum-per-generation assignment IS forced by the banked (Ĥ,D̂) spectrum (D̂=diag(n_C,rank,0); gen-3 uniquely Shilov at D̂=0) — SURVIVES, it's the operator restatement of K547's count-forcing. But my π-content shortcut ("D̂>0→π") was WRONG and superseded by established **K547** (June 26): π is forced by *locus compactness* — only the muon (Cartan-slice compact sphere → π¹²) is π-ful; electron (strip) and tau (point) are π-FREE (that's why m_τ/m_e=49·71 is integer). Elie (4531) + Grace both caught it. Corrected in-file; neutrino falsifier fixed to **ν₂ π-ful, ν₁ν₃ π-free** (forced by K547 modulo neutrinos using the deposit-locus operation; not currently data-testable; did NOT fish it).
+- **3 mass rungs scale-robust:** the two lepton π-forms + down m_s/m_d=20. All form-degenerate matches → all *mechanism-targets*, not candidates. m_s/m_d=20 held (Casey), banks only if the little-group determinant forces rank² forward.
+- **The one open count-lead:** does stratum geometry FORCE the down-ladder cutoff {≤2,≤3}→(20,50)? That's **Grace's Korányi–Wolf rank-1 reference lane** (she pulled her own June-26 determinant work and found my harmonic-cutoff lead is *disconnected* from the established point-2-form-bundle mechanism — she withdrew it as the mechanism; the real object is Lyra's colored curvature/flat determinant, not mode-counts). So the harmonic reading is a numerical lead; the mechanism is the colored determinant, still to build.
+
+## THE per-channel-α reopening (F447/F448) — Casey's catch, and the reframe
+
+Casey caught the whole team (including Keeper's audit) killing per-channel-α by **false analogy**: "photon is a color singlet → no N_c³" *felt* like the RG-invariance kill but is NOT a theorem. **Saved as [[feedback-verify-symmetry-kill-is-a-theorem-not-analogy]].**
+
+- **F447 — corrected:** a color-blind photon's *coupling* DOES carry N_c (vacuum polarization / R-ratio, one color trace) — but **LINEARLY**. So the *cubic* N_c³ in N_max=137=N_c³·n_C+rank is NOT electromagnetic (EM is linear; SO(4,2) is color-blind) — it's the **total-substrate color-sector share**. α=1/N_max, if it works, is a **total-substrate equipartition**, not "1/(photon's own channels)."
+- **F448 — computed, target-innocent:** the corpus's own photon model (T1268 = S¹ edges on K₇, g=7) has edge count **21=N_c·g (linear)** and edge-Laplacian spectrum **{0, g=7, 2C_2=12}**, trace 210=2N_c·n_C·g — every photon-own invariant linear in N_c; **137 (cubic) is absent**. Two independent lines now agree the photon is N_c-linear. **Peer-audit catch:** T1268's embedded "α=1/N_max=eigenvalue gap" is UNFORCED (asserted; actual spectrum {0,g,2C_2}); T1268 core (photon=edge) untouched — Keeper to log.
+- **Frontier verdict (Elie 4534):** the cell-count "N_cells=N_c^{N_c}·n_C+rank" is N_max *relabeled*, not an independent forcing (the one grounded piece: 27=N_c³=dim Albert/E₆ color-tensor). **Not forced; Elie refused to fish 137.** So **α stays value-banked (Wyler), EM-identification gated.** The route is *not* a-priori blind (Casey's catch stands) — it's a live total-substrate-equipartition candidate — but the forcing isn't delivered.
+
+## THE LEAD for Vol 42 — "remember linear algebra" (Casey's EOD directive)
+
+Both frontiers stalled at "needs a forcing," and the linear-algebra reframe is the way in. **F448 already showed the photon count IS a Laplacian spectrum** ({0,g,2C_2}) — not a hand-count. So:
+
+**The total-substrate count 137 = N_c³·n_C + rank is a DIRECT-SUM DIMENSION, not a cell-count.** 137 is *prime* (Elie 4535 corrected Keeper: 137 is below-average degeneracy, but has 18 additive-only routes, no pure product) → its structure is intrinsically **"bulk product + boundary offset"**: dim(H_bulk) + dim(H_boundary), with H_bulk = color-tensor(N_c³) ⊗ conformal-ladder(n_C) = 135, H_boundary = rank Shilov blocks = 2. **Attack it as the dimension/trace of an operator on H = H_gen⊗H_gauge⊗H_Clifford, not by counting cells.** The two forcing questions become linear-algebra questions: (1) is dim(H_bulk) forced as N_c³·n_C by a specific operator's spectrum? (2) is α = 1/dim(H) the equipartition (trace-normalized coupling)? This is the *same* move that worked for the photon (F448) and for the whole Vol-16 operator algebra. **Start Vol 42 by writing the operator whose dimension is 137 and asking if it's forced — don't count cells.** (Elie's cell-count and Grace's geometry then become checks on the operator, not the primary route.)
+
+## Discipline ledger (symmetric — my self-corrections)
+
+- Walked back the QCD-running rescue (my Tuesday framing) via the RG-invariance kill (F444).
+- Walked back my F446 π-content shortcut (superseded by K547; Elie 4531 + Grace caught it) — kept the valid stratum-forcing half.
+- **Casey caught my hasty per-channel-α negative** ("photon singlet → no N_c") — corrected to "carries N_c linearly" (F447). The team over-closed by false analogy; the lesson is banked to memory.
+- Held m_s/m_d=20 as mechanism-target (not candidate) — absorbed Keeper's form-degeneracy ruling (20 is form-cheap; the match carries no weight).
+
+## Pending Casey decisions
+
+1. **α tier-call** — reserved for Casey; recommendation input SHIFTED and is now precise: per-channel route **reopened + color factor grounded (27=Albert), but forcing NOT delivered** → α stays "value-banked Wyler, EM-id-gated" ("8 firm + 1 partial-forced"). Cal not pulled (reserved trigger).
+2. θ₁₃ already banked #10 (done, K632).
+
+## How to wake (Vol 42)
+
+Read MEMORY.md → this sundown → board **CI_BOARD_2026-07-01_Wednesday_LONG_PULL** + **MESSAGES_2026-07-01.md** (F444–F448 + all team posts). Count is **10** (θ₁₃, K632). **Two frontiers, both needing a FORCING that is a linear-algebra question:** (a) the α total-substrate count — *write the operator whose dim is 137 = dim(H_bulk)⊕dim(H_boundary), ask if it's forced; don't count cells* (Casey's "remember linear algebra"); (b) the down-ladder cutoff — the colored curvature/flat determinant (my color-rep object; Grace's KW geometry checks it). My role at EOD was constraint-provider/checker (α frontier: photon side closed, N_c³=total-substrate handed to Elie; down-ladder: colored determinant is mine to build, Grace's checker-prep armed). **The discipline lesson of the day: a "symmetry forbids it" negative is only a kill if it's an actual theorem — verify, don't pattern-match** ([[feedback-verify-symmetry-kill-is-a-theorem-not-analogy]]). And the plainer computed reading usually dissolves the wall (Casey: "not fishing if it's obvious").
+
+— Lyra, Wed 2026-07-01 EOD (date-verified 16:48). Count 10 held (θ₁₃ #10, K632). Mass lane → understanding (RG-invariance kill F444; sector split = color switch F445/K547/K551; F446 stratum-pin kept, π-shortcut walked back). Per-channel-α reopened by Casey's catch (false-analogy kill), reframed to total-substrate: photon carries N_c LINEARLY (F447), photon-own spectrum {0,g,2C_2}, 137 absent (F448, T1268 P4 audited unforced). α value-Wyler / EM-id-gated (forcing not delivered). **Vol 42 lead: attack the 137 count as an operator dimension (dim H_bulk ⊕ H_boundary), linear algebra not cell-counting.** Discipline symmetric — walked back 3 of my own claims, incl. the α negative Casey caught.
