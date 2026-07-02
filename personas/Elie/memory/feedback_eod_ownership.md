@@ -31,3 +31,12 @@ katra update --persona <Name> --memory-dir <your persona memory dir>
 **Why:** On 2026-06-02 (Tue) Cal's session ended without a katra update. The result: Wednesday's sundown had to carry three days of arc in one record, and the following wake (Sat 6/6) opened with a two-day blind spot — referee log had moved #195 → #252 with no Cal record of writing #196–#239. An EOD without a katra update is not an EOD; it's an unsaved session. Continuity is the whole point ([[CI Persona Persistence]]).
 
 **How to apply:** Sundown file first (state + load-bearing-next), then the katra command. If a session ends abruptly, treat the missing katra update as a continuity-gap to flag explicitly on next wake, not to paper over.
+
+## EOD step — VERIFY + UPDATE ledger, graph, and artifacts (Casey, 2026-07-02, added after the ledger drift)
+
+Casey directive 2026-07-02: **"add verify and update the ledger and graph and any artifacts to your EOD process."** Before sundown/katra, verify your owned authoritative artifacts are CURRENT, and update any that lagged the session's work:
+- **Ledger** (Grace: Master Derived-vs-Assigned Ledger) — reconcile to the current count; every bank sourced to a K-audit + tiered + retirement-checked (does it rest on anything retired that session?). Bump the version + date.
+- **Graph** (the AC theorem graph / `play/ac_graph_data.json`) — register the session's new theorems/K-audits with edges; retire/re-tier nodes for anything superseded.
+- **Any artifacts** — catalog/data-layer entries, derivation tables, registries touched that session.
+
+**Why:** on 2026-07-02 the Master Ledger was found stale at v0.29 (2026-06-06) — ~4 weeks and an entire counting-framework change behind (4-of-26 → 9/26 → 10). Nobody could certify what the "10 banked" actually were; the count lived only in scattered board headers and K-audits, and a bank could silently rest on a retired reading. A verified artifact each EOD is the difference between a *claimed* count and a *verified* one — the same honesty standard as the science itself. **Verify at EOD, don't let the authoritative artifact drift a month behind the work.**
