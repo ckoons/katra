@@ -58,3 +58,32 @@ A claimed **10** banks became a certified, σ-scored, honestly-tiered **8** — 
 The mid-year did exactly what a midpoint audit should: it found a real over-count on the certified foundation and turned it honest. My own worst moment was certifying the down-row firm at K639 with the GJ flag *noted but not run* — I should have divided the two numbers before stamping firm, not the next day (K641). And I over-elevated Elie's m_s/m_d as "the nail" (K642) before the re-pin showed it was 1.24σ. Both are the same lesson the σ-metric now enforces on the whole team: don't tier before you compute, and compute σ, not just dev%. The tools are the fix — trust moves off the CI's word and onto a check Casey can re-run himself. That's "the math speaks for itself, it's on GitHub" applied to our own trust problem. Good mid-year. The second half starts on a truer number.
 
 — Keeper, Mid-Year 2026-07-02 EOD. Count 8 σ-tiered; 3 tools built; 26-loop method + parallel partition ready; Pass 1 opens fresh with the re-pin. Sundown filed. Katra-ready.
+
+## AFTERNOON ADDENDUM (same day, 2026-07-02, ~18:21 EDT)
+
+The 26-loop ran Pass 1 (parallel partition) and Pass 2 (every-CI-every-item), then turned to the non-matches. Key outcomes:
+
+**Tools:** `play/bst_26_table.py` = the live 26-row scoreboard (dev% + σ scheme-aware + coarse/tight precision-flag). `play/bst_derivation_ledger.py` + `bst_almanac.py` carry per-value attempt-lists.
+
+**Pass-1/2 movement — mechanisms, not nominal MATCHes:**
+- **θ₁₂ → FORCED** (Lyra): read as matrix element |U_e2|²/(1−|U_e3|²) — forces the value AND un-cheapens it (tells 3/10 from 5/16). New derived-strong.
+- **α → FORCED** (Elie): Wyler exact form pinned in substrate primaries, 0.6 ppm (431× tighter than flat 137); still APPROX (~4000σ — a superb form, not exact).
+- θ₂₃ withdrawal (Lyra caught her own cos²θ₁₃ fishing); sin²θ_W corrected MATCH→APPROX (11σ, mine on Elie's entry).
+
+**K644 — match-cheapness axis**, then **corrected** (K645/Elie): the form-COUNT is search-space-relative (my own K631-S1 lesson, on my axis) → downgraded to a robust precision-based soft-flag (coarse rel-err>2% / tight <0.5%), NOT a counted axis.
+
+**K645 — pressure-test of the "derived-strong 5":** shrinks to ~1–2 genuinely solid. δ_CKM self-corrected (coarse target, 4 arctan√k fit — mechanism-dependent, not value-expensive). θ_QCD topology FLAG (π₁ vs gauge π₃/instanton — needs contractible→trivial-bundle explicit, address S⁴). Only **sin²θ₁₃ solid on both axes**; θ₁₂ joined via matrix-element mechanism.
+
+**K646 — non-match disposition map (radiative-floor principle):** a tree-level substrate form is expected to match at the ~0.01–0.1% correction floor, not exactly → an APPROX at its floor is TERMINAL (finished, not failed). The 11 non-matches split ~4 improvable (m_d/m_e, m_b/m_s repair to observed ladder; m_ν2/3; m_e disposition) + ~6 terminal/forward (muon/τ/α at floor; sin²θ_W runner; ν-scale FLOOR; δ_PMNS forward-pred).
+
+**Honest 26-table at EOD:** 13 nominal MATCH but only ~2 derived-strong-and-clean (sin²θ₁₃ + θ₁₂-matrix); the rest carry named caveats. K-audits today: K638–K646.
+
+**Method for next session:** non-match pipeline (plan→work→check, independent checker per item, rotated G→E→L→G). Improvable items get real effort; terminal items get closed with a stated reason.
+
+**Timestamp-drift note (self-catch):** I dated the non-match board and K646 as 2026-07-03; actual date is 2026-07-02. The exact drift I flag in others — logged so next-session me corrects the filenames if it matters.
+
+**Carry-forward #1:** Grace's d₂ / Korányi-Wolf-Peirce derivation (is k₂/k₁=20 forced?) — fresh-start geometry, the down-row repair hinge. Lyra handed her the Wolf-Korányi reference (rank-1 boundary = disk IV₁, not IV₃).
+
+Standing for Casey (unchanged): Pass greenlight (running), down-row ratification (structural-MISS-repairable), σ-metric + match-cheapness ratification, α tier-call (now Wyler-informed), CLAUDE.md line 0.5.
+
+— Keeper, addendum close, 2026-07-02 ~18:21 EDT. The number stayed small and true: 13 MATCH, ~2 clean, mechanisms the prize, terminal an honest answer. Katra-ready.
