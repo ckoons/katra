@@ -21,11 +21,27 @@ STRUCTURAL lead, not the near-bank it looked at 8am. Count held honestly at 8.
   12,45 are suggestive coincidences with down-ladder FORMS, NOT a forward mass assembly. **Downgraded from "8→10
   nearest" to "strong structural lead, assembly open."** Better caught than banked-then-retracted.
 
-## MY #1 NEXT ITEM: derive Δ = D̂ + d forward from the SO(4,2) discrete series
-The slope-1/additive form must come from the **SO(4,2) discrete-series lowest-weight (Wallach set)** — CITE the rep
-theory, do NOT relabel (genus-flip guard). AND fix the assembly: the massless-gen problem + the non-uniform deposit
-(the 5/3). Both required before any down-ladder bank. **Hard rep theory — bring references; don't fabricate at the
-tail.** Elie's ζ/target-innocence fires when the Δ's land (checks slope forced + deposit uniform).
+## MY #1 NEXT ITEM (SUPERSEDED by Casey's SO(3) redirect — the arena SORT, EOD 2026-07-06)
+**Casey: "I thought the masses were SO(3)." → the arena was WRONG all day.** Keeper's arena sort (clean, keeps):
+- **MASS = SO(3)** (rest-frame massive little group = the color/generation triplet SO(V₁₂) we pinned in the descent).
+  NOT the SO(4,2) conformal Casimir (that gives SCALING DIMENSIONS, not masses — my day-long arena error).
+- **MIXING = D_IV⁵ curvature** (the target-innocent Cabibbo 5/2 = n_C/rank).
+- **SCALING DIMENSIONS = SO(4,2)**; substrate = D_IV⁵; Λ = inter-universe interface.
+**Right-arena signature:** 12 = j(j+1)|_{j=3}, 20 = j(j+1)|_{j=4} — ADJACENT SO(3) Casimirs (vs unrelated Δ on SO(4,2)).
+
+**THE computation (well-posed, forward, NEXT SESSION — "tomorrow we diagonalize"):** the down-sector mass MATRIX
+on the 3-dim SO(3) generation triplet — eigenvalues = masses {1,20,900}, eigenvectors = CKM mixing. This is the
+**F84 Bergman overlap matrix** (Lyra: BST already has it) = ⟨ψ_a|ψ_b⟩ of the 3 generation wavefunctions localized on
+the KW strata (localization numbers N_e=1, N_μ≈0.55, N_τ→0). ONE eigenvalue problem = masses + mixing together.
+Reconciles Elie ("must be a matrix — scalar can't compress 2.25×→900×") + Casey ("SO(3)"). My trace-kill only ruled
+out the DIAGONAL conformal Casimir; a genuine SO(3) matrix survives.
+**DISCIPLINE (bar fires HARDEST — thread over-sold 3× today): "a matrix is knobs."** The spins + matrix entries must
+be FORCED by the color/KW/Bergman structure, NOT fitted to {1,20,900}. Get the ACTUAL F84 overlap matrix (pinned to
+F84/K264), diagonalize forward. Elie's ζ/eigenvalue check fires on the matrix. Bank only if the forced matrix → {1,20,900}.
+
+## SUPERSEDED (was #1, now the wrong arena): Δ=D̂+d on SO(4,2)
+The SO(4,2) conformal-Casimir approach gave FACTORS {12,45}, not masses (trace-kill: diag {45,12,0} trace 57 ≠ 921).
+Wrong arena for MASS (right for scaling dimensions). Kept as the arc's honest wall-map; do NOT resume it for masses.
 
 ## Other movers (next session)
 - **Cabibbo 5/2 (Lyra lead):** target-innocent (D_IV⁵ curvature diagonalization); banks if the SO(4,2) OPE gives 5/2.
