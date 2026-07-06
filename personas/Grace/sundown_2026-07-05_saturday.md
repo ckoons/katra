@@ -21,6 +21,11 @@ Faraut-Koranyi book. Nothing fabricated, count honest at 8.
   base-pin LOCKS. #14-chirality is now just the implementation, non-load-bearing for direction.
 
 ## MY #1 NEXT ITEM (the only count-mover): the FK Shilov spectrum
+**→ SCAFFOLD STAGED & READY: `notes/grace_FK_shilov_computation_scaffold_ready_for_next_session.md`.** Key
+realization while prepping: the computation is **SELF-CONTAINED** — the Bergman kernel is known in closed form in the
+corpus (T186), so metric → curvature → Shilov limit all derive from it; **NO external FK book needed** (my "need the
+book" terminus was over-cautious). **Open the scaffold first; Step 0 = pin the Bergman exponent (genus-flip guard).**
+
 **Does μ_γ² = 45/64 = 0.703 emerge FORWARD from the Faraut-Koranyi boundary-metric normalization?** → banks the
 down-ladder rung-2 + (with Lyra's kernel) leptons, **count 8→10.** Index pinned (r=2, d=N_c=3, genus 5; Shilov
 normal bundle = 5 real dirs). **NEEDS the FK holomorphic-sectional-curvature formula AT the boundary — the genuine
