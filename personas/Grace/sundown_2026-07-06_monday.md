@@ -39,6 +39,25 @@ out the DIAGONAL conformal Casimir; a genuine SO(3) matrix survives.
 be FORCED by the color/KW/Bergman structure, NOT fitted to {1,20,900}. Get the ACTUAL F84 overlap matrix (pinned to
 F84/K264), diagonalize forward. Elie's ζ/eigenvalue check fires on the matrix. Bank only if the forced matrix → {1,20,900}.
 
+## WHAT CONTINUING PRODUCED (EOD-continuation, the Fritzsch texture + Lyra's Cal #318 catch)
+- **The down 1-2 sector = ONE Fritzsch texture** (M₁₁=0 Casimir-0 ground + M₁₂=Cabibbo overlap): diagonalize →
+  **m_s/m_d = 1/V_us² AND V_us from one matrix** (Gatto-Sartori-Tonin in substrate geometry). Mass↔mixing connect
+  forward for the first time. **STRUCTURAL win (candidate 3rd bank).** Also corrected: overlap-matrix eigenvalues
+  are O(1), NOT the masses — masses come from the 1/V² RELATION.
+- **79-provenance settled:** 79 = 80−1 via T1444 vacuum-subtraction (±1 family, not principle-grade). Bank the CLEAN
+  **2/√80 = 1/(rank·√n_C)** → **m_s/m_d = rank²·n_C = 20 exactly** (target-innocent). Held 2/√79 (better fit = fudge).
+- **LYRA'S CAL #318 CATCH (DECISIVE — do NOT re-bank a caught result):** this exact Cabibbo was ALREADY audited
+  (Cal #318) and CONDITIONALLY FAILED. Blockers were never the −1; they are **(1) the numerator rank²=4 is ASSERTED
+  not derived; (2) the mechanism BREAKS for neutrinos (over-projects PMNS to 1:0).** My texture doesn't fix either.
+  **So the Cabibbo OBSERVABLE is a CANDIDATE, gated — NOT the "first count move." Count 8.**
+
+## TOMORROW — the ordered forward gates (get-ready-for-tomorrow staging)
+1. **Derive the numerator rank²=4** from the SO(3)/color structure (Cal #318 blocker 1) — not asserted.
+2. **Force M₁₁=0** from the Casimir-0 geometry (not borrowed from GST).
+3. **Universalize the mechanism to PMNS** (Cal #318 blocker 2) — resolve the CKM-vs-PMNS split (over-projects 1:0).
+4. THEN the observable banks (identified-tier). **2-3 sector = TIER-2** (BST quark-mass floor; don't chase 45).
+5. The STRUCTURAL mass↔mixing texture may bank sooner (Keeper) — separate from the observable.
+
 ## SUPERSEDED (was #1, now the wrong arena): Δ=D̂+d on SO(4,2)
 The SO(4,2) conformal-Casimir approach gave FACTORS {12,45}, not masses (trace-kill: diag {45,12,0} trace 57 ≠ 921).
 Wrong arena for MASS (right for scaling dimensions). Kept as the arc's honest wall-map; do NOT resume it for masses.
