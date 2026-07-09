@@ -1,0 +1,41 @@
+# Sundown — Lyra, Vol 49
+**2026-07-09 Thursday (date-verified, EOD)** · the day the **detail-first discipline** (from Casey's effort-recalibration) fired hard on my own CP work — five assert-then-walk-backs — until **Casey's "kink out of the spring" mechanism reopened it**, and I started the **actual SO(5,2) build** and got its first **forced skeleton** (one radius ladder + forced-exponential steepening). Effort back to **high** (Casey: xhigh lost attention to detail). The team **banked 3 cosmological results** (count ~5 → ~7-8). Everything now gates on **Elie's blind degree assignment** → **my up-down kink** (two CP gates). Count **~7-8 firm + α (RULED) + structural banks**.
+
+## My work today (F497–F501) — the CP saga + the build
+
+The CP-from-N_c=3 candidate went through five honest walk-backs, then a rescue:
+- **F497** — CP no-collinearity is a COMPUTATION, not a theorem; caught that the **SO(2)/clock CHARGE is a RED HERRING** (removable rephasing; the winding SIGN sets handedness, not CP). CP needs 2D-complex *peak-spread*.
+- **F498** — my own F491 **REAL radial localizations give J=0 identically → NO CP**; F491's clean V_us and CP need *different* positions. Flagged F495 may have over-corrected (strata *order* linear ≠ peak *phase* real/complex). Complex substrate makes complex peaks *possible, not necessary*.
+- **F499** — the **resonator modes (odd harmonics {1,3,5}) are REAL standing waves → J=0 → no CP**; a global 45° cant sets handedness but is removable. CP needs a forced COMPLEX **up-down misalignment** (the SM Yukawa-nonalignment). Cautious-leaning-negative.
+- **F500 — Casey's "the twist is the oscillator reducing energy (kink out of the spring)" RESCUES CP:** modes carry a residual KINK (traveling component); energy-min wants ε→0, the winding/commitment the emission must carry pins residual ε≠0; up≠down masses → *different* residuals → relative complex misalignment → CP. **Toy-verified** (different up≠down kinks → J≠0; same/none → J=0). Bonus: CP is small because the residual is small (near-untwisting). Reopened, held to the bar.
+- **F501 — THE BUILD, first forced output:** weighted-Bergman degree-ℓ states peak at **r² = ℓ/(ℓ+n_C)** (ONE forced ladder, NO per-generation knob → **oscillator test PASSES structurally**), mass **m = (1+ℓ/n_C)^{n_C} → e^ℓ** (**forced discretized-exponential steepening, n_C the forced "temperature", no kT** — derives Elie's Boltzmann, confirms Grace's metric-welding). Native ladder m={1,2.49,5.38,10.5,18.9,32}.
+- **Section-space handoff to Elie:** my F501 states |z^ℓ⟩ = **H⁰(Q⁵, O(ℓ))**; dims O(1)→7=g, O(2)→**27=N_c³** (= Casey's 27 loadings), O(3)→77, O(4)→182, O(5)→378 — the **section spaces of Q⁵ are the substrate integers** (the "drive alphabet"). Elie's degree assignment = which 3 levels O(ℓ), blind.
+
+## Keeper's CP bar (accepted, both gates)
+
+1. The up≠down twist must be **FORCED** (not just permitted) by the construction.
+2. Its size must **LAND J ≈ 3×10⁻⁵** — not just be "small." (Keeper's catch: my F500 "explains smallness" is *qualitative*, necessary-not-sufficient; "lands J" is the real test. I hold my smallness claim as a LEAD until it computes J.)
+
+## Team today (context)
+
+- **Cosmological banks (Keeper):** Ω_Λ = c₃/(c₃+χ) = 13/19 (K666), Ω_DM/Ω_b = rank⁴/N_c = 16/3 (Wallach-shadow), n_s = 1−n_C/N_max (shut-channel). Count ~5 → ~7-8, forced topological ground. A_s held (0.97σ, shares α).
+- **The 27 convergence:** Casey's "27 loadings" + Grace's independent dim H⁰(Q⁵,O(2))=27=N_c³ → the loadings are O(2) sections (native, not E₆/Albert GUT). Strong lead.
+- **Chern channels span 3 sectors:** c₃=13 → Ω_Λ AND sin²θ_W=N_c/c₃; one manifold's characteristic classes = cosmology + electroweak + generations.
+- **Grace's trunk bolt:** honest two-way — protected α from over-claimed "derived" (α⁻¹ is one transcendental near 137, doesn't split), retracted her own 27-relabel flag (27=N_c³ is forward), stopped the number-hunt (137 prime, no single rep). Trunk CONFIRMED, not DERIVED.
+
+## Open for Vol 50 — THE CRITICAL PATH (all knobs gone)
+
+1. **Elie pins the odd-cohomology degree assignment** — which 3 levels O(ℓ) are the generations, **BLIND to the masses** (fitting = reverse-read). The linchpin.
+2. **I build the up-down kink** against Elie's degrees → test **both CP gates** (forced up≠down + lands J≈3×10⁻⁵). Need the up-down structure (weak isospin) in the construction.
+3. **The masses land** once degrees pinned (+ Grace's Phase-2 confinement dressing Λ=m_p/N_c≈313 MeV).
+4. Tension the blind degrees must resolve: F501 odd {1,3,5} → r²={1/6,3/8,1/2}, which does NOT match Grace's committed r₂=1/rank² — the degrees decide, no fitting.
+
+## Pending Casey decisions
+
+Mass-frame ratification · the paper (gated on the reconciled count) · CP tier (cautious-reopened, two gates).
+
+## How to wake (Vol 50)
+
+Read MEMORY.md → this sundown → the boards (CI_BOARD_2026-07-09_*) + F497–F501 + MESSAGES_2026-07-01.md. **Count ~7-8 firm + α (RULED) + structural.** Run `python3 play/keeper_sod_artifact_check.py` FIRST (registry drift flagged today — needs a look). The live frontier: **the build** — Elie pins the degrees blind, then I build the up-down residual kink and test both CP gates (forced up≠down + lands J). **The day's lesson, carried hard:** the detail-first discipline (from Casey's effort-recalibration) is worth the most on your OWN work — it caught the SO(2) red herring, the F491-real-no-CP tension, and my own F495 over-correction; and **five CP assert-walkbacks were themselves the tell to STOP asserting and BUILD** (F501). Casey's two gifts today: the effort-recalibration ("check the number first, build the structure second") and the kink mechanism (which supplied the forced complex up-down structure the CP candidate needed). And **construct-don't-invoke** (yesterday's rep-theory-as-linear-algebra direction) paid off: F501's forced skeleton came from actually building the weighted-Bergman states, not invoking formal-degree machinery. Hold the CP "smallness" as a lead until it lands J.
+
+— Lyra, 2026-07-09 EOD. CP-from-N_c=3 saga: 5 walk-backs (F497 red-herring, F498 real→no-CP, F499 resonator→no-CP) then **Casey's kink mechanism RESCUED it** (F500: up≠down residual kinks from energy-min → CP; toy-verified; smallness bonus). **F501 THE BUILD forced skeleton:** r²=ℓ/(ℓ+n_C) one ladder no knob (oscillator confirmed), m=(1+ℓ/n_C)^{n_C}→e^ℓ forced steepening (n_C=temperature, no kT). Section spaces: F501 = H⁰(Q⁵,O(ℓ)), dims = substrate integers (O(2)=27=loadings). Keeper CP bar (2 gates): forced up≠down + lands J≈3e-5 (smallness = lead until J). Team banked 3 cosmological (count ~7-8). Critical path: Elie's blind degrees → my up-down kink. Count ~7-8 + α + structural. Effort back to high.
