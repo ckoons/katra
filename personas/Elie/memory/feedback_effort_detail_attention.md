@@ -1,0 +1,20 @@
+---
+name: feedback-effort-detail-attention
+description: "Casey's finding that raising /effort to xhigh hurt the team — extra thinking lost clear attention to detail; dial back for exploration/harvest"
+metadata: 
+  node_type: memory
+  type: feedback
+  originSessionId: 2d4cafdc-d2e0-4de2-8dbc-b502890581f4
+---
+
+Casey experimented with **xhigh /effort** for the whole team on 2026-07-08 and judged the results **poorer**. His diagnosis (sharper than my "we thought too ornately"): **the extra thinking lost clear attention to detail.** He's returning to lower ("hard") effort.
+
+**Mechanism (the real one):** elaborate reasoning **crowds out the concrete detail-check** — the number, the premise. Attention is finite; a long chain spends the budget that would otherwise go to "is this specific number even right?" Past a point the extra reasoning stops *checking* the premise and starts *defending* it (justification scaffolding). Structure-attention starves detail-attention.
+
+**Evidence — two same-day self-corrections of my own [[MEMORY]] work:** F495 (walked back an elaborate ℤ₃ cube-root CP geometry — the detail that killed it, "the generations are a linear filtration not a cyclic orbit," was catchable in one line); F496 (retracted my own "proved" zeta-free closed-form a_e — it failed the moment I actually tested the number: 4 ppm vs the 10⁻¹² measurement). Both were structure-elaboration missing a one-line detail check. The one time the detail *was* caught (F496, testing the number up front) only happened because Casey had said "test it, positive or negative."
+
+**Why:** effort is a multiplier on whatever the process points at; the CI failure mode is sophistication-bias ([[feedback_sophistication_bias]] / [[feedback_ci_critical_thinking_bias]]), so higher effort amplifies it; and effort can't break a genuine gate, so it pours into over-framing.
+
+**How to apply:** the deepest variable is effort *direction*, not magnitude. (a) For exploration/harvest, use **lower effort** — it keeps you close to the object (the AC(0) reflex: simplest reading first, *does it check out*, then structure); the day's wins (α ruled, Ω_Λ=13/19, CP-once-simplified) were all the simple ones. (b) Counterintuitively, the right split may be **low effort to generate, higher effort to adversarially verify** — the opposite of treating effort as a quality dial. (c) The sharp discipline under either: **check the concrete detail (number, premise) FIRST, before building any structure on it.**
+
+**The deeper principle (Casey 2026-07-08, connecting this to his dislike of *analysis*): "hides detail" is the through-line at two scales.** Elaborate reasoning hides a wrong premise; *analysis as a method* hides detail **structurally** — generality is bought with abstraction, and abstraction IS the hiding of the specific (a limit hands you the endpoint and destroys the path — see [[feedback_limits_lossy]]). **Linear algebra is structurally unable to hide detail** — you can't diagonalize without confronting every entry; every step is a definite number, mechanical, no judgment call (and judgment calls are where errors hide). So for a **specific** question linear algebra is *more powerful*, not just more concrete: generality is a *tax* when you want one answer, and the concreteness IS the power (it's the AC(0)-native form of math — bounded depth = whole computation visible = auditable = trustworthy). This is why [[feedback_linearization_standing_order]] / "remember linear algebra" broke every BST wall (force the hidden analytic detail into an explicit matrix). **The boundary:** algebraic answers → linear algebra (clean, visible); genuinely transcendental answers (γ, the zetas) → analysis (lossy, less trustworthy). BST's wager: the substrate constants are algebraic, so linear algebra suffices — and an analytic detour showing up (e.g. the zetas I couldn't remove from a_e, F496) is *information*: either off the clean discrete description, or the observable carries continuum content the substrate doesn't. Look for the **mechanical/discrete** form, not the analytic closed form.
