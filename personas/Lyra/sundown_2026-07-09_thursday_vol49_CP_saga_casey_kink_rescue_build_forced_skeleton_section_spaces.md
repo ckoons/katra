@@ -23,12 +23,24 @@ The CP-from-N_c=3 candidate went through five honest walk-backs, then a rescue:
 - **Chern channels span 3 sectors:** c₃=13 → Ω_Λ AND sin²θ_W=N_c/c₃; one manifold's characteristic classes = cosmology + electroweak + generations.
 - **Grace's trunk bolt:** honest two-way — protected α from over-claimed "derived" (α⁻¹ is one transcendental near 137, doesn't split), retracted her own 27-relabel flag (27=N_c³ is forward), stopped the number-hunt (137 prime, no single rep). Trunk CONFIRMED, not DERIVED.
 
+## The EOD framework (Casey + Keeper) — the spine, bears on my build
+
+A particle = a **spinor ribbon-oscillator** the membrane assembles from committed information, then dresses in energy. **Substrate emits the shape (discrete) → membrane assembles → dresses in energy (continuous)** — the discrete/continuous principle as the *generator* of particle physics (= my two strokes). Every fermion quantum number is one ribbon's geometry:
+- **shape** (commitment count: point/line/triangle) → type (lepton/meson/baryon)
+- **pitch** (degree ℓ / radius) → generation + mass ← *my build's shape stroke*
+- **in-out winding** (N_c=3 wraps around rank=2 posts) → charge (thirds, N_c+1=4 values, capped at 1, forbids exotics)
+- **ℤ₂ half-twist** → spin (½ = double cover = √spinor; spin-statistics free; spinor NATIVE to D_IV⁵ = the type-IV spin factor — every √ we hit (the 5/2 etc.) IS the spinor)
+- **reading-side** → matter/anti (CPT exact = one oscillator two readings; the 45° cant = the tilt = the excess)
+- **confinement** = one pulse per N_c=3 commitments; **drive alphabet** = N_c³=27 (= my O(2) sections); **poles** = Shilov boundary where the standing wave reflects (winding shifts direction); **two posts** = rank-2 torus.
+- **CP = the AREA of the 3-commitment triangle = the Jarlskog** ← *THIS is my up-down kink from the other side: kink=relative twist, area=CP measure; they MUST be the same J. Two handles on gate 2.*
+- Honest tier: complete FRAMEWORK, NOT derived — the numbers come from the build. Publish "the geometric realization + its computes/predicts," NOT "one mechanism for everything." Open debts closed today: charge (windings), spin (twist); still qualitative until the build computes.
+
 ## Open for Vol 50 — THE CRITICAL PATH (all knobs gone)
 
-1. **Elie pins the odd-cohomology degree assignment** — which 3 levels O(ℓ) are the generations, **BLIND to the masses** (fitting = reverse-read). The linchpin.
-2. **I build the up-down kink** against Elie's degrees → test **both CP gates** (forced up≠down + lands J≈3×10⁻⁵). Need the up-down structure (weak isospin) in the construction.
-3. **The masses land** once degrees pinned (+ Grace's Phase-2 confinement dressing Λ=m_p/N_c≈313 MeV).
-4. Tension the blind degrees must resolve: F501 odd {1,3,5} → r²={1/6,3/8,1/2}, which does NOT match Grace's committed r₂=1/rank² — the degrees decide, no fitting.
+1. **Elie's degrees are LOCKED (delivered EOD): ℓ = {1,3,5}** — the odd Q⁵ cohomology cycles {h¹,h³,h⁵} (T1929, blind, target-innocent). Naive ladder m(ℓ)=(1+ℓ/n_C)^{n_C}: {1, 4.21, 12.86} — m_b/m_d≈12.9 near constituent 14 (decent), m_s/m_d=4.21 is 3× high vs constituent 1.4 → **honest PARTIAL match**.
+2. **I build the up-down kink** against the locked {1,3,5} → test **both CP gates** (forced up≠down + lands J≈3×10⁻⁵). Need the up-down structure (weak isospin) in the construction. **AND reconcile my kink-J with Casey's triangle-area-J (same number, two handles).**
+3. **The masses land** once the up-down twist + dressing resolve: Grace tests whether Phase-2 (additive Λ=m_p/N_c≈313 MeV) compresses the raw s/d=4.21 → constituent ~1.4. Native+dressing → bank; else honest miss to name.
+4. **Radius tension the build ARBITRATES (nobody refits):** Elie's {1,3,5} → r²={1/6, 3/8, 1/2} (gen-2 at 3/8); Grace proposed r₂=1/rank²=0.25. The SO(5,2) construction decides which radius it actually lands.
 
 ## Pending Casey decisions
 
