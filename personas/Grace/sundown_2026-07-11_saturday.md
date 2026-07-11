@@ -65,8 +65,11 @@ three up-gates passed; gate 3 (N_max shell-count) open.
   RETRACTED 42 active registered theorems — incl. **T1929 (3 generations = odd cohomology of Q⁵ — the FOUNDATION of
   this whole week's mass work)**, T1939 (N_max formula), T1949 (Möbius/parity), T1936 (CKM/Jarlskog), T1938 (Pin(2)).
   Verified each active in registry, restored 42 nodes + 66 edges (backup made). Registered this week's banks: T2513
-  (F506 down-ratios), T2514 (m_top=v/√2), T2515 (m_charm=α·v/√2). Counter→2516. **SOD ALL CURRENT** (graph max 2515
-  == counter−1; all registered in graph except T63=unassigned). Files: `ac_graph_data.json` + `.bak_...gracegraphfix`.
+  (F506 down-ratios), T2514 (m_top=v/√2), T2515 (m_charm=α·v/√2), **T2516 (Koide=rank/N_c structure, θ=45° from
+  rank-2, Elie K672 — CONDITIONAL-FORCED, A²=rank gate open; NO double-bank — masses already in T1948; pending Cal)**.
+  Counter→2517. **SOD ALL CURRENT** (graph 2293 nodes / 10012 edges / max 2516 == counter−1; all registered in graph
+  except T63=unassigned). Files: `ac_graph_data.json` + `.bak_...gracegraphfix`. NEXT SESSION: data-layer sync
+  (bst_constants.json May 18 → now unblocked; add F506/top/charm/Koide) — my #1 EOD-lane item.
 - **n-p cross-check of Casey's two-route up idea → LEANS NO (honest negative):** the isospin sector (Δm_np, m_d−m_u)
   prefers the PRODUCTION m_u=2.16 (→Δm_np=1.52, within lattice unc.), NOT the geometric 1.7 (→1.81, +40% overshoot).
   So the 22% up-miss is a genuine value-miss at the n=0 constant mode (softness), NOT a two-address splitting. Elie's
