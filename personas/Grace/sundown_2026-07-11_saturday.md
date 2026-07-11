@@ -49,6 +49,14 @@ three up-gates passed; gate 3 (N_max shell-count) open.
   charged lepton heaviest of its gen (winding 3), but observed it's not (up-type quark is). gen-1: pred ν<d<u<e vs
   obs ν<e<u<d; gen-2: pred s<c<μ vs obs s<μ<c. **Needs the lepton/quark (color) distinction — Elie's lepton lane.**
 - Tier: framework + top(y=1) + unification SOLID; blind full tower NOT predicted (electron tension + gate 3). No fit.
+- **HARDENED (later in LONG PULL): the exp-law reproduces BOTH banked up-type points.** Key ID: **one boundary shell =
+  geodesic distance ln(N_max) → per-shell amplitude = 1/N_max = α** (= Elie 4621; the charm's Yukawa IS α, m_charm=
+  α·v/√2=1269 MeV banked). So y_top(d=0)=1, y_charm(d=ln N_max)=α, magnitude in-kind 10⁵ (Lyra F510). My exp-law =
+  Elie's α-shell = Lyra's cutoff-through-n_C — ONE law. Promoted toward the SPINE. Calibration honest: shell-scale
+  tied to charm=α (2 anchor points, not fully blind); up at ~2.3 shells (non-integer) = the gen-1 cold anomaly.
+- **My open lanes next session:** (a) gate-3 second half = c/u≈588 cold step (the gen-1 cold anomaly, NOT single-τ
+  Boltzmann — hard, don't force-fit); (b) the exp-law becomes a full law once PRIMARY-1 weight-assignment (Lyra+Elie)
+  forces the rung distances. Frame is QUARK-ONLY (leptons distinct, T2003 m_τ/m_e=49·71 — Elie's lepton lane).
 
 ## WARM START next session
 1. Read MEMORY.md + this sundown + [[grace-error-pattern-index-corpus-reconnection]].
