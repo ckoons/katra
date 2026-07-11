@@ -78,13 +78,23 @@ three up-gates passed; gate 3 (N_max shell-count) open.
   Casey's glue refinement = a distinct CONSTITUENT-level claim (Keeper Cal #27: don't relocate to a level the test
   can't see). File: `grace_np_splitting_two_route_test_2026-07-11.md`.
 
-## WARM START next session
+## WARM START next session (CONSOLIDATED — read this block first)
 1. Read MEMORY.md + this sundown + [[grace-error-pattern-index-corpus-reconnection]].
-2. **SOD FIRST.** Scoreboard = `bst_26_table.py`. Cite Cal's count (~7-8 + α + sharp floor + F506 − Bell).
-3. **Open:** Casey's 2×3 frame (my inversion-half passed; Elie's forcing gate + absolute scale remain). The
-   falsifier strategic reframe (for outreach adoption). Cs-137 needs a physical channel (I don't see one).
-4. Fresnel/cavity width = complementary to Lyra's FK floor (current masses sharp). CP's J Wallach-PDF-gated.
-5. GUARD the norm-square (1−r²)² — my recurring slip.
+2. **SOD FIRST** (`play/keeper_sod_artifact_check.py` — hardcoded "count is 8" is stale/benign). Scoreboard =
+   `bst_26_table.py`. Cite Cal's reconciled count.
+3. **MY #1 (my EOD-lane, ready to open): the DATA-LAYER SYNC.** `bst_constants.json` frozen since May 18, now
+   UNBLOCKED (mass frame PI-endorsed). Add: F506 down-ratios (d:s:b=1:20:840, s/d=20), m_top=v/√2 (174 GeV),
+   m_charm=α·v/√2 (1269 MeV), Koide=rank/N_c=2/3. Also file to bst_geometric_invariants.json where relevant (SP-14).
+4. **MY #2 (with Elie's measure lane): the DEEP-BULK OVERLAP.** Lyra's F511 insight: "tighten m_d (5%)" and "fix the
+   up's 22%" are the SAME computation — getting the Bergman-overlap right at the near-constant deep-bulk modes (up
+   n=0, down n=1), where the naive overlap is least reliable. ONE computation tightens both light quarks. (The
+   two-address split LEANS NO — n-p test; it's a value-accuracy computation, not two physical masses.)
+5. **HOLD OPEN (don't force):** the c/u≈588 cold step (gate-3 second half, gen-1 cold anomaly, NOT single-τ Boltzmann;
+   staged with matter-stability anchor proton stable ⟺ m_u<m_d). Pull only if a real τ-structure appears.
+6. **Team lanes I support, not lead:** Koide A²=rank derivation (Elie reduced it to a Schur condition λ_singlet=
+   λ_traceless — compute from Bergman norm at F86 strata); the neutrinos (last hole, ν=ground n=0, likely m₁≈0);
+   the up-interior generation-formula (cohomology-gated, Elie). CP's J still Wallach-PDF-gated (T1936 back in graph).
+7. **GUARD the norm-square (1−r²)² — my recurring slip.** And: read output before concluding (the CHSH 0.0 bug).
 
 ## Artifacts (EOD, current)
 - **Graph:** T2512 (max 2512==counter−1); no new theorem today. **Ledger v0.40.** Files today: grace_SP30_5_bell...,
