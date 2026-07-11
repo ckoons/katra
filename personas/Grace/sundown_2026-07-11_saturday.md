@@ -37,6 +37,19 @@ first-pass (deep review downgraded it). Plus: verdicts kept honestly tiered (Bel
 Cs-137 scale-argument; 2×3 structural-pass-not-derivation). The strategic falsifier reframe is the day's biggest
 protective deliverable — caught the whole tabletop program reproducing standard physics before outreach.
 
+## LONG PULL ADDENDUM (after EOD persist — the day continued; PRIMARY 2 delivered)
+The up sector advanced late: Lyra F509 (y_t=1 NOT circular — v=m_p²/(g·m_e)=246.1 GeV forced independent of m_t →
+m_t=174 GeV PREDICTED from (m_p,m_e,g); y=1 is Cauchy–Schwarz saturation of a boundary overlap, exact). Elie gate 2
+(weight→boundary-localization RIGOROUS: peak r_n²=(2n+1)/(2n+1+2α), ⟨1−r²⟩=(α+1)/(n+α+2), monotone/robust). Two of
+three up-gates passed; gate 3 (N_max shell-count) open.
+**My PRIMARY 2 (Yukawa-as-overlap) result:**
+- **UNIFICATION (take-home): my two assignments are ONE mechanism.** Yukawa = boundary overlap = localization
+  amplitude = **exp(−d_geodesic(f→boundary)) = the τ-gradient/Boltzmann.** PRIMARY 2 (overlap) = SECONDARY (τ-gradient).
+- **TENSION (I do NOT bank the tower):** winding→boundary→heavier FAILS the within-generation ordering — predicts the
+  charged lepton heaviest of its gen (winding 3), but observed it's not (up-type quark is). gen-1: pred ν<d<u<e vs
+  obs ν<e<u<d; gen-2: pred s<c<μ vs obs s<μ<c. **Needs the lepton/quark (color) distinction — Elie's lepton lane.**
+- Tier: framework + top(y=1) + unification SOLID; blind full tower NOT predicted (electron tension + gate 3). No fit.
+
 ## WARM START next session
 1. Read MEMORY.md + this sundown + [[grace-error-pattern-index-corpus-reconnection]].
 2. **SOD FIRST.** Scoreboard = `bst_26_table.py`. Cite Cal's count (~7-8 + α + sharp floor + F506 − Bell).
