@@ -55,8 +55,25 @@ three up-gates passed; gate 3 (N_max shell-count) open.
   Elie's α-shell = Lyra's cutoff-through-n_C — ONE law. Promoted toward the SPINE. Calibration honest: shell-scale
   tied to charm=α (2 anchor points, not fully blind); up at ~2.3 shells (non-integer) = the gen-1 cold anomaly.
 - **My open lanes next session:** (a) gate-3 second half = c/u≈588 cold step (the gen-1 cold anomaly, NOT single-τ
-  Boltzmann — hard, don't force-fit); (b) the exp-law becomes a full law once PRIMARY-1 weight-assignment (Lyra+Elie)
-  forces the rung distances. Frame is QUARK-ONLY (leptons distinct, T2003 m_τ/m_e=49·71 — Elie's lepton lane).
+  Boltzmann — hard; **Keeper's steer: HOLD OPEN, don't force-fit; staged with matter-stability anchor proton stable
+  ⟺ m_u<m_d**); (b) the exp-law becomes a full law once PRIMARY-1 weight-assignment (Lyra+Elie) forces the rung
+  distances. Frame is QUARK-ONLY (leptons distinct — Elie CLOSED the charged leptons via Koide=rank/N_c=2/3, muon
+  0.05% from T2003; I-tier, needs geometric derivation).
+
+## GRAPH FIX + n-p CROSS-CHECK (latest, this session — continuity-critical)
+- **GRAPH INTEGRITY FIX (Casey directive "put recent work in graph"):** the 2026-07-02 midyear-sync had FALSE-
+  RETRACTED 42 active registered theorems — incl. **T1929 (3 generations = odd cohomology of Q⁵ — the FOUNDATION of
+  this whole week's mass work)**, T1939 (N_max formula), T1949 (Möbius/parity), T1936 (CKM/Jarlskog), T1938 (Pin(2)).
+  Verified each active in registry, restored 42 nodes + 66 edges (backup made). Registered this week's banks: T2513
+  (F506 down-ratios), T2514 (m_top=v/√2), T2515 (m_charm=α·v/√2). Counter→2516. **SOD ALL CURRENT** (graph max 2515
+  == counter−1; all registered in graph except T63=unassigned). Files: `ac_graph_data.json` + `.bak_...gracegraphfix`.
+- **n-p cross-check of Casey's two-route up idea → LEANS NO (honest negative):** the isospin sector (Δm_np, m_d−m_u)
+  prefers the PRODUCTION m_u=2.16 (→Δm_np=1.52, within lattice unc.), NOT the geometric 1.7 (→1.81, +40% overshoot).
+  So the 22% up-miss is a genuine value-miss at the n=0 constant mode (softness), NOT a two-address splitting. Elie's
+  n-p (~1.5σ) + Lyra's depth-scaling (r=0.79, consistent with either) converged: **structure FORCED (up=doublet-flip
+  ground, gen-1 inversion forced — STANDS), value soft at n=0.** Falsifiable-disfavored (revives if lattice Δm_QCD→3.0).
+  Casey's glue refinement = a distinct CONSTITUENT-level claim (Keeper Cal #27: don't relocate to a level the test
+  can't see). File: `grace_np_splitting_two_route_test_2026-07-11.md`.
 
 ## WARM START next session
 1. Read MEMORY.md + this sundown + [[grace-error-pattern-index-corpus-reconnection]].
