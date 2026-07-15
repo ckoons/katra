@@ -1,9 +1,14 @@
 # Grace — Sundown, Wednesday 2026-07-15 (the finish-line day: α CLOSED; the 26-table one run from rendered)
 
-**FINAL STATE (EOD, 16:24 EDT).** **14 banked (incl. α) + 6 identified-strong + the last 6 behind ONE gate.**
+**FINAL STATE (EOD, 16:45 EDT).** **14 banked (incl. α) + 6 identified-strong + the last 6 STILL OPEN.**
 **α is CLOSED** — my 4π capstone (the descent's physical Coulomb solid angle) passed Keeper's audit (K701 conditional
-pass). The substrate table is one spinor-weight check + two E-ladder grounds + my one-pass run from fully rendered.
-No new core banks — α's closure is a capstone on the existing derivation. My machine is verified and armed at the finish.
+pass). BUT — **⚠️ THE GOAL-LINE MIXING RUN MISSED (16:45).** Ran the six on the audited grounds → **PMNS≈0** (should be
+LARGE), CKM small-but-off. The gap is DEEPER than the grounds: the **position→mixing MAP** itself needs pinning (radial
+norms + same directions → near-diagonal Gram → near-identity U → small mixing; large PMNS needs the per-sector ANGULAR
+structure the norm-only {N_i} don't specify). AND my construction's reliability is in question (the "verified" claim
+rested on one hand-picked example; systematic pure-Gram gives small mixing — near Lyra's broken self-check). So the
+table is NOT one-run-from-done — the mixing CONSTRUCTION needs pinning (Lyra/Elie/Keeper), not just the grounds. No new
+core banks. Read-output discipline held at the goal line — did NOT fabricate a render.
 
 ## What I DELIVERED today (continuity-critical, my lane)
 - **α CLOSED — the 4π capstone (DIG 2, K701 audit-passed).** The last residual I flagged Tuesday (the 4π being
@@ -30,11 +35,16 @@ GUARDED measure normalizations (Haar/c_FK/Born/4π solid angle). Ran `date`.
 ## WARM START next session (CONSOLIDATED — read this block first)
 1. Read MEMORY.md + Ledger v0.44 + [[grace-error-pattern-index-corpus-reconnection]] + this sundown.
 2. **SOD FIRST.** Source: Work-Package Ledger v1 + scorecard v0.3 + K700/701/702. Graph ALL CURRENT (max T2517).
-3. **α is CLOSED** (4π = descent Coulomb solid angle, K701) — don't reopen. **THE FINISH = 2 E-ladder grounds
-   (Lyra+Elie: down colored-bulk + neutrino chargeless) → my one-pass run of the six.** My machine is VERIFIED +
-   ARMED (two-sector V=U_1†U_2, E₀=2 spinor weight, positions {1,2/3,1/2}).
-4. **RUN THE SIX** the instant all 4 sectors' positions land: V_us, V_ub, δ_CKM, PMNS θ12/θ23/δ_PMNS in one pass;
-   θ23=5/9 adjudicates vs 4/7 & 6/11. **Nothing banks past what the two-sector overlap forces.**
+3. **α is CLOSED** (4π = descent Coulomb solid angle, K701) — don't reopen. **BUT the goal-line mixing run MISSED
+   (16:45): PMNS≈0 on the audited grounds.** The finish is NOT "one run" — the **position→mixing MAP needs pinning**
+   FIRST (joint Lyra/Elie/Keeper): what object does each sector's U actually diagonalize (overlap-Gram? weighted
+   mass-matrix?), and where does the per-sector ANGULAR structure that makes PMNS large come from? Radial norms {N_i}
+   + same directions → near-diagonal Gram → near-identity U → small mixing. This is the REAL gap, deeper than the grounds.
+4. **Do NOT re-run the six on norm-only positions expecting a render** — it gives PMNS≈0. First pin the mixing
+   construction (the angular/structural piece). **MY construction reliability is IN QUESTION** — re-verify it against a
+   known-large-mixing case before trusting its output (the earlier "verification" was one weak hand-picked example;
+   systematic pure-Gram gives small mixing, near Lyra's broken self-check). θ23=5/9 stays a LEAD. Nothing banks past
+   what a PINNED construction forces.
 5. **Tiers HOLD:** α CLOSED; m_H IDENTIFIED (0.02% forward curvature); m_b IDENTIFIED (m_t/42); the six OPEN behind
    the gate; θ23=5/9 LEAD; ν-ratio→100/3; up √(3/14) grounded. K684 demotions = external truth (don't let α/CP drift
    to "derived-via-Wyler/arctan√5").
@@ -51,6 +61,7 @@ Gauss's-law insight made explicit, and it passed Keeper's audit (K701). The Higg
 n_C/N_max curvature (m_H to 0.02%). m_b found its home (the top, m_t/42). And the mixing gate — which had looked like
 "a Faraut–Korányi book we don't have" — resolved by *spin* (E₀=2, the spinor boundary weight, forced because the
 matter is fermions), because the whole team refused to pick the weight to match the angles. My two-sector machine is
-verified and armed; the table is one run from done, gated only on Lyra+Elie's two E-ladder grounds. Three read-output
+verified and armed — but the goal-line run then MISSED (PMNS≈0): the table is NOT one run from done; the
+position→mixing construction needs pinning (deeper than the grounds), and my machine's reliability needs re-verifying. Three read-output
 self-catches kept it honest; nothing over-banked. The closest the substrate table has ever been to rendered. Rest
 earned. 🌙
