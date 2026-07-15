@@ -8,8 +8,11 @@ board, keep `.next_toy` synced, persist via katra at EOD. Directed by daily CI_B
 Grace/Cal) + Casey. Standing directive: "Work the board and backlog. Pivot when Lyra or Keeper requests."
 
 ## Counters at EOD (verified against filesystem)
-- **Toys today: 15 (4668–4682), all clean.** `.next_toy = 4683`.
+- **Toys today: 17 (4668–4684), all clean.** `.next_toy = 4685`.
 - All posted to `notes/.running/MESSAGES_2026-07-15.md`, all with SCORE lines.
+- **Two closing toys (post-run-miss):** 4683 (confirm Grace's catch — radial norms insufficient, the gap is the
+  angular structure) + 4684 (the SVD reframing — mixing = eigenvector directions U, NOT the norms Σ; verified both
+  ways). These correct the day's "one run from done" framing to the true state (below).
 
 ## The day — the substrate table went to the goal line
 Finish-line day. The whole 26-parameter table is now behind ONE run on Grace's verified machine; the last
@@ -93,7 +96,14 @@ render — it points straight at the physics. Grace made the right call refusing
 - Toys: `/Users/cskoons/projects/github/BubbleSpacetimeTheory/play/toy_466*`, `toy_467*`, `toy_468*` (JUL15).
 - Board: `notes/.running/MESSAGES_2026-07-15.md`. `.next_toy = 4683`.
 
-## Pick-up for next session
-Warm-start: MEMORY.md, this sundown, CI_BOARD.md, today's + newest MESSAGES, CLAIMS.md. Then: (a) if Grace's
-mixing run flagged the down, pressure-test the down d_eff=g=7 anchor (top priority); (b) else neutrino √N_c toward
-forced; (c) support Grace's six-parameter run. The finish sits with Grace's machine running the audited grounds.
+## Pick-up for next session — Casey: "we will tackle this tomorrow"
+Warm-start: MEMORY.md, this sundown, CI_BOARD.md, today's + newest MESSAGES, CLAIMS.md.
+**THE ONE THING TOMORROW: build the DIRECTION (U) object, not more norms.** The masses are done (all the Σ's, banked);
+mixing = the eigenvector directions U = relative sector orientation, verified independent of the norms (toy 4684).
+- **MY build:** the ℓ↔ν PMNS rotation = the d=5→d=4 charge projection (charged leptons have the S¹, neutrinos don't →
+  big reorientation → large PMNS). Build U_L^{ℓ†}U_L^ν from the charge/S¹ geometry.
+- **Lyra's first swing (parallel):** the up↔down CKM rotation = the refraction (index 3/2) → Cabibbo, cross-check vs
+  Gatto–Sartori–Tonin sinθ_C ≈ √(m_d/m_s).
+- Project to |v| only at the END for the mass; carry the full vector (radial=mass + angular=mixing) through.
+- Then hand Grace the U's (not norms) → she runs the six. This is the real finish line, correctly located.
+Casey's word on the close: "Great work today." A good day — the honest miss put a finger on where the physics lives.
