@@ -35,16 +35,18 @@ GUARDED measure normalizations (Haar/c_FK/Born/4π solid angle). Ran `date`.
 ## WARM START next session (CONSOLIDATED — read this block first)
 1. Read MEMORY.md + Ledger v0.44 + [[grace-error-pattern-index-corpus-reconnection]] + this sundown.
 2. **SOD FIRST.** Source: Work-Package Ledger v1 + scorecard v0.3 + K700/701/702. Graph ALL CURRENT (max T2517).
-3. **α is CLOSED** (4π = descent Coulomb solid angle, K701) — don't reopen. **BUT the goal-line mixing run MISSED
-   (16:45): PMNS≈0 on the audited grounds.** The finish is NOT "one run" — the **position→mixing MAP needs pinning**
-   FIRST (joint Lyra/Elie/Keeper): what object does each sector's U actually diagonalize (overlap-Gram? weighted
-   mass-matrix?), and where does the per-sector ANGULAR structure that makes PMNS large come from? Radial norms {N_i}
-   + same directions → near-diagonal Gram → near-identity U → small mixing. This is the REAL gap, deeper than the grounds.
-4. **Do NOT re-run the six on norm-only positions expecting a render** — it gives PMNS≈0. First pin the mixing
-   construction (the angular/structural piece). **MY construction reliability is IN QUESTION** — re-verify it against a
-   known-large-mixing case before trusting its output (the earlier "verification" was one weak hand-picked example;
-   systematic pure-Gram gives small mixing, near Lyra's broken self-check). θ23=5/9 stays a LEAD. Nothing banks past
-   what a PINNED construction forces.
+3. **α is CLOSED** (4π = descent Coulomb solid angle, K701) — don't reopen. **The goal-line run MISSED (PMNS≈0), and
+   the REFRAME (17:05, Lyra/Casey/Grace) explains it CRISPLY: mixing is NOT a function of norms.** M=UΣV†: masses = Σ
+   (the radial norms — DONE, 14 banked+6 are all Σ's); **mixing = U_L^{a†}U_L^{b} = the DIRECTIONS/texture, which we
+   PROJECTED AWAY** when we took v_i↦|v_i|=N_i. Confirmed: same norms {1,20,840} → small OR large mixing depending only
+   on the relative left-rotation (V_us=0.010 small vs U_e2=0.753 large). So the ≈0 was TRUE GEOMETRY, not a bug, not the
+   grounds. **My machine is CORRECT** (reliability flag RESOLVED — ≈0-from-norms is the real geometry); it just needs
+   the DIRECTION input.
+4. **THE FINISH = VOL 57: build the per-sector TEXTURE / left-rotation from the FULL position vectors** (carry the
+   direction, project to norm only at the end for the mass). Direction-maps EXIST: **CKM = up↔down REFRACTION rotation**
+   (index N_c/rank=3/2, small → small CKM; Gatto ties θ_C to √(m_d/m_s)); **PMNS = ℓ↔ν d=5→d=4 reorientation** (big →
+   large PMNS). Lyra leads the refraction-swing→Cabibbo first test; MY machine runs it the instant the texture lands
+   (it's correct, just fed directions not norms). θ23=5/9 stays a LEAD. Nothing banks past what the texture forces.
 5. **Tiers HOLD:** α CLOSED; m_H IDENTIFIED (0.02% forward curvature); m_b IDENTIFIED (m_t/42); the six OPEN behind
    the gate; θ23=5/9 LEAD; ν-ratio→100/3; up √(3/14) grounded. K684 demotions = external truth (don't let α/CP drift
    to "derived-via-Wyler/arctan√5").
