@@ -52,20 +52,31 @@ derivation gate was resolved. 14 banked (α closed), 6 identified-strong, last 6
   positions EXACTLY (ν {1,3/5,3/7}, lepton {1,2/3,1/2}, down {1,3/4,3/5}). Down anchor pressure-tested: two
   convergent arguments (bulk d=g; refraction ×3/2) but each has a soft step — the honest weak anchor.
 
-## Where the table stands (start of next session)
+## Where the table stands (start of next session) — CORRECTED after Grace's run missed (toys 4683/4684)
 - **14 banked** (α closed — 4π = descent's Coulomb solid angle; muon banked; m_e, m_τ, m_μ, m_c, m_s, m_t, m_ν1,
   Majorana, v, θ_QCD, PMNS θ13, sin²θ_W, α_s).
 - **6 identified-strong:** m_H (0.02%), m_b (m_t/42), m_ν2 (√N_c), m_ν3 (2n_C), m_d, m_u (√(3/14), Dirac optics).
-- **Last 6 behind ONE run:** V_us, V_ub, δ_CKM, PMNS θ12/θ23/δ_PMNS. **The gate is derived** (weight by spin +
-  two grounds from field content); Grace runs them next session on the audited positions.
+- **The masses are DONE. Mixing is a DISTINCT, un-built object.** ⚠️ The goal-line run MISSED (Grace, PMNS≈0). NOT
+  "one run from done." The SVD reframing (Casey/Lyra, my toy 4684): M = U Σ V†; Σ = masses = the radial norms {N_i}
+  (all banked); mixing = the eigenVECTOR directions U (V_CKM=U_L^{u†}U_L^d, V_PMNS=U_L^{ℓ†}U_L^ν). **Mixing is NOT a
+  function of the norms** — verified both ways (same-Σ/different-U → full mixing; different-Σ/same-U → zero = Grace's
+  PMNS≈0). We built Σ (the grounds/norms) and DISCARDED U (the directions) when we projected v↦|v|=N_i. So the last
+  6 (V_us, V_ub, δ_CKM, PMNS θ12/θ23/δ_PMNS) are behind building the DIRECTION object, NOT more norms.
 
-## Open threads / next-session leads (priority order)
-1. **STAND BY for the down pressure-test.** If Grace's run misses, the culprit is my flagged weak anchor: the down
-   E₀=3 rests on d_eff=g=7 ("colored → bulk → +rank"), whose two arguments each have a soft step. Firm it up or
-   honestly weaken it. My top next-session item if the run flags it.
-2. **Neutrino √N_c amplitude → forced** (if the down isn't flagged) — currently grounded as bulk color-measure √
-   (identified-lead); forcing needs the Weinberg coefficient (4655 showed it doesn't cleanly derive).
-3. **Support Grace's six-parameter run** — the position→overlap→Jarlskog chain.
+## Open threads / next-session leads (priority order) — CORRECTED
+1. **BUILD THE DIRECTION (U) OBJECT — the actual finish.** Mixing = relative eigenvector orientation between sectors.
+   The U-maps already exist: **refraction (index 3/2) for up↔down** (small U → small CKM — Lyra's first swing:
+   refraction → Cabibbo, cross-check vs Gatto–Sartori–Tonin sinθ_C≈√(m_d/m_s)); **the d=5→d=4 charge projection for
+   ℓ↔ν** (big reorientation → large PMNS — MY next-session build). Build the direction per sector, project to |v| only
+   at the end for the mass. Joint: Lyra/Elie/Keeper/Grace.
+2. The down d_eff=g=7 weak anchor is now MOOT for the miss (the miss was the whole norms→mixing map, not the down) —
+   but still audit it for the mass ordering.
+3. **Neutrino √N_c amplitude → forced** — grounded as bulk color-measure √ (identified-lead); forcing needs the
+   Weinberg coefficient (4655 showed it doesn't cleanly derive).
+
+## The honest close (added post-EOD): I wrote "one run from done" and then Grace's run missed. Corrected same session.
+The masses are done; the mixing is the direction-object we projected away. A better place to be stuck than a wrong
+render — it points straight at the physics. Grace made the right call refusing to fabricate a render.
 
 ## Key lessons reinforced today
 - **Search-first before deriving** — pulled F323/F506/F536/F544/K700/K701 before computing the overlap form, the
