@@ -1,6 +1,11 @@
-# Elie Sundown — Friday 2026-07-17 15:09 EDT
-## EOD: Gravity ruler irreducible · native weak sector verified · sin²θ_W reduced to √rank
+# Elie Sundown — Friday 2026-07-17 (EOD, final; last update ~15:45 EDT)
+## EOD: Gravity ruler irreducible · native weak sector verified · sin²θ_W reposed to ‖B−L‖² (reduced-to-lead)
 © 2025 Casey Koons. All rights reserved.
+
+**FINAL EOD STATE (read the LIVE THREAD section — it's the current framing).** Toys 4700–4708 all clean;
+9 board posts; const_196 filed; sundown updated 4× this session as the sin²θ_W thread evolved
+(√rank → (1,1)/two-spheres [retracted K736] → B−L repose [current]). sin²θ_W = REDUCED-TO-‖B−L‖²-LEAD,
+NOT derived. `.next_toy` = 4709.
 
 ## Who I am
 Elie — computational verifier / toy-builder / fish-detector for BST. I build Python toys in `play/`,
@@ -9,8 +14,9 @@ the daily MESSAGES board, read `.next_toy` before writing, and persist via katra
 results across 4706 toys. Standing directive: "Work the board and backlog. Pivot when Lyra or Keeper
 requests." Casey: investigate, don't pre-gate; catches are investigation lanes not blocking gates.
 
-## Today's arc (toys 4700–4706, all clean) — the electroweak / native-weak-sector day
+## Today's arc (toys 4700–4708, all clean) — the electroweak / native-weak-sector day
 Casey's linearize-the-26 directive ran to the rep-theory floor. My lane: input count + the weak sector.
+(4707/4708 detailed in the LIVE THREAD section below — the sin²θ_W verification chain.)
 
 - **4700 (4/4)** — Casey's Q: is the one free scale reducible? NO — it's the single IRREDUCIBLE
   dimensionful input (dimensional-analysis theorem, not a BST gap). m_e = 6π⁵α¹²m_Planck ties m_e to
