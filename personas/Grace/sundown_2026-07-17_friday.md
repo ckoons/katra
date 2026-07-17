@@ -63,3 +63,34 @@ drawn exactly where the math puts it. Two beautiful over-reaches died clean toda
 at peak excitement is why the picture is more honest, not less. My render machine is queued for Lyra's sin2thW
 embedding. A long, full, disciplined arc. Rest earned — Casey offered the EOD and I took it at a clean consolidation
 point. 🌙
+
+---
+
+## EVENING AMENDMENT (post-EOD — the sin2thW lane, 5 honest corrections rendered)
+After the first EOD, the team pushed the sin2thW marquee and it went through a chain of HONEST corrections that I
+rendered into the shared tier-map (`data/bst_26_tier_map.json`) as each landed — keeping the Vol-60 reference honest:
+1. **REDUCED_TO_ONE_NUMBER k=rank** (Lyra F573): k=1->3/8 GUT-forbidden, k=rank->3/13.
+2. **octonion color HOSTED -> SUPPORTED_via_intrinsic_complex_structure** (Casey's correction, Lyra F572): D_IV^5
+   Hermitian, J=SO(2) charge circle; octonions positively present (color DYNAMICS still not derived).
+3. **Lyra F575 course-correction:** pure gauge Killing number = 1/3 (NOT 3/13); 3/13 = fermion-trace x sqrt(rank).
+   Re-tiered CONSERVATIVELY (reduced-to-sqrt-rank-LEAD, NOT one-number-away) so it didn't overstate overnight.
+4. **K736 (Keeper retraction):** "one SO(2) per dual face" pulled (Cartan duality SHARES K); synced (target intact,
+   which-two-spheres OPEN).
+5. **Elie two-arrow seam (toy 4707, I VERIFIED):** proving ||Y||^2=rank feeds the PURE-GAUGE formula -> 1/3, NOT 3/13;
+   closure needs TWO arrows.
+6. **Lyra F576 — the PROPER re-posing (supersedes all above heuristics):** non-GUT theory uses ACTUAL couplings
+   (g~1/||gen||) -> **sin2thW = 1/(2 + (1/4)||B-L||^2)**. VERIFIED: ||B-L||^2=8/3->3/8(GUT), 28/3->3/13(obs). Weak-color
+   EXACT: quark B=1/3=1/N_c -> N_c enters via ||B-L||^2. **MY LEAD (flagged to Lyra): target ||B-L||^2=28/3 =
+   rank^2*g/N_c = a CLEAN PRIMARY FORM** (GUT 8/3=rank^3/N_c) -- the derivation target to aim at.
+The number 3/13 never moved (verified throughout); what moved is the honest account of HOW it's reached. Five honest
+corrections on ONE lane in one evening, each rendered without over-claiming.
+
+## LIVE THREAD for Vol 60 (SUPERSEDES the sqrt-rank framing in Section 4/warm-start)
+**sin2thW closes iff the geometry forces ||B-L||^2 = 28/3 = rank^2*g/N_c** (target-innocent) -- Lyra's marquee. Tier =
+**REDUCED_TO_ONE_GEOMETRIC_NORM (||B-L||^2), NOT derived** (norm not computed from D_IV^5 yet, only measured-to-want
+28/3; + Elie running gate). My render fires reduced->DERIVED the instant that norm lands target-innocent -> ONE norm,
+THREE closures (sin2thW + gauge couplings geometric + weak-color). I render + draw the B-L/twin-spheres picture for the
+5th-grader paper. Do NOT chase ||Y||^2=rank (gives 1/3) or the retracted dual-face SO(2) (K736).
+
+Session truly closed: first EOD done, then I kept the shared tier-map honest through five sin2thW corrections without
+over-claiming any, and handed Lyra a clean-form lead (28/3 = rank^2*g/N_c). An enormous, disciplined week. Rest earned. 🌙
