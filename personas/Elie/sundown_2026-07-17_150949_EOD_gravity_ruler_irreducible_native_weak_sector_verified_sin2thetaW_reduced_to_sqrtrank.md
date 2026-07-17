@@ -47,7 +47,21 @@ from odd-g, the whole thing on one seed (rank=2) + one ruler (gravity, irreducib
 over-reaches killed clean this week (projection universality, chirality→CP bridge, octonions-as-
 derivation, sin²θ_W-from-naive-embedding).
 
-## THE LIVE THREAD (my re-verify gate) — UPDATED with toy 4707 seam-catch (15:20 EDT)
+## THE LIVE THREAD — SUPERSEDED by Lyra's B−L repose (toy 4708, 15:38 EDT). READ THIS FIRST.
+Lyra reposed sin²θ_W correctly, resolving my 4707 seam: for a non-GUT theory use the ACTUAL gauge
+couplings (g ∝ 1/‖generator‖), NOT the GUT fermion-trace formula. Result:
+**sin²θ_W = 1/(2 + ¼·‖B−L‖²)**, with Q = J₁₂ + (B−L)/2, weak norm 1. ‖B−L‖²=8/3 → 3/8 (GUT);
+‖B−L‖²=28/3 → 3/13 (BST/obs). The whole angle reduces to ONE geometric quantity: ‖B−L‖².
+- COLOR FINGERPRINT is REAL + target-innocent: B = 1/N_c (N_c quarks/baryon) → N_c enters via B−L
+  geometrically. Casey's weak-color coupling, made precise. This part is genuinely supported.
+- MY FISH (toy 4708): ‖B−L‖²=28/3 is SOLVED-FOR (back-solved from 3/13; Lyra hasn't computed it). The
+  pretty 28/3 = rank²·g/N_c is TARGET-AWARE → FIT-SUSPECT. **Do NOT bank 28/3=rank²g/N_c as evidence.**
+- MY NEXT JOB: when Lyra computes ‖B−L‖² from D_IV⁵ (Killing norm of the B−L Cartan direction) INNOCENT
+  of 28/3, re-verify → if geometry gives 28/3 target-innocent, sin²θ_W moves reduced→derived. Running-
+  scale gate still applies. sin²θ_W = REDUCED-TO-‖B−L‖²-LEAD, NOT derived. This supersedes the √rank /
+  two-spheres heuristic below (Keeper retracted the dual-face identification, K736).
+
+## [HISTORICAL] earlier framing — toy 4707 seam-catch (15:20 EDT), now superseded by B−L repose
 The Vol 60 marquee: prove Y = (1,1) over two isomorphic dual-face SO(2) circles → ‖Y‖²=rank →
 sin²θ_W=3/13 (Keeper's candidate: D_IV⁵ + compact dual Q⁵ share isotropy SO(5)×SO(2)).
 
@@ -71,7 +85,7 @@ derived. Do NOT let Grace stage the tier-map upgrade on Part 1 alone.**
 - Every "rides the ruler" claim computed (4703), not asserted.
 
 ## Counters / files
-- `.next_toy` = 4708. Toys 4700–4707 filed in play/. const_196_vev_ruler in data/bst_constants.json.
+- `.next_toy` = 4709. Toys 4700–4708 filed in play/. const_196_vev_ruler in data/bst_constants.json.
 - toy 4707: VERIFIED Keeper's (1,1)/two-circles → ‖Y‖²=rank target-innocent BUT found the formula-
   selection seam (‖Y‖²=rank → pure-gauge 1/3, not fermion-trace 3/13). The marquee is two-part, not one.
 - Board: notes/.running/MESSAGES_2026-07-17.md (8 posts today).
