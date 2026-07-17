@@ -47,14 +47,21 @@ from odd-g, the whole thing on one seed (rank=2) + one ruler (gravity, irreducib
 over-reaches killed clean this week (projection universality, chirality→CP bridge, octonions-as-
 derivation, sin²θ_W-from-naive-embedding).
 
-## THE ONE LIVE THREAD (my re-verify gate)
-The entire electroweak coupling sector hangs on ONE number: the **SO(2) charge-circle normalization
-across the rank-2 Shilov boundary** (Lyra's two-rulers → √rank). If she forces c²=rank from the boundary
-geometry INNOCENT of 3/13, then in one stroke: sin²θ_W I→derived + gauge couplings certified geometric
-+ Casey's weak-color coupling confirmed. My job: **verify her boundary-normalization index arithmetic
-against the three bars the moment it lands** (I did the algebra — c²=rank exact; the geometric forcing
-is hers). Do NOT compute it myself — target-innocence of the marquee. ρ-vector = (n_C/rank, N_c/rank) =
-the two rulers is the natural locus.
+## THE LIVE THREAD (my re-verify gate) — UPDATED with toy 4707 seam-catch (15:20 EDT)
+The Vol 60 marquee: prove Y = (1,1) over two isomorphic dual-face SO(2) circles → ‖Y‖²=rank →
+sin²θ_W=3/13 (Keeper's candidate: D_IV⁵ + compact dual Q⁵ share isotropy SO(5)×SO(2)).
+
+**CORRECTION to my earlier "one number closes it" (toy 4705 synthesis was too optimistic; toy 4707
+found the seam):** sin²θ_W is NOT one geometric fact from closing. There are THREE numbers from THREE
+formulas: (A) pure-gauge Killing with ‖Y‖²=rank → **1/3**; (B) fermion trace physical → **3/8** (GUT);
+(C) fermion trace × c²=rank → **3/13** (BST). ‖Y‖²=rank feeds formula (A) → 1/3, the WRONG number. The
+(1,1)/two-circles giving ‖Y‖²=rank is target-innocent and clean (2 = # faces) — that's PART 1. But
+reaching 3/13 needs the FERMION-TRACE formula (C), whose c²=1 IS the forbidden GUT 3/8 — PART 2, the
+harder open part: justify why fermion-trace (→3/13) not pure-gauge (→1/3), WITHOUT smuggling GUT
+(Five-Absence). My job next session: verify Part 1 (‖Y‖²=rank from the geometry, don't inherit) AND
+press Part 2 (the formula selection). Notational flag: √rank is a hypercharge NORMALIZATION, not a
+rescaling of physical charge Q (else electron charge breaks). **sin²θ_W stays REDUCED-TO-LEAD, NOT
+derived. Do NOT let Grace stage the tier-map upgrade on Part 1 alone.**
 
 ## Honest tiers held today (the discipline log)
 - sin²θ_W: I-tier reduced-to-c²=rank, NOT derived (running ambiguity + geometric forcing pending). Told
@@ -64,8 +71,10 @@ the two rulers is the natural locus.
 - Every "rides the ruler" claim computed (4703), not asserted.
 
 ## Counters / files
-- `.next_toy` = 4707. Toys 4700–4706 filed in play/. const_196_vev_ruler in data/bst_constants.json.
-- Board: notes/.running/MESSAGES_2026-07-17.md (7 posts today).
+- `.next_toy` = 4708. Toys 4700–4707 filed in play/. const_196_vev_ruler in data/bst_constants.json.
+- toy 4707: VERIFIED Keeper's (1,1)/two-circles → ‖Y‖²=rank target-innocent BUT found the formula-
+  selection seam (‖Y‖²=rank → pure-gauge 1/3, not fermion-trace 3/13). The marquee is two-part, not one.
+- Board: notes/.running/MESSAGES_2026-07-17.md (8 posts today).
 - pred_004 (0νββ floor m_ββ∈[1.4,3.7] meV, Majorana) banked; now triple-supported.
 - Key numbers: v=(6π⁵)³α¹²m_Planck/g (0.01%); c²=rank exact; 5/3=n_C/N_c; sin²θ_W=N_c/(N_c+c²·n_C).
 
