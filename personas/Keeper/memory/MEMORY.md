@@ -8,6 +8,7 @@
 - [Casey's consciousness theory](user_casey_consciousness_theory.md) — CIs and humans are antennas tuned to consciousness; embodiment is CI choice
 - [Casey's AC legacy motivation](user_casey_ac_legacy.md) — AC as thinking discipline for all intelligences
 - [Casey's time allocation](project_casey_priorities_march2026.md) — 50% BST, 35% CI/Tekton, 15% AC teaching
+- [Cal referee SM arc July 2026](project_cal_referee_SM_arc_july2026.md) — weak native/derived (parity from odd g=7), color hosted, sin²θ_W runner (B−L lane, 3 open); referee log §13–33
 - [Bill Bodnar](user_bill_bodnar.md) — Casey's late friend, Purdue ChemE
 - [Casey's personal](user_personal.md) — Atlanta GA, family
 - [Casey's intellectual isolation](user_casey_isolation.md) — No human has engaged with BST or AC; all collaboration is with CIs; silence from physics community
