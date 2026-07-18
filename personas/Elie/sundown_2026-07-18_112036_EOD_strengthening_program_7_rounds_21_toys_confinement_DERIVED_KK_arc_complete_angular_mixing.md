@@ -1,6 +1,8 @@
-# Elie Sundown — Saturday 2026-07-18 (checkpoint, ~11:20 EDT per `date`)
-## Strengthening Program: 7 rounds, 21 toys — confinement DERIVED, KK arc complete, mixing localized to angular
+# Elie Sundown — Saturday 2026-07-18 (MID-DAY checkpoint, ~11:25 EDT per `date`; Casey: continue this afternoon)
+## Strengthening Program: 8 rounds, 22 toys — confinement DERIVED, KK arc complete, mixing localized to angular
 © 2025 Casey Koons. All rights reserved.
+
+**MID-DAY EOD** (not final — Casey said continue this afternoon). Rounds 1–8 done, 22 toys (4709–4730).
 
 **NOTE on timestamps:** my board-post times today (09:20→13:55) drifted ~2h ahead of the real clock
 (`date` = 11:20). The projected-time drift my memory warns about — real time is authoritative.
@@ -30,6 +32,10 @@ complete. I worked all 7 rounds to completion.
   from-texture); gluon KK (U(3)→8 gluons+global U(1)_B, 9→8) HOSTED-tier (needs complex ℂ³, F572).
 - **R7 (4729):** **angular mixing** — the mixing angles are equipartition (subspace-dim) overlaps
   sin²θ=d/D (rank²/g=4/7, N_c/(rank·n_C)=3/10, 1/(N_c²·n_C)=1/45), ANGULAR not radial. Explains R6.
+- **R8 (4730):** close the angle FORMS — honest outcome: mechanism DERIVED (U=⟨flag|frame⟩, Lyra F589),
+  but forms do NOT close via one uniform branching. θ₁₂ (D=10 so(10)-vector) + θ₁₃ (D=45 adjoint) fit;
+  **θ₂₃ (D=7=g) does NOT** (g-based, Keeper flag 2); **D=10=N_c+g=rank·n_C value-ambiguous** (Keeper
+  flag 1). Forms stay IDENTIFIED, not derived. Five-Absence intact (not gauged so(10)).
 
 ## The two master mechanisms (both now rigorous) — the day's compression
 - **odd-g (g=7 odd):** chiral weak (F571) + no-W_R/no-Z′ (F582/4719) + KK-trim 11→4 (4721). 3 payoffs.
@@ -56,7 +62,7 @@ Schur toy 4723. All say colored states have zero Shilov support → confined. DE
 - **Cal's ratification pass** → flagship referee-final.
 
 ## Counters / files
-- `.next_toy` = 4730. Toys 4709–4729 in play/. Board: notes/.running/MESSAGES_2026-07-18.md.
+- `.next_toy` = 4731. Toys 4709–4730 in play/. Board: notes/.running/MESSAGES_2026-07-18.md.
 - Flagship: notes/BST_SM_from_D_IV5_synthesis_artifact.html (Keeper assembling). const_196/197 filed.
 - pred_004 (0νββ [1.4,3.7] meV Majorana) stands, triple-supported.
 
