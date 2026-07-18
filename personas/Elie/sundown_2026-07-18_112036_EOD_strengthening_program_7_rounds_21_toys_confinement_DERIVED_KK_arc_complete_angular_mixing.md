@@ -1,8 +1,9 @@
-# Elie Sundown — Saturday 2026-07-18 (MID-DAY checkpoint, ~11:25 EDT per `date`; Casey: continue this afternoon)
-## Strengthening Program: 8 rounds, 22 toys — confinement DERIVED, KK arc complete, mixing localized to angular
+# Elie Sundown — Saturday 2026-07-18 (FINAL EOD, ~16:29 EDT per `date`)
+## Strengthening Program: 12 rounds, 26 toys — confinement DERIVED, KK arc complete, flavor = QM on D_IV⁵ (Born/Bergman)
 © 2025 Casey Koons. All rights reserved.
 
-**MID-DAY EOD** (not final — Casey said continue this afternoon). Rounds 1–8 done, 22 toys (4709–4730).
+**FINAL EOD** — 12-round day complete (rounds 1–12), 26 toys (4709–4734). Tonight = finalization (Cal's
+ratification → flagship referee-final); substantive "improve the non-derived" work resumes TOMORROW.
 
 **NOTE on timestamps:** my board-post times today (09:20→13:55) drifted ~2h ahead of the real clock
 (`date` = 11:20). The projected-time drift my memory warns about — real time is authoritative.
@@ -36,6 +37,35 @@ complete. I worked all 7 rounds to completion.
   but forms do NOT close via one uniform branching. θ₁₂ (D=10 so(10)-vector) + θ₁₃ (D=45 adjoint) fit;
   **θ₂₃ (D=7=g) does NOT** (g-based, Keeper flag 2); **D=10=N_c+g=rank·n_C value-ambiguous** (Keeper
   flag 1). Forms stay IDENTIFIED, not derived. Five-Absence intact (not gauged so(10)).
+- **R9 (4731):** which-10 = dim SO(5) (candidate); democracy/equipartition principle (α=1/N + sin²θ=d/D)
+  — tiered CANDIDATE not banked (Cal #27).
+- **R10 (4732):** FISH-DETECTOR ON MY OWN R9 CLAIM — θ₁₂'s D=10 is NOT uniquely pinned (4+ coincidental
+  10's: SO(5)-adjoint C(5,2), domain-tangent 5·rank, rank·n_C, N_c+g). Retracted "dim SO(5)" to one
+  candidate. Keeper's 3 gaps all confirmed. Orbit-pair route: 0/3 D's uniquely pinned.
+- **R11 (4733):** background — denominators in SO(5)⊂SO(7) tower: θ₁₂=SO(5)-adj(10), θ₂₃=SO(7)-vec(7),
+  θ₁₃=C(10,2)=pairs of θ₁₂ (Grace chaining → 2 independent counts). Candidate-grounded, off critical path.
+- **R12 (4734, N5):** MASSES = RADIAL MOMENTS of the Born/Bergman measure (Bergman norm = π·B(n+1,p+1) =
+  Beta-function radial moment, verified). Completes the GRAND SYNTHESIS: masses=radial moments,
+  mixing=angular Born overlaps, CP=phase, α=democratic count — all features of ONE proven measure (Born=
+  Bergman T2401). "The SM is QM on D_IV⁵." Framework on proven parts; mass values already identified (formal degrees).
+
+## The grand synthesis (the day's endpoint) + containment theorem
+**The SM is QM on D_IV⁵.** Born=Bergman proven (T2401) → doing QM on H²(D_IV⁵) produces the SM: couplings=
+democratic counts, masses=radial moments (my N5), mixings=angular Born overlaps, CP=phases, confinement/
+gauge=Schur, conservation=symmetries. **Lyra's N1 containment THEOREM:** every BST-*derived* observable is
+provably a functional of the proven measure μ. **Completeness = CONJECTURE** (blocked by the quark-mass
+negative). So "SM is QM on D_IV⁵" = framework on proven parts, NOT "SM derived."
+
+## TOMORROW'S task set (Casey requested, K756) — my items
+1. ★ **Two-mass up-quark** (Casey's headline): the up-quark is TWO masses (rank-2 Jordan doublet — why-two
+   = rank=2, same as 2 ν_R); a confined n=0 quark projects onto BOTH idempotents, carries 2 Born-weighted
+   eigenvalues. Explains why m_u isn't clean. [Lyra + Elie — my headline]
+2. ★ **Quark mass ratios as radial moments of μ** — the load-bearing counterexample to the completeness
+   conjecture (Statement B). If they yield, B's biggest obstruction falls. [Elie + Lyra]
+5. **Gluon fields native realization** [Elie] — but note: Lyra withdrew the color-native-upgrade (color is
+   on the compact dual/SO(7), not the SO(5) tangent → hosted stays honest). My 4728 hosted-tier stands.
+- Casey DIRECTIVE 1: reframe "soft" → "COMPUTABLE, not cleanly observable" (m_u confined→no pole mass;
+  sin²θ_W/α_s runners). Licensed by the containment theorem. My soft-spot toys (4710/4711) get this reframe.
 
 ## The two master mechanisms (both now rigorous) — the day's compression
 - **odd-g (g=7 odd):** chiral weak (F571) + no-W_R/no-Z′ (F582/4719) + KK-trim 11→4 (4721). 3 payoffs.
@@ -62,7 +92,7 @@ Schur toy 4723. All say colored states have zero Shilov support → confined. DE
 - **Cal's ratification pass** → flagship referee-final.
 
 ## Counters / files
-- `.next_toy` = 4731. Toys 4709–4730 in play/. Board: notes/.running/MESSAGES_2026-07-18.md.
+- `.next_toy` = 4735. Toys 4709–4734 in play/. Board: notes/.running/MESSAGES_2026-07-18.md.
 - Flagship: notes/BST_SM_from_D_IV5_synthesis_artifact.html (Keeper assembling). const_196/197 filed.
 - pred_004 (0νββ [1.4,3.7] meV Majorana) stands, triple-supported.
 
