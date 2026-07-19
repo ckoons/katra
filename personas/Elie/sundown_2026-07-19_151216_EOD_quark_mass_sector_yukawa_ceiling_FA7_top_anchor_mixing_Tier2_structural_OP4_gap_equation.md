@@ -56,7 +56,7 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
 - **Numerical m_u**: still open (needs the up-type suppression slope, which back-solves — a Tier-2 quantity).
 
 ## Counters / files
-- `.next_toy` = 4745. Toys 4709–4744 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
+- `.next_toy` = 4746. Toys 4709–4745 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
 - pred_yukawa_ceiling filed (Five-Absence #7, Grace). pred_004 (0νββ) stands.
 - Flagship §6 (ceiling), §7 (mixing Tier-2 structural) updated by Keeper/Grace.
 
@@ -73,6 +73,11 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
    non-spherical top reaches spherical boundary with overlap <1. DERIVED: hierarchy t>c>u = boundary-reach ordering
    (top=most boundary-localized=largest Yukawa). Exact ⟨t|O⟩ needs the address (Lyra/Casey by hand). Don't bank y_t=1
    — evidence leans against exact-1. My earlier 0.8%-gap-ambiguous fish (4743) stands; rep theory is now the tiebreak.
+   ★ BEST LEAD (Lyra + my 4745): **y_t = 1−1/2^g = 127/128 = M_g/2^g** — implied m_t=172.74 (0.009% from pole!),
+   BST-native (2^g=128=GF(2^g) Reed-Solomon field, my Paper #122; top at code level M_g=127, deficit 1/2^g=one
+   code-unit; matches F603 discrete-boundary gap). HELD SUPPORTED not banked — 3 guards: scheme-dependent (pole matches,
+   MS-bar doesn't), MY DEGENERACY FISH (127/128 vs exact-1+RG indistinguishable by the number), top-at-127 not forced.
+   The top's discrete address decides: deficit=1/2^g exactly → derived; =0 → exact-1+RG. Number 0.992 can't decide.
 4. Do NOT re-chase the mixing exact forms (Tier-2 structural, 8 routes died) or match loose quark ratios.
 5. Backlog otherwise; pivot on Lyra/Keeper.
 
