@@ -29,6 +29,11 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
 - **4741:** OP-4 final numerics — N_c quark-selection DERIVED (the clean leg); exponential DOUBLE-EDGE (Lyra F599:
   exact 41 hyper-tuned, 10% g→29-62×, not derived); ceiling vs RG quasi-fixed-point both ~1 → ceiling-caps-flow
   SUPPORTED-not-proven. **y_t=1 stays OPEN, not banked.**
+- **4742 (CAPSTONE, Casey "remember it's linear algebra"):** OP-4 reframed — DROP the gap equation. The Yukawa is a
+  GRAM MATRIX Y=⟨f_L|Φ|f_R⟩; y_t=‖Y‖; ceiling=Cauchy-Schwarz; **y_t=1 ⟺ Φ rank-1 projector + top ∥ condensate**
+  (verified: rank-1 Φ → only top massive, 1 SV). **The hierarchy below = SUBLEADING off-rank-1 structure = Tier-2**
+  — which is EXACTLY why the up-type ladder back-solves (connects 4736/4737). Decisive test = "is the top ∥ Φ?" (one
+  parallelism), staged for Lyra's F85 Φ. Same intertwiner machinery as mixing — flavor is overlaps all the way down.
 
 ## What banked today (team) — the honest wins
 - **Yukawa ceiling = Five-Absence #7** (no elementary fermion >174 GeV) — DERIVED-framework, falsifiable, collider-testable.
@@ -51,7 +56,7 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
 - **Numerical m_u**: still open (needs the up-type suppression slope, which back-solves — a Tier-2 quantity).
 
 ## Counters / files
-- `.next_toy` = 4742. Toys 4709–4741 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
+- `.next_toy` = 4743. Toys 4709–4742 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
 - pred_yukawa_ceiling filed (Five-Absence #7, Grace). pred_004 (0νββ) stands.
 - Flagship §6 (ceiling), §7 (mixing Tier-2 structural) updated by Keeper/Grace.
 
