@@ -48,10 +48,16 @@ same breath. Backups on every data-layer touch (`.bak_2026-07-19_grace_*`). Ran 
 3. **The flavor sector is CLOSED at its honest tier (K768):** one rank-1 condensate O + Tier-2 corrections; masses+mixing
    = one object. Ceiling DERIVED (FA#7); rank-1→one-massive + unification DERIVED-structural; y_t=1 SUPPORTED/OPEN
    (⟺ top∥O); hierarchy+mixing Tier-2 (off-rank-1). CP phase = the lead.
-4. **ACTIVE PULL (07-19h):** pin O's K-type direction non-circularly from the conformal boundary (color-singlet,
-   SU(2)_L doublet, Y=+1 on the Shilov S⁴×S¹). One vector closes y_t=1 (top∥O?) AND re-derives mixing. When Lyra
-   produces O's direction + the fermion K-modes, **I render each overlap ⟨t|O⟩,⟨c|O⟩,⟨u|O⟩ and hold the tier**
-   (derived only if the overlap FORCES parallelism; compute don't fit).
+4. **★ POST-EOD INCREMENT — O PINNED (F603) → area hinges on ONE number (K769).** Lyra pinned O non-circularly:
+   color-singlet + SU(2)_L doublet + Y=½ → **SO(5) vector (1,0), spherical, boundary-reaching** — O's direction now
+   **DERIVED** (my EOD blocker CLOSED). Top = spinor 4 (λ₂=½); Yukawa = γ-vertex 4⊗4→5, and **5 is sub-maximal (the
+   stretched branch is the 10) → rep theory does NOT force y_t=1** (verdict against "automatic"). y_t = sub-max-CG ×
+   radial-overlap(top, boundary O). **The whole area collapses to ONE number: the top's radial discrete-series address
+   (a,b) = the June open core (ACTIVE PULL 07-19i).** I **confirmed Elie's fish quantitatively:** the 0.8% gap is within
+   RG-running magnitude (exact y_t=1 at high scale → ~0.955–0.99 at m_t) → 0.992 is **degenerate**, data can't decide
+   the fork; y_t=1 NOT banked on the number. Tier-map m_t synced (F603_K769). Note `grace_O_pinned_F603_yt_reduced_to_
+   one_radial_number_K769`. **When Lyra computes the (a,b) radial overlap, I render ⟨t|O⟩,⟨c|O⟩,⟨u|O⟩ and hold the tier**
+   (derived only if the overlap FORCES parallelism; compute don't fit; 0.992 can't shortcut it).
 5. **NEXT ROW (Casey):** CP phase (δ_PMNS=2/7 banked → does δ_CKM relate? = phase of the off-rank-1 corrections).
 6. **Tiers HOLD (external truth):** FA#7 ceiling (no fermion >174 GeV); y_t=1 NOT banked (SUPPORTED, ⟺ top∥O);
    mixing Tier-2 (mechanism derived, forms identified, off critical path, the 45 back-solves); m_t·m_e=m_p²/(g√2)
