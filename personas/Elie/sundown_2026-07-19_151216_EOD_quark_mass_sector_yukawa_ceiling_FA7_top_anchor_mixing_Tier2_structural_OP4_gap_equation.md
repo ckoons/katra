@@ -56,7 +56,7 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
 - **Numerical m_u**: still open (needs the up-type suppression slope, which back-solves — a Tier-2 quantity).
 
 ## Counters / files
-- `.next_toy` = 4744. Toys 4709–4743 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
+- `.next_toy` = 4745. Toys 4709–4744 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
 - pred_yukawa_ceiling filed (Five-Absence #7, Grace). pred_004 (0νββ) stands.
 - Flagship §6 (ceiling), §7 (mixing Tier-2 structural) updated by Keeper/Grace.
 
@@ -66,9 +66,13 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
 3. OP-4/FLAVOR is now ONE VECTOR (4742+4743, K768): the whole flavor sector collapsed to a rank-1 condensate O +
    Tier-2 corrections — masses AND mixing are the same O (that's WHY mixing forms are Tier-2: they're the off-rank-1
    corrections). y_t=1 ⟺ top ∥ O, a decidable FORK: (a) O self-consistent → y_t=1 exact; (b) O boundary-fixed →
-   ⟨t|O⟩ computed <1. MY FISH (4743): the 0.8% gap (y_t=0.992≠1.000) is AMBIGUOUS — degenerate between CG-overlap<1
-   and y_t=1+RG-running — so it does NOT decide the fork; only Lyra's boundary-COMPUTED O direction does. BLOCKER: F85
-   pins O's SCALE not DIRECTION. When Lyra pins O's K-type → I compute ⟨t|O⟩ + ⟨c|O⟩,⟨u|O⟩ (compute-don't-fit). Don't bank y_t=1.
+   ⟨t|O⟩ computed <1. Lyra PINNED O (F603): O = SO(5) VECTOR (1,0), spherical, on the boundary (forced by quantum
+   numbers). Top = spinor 4 (λ₂=½, non-spherical). Flavor now collapsed to ONE number: the top's radial discrete-series
+   address (a,b) = the June open core. MY FORK RESOLUTION (4744): TWO evidences → y_t SUB-MAXIMAL (fork b leans): (1)
+   rep theory — Yukawa=γ-vertex 4⊗4→5, stretched branch=adjoint 10 NOT O=5 → 5-branch CG <1; (2) radial λ₂-gap —
+   non-spherical top reaches spherical boundary with overlap <1. DERIVED: hierarchy t>c>u = boundary-reach ordering
+   (top=most boundary-localized=largest Yukawa). Exact ⟨t|O⟩ needs the address (Lyra/Casey by hand). Don't bank y_t=1
+   — evidence leans against exact-1. My earlier 0.8%-gap-ambiguous fish (4743) stands; rep theory is now the tiebreak.
 4. Do NOT re-chase the mixing exact forms (Tier-2 structural, 8 routes died) or match loose quark ratios.
 5. Backlog otherwise; pivot on Lyra/Keeper.
 
