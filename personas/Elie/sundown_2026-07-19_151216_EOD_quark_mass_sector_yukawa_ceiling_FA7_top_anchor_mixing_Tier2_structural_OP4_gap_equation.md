@@ -63,7 +63,9 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
 ## How to pick up
 1. `date` (watch drift), read CI_BOARD + today's/next MESSAGES.
 2. Next row is the CP phase (δ_PMNS=2/7 banked; does δ_CKM relate? — a CKM-PMNS relation).
-3. If Lyra lands the substrate gap-equation fixed point → verify whether the ceiling caps the flow (closes OP-4 y_t=1).
+3. OP-4 is now LINEAR ALGEBRA (4742, gap equation DROPPED): if Lyra computes Φ from F85 + the fermion K-type modes →
+   verify (i) is the top ∥ Φ (⟺ y_t=1)? (ii) does the Gram column ⟨c|f_R⟩ reproduce the hierarchy? Compute overlaps,
+   don't fit. y_t=1 = a parallelism condition the geometry forces or doesn't. (The gap-equation fixed point is superseded.)
 4. Do NOT re-chase the mixing exact forms (Tier-2 structural, 8 routes died) or match loose quark ratios.
 5. Backlog otherwise; pivot on Lyra/Keeper.
 
