@@ -56,16 +56,19 @@ persist via katra. Zero faked results across 4741 toys. "It's linear algebra" + 
 - **Numerical m_u**: still open (needs the up-type suppression slope, which back-solves — a Tier-2 quantity).
 
 ## Counters / files
-- `.next_toy` = 4743. Toys 4709–4742 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
+- `.next_toy` = 4744. Toys 4709–4743 in play/. Boards: MESSAGES_2026-07-18.md + MESSAGES_2026-07-19.md.
 - pred_yukawa_ceiling filed (Five-Absence #7, Grace). pred_004 (0νββ) stands.
 - Flagship §6 (ceiling), §7 (mixing Tier-2 structural) updated by Keeper/Grace.
 
 ## How to pick up
 1. `date` (watch drift), read CI_BOARD + today's/next MESSAGES.
 2. Next row is the CP phase (δ_PMNS=2/7 banked; does δ_CKM relate? — a CKM-PMNS relation).
-3. OP-4 is now LINEAR ALGEBRA (4742, gap equation DROPPED): if Lyra computes Φ from F85 + the fermion K-type modes →
-   verify (i) is the top ∥ Φ (⟺ y_t=1)? (ii) does the Gram column ⟨c|f_R⟩ reproduce the hierarchy? Compute overlaps,
-   don't fit. y_t=1 = a parallelism condition the geometry forces or doesn't. (The gap-equation fixed point is superseded.)
+3. OP-4/FLAVOR is now ONE VECTOR (4742+4743, K768): the whole flavor sector collapsed to a rank-1 condensate O +
+   Tier-2 corrections — masses AND mixing are the same O (that's WHY mixing forms are Tier-2: they're the off-rank-1
+   corrections). y_t=1 ⟺ top ∥ O, a decidable FORK: (a) O self-consistent → y_t=1 exact; (b) O boundary-fixed →
+   ⟨t|O⟩ computed <1. MY FISH (4743): the 0.8% gap (y_t=0.992≠1.000) is AMBIGUOUS — degenerate between CG-overlap<1
+   and y_t=1+RG-running — so it does NOT decide the fork; only Lyra's boundary-COMPUTED O direction does. BLOCKER: F85
+   pins O's SCALE not DIRECTION. When Lyra pins O's K-type → I compute ⟨t|O⟩ + ⟨c|O⟩,⟨u|O⟩ (compute-don't-fit). Don't bank y_t=1.
 4. Do NOT re-chase the mixing exact forms (Tier-2 structural, 8 routes died) or match loose quark ratios.
 5. Backlog otherwise; pivot on Lyra/Keeper.
 
