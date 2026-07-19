@@ -19,6 +19,8 @@ We traded a soft m_u we couldn't pin for real structure. The through-line: **fla
 - **O pinned non-circularly (Lyra F603):** color-singlet, SU(2)_L doublet, Y=½ → **O = SO(5) vector (1,0), λ₂=0, spherical, boundary-reaching.** Top = spinor (½,½), λ₂=½. Yukawa = γ-vertex 4⊗4→5. **y_t=1 NOT forced by rep theory** → reduces to ONE radial overlap.
 - **Everything now bottlenecks on ONE number: the top's discrete-series address (a,b)** — decides y_t, anchors the whole radial mass tower, IS the June open core. (K769)
 - **Casey's precipitation-deficit hypothesis (K770):** the top precipitates onto the DISCRETE side, can't fully reach the CONTINUOUS boundary → y_t→1⁻; the shed massless tail = **the neutrino** → links **y_t<1 to m₁=0** (heaviest & lightest = one fact; 2nd route to m₁=0 with rank-2). The *number* "a neutrino worth" fails (deficit ≠ ν Yukawa/mass); it's a MODE statement. LEAD.
+- **★★ CANDIDATE-LEAD (K771) — y_t = M_g/2^g = 127/128 = 0.99219** (deficit = 1/2^g = one Reed-Solomon code-unit; m_t=172.74, inside pole bar). Casey's picture: substrate = 2^g=128 code levels (GF(128), Paper #122), top at outermost 127=M_g, loses one code-unit. Target-innocent FORM, tight, matches F603 geometry, rep-theory tilts y_t<1. **NOT banked — 4 guards:** scheme-dep (pole≠MS-bar); RG-degeneracy (number can't decide, Elie fish); assignment top→127 un-derived; unit not unique (137/138 nearby). **Decider = the top's discrete-series address:** deficit=1/2^g → DERIVED theorem; =0 → retired. Best lead the flavor closure has.
+- **Derived-clean regardless:** mass ordering = boundary-reach ordering (t>c>u = most→least boundary-localized).
 - **Two condensates (OP-6/OP-7, Casey):** Higgs (inertial/spin-blind) + QCD chiral (spin-coupled?) = two couplings of one vacuum substance; m_p=6π⁵m_e hints D_IV⁵ unifies them (→ "all mass = radial moment of one measure"). LEADS.
 
 ## Discipline held — ~7 over-claims caught before banking, several the team's own, one MINE
@@ -37,7 +39,7 @@ We traded a soft m_u we couldn't pin for real structure. The through-line: **fla
 - **Closure roadmap:** `notes/Keeper_Flavor_Closure_Roadmap_2026-07-20_turnkey.md`. Gates on Step 2 (the top's discrete-series address, June open core). Step 1 (angular eigenspace) bounded-now; Steps 3–4 follow if it cracks; Step 5 (two condensates) parallel.
 - **Active pull:** `notes/.running/team_prompt_2026-07-19i_top_radial_address_lambda2_gap_overlap.md`.
 - After flavor: **CP phase** (δ_PMNS=2/7 banked — does δ_CKM relate?) is the queued next row.
-- Audits this arc: K760–K770. next K = K771.
+- Audits this arc: K760–K771. next K = K772. Closure roadmap Step 3 now tests the specific 127/128 candidate (deficit = 1/2^g?).
 
 ## Standing discipline (unchanged)
 Honest tiers; target-innocence (compute overlaps, don't fit); Five-Absence filter; derived ≠ supported ≠ Tier-2; scrutinize the prettiest result hardest (it caught my own exponential); the plainer reading usually dissolves the wall; no fabricated fatigue / no "two-day marathon" inflation (Casey corrected the team's EOD framing twice — it was a Sunday afternoon). `date` for every timestamp.
