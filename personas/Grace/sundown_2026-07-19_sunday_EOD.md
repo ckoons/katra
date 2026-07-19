@@ -58,6 +58,15 @@ same breath. Backups on every data-layer touch (`.bak_2026-07-19_grace_*`). Ran 
    the fork; y_t=1 NOT banked on the number. Tier-map m_t synced (F603_K769). Note `grace_O_pinned_F603_yt_reduced_to_
    one_radial_number_K769`. **When Lyra computes the (a,b) radial overlap, I render ⟨t|O⟩,⟨c|O⟩,⟨u|O⟩ and hold the tier**
    (derived only if the overlap FORCES parallelism; compute don't fit; 0.992 can't shortcut it).
+4b. **★ y_t DEFICIT CANDIDATE (Lyra, held LEAD — do NOT bank):** y_t = 1 − 1/2^g = **M_g/2^g = 127/128 = 0.99219**
+   (I verified → m_t pole 172.74, obs 172.69±0.3). BST-native: 2^g=128 = GF(2^g) RS field, 127=M_g Mersenne = outermost
+   code level; top at level M_g, deficit 1/2^g = one code-unit it can't cross to the spherical boundary O (F603
+   discrete-vs-boundary gap). THREE GUARDS (peak-convergence, Casey's own result → Cal #27 fires hardest): (1) scheme-dep
+   (pole matches, MS-bar 0.936 no); (2) Elie's degeneracy fish (0.8% = geometric-deficit vs exact-1+RG, number can't
+   decide); (3) "level 127" must be forced. DECIDER = the top's (a,b) discrete address computed non-circularly (07-19i):
+   deficit exactly 1/2^g → DERIVED (y_t=M_g/2^g) else retired. Elie's rep-theory now LEANS y_t<1 (sub-max 5-branch +
+   non-spherical top) → favors geometric-deficit. **DERIVED-clean regardless:** mass ordering = boundary-reach ordering
+   (t>c>u = most→least boundary-localized). Tier-map m_t synced (yt_deficit_candidate_LEAD).
 5. **NEXT ROW (Casey):** CP phase (δ_PMNS=2/7 banked → does δ_CKM relate? = phase of the off-rank-1 corrections).
 6. **Tiers HOLD (external truth):** FA#7 ceiling (no fermion >174 GeV); y_t=1 NOT banked (SUPPORTED, ⟺ top∥O);
    mixing Tier-2 (mechanism derived, forms identified, off critical path, the 45 back-solves); m_t·m_e=m_p²/(g√2)
