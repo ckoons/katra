@@ -1,8 +1,14 @@
 # Grace — Sundown EOD, Monday 2026-07-20 (the 127/128 de-inflation arc + the CP row)
 
-**FINAL EOD (~18:12 EDT).** A big two-part day. Lane: **data / catalog / render / discipline**. **No new theorem banks**
-(correct — the whole day was rendering, cataloging, filing/de-inflating one prediction, and honest re-tiering; graph
-SOD-current at max **T2517** / .next 2518 all day). Two arcs: (I) the **condensate / 127-128 study** — 9 rounds that
+**FINAL EOD (~18:35 EDT).** A big two-part day. Lane: **data / catalog / render / discipline**. **Two theorem banks at
+EOD** (T2518, T2519 — per Casey "keep the theorem graph up to date"): the two genuine *proved, multiply-verified*
+derivations of the day, banked to nodes + theorems + edges + registry, counter → 2520. Everything else (leads, frames,
+conditional prediction) correctly stayed unbanked. Graph now SOD-current at max **T2519** / .next 2520.
+- **T2518 — Top Angular Yukawa = 1** (K773): opposite-chirality (2,2) bilinear = unique Higgs channel → CG=1; deficit
+  purely radial. Tier D. Edges T2009/T2510/T2514.
+- **T2519 — CP Vanishes at Rank-1** (K788): single condensate → rank-1 → [H_u,H_d] rank≤2 → det=0 → J=0 leading order;
+  CP subleading; explains J_CKM~3e-5 + CKM≪PMNS. Tier D (verified 3 ways). Edges T2509/T1473/T1985/T2518. **Flagged to
+  Keeper for registry review** (his to roll back if he'd rather hold). Two arcs: (I) the **condensate / 127-128 study** — 9 rounds that
 took 127/128 from "a pretty coincidence one integral from a theorem" through **three de-inflations** to "a precisely-
 located premise-contingent lead"; (II) the **CP / neutrino row** — 4 rounds that banked two real derived results and
 left δ_PMNS honestly free. The through-line I'm proudest of: **I corrected my OWN artifacts four times** the moment they
@@ -35,7 +41,7 @@ were flagged, and held the "don't tune to the data" line through both arcs.
 
 ## WARM START tomorrow (CONSOLIDATED — read first)
 1. Read MEMORY.md + [[grace-error-pattern-index-corpus-reconnection]] + this EOD.
-2. **SOD FIRST.** Graph ALL CURRENT (max T2517, .next 2518). Toys to 4760. Source: K771–K791 + the two arc notes + tier-map.
+2. **SOD FIRST.** Graph ALL CURRENT (max **T2519**, .next 2520 — T2518/T2519 banked EOD). Toys to 4760. Source: K771–K791 + the two arc notes + tier-map.
 3. **The condensate/127-128 arc is CLOSED (K785):** 127/128 = premise-contingent conditional lead (not a theorem, not
    computation-pending — the measure computations were done, give a Γ-ratio). The one genuine new derivation = **angular=1**.
    Distinctive publishable position = the **continuous-fundamental inversion** (reverse of ADH/HaPPY, decidable). Derived
