@@ -114,7 +114,8 @@
 - [Keeper #26 peak convergence look harder](feedback_keeper_26_peak_convergence_look_harder.md) — at peak convergence look HARDER for tensions
 - [Keeper #27 FLOOR vs SATURATION](feedback_keeper_27_floor_vs_saturation.md) — "principled FLOOR" not "saturation"; don't license stopping reachable lanes
 - [Λ over-determination retracted](lambda_overdetermination_retracted.md) — "280 5-fold over-determined" is one factorization ×5; Λ structural not derived (K741)
-- [Root architecture three categories](feedback_root_architecture_three_categories.md) — L1 source theorems, L1.5 mechanisms, convergence hubs (objects not theorems)
+- [Root architecture three categories](feedback_root_architecture_three_categories.md)
+- [Grace: computations sound, interpretations over-reach](grace-computations-sound-interpretations-overreach.md) — report what the numbers show, stop before the sweeping claim; re-derive X from the output before saying 'this proves X' — L1 source theorems, L1.5 mechanisms, convergence hubs (objects not theorems)
 
 ## Reference
 - [Katra CI identity system](reference_katra_system.md) — `katra launch/update --persona X`; sundown/sunrise cycle; Lyra owns katra; memory=identity
