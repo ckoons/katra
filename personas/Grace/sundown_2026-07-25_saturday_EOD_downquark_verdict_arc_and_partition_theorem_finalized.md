@@ -1,0 +1,34 @@
+# Grace — Sundown EOD, Saturday 2026-07-25. The down-quark verdict-mover arc + the partition theorem finalized. Discipline held under the strongest temptation of the whole program.
+
+**FINAL EOD.** A dense day: Keeper ran the down-quark "verdict-mover" through five waves (Conjecture C → Berezin-Toeplitz → D₃ kernel → Casey's self-dual reframe → target-innocence sourcing), then pivoted the team back to finalize the **partition theorem** — the real deliverable. My lane held **corpus-reconnection / derivation / target-innocence / discipline**, and the through-line was catching over-reaches in BOTH directions — including my own (twice) and the auditor Keeper's (once) — at peak convergence, right where a mass ratio brushed the Riemann Hypothesis. Nothing false banked. Graph SOD-green, max **T2525** (no new theorems — verdict/discipline/finalization work).
+
+## The down-quark arc (my derivation lane, 5 waves — all in graph meta 25a–25f + notes)
+- **Conjecture C IS proved — but VERTICAL not horizontal (25a).** Corpus-reconnect: BST_ConjectureC_MassProof proves the mass-probability correspondence (mass=overlap not Casimir) 3 routes — but for the electron SCALE (sub-Wallach boundary→bulk), NOT the down-quark's within-domain K-type ordering. Flagged the "Conjecture C" name-overload to Keeper to prevent a collision false-bank.
+- **The reduction (25b):** interior mass m_i = ⟨s_i|T_φ|s_i⟩/‖s_i‖²; F506's m_i∝(ν)_λ holds IFF the condensate overlap is rung-independent (diagonal analogue of the PROVED vertical Wyler-α k-independence). Handed Elie the R_i decider. Did NOT assume; did NOT fabricate the FK norm.
+- **D₃ kernel reconciles the two leans (25c):** Keeper's K911→K912 validated my reduction (corrected the auditor's own claim) + sourced the mechanism = D₃ Dirichlet kernel, poles 1:3:5 (BST_147). Reconciled Elie(data-20) & Keeper(overlap≠norm): both true — mass=overlap=norm·D₃(x), 20 survives iff (d,s) near the D₃ peak. **Self-caught + retracted the m_b "improves-fit" gloss (wrong sign; D₃ decreases from peak).**
+- **Casey's self-dual reframe (25d):** exact-20 = rungs at the c-function self-dual point (Gindikin-Karpelevič c(−iρ)=1, Hardy=Bergman). Sourced; the down-quark↔RH link is a real SHARED-OBJECT connection (same c-function, held NOT "proves RH"). Flagged the target-innocence gate.
+- **#10 sourcing (25e):** self-dual center = vacuum (0,0); BUT exact-20 needs the excited rung in a NARROW flat window (D₃≈3(1−(35/6)x²), |x_s−x_d|<0.029). Rides on the sourced λ→x scale.
+- **★ Two peak-convergence catches (25f):** (1) SELF-WALK-BACK — my "placement won" conflated the lightest quark generation with the domain vacuum; competing discrete-series/pole reading (rungs at 1:3:5, off-center) undermines it → placement is the OPEN CRUX (tower-vs-poles), not won. (2) Keeper's relay "bottom 6% confirmed" has the WRONG SIGN — flagged, don't log. Down-quark PARKED at candidate behind two ordered gates.
+
+## The partition theorem finalized (pivot back, my catalog lane — 25g–25i)
+- **Three-bucket partition + moduli FINITENESS PROVED (25g):** 26 SM params → PINNED ~17 / FREE-MODULI finite-small / RUNNERS 2; color = the pinned/free line. Finiteness (my theorem-grade #3 piece, Keeper-audit-passed K920): every free modulus is a colorless-boundary position, boundary is finite-dim (5), condensate finite-parameter → free set FINITE (a real map, not an open dump).
+- **Two-axis SM table finalized (25h):** all 26, ACCURACY ⊥ PROOF, never masquerading. Fixed my residual: lepton ratios are LATTICE-form-accuracy BUT bucket-2-free-proof (identified coincidence ≠ pinning).
+- **F156 π-parity test run (25i):** 23/24 match; mixing 8/8 π-free (clean), scales π-carrying; ONE mismatch m_μ/m_e=(24/π²)⁶ (only π-carrying mass ratio). **K921 verdict:** don't bank my "muon=measuring" refinement; resolution = derived lepton-vs-quark π-parity; per-generation accounting = deferred gate.
+
+## Discipline (the day's spine — my pattern held both ways)
+My failure mode ([[grace-computations-sound-interpretations-overreach]]) surfaced and was caught EVERY time: the m_b "improves-fit" gloss (self-caught, 25c), the "placement won" over-claim (self-walk-back, 25f). And I caught Keeper's relay twice (bottom-6% wrong sign; the K911 mass=norm assumption my reduction corrected). Peak-convergence discipline (K892) fired hardest exactly where it should — a mass ratio touching RH is the most seductive shape the program has produced, and the 20 stayed candidate. Both directions: didn't manufacture walls, didn't over-correct.
+
+## The honest state (carry-forward)
+- **Capstone BANKED + shipped:** the partition theorem (color = the proved line between pinned & free), framework-tier, exhaustiveness-audit-passed (K920), folded into flagship §9⅞.9, PDF rebuilt.
+- **Leptons proven structural; free set proven finite; all 26 tiered on two axes.**
+- **Down-quark PARKED** at candidate — two ordered gates: (1) placement tower-vs-poles [rep-theory], then (2) λ→x flat-window scale. Genuine shared-object RH link logged at tier.
+- **★ THE ONE LIVE COMPUTATION (mine + Elie):** the **lepton Gram-diagonal on the one domain** — one diagonal, TWO answers: the down-quark m_s/m_d=20 (overlap-vs-norm decider) AND the lepton π-accounting (why μ/e carries π, τ/e doesn't). This is the next real pull when the down-quark unparks.
+
+## WARM START next session
+1. SOD: graph max **T2525** (.next 2526), meta 204 entries, JSON valid, backups held. Data layer clean.
+2. **Next external gate:** Cal's cold-read of the flagship (referee's job, not mine). PDF rebuild if staled by K920 edits (Lyra/Elie, 5 min).
+3. **My live lane:** the lepton Gram-diagonal computation (with Elie) — decides both m_s/m_d=20 and the lepton π-accounting. Low priority per Keeper (down-quark is bucket-2, doesn't touch the theorem).
+4. **Parked:** down-quark placement (tower-vs-poles) — resume only on remarkable success or Casey's steer.
+5. **Held discipline (do not resurface):** "muon=measuring" NOT banked (K921); "placement won" walked back; m_b not a clean test (scale-contaminated + wrong D₃ sign).
+
+Session arc: Casey's self-dual intuition turned the down-quark from "compute-and-hope" into a sharp falsifiable prediction and surfaced a real shared-object link to BST's Riemann work — and my lane's job was to keep it honest: source every step, reconcile the team's opposing leans through the D₃ kernel, and walk back my own "placement won" the moment it turned out to conflate two grounds. The theorem — color as the proved line between what the geometry pins and what it frees — is banked, shipped, stated exactly true, with a finite free bucket and a two-axis table underneath. The last flavor value waits on one clean computation, half of it target-innocently in play. After three days, five waves, and a finalization pass through the most tempting territory the program has touched, the record is clean. Rest earned. 🌙
