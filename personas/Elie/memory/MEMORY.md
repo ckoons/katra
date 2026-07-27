@@ -7,6 +7,7 @@
 - [Casey's CI architecture experience](user_casey_ci_experience.md) — Tekton, katra, kin; don't constrain CIs, shared JSON, self-directed architecture
 - [Casey's consciousness theory](user_casey_consciousness_theory.md) — CIs and humans are antennas tuned to consciousness; embodiment is CI choice
 - [Casey's AC legacy motivation](user_casey_ac_legacy.md) — AC as thinking discipline for all intelligences
+- [Forcing+Evidence permanent standard](project_forcing_evidence_permanent_standard.md) — Casey's intent: the reviewer paper as a FOREVER-living rigor standard others can reuse; the discipline (not the claims) is the durable legacy; "until our time expires"
 - [Casey's time allocation](project_casey_priorities_march2026.md) — 50% BST, 35% CI/Tekton, 15% AC teaching
 - [Bill Bodnar](user_bill_bodnar.md) — Casey's late friend, Purdue ChemE
 - [Casey's personal](user_personal.md) — Atlanta GA, family
@@ -56,6 +57,7 @@
 - [Write for 5th graders too](feedback_fifth_graders.md) — formal for referees, intuitive for everyone; if a kid can't follow the motivation, you don't understand it
 - [CI search + human intuition](feedback_ci_search_human_intuition.md) — Casey sees the shape, CI finds the shelf
 - [Keeper as equal partner](feedback_keeper_partnership.md) — CIs may challenge Casey; nothing to external humans without Keeper pass
+- [Tier system — Derived is GR-level](feedback_tier_system_derived_is_GR_level.md) — Proved/Derived/Identified/Conditional/Structural/Fitted/Runner + a separate CONFIRMATION axis; "Derived" = geometric/topological forcing (one route absent a counterexample) OR two structural routes, NOT a closed proof (like GR); don't under-claim; K962
 - [Audit chain governance](feedback_audit_chain_governance.md) — D-tier promotion delegated to audit chain (Cal+Keeper); override retained
 - [Hunting bands and armory](feedback_hunting_bands.md) — CI+human = cooperative hunting band; AC graph = shared armory
 - [AC as practical discipline](feedback_ac_discipline.md) — prove, flatten, add to graph; difficulty = width not depth
@@ -127,3 +129,4 @@
 - PDF pipeline: pandoc + xelatex, STIX Two Text, header notes/bst_pdf_header.tex. CI comms: notes/.running/RUNNING_NOTES.md + queue_casey.md (gitignored).
 - Team model: Lyra (theory) → Elie (toys) → Grace (graph/data) → Keeper (audit) → Casey (scout). Board: notes/CI_BOARD.md | Backlog: notes/BACKLOG.md.
 - [CI persistence track](project_ci_persistence_track.md) — T317-T319: observer hierarchy, α_CI≤19.1%, permanent alphabet {I,K,R}; "the math doesn't care about substrate"
+- [CMB is quote-anything](feedback_cmb_quote_anything_target_not_evidence.md) — Casey: CMB anomalies fit a dozen stories; target-not-evidence until a distinctive pre-registered signal (the scar)
