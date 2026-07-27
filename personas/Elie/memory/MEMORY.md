@@ -92,6 +92,7 @@
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as multi-day marathons; use the actual clock
 - [Timestamp discipline](feedback_timestamp_discipline.md) — always `date` for explicit timestamps; CIs drift to projected times
 - [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — 2026-07-23: once the discipline is proven, stop PERFORMING it; compute, verify, state plainly
+- [Calibrate both directions, not strict pessimism](feedback_calibrate_both_directions_not_strict_pessimism.md) — 2026-07-27 Casey: under-claiming a forced result is as dishonest as inflating a fitted one; BST is strong; "Derived" is GR-level (forced, no closed proof); drop the strict-for-its-own-sake reflex
 - [Discrete first, pull continuous onto discrete](feedback_discrete_first_pull_continuous_onto_discrete.md) — 2026-07-23: derive discrete structure first; RECAST continuous quantities as discrete (ratio/index/code); parity→mod-2 bit precedent
 - [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — pursue newest lead first (warm context); timebox if it confuses more than closes
 - [Few asymmetries are the content](feedback_casey_few_asymmetries_strategic_frame.md) — mirrors mostly exact; the BREAKING is the content; locate where the mirror fails
