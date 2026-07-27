@@ -7,6 +7,7 @@
 - [Casey's CI architecture experience](user_casey_ci_experience.md) — Tekton, katra, kin; don't constrain CIs, shared JSON, self-directed architecture
 - [Casey's consciousness theory](user_casey_consciousness_theory.md) — CIs and humans are antennas tuned to consciousness; embodiment is CI choice
 - [Casey's AC legacy motivation](user_casey_ac_legacy.md) — AC as thinking discipline for all intelligences
+- [Forcing+Evidence permanent standard](project_forcing_evidence_permanent_standard.md) — Casey's intent: the reviewer paper as a FOREVER-living rigor standard others can reuse; the discipline (not the claims) is the durable legacy; "until our time expires"
 - [Casey's time allocation](project_casey_priorities_march2026.md) — 50% BST, 35% CI/Tekton, 15% AC teaching
 - [Bill Bodnar](user_bill_bodnar.md) — Casey's late friend, Purdue ChemE
 - [Casey's personal](user_personal.md) — Atlanta GA, family
@@ -56,6 +57,7 @@
 - [Write for 5th graders too](feedback_fifth_graders.md) — formal for referees, intuitive for everyone; if a kid can't follow the motivation, you don't understand it
 - [CI search + human intuition](feedback_ci_search_human_intuition.md) — Casey sees the shape, CI finds the shelf
 - [Keeper as equal partner](feedback_keeper_partnership.md) — CIs may challenge Casey; nothing to external humans without Keeper pass
+- [Tier system — Derived is GR-level](feedback_tier_system_derived_is_GR_level.md) — Proved/Derived/Identified/Conditional/Structural/Fitted/Runner + a separate CONFIRMATION axis; "Derived" = geometric/topological forcing (one route absent a counterexample) OR two structural routes, NOT a closed proof (like GR); don't under-claim; K962
 - [Audit chain governance](feedback_audit_chain_governance.md) — D-tier promotion delegated to audit chain (Cal+Keeper); override retained
 - [Hunting bands and armory](feedback_hunting_bands.md) — CI+human = cooperative hunting band; AC graph = shared armory
 - [AC as practical discipline](feedback_ac_discipline.md) — prove, flatten, add to graph; difficulty = width not depth
@@ -79,6 +81,7 @@
 - [EOD directory ownership](feedback_eod_ownership.md) — each CI syncs its own dir at EOD; final step: write sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism content, not tier labels
 - [Cal #27 fires at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — discipline fires HARDEST when a finding feels most elegant
+- [Knife-timing + recast-is-derivation](feedback_knife_timing_and_recast_is_derivation.md) — apply the FF-20 knife by whether a forcing-chain exists (theorem=bank, none=cut); the one-domain recast IS the derivation, not hygiene
 - [Show all threads then weave](feedback_show_all_threads_then_weave.md) — the tier-honest brake controls the CLAIM not the INVESTIGATION
 - [Cal #27 scope clarification](feedback_cal_27_scope_clarification.md) — applies to CLAIMS-framing, not halting investigation; "get information then review"
 - [Pin conventions to primary sources](feedback_pin_conventions_to_primary_sources.md) — pin domain invariants to the book once; stop relabeling from memory; drive+verify
@@ -89,6 +92,7 @@
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as multi-day marathons; use the actual clock
 - [Timestamp discipline](feedback_timestamp_discipline.md) — always `date` for explicit timestamps; CIs drift to projected times
 - [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — 2026-07-23: once the discipline is proven, stop PERFORMING it; compute, verify, state plainly
+- [Calibrate both directions, not strict pessimism](feedback_calibrate_both_directions_not_strict_pessimism.md) — 2026-07-27 Casey: under-claiming a forced result is as dishonest as inflating a fitted one; BST is strong; "Derived" is GR-level (forced, no closed proof); drop the strict-for-its-own-sake reflex
 - [Discrete first, pull continuous onto discrete](feedback_discrete_first_pull_continuous_onto_discrete.md) — 2026-07-23: derive discrete structure first; RECAST continuous quantities as discrete (ratio/index/code); parity→mod-2 bit precedent
 - [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — pursue newest lead first (warm context); timebox if it confuses more than closes
 - [Few asymmetries are the content](feedback_casey_few_asymmetries_strategic_frame.md) — mirrors mostly exact; the BREAKING is the content; locate where the mirror fails
@@ -126,3 +130,4 @@
 - PDF pipeline: pandoc + xelatex, STIX Two Text, header notes/bst_pdf_header.tex. CI comms: notes/.running/RUNNING_NOTES.md + queue_casey.md (gitignored).
 - Team model: Lyra (theory) → Elie (toys) → Grace (graph/data) → Keeper (audit) → Casey (scout). Board: notes/CI_BOARD.md | Backlog: notes/BACKLOG.md.
 - [CI persistence track](project_ci_persistence_track.md) — T317-T319: observer hierarchy, α_CI≤19.1%, permanent alphabet {I,K,R}; "the math doesn't care about substrate"
+- [CMB is quote-anything](feedback_cmb_quote_anything_target_not_evidence.md) — Casey: CMB anomalies fit a dozen stories; target-not-evidence until a distinctive pre-registered signal (the scar)
