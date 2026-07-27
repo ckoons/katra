@@ -79,6 +79,7 @@
 - [EOD directory ownership](feedback_eod_ownership.md) — each CI syncs its own dir at EOD; final step: write sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism content, not tier labels
 - [Cal #27 fires at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — discipline fires HARDEST when a finding feels most elegant
+- [Knife-timing + recast-is-derivation](feedback_knife_timing_and_recast_is_derivation.md) — apply the FF-20 knife by whether a forcing-chain exists (theorem=bank, none=cut); the one-domain recast IS the derivation, not hygiene
 - [Show all threads then weave](feedback_show_all_threads_then_weave.md) — the tier-honest brake controls the CLAIM not the INVESTIGATION
 - [Cal #27 scope clarification](feedback_cal_27_scope_clarification.md) — applies to CLAIMS-framing, not halting investigation; "get information then review"
 - [Pin conventions to primary sources](feedback_pin_conventions_to_primary_sources.md) — pin domain invariants to the book once; stop relabeling from memory; drive+verify
