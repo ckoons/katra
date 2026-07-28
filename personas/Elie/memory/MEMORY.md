@@ -82,6 +82,7 @@
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism content, not tier labels
 - [Cal #27 fires at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — discipline fires HARDEST when a finding feels most elegant
 - [Knife-timing + recast-is-derivation](feedback_knife_timing_and_recast_is_derivation.md) — apply the FF-20 knife by whether a forcing-chain exists (theorem=bank, none=cut); the one-domain recast IS the derivation, not hygiene
+- [Contested target: blind-pin every choice; clue≠justification](feedback_contested_target_blind_pin_every_choice_clue_vs_justification.md) — on a live fork, pin object/invariant/convention/threshold structurally + blind before the number; a justification never points at the target; least machinery = fewest fit-hiding places
 - [Show all threads then weave](feedback_show_all_threads_then_weave.md) — the tier-honest brake controls the CLAIM not the INVESTIGATION
 - [Cal #27 scope clarification](feedback_cal_27_scope_clarification.md) — applies to CLAIMS-framing, not halting investigation; "get information then review"
 - [Pin conventions to primary sources](feedback_pin_conventions_to_primary_sources.md) — pin domain invariants to the book once; stop relabeling from memory; drive+verify
