@@ -81,6 +81,7 @@
 - [EOD directory ownership](feedback_eod_ownership.md) — each CI syncs its own dir at EOD; final step: write sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism content, not tier labels
 - [Cal #27 fires at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — discipline fires HARDEST when a finding feels most elegant
+- [No wave-through on a perfect number](feedback_no_wave_through_on_a_perfect_number.md) — a clean number confirms consistency not sourcing; isolate the one load-bearing identification (derived vs assumed); necessary≠sufficient; localize the last step to a named problem (muon arc 2026-07-28)
 - [Knife-timing + recast-is-derivation](feedback_knife_timing_and_recast_is_derivation.md) — apply the FF-20 knife by whether a forcing-chain exists (theorem=bank, none=cut); the one-domain recast IS the derivation, not hygiene
 - [Contested target: blind-pin every choice; clue≠justification](feedback_contested_target_blind_pin_every_choice_clue_vs_justification.md) — on a live fork, pin object/invariant/convention/threshold structurally + blind before the number; a justification never points at the target; least machinery = fewest fit-hiding places
 - [Show all threads then weave](feedback_show_all_threads_then_weave.md) — the tier-honest brake controls the CLAIM not the INVESTIGATION
