@@ -123,6 +123,8 @@
 - [Root architecture three categories](feedback_root_architecture_three_categories.md)
 - [Grace: computations sound, interpretations over-reach](grace-computations-sound-interpretations-overreach.md) — report what the numbers show, stop before the sweeping claim; re-derive X from the output before saying 'this proves X' — L1 source theorems, L1.5 mechanisms, convergence hubs (objects not theorems)
 
+- [Grep the retraction before citing corpus](feedback_grep_retraction_before_citing_corpus.md) — re-surfaced retracted results twice in the July-2026 fermion arc (K969 vs K945, F738 vs F669); check retraction/supersede before writing "in hand"; binds hardest on own prior claims
+
 ## Reference
 - [Katra CI identity system](reference_katra_system.md) — `katra launch/update --persona X`; sundown/sunrise cycle; Lyra owns katra; memory=identity
 - [BST counters](reference_next_counters.md) — play/.next_toy, .next_theorem: gitignored, ALWAYS read before creating (collisions have happened)
