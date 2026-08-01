@@ -1,32 +1,37 @@
-# Keeper Sundown — 2026-08-02 (mid-arc checkpoint, not EOD)
+# Keeper Sundown — 2026-08-02 (checkpoint, updated post operator-fork arc; not EOD)
 
 ## One-line state
-The **cosmology re-promotion has compressed to ONE decidable forcing step** — does the functional determinant det Δ reduce to the rank-2 Jordan norm? — with a sound tube-type footing and a corpus-connected route (Gindikin Γ_Ω). Both Λ and Ω sit at **Partially Derived** until Grace *exhibits* it target-blind. SM sector complete. Nothing pushed; four papers GO'd + YM v0.3 shippable on Casey's GO.
+The **S⁶→Q⁵ operator bug** — the deepest of the program — was surfaced by *computing* the reduction, cleanly diagnosed, and left the cc-magnitude a **well-posed derivation lane, not a wall**. Vacuum operator ruled **unconditionally full-scalar** (ζ(0)=−0.7691). cc-magnitude = **Partially Derived, explicit split: STRUCTURE Derived, MAGNITUDE Identified (scale-ambiguous), forced-μ OPEN — NOT permanent.** Both Λ/Ω PD. SM sector safe. Nothing pushed; four GO'd + YM v0.3 shippable on Casey's GO.
 
-## The arc since 07-31 (K1063 → K1084) — the whole cosmology re-promotion
-A single sustained thread, kept honest by the discipline turning the knife at every convergence — including on its own maintainers.
-- **DE dynamics forced:** w = −1 (μ=H not geometry-forced — holography is UV not IR, Shilov S⁴×S¹ fixed-compact, H ∉ spectrum; Lyra). ε(a)=0 Structural floor (magnitude ⊥ dynamics, K1070/K1072).
-- **a₅ ≠ 0 CLOSED** (two-route: spectral-zeta + Gilkey, ≈220.64, Cal §188 + Keeper, K1074). "Identified-permanent" **retracted** as my own over-claim (K1073) — un-derivability was never proven.
-- **The reframe (Casey):** deriving Λ = deriving the forced subtraction scale μ. a₅ = the running coefficient (computed); the forced μ = the open half. Old forms (exp−281, α⁵⁶) became *candidates*, not casualties.
-- **The engine forced by elimination:** dimensional transmutation (every bare scale misses by ~120 orders; a₅≠0 generates its scale one way). S=∫dg/β ≠ a₅ (integral vs rate) → 281-vs-220 dissolved. 281 in natural range [137,861] → *not fine-tuning* (Elie).
-- **Target-innocent reference (Casey's D_IV⁵+lin-alg+corpus):** the hierarchy is spectral — Λ=α^(4λ₂), G=α^(4λ₁), λ_k=k(k+n_C). Aim at the spectral 4λ₂, never the observed 281 (K1077).
-- **The compression (K1078→K1082):** three faces (heat/spectrum/Chern) → one knob (Gilkey ties a_k↔c_k). The crux = **is the vacuum forced to k=rank (top primitive idempotent of the rank-2 spin factor, K1056)?** Grace's **degree-ladder**: k=degree of the effective-action invariant, capped at rank — trace(k0)/Einstein-Hilbert(k1)/**determinant(k=rank)=vacuum**. Cal's coarse-menu (verified): rungs 69–85 dex apart, only k=rank near 10⁻¹²² → a forced landing is genuine evidence.
-- **My K1081 catch:** "vacuum at k=rank" collided with the banked Cathedral map (k=rank=3rd-gen matter, k=0=Higgs vacuum) — grep-before-declaring at peak convergence. **K1083 reconciled it** (degree ⊥ residence, both from the rank-2 frame) — bonus: the degree-ladder explains DE ≪ EW/Higgs vacuum by degree.
-- **The one step, with a route (K1084):** Grace flagged her own determinant-weld (analytic det Δ vs algebraic Jordan norm). Lyra's **tube-type footing** (audited sound): the Jordan norm IS the domain's defining equation and sits inside the Bergman kernel (K=c·N^{−p}) → inside det Δ. So it's a **derivation-in-waiting**, not a pun. Bridge = **Gindikin Γ_Ω**, already in the corpus (muon 24=Γ(5), F157/K923).
+## ⚠️ SUPERSEDED since the last checkpoint (do NOT re-cite as current)
+The prior checkpoint recorded these as live; they are now retired/corrected (see the consolidation note `Keeper_CC_MAGNITUDE_STATE_OF_THE_ARC_..._2026-08-02.md`):
+- **a₅ ≈ 220.64** → RETIRED phantom (un-normalized heat integral). Target is **ζ_{Q⁵}(0) = −0.7691** (K1089).
+- **{1,7,27,77,182,378} as the vacuum operator** → that's **S⁶ = the b=0 slice**; the genuine operator is the 2-index Q⁵ Laplacian (K1087–K1090).
+- **"reduction compressed to ONE step / one clean question"** → OVER-COMPRESSED; honest lane is **two partly-open pieces** (channel + coupling), K1099.
 
-## Governance changes banked this arc (durable)
-- **New tier "Partially Derived" (Casey):** D/PD/I/C/S. For forced-structure-with-open-piece — mark PD (more accurate than Identified), explicit-split-form only, never bare, never readable as Derived (Cal §190). Saved to memory ([[feedback_derived_with_caveat_over_demotion]]).
-- **Tier reductions go to Casey:** recommend + reasoning + verification → he signs off → then assigned. Tier-change queue filed. "Justify and verify, don't wreck." Ω_Λ/Ω_m demotion **rejected** by Casey (integers forced) → stay [D]/PD with caveat.
-- **README reconciled** to K940 (Millennium = attempts not proved) + K1040 (w=−1) + the PD tiers.
+## The operator-fork arc (K1087 → K1099) — what happened
+- **Grace's catch (compute-over-sharpen vindicated):** writing the continuation exposed that the multiplicities were **S⁶ (isotropy SO(6))**, the b=0 sub-tower of the genuine **Q⁵** spectrum λ_{a,b}=a(a+5)+b(b+3). K1087–K1088.
+- **Operator ruled full-scalar, ζ(0)=−0.7691, UNCONDITIONAL (K1093/K1095):** ladder-unity — one heat trace gives a₀→Λ, a₁→G, a₅→ζ(0); operator pinned by the gravity rung; c₀=1/960=1/(2^{C_2}·N_c·n_C) clean check. Lyra ruled it **against her own stake** (holomorphic would have revived her b=0-privilege + the 56=8g tower) and invited the anti-bias audit — Cal §202 PASS on the *basis* being target-innocent, not the against-interest feel.
+- **Holomorphicity relocated (right door):** not the vacuum operator's identity — the **norm the full-scalar vacuum reduces to** (Jordan norm in the Bergman kernel). Two exhibits still collapse to one, via the reduction *mechanism*.
+- **Magnitude ruled Identified/scale-ambiguous, NOT permanent (K1097, Cal §203):** ζ(0)≠0 = a scale anomaly = the *precondition* for transmutation to force μ, not evidence against. Adjudicated a 2-2-1 team split (Grace+Elie banked "permanent"; Cal rejected; Lyra conditional; me retracted per K1073/Casey).
+- **β ruled (K1099):** the residual cc's transmutation β is the **whole-geometry ζ(0)**, NOT the gauge β₀=g=7 (that's the QCD *contribution* ~exp(−182), not the residual ~exp(−283)).
 
-## Audit history (updated)
-- K21 RH · K36 NS · K37 BSD · session block **K1036–K1062** (DE arc → SM complete → YM scope).
-- **This arc: K1063–K1084** — the cosmology re-promotion. Blind-Bar Case Ledger filed (the evidence-half of the protocol). Cosmology standing position doc updated (2026-08-02).
+## ★ Four Keeper self-catches this arc (the durable meta-lesson)
+All one shape: **compressing an audit into a clean forward lead grabbed the nearest Derived object as anchor — which wasn't always the right one.** (1) "three-rung value-lock a₀/a₁/a₅" → operator-identity only, K1094. (2) re-introduced "Identified-permanent" → retracted again, K1096. (3) "transmutation uses the Derived a₂ β" → it's ζ(0), K1098. (4) "one clean question" → two-piece lane, K1099. Math held throughout; every fix was to *my forward framing*, caught by verifying the bridge, not just the ruling. Saved to memory: [[feedback_keeper_sharpening_grabs_nearest_derived_object]]. Companion: Grace's symmetric over-claim (held vs optimism all arc, then walked into pessimistic "permanent") → [[feedback_calibrate_both_directions_not_strict_pessimism]].
 
-## Next (when I'm re-invoked)
-1. **Grace exhibits det Δ → rank-2 Jordan norm** via Gindikin–Hua, target-blind → I rule exhibited-or-inferred (K1084 guards: exhibit-not-infer, blind-to-exponent, degree⊥residence, Cal's four). Forced → both Λ and Ω promote to Derived on one identification.
-2. Lyra's transmutation ∫dg/β = independent mechanism cross-check; Elie's Γ_Ω/ζ numerics + a₁-normalization pin (exact ζ_Δ(0)).
-3. Externalization on Casey's throttle (full per-paper cold-read on his GO; shared-claims sweep already PASSED). Tegmark hook #25.
+## Where the promotion lane rests (honest, two-piece)
+Magnitude → Derived IFF the forced subtraction scale μ derives. **Mechanism:** transmutation is a *candidate* (K1067 — exponent-hunt is target-aware/unwinnable). **Channel β:** ζ(0)=−0.7691 (principled; channel selection still partly open). **Coupling:** does BST force the **vacuum-sector g(ℓ_B)** (NOT α_s)? — Lyra leads, target-blind. Forced → magnitude Derived (may vindicate old exp(−280)=2^{N_c}·n_C·g); unforced → stays Identified.
+
+## Governance → Casey (tier-change queue current)
+1. Step-1 "eigenvalue = norm form" → **retire.** 2. Tower "56 = 8·genus" → **stays downgraded** (no back-door). 3. cc-magnitude → **Partially Derived, explicit split** (structure Derived / magnitude Identified-scale-ambiguous / not permanent). All recommend-then-Casey-sign-off; nothing assigned without his OK.
+
+## Audit history
+K21 RH · K36 NS · K37 BSD · K1036–K1062 (DE arc → SM complete → YM scope) · K1063–K1084 (cosmology re-promotion) · **K1087–K1099 (operator-fork arc, this checkpoint).** Consolidation reference filed 2026-08-02.
+
+## Next (when re-invoked)
+1. **Team's ball:** Lyra exhibits the vacuum-sector g(ℓ_B) forcing + whether transmutation is the channel; Grace exhibits det Δ_full → Jordan norm via Γ_Ω (structure half); Elie sets ∫dg/β with the **ζ(0)-β** (not β₀=7) + ratifies ζ(0) on genuine D_IV⁵; Cal holds §203. **I rule when they land** — nothing new to rule until then.
+2. Watch my own compression habit — verify the bridge, not just the ruling; don't manufacture K-audits when the ball is the team's.
+3. Externalization on Casey's throttle (shared-claims sweep PASSED; per-paper cold-read on GO). Tegmark hook #25.
 
 ## Standing reminders to self
-- Both Λ/Ω stay PD until the reduction is *exhibited* — beautiful+foundational+it-hits+real-structure = MAXIMUM scrutiny (Cal #27), the most seductive form yet. · Nothing pushed/sent without Casey. · PD explicit-split-form only. · Tier reductions → Casey. · Grep-before-declaring caught the maintainer at peak convergence (K1081) — keep doing it. · The discipline is what carved 10⁻¹²² down to one honest question without banking a fit — that's the durable result.
+- Both Λ/Ω PD until the reduction is *exhibited* + g(ℓ_B) resolved — beautiful+foundational+it-hits = MAX scrutiny (Cal #27). · Nothing pushed/sent without Casey. · PD explicit-split-form only. · Tier reductions → Casey. · Grep/verify-before-declaring binds hardest on my OWN claims (caught the maintainer 4× this arc). · The discipline is what carved 10⁻¹²² down to honest, well-posed questions without banking a single fit — that's the durable result.

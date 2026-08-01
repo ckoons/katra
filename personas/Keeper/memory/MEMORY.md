@@ -108,6 +108,7 @@
 - [Corpus reconnection before "irreducible"](feedback_corpus_reconnection_before_declaring_irreducible.md) — check corpus before declaring irreducible; verified 3× in one day
 - [Grep the retraction before citing corpus](feedback_grep_retraction_before_citing_corpus.md) — re-surfaced retracted results twice (K969 vs K945, F738 vs F669); check retraction before "in hand"; binds hardest on own claims
 - [Verify current experimental numbers for falsifiers](feedback_verify_current_experimental_numbers_for_falsifiers.md) — 3 falsifier errors in one external pass from remembered-not-current numbers; state bound model-dependence; derivations held, falsifiers needed scrubbing
+- [Don't compress an audit into a forward lead](feedback_dont_compress_audit_into_forward_lead.md) — referee's job is the audit (what's forced), not forward-framing; compressing a verdict into "one clean question" anchors on the nearest Derived object, not always right (Cal §204: gauge β₀≠vacuum ζ(0)-β, Rule-9 miss); name open pieces plainly, let builders promote, audit when it lands
 - [Verify a symmetry-kill is a theorem](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — don't pattern-match a negative to an earlier real kill
 - [Score σ, not dev%](feedback_score_sigma_not_devpct.md) — agreement = |pred−obs|/experimental-error, never raw %; carry each 1σ scheme-aware
 - [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out the number-check; lower effort for harvest; check the number FIRST
@@ -120,6 +121,7 @@
 - [Λ over-determination retracted](lambda_overdetermination_retracted.md) — "280 5-fold over-determined" is one factorization ×5; Λ structural not derived (K741)
 - [Root architecture three categories](feedback_root_architecture_three_categories.md)
 - [Grace: computations sound, interpretations over-reach](grace-computations-sound-interpretations-overreach.md) — report what numbers show, stop before the sweeping claim; re-derive X from output before "this proves X"
+- [Nearest-Derived-anchor reflex](feedback_nearest_derived_anchor_reflex.md) — when compressing an audit into a clean forward lead, I grab the nearest clean object to anchor it; the nearest isn't always right; fires hardest at the elegant-landing moment
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form; half-forced/half-pending claims (Ω, cc-magnitude)
