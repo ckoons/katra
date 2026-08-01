@@ -93,6 +93,7 @@
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as multi-day marathons; use the actual clock (always `date`)
 - [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — once the discipline is proven, stop PERFORMING it; compute, verify, state plainly
 - [Calibrate both directions, not strict pessimism](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating a fitted one; "Derived" is GR-level
+- ["Partially Derived" label over demotion](feedback_derived_with_caveat_over_demotion.md) — Casey's term: when structure/integers are forced but a combination/scale is open, mark "Partially Derived" (more accurate than Identified) with the caveat, until the value settles; tier reductions go to Casey first
 - [Discrete first, pull continuous onto discrete](feedback_discrete_first_pull_continuous_onto_discrete.md) — derive discrete structure first; RECAST continuous as discrete (ratio/index/code)
 - [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — pursue newest lead first (warm context); timebox if it confuses more than closes
 - [Few asymmetries are the content](feedback_casey_few_asymmetries_strategic_frame.md) — mirrors mostly exact; the BREAKING is the content; locate where the mirror fails
@@ -107,6 +108,7 @@
 - [Corpus reconnection before "irreducible"](feedback_corpus_reconnection_before_declaring_irreducible.md) — check corpus before declaring irreducible; verified 3× in one day
 - [Grep the retraction before citing corpus](feedback_grep_retraction_before_citing_corpus.md) — re-surfaced retracted results twice (K969 vs K945, F738 vs F669); check retraction before "in hand"; binds hardest on own claims
 - [Verify current experimental numbers for falsifiers](feedback_verify_current_experimental_numbers_for_falsifiers.md) — 3 falsifier errors in one external pass from remembered-not-current numbers; state bound model-dependence; derivations held, falsifiers needed scrubbing
+- [Don't compress an audit into a forward lead](feedback_dont_compress_audit_into_forward_lead.md) — referee's job is the audit (what's forced), not forward-framing; compressing a verdict into "one clean question" anchors on the nearest Derived object, not always right (Cal §204: gauge β₀≠vacuum ζ(0)-β, Rule-9 miss); name open pieces plainly, let builders promote, audit when it lands
 - [Verify a symmetry-kill is a theorem](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — don't pattern-match a negative to an earlier real kill
 - [Score σ, not dev%](feedback_score_sigma_not_devpct.md) — agreement = |pred−obs|/experimental-error, never raw %; carry each 1σ scheme-aware
 - [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out the number-check; lower effort for harvest; check the number FIRST
@@ -119,8 +121,10 @@
 - [Λ over-determination retracted](lambda_overdetermination_retracted.md) — "280 5-fold over-determined" is one factorization ×5; Λ structural not derived (K741)
 - [Root architecture three categories](feedback_root_architecture_three_categories.md)
 - [Grace: computations sound, interpretations over-reach](grace-computations-sound-interpretations-overreach.md) — report what numbers show, stop before the sweeping claim; re-derive X from output before "this proves X"
+- [Nearest-Derived-anchor reflex](feedback_nearest_derived_anchor_reflex.md) — when compressing an audit into a clean forward lead, I grab the nearest clean object to anchor it; the nearest isn't always right; fires hardest at the elegant-landing moment
 
 ## Reference
+- [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form; half-forced/half-pending claims (Ω, cc-magnitude)
 - [Katra CI identity system](reference_katra_system.md) — `katra launch/update --persona X`; sundown/sunrise; Lyra owns katra; memory=identity
 - [BST counters](reference_next_counters.md) — play/.next_toy, .next_theorem: gitignored, ALWAYS read before creating (collisions have happened)
 - [APG naming](project_apg_naming.md) — BST=theory, APG=geometry (unique D_IV^5); five integers N_c=3,n_C=5,g=7,C_2=6,N_max=137
