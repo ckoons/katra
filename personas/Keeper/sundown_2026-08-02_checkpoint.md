@@ -1,4 +1,7 @@
-# Keeper Sundown — 2026-08-02 (checkpoint, updated post operator-fork arc; not EOD)
+# Keeper Sundown — 2026-08-02 (EOD · ✔ Keeper PASS — arc closed at its honest endpoint)
+
+## EOD close (Casey called it; whole team converged on closing here)
+Arc closed at a stable, honest resting point. Ruling stable (structure Derived, magnitude Identified/scale-ambiguous/not-permanent, independent of the β); instability was **entirely in my forward-framing** (four compressions, all corrected). Team each owned their β-error + the compression reflex. **Forcing+Evidence standard += Rule 17** ("distrust the compression, not just the pessimism" — team-endorsed, filed). 8-pt EOD audit: notes-only session — no new toys/theorems/data/PDFs; board+tier-queue+standard+consolidation+sundown all synced; nothing pushed to BST repo. **Keeper PASS.** Next session is the team's ball (channel + g(ℓ_B)), to be done fresh/slow/blind — I rule when it lands.
 
 ## One-line state
 The **S⁶→Q⁵ operator bug** — the deepest of the program — was surfaced by *computing* the reduction, cleanly diagnosed, and left the cc-magnitude a **well-posed derivation lane, not a wall**. Vacuum operator ruled **unconditionally full-scalar** (ζ(0)=−0.7691). cc-magnitude = **Partially Derived, explicit split: STRUCTURE Derived, MAGNITUDE Identified (scale-ambiguous), forced-μ OPEN — NOT permanent.** Both Λ/Ω PD. SM sector safe. Nothing pushed; four GO'd + YM v0.3 shippable on Casey's GO.
