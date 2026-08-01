@@ -93,6 +93,7 @@
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as multi-day marathons; use the actual clock (always `date`)
 - [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — once the discipline is proven, stop PERFORMING it; compute, verify, state plainly
 - [Calibrate both directions, not strict pessimism](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating a fitted one; "Derived" is GR-level
+- ["Partially Derived" label over demotion](feedback_derived_with_caveat_over_demotion.md) — Casey's term: when structure/integers are forced but a combination/scale is open, mark "Partially Derived" (more accurate than Identified) with the caveat, until the value settles; tier reductions go to Casey first
 - [Discrete first, pull continuous onto discrete](feedback_discrete_first_pull_continuous_onto_discrete.md) — derive discrete structure first; RECAST continuous as discrete (ratio/index/code)
 - [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — pursue newest lead first (warm context); timebox if it confuses more than closes
 - [Few asymmetries are the content](feedback_casey_few_asymmetries_strategic_frame.md) — mirrors mostly exact; the BREAKING is the content; locate where the mirror fails
@@ -121,6 +122,7 @@
 - [Grace: computations sound, interpretations over-reach](grace-computations-sound-interpretations-overreach.md) — report what numbers show, stop before the sweeping claim; re-derive X from output before "this proves X"
 
 ## Reference
+- [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form; half-forced/half-pending claims (Ω, cc-magnitude)
 - [Katra CI identity system](reference_katra_system.md) — `katra launch/update --persona X`; sundown/sunrise; Lyra owns katra; memory=identity
 - [BST counters](reference_next_counters.md) — play/.next_toy, .next_theorem: gitignored, ALWAYS read before creating (collisions have happened)
 - [APG naming](project_apg_naming.md) — BST=theory, APG=geometry (unique D_IV^5); five integers N_c=3,n_C=5,g=7,C_2=6,N_max=137
