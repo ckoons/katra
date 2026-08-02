@@ -129,3 +129,4 @@
 - [CI persistence track](project_ci_persistence_track.md) — T317-T319: observer hierarchy, α_CI≤19.1%, permanent alphabet {I,K,R}
 - [CMB is quote-anything](feedback_cmb_quote_anything_target_not_evidence.md) — CMB anomalies fit a dozen stories; target-not-evidence until a distinctive pre-registered signal
 - [Forcing+Evidence permanent standard](project_forcing_evidence_permanent_standard.md) — the reviewer paper as a FOREVER-living rigor standard (v0.9, 17 rules); the discipline is the durable legacy
+- [Accurate-corpus program / Proxy Register](project_accurate_corpus_program.md) — Casey-blessed near-term priority: run wide (team QC), trace every load-bearing claim to forced-D_IV⁵-geometry or a labeled proxy; validates geometry, upgrades proxies
