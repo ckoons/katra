@@ -17,4 +17,6 @@ The BST tier ladder (K962 base) now carries a fifth external code: **D / PD / I 
 
 **Promotion/reopen:** a PD claim promotes to full **D** when its named blind test forces the open half target-innocently; it reopens to **I** if the test fails (the caveat is load-bearing, won't cover a fit).
 
+**Anchor-convention (#9, ratified 2026-08-03, Casey time-anchor K1118):** a *dimensionful* quantity forced given the one dimensionful unit-anchor — the **commitment tick t_B** — is **Derived-given-the-tick**. Every physical theory takes exactly one dimensionful input (GR: G; SM: a mass); the tick is BST's *unit*, not a free parameter, so forcing everything else from it is Derived for dimensionful quantities. Applies at once to v, m_e, m_p, m_Planck, G, ℓ_B (m_Planck=√(ℏc/G) then falls out — no longer an input). No dimensionless result moves. **BST takes exactly 2 dimensionful inputs — the tick + the cosmic age**; everything else geometry-forced. The cc *value* is Identified precisely because it's the one place the *second* scale (the age) enters — the n=2 case of the same rule.
+
 Ties to [[feedback_calibrate_both_directions_not_strict_pessimism]] (bare Identified under-claims by discarding the forced half) and [[grace-computations-sound-interpretations-overreach]].
