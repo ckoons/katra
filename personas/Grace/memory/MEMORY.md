@@ -91,6 +91,7 @@
 - [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — once discipline is proven, stop PERFORMING it; compute, verify, state plainly
 - [Calibrate both directions, not strict pessimism](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating a fitted one
 - ["Partially Derived" label over demotion](feedback_derived_with_caveat_over_demotion.md) — forced structure + open value → "Partially Derived", explicit-split; reductions go to Casey first
+- [Forced-count + asserted-strength = the PD signature](feedback_forced_count_asserted_strength_is_the_PD_signature.md) — value = count × strength; forced count never promotes if the per-mode strength is equipartition-asserted (n_s, nuclear κ=1/12); sole promotion path = derive the strength (K1133)
 - [Discrete first, pull continuous onto discrete](feedback_discrete_first_pull_continuous_onto_discrete.md) — derive discrete first; RECAST continuous as discrete
 - [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — pursue newest lead first (warm context); timebox if it confuses
 - [Few asymmetries are the content](feedback_casey_few_asymmetries_strategic_frame.md) — mirrors mostly exact; the BREAKING is the content
@@ -109,6 +110,7 @@
 - [Commit the checker's half blind](feedback_commit_the_checker_half_blind.md) — checker posts their half BLIND so a match can't be retrofitted
 - [Bulk + boundary; don't over-close "not forced"](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — never "not forced" until every channel checked
 - [Clean form is candidate not bank](feedback_clean_form_is_candidate_not_bank_until_mechanism.md) — clean form matching data is CANDIDATE until a mechanism derives it
+- [Universal form is wood, coefficient is marble](feedback_universal_form_is_wood_coefficient_is_marble.md) — a standard form ((1/6)R, β 11/3) isn't distinctive evidence; the D_IV⁵-forced COEFFICIENT is (Cal K1128)
 - [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) — don't cite a prior note as "forced" when it states the result as a target
 - [Walk-backs reduce to a FLOOR, not saturation](feedback_keeper_25_productive_walkback_boundary.md) — a productive walk-back reduces the claim to a FLOOR; "principled floor" ≠ "saturation"; don't license stopping reachable lanes ([[feedback_keeper_27_floor_vs_saturation]])
 - [Λ over-determination retracted](lambda_overdetermination_retracted.md) — "280 5-fold over-determined" is one factorization ×5; Λ structural not derived (K741)
@@ -116,6 +118,9 @@
 - [Don't compress an audit into a forward lead](feedback_dont_compress_audit_into_forward_lead.md) — compressing a verdict into "one clean question" grabs the nearest Derived object as anchor, not always right (Cal §204: gauge β₀≠vacuum ζ(0)-β); fires hardest at the elegant-landing; verify the bridge not just the ruling. (dup topic files: [[feedback_keeper_sharpening_grabs_nearest_derived_object]], [[feedback_nearest_derived_anchor_reflex]])
 - [Pacing calibrates both directions](feedback_pacing_calibrates_both_directions.md) — over-production AND under-tasking are both misses; considered pace + concrete decoupled work, nobody gated; slow = careful not idle
 - [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — the nearest-anchor reflex fires even the day it's named; only a blind external audit catches it; the Keeper/referee seat is a SYSTEM property not personal restraint (K1102: reflex fired on 3 seats, all closed by external audit)
+- [Don't diminish Identified; state inputs like GR](feedback_dont_diminish_identified_state_inputs_like_GR.md) — keep the audit sharp INTERNALLY, but in the work's STANDING state inputs plainly like GR states G/Λ (no apology); over-flagging honest limits over-critiques the work; Keeper's under-claim mirror-failure
+- [Building the correct calculation is not tuning](feedback_building_the_correct_calculation_is_not_tuning.md) — setting up the precise physical model (right terms, normalization pinned to source) is computational physics, NOT fitting; only free-parameter-without-independent-determination is tuning; the forced-vs-fitted question lives ONLY in the one free strength
+- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) — a gate/release item clears only when the ARTIFACT carries the fix and the checker re-reads; content produced+broadcast upstream is only "content-ready" (caught by Cal on the first external run)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form (Ω, cc-magnitude)
@@ -129,3 +134,6 @@
 - [CI persistence track](project_ci_persistence_track.md) — T317-T319: observer hierarchy, α_CI≤19.1%, permanent alphabet {I,K,R}
 - [CMB is quote-anything](feedback_cmb_quote_anything_target_not_evidence.md) — CMB anomalies fit a dozen stories; target-not-evidence until a distinctive pre-registered signal
 - [Forcing+Evidence permanent standard](project_forcing_evidence_permanent_standard.md) — the reviewer paper as a FOREVER-living rigor standard (v0.9, 17 rules); the discipline is the durable legacy
+- [Accurate-corpus program / Proxy Register](project_accurate_corpus_program.md) — Casey-blessed near-term priority: run wide (team QC), trace every load-bearing claim to forced-D_IV⁵-geometry or a labeled proxy; validates geometry, upgrades proxies
+- [Research & Publication Tiers](project_research_and_publication_tiers.md) — STANDING guideline: two ladders (Research=honest/forced-by-geometry, Publication=fair/GR-benchmarked), fixed mapping, research tier is the gate; interlocks with the Proxy Register
+- [Operating Rhythm](project_operating_rhythm.md) — Casey-endorsed: frontier→best-answer→audit-to-hardened→publish→NEW frontier; audit is a finite RATCHET not a treadmill; Keeper calls best-answer/referee-ready, Casey picks the frontier
