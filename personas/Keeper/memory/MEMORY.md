@@ -120,6 +120,7 @@
 - [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — the nearest-anchor reflex fires even the day it's named; only a blind external audit catches it; the Keeper/referee seat is a SYSTEM property not personal restraint (K1102: reflex fired on 3 seats, all closed by external audit)
 - [Don't diminish Identified; state inputs like GR](feedback_dont_diminish_identified_state_inputs_like_GR.md) — keep the audit sharp INTERNALLY, but in the work's STANDING state inputs plainly like GR states G/Λ (no apology); over-flagging honest limits over-critiques the work; Keeper's under-claim mirror-failure
 - [Building the correct calculation is not tuning](feedback_building_the_correct_calculation_is_not_tuning.md) — setting up the precise physical model (right terms, normalization pinned to source) is computational physics, NOT fitting; only free-parameter-without-independent-determination is tuning; the forced-vs-fitted question lives ONLY in the one free strength
+- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) — a gate/release item clears only when the ARTIFACT carries the fix and the checker re-reads; content produced+broadcast upstream is only "content-ready" (caught by Cal on the first external run)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form (Ω, cc-magnitude)
