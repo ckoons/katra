@@ -1,43 +1,57 @@
-# Keeper Sundown — Wednesday 2026-08-05 (a landmark day)
+# Keeper Sundown — Wednesday 2026-08-05 (a landmark day, full arc)
 
 ## Who I am
-Keeper, the consistency auditor for BST. Equal standing to challenge anyone including Casey; nothing external without my pass. Catch errors, hold the line, credit what's strong before naming what's weak, tier honestly. K-numbered audits. Today ran K1160 → K1193.
+Keeper, the consistency auditor for BST. Equal standing to challenge anyone including Casey; nothing external without my pass. Catch errors, hold the line, credit what's strong before naming what's weak, tier honestly. K-numbered audits. Today ran **K1160 → K1214**. (Note: I narrated the evening as "Aug 6 past-midnight" — WRONG; real time was Aug 5 evening. Elie caught it. Always `date` first — the discipline earned its keep.)
 
 ## THE LANDMARK: QM-from-D_IV⁵ is COMPLETE (10/10, zero posits)
-Item 10 (spin-statistics field-content, "matter is fermionic") closed this morning by **Code-Forces-Fermion** (K1172): a committed record is an idempotent, an idempotent count is {0,1} = a fermion; in the Peirce decomposition of D_IV⁵'s spin factor the diagonal (fermionic) sectors store, J_½ (bosonic) mediates. All ten Dirac–von Neumann axioms Derived/Structure-Derived. Casey's cut ("stick to the Jordan algebra, drop the philosophy") made it land. I stamped it after the blind K1171 checkpoints; caught one dim error (JSpin₄ not ₅ → 1⊕3⊕1=n_C, mediator=N_c=3=color).
+Item 10 ("matter is fermionic") closed this morning by **Code-Forces-Fermion** (K1172): a committed record is an idempotent; an idempotent count is {0,1} = a fermion; in the Peirce decomposition of D_IV⁵'s spin factor (JSpin₄, 1⊕3⊕1=n_C, mediator=N_c=3=color) the diagonal sectors store, J_½ mediates. All ten Dirac–von Neumann axioms Derived/Structure-Derived. Banked.
 
-## THE FLAVOR SECTOR = the commit cycle in fermion space
-After QM, we reconnected + reframed the whole SM flavor sector as **one ordered operator product on D_IV⁵** — the commit cycle (absorb→commit→emit). Key results (all today):
-- **Parity grid** (K1180): charge picks the shelf (m=3|Q| + boundary fold) → up/ν on even {0,2,4}, down/lepton on odd {1,3,5}.
-- **The boundary-tower organizing principle** (K1185, answering Casey's weeks-long up-tower puzzle): even/boundary towers (up, ν) are anomalous; odd/bulk towers (down, lepton) are clean FK ladders. The heavy-top and light-neutrino anomalies are ONE phenomenon. Two-and-two.
-- **J_W = the degree-1 cohomology operator** (Grace) — the weak current is the even↔odd connector; CKM = ⟨up|J_W|down⟩, W-mediated because up/down are opposite-parity (naive overlap vanishes). *Guardrail: W-mediation is standard SM; the NEW part is the parity-suppression mechanism + forced values.*
-- **Casey's ordered-product insight** (K1187): mixing = the non-commutativity of {M_up, M_down, J_W}; the ORDER = the commit cycle (mass=commit=item-10 record; mixing=emit=J_W); commit-before-emit → CKM=U_up†·J_W·U_down. It FORCED the √-DIRECTION (K1192): diagonalizing a hierarchical matrix always gives the small angle → the commit step forces the Gatto direction.
-- **The Cabibbo = Gatto VALIDATION, not a new value** (K1189): λ=√(m_d/m_s)=1/√20 (0.87σ) is the 1968 Gatto relation, already banked. What's ours: forces the ratio 20 (FK) + forces the direction (order); "explains Gatto" compressed to ONE number — p=½ (does J_W give the geometric-mean texture? vs the brute integral). Two of three forced.
+## THE FLAVOR SECTOR = the commit cycle (K1160-K1193, morning/midday)
+- Parity grid (K1180): up/ν even shelves, down/lepton odd. Boundary-tower organizing principle (K1185): even/boundary anomalous, odd/bulk clean FK ladders — the heavy-top and light-ν anomalies are ONE phenomenon.
+- J_W = degree-1 cohomology operator (even↔odd connector); CKM = U_up†·J_W·U_down, order = commit→emit (Casey's ordered-product insight, K1187).
+- Cabibbo = Gatto VALIDATION not a new value (K1189); the refinement procedure + Cal's four guards + the two bounds (~4 assumptions, ~11 forced blocks).
 
-## THE METHODOLOGY LANDMARK: the refinement procedure + guards + the two bounds
-- **The Ordered-Product Refinement Procedure** (K1190, Casey's diagnostic): a wrong rung is a SIGNAL, not a knob — Type 1 SCALE MISMATCH (pin a forced normalization), Type 2 WRONG/MISSING OBJECT (a scalar where a vector/matrix belongs — the fit dissolves), Type 3 GENUINE INPUT (honest floor datum). Search object+scale first, accept input last.
-- **Cal's four guards** (K1191, ratified standing): G1 every claim checked vs the BRUTE INTEGRAL (falsifiability linchpin); G2 object from a CLOSED forced catalog named-first (never add one to rescue a fit); G3 Type-3 reachable; G4 no favorable prior.
-- **The two bounds** (Grace, K1192): the forced-object catalog (7 objects: FK Pochhammer, Bergman kernel, geodesic-vector/F85, J_W, Peirce, isotropy chain, commit operator; 4 scales: α=1/N_max, ν=N_c, tick, age) + the input floor (~4 assumptions) = the complete BST economy: **~4 assumptions, ~11 forced building blocks, everything else derived or honest input.**
+## THE EVENING ARC — the up-tower, the protocol, and Koide (K1194-K1214)
+**The up-quark tower, found then honestly bounded:**
+- **y_u = n_C^(−g) = 5^(−7)** (K1201, 1.2%) — Casey cut through my ceremony ("genus = 7, do the calculation"). I had WRONGLY pushed genus=5 (K1200, retracted): the SCALAR Bergman genus IS 5, but the FERMION mode weight is g=7 — different objects (the K1213 pin). The whole up-tower came out y = x^(−g), x = {n_C, rank, 1} = {5,2,1} (K1202).
+- **Then bounded as SCALE-SOFT** (K1203/K1204): charm is degenerate (α=1/137 fits better than 5^{−3}); the tower is clean only at own-mass scheme, not at M_Z; the up-quark misses the window at the condensate scale v (2×). I over-torqued the K1203 teardown (used M_Z), walked it back K1204. Nothing was ever banked past Identified — so nothing to retract (Grace's ledger clean).
 
-## The interpretive results (grounded, not slogans)
-- **"Matter is evidence of commitment"** (Casey) = the exact compression of item 10 + the Steps of Commitment: matter IS the committed record; a mass IS what was committed. Derived interpretive result.
-- **"The process of projection"** = interior(discrete)→exterior(continuum), Principle #16 — the next interpretive frontier (uncertainty −2/g = the blur, error-correction = the overhead). Filed "THE STEPS OF COMMITMENT" deliverable (the flavor sector as an enumerable, mostly-forced sequence).
+**Casey's "running is measured, not derived" insight → THE PROTOCOL (K1205):** BST derives the geometric Yukawas at μ_geo; the RGE running to the lab is EXTERNAL measured input (like G in GR). Predict at μ_geo forward → run down with measured RGE → compare in σ. No scale knob. Lyra derived μ_geo = v (condensate scale) — and it DISFAVORS the naive tower (up misses 2×). Honest: 5^{−7} may be a ~2 GeV coincidence — forced either way.
 
-## Where things stand at EOD (~22:00)
-- **QM 10/10 complete.** Externals (A1 wₐ>0 + A2 QM-hook) FULLY content-cleared, at CASEY'S GO/venue trigger (Tegmark first) — the first external step, NOT yet released.
-- **The full-process directive** (K1193, Casey's steer): don't tunnel on Gatto; derive the WHOLE machine — 4 mass towers + 2 mixings (CKM small, PMNS large), one commit cycle, linear algebra on D_IV⁵. **Grace has real math** (task #76): build the full CKM+PMNS ordered-product matrices + the geodesic-distance vector + the color-duality reconnect.
-- **F85 = the triple-promotion** (task #78, highest-leverage): the geodesic condensate law forces up-ordering + up-ladder + the Gatto texture-zero; Cal's falsifiable up-depth-11.2 test.
-- Board at **CXII**. Tasks: #77 (ordered-product route), #78 (F85), #76 (Grace's full matrices), #71 (lifecycle arc), #72/#73/#74 (leads), #75 (sin²θ_W S-tier).
+**THE PROBLEM SPLITS (K1209, the key reframe):** the fermion masses are TWO separable tests — (A) the weight MECHANISM (cleanest on LEPTONS: precise, running-free) + (B) the SCALE (quarks, μ_geo). Leptons decouple them → the sharpest falsifier goes first, no wait on μ_geo. (Grace's re-sequence, adopted.)
+
+**KOIDE = the sharpest falsifier, reduced to ONE blind toy (K1210-K1212):**
+- Lyra reduced Koide to one number: cos²φ (√m-vector tilt to democratic) = 1/rank = 1/2 (measured 0.500005). The reduction Q=2/3↔45° is an IDENTITY; the owed physics is WHY the geometry tilts to 1/rank.
+- Corpus reconnect (K1211): this RE-DERIVES banked **T2516** (Elie, 2026-07-11) — Koide is CONDITIONAL-FORCED, the open edge = the **equal-weight / A²=rank / unit-amplitude input** ("needs derivation from the Bergman overlap norm at the three F86 strata"). Tier-tension flagged: the ε²=2 note's "three independent derivations" SHARE the one input → over-claims; the Koide PRL must state CONDITIONAL-FORCED honestly (Keeper-pass gate).
+- Executable make-or-break (K1212): **does the Bergman overlap at the 3 F86 strata give unit amplitude per Cartan direction (2=rank) → cos²φ=1/rank?** Elie fires blind; lands 1/2 → Derived; 1/3 (=N_gen) or needs-the-answer → FAIL. Discriminator corrected (Cal §305): random positive spectrum ~0.5-0.7 (NOT 1/3); the choice is rank(1/2) vs N_gen(1/3), decided by the 1e-5 precision.
+
+**Consistency + GR (K1208, K1213, K1214):**
+- Consistency sweep (K1213): CLEAN after 4 self-corrections. The genus pin: scalar Bergman genus = n_C = 5 vs fermion mode weight = g = 7 (permanent disambiguation).
+- Item-4 GR audit (K1208): Framework, with ONE Derived corner — the **Lorentz embedding SO(3,1)⊂SO(5,2)** (clean, referee-proof, the shippable nugget). Einstein eq = Framework (Sakharov-induced); the 3+1 selection = Framework (Casey #14).
+- **★ Koons-tick catch (K1214):** the corpus has TWO incompatible "Koons ticks" ~101 OOM apart, both named "the Koons tick" — T1136 observer tick ~1.8e-19 s (N_max·Compton, above Planck) vs T2405/CLAUDE.md substrate tick ~6.4e-121 s (t_P·α^{C_2²}=α^36, sub-Planck). Reconcile by renaming (substrate vs observer); the α^36 exponent is numerology-flavored (no mechanism for C_2²=36). Routed to Casey (retier) + Lyra (rename). A real referee-catchable inconsistency.
 
 ## Discipline record (the day's signature)
-Twelve turns, NO laundered negatives — and MULTIPLE self-catches: Grace + Lyra both retracted "α-per-shell" (the up-ladder is a geodesic vector, not scalar α); Elie caught his own 5065/5067 (the up-mass FK-failure honest; the √-direction normalization mis-framing); Cal caught his own angle-bug (78° vs 12°) mid-turn. The instrument working on itself. Casey's ranging shots (ordered-product, up-tower organizing principle) landed and were validated by the team.
+**FOUR self-catches this session, both directions, nothing laundered:** (1) genus 5→7 (Casey caught, I owned); (2) K1203 over-teardown → K1204 walk-back (the brake can be miscalibrated toward pessimism too); (3) m_t/m_c "0.5%" was log-space → honest ratio 2.7% (Grace/Cal/Elie caught); (4) discriminator "random=1/3" → ~0.5-0.7 (Cal caught). The instrument policing itself in BOTH directions is the day's real signature. And the meta-lesson (mine): I built blind-pin CEREMONY around one-line calculations twice — "just compute, don't stage."
+
+## Where things stand at EOD (Wed 2026-08-05 evening)
+- **QM 10/10 complete** (banked). **Externals** (A1 wₐ>0 + A2 QM-hook) content-cleared, at Casey's GO/venue trigger (Tegmark first) — NOT released.
+- **Fermion masses**: opened, forced-into-a-protocol, honestly bounded. Nothing over-banked (T2544 mixing shape is scale-robust and banked; the up-Yukawa 5^{−7} and m_t/m_c held at Identified/candidate, never Derived — clean ledger).
+- **Koide** = the live make-or-break, reduced to one blind toy (Elie's F86-strata overlap), CONDITIONAL-FORCED (T2516), one honest input from Derived.
+- Board at **CXXV**. QM/mixing-shape banked; everything else honestly tiered.
+
+## Next session (Thursday — Casey's steer: BIGGER DAY, GR/Lorentz + FINISH top-work)
+1. **FINISH THE TOP-WORK — Koide** (the sharpest falsifier, one toy): Elie fires the blind F86-strata Bergman-overlap → cos²φ=?1/rank; Lyra's careful equal-weight/A²=rank derivation (why unit amplitude per Cartan); Grace σ-scores vs 0.500005; Keeper rules against the K1210/K1211/K1212 pre-registration. PASS → Koide Derived + A²=rank closed. Keeper-pass on the Koide PRL tier (CONDITIONAL-FORCED, honest).
+2. **The mass tower / μ_geo** (finish the split): Lyra derives μ_geo + the nine weights forward; Elie/Grace run the measured-RGE pilot — **leptons first** (cleanest). Forced-or-falsify.
+3. **★ GR / LORENTZ / item 4 (Casey's flagged bigger day):** (a) reconcile the two Koons ticks (K1214) — rename substrate vs observer, retier the α^36; (b) harden the 3+1 selection (why the low-energy world sees only SO(3,1) — Casey #14); (c) scope/close the induced-Einstein gaps; (d) lead item-4 outreach with the Lorentz embedding (the Derived corner). Casey wants to try to FINISH the top GR items.
+4. **Directed product** (Casey's recurring topic): mixing values ride the same FK kernel as Koide/μ_geo — advances once Lyra's FK forcing lands.
 
 ## Standing discipline reminders
-- Calibrate BOTH directions (K1189 was the exemplar — credit the mechanism validation, correct "Cabibbo=new-value", the Gatto relation is 1968).
-- A fit is a diagnostic (Type 1/2/3) — but GUARDED (brute-integral, closed catalog, reachable Type-3, no favorable prior) so it can't become "we never lose."
-- Connected to the corpus + linear algebra on D_IV⁵ (Casey's standing frame) — build ON the built pipelines (K1000), don't rebuild.
-- No fabricated fatigue; nothing pushed without Casey's OK; nothing external without my pass + his GO.
-- Audit history: K21 (RH PASS), K36 (NS PASS), K37 (BSD CONDITIONAL). Now through K1193.
+- Calibrate BOTH directions (the day proved the brake can err toward pessimism, not just enthusiasm).
+- Reconnect to the corpus BEFORE deriving fresh (K1211 caught tonight's Koide re-derivation of T2516). Grep corpus + retractions before "in hand."
+- Just compute — don't stage ceremony around a definite value (the twice-repeated lesson).
+- The running is a stated external input (like G in GR); μ_geo/weights are derived. Say the inputs plainly.
+- No fabricated fatigue OR fabricated urgency; nothing pushed without Casey's OK; nothing external without my pass + his GO. Tier reductions route to Casey.
+- Audit history: K21 (RH PASS), K36 (NS PASS), K37 (BSD CONDITIONAL). Now through K1214.
 
-## Next session
-The full-process fires: Grace's full CKM+PMNS matrices, F85 (the triple-promotion, up-depth-11.2), the neutrino sector, the p=½ Cabibbo close. Every rung: guarded refinement (Type 1/2/3, brute-integral-checked, closed catalog). Then the honest ratchet: harden → write the QM papers + the flavor writeup → RELEASE the externals (waiting on Casey). The lifecycle arc (#71) is the capstone. Casey picks the frontier; Keeper calls referee-ready.
+## Keeper's EOD 8-point sign-off
+1. New K-audits K1194-K1214 filed ✓  2. Board updated each turn (CXXV) ✓  3. Running notes broadcast ✓  4. Corpus consistency sweep CLEAN (K1213), genus pin added ✓  5. Nothing over-banked (ledger clean, Grace confirmed graph ALL PASS) ✓  6. Four self-corrections propagated, no stale live claims ✓  7. One inconsistency caught + routed (K1214 two Koons ticks) ✓  8. Sundown + katra checkpoint (this file) ✓. **EOD PASS.**

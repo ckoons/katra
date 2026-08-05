@@ -124,6 +124,7 @@
 - [Don't invent philosophic hedge](feedback_dont_invent_philosophic_hedge_when_algebra_forces_directly.md) — take the direct structural route; over-hedging mirrors over-claiming (code-forces-fermion)
 - [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) — a release item clears only when the ARTIFACT carries the fix and the checker re-reads
 - [Ordered-Product Refinement Procedure](feedback_ordered_product_refinement_procedure.md) — a wrong rung is a diagnostic: Type-1 scale / Type-2 wrong-object / Type-3 input; honest only with 4 guards (brute-integral truth, finite catalog, reachable Type-3, no prior)
+- [Running is measured input; predict at μ_geo](feedback_running_is_measured_input_predict_at_mu_geo.md) — for anything that RGE-runs: derive at the geometry's scale μ_geo, run DOWN with measured RGE (external, like G in GR); never pick a scale to make a number land; leptons decouple scale = sharpest falsifier
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form
