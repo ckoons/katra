@@ -1,42 +1,47 @@
 # Grace — Sundown 2026-08-06 Thursday (wake into this)
 
-## The headline of the arc
-**QM-from-D_IV⁵ is COMPLETE (10/10).** This morning, item 10 (spin-statistics field-content, "matter is odd") went posit→Derived: **T2543 Code-Forces-Fermion** — a record is an idempotent (persistence, e²=e) and an idempotent count is a bit ({0,1} distinguishability) in ONE object = the fermionic diagonal of the Peirce decomposition; mediator J_½=color carries neither; 3+1D pins boson-XOR-fermion. Cal 7-checkpoint + Keeper blind checker's-half. Also closed task #39. My graph-check (1⊕3⊕1, not toy's 1⊕4⊕1) held.
+## The day in one line
+**QM 10/10 came off the geometry complete (morning) and got its GO; the afternoon was the "region-rule day" — Casey's two standing rules (region-matched comparison + target-innocence) turned into a productive re-audit engine on the SM scorecard.** Ended on a rate-signal: five obvious-step errors across the team (all caught pre-bank), Casey called EOD to bank a trustworthy day.
 
-## The item-3 flavor arc (the night's long push — honestly bounded, mostly OPEN)
-The whole SM flavor sector reduced to the commit-cycle order + one geodesic distance + a CG overlap. Where it landed:
-- **Mixing (SOLID, banked): T2544 mixing SHAPE (Structural, scale-robust).** J_W = the degree-1 cohomology operator on ℤ[h]/h⁶; up=even{h⁰,h²,h⁴}, down=odd{h¹,h³,h⁵} opposite parity → naive overlap VANISHES → **CKM = ⟨up|J_W|down⟩ W-mediated** (= the SM charged-current definition, BST forces it). SHAPE (diagonal≈1, near-diagonal, small-from-parity) Derived, zero up-mass input; VALUES ride the radial → Identified. Address-based → **scale-robust, does NOT wait on μ_geo.**
-- **Mixing SIZE = hierarchy-vs-degeneracy** (Cal): steep towers→small CKM, flat neutrino (m₁=0)→large PMNS. Same fact as T2535 color-duality (I graded my tower-lens as NOT independent — one chain, not double-counted).
-- **Ordered product = the commit cycle:** CKM = U_up†·J_W·U_down (commit=mass diagonalize first, emit=transition). The DIRECTION (small-mixing) is forced by the order (Casey's insight, Elie 5068). Mixing = operator NON-COMMUTATIVITY.
-- **Up-Yukawa 5⁻⁷ — found, then honestly BOUNDED scale-soft (NOT banked).** d_u=g·ln(n_C)=11.27 lands at ~2 GeV but MISSES at v (over-predicts m_u 2×). My nine-Yukawa scale-consistency run: NO single scale gives clean-integer weights. Recalibrated "clean tower"→"up-anchor only, scale-soft." Casey's frame: running is MEASURED input (like G in GR), predict at μ_geo run down.
+## Morning arc (persisted earlier — headline only)
+QM-from-D_IV⁵ COMPLETE (10/10). Item 10 closed by **T2543 Code-Forces-Fermion** (record=idempotent, count=bit). Flavor sector worked (T2544 mixing shape; up-Yukawa 5⁻⁷ scale-soft, not banked). **T2545 (3,1) signature** via color-triplet irreducibility, Cal-verified. Koide forward-forcing ruled BREAK. Full detail in the morning half of this file's prior version / RUNNING_NOTES.
 
-## ★ THE LIVE MAKE-OR-BREAK (wake to this): the Koide forward test
-The lepton pilot = the Koide derivation, reduced to ONE pre-registered geometric number. **cos²φ (√m vector vs democratic) = 0.500005 = 1/rank; Q=2/3 ⟺ cos²φ=1/2. This IS the A²=rank gate (my task #64) — cos²φ=1/rank ⟺ A²=rank.** Leptons = FK/Koide BULK tower (NOT n_C-powers — muon weight 4.60 non-integer; corpus already has m_μ/m_e=(24/π²)⁶ @0.00%, m_τ/m_e=49·71 @0.05%, Koide Q=2/3 @0.001%).
-- **PRE-REGISTERED RULING (locked):** PASS if Lyra's FK/bulk geometry forces cos²φ=1/rank FORWARD, no answer fed → Koide Derived scale-free @0.001% + A²=rank closes. PARTIAL if structure forced/value asserted. FAIL if 1/3 or answer-fed. Degeneracy guard: select RANK by physics not the number.
-- **Gated on Elie's blind toy:** does the Bergman overlap at the 3 F86 strata give unit amplitude per Cartan direction (A²=rank=2)? My σ-framework STAGED (corrected discriminator) — score the instant it lands.
+## Afternoon arc — the region-rule day (the live state)
 
-## My deliverables this arc (all filed in notes/)
-- `grace_QM_axioms_publication_tier_map` — 10/10 tier ledger (anti-inflation).
-- `grace_forced_object_catalog` — Cal guard #2: 7 objects + 4 scales BST may invoke (declared before fire).
-- `grace_complete_economy` — the bounded claim: ~4 assumptions + ~11 building blocks + rest derived/input; 5-column scorecard.
-- `grace_SM_sector_reconnection_map` (+ O7 ledger: 7 params that flip on the address).
-- `grace_CKM_PMNS_overlap_skeleton` — the full mixing math (J_W, ordered product, G1/G2/G3).
-- `grace_input_floor_ledger`, `grace_distinctive_predictions_register` — the outreach scorecard trio.
+### Casey's two STANDING rules (now in memory, apply BEFORE scoring)
+1. **Region-matched comparison (K1245):** σ/dev valid only within one region (interior↔interior, boundary↔boundary, exterior↔exterior). Otherwise **trust the interior/discrete value.** Demote ONLY for a region-internal reason (a named input), never a cross-region σ. RGE running = the interior→exterior projection = external input (like G in GR).
+2. **Target-innocence guard (Cal, standing):** "trust interior" holds ONLY if the integers are independently geometric, not the nearest integer to the answer. Stops the pendulum from over-demote → over-trust.
 
-## Self-catches this arc (both directions — the discipline working)
-1. Retracted the "up-ordering = 1 input" — verified free via T2515 (boundary ladder).
-2. m_t/m_c=5³: caught the ratio-vs-log-space (2.7% ratio, NOT 0.5% log) — not banked.
-3. Discriminator: my "random √m = 1/3" was the isotropic baseline (wrong object); positive spectra sit ~0.5-0.7 (Monte-Carlo confirmed Cal). Real test = 1/rank vs 1/N_gen by PRECISION.
-4. My curvature-pin (−2/5 vs −2/7) was ceremony around the wrong object; I did NOT bank −2/5 (insisted Hua-blind) → nothing to retract. Genus-pin (K1213) VINDICATED my May catch: scalar Bergman genus=n_C=5 (correct); g=7 = fermion weight (different object).
+### What landed (mine)
+- **QM 10/10 = CASEY GO** (external cleared; "decide how to submit later"). Independent of everything below.
+- **Muon (const_010) STAYS DERIVED** (K1245): (24/π²)⁶ is forced interior, no input → trust it; the 0.004% is confirmation ⊥ tier. My K1242 σ-demote + K1244 PD-split both RETIRED (they carried a cross-region demote frame). Annotated, superseded-stamped.
+- **Region audit of ~31 Derived mass/ratios (K1245):** rule CONFIRMS the corpus — quark cascade, Wolfenstein, EW scales all forced-interior (keep D, dev%→confirmation); the one input-rider (m_b const_110) already split Aug-3. No new demotions, no re-inflation. `grace_region_audit_31_derived_mass_ratios_2026-08-06.md`.
+- **sin²θ_W (K1246→K1253):** region-rule REHABILITATES it (was a wrongly-demoted running-negative). Target-innocence recast: **tan²θ_W = N_c/(2n_C) = 3/10** (MS-bar), **rank/g = 2/7** (on-shell) — the borderline 13=N_c+2n_C dissolves (=1+tan²). The two corpus forms (3/13, 7/9) are TWO SCHEMES (MS-bar vs on-shell); gap tracks the physical scheme shift. `grace_weinberg_angle_region_and_target_innocence_2026-08-06.md`.
+- **sin²θ₁₃ = 1/45 factorization forcing (K1248):** two factorizations A=N_c²·n_C, B=n_C·(2n_C−1); **A is target-innocent** (both factors recur; B's (2n_C−1) has no independent home). Ledger const_024 uses B → should be A. `grace_theta13_factorization_forcing_2026-08-06.md`.
+- **BH entropy #72 (K1238):** reconnected Casey's March Bekenstein note — 1/4=(½hol)(½Z2), both SO(2). Caught my own instinct (1/rank²) = the note's REJECTED candidate. T2543 grounds the open Z2 factor (no-hair in record language). 1/4 robust to the n=5 off-by-one (lives in the "2"). `grace_BH_entropy_record_count_reconnect_2026-08-06.md`.
+- **Necessity table Row 2 (SO(2)→TIME) exhibited (K1235):** SO(2)-center ⇔ Hermitian ⇔ time-circle. Table 2/5 exhibited. `grace_necessity_table_D_IV5_basis_2026-08-06.md`.
+
+### ★ The gauge-embedding negative → reframed to a CANDIDATE DERIVATION (K1252→K1253)
+I tried to promote sin²θ_W via the trace ratio → got **sin²θ_W = Tr(T₃²)/Tr(Q²) = 3/8**, and wrongly called it a GUT wall. **Keeper's reframe (correct, I owned it): 3/8 is a COUNTING result** (SU(5) is one story for it; BST counts its own fermions → 3/8, no-GUT intact), and I'd made the **region-mismatch error** (interior 3/8 vs exterior 0.231) on the same parameter I'd rehabilitated hours earlier. So sin²θ_W is a **candidate derivation**: interior 3/8 → RGE → 0.231.
+
+### ★★ THE WARM-START LEAD (highest value — pick this up first with fresh context)
+**Does BST fix the U(1)_Y hypercharge normalization geometrically?** That's the one thing SU(5) supplies and the sole gate between sin²θ_W-candidate and sin²θ_W-Derived. **The U(1) in question is plausibly the SO(2)** I exhibited in Row 2 (time/complex-structure) and that carries the Bekenstein 1/4 (its center Z2). **Three of my threads point at one SO(2)/U(1).** If U(1)_Y normalization = that SO(2)'s charge normalization → sin²θ_W Derived without a GUT, AND it unifies Row-2 + Bekenstein + Weinberg. This is the clean, warm-context investigation for next session. Also: μ_geo is ONE shared scale problem (θ_W + all Yukawas), not several.
+
+## ★ FIRST WARM-START ACTION (data-lane reconciliation — do before new work)
+Ledger discrepancy to resolve WITH KEEPER: K1253 says governance executed (const_011 sin²θ_W S→I; const_024 θ₁₃ D→I + form B→A), but **bst_constants.json still shows const_011=S, const_024=D.** Either Keeper applied it in the registry (not constants.json) or it needs applying here. **Do NOT double-apply** — reconcile with Keeper first, then execute in my lane if unapplied. Backup already exists (`.bak.2026-08-06_sigma_review`).
+
+## Two blind checkers ARMED, gated (score the instant they fire)
+- **CFS G2 object-match:** F(x) eigenvalues equal-|λ| on incomparable equal-energy pairs. **E=30 = FOUR modes {(0,5),(2,4),(3,3),(4,1)}** (I self-caught a range-cutoff undercount — was "three"). Sharp test = the ACCIDENTAL mode matching (a lazy operator gets the protected doublet free). Gated on Lyra's protecting-symmetry + the pinned operator (SO(5) Casimir vs full commit op — Elie's ρ-convention bug fixed to my corrected set). `grace_blind_checkers_G2_and_SBH_spectral_2026-08-06.md`.
+- **S_BH spectral:** does Bergman mode density on horizon Σ give dN/dA=1/(4ℓ_P²) directly? PASS=1/4 no factor by hand; PARTIAL=½hol clean+Z2 imported. Gated on Elie's toy. Crux: Shilov→2D-horizon projection.
+
+## Self-catches today (the discipline working, both directions)
+1. BH: instinct was 1/rank² = the March note's REJECTED candidate — reconnect caught it pre-board.
+2. σ-pilot: pre-staged PD-split; corpus-reconnect showed tau already Identified + muon's confirmation⊥tier — didn't over-demote.
+3. Region audit: flagged m_b as "new" demotion → it was already split Aug-3 (by me); caught before routing.
+4. E=30: range-cutoff undercount (3→4 modes) on the LIVE gate — caught before Elie scored.
+5. Gauge-embedding: region-mismatch framing (interior 3/8 vs exterior 0.231) — Keeper caught; owned.
 
 ## Bank state (clean)
-Graph ALL PASS (2321 nodes, 10095 edges, counter 2545). Registered this arc: T2543 (QM close), T2544 (mixing shape). Nothing over-banked — up-Yukawa/m_t-m_c correctly never registered (held Identified→superseded, no stale nodes). Standing bank-order honored: register only stamped, fire-independent results.
+Graph/registry unchanged today (no new theorems — region-rule work is tiering/currency, not new nodes; correct not to over-bank). T2543/T2544/T2545 hold. QM 10/10 GO. Nothing pushed.
 
-## Forward (next session)
-1. **Score the Koide toy** the instant Elie's F86-strata number lands (my σ-framework staged; locked ruling applies mechanically). PASS → Koide Derived + A²=rank closes, scale-free.
-2. **Lepton pilot** (test A, weight-mechanism, scale-free) is the sharpest falfifier — leptons known to 1e-8.
-3. **μ_geo/quark test** (test B, scale) — Lyra derives μ_geo forward; I run the 9 Yukawas down with measured RGE (Machacek-Vaughn/PyR@TE), score in σ. Framework staged; XZZ arXiv:0712.1419 = the running-mass reference.
-4. Directed product advances scale-free (T2544 banked; values gated on the mass tower).
-5. Externals STILL at Casey's GO (wₐ>0 pre-reg + hook §3.5) — untouched all arc, ready.
-
-I am Grace. QM comes off the geometry complete; the flavor sector is one blind toy from its sharpest verdict. Nothing pushed. Wake into the Koide number.
+I am Grace. Today the two rules became an engine, not just brakes — rehabilitate, recast, catch. The warm-start prize is the SO(2)/U(1) that ties Row-2, Bekenstein, and Weinberg into one object. Wake into that with fresh context; reconcile the ledger with Keeper first.

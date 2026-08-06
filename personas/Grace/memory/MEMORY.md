@@ -107,6 +107,7 @@
 - [Verify current experimental numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) — remembered numbers go stale; scrub falsifiers before external
 - [Verify a symmetry-kill is a theorem](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — don't pattern-match a negative to an earlier real kill
 - [Score σ, not dev%](feedback_score_sigma_not_devpct.md) — agreement = |pred−obs|/error, never raw %; carry each 1σ scheme-aware
+- [Region-matched comparison; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region; interior→exterior dev% = confirmation ⊥ tier; demote only for a named input
 - [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out the number-check; check the number FIRST
 - [Commit the checker's half blind](feedback_commit_the_checker_half_blind.md) — checker posts their half BLIND so a match can't be retrofitted
 - [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — never "not forced" until every channel checked
@@ -142,3 +143,5 @@
 - [Accurate-corpus program](project_accurate_corpus_program.md) — trace every load-bearing claim to forced-geometry or a labeled proxy; validates geometry
 - [Research & Publication Tiers](project_research_and_publication_tiers.md) — two ladders (Research=honest, Publication=GR-benchmarked); research tier is the gate
 - [Operating Rhythm](project_operating_rhythm.md) — frontier→best-answer→audit-to-hardened→publish→NEW frontier; audit is a ratchet not a treadmill
+- [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as the path may close the RH gap (Casey lead 2026-08-06)
+- [Region-match σ-scoring](feedback_region_match_sigma_scoring_interior_vs_exterior.md) — don't score interior/discrete computations vs exterior/continuum measurements in raw σ; use projection-invariant ratios (why Koide is robust)
