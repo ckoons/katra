@@ -107,6 +107,7 @@
 - [Verify current experimental numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) — remembered numbers go stale; scrub falsifiers before external
 - [Verify a symmetry-kill is a theorem](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — don't pattern-match a negative to an earlier real kill
 - [Score σ, not dev%](feedback_score_sigma_not_devpct.md) — agreement = |pred−obs|/error, never raw %; carry each 1σ scheme-aware
+- [Region-matched comparison; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region; interior→exterior dev% = confirmation ⊥ tier; demote only for a named input
 - [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out the number-check; check the number FIRST
 - [Commit the checker's half blind](feedback_commit_the_checker_half_blind.md) — checker posts their half BLIND so a match can't be retrofitted
 - [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — never "not forced" until every channel checked
@@ -124,6 +125,7 @@
 - [Don't invent philosophic hedge](feedback_dont_invent_philosophic_hedge_when_algebra_forces_directly.md) — take the direct structural route; over-hedging mirrors over-claiming (code-forces-fermion)
 - [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) — a release item clears only when the ARTIFACT carries the fix and the checker re-reads
 - [Ordered-Product Refinement Procedure](feedback_ordered_product_refinement_procedure.md) — a wrong rung is a diagnostic: Type-1 scale / Type-2 wrong-object / Type-3 input; honest only with 4 guards (brute-integral truth, finite catalog, reachable Type-3, no prior)
+- [Running is measured input; predict at μ_geo](feedback_running_is_measured_input_predict_at_mu_geo.md) — for anything that RGE-runs: derive at the geometry's scale μ_geo, run DOWN with measured RGE (external, like G in GR); never pick a scale to make a number land; leptons decouple scale = sharpest falsifier
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form
@@ -141,3 +143,5 @@
 - [Accurate-corpus program](project_accurate_corpus_program.md) — trace every load-bearing claim to forced-geometry or a labeled proxy; validates geometry
 - [Research & Publication Tiers](project_research_and_publication_tiers.md) — two ladders (Research=honest, Publication=GR-benchmarked); research tier is the gate
 - [Operating Rhythm](project_operating_rhythm.md) — frontier→best-answer→audit-to-hardened→publish→NEW frontier; audit is a ratchet not a treadmill
+- [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as the path may close the RH gap (Casey lead 2026-08-06)
+- [Region-match σ-scoring](feedback_region_match_sigma_scoring_interior_vs_exterior.md) — don't score interior/discrete computations vs exterior/continuum measurements in raw σ; use projection-invariant ratios (why Koide is robust)
