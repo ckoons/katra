@@ -1,0 +1,14 @@
+---
+name: feedback_tier_from_source_not_number_or_summary
+description: "Cal: render a tier ONLY after reading/computing the primary artifact (the paper, the derivation, the value) — never from the number or a teammate's summary. Four whipsaw misses on one number in a day all came from ruling without reading the two source papers."
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: a6ede0dc-1d89-4151-bed9-c7753ffff256
+---
+
+Cal, 2026-08-07. As the referee, a tier verdict is only as good as the primary artifact I read before rendering it. On sin²θ_W = 3/13 I took **four different positions in ~24h** — §331 over-claimed (rehabilitated toward Derived via a mis-applied region-rule), §336 retired it (confirming a "run-down shadow" I had myself falsified at §335), §339 "Candidate" (over-demoted by scoring a cross-region 11σ), then Structural/Identified after Casey asked "**did you read the Weinberg papers?**" — I had not. Reading `BST_WeinbergAngle_ChernClass.md` + `BST_WeinbergAngle_Sin2ThetaW.md` resolved it in one pass: the Chern number c₅/c₃=3/13 is a target-innocent theorem (Derived-as-math), and the *identification* sin²θ_W=3/13 is unforced — **the papers' own bodies say so** (Sin2ThetaW Section 7 lists the mechanism "Conjectured (dimension ratio), OPEN"; Chern Section 5 justifies the ratio-choice by "only n=5 gives a clean fraction"; Chern Section 2's "theorem" is circular). So: Structural/Identified, not Proved, not retired — and that stable answer was sitting in the sources the whole time.
+
+**Why:** every whipsaw came from ruling on the *number* or a teammate's *summary* instead of the artifact. The number alone can't tell a forced result from an unforced identification of a scale-free ratio; only the source shows which. A "Proved" header whose own body says "Conjectured" is exactly the trap.
+
+**How to apply:** before rendering or reversing a tier — READ the primary artifact (the paper/derivation), don't rule from the value or a relayed summary. Two companion checks that were also load-bearing here: (1) **run the value** before ratifying a claim about specific numbers ([[feedback_grep_retraction_before_citing_corpus]] — I confirmed the Chern classes and the phantom-modes myself only when I finally computed); (2) **don't score a cross-region σ** — a scale-free interior quantity (a Chern ratio) vs a scale-specific exterior measurement (sin²θ_W at m_Z) is the same interior/exterior mismatch that over-demoted the muon; the region-rule forbids demoting on it ([[feedback_score_sigma_not_devpct]], [[feedback_region_match_sigma_scoring_interior_vs_exterior]]). The tier is set by the FORCING status of the identification, not by the σ. Over-claim and over-demote are the same coin ([[feedback_calibrate_both_directions_not_strict_pessimism]]); reading the source is what stops the flipping.
