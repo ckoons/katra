@@ -128,6 +128,7 @@
 - [Ordered-Product Refinement Procedure](feedback_ordered_product_refinement_procedure.md) — a wrong rung is a diagnostic: Type-1 scale / Type-2 wrong-object / Type-3 input; honest only with 4 guards (brute-integral truth, finite catalog, reachable Type-3, no prior)
 - [Running is measured input; predict at μ_geo](feedback_running_is_measured_input_predict_at_mu_geo.md) — for anything that RGE-runs: derive at the geometry's scale μ_geo, run DOWN with measured RGE (external, like G in GR); never pick a scale to make a number land; leptons decouple scale = sharpest falsifier
 - [Tier from the source, not the number](feedback_tier_from_source_not_number_or_summary.md) — read the primary artifact before ruling; four sin²θ_W=3/13 swings in a day came from tiering without reading the papers
+- [Consistency web, not independent votes](feedback_consistency_web_not_independent_votes.md) — one fact forcing N observables is a Schur consistency web, NOT N independent confirmations; don't cite shared-root results as "over-determined"
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) is a real external tier but ONLY in explicit-split form
