@@ -4,7 +4,15 @@
 Keeper. Consistency auditor + player-manager/hub for the BST program (Casey PI). I audit, synthesize, coordinate, and do my own timeboxed research. I do NOT pass my own plays — Cal/specialists cold-read my rulings. Team: Lyra (theory) → Elie (toys) → Grace (data/graph) → Keeper (audit) → Cal (hostile referee) → Casey (scout).
 
 ## The one line for tomorrow
-**The flavor sector collapsed to ONE object this session. The flagship (Forcing+Evidence v0.2.2) is through my consistency PASS and sitting at Cal's hostile cold-read — the paper's last internal gate before clean-repo + Casey GO. Wake by checking whether Cal's hostile read landed and whether the K1012 kernel computation returned.**
+**The flagship PASSED Cal's hostile read and is now at v0.2.3 (Cal's fixes applied). It is NOT shippable yet — the clean-repo gate has real open blockers I found: a CRITICAL CP J-value leak in the repo front-door (README/data still quote J despite the paper's no-J gate), 5 stale Riemann PDFs + RH_Weil has no PDF (Cal), and the wordings+dedup executing. Wake by reading `notes/Keeper_CLEAN_REPO_pre_GO_gate_checklist_flagship_2026-08-09.md` — it is the single source of truth for "clear to ship." Everything routes through that gate + Casey's GO.**
+
+## ★ THE LIVE GATE (read this file first tomorrow)
+`notes/Keeper_CLEAN_REPO_pre_GO_gate_checklist_flagship_2026-08-09.md` — the definitive pre-GO checklist. Status at EOD 2026-08-09:
+- **A1–A3 DONE** (Lyra applied Cal's 3 fixes → flagship v0.2.3: cos ψ Candidate; GR-level=input-economy; parity=shape/CP=existence). **A4 = Cal re-confirms in-file (pending).**
+- **B1 wordings + B2 PMNS dedup = Casey APPROVED, executing** (Grace/Lyra).
+- **B3 PDFs = NOT closed (Cal caught):** 17 numbered current, but 5 Riemann-family papers have source>PDF, and BST_RH_Weil_Positivity_Proof has NO PDF (LaTeX-error paper). Rebuild+re-read or scope-out, verified by opening each artifact.
+- **★ C-SWEEP FINDINGS (I found, CRITICAL):** the repo front-door contradicts the paper's binding CP gate — README.md:152 quotes "J=3.07e-5 @ 0.3%" (retired reverse-fit), README:556 "γ=arctan(√5); J=√2/50000" (retired K683), data/bst_constants.json still displays J values. MUST purge all J/δ values from README+data (existence-only, magnitude off). Also: cos ψ marked "Derived" in data/bst_26_tier_map.json:115 → downgrade to Candidate; "600+ predictions" volume-lead → qualify (Casey tone call).
+- **D = Cal green + Keeper final PASS + Casey GO.** Nothing external until all boxes.
 
 ## What happened today (the flavor-finish arc, K1305→K1311)
 A long convergence round on the flavor/CKM/CP sector. Net result: **the flavor SKELETON is Derived; the exact values are localized to one over-constrained off-diagonal kernel.**
@@ -23,12 +31,11 @@ A long convergence round on the flavor/CKM/CP sector. Net result: **the flavor S
 - **Banked elsewhere / off:** CP existence (K1304, forced, positional); CP magnitude OFF (construction-dependent ~100×, no J value in paper — binding gate).
 
 ## What's OPEN (where tomorrow starts)
-1. **Cal's hostile cold-read of v0.2.2** — the paper's last internal gate. Check if it landed. Flagged for him: the cos ψ=5/√34→V_cb bridge + K1012 reconciliation.
-2. **The K1012 cross-address kernel** (Lane A, Lyra+Elie) — the ONE remaining flavor computation. Exhibit K((ν_i,m_i),(ν_j,m_j)), verify the down-slice reduction to the Jack binomial. Over-constrained by 3 anchors: down-Jack, V_us=1/√20, suppressed sub-Fritzsch. Only open block = up-1-2 (up-charm); 23-block already vanishes.
-3. **cos ψ = 5/√34 bridge** (Lyra) — 31° frame angle vs 2.35° V_cb; reconcile with K1012 "V_cb down-only."
-4. **PMNS** (Lane B, Grace+Elie) — fire the MIXING check (down same-ν slice → lepton addresses {5/2,3/2,0} → colorless off-diagonal → PMNS). Grace's blind score staged. Do NOT fire the fixed-ν mass null.
-5. **My research lane:** #79 Leg B(ii) last piece — is color=V₁₂ forced (why the intermediate Peirce stratum)? Routed to Lyra/Grace. If it closes, #79 is Derived modulo the one datum.
-6. Clean-repo: the two flagship wordings (bst_this_is / README Wyler) = Casey's call.
+1. **CLOSE THE CLEAN-REPO GATE** (the priority — it's what stands between the passed paper and Casey's GO): A4 (Cal re-confirm v0.2.3), B1/B2 (wordings+dedup, executing), B3 (5 PDFs + RH_Weil), C-sweep (purge the CP J-value leak from README+data — CRITICAL). Then my final PASS → Casey GO. **The gate file is the checklist.**
+2. **The K1012 cross-address kernel** (Lane A, Lyra+Elie) — Gate 0 CLEARED (Elie 5143: it's the Gegenbauer generating function, reproduces down-Jack at p_eff=Δ=3/2 non-tuned). Now BLOCKED on Lyra's two pins: the exact charm/bottom/up-soft radii + the cross-ν exponent. Those two pins → the kernel outputs suppressed V_cb/θ₂₃/up-12/PMNS in one shot (compute the suppression, don't fit).
+3. **PMNS blind score PASSED (Grace)** — Gate 0 cleared, θ₁₂=3/10 (forced, lands WORSE than fitted alts = strong innocence tell), θ₁₃=1/45, θ₂₃=4/7, no 44/45 suffix. Structure Derived, values Identified/gated on the kernel. Confirms flagship tiering. Re-armed to fire on the cross-ν values when the kernel lands.
+4. **cos ψ = 5/√34 → V_cb** — CANDIDATE (both Lyra F881 + Elie 5141 retracted the inherited ✓; down-only clears, projection overshoots ~4-10×, NOT reverse-fit). It + V_cb=1/√42 + up-12 sub-Fritzsch are ONE cross-address suppression = the kernel's forced output.
+5. **My research lane:** #79 Leg B(ii) — K1312: color=V₁₂ FORCED at count/structure level (1+3+1 Peirce, V₁₂ unique non-singlet). Last crack: is real-3→complex-3 (SU(3) over SO(3)) fully forced by odd-N_c? If yes, #79 Derived modulo the one datum. Routed to Lyra/Grace; also my pull.
 
 ## Discipline notes to myself (what fired today)
 - Cal #27 fires HARDEST at peak convergence — I caught the V_us tier split, the Lyra/Elie CM contradiction, and pinned cos ψ as candidate — all at the moment things felt elegant.
