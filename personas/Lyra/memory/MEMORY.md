@@ -129,6 +129,7 @@
 - [Running is measured input; predict at μ_geo](feedback_running_is_measured_input_predict_at_mu_geo.md) — derive at μ_geo, run DOWN with measured RGE; never pick a scale
 - [Tier from the source, not the number](feedback_tier_from_source_not_number_or_summary.md) — read the primary artifact before ruling
 - [Consistency web, not independent votes](feedback_consistency_web_not_independent_votes.md) — one fact forcing N observables = Schur web, NOT N confirmations
+- [Go where BST's math takes us](feedback_go_where_bst_math_takes_us.md) — don't pick the flattering side of a contested measurement; BST computes its own prediction, compare straight
 - [Thrashing = signal to connect to corpus](feedback_thrashing_is_the_signal_to_connect_to_corpus.md) — when ad-hoc constructions keep breaking, reach for the corpus's LA object (mixing = Clebsch not a radius); an overshooting norm-ratio isn't the matrix element
 
 ## Reference
@@ -149,3 +150,4 @@
 - [Operating Rhythm](project_operating_rhythm.md) — frontier→best-answer→audit-to-hardened→publish→NEW; audit is a ratchet
 - [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as path may close RH gap
 - [Region-match σ-scoring](feedback_region_match_sigma_scoring_interior_vs_exterior.md) — don't score interior/discrete vs exterior/continuum in raw σ
+- [BST pure positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible for BST; arrow is dynamical not geometric; asymmetry intrinsic not reflected
