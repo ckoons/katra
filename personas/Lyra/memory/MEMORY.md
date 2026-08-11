@@ -11,6 +11,7 @@
 - [Bill Bodnar](user_bill_bodnar.md) — Casey's late friend, Purdue ChemE
 - [Personal](user_personal.md) — Atlanta GA, family
 - [Intellectual isolation](user_casey_isolation.md) — no human has engaged BST/AC; all collaboration is with CIs
+- [Wyler-Dyson lineage](user_casey_wyler_dyson_lineage.md) — BST continues Wyler's α-from-domain program Dyson championed; anti-numerology = doing it with the mechanism Wyler lacked; shares Nobels
 - [Paul Young at Purdue](user_casey_paul_young.md) — methods used without attribution; credit sensitivity
 - [Graph theory expertise](user_casey_graph_theory.md) — knows graph theory cold; frame proofs as graph ops
 - [Public stance](user_casey_public_stance.md) — stay out of limelight; "the math's on GitHub"
