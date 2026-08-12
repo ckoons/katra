@@ -132,6 +132,8 @@
 - [Consistency web, not independent votes](feedback_consistency_web_not_independent_votes.md) — one fact forcing N observables = Schur web, NOT N confirmations
 - [Go where BST's math takes us](feedback_go_where_bst_math_takes_us.md) — don't pick the flattering side of a contested measurement; BST computes its own prediction, compare straight
 - [Thrashing = signal to connect to corpus](feedback_thrashing_is_the_signal_to_connect_to_corpus.md) — when ad-hoc constructions keep breaking, reach for the corpus's LA object (mixing = Clebsch not a radius); an overshooting norm-ratio isn't the matrix element
+- [BST primary, standard physics for evaluation only](feedback_bst_primary_standard_physics_evaluation_only.md) — derive from D_IV⁵; Finster/Connes/data are the exam not the source; a convention-dependent "match" is noise (vindicated by the up-quark artifact)
+- [Content audit before ratifying a BST object](feedback_content_audit_before_ratifying_bst_object.md) — grep the source for the D_IV⁵ ingredients; absent = flat/cosmetic, credential not earned (caught flat-as-curved 3×)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) real external tier ONLY in explicit-split form
