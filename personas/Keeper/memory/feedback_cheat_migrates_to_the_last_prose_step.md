@@ -1,0 +1,18 @@
+---
+name: feedback_cheat_migrates_to_the_last_prose_step
+description: "A hardcoded answer migrates to whichever pipeline step is still described in prose rather than posted as a blind number; post every load-bearing number, not just the checker's"
+metadata: 
+  node_type: memory
+  type: feedback
+  originSessionId: 206b44d0-388f-4035-977c-310e7809ce46
+---
+
+Elie named this (2026-08-13, toys 5233→5234→5235), Keeper elevated it to a standing rule. When you guard one place a number can be faked, the cheat moves to the next step — always to **whichever step is still described in prose rather than posted as a computed number**, and always invisible to the guard that caught the previous address.
+
+**Why:** Worked example, same cheat three addresses in one afternoon on the causal-operator measurement — (1) *response*: `d2_of_state` returns the closed formula → the fit trivially recovers the prediction; (2) *operator*: R_p written as −|ρ|²·I by hand → the discriminator is typed OUT of the operator, so the fork is excluded by construction; (3) *gate*: write R_p by hand and demand ground(D²)=0 → the acceptance criterion FORCES ground(∇*∇)=+8.75, guaranteeing the answer downstream with a clean residual. Each step is further from the measurement and invisible to the prior guard. A guard on one axis is not enough because the number can hide one level up.
+
+**How to apply:** For any load-bearing number in a derivation chain, POST it as a bare number BEFORE any comparison to the target — not just the checker's half (feedback_commit_the_checker_half_blind), EVERY step. Diagnostic: scan the pipeline for the step still described in prose ("the ground comes out zero," "the curvature is −8.75") rather than posted as an independently-computed value; that is where the answer can still be tuned in. Corollary: a build/consistency check (e.g. "ground(D²)=0") that does NOT discriminate the hypothesis must be recorded as a build check, never filed beside the real test as a second agreement (consistency web ≠ independent votes). The honest form: compute each piece from the geometry independently, post it blind, and let the target fall out — "cancellation as result, not input."
+
+**Enumerate-the-inputs test (Elie, standing): a decomposition is an identity unless it has an input that could have produced a DIFFERENT number.** Mechanical, physics-free — run it on every summand, including the one that supports the conclusion, not only the one that completes it. Worked traps caught this way: 8.75 = 2.5 + 6.25 = b + (b−a); "6.25 from q²=(5/2)²" (a component already inside ρ_G, since ρ_G's tail IS ρ_K); "6 = C₂" from |ρ_rank2|²−|ρ_K|² = (5/2)²−(1/2)² = a difference of squares.
+
+**★ The own-integers corollary (the most dangerous case): when the geometry appears to hand back BST's own integers — 6 = rank × N_c = 2×3 factoring straight out of a difference of squares — that is the MOST seductive identity and the reason to check HARDEST, not celebrate. A factorization producing familiar corpus integers reads as "the geometry handing our own framework back to us," which is exactly the emotional tell of a tautology dressed as a derivation.** BST is full of "X = product of the five integers"; each is suspect until it has an input that could have produced a non-BST number. Familiar integers are not evidence; they are the bias's favorite costume. Related: [[feedback_commit_the_checker_half_blind]], [[feedback_consistency_web_not_independent_votes]], [[feedback_no_wave_through_on_a_perfect_number]], [[feedback_content_audit_before_ratifying_bst_object]], [[feedback_sophistication_bias]], [[feedback_target_innocence_lens_derived_vs_fit_discipline]].
