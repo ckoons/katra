@@ -134,6 +134,7 @@
 - [Thrashing = signal to connect to corpus](feedback_thrashing_is_the_signal_to_connect_to_corpus.md) — when ad-hoc constructions keep breaking, reach for the corpus's LA object (mixing = Clebsch not a radius); an overshooting norm-ratio isn't the matrix element
 - [BST primary, standard physics for evaluation only](feedback_bst_primary_standard_physics_evaluation_only.md) — derive from D_IV⁵; Finster/Connes/data are the exam not the source; a convention-dependent "match" is noise (vindicated by the up-quark artifact)
 - [Content audit before ratifying a BST object](feedback_content_audit_before_ratifying_bst_object.md) — grep the source for the D_IV⁵ ingredients; absent = flat/cosmetic, credential not earned (caught flat-as-curved 3×)
+- [Pre-registration protects interpretation not instrument](feedback_preregistration_protects_interpretation_not_instrument.md) — a pre-registered target-innocent number is still a false positive if a should-not-matter knob lives INSIDE the ruler; vary it (r read the region not the dimension); keep the convention-independent banked result out of the same sentence as the fragile one
 - [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) — post EVERY load-bearing number blind, not just the checker's; the fake hides in whichever step is still prose
 - [Millennium: composite + gaps, not primes](feedback_millennium_composite_and_gaps_not_primes.md) — reframe around spectral-gap "continuum can't reach without counting"; discrete-first on the Millennium proofs
 
