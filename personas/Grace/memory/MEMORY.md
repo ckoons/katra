@@ -130,3 +130,4 @@
 - [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as path may close RH gap (see F988 lead)
 - [Region-match σ-scoring](feedback_region_match_sigma_scoring_interior_vs_exterior.md) — don't score interior/discrete vs exterior/continuum in raw σ
 - [BST pure positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric; asymmetry intrinsic
+- [Hunt-if-P mechanism can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-it-if-P-lands' mechanism must pass the same circularity check as the test; it can BE what manufactures P
