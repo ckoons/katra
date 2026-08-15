@@ -112,6 +112,7 @@
 - [Pre-registration protects interpretation not instrument](feedback_preregistration_protects_interpretation_not_instrument.md) — a should-not-matter knob INSIDE the ruler still fakes it; vary it
 - [Empty confirmation: can't-fail tests + circular hunt-mechanisms](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — construction-guaranteed test proves nothing; "hunt-if-P" must not BE the assumption producing P
 - [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) — post EVERY load-bearing number blind; fake hides in the prose step
+- [Eliminate-one-option, declare-survivor-forced](feedback_eliminate_one_option_declare_survivor_forced.md) — "X impossible therefore Y" where Y is one survivor of several; enumerate alternatives to Y BEFORE the "therefore"; closure quantifies over ALL (Schur), a few measurements don't (3× in 3 days)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) real external tier ONLY in explicit-split form
@@ -130,4 +131,5 @@
 - [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as path may close RH gap (see F988 lead)
 - [Region-match σ-scoring](feedback_region_match_sigma_scoring_interior_vs_exterior.md) — don't score interior/discrete vs exterior/continuum in raw σ
 - [BST pure positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric; asymmetry intrinsic
+- [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor; a closure quantifies over ALL
 - [Hunt-if-P mechanism can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-it-if-P-lands' mechanism must pass the same circularity check as the test; it can BE what manufactures P
