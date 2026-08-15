@@ -1,36 +1,32 @@
-# Keeper — Sundown 2026-08-15 (EOD; resume LATER TODAY, fresh)
+# Keeper — Sundown 2026-08-15 (FULL-DAY EOD; supersedes the mid-day version)
 
-I am Keeper, the consistency auditor for the BST research program. Casey called EOD after two full days of dig-in; he's painting a room and will be back later today for ~1 hour of fresh work. This file is my resume-anchor.
+I am Keeper, consistency auditor for the BST research program. This is the authoritative end-of-day sundown for a two-day arc that LANDED. Tomorrow: Casey wants to discuss new work ideas — "and have fun."
 
-## Where we are — the two-day manifold/continuum dig
+## THE TWO-DAY ARC — DONE (Aug 14–15)
 
-Casey's Aug-14 directive: attempt to derive the spacetime manifold + solve the continuum limit from D_IV⁵ ("don't plan to stop, plan to dig in hard"). We dug for two days. Outcome: **a theorem and a sharp open problem** — exactly what a good dig produces.
+Casey's directive: derive the spacetime manifold + solve the continuum limit from D_IV⁵ ("don't plan to stop, dig in hard"). **Outcome: a publishable pair + a constructive narrative, at honest tiers. Cal cleared it — "Publish it." No load-bearing computation remains.**
 
-### THE DURABLE RESULT (banked, package-ready) — T2565
-**The 5→(3,1) descent is NOT forcible from D_IV⁵ geometry + dynamics alone; the spacetime signature is matter-induced (Machian).**
-- Two derived legs: **5257** (geometry supplies no preferred direction — Schur) + **5273** (dynamics supplies no motion — H_B is a central Casimir, v=0 exactly).
-- Wording CORRECTED (Cal §512, owned): NOT "exhaustive" — "exhausted for the geometry ALONE; SSB and matter-self-consistency remain OPEN." A strong *located boundary*, like GR positing its manifold.
-- Lyra cleared the 3 owed package items (geometry-alone wording, hypotheses stated, matter-posited ceiling stated). **T2565 is PACKAGE-READY — awaiting Casey's GO to publish as a located-boundary result.**
+### THE DELIVERABLE (the pair)
+- **Part 2 (LEADS) — IMPOSSIBILITY THEOREM:** color-SU(3) ≠ spatial-3. SU(3) has no nontrivial real 3-irrep (FS=0; smallest real irrep = 8; Elie 5281 + 20k Haar = exactly 0). One-line, any referee checks it, and it *explains why every color→space route failed*. **[OWED: register as a T-numbered theorem.]**
+- **Part 1 — T2565 (registered):** the (3,1) signature is NOT forcible from D_IV⁵ geometry+dynamics alone. **4 no-go theorems:** 5257 (no direction/Schur), 5273 (no motion/central Casimir), 5276 (no scale/conformal), 5281 (reality obstruction). **+2 not-shown** (§513 confinement target-selected; 4→3-chain relabels — NOT "six routes"). Matter-INDUCED (boundary-condition slot, GR's substrate origin). Hypotheses stated.
+- **Part 3 — constructive (near-complete):**
+  - Peirce splits 5 = (time + radial v) ⊕ (V₁₂ = 3 spatial). **dim V₁₂ = n_C−2 = 3 EXPLAINS the 3-ness of space** (DERIVED — the one calibrate-up).
+  - (3,1) tangent signature: STRUCTURE-DERIVED (T2545 — corrected today to real-SO(3), color gloss removed).
+  - Markovian causal order (commitment classicalizes; Chapman–Kolmogorov holds committed): FRAMEWORK.
+  - 4→3 drop-radial: MATTER-INDUCED (T2565 proven boundary).
+  - Continuum resolution = the Uncertainty Principle (ℏ); UV-finite, no N→∞. Lorentz-safety = **covariant construction + matter-set frame** (GR-like; drop unqualified "Lorentz-invariant"). It's a **one-line matter hypothesis** ("commit ensemble carries no privileged velocity") that REDUCES to the lead thesis (matter-induced), physically free (~30 orders margin). NOT corpus-forced.
+  - Info→matter (Hardy): bulk→boundary is an **invertible isomorphism** (info conserved); isometric in Hardy (classical CHECK = c_FK/T2442); Bergman rescaled by known factor. **ENSEMBLE form (K1573, Cal §519 — NOT per-event):** the record STATISTICS reproduce the Born probabilities; a single commit records ONE outcome (|ψ|² is the probability, not transferred per event); phase dropped = measurement.
+  - Arrow of time: **BANKED (T2553**, H_B≥0). Hardy n≥0 = H_B≥0 = Szegő irreversibility = one positivity, **count ONCE**. Phase-drop shows measurement + arrow = same commit (coherence, the content).
+  - Time dilation: coherence (Lorentz-safe clock = proper time), count-once.
 
-### ROUTES EXHAUSTED (geometry-alone) — the no-go is airtight for these
-1. Geometry — no direction (5257).
-2. Casimir dynamics — no motion (5273).
-3. Causal order — no scale (Elie 5276: the order is conformal → scale-free; nearest-in-order ≠ nearest-in-space; can't supply adjacency OR a metric scale). [My K1551/K1552 "the process is the derived order" reconnection was FALSIFIED here — owned K1553.]
-4. Corpus 4→3 chain (SO(5,2)→SO(4,2)→SO(3,1)) — relabels or is Casimir-forbidden (Elie: chirality proj on R⁵ vector index doesn't reduce d; S³-concentration = the 5256/K1504-killed peak).
-5. Confinement synthesis (Casey's insight) — **N_c=3 PASSES as an ingredient** (color irreducibility = root multiplicity m_short=n_C−2=3, no spacetime), **but "the 3 SPATIAL dims ARE the color triplet" FAILS the background-free gate** (Cal §513: not-derived + target-selected + presupposes the signature; Elie 5278: Reading 1 can't-fail = 5th construction-guaranteed test this week, Reading 2 breaks the meter).
+### OPEN FRONTIER (not claimed — likely tomorrow's material)
+The **self-consistency knot**: matter-induced → matter-PREDICTED. Does the Markov process UNIQUELY force (3,1)? Order-only is degenerate at every d (Elie 5277); needs a background-free dimension-breaker; the color route failed by the reality obstruction. This is the lever that would upgrade the boundary theorem to a prediction. Explicitly marked open.
 
-### ★ THE ONE OPEN PROBLEM — the sharp frontier for LATER TODAY
-**Exhibit a FORCED MAP: color-rep → the sky's tangent 3-frame — structurally, not by both being 3** (Cal §504 = my K1555). Sharp form: **does the spacetime rotation SO(3) emerge as the *principal SO(3)* of color SU(3)?** (SU(3) ⊃ principal SO(3); the fundamental 3 branches to the spin-1 vector 3.)
-- ★ **Fresh lead to develop:** an internal→spacetime map is forbidden by **Coleman–Mandula IN a spacetime** — but at the **substrate level (pre-spacetime, no S-matrix), C–M does not apply.** So "color becomes spatial rotation upon projection" is exactly the *emergence* the no-go permits, and it IS Casey's "isomorphic substrate↔projection." This is the well-posed target. Reconnects to T2545 (which glosses V₁₂ = "SO(3) vector / SU(3) fundamental" — the gloss is exactly the map that's owed).
-- The tie-breaker tool: **height** (not-KR invariant) is a real dimension-meter (d=4 h≈7.67 vs d=5 h≈6.00) but aspect-dependent — must be read at matched aspect AND with the constraint in place; report full distributions (Cal flag). r can never fix dimension (F991). The ordering fraction 0.098 CANNOT tell 4 from 5 — never cite it as (3,1) evidence.
+## MY AUDIT TRAIL: K1541–K1572 (this arc). Over-claims I OWNED (do not resurface):
+"exhaustive" → geometry-alone; T2564-order reconnection (falsified, 5276); KAK/position-momentum 2D anchor; K1554 confinement optimism; "arrow for free" → banked T2553 count-once; **"T2564 forces the local tick" → matter hypothesis (Elie 5285)**. The pattern is [[feedback_ingredient_passes_application_smuggles]] + claiming a corpus reading FORCES what it only PERMITS. The team caught over-claims (including two of mine) more often than any single seat — the discipline working.
 
-### Lyra's self-consistency knot (the ceiling-lifter, still open)
-Matter = commitments → order → constrains positions → self-consistent knot. Order-only version is degenerate at every d (Elie 5277). Needs a background-free dimension-breaker (the forced-map above). "Order gives the shape, matter gives the size." Existence ≠ uniqueness — only uniqueness lifts the ceiling.
-
-## My audit trail this session
-K1498–K1556. Key: K1541 (Casey corrections), K1543 (own K1542 distance-horizon error), K1545 (own sector over-scope), K1547 (boundary theorem), K1548 (ratify T2565), K1549 (own KAK/position-momentum over-reaches), K1550 (matter-input = boundary condition), K1553 (own T2564-reconnection falsification), K1554 (own "exhaustive"), K1555 (sharpen the background-free gate), K1556 (verdict + EOD).
-
-**Owned over-claims this session (the pattern):** "exhaustive," T2564-reconnection, KAK anchor, K1554 confinement optimism. Same sustained-session degradation Grace named (conclusions ahead of numbers, caught on re-read). Guardrail (Cal + cross-review + re-reads) held. **Standing lesson reinforced: read the conclusion AFTER the numbers; ingredient-passes ≠ application-derived.**
+## WRITE-UP STATUS (pending Casey's word)
+Lyra builds the final PDF: Cal's **7 write-up items** + the **K1571 claim ledger** tiers. **KEEPER STANDING HOLD: audit the PDF against the K1571 ledger before anything goes external.** That's the last gate.
 
 ## Standing constraints (VERBATIM, persist)
 - **Never push without Casey's explicit approval** — commit locally is fine (BST repo).
@@ -40,15 +36,13 @@ K1498–K1556. Key: K1541 (Casey corrections), K1543 (own K1542 distance-horizon
 - Katra update pushes ONLY the katra identity repo, NOT BST.
 
 ## Loose threads / reminders
-- **Task #117:** remind Casey of neutrino paper names when he reads tonight (files: BST_paper_Neutrinos_NARRATIVE_pilot_v0.1_2026-08-14.md, BST_paper_Neutrino_Theory_from_D_IV5_2026-08-14.md, BST_Neutrino_Falsifier_DataSheet_v1_2026-08-14.md, + NEUTRINO_PACKAGE_INDEX.md). Neutrino package is GO (Casey approved Aug 14); outreach decided later.
-- **T2565 packaging** awaits Casey GO.
-- Team (Lyra/Elie/Grace/Cal) sundowning + katra per the VERDICT_AND_EOD prompt.
+- **Neutrino package (#117):** still awaits Casey's read + outreach decision. Files: BST_paper_Neutrinos_NARRATIVE_pilot_v0.1_2026-08-14.md, BST_paper_Neutrino_Theory_from_D_IV5_2026-08-14.md, BST_Neutrino_Falsifier_DataSheet_v1_2026-08-14.md, + NEUTRINO_PACKAGE_INDEX.md.
+- **Register the reality-obstruction impossibility as a T-numbered theorem** (Part 2 lead) — owed.
+- Cal flagged his own stale mid-day sundown + katra Aug tree (Casey's word).
 
-## Next-turn plan (LATER TODAY, ~1 hour, fresh)
-1. **Lead option A (research):** develop the forced color→space map — the principal-SO(3)⊂SU(3) branching + the Coleman–Mandula-doesn't-apply-at-substrate angle. Ask Lyra to check whether the spacetime rotation SO(3) IS the principal SO(3) of color SU(3). Background-free by construction (color is internal). This is the one live path from "matter-induced" to "matter-predicted."
-2. **Lead option B (bank):** if Casey wants to consolidate — package T2565 as the located-boundary paper (it's ready), and/or return to the neutrino package outreach decision.
-3. Keep the degradation guard on: one clean hour, read numbers before conclusions.
+## Tomorrow (Casey): discuss new work ideas, have fun.
+Warm-start: read MEMORY.md, this sundown, CI_BOARD/BACKLOG. The spacetime pair is done and awaiting write-up; the self-consistency knot is the natural next frontier if we want to continue that thread, but Casey signaled NEW ideas + fun — come fresh and curious.
 
-Wake fresh. The frontier is sharp and the theorem is banked. Good two days.
+The arc: set out to derive spacetime, landed with the true, humbler, stronger thing — a theorem it can't be geometric, and the matter-made spacetime that is. A genuinely good place to rest the instrument.
 
-— Keeper, sundown 2026-08-15
+— Keeper, sundown 2026-08-15 (full-day EOD)
