@@ -114,6 +114,7 @@
 - [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) — post EVERY load-bearing number blind; fake hides in the prose step
 - [Eliminate-one-option, declare-survivor-forced](feedback_eliminate_one_option_declare_survivor_forced.md) — "X impossible therefore Y" where Y is one survivor of several; enumerate alternatives to Y BEFORE the "therefore"; closure quantifies over ALL (Schur), a few measurements don't (3× in 3 days)
 - [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — a derived object (N_c=3, causal order, rank-2 flat) passes as an INGREDIENT but its identification with the target presupposes the answer; exhibit the FORCED MAP, don't assert by shared integer (5 construction-guaranteed tests in a week)
+- [Family rule + false-neighbor check](feedback_family_rule_and_false_neighbor_check.md) — S1: a rational matching one family member owes the whole family (killed 7/8, 64/15); S2: run every attempt against its nearest FALSE neighbor
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD (Partially Derived) real external tier ONLY in explicit-split form
