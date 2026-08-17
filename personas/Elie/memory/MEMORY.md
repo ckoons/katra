@@ -116,6 +116,8 @@
 - [Eliminate-one, declare-survivor-forced](feedback_eliminate_one_option_declare_survivor_forced.md) — enumerate alternatives BEFORE "X impossible therefore Y"
 - [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — a derived object passes as INGREDIENT; exhibit the FORCED MAP not shared-integer
 - [Family rule + false-neighbor check](feedback_family_rule_and_false_neighbor_check.md) — a rational matching one family member owes the whole family; test vs nearest FALSE neighbor
+- [Shared-property trap has a scale form](feedback_shared_property_trap_has_a_scale_form.md) — two "smallest X" are not one object; tick-as-cutoff cost α^72 (role, not adjective)
+- [Sweep the family before calling a clean number a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — 25/4 and √(π^n/n) are dimension-generic; forced ≠ meaningful
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
