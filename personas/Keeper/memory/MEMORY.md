@@ -118,6 +118,9 @@
 - [Family rule + false-neighbor check](feedback_family_rule_and_false_neighbor_check.md) — a rational matching one family member owes the whole family; test vs nearest FALSE neighbor
 - [Shared-property trap has a scale form](feedback_shared_property_trap_has_a_scale_form.md) — two "smallest X" are not one object; tick-as-cutoff cost α^72 (role, not adjective)
 - [Sweep the family before calling a clean number a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — 25/4 and √(π^n/n) are dimension-generic; forced ≠ meaningful
+- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — a check whose subject carries "forced/derived/our" smuggles the property; strip it, verify separately (§590/§593)
+- [Load-bearing ≠ truth-tiebreaker](feedback_load_bearing_is_not_a_truth_tiebreaker.md) — when readings conflict, go to the primary source/definition; load-bearing = cost-of-wrong, protects errors (§595)
+- [A search that cannot succeed proves nothing empty](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) — validate the instrument vs a positive control before reporting a negative; wrong clock corrupts -newermt (§599)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
@@ -138,4 +141,5 @@
 - [BST positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
-- [Time, Derived — CONDITIONAL PASS](project_time_derived_conditional_pass.md) — K1665/K1666: gate 9/9 green, item-10 closed on hash; GO=v1.2; freeze mechanical (chmod 444)
+- [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate green, item-10 closed on 3-way hash; cleared to ship on Casey's word; freeze mechanical (chmod 444+hash)
+- [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — the honest boundary of D_IV⁵: it forces STRUCTURE (order/algebra/dimensionless form); the missing MECHANISM (weighting/scale/gauge-generators) is gauge/dynamical/one-input, beyond static geometry — #114·gravity-value·#108 all floored this way (K1677)
