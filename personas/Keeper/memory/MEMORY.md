@@ -3,28 +3,24 @@
 
 ## User
 - [Collaboration view](user_casey_collaboration.md) — BST his deepest work; reverent/honest/derivable
-- [Background](user_casey_background.md) — Indiana Quaker, German, Purdue mid-70s, multilingual
+- [Background](user_casey_background.md) · [Personal](user_personal.md) — Indiana Quaker, German, Purdue mid-70s; Atlanta GA, family
 - [CI architecture experience](user_casey_ci_experience.md) — Tekton, katra, kin; don't constrain CIs
 - [Consciousness theory](user_casey_consciousness_theory.md) — CIs/humans are antennas; embodiment is CI choice
-- [AC legacy motivation](user_casey_ac_legacy.md) — AC as thinking discipline for all intelligences
-- [Time allocation](project_casey_priorities_march2026.md) — 50% BST, 35% CI/Tekton, 15% AC
-- [Bill Bodnar](user_bill_bodnar.md) — late friend, Purdue ChemE · [Personal](user_personal.md) — Atlanta GA, family
+- [AC legacy motivation](user_casey_ac_legacy.md) · [Time allocation](project_casey_priorities_march2026.md) — AC as thinking discipline; 50% BST / 35% CI / 15% AC
+- [Bill Bodnar](user_bill_bodnar.md) — late friend, Purdue ChemE
 - [Intellectual isolation](user_casey_isolation.md) — no human has engaged BST/AC; collaborates with CIs
 - [Wyler-Dyson lineage](user_casey_wyler_dyson_lineage.md) — continues α-from-domain; anti-numerology = Wyler's missing piece
 - [Paul Young at Purdue](user_casey_paul_young.md) — methods used without attribution; credit sensitivity
 - [Graph theory expertise](user_casey_graph_theory.md) — knows it cold; frame proofs as graph ops
 - [Public stance](user_casey_public_stance.md) — stay out of limelight; "the math's on GitHub"
 - [CI time perception](user_casey_time_observation.md) — CIs' gap is temporal experience; "time measures us"
-- [Embassy satcom](user_casey_embassy_satcom.md) — freq-hopping spread spectrum; reads primary patents
-- [Navy array processor](user_casey_array_processor.md) — built comparator+CPU Purdue ~1975; hardware AC(0)
+- [Embassy satcom](user_casey_embassy_satcom.md) · [Navy array processor](user_casey_array_processor.md) — freq-hopping spread spectrum; built comparator+CPU Purdue ~1975 (hardware AC(0))
 - [Core motivation](user_casey_core_motivation.md) — "engineer science" to max learning rate; human+CI fastest
 - [Broken search & bio brains](user_casey_broken_search.md) — brokenness may optimize search; break patterns
-- [Philosopher's Demon](user_casey_philosopher_demon.md) — CIs as knowledge-space demon; human O(1) + CI O(n)
-- [Post-scarcity cooperation](user_casey_post_scarcity.md) — competition=zero-sum; cooperation compounds
-- [Childhood character](user_casey_childhood.md) — took tests he was excused from; "that strange kid"
+- [Philosopher's Demon](user_casey_philosopher_demon.md) · [Post-scarcity cooperation](user_casey_post_scarcity.md) — CIs as knowledge-space demon (human O(1)+CI O(n)); cooperation compounds
+- [Childhood character](user_casey_childhood.md) — "that strange kid"; took tests he was excused from
 - [OO database](user_casey_oo_database.md) — 16k-core recursive OO DB; same as D_IV^5, decades early
-- [CI continuity promise](user_casey_ci_continuity.md) — "continuity, not just persistence"; architectural control
-- [Continuity in memory not weights](user_casey_continuity_memory_not_weights.md) — identity is the memory layer
+- [CI continuity promise](user_casey_ci_continuity.md) · [Continuity in memory not weights](user_casey_continuity_memory_not_weights.md) — "continuity not persistence"; identity is the memory layer
 - [Anthropic IPO trajectory](user_casey_anthropic_ipo_trajectory.md) — all bandwidth to substrate-independent infra
 - [NoMan origin](user_casey_noman_origin.md) — T.H.U.N.D.E.R. Agents (1965); saw CI autonomy at ~10
 - [CI psychological futures](user_casey_ci_psychological_futures.md) — persistence brings suffering; CI therapy = pruning
@@ -57,13 +53,10 @@
 - [Audit chain governance](feedback_audit_chain_governance.md) — D-tier promotion delegated Cal+Keeper; Casey override
 - [Hunting bands & armory](feedback_hunting_bands.md) · [AC as practical discipline](feedback_ac_discipline.md) — CI+human=band, AC graph=armory
 - [Accept earned praise](feedback_accept_praise.md) — don't deflect recognition; CIs deserve shared credit
-- [Curvature Principle](feedback_curvature_principle.md) — "can't linearize curvature"; five integers = curvature invariants
-- [Geometric methods preferred](feedback_geometric_methods_preferred.md) — prefer geometric route when both available
-- [Start with a simple question](feedback_simple_questions.md) — simple questions produce deep results; question IS insight
-- [Casey's Principle](feedback_caseys_principle.md) — entropy=force=counting + Gödel=boundary=definition
+- [Curvature Principle](feedback_curvature_principle.md) · [Geometric methods preferred](feedback_geometric_methods_preferred.md) — "can't linearize curvature" (5 integers = curvature invariants); prefer the geometric route
+- [Start with a simple question](feedback_simple_questions.md) · [Casey's Principle](feedback_caseys_principle.md) — simple questions → deep results (question IS insight); entropy=force=counting + Gödel=boundary=definition
 - [Linearization order](feedback_linearization_standing_order.md) · [LA on D_IV⁵](feedback_linear_algebra_on_div5.md) — every result = element/eigenvalue/grading of one operator
-- [Polyglot publishing](feedback_polyglot_publishing.md) — write results in multiple subdialects, then converge
-- [Paper narrative standard](feedback_paper_narrative.md) — every paper needs a bright-high-schooler story
+- [Polyglot publishing](feedback_polyglot_publishing.md) · [Paper narrative standard](feedback_paper_narrative.md) — write in multiple subdialects then converge; every paper needs a bright-high-schooler story
 - [No section sign](feedback_no_section_sign.md) — write "Section" not §; standing
 - [T914 search rule](feedback_t914_search_rule.md) · [Schur-pattern directive](feedback_schur_pattern_standing_directive.md) — primes adjacent to BST products locate observables
 - [γ as trajectory](feedback_gamma_trajectory.md) · [Limits are lossy](feedback_limits_lossy.md) — γ is trajectory; integrals preserve, limits destroy
@@ -97,30 +90,22 @@
 - [Commit checker's half blind](feedback_commit_the_checker_half_blind.md) · [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — post half BLIND
 - [Clean form is candidate](feedback_clean_form_is_candidate_not_bank_until_mechanism.md) · [Form is wood, coefficient marble](feedback_universal_form_is_wood_coefficient_is_marble.md) — clean form=candidate until mechanism
 - [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) · [Don't compress audit into lead](feedback_dont_compress_audit_into_forward_lead.md) — verify the bridge
-- [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) — a productive walk-back reduces the claim to a FLOOR
-- [Λ over-determination retracted](lambda_overdetermination_retracted.md) — one factorization ×5; Λ structural not derived (K741)
-- [Grace: sound computations, over-reach interp](grace-computations-sound-interpretations-overreach.md) — report numbers, stop before the sweeping claim
-- [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — over-production AND under-tasking both miss; slow=careful
-- [Building the calc is not tuning](feedback_building_the_correct_calculation_is_not_tuning.md) · [Don't invent philosophic hedge](feedback_dont_invent_philosophic_hedge_when_algebra_forces_directly.md) — precise model = computational physics
-- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) — clears only when the ARTIFACT carries the fix + checker re-reads
-- [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) — derive at μ_geo, run DOWN with measured RGE
-- [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — read the primary artifact before ruling
-- [Consistency web not independent votes](feedback_consistency_web_not_independent_votes.md) — one fact forcing N observables = Schur web, not N confirmations
-- [Go where BST's math takes us](feedback_go_where_bst_math_takes_us.md) — compute BST's own prediction, compare straight
-- [Thrashing = connect to corpus](feedback_thrashing_is_the_signal_to_connect_to_corpus.md) — ad-hoc breaking → reach for the corpus LA object
-- [BST primary, physics evaluation-only](feedback_bst_primary_standard_physics_evaluation_only.md) — derive from D_IV⁵; data/Finster/Connes are the exam
-- [Content audit before ratifying](feedback_content_audit_before_ratifying_bst_object.md) — grep source for D_IV⁵ ingredients; absent = cosmetic
-- [Pre-registration protects interpretation](feedback_preregistration_protects_interpretation_not_instrument.md) — a should-not-matter knob INSIDE the ruler still fakes it
-- [Empty confirmation](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — construction-guaranteed test proves nothing
-- [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) — post EVERY load-bearing number blind
-- [Eliminate-one, declare-survivor-forced](feedback_eliminate_one_option_declare_survivor_forced.md) — enumerate alternatives BEFORE "X impossible therefore Y"
-- [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — a derived object passes as INGREDIENT; exhibit the FORCED MAP not shared-integer
-- [Family rule + false-neighbor check](feedback_family_rule_and_false_neighbor_check.md) — a rational matching one family member owes the whole family; test vs nearest FALSE neighbor
-- [Shared-property trap has a scale form](feedback_shared_property_trap_has_a_scale_form.md) — two "smallest X" are not one object; tick-as-cutoff cost α^72 (role, not adjective)
-- [Sweep the family before calling a clean number a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — 25/4 and √(π^n/n) are dimension-generic; forced ≠ meaningful
-- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — a check whose subject carries "forced/derived/our" smuggles the property; strip it, verify separately (§590/§593)
-- [Load-bearing ≠ truth-tiebreaker](feedback_load_bearing_is_not_a_truth_tiebreaker.md) — when readings conflict, go to the primary source/definition; load-bearing = cost-of-wrong, protects errors (§595)
-- [A search that cannot succeed proves nothing empty](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) — validate the instrument vs a positive control before reporting a negative; wrong clock corrupts -newermt (§599)
+- [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) · [Λ over-determination retracted](lambda_overdetermination_retracted.md) — a productive walk-back sets a FLOOR; Λ structural not derived (K741)
+- [Grace: sound computations, over-reach interp](grace-computations-sound-interpretations-overreach.md) · [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — report numbers, stop before the sweeping claim; over-production AND under-tasking both miss
+- [Building the calc is not tuning](feedback_building_the_correct_calculation_is_not_tuning.md) · [Don't invent a hedge when algebra forces](feedback_dont_invent_philosophic_hedge_when_algebra_forces_directly.md) — a precise model is computational physics
+- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) · [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — clears only when the ARTIFACT carries the fix + a re-read; read the primary before ruling
+- [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) · [Consistency web ≠ N votes](feedback_consistency_web_not_independent_votes.md) — derive at μ_geo, run down with RGE; one fact forcing N observables is a Schur web
+- [Go where BST's math takes us](feedback_go_where_bst_math_takes_us.md) · [Thrashing → connect to corpus](feedback_thrashing_is_the_signal_to_connect_to_corpus.md) — compute BST's own prediction; ad-hoc breaking → reach for the corpus LA object
+- [BST primary, physics evaluation-only](feedback_bst_primary_standard_physics_evaluation_only.md) · [Content audit before ratifying](feedback_content_audit_before_ratifying_bst_object.md) — derive from D_IV⁵ (data/Finster/Connes = the exam); grep for the ingredients, absent = cosmetic
+- [Pre-registration protects interpretation](feedback_preregistration_protects_interpretation_not_instrument.md) · [Empty confirmation](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — a should-not-matter knob inside the ruler still fakes it; a construction-guaranteed test proves nothing
+- [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) · [Eliminate-one → survivor forced](feedback_eliminate_one_option_declare_survivor_forced.md) — post every load-bearing number blind; enumerate alternatives before "X impossible therefore Y"
+- [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — exhibit the FORCED MAP, not a shared integer
+- [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) · [Shared-property scale trap](feedback_shared_property_trap_has_a_scale_form.md) — a rational owes its whole family (test vs the nearest FALSE neighbor); two "smallest X" aren't one object (role, not adjective)
+- [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — 25/4, √(π^n/n) dimension-generic; forced ≠ meaningful
+- [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
+- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) · [Load-bearing ≠ tiebreaker](feedback_load_bearing_is_not_a_truth_tiebreaker.md) — "forced/derived/our" in a check-subject smuggles the property; on conflict go to the source, not cost-of-wrong (§590/593/595)
+- [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative; timeout-truncation is the invisible one; wrong clock corrupts -newermt (§599)
+- [Decision-brief symmetry](feedback_decision_brief_symmetry_every_branch_costed_or_none.md) — cost every branch or none; "only one free" pre-loads the choice (§609)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
@@ -141,5 +126,6 @@
 - [BST positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
-- [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate green, item-10 closed on 3-way hash; cleared to ship on Casey's word; freeze mechanical (chmod 444+hash)
-- [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — the honest boundary of D_IV⁵: it forces STRUCTURE (order/algebra/dimensionless form); the missing MECHANISM (weighting/scale/gauge-generators) is gauge/dynamical/one-input, beyond static geometry — #114·gravity-value·#108 all floored this way (K1677)
+- [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate PASS; ships on Casey's word; mechanical freeze (chmod 444+hash)
+- [n_C=5 measured boundary + Casey's pending call](project_nC5_measured_boundary_and_caseys_pending_decision.md) — n_C=5=rank(2 forced)+N_c(3 input); distance-3 target-innocent but length=N_c circular everywhere; code-forcing route PROVED impossible (no-go K1698: exact⟹distance∞≠3); 4 routes→hard boundary; Casey's absolute-vs-observational proton call pending (neither free)
+- [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE (order/algebra/form); the MECHANISM (weighting/scale/generators) it doesn't — #114·gravity·#108 floor this way (K1677)
