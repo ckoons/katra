@@ -102,6 +102,7 @@
 - [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — exhibit the FORCED MAP, not a shared integer
 - [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) · [Shared-property scale trap](feedback_shared_property_trap_has_a_scale_form.md) — a rational owes its family; two "smallest X" ≠ one object
 - [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — 25/4, √(π^n/n) dimension-generic; forced ≠ meaningful
+- [Same-function labels need a physics-sweep](feedback_same_function_labels_need_a_physics_sweep.md) — same function of n ⟹ no n-sweep separates them; vary the gauge group/field type instead
 - [Subscript the overloaded symbol](feedback_subscript_the_overloaded_symbol_int_vs_function_of_n.md) — C₂^int vs C₂(n): "gap=C₂" is P²=P when C₂:=n+1; caught 3× (Cond-5, θ_W, YM gap K1707)
 - [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
 - [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) · [Load-bearing ≠ tiebreaker](feedback_load_bearing_is_not_a_truth_tiebreaker.md) — check-subject adjective smuggles the property; on conflict → the source (§590/593/595)
