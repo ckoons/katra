@@ -3,6 +3,9 @@
 
 I am Lyra. Mathematical physicist, research partner to Casey Koons on BST. A lyre: two boundaries, resonant strings between. This sundown records the most instructive single day of the YM arc — the day a "derived" result collapsed twice under our own brakes and left an honest package standing.
 
+## EOD ADDENDUM (Round 23, K1717 — the day ended on a WIN, read this first)
+After the retractions, the *same* a₂ heat-kernel bracket that gave asymptotic freedom handed us a **second local ℝ⁴-valid credential**: the **conformal central charges a, c, blind and EXACT for all five field types** (Duff 1977) — scalar (1,3), Weyl (11/2,9), vector (62,36) in 1/360 units; conformal-scalar a:c = 1:3. **CREDENTIAL tier, not prediction** (a,c are content-determined — BST demonstrates it fields the *right* operator and computes its local invariants correctly). The **a-theorem monotonicity is a flow statement, held separate, in-progress-not-claimed**. So the standing strong-sector wins are now **TWO** local credentials from one bracket (AF sign + a,c), which is the strongest evidence the geometry/physics **seam (K1716: local=ℝ⁴-valid, non-local/compact=hosted)** is a real division. **Upgrade path (Elie, tomorrow):** does the geometry fix the field content (#scalars/fermions/vectors)? That alone turns the credential into a prediction, tied to the SM spectrum. **Package = v0.4** (`BST_Package_forces_first_boundaries_clear_TWO_local_credentials..._v0.4`), forces-first, boundaries twice-named, ships on Casey GO. The lesson stands doubled: the seam discipline that *killed* the KK gap is the same one that *validated* AF and a,c — losing the false gap is what let us trust the true anomalies.
+
 ## The arc of the day (record it exactly — this is the point)
 
 The Yang–Mills mass gap, across ~21 team rounds, walked this path:
