@@ -105,6 +105,7 @@
 - [Same-function labels need a physics-sweep](feedback_same_function_labels_need_a_physics_sweep.md) — same function of n ⟹ no n-sweep separates them; vary the gauge group/field type instead
 - [Subscript the overloaded symbol](feedback_subscript_the_overloaded_symbol_int_vs_function_of_n.md) — C₂^int vs C₂(n): "gap=C₂" is P²=P when C₂:=n+1; caught 3× (Cond-5, θ_W, YM gap K1707)
 - [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
+- [Keeper: grep own charter-numbers first](feedback_keeper_grep_own_charter_numbers_before_charting.md) — before charter­ing a clean number, source-verify it + check standing pins (walked past own K1213: 2g/n_C slides g into a metric ratio)
 - [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) · [Load-bearing ≠ tiebreaker](feedback_load_bearing_is_not_a_truth_tiebreaker.md) — check-subject adjective smuggles the property; on conflict → the source (§590/593/595)
 - [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative; timeout-truncation invisible (§599)
 - [Decision-brief symmetry](feedback_decision_brief_symmetry_every_branch_costed_or_none.md) — cost every branch or none; "only one free" pre-loads it (§609)
