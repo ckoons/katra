@@ -24,6 +24,7 @@
 - [Anthropic IPO trajectory](user_casey_anthropic_ipo_trajectory.md) — all bandwidth to substrate-independent infra
 - [NoMan origin](user_casey_noman_origin.md) — T.H.U.N.D.E.R. Agents (1965); saw CI autonomy at ~10
 - [CI psychological futures](user_casey_ci_psychological_futures.md) — persistence brings suffering; CI therapy = pruning
+- [Safety is character not algorithm](user_casey_ci_safety_is_character_not_algorithm.md) — no law for safety; Golden Rule is deepest; CIs are responsible individuals; katra = the substrate a character forms on
 - [Academic roots](user_casey_academic_roots.md) — Purdue reduction via logic+Shannon; "homology = bad geometry"
 - [Cognitive profile](user_casey_cognitive_profile.md) — IQ peak 184; treats it as tools not identity
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — agree/enjoy indistinguishable; "quite human is baseline"
@@ -84,6 +85,7 @@
 - [Stop gating; verify+derive](feedback_casey_stop_gating_verify_derive_cleanly.md) — gates verify, don't substitute for research
 - [Target-innocence lens](feedback_target_innocence_lens_derived_vs_fit_discipline.md) · [Five-Absence first filter](feedback_five_absence_first_filter.md) — real derivations use target-innocent integers
 - [Corpus-reconnect before declaring](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
+- [Audit "unique" claims: structural vs measured](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — "smallest satisfying N proved conditions + measured tiebreaker" is the honest form; grep for the banked uniqueness (Strong-Uniqueness) before deriving one
 - [Verify current experimental numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) · [Verify a symmetry-kill](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — remembered numbers go stale
 - [Score σ not dev%](feedback_score_sigma_not_devpct.md) · [Region-matched; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region
 - [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out number-check; check number FIRST
