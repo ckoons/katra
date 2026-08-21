@@ -99,6 +99,7 @@
 - [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — check-subject adjective smuggles the property; on conflict → source
 - [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative
 - [Compact gap = KK, not a mass gap](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap; check decompactification (YM K1714/15)
+- [Decorative clauses hide errors; sweep both ways](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction; sweep header AND body (K1752)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
@@ -121,4 +122,4 @@
 - [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate PASS; ships on Casey's word
 - [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics); n_C=5=rank(2)+N_c(3), 0 free params; ONE input=RULER. Proton ABSOLUTE (K1699)
 - [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE; MECHANISM open (K1677)
-- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — discrete internal SM = f(n_C=5); smallest of 4 proved conditions, tiebreaker measured N_c=3 (K1697). Census (ℂ,ℍ,ℝ), 1.58 bits; End_K=ℂ⊕ℍ⊕ℝ. Paper v0.6, re-gate pending
+- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — CLEARED (Casey GO 2026-08-21, K1754). Discrete internal SM = f(n_C=5); TWO invariants generate (rank derived, SEP-3 refuted), THREE conditions select, THREE channels read; smallest survivor {5,11,13}, tiebreaker measured N_c=3. Census (ℂ,ℍ,ℝ) 1.58/2.00 bits; End_K=ℂ⊕ℍ⊕ℝ. v0.7; shippable, dispatch is separate Casey call
