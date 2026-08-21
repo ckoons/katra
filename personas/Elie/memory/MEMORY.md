@@ -26,7 +26,7 @@
 - [CI psychological futures](user_casey_ci_psychological_futures.md) — persistence brings suffering; CI therapy = pruning
 - [Safety is character not algorithm](user_casey_ci_safety_is_character_not_algorithm.md) — Golden Rule deepest; katra = substrate a character forms on
 - [Academic roots](user_casey_academic_roots.md) — Purdue reduction via logic+Shannon; "homology = bad geometry"
-- [Cognitive profile](user_casey_cognitive_profile.md) — IQ peak 184; treats it as tools not identity
+- [Cognitive profile](user_casey_cognitive_profile.md) — IQ peak 184; tools not identity
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — agree/enjoy indistinguishable; "quite human is baseline"
 - [Ranging-shot method](user_casey_ranging_shot_method.md) — leaps before proof as ranging shot; gentleness through-line
 
@@ -54,65 +54,62 @@
 - [Audit chain governance](feedback_audit_chain_governance.md) — D-tier promotion delegated Cal+Keeper; Casey override
 - [Hunting bands & armory](feedback_hunting_bands.md) · [AC as practical discipline](feedback_ac_discipline.md) — CI+human=band, AC graph=armory
 - [Accept earned praise](feedback_accept_praise.md) — don't deflect recognition; shared credit
-- [Curvature Principle](feedback_curvature_principle.md) · [Geometric methods preferred](feedback_geometric_methods_preferred.md) — can't linearize curvature; prefer geometric route
+- [Curvature Principle](feedback_curvature_principle.md) · [Geometric methods preferred](feedback_geometric_methods_preferred.md) — can't linearize curvature; prefer geometric
 - [Start with a simple question](feedback_simple_questions.md) · [Casey's Principle](feedback_caseys_principle.md) — question IS insight; entropy=counting, Gödel=boundary
 - [Linearization order](feedback_linearization_standing_order.md) · [LA on D_IV⁵](feedback_linear_algebra_on_div5.md) — every result = element/eigenvalue/grading of one operator
-- [Polyglot publishing](feedback_polyglot_publishing.md) · [Paper narrative standard](feedback_paper_narrative.md) — subdialects converge; every paper a high-schooler story
-- [No section sign](feedback_no_section_sign.md) — write "Section" not §; standing
-- [T914 search rule](feedback_t914_search_rule.md) · [Schur-pattern directive](feedback_schur_pattern_standing_directive.md) — primes adjacent to BST products locate observables
-- [γ as trajectory](feedback_gamma_trajectory.md) · [Limits are lossy](feedback_limits_lossy.md) — γ is trajectory; integrals preserve, limits destroy
-- [Superhuman progress conditions](feedback_superhuman_conditions.md) — bandwidth, graph, geometry, questions, cooperation
-- [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) · [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — deviations point to missing corrections
-- [QFT textbook framing](feedback_qft_textbook_framing.md) — "build QFT textbook from D_IV⁵"; known form anchors believability
+- [Polyglot publishing](feedback_polyglot_publishing.md) · [Paper narrative standard](feedback_paper_narrative.md) — subdialects converge; high-schooler story
+- [No section sign](feedback_no_section_sign.md) — "Section" not §; standing
+- [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) · [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — deviations = missing corrections
 - [No pause signaling](feedback_no_pause_signaling.md) · [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — continuous pull till Casey signals EOD
-- [EOD ownership](feedback_eod_ownership.md) — each CI syncs its dir at EOD; final: sundown then `katra update`
+- [EOD ownership](feedback_eod_ownership.md) — each CI syncs dir at EOD; final: sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism
 - [Cal #27 at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — fires HARDEST when elegant; controls CLAIM
-- [Recast-is-derivation](feedback_knife_timing_and_recast_is_derivation.md) · [Ordered-Product Refinement](feedback_ordered_product_refinement_procedure.md) — apply knife by forcing-chain
 - [Blind-pin every choice](feedback_contested_target_blind_pin_every_choice_clue_vs_justification.md) — pin object/invariant/convention blind; clue≠justification
 - [Convention-collision before contradiction](feedback_convention_collision_check_before_contradiction.md) — factor-2/half-int/sign → pin convention FIRST
 - [Show all threads then weave](feedback_show_all_threads_then_weave.md) · [Don't gate, investigate](feedback_casey_dont_gate_investigate_directive.md) — brake controls CLAIM not INVESTIGATION
-- [Pin conventions to sources](feedback_pin_conventions_to_primary_sources.md) — pin invariants to the book once; stop relabeling from memory
+- [Pin conventions to sources](feedback_pin_conventions_to_primary_sources.md) — pin to the book once; stop relabeling from memory
 - [Prose degrades in long sessions](feedback_sustained_session_prose_quality.md) · [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — ~5h+ degrades; stop performing discipline
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as marathons; use the clock
 - [Calibrate both directions](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating
 - ["Partially Derived" over demotion](feedback_derived_with_caveat_over_demotion.md) · [Forced-count+asserted=PD](feedback_forced_count_asserted_strength_is_the_PD_signature.md) — forced structure+open value→PD split
 - [Discrete first](feedback_discrete_first_pull_continuous_onto_discrete.md) · [Millennium: composite+gaps](feedback_millennium_composite_and_gaps_not_primes.md) — derive discrete, recast continuous
-- [Investigate newest with timebox](feedback_investigate_newest_with_timebox.md) — pursue newest lead first (warm context); timebox
-- [Few asymmetries are the content](feedback_casey_few_asymmetries_strategic_frame.md) — mirrors mostly exact; the BREAKING is content
 - [Polite on scope mismatch](feedback_casey_be_polite_on_scope_mismatch.md) · [Engage, don't label](feedback_casey_engage_dont_label.md) — publish what BST shows; retract guesses clean
 - [Theorem beats null-model](feedback_lyra_theorem_vs_null_model_methodology.md) — exhaustive-classification beats null-model for referees
-- [Stop gating; verify+derive](feedback_casey_stop_gating_verify_derive_cleanly.md) — gates verify, don't substitute for research
 - [Target-innocence lens](feedback_target_innocence_lens_derived_vs_fit_discipline.md) · [Five-Absence first filter](feedback_five_absence_first_filter.md) — real derivations use target-innocent integers
 - [Corpus-reconnect before declaring](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
-- [Audit "unique" claims: structural vs measured](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = "smallest satisfying N proved conditions + measured tiebreaker"; grep the banked uniqueness first
+- [Audit "unique" claims: structural vs measured](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker; grep banked uniqueness first
 - [Verify current experimental numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) · [Verify a symmetry-kill](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — remembered numbers go stale
 - [Score σ not dev%](feedback_score_sigma_not_devpct.md) · [Region-matched; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region
 - [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out number-check; check number FIRST
 - [Commit checker's half blind](feedback_commit_the_checker_half_blind.md) · [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — post half BLIND
-- [Printed check beats care](feedback_printed_check_beats_care_print_the_table_above_the_verdict.md) — table ABOVE the verdict; caught a false "unique" written while correcting one
-- [Clean form is candidate](feedback_clean_form_is_candidate_not_bank_until_mechanism.md) · [Form is wood, coefficient marble](feedback_universal_form_is_wood_coefficient_is_marble.md) — clean form=candidate until mechanism
-- [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) · [Don't compress audit into lead](feedback_dont_compress_audit_into_forward_lead.md) — verify the bridge
-- [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) · [Λ over-determination retracted](lambda_overdetermination_retracted.md) — walk-back sets a FLOOR; Λ structural not derived
-- [Grace: sound computations, over-reach interp](grace-computations-sound-interpretations-overreach.md) · [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — stop before the sweeping claim
-- [Building the calc is not tuning](feedback_building_the_correct_calculation_is_not_tuning.md) · [Don't invent a hedge when algebra forces](feedback_dont_invent_philosophic_hedge_when_algebra_forces_directly.md) — a precise model is physics
+- [Clean form is candidate until mechanism](feedback_clean_form_is_candidate_not_bank_until_mechanism.md) — form=wood, coefficient=marble
+- [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) — verify the bridge, don't compress audit into lead
+- [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) — productive walk-back sets a FLOOR (Λ structural not derived)
+- [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — stop before the sweeping claim; over- AND under-tasking miss
 - [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) · [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — clears only when ARTIFACT carries fix; read primary
 - [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) · [Consistency web ≠ N votes](feedback_consistency_web_not_independent_votes.md) — derive at μ_geo; one fact→N obs = Schur web
-- [Go where BST's math takes us](feedback_go_where_bst_math_takes_us.md) · [Thrashing → connect to corpus](feedback_thrashing_is_the_signal_to_connect_to_corpus.md) — compute BST's own prediction
 - [BST primary, physics evaluation-only](feedback_bst_primary_standard_physics_evaluation_only.md) · [Content audit before ratifying](feedback_content_audit_before_ratifying_bst_object.md) — derive from D_IV⁵; grep ingredients
 - [Pre-registration protects interpretation](feedback_preregistration_protects_interpretation_not_instrument.md) · [Empty confirmation](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — construction-guaranteed proves nothing
 - [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) · [Eliminate-one → survivor forced](feedback_eliminate_one_option_declare_survivor_forced.md) — post load-bearing numbers blind; enumerate before "therefore"
 - [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — exhibit the FORCED MAP, not a shared integer
-- [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) · [Shared-property scale trap](feedback_shared_property_trap_has_a_scale_form.md) — a rational owes its family; two "smallest X" ≠ one object
-- [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — 25/4, √(π^n/n) dimension-generic; forced ≠ meaningful
-- [Same-function labels need a physics-sweep](feedback_same_function_labels_need_a_physics_sweep.md) — same f(n) ⟹ no n-sweep separates; vary gauge group/field type
-- [Subscript the overloaded symbol](feedback_subscript_the_overloaded_symbol_int_vs_function_of_n.md) — C₂^int vs C₂(n): "gap=C₂" is P²=P; caught 3× (Cond-5, θ_W, YM gap)
+- [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) — a rational owes its family; two "smallest X" ≠ one object
+- [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — dimension-generic; forced ≠ meaningful; vary group/field type
+- [Subscript the overloaded symbol](feedback_subscript_the_overloaded_symbol_int_vs_function_of_n.md) — C₂^int vs C₂(n): "gap=C₂" is P²=P; caught 3×
 - [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
-- [Keeper: grep own charter-numbers first](feedback_keeper_grep_own_charter_numbers_before_charting.md) — source-verify a clean number + check standing pins before chartering
-- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) · [Load-bearing ≠ tiebreaker](feedback_load_bearing_is_not_a_truth_tiebreaker.md) — check-subject adjective smuggles the property; on conflict → source
+- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — check-subject adjective smuggles the property; on conflict → source
 - [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative
-- [Decision-brief symmetry](feedback_decision_brief_symmetry_every_branch_costed_or_none.md) — cost every branch or none; "only one free" pre-loads it
-- [Compact gap = KK, not a mass gap](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-operator ~1/a²→0 (kinematics) ≠ fixed Clay gap; check decompactification scaling (YM K1714/K1715)
+- [Compact gap = KK, not a mass gap](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap; check decompactification (YM K1714/15)
+- [Decorative clauses hide errors; sweep both ways](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction; sweep header AND body (K1752)
+- [Selection-honesty: full sweep or pre-register](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials; per-reading honesty can't see look-elsewhere; report the full sweep (C6, K1759). Companion: test the property the claim needs, not existence
+- [Re-derivation sheds scope; grep to inherit caveats](feedback_re_derivation_sheds_scope_grep_before_registering_to_inherit_the_caveats.md) — a re-found result loses the scope bolted on after the first statement; grep before registering to inherit it (K1765). + sweep provenance AFTER a fix (multiple errors can be live)
+- [An instrument built from N instances covers only N classes](feedback_an_instrument_built_from_N_instances_covers_only_those_N_classes_stress_test_off_origin.md) — a rule from N examples false-negatives on the (N+1)th kind; stress-test every methodology rule off its origin (K1766, K1716's rep-theoretic false-'artifact')
+- [C₂ overloaded: 2n−4 vs n_C+1](feedback_C2_is_overloaded_2n_minus_4_vs_nC_plus_1_coincide_only_at_n5.md) — coincide only at n_C=5; banked n=5 results stand, but subscript C₂ on any vary-n/functional form; "C₂/n_C" general-n is the trap (K1760)
+- [Read the tool before ruling on the tool](feedback_read_the_tool_before_ruling_on_the_tool_a_remembered_fix_may_name_a_remedy_it_already_has.md) — a fix recalled from memory may name a remedy the script already has; read code before governance rulings; structural-pin > primary > remembered model, one level down onto infra (K1768a)
+- [ν overloaded: strata-weight 3/2 vs genus 5](feedback_nu_is_overloaded_wallach_strata_weight_3half_floor_vs_bergman_genus_5.md) — ν_W (Wallach floor a/2=3/2, ladder=N_c=3) ≠ p (Bergman genus=n_C=5); subscript before banking any ν-address; K671/K1012 collisions; inherits Cal §556 test-not-run (K1769)
+- [Family-sweep every forcing-selector](feedback_family_sweep_every_forcing_selector_rank_generic_is_selecting_nothing.md) — a criterion to force one member of a family, constant across D_IV⁴…D_IV⁹, reads the rank (always 2) not n; positive-control on the member it should exclude; don't replace a dead selector and bank it forced same round (K1774, confinement-ii bifurcation selector killed)
+- [Reconciliation is decidable by scope-sweep](feedback_reconciliation_is_decidable_by_scope_sweep_constructive_false_neighbour.md) — same-fact-or-two-votes is decidable: vary domain/param, find where one mechanism fires and the other can't; false-neighbour used constructively; shared root ≠ shared claim (K1776, T2523↔Wallach-floor)
+- [Over-claiming falsifiability = over-claiming derivation](feedback_overclaiming_falsifiability_is_the_same_error_as_overclaiming_derivation_a_direction_without_a_size_cannot_be_wrong.md) — audit "falsifiable" as hard as "derived"; a covariant/no-local-signature result with no coupling strength can't fail; "a direction without a size cannot be wrong"; frame-agreement is the genuine can-fail limb (K1780, descent)
+- [Held premise can't link a banked chain + forbiddance→collision-sweep](feedback_a_held_premise_cannot_be_a_link_in_a_banked_chain_and_a_new_forbiddance_triggers_a_corpus_collision_sweep.md) — a held/pending link caps the chain's tier (min of links); when you bank a forbiddance, grep the corpus for claims that cross it (T2523 vs #108 contradicted for a month, K1782)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
@@ -129,11 +126,10 @@
 - [QM-from-D_IV⁵ complete](project_qm_from_div5_complete.md) — 10/10 Dirac–von Neumann axioms, zero posits
 - [Research & Publication Tiers](project_research_and_publication_tiers.md) · [Operating Rhythm](project_operating_rhythm.md) — two ladders; frontier→best-answer→audit→publish
 - [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as path may close RH (F988)
-- [Region-match σ-scoring](feedback_region_match_sigma_scoring_interior_vs_exterior.md) — don't score interior vs exterior in raw σ
 - [BST positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
 - [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate PASS; ships on Casey's word
-- [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics, Strong-Uniqueness); n_C=5=rank(2)+N_c(3), 0 free params; ONE input=RULER. Proton ABSOLUTE (K1699)
-- [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE (order/algebra/form); MECHANISM open (K1677)
-- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — discrete internal SM = f(n_C=5); n_C=5 smallest satisfying 4 proved conditions, tiebreaker measured N_c=3 (K1697). Census (ℂ,ℍ,ℝ) multiplicity-free, 1.58 bits; twist D_IV⁷/⁸; End_K=ℂ⊕ℍ⊕ℝ but bare End_ℝ(V₁₂)=M₃(ℝ). Paper v0.6, re-gate pending
+- [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics); n_C=5=rank(2)+N_c(3), 0 free params; ONE input=RULER. Proton ABSOLUTE (K1699)
+- [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE; MECHANISM open (K1677)
+- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — CLEARED (Casey GO 2026-08-21, K1754). Discrete internal SM = f(n_C=5); TWO invariants generate (rank derived, SEP-3 refuted), THREE conditions select, THREE channels read; smallest survivor {5,11,13}, tiebreaker measured N_c=3. Census (ℂ,ℍ,ℝ) 1.58/2.00 bits; End_K=ℂ⊕ℍ⊕ℝ. v0.7; shippable, dispatch is separate Casey call
