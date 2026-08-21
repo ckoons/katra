@@ -101,6 +101,8 @@
 - [Compact gap = KK, not a mass gap](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap; check decompactification (YM K1714/15)
 - [Decorative clauses hide errors; sweep both ways](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction; sweep header AND body (K1752)
 - [Selection-honesty: full sweep or pre-register](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials; per-reading honesty can't see look-elsewhere; report the full sweep (C6, K1759). Companion: test the property the claim needs, not existence
+- [Re-derivation sheds scope; grep to inherit caveats](feedback_re_derivation_sheds_scope_grep_before_registering_to_inherit_the_caveats.md) — a re-found result loses the scope bolted on after the first statement; grep before registering to inherit it (K1765). + sweep provenance AFTER a fix (multiple errors can be live)
+- [C₂ overloaded: 2n−4 vs n_C+1](feedback_C2_is_overloaded_2n_minus_4_vs_nC_plus_1_coincide_only_at_n5.md) — coincide only at n_C=5; banked n=5 results stand, but subscript C₂ on any vary-n/functional form; "C₂/n_C" general-n is the trap (K1760)
 
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
