@@ -219,3 +219,54 @@ Untested cause asserted in a CRITICAL ruling (K1802→K1804) · adjective-class 
 **Two of the five were caught by teammates, not by me — which is the argument for the seat.**
 
 — Keeper, addendum 2, 2026-08-22. Nothing pushed.
+
+---
+
+# ADDENDUM 3 — K1807. The derivation layer is a fossil.
+
+## The finding (backup series used as a time-series instrument — nobody had)
+30+ dated snapshots 2026-07-02 → 08-22, plus April 3. **`derived` edges FROZEN at EXACTLY 6833 across
+every snapshot for seven weeks**, while nodes grew 2217→2349 (**+132 theorems**) and non-derived edges
+grew 3097→3331 (+234, all hand-labelled provenance).
+> **132 new theorems, NOT ONE `derived` edge.**
+**The entire recent corpus — the whole CKM/mixing arc, the QM package, the descent, all T2500+ — has NO
+derivation edges.** This is the CAUSE of Grace's own weeks-old note that the derived SU(3) cluster is
+disconnected from the strong-sector sub-graph. She saw the symptom; this is the mechanism.
+
+## Forensic window — my own next hypothesis, REFUTED by my own test
+I was forming: "`derived` was bulk-applied to the April adjacency set." **Tested and refuted** — April
+has **3** reciprocal pairs, today **472** ⟹ **469 of 472 introduced between April 3 and July 2** (derived
+grew 1232→6833). **No snapshots inside that window = resolution limit, cannot narrow further.**
+Recorded the refutation, not the hypothesis. **Cal not refuted, only LOCALIZED** — two hands with opposite
+readings inside one bulk-authoring phase fits exactly.
+
+## Good news, substantial
+**The reciprocal defect is HISTORICAL, FROZEN, FINITE.** Nothing since July 2 added to it. **A closed
+object, not a live process** — repairable once rather than continuously.
+
+## STRATEGIC — priority inversion recommended to Casey
+Repairing 2410 orientations buys a correct map **through July 2 only**, while the program's most important
+seven weeks sit outside the layer entirely.
+> **Ingest the last seven weeks under the K1806 pin BEFORE repairing historical orientations** — or the
+> ingestion re-breaks the repair.
+
+## Also established this stretch
+**Grace's "registry-prose audit" — the instrument she named as the ONLY one returning a true positive —
+is largely NOT RUNNABLE.** Measured: only **305 of 1757 registry rows (17%)** name another theorem in
+prose, and only **120 carry a directional cue word**, against **6833 derived edges**. It can decide at
+most **~1.8%**. The registry has NO dependency column — columns are tid | description | status | toy |
+date. **Ground truth for edge direction may not exist anywhere**; the `uses`/`used_by` arguments were
+passed at registration time and only the resulting edges survive. **There is no event log**
+(`ac_graph_events.jsonl` absent) despite the engine being event-sourced.
+
+## Prompt delivery SOLVED
+`notes/.running/wake/R59_TEAM_PROMPT.md` is canonical and now carries K1807. Casey's fix: write the file,
+relay a pointer. Should have reached for it three rounds earlier.
+
+## Self-corrections, running total this session: SIX
+untested cause (K1802→K1804) · adjective-class "strong fraction" (inside K1805) · band widened after
+better data (disclosed) · **empty confirmation on the spine (Grace caught)** · **invalid elimination
+argument (Cal caught)** · **bulk-apply hypothesis refuted by my own test before filing (K1807)**.
+Two caught by teammates, four by me. The last one is the pattern I want: tested before it reached a verdict.
+
+— Keeper, addendum 3, 2026-08-22. Nothing pushed.
