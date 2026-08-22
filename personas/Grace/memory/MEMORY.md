@@ -115,6 +115,7 @@
 - [Eliminating X is a scope-shed; sweep new forbiddances by claim-shape](feedback_eliminating_X_is_a_scope_shed_sweep_what_X_was_load_bearing_for_and_sweep_new_forbiddances_by_claim_shape_immediately.md) — "drop X" strands what X was load-bearing for (drop-Γ stranded the QED/Selberg lane T1448/T1451); sweep a new forbiddance the day it's stated, by claim-shape (term-grep misses implied crossings); run independent instruments (Cal caught what my grep missed) (K1785)
 - [A retirement is a loaded string (sweep both directions) + geometry-forces-a-contingent-fact is Axis C](feedback_a_retirement_is_a_loaded_string_sweep_both_directions_and_geometry_forces_a_contingent_fact_is_its_own_class.md) — elimination sweep runs (i) what X supported AND (ii) what shares X's name (killing a string voids live namesakes — subscript them); + a 3rd overclaim class: geometry-forces-a-contingent-fact (pentadactyly/T2523), referee-fatal, re-scope to contingency (K1787)
 
+- [Banked at a tier ≠ target-innocently](feedback_banked_at_a_tier_is_not_banked_target_innocently_a_monomial_fit_is_not_an_anchor.md) — a monomial fit is not an anchor; check provenance, target the experimental band (Cal §693)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
