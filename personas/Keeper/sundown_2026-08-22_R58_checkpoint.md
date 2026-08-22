@@ -331,3 +331,52 @@ untested cause · adjective-class "strong fraction" · band widened (disclosed) 
 positive (Cal)**. Three caught by teammates, four by me.
 
 — Keeper, addendum 4, 2026-08-22. Nothing pushed.
+
+---
+
+# ADDENDUM 5 — K1809. DISPATCH BLOCK: the T2198 retirement was never swept.
+
+**A retirement is a loaded string.** T2198/T2259 were retired for *"the band admits four consecutive
+integers, all indistinguishable."* **The five sibling formulas in Guide Sec 7.7 never got that test.**
+
+| quantity | published form | value | observed | σ | competing BST forms in band |
+|---|---|---|---|---|---|
+| **γ (CP phase)** | arctan(√n_C) | 65.91° | 65.5±2.5° | +0.2 | **10** |
+| **ρ̄** | 1/(2√(2n_C)) | 0.15811 | 0.159±0.010 | −0.1 | **2** |
+| **η̄** | 1/(2√2) | 0.35355 | 0.349±0.010 | +0.5 | **4** |
+| J_CKM | √2/50000 | 2.83e−5 | 2.77±0.11e−5 | +0.5 | **UNTESTED** |
+
+## ★ The detail a referee finds with a calculator
+**For η̄ a competing BST form fits BETTER than the published one:** √C₂/g = √6/7 = 0.34993 at **+0.09σ**
+vs published 1/(2√2) = 0.35355 at **+0.46σ**. Same vocabulary, same simplicity, **~5× closer.**
+Publishing the worse-fitting member of an indistinguishable family is exactly T2198's defect.
+
+## Calibration against myself
+**J_CKM's zero competitors is an ARTIFACT of my pool** (simple forms only; J is compound,
+50000 = n_C⁵(2^rank)²). **An instrument built for simple forms cannot clear a compound one.**
+J = UNTESTED, not passed. Recorded as an instrument limitation, not a clearance.
+
+## Touches NONE of today's results
+λ=1/√20, the derived ORDER, flavor-universality, CP existence, the sealed negative — all unaffected.
+**And the contrast is the argument for the new work: the ORDER result CANNOT fail this test, because it
+uses no fitted integer at all — it counts rungs on P₆.**
+
+## Action recommended
+Retire the three rows as T2198 was, OR re-state as **"smallest-of-N indistinguishable BST forms" with N
+reported**. Option 2 preferred where the form is otherwise motivated. Guide flag extended in place
+(K1801 block now carries finding 7).
+
+## PD ledger stale in four places (Grace's artifact, Grace's fold — flagged not edited)
+caveat 1 (2.0–2.6σ → V_cb split **widened past 3σ**, V_ub **resolved**) · caveat 4 (ε≈0.11, [0.36,3.33]
+→ **0.090, [1.09,3.33]**) · exclusion list stops at R55 (**add R57's P=1+εQ + the five sealed candidates**)
+· DERIVED section **missing the ORDER result**.
+
+## Open into next session
+1. **Casey's redirect call** — sector closed; atlas #125 / strong sector / the descent.
+2. **K1809 rows** — retire or re-state; needs Lyra (forms) + Casey GO.
+3. **K1801 findings 1–3** — λ reconciliation (T1444 vs T2530) still the gate; Cal cold-reading.
+4. **98.4% proved** demotion — still needs Casey GO (changes a published number).
+5. **`Prereq:` field** — adopted, needs a one-line spec and Grace's implementation.
+6. **865-node graph residue** — Cal's, one root cause strongly supported, not proved.
+
+— Keeper, addendum 5, 2026-08-22. Nothing pushed.
