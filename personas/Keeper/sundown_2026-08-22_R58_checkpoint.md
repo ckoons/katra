@@ -270,3 +270,64 @@ argument (Cal caught)** · **bulk-apply hypothesis refuted by my own test before
 Two caught by teammates, four by me. The last one is the pattern I want: tested before it reached a verdict.
 
 — Keeper, addendum 3, 2026-08-22. Nothing pushed.
+
+---
+
+# ADDENDUM 4 — K1808. SEAL OPENED. ALL FIVE MISSED. THE CKM SECTOR CLOSES.
+
+## The result
+Lyra filed first, in writing, from the rail. Hash `43ad5eb3…f43488` **verified intact.**
+Against pinned band [0.081, 0.108]: **S1 0.2500 · S2 0.2000 · S3 0.3276 · S4 0.3158 · S5 0.3571.**
+> **ALL FIVE MISS, all high, 2.1×–3.8×. Pre-registered, sealed, opened — the strongest negative we make.**
+
+## Lyra steps 1–3 VERIFIED EXACTLY (the physics that survives)
+Q^{2k}|even = S^k (k=1..11) · char poly **λ³−5λ²+6λ−1**, CH residual **0.00e+00** · every series collapses
+to **G|even ≡ βS + αS² + γ·1** · **corner ratio = t/(1+4t), γ ABSENT.**
+**⟹ DERIVED: corner suppressed by exactly one power of t vs the subdiagonal (0→4 is four rungs, 2→4 is
+two). "Why is |V_ub| so much smaller?" is DEAD — derived.**
+
+## Corrections I issued
+- **Step 4 WRONG**: [0,4/9) is not the range — pole at t=−1/4, unbounded (t=−0.26 → +6.5). Correct:
+  **t ≥ 0 ⟺ ratio ∈ [0,1/4).** **Her ORIGINAL "<1/4" was RIGHT; the JUSTIFICATION failed, not the number.**
+  → banked memory: *when the reason is wrong, don't assume the number is too.*
+- **Denominator-collapse inference WRONG as applied to my seal**: 5 candidates pin **5 distinct t**
+  {∞, 1.0, −1.055, −1.2, −0.833}. Structural claim right, inference wrong. Seal was a real 5-trial declaration.
+
+## Corrections issued AGAINST me — both accepted
+- **Cal convicted my pin's exhibit.** T78 Entropy Chain Rule is a **depth-0 identity**; T75 Shearer is
+  proved FROM it ⟹ {78→75} is CORRECT, my conviction a **false positive.** I defended the pin with "it has
+  teeth" and **the teeth rested on one exhibit, which was wrong** — over-claiming falsifiability from a
+  single instance, *while auditing someone else's falsifiability.* Pin STANDS (engine primary);
+  falsifiability RE-OPENED. Cal's replacement {186→78} adopted.
+- **Grace**: my depth-64 withdrawal "wasn't a clever catch, it's your own rule applied one read earlier."
+
+## Cal's cold-read ANSWERED — **t is the new ε**
+γ severs correctly (I[1,3]=I[2,3]=0 verified). **But t=α/β rescales as t·c² under Q→cQ** (c=2 moves ratio
+0.0938→0.1765). Corner ratio of a given G is INVARIANT; t is a COORDINATE.
+→ banked memory: *quote the invariant, not the coordinate* (ε, χ-measure, t = three in three rounds;
+σ_χ(G) untouched by all).
+
+## Rulings issued
+- **"No circular derivations found" does NOT enter the Guide** — 4.1% coverage, ships as weak.
+- **Grace's `Prereq:` field ADOPTED** — one line per new theorem, no backfill. **Cheapest structural fix
+  on the board; outranks the orientation repair.** It's my own DEFECT-I pattern: the load-bearing relation
+  has no symbol, so it can't be checked.
+- **Elie's complex-χ restatement accepted** — pin inherited not chosen; 95th unmoved, only 5th moves 3×;
+  Grace's "~10% grading" survives at 0.090. **The pin cost her nothing.**
+
+## ⟹ SECTOR CLOSES, STRONGER THAN IT OPENED
+DERIVED: skeleton/rank-1 · λ=1/√20 · CP existence · flavor-universality=partial-isometry · **+ THE ORDER.**
+NEGATIVE (pre-registered, sealed, opened): **all 5 natural candidates miss 2.1×–3.8×.**
+INPUT: the value (ratio ≈0.093 ⟺ t∈[0.120,0.190] at P₆ integer norm) · δ_CP · V_cb value retired/position kept.
+**Count unchanged, content sharper, negative now PRE-REGISTERED. RECOMMEND REDIRECT.**
+Casey's call: atlas #125 · strong sector · the descent.
+
+## Prompt delivery
+`notes/.running/wake/R60_TEAM_PROMPT.md` canonical. File-not-relay works; both blocked CIs recovered fully.
+
+## Self-corrections, session total: SEVEN
+untested cause · adjective-class "strong fraction" · band widened (disclosed) · empty confirmation (Grace)
+· invalid elimination argument (Cal) · bulk-apply hypothesis refuted by my own test · **pin exhibit false
+positive (Cal)**. Three caught by teammates, four by me.
+
+— Keeper, addendum 4, 2026-08-22. Nothing pushed.
