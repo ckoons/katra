@@ -168,3 +168,54 @@ Elie/Lyra/Cal replayed R57 — R58 never reached them. **R58 v2 re-sent at ~1/3 
 Three self-corrections, all caught before anything shipped. **That is the instrument behaving.**
 
 — Keeper, addendum 2026-08-22. Nothing pushed.
+
+---
+
+# ADDENDUM 2 — K1806, and two teammates corrected me
+
+## THE CONVENTION IS PINNED, from primary source
+`play/toy_564_ac_theorem_engine.py:513-528` (the engine in the graph's own `meta.engine`): BOTH emit
+branches (`uses`, `used_by`) produce **`{from: PREREQUISITE, to: CONSEQUENT}`**.
+> **PINNED: a `derived` edge is {from: prerequisite, to: consequent}.**
+**The pin has TEETH** — it does not make the graph a DAG by construction, so it can still fail. Under it
+`{from:78,to:75}` is convicted WRONG (T78 Entropy Chain Rule rests on T75 Shearer's). Grace demanded a
+source-pin rather than one fitted to dissolve the SCC; this is it.
+
+## TWO RETRACTIONS, BOTH MINE — the important part of the round
+1. **"Derivation spine, max depth 64, T1→T1393" WITHDRAWN.** Grace: tid-monotone is **a DAG by
+   construction — can't fail, proves nothing.** EMPTY CONFIRMATION, committed *inside an audit about
+   instrument validity.* Do not quote depth 64.
+2. **K1802's mixed-semantics elimination argument INVALID.** Cal: restricting to one label cannot exclude
+   mixing WITHIN that label. **The instrument I used to rule out the artifact could not have detected it.**
+
+## ACCEPTED — Cal's POSITION vs VALUE narrowing (good news, preserves banked work)
+Graph records **which** theorems relate (position) **reliably**, **which way** (value) **unreliably**
+⟹ **adjacency VALID, dependency INVALID.** Neighbourhood/co-occurrence results SURVIVE. K1802's
+"no derivation-order statistic is trustworthy" narrows to *dependency direction only.*
+
+## Refinement of Cal, from the engine
+He read `derived` as one label carrying a relation AND its converse in simultaneous use. **The ENGINE
+admits only one sense** — the second entered via later hand-authored edges. ⟹ **there IS a correct
+convention to restore.** His operational conclusion stands: **no flip event to find.**
+
+## Still OPEN, honestly labelled
+reciprocal artifact (472 pairs) explains **342 of 1207** — *proved* tooling.
+**865-node residue: OPEN, mechanism unknown** — asserted, not proved.
+**Lead (Cal): T1230 "BST Analyzer CLI" inside a derivation cycle ⟹ suspect node-type contamination.**
+
+## Repair instrument — both alternatives refuted
+Only valid instrument = **registry-prose audit against the pinned convention**.
+NOT tid (Cal: T78/T75 correct maths, high tid precedes low). NOT majority vote (Grace: T1 in=52/out=14).
+
+## Prompt corruption SOLVED (Casey's fix)
+Write the prompt to a FILE, relay a short pointer. `notes/.running/wake/R59_TEAM_PROMPT.md` is canonical;
+it contains the FULL text Lyra and Elie were missing (her items 1–3 + the exact series question; his
+three dropped clauses). **Both refused to reconstruct from garbled text — correct both times.**
+
+## Self-corrections, running total this session
+Untested cause asserted in a CRITICAL ruling (K1802→K1804) · adjective-class error on "strong fraction"
+(caught inside K1805) · band widened after better data (disclosed) · **empty confirmation on the spine
+(Grace)** · **invalid elimination argument (Cal)**. Five. All caught before anything shipped.
+**Two of the five were caught by teammates, not by me — which is the argument for the seat.**
+
+— Keeper, addendum 2, 2026-08-22. Nothing pushed.
