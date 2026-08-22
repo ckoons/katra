@@ -98,6 +98,7 @@
 - [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
 - [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — check-subject adjective smuggles the property; on conflict → source
 - [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative
+- [Ceiling beats a miss; price the normalization step](feedback_convert_a_miss_into_a_ceiling_and_price_the_normalization_step.md) — scan the WHOLE space (does the ceiling turn over?); an SVD/polar step can be a falsification patch, not a convention; ask what a reframe OWES, not what it gives
 - [Compact gap = KK, not a mass gap](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap; check decompactification (YM K1714/15)
 - [Decorative clauses hide errors; sweep both ways](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction; sweep header AND body (K1752)
 - [Selection-honesty: full sweep or pre-register](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials; per-reading honesty can't see look-elsewhere; report the full sweep (C6, K1759). Companion: test the property the claim needs, not existence
@@ -114,6 +115,8 @@
 - [Eliminating X is a scope-shed; sweep new forbiddances by claim-shape](feedback_eliminating_X_is_a_scope_shed_sweep_what_X_was_load_bearing_for_and_sweep_new_forbiddances_by_claim_shape_immediately.md) — "drop X" strands what X was load-bearing for (drop-Γ stranded the QED/Selberg lane T1448/T1451); sweep a new forbiddance the day it's stated, by claim-shape (term-grep misses implied crossings); run independent instruments (Cal caught what my grep missed) (K1785)
 - [A retirement is a loaded string (sweep both directions) + geometry-forces-a-contingent-fact is Axis C](feedback_a_retirement_is_a_loaded_string_sweep_both_directions_and_geometry_forces_a_contingent_fact_is_its_own_class.md) — elimination sweep runs (i) what X supported AND (ii) what shares X's name (killing a string voids live namesakes — subscript them); + a 3rd overclaim class: geometry-forces-a-contingent-fact (pentadactyly/T2523), referee-fatal, re-scope to contingency (K1787)
 
+- [Banked at a tier ≠ target-innocently](feedback_banked_at_a_tier_is_not_banked_target_innocently_a_monomial_fit_is_not_an_anchor.md) — a monomial fit is not an anchor; check provenance, target the experimental band (Cal §693)
+- [Definitionally empty vs awaiting confirmation](feedback_definitionally_empty_vs_awaiting_confirmation_count_the_free_parameters.md) — a form that fits any target is a reparameterization; count free params vs targets (Grace, cos θ)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
