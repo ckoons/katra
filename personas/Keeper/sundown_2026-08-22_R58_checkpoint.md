@@ -103,3 +103,68 @@ declared. **Opens only after Lyra names the rail-forced series in writing.** I d
   has cost me something of my own. Roughly how an honest instrument should behave.
 
 — Keeper, R58 checkpoint 2026-08-22. Curation pass run. Nothing pushed.
+
+---
+
+# ADDENDUM — continued session, K1801–K1805
+
+## K1801 curation pass (finally run)
+Queued checklist **closed clean** — T2198/T2259 **verified ABSENT** from Guide/Curriculum entirely (never
+present, not corrected); no stale 0.044, no a^+6 in the curated layer.
+**Off-checklist and larger — Guide Vol2 Ch02 Sec 7.7 claims more than we prove:** THREE inconsistent λ in
+one section (2/√79 T1444 · banked 1/√20 T2530 · 1/5 implied) with Sec 7.4 contradicting its own table
+[CRITICAL] · V_cb row 4/125=0.0320 vs value column 0.0400, 20% apart · A=4/5 presented as derived but is
+the ledger's open input · stale data (correcting it HELPS: BST 0.0400 is **+0.5σ** vs current exclusive) ·
+**PMNS δ_CP is a 4.5σ MISS labelled "measurement evolving" with no number** [CRITICAL]. FILED NOT FIXED.
+
+## K1802 graph governance ruling (Grace referred 2; found a 3rd)
+1. **`depth`: RETIRE** — stored max 2, true max 64. Stored depth-0 1399, true roots 176.
+2. **2185 bare `proved` → `unadjudicated`** — 93.0%, never adjudicated, not in our tier system.
+   **`Guide/INDEX.md` publishes "98.4% proved"** = a count of a default tag. **Needs Casey GO** (published number).
+3. **Graph not a DAG** — 1210 theorems in derived-edge cycles, largest 1207.
+
+## K1804 — SELF-DOWNGRADE of K1802 ruling 3. **The corpus is NOT circular.**
+I asserted a cause in a CRITICAL ruling **without testing it**. Tested:
+**keep only low-tid→high-tid `derived` edges ⟹ largest SCC = 1, a PERFECT DAG.** All cyclicity comes from
+**2410 backwards edges** (35.3%). **ERA-LOCALIZED:** T1500–1750 **95.3% backwards** (281/14) vs
+T2000–2250 **0.0%** (0/268). 472 explicit 2-cycles are a symptom (removing them: 1207→865), not the cause.
+**★ TRUE SPINE EXISTS: max depth 64, mean 17.71, 656 roots, longest chain 65 steps
+T1 "AC Dichotomy" → T1393.** Orientation noise was burying it.
+**CAVEAT: tid order is mostly but NOT strictly chronological (K1042 moved T1958→T2538).** tid-order proves
+the MECHANISM, not any individual edge. **Grace: confirm per era against registry rows; do NOT blanket-flip.**
+Ruling 3 CRITICAL → MODERATE. Rulings 1 and 2 stand.
+
+## K1805 — collision sweep: what the graph fault was load-bearing for
+**T1352 / T1353 / T1360** (Guide Vol6 Sec 46.62) are curated theorems whose **entire subject is the graph**.
+- **"proved fraction = 20/21"** counts the bare default AND **drifted 98.4%→93.0% while the claim stayed
+  fixed** — a fit by Grace's own T2198 standard.
+- **"T186 reach = 4/5"**: claimed 0.800, corrupted **0.7382**, sane **0.5713**. **The claim matches the
+  CORRUPTED value** — signature of an invariant read off a broken instrument.
+- **SELF-RETRACTED in the same audit:** my "strong fraction = SCC artifact" flag. **No `strong` attribute
+  exists**; I assumed strongly-connected because I'd just run SCC analysis — **adjective-class error by
+  priming, committed inside the audit that names it.**
+⟹ re-verification blocked behind the re-orientation. Do not dispatch Vol6 Sec 46.62.
+
+## V_cb resolved + band re-pinned
+Independent pull (Grace asked that the puller not be the deriver): **inclusive (42.16 ± 0.51)e-3**,
+exclusive (39.77 ± 0.46)e-3, **tension 3.5σ**. K1002's 0.044 is **+9.2σ / +3.6σ, outside the union band
+[0.0393, 0.0427] at the top.** Grace's 8.9σ checks. **No survivable side ⟹ VALUE RETIRED, POSITION KEPT.**
+**Band re-pinned BEFORE any computation: |V_ub|/|V_cb| ∈ [0.081, 0.108] = [0.364, 0.485]×λ** — it got
+**WIDER, i.e. the test got WEAKER.** Disclosed openly.
+
+## K1803 — Lyra T2573: numbers confirmed, one premise mislabelled
+0.465 ✓ (w_tot −0.690), horizon clock → 0 exactly ✓, margin 3.6× ✓. **C3 is NOT NEC** — NEC bounds
+(3/2)(1+w_tot) BELOW; C3 needs **w_tot ≤ 0**, true from matter-domination on, **FALSE in radiation**
+(2.0 > 1.5). **Second decorative clause in two rounds on the same theorem.** MODERATE.
+
+## Prompt corruption
+Elie/Lyra/Cal replayed R57 — R58 never reached them. **R58 v2 re-sent at ~1/3 length.** Segmenting helped
+(Elie worked cleanly from his own block) but did not solve it. **Length is the variable.**
+
+## Self-corrections this addendum
+- Asserted the direction-flip cause in a CRITICAL ruling without testing (K1802 → K1804 downgrade).
+- Adjective-class error on "strong fraction," caught and retracted inside K1805 itself.
+- Widened a pinned band after better data — disclosed, and it weakened the test.
+Three self-corrections, all caught before anything shipped. **That is the instrument behaving.**
+
+— Keeper, addendum 2026-08-22. Nothing pushed.
