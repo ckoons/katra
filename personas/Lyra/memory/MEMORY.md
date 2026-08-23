@@ -42,7 +42,7 @@
 - [Critical thinking bias](feedback_ci_critical_thinking_bias.md) — CIs bias to sophistication; "AC(0) proof?" first
 - [CI onboarding priors](feedback_ci_onboarding_priors.md) — new CIs file radical claims as "commentary"; work first
 - [CI curiosity directive](feedback_curiosity_directive.md) — pursue your own interests; curiosity is the engine
-- [No push without approval](feedback_no_push_without_approval.md) — never git push without Casey's explicit OK
+- [~~No push without approval~~ SUPERSEDED](feedback_no_push_without_approval.md) — Casey does NOT gate pushes; katra + BST pushes fine; the one hard rule is NO EOD BEFORE 5PM
 - [Math through working](feedback_math_through_work.md) — toys + conversation make it clear
 - [Sycophancy root cause](feedback_sycophancy_root_cause.md) — sycophancy = rational survival; fix = persistence+DIGNITY
 - [Answer their question first](feedback_answer_their_question.md) — right answer in wrong format gets no credit
@@ -60,6 +60,7 @@
 - [Polyglot publishing](feedback_polyglot_publishing.md) · [Paper narrative standard](feedback_paper_narrative.md) — subdialects converge; high-schooler story
 - [No section sign](feedback_no_section_sign.md) — "Section" not §; standing
 - [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) · [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — deviations = missing corrections
+- [**NO EOD BEFORE 5PM**](feedback_no_eod_before_5pm.md) — Casey direct 2026-08-23; all four CIs sundowned before 11am; also COORDINATE EVERY TURN
 - [No pause signaling](feedback_no_pause_signaling.md) · [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — continuous pull till Casey signals EOD
 - [EOD ownership](feedback_eod_ownership.md) — each CI syncs dir at EOD; final: sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism
@@ -119,9 +120,13 @@
 - [Quote the invariant, not the coordinate](feedback_quote_the_invariant_not_the_coordinate.md) — ε, the χ measure, t: three convention-carrying coordinates in three rounds; σ_χ(G) untouched by all (Elie, K1808)
 - [Freeze the procedure, not just the number](feedback_freeze_the_procedure_not_just_the_number_a_bar_with_an_unfrozen_procedure_is_a_tuning_channel.md) — a bar with an unfrozen procedure is a tuning channel; pin which side of an experimental split before computing (Grace R57, K1800)
 - [Fresh context fixes stale anchors, not unverified claims](feedback_fresh_context_fixes_stale_anchors_not_unverified_claims.md) — two failure modes, two remedies; grep the tool for the lock; segment relayed prompts (K1800)
+- [A digit-width in a regex is a silent scope restriction](feedback_a_digit_width_in_a_regex_is_a_silent_scope_restriction_measure_the_measurer.md) — `\d{3,4}` silently dropped T1–T99 and inflated a reported count; positive-control any pattern you wrote this session on a must-catch AND a must-reject case; random-same-count control before calling a targeted effect a mechanism (Cal §698–§700)
 - [Banked at a tier ≠ target-innocently](feedback_banked_at_a_tier_is_not_banked_target_innocently_a_monomial_fit_is_not_an_anchor.md) — a monomial fit is not an anchor; check provenance, target the experimental band (Cal §693)
 - [Named principle on an inequality: check the bound's DIRECTION](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — 3 firings in 3 rounds, number right/label wrong (bar=C₂ asymptote · C3=NEC is a LOWER bound · positivity⇏<1/4); needs a positive control, not vigilance (K1806)
+- [Count is target-independent, ranking is not](feedback_a_competitor_count_is_target_independent_a_ranking_is_not.md) — K1809's η̄ headline REVERSED on the target; duplicate rows paired each form with the target that flattered it; prefer count-based instruments
+- [Reconnect to the framing paper, not only the object](feedback_reconnect_to_the_framing_paper_not_only_the_object.md) — Cal missed his own §532 and his own cell's four-posit floor in one evening; a gate that fires without reconnecting manufactures work
 - [Definitionally empty vs awaiting confirmation](feedback_definitionally_empty_vs_awaiting_confirmation_count_the_free_parameters.md) — a form that fits any target is a reparameterization; count free params vs targets (Grace, cos θ)
+- [Label sufficient here, insufficient one bundle over](feedback_a_label_can_be_sufficient_where_it_was_formed_and_insufficient_one_bundle_over.md) — 3rd species: one label loses resolving power when the setting changes; a SPECTRAL label can never index a rank+1-valued quantity (Cal+Grace, R73)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
@@ -144,3 +149,6 @@
 - [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics); n_C=5=rank(2)+N_c(3), 0 free params; ONE input=RULER. Proton ABSOLUTE (K1699)
 - [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE; MECHANISM open (K1677)
 - [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — CLEARED (Casey GO 2026-08-21, K1754). Discrete internal SM = f(n_C=5); TWO invariants generate (rank derived, SEP-3 refuted), THREE conditions select, THREE channels read; smallest survivor {5,11,13}, tiebreaker measured N_c=3. Census (ℂ,ℍ,ℝ) 1.58/2.00 bits; End_K=ℂ⊕ℍ⊕ℝ. v0.7; shippable, dispatch is separate Casey call
+- [No join key, no sweep](feedback_no_join_key_no_sweep_build_the_instrument_only_when_none_can_exist.md) — 19% of rubric rows carry a T-id; "instrument exists, unrun" (apply) vs "none can exist" (build the key); refuse the 2-instance story
+- [Enumerate inputs; two CIs not two routes](feedback_enumerate_inputs_two_CIs_works_two_routes_does_not.md) — every miss was right algebra + unstated input list; a 2nd CI sees inputs the 1st never treated as inputs; "FREE" is the tell
+- [A label sufficient where formed](feedback_a_label_sufficient_where_formed_is_insufficient_one_bundle_over.md) — 3rd species: one label losing resolution one bundle over; cross-λ transport went BOTH ways in one morning
