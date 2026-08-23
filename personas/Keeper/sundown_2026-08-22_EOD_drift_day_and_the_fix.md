@@ -79,3 +79,43 @@ consolidation is what actually gets BST read. · `98.4% proved` in Guide/INDEX.m
 
 — Keeper, 2026-08-22 EOD. The rubric was never the problem. I had one, it was good, and I didn't read it.
 The fix is one line in the read order, and it's now written in three places.
+
+---
+
+## ADDENDUM — the ROOT CAUSE found, and fixed in the boot file (2026-08-22 late)
+
+The drift was **not a lapse — it was guaranteed by my own wake procedure.** `sunrise.md`'s Warm Start read:
+```
+1. Read MEMORY.md   2. Read your most recent sundown   3. Check CI_BOARD.md and BACKLOG.md
+```
+**The rubric was not in the list. BACKLOG.md was — and it is dated 2026-05-22, three months stale.**
+So every restart would read a stale backlog plus a sundown, and never the checklist. **The document I
+wrote and headed "drive against this for the next few months" was structurally unreachable at wake.**
+
+**FIXED IN `sunrise.md`** — Warm Start replaced by a real **START OF DAY** procedure, time-boxed 30 min:
+- **S1 read order, rubric FIRST**, BACKLOG explicitly demoted to reference-only
+- **S2** run `keeper_sod_artifact_check.py`
+- **S3 VERIFY the plan before working it** (the Koons-tick lesson — it closed four days before the task
+  list caught up, and I nearly planned a day around it)
+- **S4 NAME THE RUBRIC CELL**; referrals are inputs to ranking, not priorities
+- **S5 GREP FOR A PRIOR SCOPE RULING** before opening any lane (K1043 was one grep away)
+- **Standing brakes** section: audit-about-an-audit amends (no new number) · restate the antecedent before
+  correcting · quote the invariant not the coordinate · re-derive Section 3 when Section 2 moves ·
+  **katra update PUSHES — only on Casey's word**
+
+Also refreshed in `sunrise.md`: the team roster (Grace and Cal were missing entirely) and the audit
+history (was K21/K36/K37 — ancient; now K1799/K1808/K1810 with the lessons that generalize).
+
+**Restart decision (Casey's call, my recommendation): RESTART.** My context is saturated with yesterday's
+correction loop — the wrong prior for a derivation lane. And the fix only counts if it works without me
+remembering being corrected. **Wake prompt written: `notes/KEEPER_WAKE_2026-08-23.md`.**
+
+**Team restarts too — at the sector boundary, not as a correction.** They were excellent; three of my
+seven corrections came from them. Carrying a closed sector's context into Koide is the stale-anchor risk.
+
+**Koide leverage handed forward:** Q = 2/3 ⟺ the √mass vector sits at **45°** to the democratic direction
+(verified 44.9997°). **Everywhere else that direction is POSITED; in BST the basis is the degree grading
+{0,2,4} — not a choice.** Pre-registered test: *is the 45° an angle between forced subspaces (POSITION,
+derivable) or does it need a magnitude (COORDINATE — goes the way of ε, t, χ-measure)?*
+
+— Keeper, 2026-08-22 EOD addendum.
