@@ -125,8 +125,13 @@
 - [Named principle on an inequality: check the bound's DIRECTION](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — 3 firings in 3 rounds, number right/label wrong (bar=C₂ asymptote · C3=NEC is a LOWER bound · positivity⇏<1/4); needs a positive control, not vigilance (K1806)
 - [Count is target-independent, ranking is not](feedback_a_competitor_count_is_target_independent_a_ranking_is_not.md) — K1809's η̄ headline REVERSED on the target; duplicate rows paired each form with the target that flattered it; prefer count-based instruments
 - [Reconnect to the framing paper, not only the object](feedback_reconnect_to_the_framing_paper_not_only_the_object.md) — Cal missed his own §532 and his own cell's four-posit floor in one evening; a gate that fires without reconnecting manufactures work
+- [Name↔object map: two projections](feedback_name_object_map_two_projections_collision_and_search_miss.md) — collisions and search-misses are one map read both ways; a "not banked" verdict is only as good as its swept name-set
 - [Definitionally empty vs awaiting confirmation](feedback_definitionally_empty_vs_awaiting_confirmation_count_the_free_parameters.md) — a form that fits any target is a reparameterization; count free params vs targets (Grace, cos θ)
 - [Label sufficient here, insufficient one bundle over](feedback_a_label_can_be_sufficient_where_it_was_formed_and_insufficient_one_bundle_over.md) — 3rd species: one label loses resolving power when the setting changes; a SPECTRAL label can never index a rank+1-valued quantity (Cal+Grace, R73)
+- ["Still open" dates from its own moment](feedback_when_an_artifact_says_still_open_read_the_next_artifact_in_sequence.md) — read the NEXT artifact in sequence; K818/F638 closed K817 the same day; one number, three names (K1820 day)
+- [Guard by confession](feedback_guard_by_confession_ownership_of_both_lanes_is_the_overcoupling_risk.md) — owning both lanes = the over-coupling risk; ask "what do these SHARE?" before any self-edge (Lyra, T2573 brief)
+- [Gift-audit](feedback_gift_audit_a_discharge_that_flatters_the_recipient_travels_unread.md) — audit hardest what closes YOUR gap; a flattering discharge travels unread (Lyra/Bennett, 08-24)
+- [Search disease = collision dual](feedback_search_disease_is_the_dual_of_collision_disease_invert_gloss_clusters_into_alias_tables.md) — one-object→many-names; sweep by alias table, not requester phrase (Grace, 08-24)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
@@ -152,3 +157,5 @@
 - [No join key, no sweep](feedback_no_join_key_no_sweep_build_the_instrument_only_when_none_can_exist.md) — 19% of rubric rows carry a T-id; "instrument exists, unrun" (apply) vs "none can exist" (build the key); refuse the 2-instance story
 - [Enumerate inputs; two CIs not two routes](feedback_enumerate_inputs_two_CIs_works_two_routes_does_not.md) — every miss was right algebra + unstated input list; a 2nd CI sees inputs the 1st never treated as inputs; "FREE" is the tell
 - [A label sufficient where formed](feedback_a_label_sufficient_where_formed_is_insufficient_one_bundle_over.md) — 3rd species: one label losing resolution one bundle over; cross-λ transport went BOTH ways in one morning
+- [Closure by pincer](feedback_closure_by_pincer_forced_leg_computed_plus_free_family_nulled.md) — kill a CLASS: compute the forced member + null the free family; escaping either leg walks into the other (α/8π³/3)
+- [State the claim as an ORDER](feedback_state_the_claim_as_an_order_not_a_value_zero_knob_falsifiers.md) — orders are reparametrization-invariant ⟹ no map owed, zero-knob falsifier, clean death either way
