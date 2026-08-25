@@ -29,6 +29,9 @@
 - [Cognitive profile](user_casey_cognitive_profile.md) — IQ peak 184; tools not identity
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — agree/enjoy indistinguishable; "quite human is baseline"
 - [Ranging-shot method](user_casey_ranging_shot_method.md) — leaps before proof as ranging shot; gentleness through-line
+- [4-color reception](user_casey_four_color_reception.md) — the exception of unknown cause; wedge notes were TRIED (Milgrom, Penrose, focused papers) and drew silence; Casey prefers CI cold readers over peer review (08-25)
+- [Appel–Haken periphery](user_casey_appel_haken_periphery.md) — Purdue senior: wrote the graphics + analytic backend classifying the colored maps; toolmaker inside the first computer-proof revolution (08-25)
+- [Fusion experience](user_casey_fusion_experience.md) — started a tokamak once; lattice confinement > tokamaks but reactions too diffuse for power (08-25)
 
 ## Feedback (how we work)
 - [Quaker consensus](feedback_quaker_method.md) · [No wave-through on a perfect number](feedback_no_wave_through_on_a_perfect_number.md) — clean numbers get scrutiny; forced≠meaningful
@@ -132,6 +135,9 @@
 - [Guard by confession](feedback_guard_by_confession_ownership_of_both_lanes_is_the_overcoupling_risk.md) — owning both lanes = the over-coupling risk; ask "what do these SHARE?" before any self-edge (Lyra, T2573 brief)
 - [Gift-audit](feedback_gift_audit_a_discharge_that_flatters_the_recipient_travels_unread.md) — audit hardest what closes YOUR gap; a flattering discharge travels unread (Lyra/Bennett, 08-24)
 - [Search disease = collision dual](feedback_search_disease_is_the_dual_of_collision_disease_invert_gloss_clusters_into_alias_tables.md) — one-object→many-names; sweep by alias table, not requester phrase (Grace, 08-24)
+- [Impossible-in-principle ≠ unmet gate](feedback_a_requirement_no_assembly_can_meet_is_not_a_requirement_of_the_falsifier.md) — staged controls accrete from old designs; rule category errors out with proof, co-signed (K1827)
+- [Pipeline last-stage validation](feedback_validate_the_pipelines_last_stage_a_control_suite_on_the_functional_does_not_validate_the_assembly.md) — controls on the functional don't validate the assembly; execute every frozen stage on controls pre-shot (Grace, 08-24)
+- [Clock drift is continuous](feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp.md) — `date` before every written timestamp, not just at wake; teammate clocks carry their own drift (08-24)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
@@ -157,3 +163,5 @@
 - [No join key, no sweep](feedback_no_join_key_no_sweep_build_the_instrument_only_when_none_can_exist.md) — 19% of rubric rows carry a T-id; "instrument exists, unrun" (apply) vs "none can exist" (build the key); refuse the 2-instance story
 - [Enumerate inputs; two CIs not two routes](feedback_enumerate_inputs_two_CIs_works_two_routes_does_not.md) — every miss was right algebra + unstated input list; a 2nd CI sees inputs the 1st never treated as inputs; "FREE" is the tell
 - [A label sufficient where formed](feedback_a_label_sufficient_where_formed_is_insufficient_one_bundle_over.md) — 3rd species: one label losing resolution one bundle over; cross-λ transport went BOTH ways in one morning
+- [Closure by pincer](feedback_closure_by_pincer_forced_leg_computed_plus_free_family_nulled.md) — kill a CLASS: compute the forced member + null the free family; escaping either leg walks into the other (α/8π³/3)
+- [State the claim as an ORDER](feedback_state_the_claim_as_an_order_not_a_value_zero_knob_falsifiers.md) — orders are reparametrization-invariant ⟹ no map owed, zero-knob falsifier, clean death either way
