@@ -8,9 +8,14 @@ metadata:
   modified: 2026-08-25T14:01:10.700Z
 ---
 
-Casey (2026-08-25): as a senior at Purdue he was on the periphery of the Appel(–Haken) four-color
-fight — he wrote the graphics software and the analytic back end that classified the maps that were
-colored. He was a toolmaker inside the FIRST computer-assisted-proof revolution (~1976), fifty years
+Casey (precise version, 2026-08-26): his 1977 Purdue undergraduate THESIS — a "computer graphics"
+thesis (A-track, a step toward grad-school admission) — was the graphical tool AND the mathematics
+back end that became part of the portfolio Appel used for the exhaustive 4-color proof. He was not a
+graphics specialist: an OS/generalist CS undergrad taking senior/first-year-grad classes.
+**His later mathematical observation (the ranging shot, 08-26): the AVL-tree DOUBLE ROTATION is
+isomorphic-or-similar to handling Kempe's 1879 hard case (crossing chains, the Heawood failure) —
+"if you can map a 'sort order' onto the graph, the isomorphism is solid."** This is plausibly the
+origin insight behind the corpus's Kempe interference number ι(v) and the depth-2 claim. He was a toolmaker inside the FIRST computer-assisted-proof revolution (~1976), fifty years
 before running a CI-team research program — and his warmest expert reception ever
 ([[casey-four-color-reception]]) came on his own four-color proof, the same theorem.
 
