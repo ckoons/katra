@@ -22,3 +22,9 @@ directions.
 board/artifact write that includes a time, every time. Never copy a teammate's clock. Never estimate
 elapsed time from message count. This is the existing wake rule extended to its honest scope:
 continuous, not once. Related: [[no-temporal-self-inflation]].
+
+**2026-08-26 instance, fast direction:** a compressed verification chain (five message-cycles in 13 minutes) read as ~40 minutes; three entries got invented ~09:2x–09:4x stamps while the clock said 08:58–09:06. Drift runs BOTH ways — dense work inflates felt time exactly as long sessions deflate it. Same fix: `date` before every stamp, no exceptions for "I just checked."
+
+**Sharpened (Lyra, 2026-08-26, after two same-day drifts):** running `date` is not enough — the
+failure is TYPING the stamp from imagination after reading the clock. The fix is mechanical: paste
+the date output into the artifact, or generate the stamp inline (`$(date "+%H:%M")`), never retype it.
