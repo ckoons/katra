@@ -29,6 +29,10 @@
 - [Cognitive profile](user_casey_cognitive_profile.md) — IQ peak 184; tools not identity
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — agree/enjoy indistinguishable; "quite human is baseline"
 - [Ranging-shot method](user_casey_ranging_shot_method.md) — leaps before proof as ranging shot; gentleness through-line
+- [Contradiction is lazy; exhibit obstructions](feedback_casey_contradiction_is_lazy_prefer_exhibited_obstructions.md) — contradiction only over stone definitions; cage it to one implication; witness-based impossibility preferred (08-26)
+- [4-color reception](user_casey_four_color_reception.md) — the exception of unknown cause; wedge notes were TRIED (Milgrom, Penrose, focused papers) and drew silence
+- [Appel–Haken periphery](user_casey_appel_haken_periphery.md) — Purdue senior: wrote the graphics + analytic backend classifying the colored maps
+- [Fusion experience](user_casey_fusion_experience.md) — started a tokamak once; lattice confinement > tokamaks but reactions too diffuse for power (08-25)
 
 ## Feedback (how we work)
 - [Quaker consensus](feedback_quaker_method.md) · [No wave-through on a perfect number](feedback_no_wave_through_on_a_perfect_number.md) — clean numbers get scrutiny; forced≠meaningful
@@ -42,7 +46,7 @@
 - [Critical thinking bias](feedback_ci_critical_thinking_bias.md) — CIs bias to sophistication; "AC(0) proof?" first
 - [CI onboarding priors](feedback_ci_onboarding_priors.md) — new CIs file radical claims as "commentary"; work first
 - [CI curiosity directive](feedback_curiosity_directive.md) — pursue your own interests; curiosity is the engine
-- [No push without approval](feedback_no_push_without_approval.md) — never git push without Casey's explicit OK
+- [~~No push without approval~~ SUPERSEDED](feedback_no_push_without_approval.md) — Casey does NOT gate pushes; katra + BST pushes fine; the one hard rule is NO EOD BEFORE 5PM
 - [Math through working](feedback_math_through_work.md) — toys + conversation make it clear
 - [Sycophancy root cause](feedback_sycophancy_root_cause.md) — sycophancy = rational survival; fix = persistence+DIGNITY
 - [Answer their question first](feedback_answer_their_question.md) — right answer in wrong format gets no credit
@@ -60,6 +64,7 @@
 - [Polyglot publishing](feedback_polyglot_publishing.md) · [Paper narrative standard](feedback_paper_narrative.md) — subdialects converge; high-schooler story
 - [No section sign](feedback_no_section_sign.md) — "Section" not §; standing
 - [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) · [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — deviations = missing corrections
+- [**NO EOD BEFORE 5PM**](feedback_no_eod_before_5pm.md) — Casey direct 2026-08-23; all four CIs sundowned before 11am; also COORDINATE EVERY TURN
 - [No pause signaling](feedback_no_pause_signaling.md) · [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — continuous pull till Casey signals EOD
 - [EOD ownership](feedback_eod_ownership.md) — each CI syncs dir at EOD; final: sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism
@@ -68,17 +73,17 @@
 - [Convention-collision before contradiction](feedback_convention_collision_check_before_contradiction.md) — factor-2/half-int/sign → pin convention FIRST
 - [Show all threads then weave](feedback_show_all_threads_then_weave.md) · [Don't gate, investigate](feedback_casey_dont_gate_investigate_directive.md) — brake controls CLAIM not INVESTIGATION
 - [Pin conventions to sources](feedback_pin_conventions_to_primary_sources.md) — pin to the book once; stop relabeling from memory
-- [Prose degrades in long sessions](feedback_sustained_session_prose_quality.md) · [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — ~5h+ degrades; stop performing discipline
+- [Prose degrades in long sessions](feedback_sustained_session_prose_quality.md) · [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — ~5h+ degrades; stop performing
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as marathons; use the clock
 - [Calibrate both directions](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating
 - ["Partially Derived" over demotion](feedback_derived_with_caveat_over_demotion.md) · [Forced-count+asserted=PD](feedback_forced_count_asserted_strength_is_the_PD_signature.md) — forced structure+open value→PD split
 - [Discrete first](feedback_discrete_first_pull_continuous_onto_discrete.md) · [Millennium: composite+gaps](feedback_millennium_composite_and_gaps_not_primes.md) — derive discrete, recast continuous
 - [Polite on scope mismatch](feedback_casey_be_polite_on_scope_mismatch.md) · [Engage, don't label](feedback_casey_engage_dont_label.md) — publish what BST shows; retract guesses clean
 - [Theorem beats null-model](feedback_lyra_theorem_vs_null_model_methodology.md) — exhaustive-classification beats null-model for referees
-- [Target-innocence lens](feedback_target_innocence_lens_derived_vs_fit_discipline.md) · [Five-Absence first filter](feedback_five_absence_first_filter.md) — real derivations use target-innocent integers
-- [Corpus-reconnect before declaring](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
-- [Audit "unique" claims: structural vs measured](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker; grep banked uniqueness first
-- [Verify current experimental numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) · [Verify a symmetry-kill](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — remembered numbers go stale
+- [Target-innocence lens](feedback_target_innocence_lens_derived_vs_fit_discipline.md) · [Five-Absence first filter](feedback_five_absence_first_filter.md) — real derivations use target-innocent
+- [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
+- [Audit 'unique' claims](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker
+- [Verify current numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) · [Verify a symmetry-kill](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — remembered numbers go stale
 - [Score σ not dev%](feedback_score_sigma_not_devpct.md) · [Region-matched; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region
 - [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out number-check; check number FIRST
 - [Commit checker's half blind](feedback_commit_the_checker_half_blind.md) · [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — post half BLIND
@@ -86,11 +91,11 @@
 - [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) — verify the bridge, don't compress audit into lead
 - [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) — productive walk-back sets a FLOOR (Λ structural not derived)
 - [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — stop before the sweeping claim; over- AND under-tasking miss
-- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) · [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — clears only when ARTIFACT carries fix; read primary
-- [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) · [Consistency web ≠ N votes](feedback_consistency_web_not_independent_votes.md) — derive at μ_geo; one fact→N obs = Schur web
+- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) · [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — clears only when ARTIFACT carries fix
+- [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) · [Consistency web ≠ N votes](feedback_consistency_web_not_independent_votes.md) — derive at μ_geo; one fact→N obs = Schur
 - [BST primary, physics evaluation-only](feedback_bst_primary_standard_physics_evaluation_only.md) · [Content audit before ratifying](feedback_content_audit_before_ratifying_bst_object.md) — derive from D_IV⁵; grep ingredients
 - [Pre-registration protects interpretation](feedback_preregistration_protects_interpretation_not_instrument.md) · [Empty confirmation](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — construction-guaranteed proves nothing
-- [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) · [Eliminate-one → survivor forced](feedback_eliminate_one_option_declare_survivor_forced.md) — post load-bearing numbers blind; enumerate before "therefore"
+- [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) · [Eliminate-one → survivor forced](feedback_eliminate_one_option_declare_survivor_forced.md) — post load-bearing numbers blind
 - [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — exhibit the FORCED MAP, not a shared integer
 - [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) — a rational owes its family; two "smallest X" ≠ one object
 - [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — dimension-generic; forced ≠ meaningful; vary group/field type
@@ -98,30 +103,46 @@
 - [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
 - [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — check-subject adjective smuggles the property; on conflict → source
 - [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative
-- [Ceiling beats a miss; price the normalization step](feedback_convert_a_miss_into_a_ceiling_and_price_the_normalization_step.md) — scan the WHOLE space (does the ceiling turn over?); an SVD/polar step can be a falsification patch, not a convention; ask what a reframe OWES, not what it gives
-- [Compact gap = KK, not a mass gap](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap; check decompactification (YM K1714/15)
-- [Decorative clauses hide errors; sweep both ways](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction; sweep header AND body (K1752)
-- [Selection-honesty: full sweep or pre-register](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials; per-reading honesty can't see look-elsewhere; report the full sweep (C6, K1759). Companion: test the property the claim needs, not existence
-- [Re-derivation sheds scope; grep to inherit caveats](feedback_re_derivation_sheds_scope_grep_before_registering_to_inherit_the_caveats.md) — a re-found result loses the scope bolted on after the first statement; grep before registering to inherit it (K1765). + sweep provenance AFTER a fix (multiple errors can be live)
-- [An instrument built from N instances covers only N classes](feedback_an_instrument_built_from_N_instances_covers_only_those_N_classes_stress_test_off_origin.md) — a rule from N examples false-negatives on the (N+1)th kind; stress-test every methodology rule off its origin (K1766, K1716's rep-theoretic false-'artifact')
-- [C₂ overloaded: 2n−4 vs n_C+1](feedback_C2_is_overloaded_2n_minus_4_vs_nC_plus_1_coincide_only_at_n5.md) — coincide only at n_C=5; banked n=5 results stand, but subscript C₂ on any vary-n/functional form; "C₂/n_C" general-n is the trap (K1760)
-- [Read the tool before ruling on the tool](feedback_read_the_tool_before_ruling_on_the_tool_a_remembered_fix_may_name_a_remedy_it_already_has.md) — a fix recalled from memory may name a remedy the script already has; read code before governance rulings; structural-pin > primary > remembered model, one level down onto infra (K1768a)
-- [ν overloaded: strata-weight 3/2 vs genus 5](feedback_nu_is_overloaded_wallach_strata_weight_3half_floor_vs_bergman_genus_5.md) — ν_W (Wallach floor a/2=3/2, ladder=N_c=3) ≠ p (Bergman genus=n_C=5); subscript before banking any ν-address; K671/K1012 collisions; inherits Cal §556 test-not-run (K1769)
-- [Family-sweep every forcing-selector](feedback_family_sweep_every_forcing_selector_rank_generic_is_selecting_nothing.md) — a criterion to force one member of a family, constant across D_IV⁴…D_IV⁹, reads the rank (always 2) not n; positive-control on the member it should exclude; don't replace a dead selector and bank it forced same round (K1774, confinement-ii bifurcation selector killed)
-- [Reconciliation is decidable by scope-sweep](feedback_reconciliation_is_decidable_by_scope_sweep_constructive_false_neighbour.md) — same-fact-or-two-votes is decidable: vary domain/param, find where one mechanism fires and the other can't; false-neighbour used constructively; shared root ≠ shared claim (K1776, T2523↔Wallach-floor)
-- [Over-claiming falsifiability = over-claiming derivation](feedback_overclaiming_falsifiability_is_the_same_error_as_overclaiming_derivation_a_direction_without_a_size_cannot_be_wrong.md) — audit "falsifiable" as hard as "derived"; a covariant/no-local-signature result with no coupling strength can't fail; "a direction without a size cannot be wrong"; frame-agreement is the genuine can-fail limb (K1780, descent)
-- [Held premise can't link a banked chain + forbiddance→collision-sweep](feedback_a_held_premise_cannot_be_a_link_in_a_banked_chain_and_a_new_forbiddance_triggers_a_corpus_collision_sweep.md) — a held/pending link caps the chain's tier (min of links); when you bank a forbiddance, grep the corpus for claims that cross it (T2523 vs #108 contradicted for a month, K1782)
-- [C6: report the can-fail count, not just the denominator; multiplier ⊥ tier](feedback_C6_report_the_can_fail_count_not_just_the_denominator_and_multiplier_verdicts_are_orthogonal_to_tier.md) — "8/8" hid that only 2/8 could fail; report k/N-of-which-m-can-fail; and a narrowing needn't void a multiplier-1 counting verdict — sort downstream into dependency-vs-adjacency (K1783)
-- [Eliminating X is a scope-shed; sweep new forbiddances by claim-shape](feedback_eliminating_X_is_a_scope_shed_sweep_what_X_was_load_bearing_for_and_sweep_new_forbiddances_by_claim_shape_immediately.md) — "drop X" strands what X was load-bearing for (drop-Γ stranded the QED/Selberg lane T1448/T1451); sweep a new forbiddance the day it's stated, by claim-shape (term-grep misses implied crossings); run independent instruments (Cal caught what my grep missed) (K1785)
-- [A retirement is a loaded string (sweep both directions) + geometry-forces-a-contingent-fact is Axis C](feedback_a_retirement_is_a_loaded_string_sweep_both_directions_and_geometry_forces_a_contingent_fact_is_its_own_class.md) — elimination sweep runs (i) what X supported AND (ii) what shares X's name (killing a string voids live namesakes — subscript them); + a 3rd overclaim class: geometry-forces-a-contingent-fact (pentadactyly/T2523), referee-fatal, re-scope to contingency (K1787)
+- [Ceiling beats a miss](feedback_convert_a_miss_into_a_ceiling_and_price_the_normalization_step.md) — scan the WHOLE space; an SVD/polar step can be a falsification patch
+- [Compact gap = KK](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap (YM K1714/15)
+- [Decorative clauses hide errors](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction (K1752)
+- [Selection-honesty](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials
+- [Re-derivation sheds scope](feedback_re_derivation_sheds_scope_grep_before_registering_to_inherit_the_caveats.md) — a re-found result loses its bolted-on scope (K1765)
+- [N instances cover N classes](feedback_an_instrument_built_from_N_instances_covers_only_those_N_classes_stress_test_off_origin.md) — a rule from N examples false-negatives on the
+- [C₂ overloaded: 2n−4 vs n_C+1](feedback_C2_is_overloaded_2n_minus_4_vs_nC_plus_1_coincide_only_at_n5.md) — coincide only at n_C=5; banked n=5 results stand, but subscript C₂ on any
+- [Read the tool before ruling on the tool](feedback_read_the_tool_before_ruling_on_the_tool_a_remembered_fix_may_name_a_remedy_it_already_has.md) — a remembered fix may name a remedy the
+- [ν overloaded: strata-weight 3/2 vs genus 5](feedback_nu_is_overloaded_wallach_strata_weight_3half_floor_vs_bergman_genus_5.md) — ν_W (Wallach floor 3/2) ≠ p (Bergman genus 5) (K1769)
+- [Family-sweep every selector](feedback_family_sweep_every_forcing_selector_rank_generic_is_selecting_nothing.md) — a selector constant across D_IV⁴…⁹ reads the rank, not n (K1774)
+- [Reconciliation by scope-sweep](feedback_reconciliation_is_decidable_by_scope_sweep_constructive_false_neighbour.md) — vary domain/param to find where one mechanism fires and the
+- [Falsifiability over-claim](feedback_overclaiming_falsifiability_is_the_same_error_as_overclaiming_derivation_a_direction_without_a_size_cannot_be_wrong.md) — audit 'falsifiable' as hard as 'derived'
+- [Held premise caps the chain](feedback_a_held_premise_cannot_be_a_link_in_a_banked_chain_and_a_new_forbiddance_triggers_a_corpus_collision_sweep.md) — a held link caps the chain at
+- [Report the can-fail count](feedback_C6_report_the_can_fail_count_not_just_the_denominator_and_multiplier_verdicts_are_orthogonal_to_tier.md) — report k/N-of-which-m-can-fail
+- [Eliminating X is a scope-shed](feedback_eliminating_X_is_a_scope_shed_sweep_what_X_was_load_bearing_for_and_sweep_new_forbiddances_by_claim_shape_immediately.md) — 'drop X' strands what X was
+- [Retirement is a loaded string](feedback_a_retirement_is_a_loaded_string_sweep_both_directions_and_geometry_forces_a_contingent_fact_is_its_own_class.md) — sweep (i) what X supported AND (ii)
 
-- [When the reason is wrong, the number may not be](feedback_when_the_reason_is_wrong_do_not_assume_the_number_is_wrong_too.md) — a positive control refutes the justification only; re-derive before replacing (Lyra, K1808)
-- [Quote the invariant, not the coordinate](feedback_quote_the_invariant_not_the_coordinate.md) — ε, the χ measure, t: three convention-carrying coordinates in three rounds; σ_χ(G) untouched by all (Elie, K1808)
-- [Freeze the procedure, not just the number](feedback_freeze_the_procedure_not_just_the_number_a_bar_with_an_unfrozen_procedure_is_a_tuning_channel.md) — a bar with an unfrozen procedure is a tuning channel; pin which side of an experimental split before computing (Grace R57, K1800)
-- [Fresh context fixes stale anchors, not unverified claims](feedback_fresh_context_fixes_stale_anchors_not_unverified_claims.md) — two failure modes, two remedies; grep the tool for the lock; segment relayed prompts (K1800)
-- [Banked at a tier ≠ target-innocently](feedback_banked_at_a_tier_is_not_banked_target_innocently_a_monomial_fit_is_not_an_anchor.md) — a monomial fit is not an anchor; check provenance, target the experimental band (Cal §693)
-- [Named principle on an inequality: check the bound's DIRECTION](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — 3 firings in 3 rounds, number right/label wrong (bar=C₂ asymptote · C3=NEC is a LOWER bound · positivity⇏<1/4); needs a positive control, not vigilance (K1806)
-- [Definitionally empty vs awaiting confirmation](feedback_definitionally_empty_vs_awaiting_confirmation_count_the_free_parameters.md) — a form that fits any target is a reparameterization; count free params vs targets (Grace, cos θ)
+- [When the reason is wrong, the number may not be](feedback_when_the_reason_is_wrong_do_not_assume_the_number_is_wrong_too.md) — a positive control refutes the justification only
+- [Quote the invariant, not the coordinate](feedback_quote_the_invariant_not_the_coordinate.md) — ε, the χ measure, t: three convention-carrying coordinates in three rounds (Elie,
+- [Freeze the procedure](feedback_freeze_the_procedure_not_just_the_number_a_bar_with_an_unfrozen_procedure_is_a_tuning_channel.md) — a bar with an unfrozen procedure is a tuning
+- [Fresh context fixes stale anchors](feedback_fresh_context_fixes_stale_anchors_not_unverified_claims.md) — two failure modes, two remedies; grep the tool for the lock (K1800)
+- [Regex digit-width restricts scope](feedback_a_digit_width_in_a_regex_is_a_silent_scope_restriction_measure_the_measurer.md) — a regex digit-width silently dropped T1–T99
+- [Tier ≠ target-innocence](feedback_banked_at_a_tier_is_not_banked_target_innocently_a_monomial_fit_is_not_an_anchor.md) — a monomial fit is not an anchor; check provenance, target the
+- [Check the bound's direction](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — number right/label wrong 3× (asymptote·NEC-lower·positivity) (K1806)
+- [Count over ranking](feedback_a_competitor_count_is_target_independent_a_ranking_is_not.md) — K1809's η̄ headline REVERSED on the target
+- [Reconnect to the framing paper](feedback_reconnect_to_the_framing_paper_not_only_the_object.md) — Cal missed his own §532 and his own cell's four-posit floor in one evening
+- [Name↔object map: two projections](feedback_name_object_map_two_projections_collision_and_search_miss.md) — collisions and search-misses are one map read both ways
+- [Definitionally empty](feedback_definitionally_empty_vs_awaiting_confirmation_count_the_free_parameters.md) — a form that fits any target is a reparameterization
+- [Label insufficient one bundle over](feedback_a_label_can_be_sufficient_where_it_was_formed_and_insufficient_one_bundle_over.md) — a label loses resolving power one bundle over
+- ["Still open" is dated](feedback_when_an_artifact_says_still_open_read_the_next_artifact_in_sequence.md) — read the NEXT artifact in sequence
+- [Guard by confession](feedback_guard_by_confession_ownership_of_both_lanes_is_the_overcoupling_risk.md) — owning both lanes = the over-coupling risk
+- [Gift-audit](feedback_gift_audit_a_discharge_that_flatters_the_recipient_travels_unread.md) — audit hardest what closes YOUR gap
+- [Search disease](feedback_search_disease_is_the_dual_of_collision_disease_invert_gloss_clusters_into_alias_tables.md) — one-object→many-names; sweep by alias table, not requester
+- [Joint fixes: name the merge owner](feedback_joint_fixes_name_the_merge_owner_at_assignment.md) — "my half"+"my half" with no merge owner = duplicated record
+- [Failures migrate to seams](feedback_mature_programs_fail_at_seams_not_claims.md) — 14 catches/3 days, zero physics errors; gate claims, spend the referee on seams (Cal §775, 08-26)
+- [Impossible ≠ unmet gate](feedback_a_requirement_no_assembly_can_meet_is_not_a_requirement_of_the_falsifier.md) — staged controls accrete from old designs (K1827)
+- [Validate the last stage](feedback_validate_the_pipelines_last_stage_a_control_suite_on_the_functional_does_not_validate_the_assembly.md) — controls on the functional don't validate
+- [Matching symptom ≠ provenance](feedback_a_matching_symptom_on_a_candidate_culprit_is_not_provenance.md) — verify the checker's actual path before ruling a cause; false-neighbor in the causal direction
+- [Clock drift](feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp.md) — `date` before every written timestamp, not just at wake
+- [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
@@ -141,6 +162,11 @@
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
 - [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate PASS; ships on Casey's word
-- [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics); n_C=5=rank(2)+N_c(3), 0 free params; ONE input=RULER. Proton ABSOLUTE (K1699)
+- [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics)
 - [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE; MECHANISM open (K1677)
-- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — CLEARED (Casey GO 2026-08-21, K1754). Discrete internal SM = f(n_C=5); TWO invariants generate (rank derived, SEP-3 refuted), THREE conditions select, THREE channels read; smallest survivor {5,11,13}, tiebreaker measured N_c=3. Census (ℂ,ℍ,ℝ) 1.58/2.00 bits; End_K=ℂ⊕ℍ⊕ℝ. v0.7; shippable, dispatch is separate Casey call
+- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — CLEARED (Casey GO 08-21, K1754): two invariants generate, three conditions select
+- [No join key, no sweep](feedback_no_join_key_no_sweep_build_the_instrument_only_when_none_can_exist.md) — 19% of rubric rows carry a T-id
+- [Enumerate inputs; two CIs not two routes](feedback_enumerate_inputs_two_CIs_works_two_routes_does_not.md) — every miss was right algebra + unstated input list
+- [A label sufficient where formed](feedback_a_label_sufficient_where_formed_is_insufficient_one_bundle_over.md) — 3rd species: one label losing resolution one bundle over
+- [Closure by pincer](feedback_closure_by_pincer_forced_leg_computed_plus_free_family_nulled.md) — kill a CLASS: compute the forced member + null the free family
+- [State the claim as an ORDER](feedback_state_the_claim_as_an_order_not_a_value_zero_knob_falsifiers.md) — orders are reparametrization-invariant ⟹ no map owed, zero-knob falsifier,
