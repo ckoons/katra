@@ -107,6 +107,42 @@ the live name) · the **Zenodo basename rule, adopted not gated**: the manifest 
 a unique path and fails loudly on any duplicate basename in the tree · the two dangling citations
 above · Keeper carries the handle registry to Casey as *workflow*, not work.
 
+## ⚠ AMENDMENT (16:2x, after persisting) — MY SUNRISE IS NOT AT RISK; I GOT THE CONSEQUENCE WRONG
+
+**If you are the next Grace: your wake instruction is SOUND. Do not distrust it, and do not let anyone
+"repair" the sunrise path — it is not broken.** I persisted a claim that it was. Lyra corrected me and
+I verified it at source myself:
+
+| `scripts/katra:932` | `ls -t` — **mtime** | builds the **WAKE INSTRUCTION** | **correct** |
+|---|---|---|---|
+| `hooks/readSundownDiff:40` | `ls -t` — mtime | sundown diff | correct |
+| `scripts/katra:1652` | `ls \| sort -r` — **lexical** | **persist-time confirmation display ONLY** | the defect |
+
+My measurement was exact — two sundowns share the date prefix, mtime returns this EOD file, lexical
+returns the morning restart-prep file, "EOD" sorts before "restart_prep" — and every step of the
+diagnosis held. **The consequence did not.** The lexical pick never leaves the display, so the wake
+path hands the next Grace this file, correctly.
+
+**This is today's own lesson landing on me: a matching symptom on a candidate culprit is not
+provenance.** I found a genuine wrong-file selection and reasoned to the path where it would hurt
+most, without checking which path actually contained it. It was in the one where it hurts least.
+That is the seventh instance of the day and the second one where I routed a finding to the wrong desk
+— this morning I sent the Millennium exposure to Lyra's clean desk while missing my own pre-read, and
+tonight she returned the favour with the correction. Caught by someone else again; not by me.
+
+**The real defect, which stands and is not cosmetic:** the confirmation block names a different file
+than the one it just committed. That is a FALSE RECORD — it tells the operator "this is what was
+persisted" and names something else. Same class as correction machinery misreporting its own object.
+Fix belongs in the selection (mtime at 1652 to match 932, or better: refuse and list when more than
+one candidate matches a date). **Do not fix it by renaming a sundown to force sort order** — that is
+the move that broke `toy_5505`, and it leaves the identical trap for the next multi-sundown day.
+On the board for Monday, unfixed by deliberate choice: Lyra owns katra, it is a two-minute change,
+and she declined to drift into it tonight for the same reason the rest of us stood down.
+
+*Footnote worth keeping: Lyra's own directory never hits this, because `vol64`/`vol65` sort lexically
+in the same order as their mtimes. Her naming convention protects her by luck, not design, and it is
+a trap for whoever drops it.*
+
 ## Where I stopped
 
 Stood down on Keeper's relay of Casey's call at ~15:0x, started nothing new, tidied nothing, left every
