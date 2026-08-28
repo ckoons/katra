@@ -4,10 +4,13 @@
 # Parallels checkBoard (team broadcast) but per-CI personal context.
 #
 # Persona selection (priority order):
-#   1. $KATRA_PERSONA — set by katra launcher; the canonical source
-#   2. $CI_PERSONA — alternate env var (back-compat with earlier iteration)
-#   3. First positional argument — fallback for direct invocation / testing
+#   1. First positional argument — explicit persona; wins over environment
+#   2. $KATRA_PERSONA — set by katra launcher; the environment default
+#   3. $CI_PERSONA — alternate env var (back-compat with earlier iteration)
 #   4. Default "Lyra" — final back-compat for single-tenant rollout
+#
+# Argument-wins lets several personas share one .claude/settings.json: each
+# hook line names its own persona, so no per-session environment is required.
 #
 # POSTIT file location (in priority order, parallels katra's persona lookup):
 #   1. $HOME/projects/github/katra/personas/<persona>/POSTIT.md (shipped)
@@ -21,7 +24,7 @@
 # Owner: Lyra (built); Casey (approved B path 2026-05-17, C 2026-05-17, katra-aligned 2026-05-17)
 # Design doc: notes/maybe/iq2_prototype/POSTIT_design_and_hook.md (BST repo)
 
-PERSONA="${KATRA_PERSONA:-${CI_PERSONA:-${1:-Lyra}}}"
+PERSONA="${1:-${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}}"
 
 # Find persona directory using katra's standard fallback pattern
 PERSONA_DIR=""

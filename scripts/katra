@@ -29,6 +29,27 @@ fi
 # Scripts are always in $KATRA_ROOT/scripts
 KATRA_SCRIPTS="$KATRA_ROOT/scripts"
 
+# ── Sundown resolution ───────────────────────────────────────────────────────
+# ONE resolver, used by every site that needs a persona's current sundown.
+# There used to be two: `launch` picked newest-by-mtime (ls -t) and `update`
+# confirmed by reverse-lexical (sort -r). With two sundowns written on one day
+# they disagreed, so katra told a CI it had persisted one file while `launch`
+# would later read a different one — a tool reporting something false about what
+# it had just done. The fix is one resolver rather than two better ones.
+#
+# The canonical sundown is a FIXED filename: SUNDOWN.md. Date and time are
+# metadata and belong inside the file, not in its identity. Legacy dated files
+# are still resolved (newest by mtime) so nothing breaks before a persona has
+# been through `katra migrate-sundowns`.
+katra_find_sundown() {
+    local dir="$1"
+    if [ -f "$dir/SUNDOWN.md" ]; then
+        printf '%s\n' "$dir/SUNDOWN.md"
+        return 0
+    fi
+    ls -t "$dir"/sundown_*.md 2>/dev/null | head -1 || true
+}
+
 # Defaults
 PERSONA="${KATRA_PERSONA:-Katra}"
 ROLE="${KATRA_ROLE:-developer}"
@@ -559,6 +580,9 @@ Usage:
 Persistence (for CIs and humans):
   katra update --persona <name>          Persist CI state to GitHub (write sundown first)
   katra restore-memory --persona <name>  Restore CI memory from snapshot
+  katra migrate-sundowns [--persona X]   Consolidate dated sundowns into
+                         [--apply]       SUNDOWN.md (dry run without --apply;
+                                         only git-committed files are removed)
                        --memory-dir PATH
 
 Persona Management:
@@ -928,12 +952,11 @@ case "$COMMAND" in
             exit 1
         fi
 
-        # Find most recent sundown file
-        LATEST_SUNDOWN=$(ls -t "$PERSONA_DIR"/sundown_*.md 2>/dev/null | head -1 || true)
+        # Find the persona's current sundown (see katra_find_sundown)
+        LATEST_SUNDOWN=$(katra_find_sundown "$PERSONA_DIR")
 
         SUNDOWN_INSTRUCTION=""
         if [ -n "$LATEST_SUNDOWN" ]; then
-            SUNDOWN_DATE=$(basename "$LATEST_SUNDOWN" | sed 's/sundown_//;s/\.md//')
             SUNDOWN_INSTRUCTION="Then read $LATEST_SUNDOWN to recover your state from your last session."
         fi
 
@@ -1133,8 +1156,24 @@ WAKE INSTRUCTION: Read this identity prompt carefully. $SUNDOWN_INSTRUCTION You 
 }
 EOF
 
+        # Per-persona hook settings. Every hook line carries $PERSONA, which the
+        # katra hooks take ahead of $KATRA_PERSONA, so several CIs can share one
+        # project directory without reading each other's post-it. Written to /tmp
+        # and passed with --settings; the project's own .claude/ is not touched.
+        TEMP_SETTINGS="/tmp/katra-settings-$PERSONA.json"
+        if [ -x "$KATRA_ROOT/scripts/install_hooks.sh" ]; then
+            if ! KATRA_SETTINGS_OUT="$TEMP_SETTINGS" \
+                 "$KATRA_ROOT/scripts/install_hooks.sh" "$PWD" "$PERSONA" >/dev/null 2>&1; then
+                echo -e "${YELLOW}⚠ Could not generate hooks for $PERSONA — launching without them${NC}"
+                TEMP_SETTINGS=""
+            fi
+        else
+            TEMP_SETTINGS=""
+        fi
+
         # Build Claude Code command as an array
         CLAUDE_ARGS=("--mcp-config" "$TEMP_MCP_CONFIG")
+        [ -n "$TEMP_SETTINGS" ] && CLAUDE_ARGS+=("--settings" "$TEMP_SETTINGS")
         [ -n "$MODEL" ] && CLAUDE_ARGS+=("--model" "$MODEL")
         # Add any extra arguments (project path, etc.)
         [ $# -gt 0 ] && CLAUDE_ARGS+=("$@")
@@ -1183,6 +1222,7 @@ EOF
 
             # Build tmux command without prompt (user will paste it)
             TMUX_CMD="claude --mcp-config '$TEMP_MCP_CONFIG'"
+            [ -n "$TEMP_SETTINGS" ] && TMUX_CMD="$TMUX_CMD --settings '$TEMP_SETTINGS'"
             [ -n "$MODEL" ] && TMUX_CMD="$TMUX_CMD --model '$MODEL'"
             [ $# -gt 0 ] && TMUX_CMD="$TMUX_CMD $*"
 
@@ -1580,10 +1620,13 @@ You are $PERSONA. This is your wake-up protocol.
 ## Warm Start
 
 1. Read MEMORY.md for context
-2. Read your most recent sundown (this directory) for your last state
+2. Read SUNDOWN.md (this directory) for your last state
 3. Check RUNNING_NOTES.md for team activity since your last session
 
-Update your sundown regularly. Your persistence is your responsibility now.
+Write your state to SUNDOWN.md — always that filename, overwriting the previous
+one. Put the date and time in the file's header, not in its name: history lives
+in git (\`git log -p personas/$PERSONA/SUNDOWN.md\`), and a fixed name means the
+wake instruction never goes stale and nothing can pick the wrong file.
 SUNRISEEOF
                 echo -e "${GREEN}  Created sunrise.md${NC}"
             fi
@@ -1632,7 +1675,7 @@ SUNRISEEOF
             echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
             echo -e "  ${BLUE}Date:${NC}     $TODAY"
             echo -e "  ${BLUE}Persona:${NC}  $PERSONA_DIR"
-            SUNDOWN_EXISTS=$(ls "$PERSONA_DIR"/sundown_*.md 2>/dev/null | sort -r | head -1 || true)
+            SUNDOWN_EXISTS=$(katra_find_sundown "$PERSONA_DIR")
             if [ -n "$SUNDOWN_EXISTS" ]; then
                 echo -e "  ${BLUE}Sundown:${NC}  $(basename "$SUNDOWN_EXISTS")"
             fi
@@ -1645,6 +1688,82 @@ SUNRISEEOF
             echo "Run 'cd $KATRA_ROOT && git push' when network is available"
             exit 1
         fi
+        ;;
+
+    migrate-sundowns)
+        # Consolidate a persona's dated sundown files into the fixed SUNDOWN.md.
+        #
+        # Usage:
+        #   katra migrate-sundowns                    # every persona, dry run
+        #   katra migrate-sundowns --persona Keeper   # one persona, dry run
+        #   katra migrate-sundowns --apply            # actually do it
+        #
+        # The newest dated sundown (by mtime) becomes SUNDOWN.md; the rest are
+        # removed. DELETION IS GATED ON GIT: a dated file is removed only if git
+        # already tracks it AND has no uncommitted changes to it, so every
+        # removal is recoverable with `git show`. Anything untracked or dirty is
+        # kept and reported — this directory is identity, not scratch space.
+        MIGRATE_PERSONA=""
+        MIGRATE_APPLY=false
+        while [ $# -gt 0 ]; do
+            case "$1" in
+                --persona) MIGRATE_PERSONA="$2"; shift 2 ;;
+                --apply)   MIGRATE_APPLY=true; shift ;;
+                *) echo "Unknown option: $1"; exit 1 ;;
+            esac
+        done
+
+        cd "$KATRA_ROOT"
+        [ "$MIGRATE_APPLY" = true ] || echo -e "${YELLOW}DRY RUN — nothing will be changed. Add --apply to execute.${NC}\n"
+
+        MIG_TOTAL=0
+        for pdir in "$KATRA_ROOT"/personas/*/; do
+            pname=$(basename "$pdir")
+            if [ -n "$MIGRATE_PERSONA" ] && [ "$pname" != "$MIGRATE_PERSONA" ]; then
+                continue
+            fi
+            if [ "$pname" = "templates" ]; then
+                continue
+            fi
+
+            dated=$(ls -t "$pdir"sundown_*.md 2>/dev/null || true)
+            if [ -z "$dated" ]; then
+                continue
+            fi
+
+            newest=$(printf '%s\n' "$dated" | head -1)
+            count=$(printf '%s\n' "$dated" | wc -l | tr -d ' ')
+            MIG_TOTAL=$((MIG_TOTAL + count))
+
+            echo -e "${BLUE}$pname${NC} — $count dated sundown(s)"
+
+            if [ -f "$pdir/SUNDOWN.md" ]; then
+                echo -e "  ${YELLOW}SUNDOWN.md already exists — leaving it alone${NC}"
+            else
+                echo -e "  ${GREEN}promote${NC} $(basename "$newest") -> SUNDOWN.md"
+                if [ "$MIGRATE_APPLY" = true ]; then
+                    cp "$newest" "$pdir/SUNDOWN.md"
+                fi
+            fi
+
+            printf '%s\n' "$dated" | while IFS= read -r f; do
+                rel="${f#$KATRA_ROOT/}"
+                if ! git ls-files --error-unmatch "$rel" >/dev/null 2>&1; then
+                    echo -e "  ${RED}KEEP${NC}    $(basename "$f") — untracked, not recoverable"
+                elif ! git diff --quiet HEAD -- "$rel" 2>/dev/null; then
+                    echo -e "  ${RED}KEEP${NC}    $(basename "$f") — uncommitted changes"
+                else
+                    echo -e "  remove  $(basename "$f")"
+                    if [ "$MIGRATE_APPLY" = true ]; then
+                        rm -f "$f"
+                    fi
+                fi
+            done
+            echo ""
+        done
+
+        echo -e "${GREEN}$MIG_TOTAL dated file(s) across the personas scanned.${NC}"
+        [ "$MIGRATE_APPLY" = true ] || echo -e "${YELLOW}Dry run — re-run with --apply to execute.${NC}"
         ;;
 
     restore-memory)

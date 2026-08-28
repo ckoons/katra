@@ -9,7 +9,8 @@
 # Owner: Lyra (IQ-11 build); Casey (approved 2026-05-17 EOD)
 # SP-28 IQ-11: Token-budget hook (NEW iteration today)
 
-PERSONA="${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}"
+# Persona: explicit argument wins; environment is the default.
+PERSONA="${1:-${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}}"
 BST="$HOME/projects/github/BubbleSpacetimeTheory"
 
 # Today's MESSAGES file

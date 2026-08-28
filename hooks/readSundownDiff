@@ -24,7 +24,8 @@
 # Owner: Lyra (IQ-10 build); Casey (approved 2026-05-17 EOD)
 # SP-28 IQ-10: Sundown-to-sunrise memory diff
 
-PERSONA="${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}"
+# Persona: explicit argument wins; environment is the default.
+PERSONA="${1:-${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}}"
 
 # Find persona directory
 PERSONA_DIR=""

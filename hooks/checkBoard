@@ -1,0 +1,32 @@
+#!/bin/zsh
+# Read today's CI message board — auto-loaded each turn via UserPromptSubmit hook.
+# Team broadcast; parallels readPostit (per-CI personal context).
+#
+# Persona selection (priority order) — same contract as the other katra hooks,
+# so install_hooks.sh can append the persona uniformly to every hook line:
+#   1. First positional argument — explicit persona; wins over environment
+#   2. $KATRA_PERSONA — set by katra launcher; the environment default
+#   3. $CI_PERSONA — alternate env var (back-compat with earlier iteration)
+#   4. Default "Lyra" — final back-compat for single-tenant rollout
+#
+# One host currently runs one team against one board (Casey, 2026-08-28), so the
+# persona does not yet select a board. $KATRA_BOARD_DIR is the seam: when teams
+# are segmented, resolve persona -> team -> board dir here and nothing else moves.
+#
+# Board location (priority order):
+#   1. $KATRA_BOARD_DIR
+#   2. BST notes/.running (the single team board today)
+#
+# Owner: Casey (ruled katra-owned 2026-08-28); moved from ~/utils by Keeper
+
+# Persona: explicit argument wins; environment is the default.
+PERSONA="${1:-${KATRA_PERSONA:-${CI_PERSONA:-Lyra}}}"
+
+BOARD_DIR="${KATRA_BOARD_DIR:-$HOME/projects/github/BubbleSpacetimeTheory/notes/.running}"
+MSGS="$BOARD_DIR/MESSAGES_$(date '+%Y-%m-%d').md"
+
+if [ -f "$MSGS" ]; then
+    echo "--- CI BOARD ($(date '+%Y-%m-%d')) ---"
+    cat "$MSGS"
+    echo "--- END BOARD ---"
+fi
