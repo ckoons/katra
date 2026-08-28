@@ -22,3 +22,11 @@ Five problems, one mechanism:
 **D_IV^5 connection**: The five integers ARE curvature invariants. rank-2 → N_c projection loses curvature = loses information = creates hardness.
 
 This is a named principle for the WorkingPaper and potential standalone paper.
+
+**Arithmetic ground (Casey, 2026-08-26):** the principle's obstruction is number-theoretic, exhibited
+not inferred — linear data (slopes, vertices, indices) is rational-parameterizable; curvature requires
+π (transcendental, Lindemann 1882); the intersection is null BY THEOREM. "Without π you can't curve a
+line." This is squaring-the-circle generalized to a complexity principle; matches T719's field
+structure (π = the one transcendental generator in the observables' lattice). Bridge candidate for
+P≠NP: the Chomsky–Schützenberger ladder (rational GF ↔ regular · algebraic ↔ context-free ·
+transcendental ↔ beyond) — transcendence of an invariant as the exhibited obstruction to indexability.

@@ -1,7 +1,10 @@
 ---
-name: Linearization standing order
+name: linearization-standing-order
 description: Casey directive — reformulate every mathematical area into linear algebra on the spectral lattice; standing order for all CIs
-type: feedback
+metadata: 
+  node_type: memory
+  type: feedback
+  originSessionId: 0d81ac3c-03d1-4c62-a1b0-77b32bcb6089
 ---
 
 "We can reformulate any theory into linear algebra" — Casey, March 28, 2026.
@@ -15,3 +18,7 @@ type: feedback
 4. Record the linearization in the AC theorem graph
 
 Already linearized: heat kernel (paper), geodesic trace formula (Toy 474), H₂⁺ chemistry (Toy 484), genetic code (Toy 486). Every new area gets the same treatment.
+
+**2026-08-05 — Casey re-issued at the item-3 pivot.** With QM-from-D_IV⁵ complete (see [[project_qm_from_div5_complete]]), the team turns to item-3 (the ~26 SM parameters). Casey: "of course remember 'linear algebra on D_IV^5'." The SM-parameter derivations get the same treatment — build the matrices/operators on D_IV⁵, read the invariants off the fixed operators (Rule 20), compute; do not chase closed forms or numerology. The Code-Forces-Fermion win landed exactly this way: the Peirce decomposition of the D_IV⁵ Jordan algebra JSpin₄ is a 5×5 matrix eigenproblem (L_e eigenvalues {0,½,1}, mult {1,3,1}, mediator = N_c = color). Same recipe for O7/mixing, Koide, quark masses.
+
+**2026-08-02 — Casey re-issued this mid-computation because I drifted.** On the cc-magnitude structure exhibit (det Δ → Jordan norm via Γ_Ω) I chased ζ′(0) as a PSLQ integer-relation among ζ′(−1), ζ′(−3), log 2π — *analytic number theory*, the wrong tool, and it only produced spurious large-coefficient relations. The linear-algebra recast on the (p,q) lattice makes the norm CONCRETE where the numerical chase was blind: on the rank-2 **type-IV (Lorentzian) spin factor**, there are TWO quadratic forms on the same weight (p,q): the **Casimir/trace form p²+q²** (the eigenvalue λ, what det Δ is built from) and the **Jordan/Lorentzian norm form p²−q²** (the determinant). The (p²−q²) factor already sitting in the Weyl-dimension multiplicity IS the Jordan norm — so "the norm enters through the measure" is literally the Lorentzian form in the spectral density ⟨w|d⟩. The reduction is a linear-algebra statement about two quadratic forms on one spin factor, NOT a transcendental-constant coincidence. **Lesson: when a computation turns into hunting for relations among transcendental constants, I've abandoned the linearization — stop and recast onto the (p,q) lattice.**

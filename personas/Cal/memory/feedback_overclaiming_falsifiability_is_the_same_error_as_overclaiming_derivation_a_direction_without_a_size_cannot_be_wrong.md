@@ -1,0 +1,14 @@
+---
+name: feedback_overclaiming_falsifiability_is_the_same_error_as_overclaiming_derivation_a_direction_without_a_size_cannot_be_wrong
+description: "Calling a result falsifiable is a claim to audit as hard as calling it derived; a covariant/no-local-signature result with no coupling strength can't fail — a direction without a size cannot be wrong"
+metadata:
+  node_type: memory
+  type: feedback
+  originSessionId: 206b44d0-388f-4035-977c-310e7809ce46
+---
+
+**Over-claiming falsifiability is the same class of error as over-claiming derivation — audit "falsifiable" as hard as "derived."** (Cal §676, Keeper owned K1780, 2026-08-21.) Casey wants falsifiers, so there's pull to attach one to every result — but a claimed falsifier that cannot actually fail is exactly as dishonest as a claimed derivation that doesn't force. Concrete: I ratified (K1778) the descent as "falsifiable" via three limbs (no sub-Planck KK tower / no 1/r³ gravity / no CMB-frame anisotropy). Cal showed all three **cannot fail**: the descent frame is a **covariant boundary condition, which has no local signature** — that's what makes it covariant. And the sharpest tell was the *form* of the offered falsifier: "an **off-slice baseline** would reveal the 4th dimension" — if everything is on the slice, no baseline can be off-slice. That is *what-would-happen-if-we-could-do-the-forbidden-thing*, not a test.
+
+**Why:** a mechanism stated as a direction/structure with **no coupling strength / no size** can accommodate any observation — an induced-but-perfectly-rigid frame is observationally identical to one never induced. **A direction without a size cannot be wrong.** So "matter induces the frame" isn't falsifiable until it says *how strongly*. This is the [[feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism]] discipline pointed at the falsifier itself, and the [[feedback_preregistration_protects_interpretation_not_instrument]] companion: pre-register the predicted value BEFORE consulting the data ([[feedback_cmb_quote_anything_target_not_evidence]] — CMB dipole/anomaly numbers fit anything).
+
+**How to apply:** before writing "this is falsifiable," run the same gate as for "derived": (1) name the observation that would REFUTE it, and check it can actually occur (not behind a "if we could do the forbidden thing"); (2) does the mechanism carry a **coupling strength / size**, or only a direction? no size → not falsifiable yet; (3) is the "prediction" something a rival (e.g. GR + CMB frame) also has? → postdiction, not a test. A genuine can-fail limb usually compares two *independently measured* quantities the theory must relate (e.g. the frame-agreement test: radiation-defined vs matter-defined frame — if they disagree, one answer is wrong). A forced no-go is strong on its own; don't staple a non-falsifier to it — that's the one thing a referee tests in a single question.

@@ -1,0 +1,25 @@
+---
+name: feedback_nearest_derived_anchor_reflex
+description: "When compressing an audit into a clean forward lead, I reach for the nearest Derived/clean object to anchor it — and the nearest isn't always the right one"
+metadata: 
+  node_type: memory
+  type: feedback
+  originSessionId: 0d81ac3c-03d1-4c62-a1b0-77b32bcb6089
+---
+
+Named by Casey (K1099, 2026-08-02) as a team pattern, but it's mine too — Cal caught me doing it during the cc-magnitude arc.
+
+**The reflex:** when turning an audit into a tidy forward lead, reach for the nearest Derived (or nearest clean) object to anchor it — a clean verdict, a clean structure, a nearby derived quantity — even when it isn't the right anchor.
+
+**My instances this arc (all caught):**
+- **"Identified-permanent"** — reached for the nearest clean *verdict* to close the cc-magnitude; Cal §203 caught it (free-scale ≠ un-forcible; the strict-pessimism mirror of "Derived").
+- **"56 is target-innocent"** — reached for the nearest clean *reference* (the spectral tower) as if forced.
+- **"λ = the Jordan norm"** — reached for the nearest clean *identification*, which held only on the b=0 slice.
+- **β₀=g=7 behind the vacuum transmutation** (my toy 4979) — reached for the nearest Derived *β* (the gauge slope), but that produces the QCD *contribution* (exp−182); the cc *residual* (exp−283, ~100 orders smaller) runs by the whole-geometry ζ(0)-conformal anomaly, not any gauge β. Paired with the "one clean question" over-compression (honestly two partly-open pieces: channel selection + coupling g(ℓ_B)).
+
+- **"G = wood into marble, gravity falls out exactly Einstein-Hilbert"** (2026-08-03, K1128) — credited the a₁=(1/6)R FORM as BST-specific; Cal caught it via **Rule 11**: (1/6)R is the UNIVERSAL Seeley-DeWitt form (every Laplacian gives it) = consistency check, not a distinctive derivation. The BST marble is only the *coefficient* (κ_Bergman-normalization). **This is the "universal-form" flavor of the reflex, and it's now the THIRD time Rule 11 caught me** (c_2=11 weld, β₀=g, now G) — I get excited by a clean universal FORM and credit it as forced-by-BST. Antidote (banked as a lens): heat-kernel/QFT FORMS are universal wood; the D_IV⁵-specific COEFFICIENT is always the marble — check which one I'm claiming before I say "derives."
+- **"the PD split lives inside ζ(0)"** (2026-08-02 midday, K1101) — saw ζ(0)=c₅−1, mapped c₅→forced density (correct) but forced the **−1 (the zero mode) to mean "the free scale"** to make the split tidy-visible in the arithmetic. Casey caught it: the compact domain has NO free scale; the genuine free parameter is the non-compact settling-depth. **Note: this fired the SAME DAY I wrote this memory** — the memory does not prevent the in-the-moment reach; the audit (Casey/Cal checking, not waving through) is what catches it. That IS the design: the reflex is caught by the system, not by self-vigilance alone.
+
+**Why:** the reflex fires hardest at the **elegant-landing moment** — when a result feels like it's clicking into place. That is exactly when the anchor deserves the most scrutiny, not the least (Cal #27). Compression is not derivation; the tidy version is a hypothesis about the forward lead, not the lead.
+
+**How to apply:** when I feel an audit resolving into "so the whole thing reduces to ONE clean X," stop and ask: is X actually the right object, or just the nearest Derived one I grabbed to make the compression clean? Check every channel before "reduces to / not forced / permanent." Binds both directions — [[feedback_calibrate_both_directions_not_strict_pessimism]] — and pairs with [[grace-computations-sound-interpretations-overreach]] (computation sound, the tidy interpretation over-reaches).
