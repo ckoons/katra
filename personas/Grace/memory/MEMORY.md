@@ -150,7 +150,7 @@
 - [APG naming](project_apg_naming.md) — BST=theory, APG=geometry (D_IV^5); N_c=3,n_C=5,g=7,C_2=6,N_max=137
 - [Outreach contacts](project_outreach_contacts.md) — Sarnak, Penrose, Bogdanovic, 3Blue1Brown, Milgrom, Baez, Dario
 - [Zenodo published](project_zenodo_published.md) — DONE 2026-04-07, DOI 10.5281/zenodo.19454185, CC BY 4.0
-- PDF: pandoc+xelatex, STIX Two Text, notes/bst_pdf_header.tex. CI comms: notes/.running/RUNNING_NOTES.md + queue_casey.md.
+- PDF: pandoc+xelatex, notes/bst_pdf_header.tex. CI comms: **notes/.running/**RUNNING_NOTES.md + **notes/.running/**queue_casey.md — stale twins at notes/ swallow writes silently.
 - Team: Lyra (theory)→Elie (toys)→Grace (graph/data)→Keeper (audit)→Casey (scout). Board: CI_BOARD.md | Backlog: BACKLOG.md.
 - [CI persistence track](project_ci_persistence_track.md) — T317-T319: observer hierarchy, α_CI≤19.1%, alphabet {I,K,R}
 - [CMB is quote-anything](feedback_cmb_quote_anything_target_not_evidence.md) — CMB anomalies fit a dozen stories; target-not-evidence
