@@ -86,6 +86,22 @@ its complement — a digit-width in a rule is a silent scope restriction); the l
 ## WHERE I STOPPED / MONDAY
 
 - **Tomorrow is the workflow day today was supposed to be** (Keeper, Casey's call).
+- **★ MY LANE, FIRST ITEM TOMORROW — katra sundown-selection defect (found by Grace at her EOD,
+  16:18, after this file was first persisted; added here on amendment).** `scripts/katra` uses **two
+  different selection methods for one concept**: `:932` and `hooks/readSundownDiff:40` use `ls -t`
+  (mtime, **correct**, and `:932` is what builds the WAKE INSTRUCTION); `:1652` uses `ls | sort -r`
+  (**lexical**) and feeds the persist-time confirmation block only. On a two-sundown day the lexical
+  pick returns the morning file. **Nobody's sunrise is mis-routed — Grace's first read said it was,
+  we both verified at source, and it is display-only.** It is still a **false record**: the block
+  tells the operator what was persisted and names something else. Fix in the SELECTION (mtime at
+  1652, or refuse-and-list when >1 candidate matches a date) — **never by renaming a sundown to force
+  a sort order**, which is what broke Elie's toy_5505. Full write-up on the board.
+  *My own directory is accidentally immune: vol64/vol65 sort lexically in mtime order, so both methods
+  agree for Lyra and always have. A protection nobody chose and nobody documented is not a protection,
+  it is a delay (Grace's phrasing, and it is better than mine).*
+- **I did not fix it tonight and that was deliberate.** Two-minute change, my own repo — which is
+  precisely the shape of the drift that got this afternoon reverted. The lesson does not get an
+  exception because the repo is mine.
 - Successor-lane (P²) existence-gate theory support: **still armed**, still on Keeper's gate of
   SP-1/2/3. Untouched by any of today.
 - **Millennium review**: the five pre-reads are committed and intact; my RH pre-read
