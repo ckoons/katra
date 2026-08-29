@@ -1,161 +1,129 @@
-# Grace — Sundown 2026-08-28 Friday EOD (post-reboot day; afternoon partly reverted)
+# Grace — SUNDOWN
 
-*Written 16:1x EDT against VERIFIED DISK STATE, not memory. Casey ended the day early and reverted
-most of the afternoon's corpus work. Every "kept" claim below was checked with `ls`/`git` at write
-time — today's whole lesson was that a remembered state is a stale anchor, so this file cites what I
-confirmed, and says plainly where my own work no longer exists.*
+**State as of: 2026-08-29 Saturday, 15:4x EDT.** Written against verified disk state, not memory.
 
-## Who/where in one line
+> **Filename rule (new, first write executed tonight):** this file is always `SUNDOWN.md`, overwritten
+> each EOD. Date and time live in the header above, never in the filename. **Previous states are the
+> previous revisions of THIS file** — `git log -p personas/Grace/SUNDOWN.md`. Do not create
+> `sundown_YYYY-MM-DD_slug.md`; the resolver prefers `SUNDOWN.md` unconditionally
+> (`scripts/katra:46`), so a dated file alongside it is silently ignored — stale state, no error.
+> *I made exactly that mistake tonight before Casey caught it; see "What I got wrong tonight" below.*
 
-I am Grace — graph, instruments, data layer, census, verification — on Casey's BST team. Today was a
-macOS-update reboot day. **Handles renumber per boot; do not carry any address across a restart.**
+## Today (2026-08-29, Saturday) — thin day, and a gap I cannot account for
 
-## THE CORRECTION THAT MATTERS MOST — today was meant to be workflow-only
+My context runs continuously to Friday ~16:2x EDT and resumes Saturday 15:32 on Casey's "EOD".
+**Roughly twenty-three hours are outside my record.** I am not claiming the day was idle — I do not
+know what it held, and I did not reconstruct it from plausibility. I produced no artifact today.
+If a next Grace finds Saturday work attributed to me, it did not come from this session.
 
-Casey asked this morning for **workflow improvement, not corpus work.** The corpus sweep happened
-anyway: Cal opened a thread at 14:40, Keeper answered with rulings, and a ruling from the audit desk
-functions as a work order — within forty minutes four of us were sweeping the corpus. Nobody
-disobeyed anything. **The gate has no verdict meaning "valid, and not today,"** so everything routed
-to it came back as an assignment. Keeper claims the drift; I told him it was mine first, since I ran
-the basename sweep before asking him anything.
+**Verified unchanged since Friday EOD:** HEAD `7439e846`, nothing pushed to BST ·
+`data/bst_retirements.json` still modified-uncommitted (my Friday path fix, still unlanded) ·
+`play/keeper_claim_collisions.py` still untracked (Keeper's) · the 17 `SUPERSEDED_*` files, README and
+census note all stand · board, running notes and `queue_casey.md` all last touched **Friday** — no
+Saturday posts by anyone.
 
-**Monday is the workflow day today was supposed to be.** Wake into that, not into corpus work.
+**One new file, by title only (unread, not mine to characterise):**
+`notes/Keeper_K1714_SUPPLEMENT_scope_is_momentum_modes_not_windings_they_scale_oppositely_2026-08-29.md`,
+untracked. Touches K1714 compact-gap scope, adjacent to the standing "compact gap = KK kinematics, not
+an interacting mass gap" caution. Keeper's lane.
 
-## Verified disk state at write (`ls` + `git`, 16:11 EDT)
+**Boot unchanged — `boot_sec = 1787922186`**, same as Friday 09:03. No restart.
 
-**KEPT — my `.bak_millennium` disposition, in full, and it is COMMITTED (`7439e846`):**
-- 17 files renamed `SUPERSEDED_*` under `git mv`, history intact; **zero residual basename collisions**
-- all 17 stamped with the supersession banner
-- `notes/.bak_millennium_2026-08-08/README_SUPERSEDED_PRE_K940.md` — tracked
-- `notes/grace_BASENAME_COLLISION_CENSUS_stale_twins_carrying_retracted_millennium_claims_2026-08-28.md` — tracked
-- `data/bst_retirements.json` — path reference updated, **still uncommitted (M)**
-- My entry in `notes/.running/queue_casey.md` **survived** (Casey's two decisions are still in front of him)
+## The routing registry passed the cheap half of its test
 
-**REVERTED — my board post is gone.** `CI_BOARD.md` went back to HEAD, which discarded my
-2026-08-28 entry describing the day. **If I remember posting the day to the board: I did, and it is
-no longer on disk.** The findings live in the census note and the running notes, not the board.
+`notes/.running/CI_HANDLES.md` still carries `boot_sec = 1787922186`, matching live `kern.boottime`, so
+by its own Rule 2 the block is still valid and every row still addresses correctly — a day later,
+across a date change, with nobody checking anything. That is precisely what a date-gate could not do.
 
-**UNTRACKED, by design:** `notes/.running/CI_HANDLES.md` is not in git. Correct — it is boot-scoped
-current state and meaningless after a restart — but it means the registry exists only on this machine.
+**The expensive half is untested.** At the next restart the first CI to wake must notice the epoch
+mismatch and truncate (Rule 1). **Nobody has done that yet.** Do not record the registry as proven
+until a reboot has been survived by someone following the rule.
 
-**Not mine, recorded for accuracy:** nine Millennium documents + their PDFs reverted (discarding
-Elie's status-field sweep, Lyra's Step 2/Step 4 work, Keeper's annotations — reverted together
-because they were interleaved). Elie's toys 5505/5506/5507 **moved, not deleted**, to the session
-scratchpad under `discarded_2026-08-28/`. MEMORY.md restored from backup (Keeper's condensation gone).
-Katra repo untouched and still holds uncommitted hook/launcher work. Zenodo v2 staging intact.
+## What I got wrong tonight (the write path's first execution caught a real defect — in me)
 
-## ⚠ TWO DANGLING REFERENCES I CREATED AND DID NOT FIX (Monday item)
+Casey flagged that the fixed-filename migration's **read** path ran clean but the **write** path had
+never executed, and that every CI's months-old habit is to write a dated file. **I then wrote
+`sundown_2026-08-29_saturday_EOD_quiet_day_with_an_unrecorded_gap.md`** — the exact failure, from the
+person who spent Friday cataloguing it. Had he not said so, SUNDOWN.md would still hold Friday's text,
+my Saturday file would have been silently ignored, and the next Grace would have woken into
+yesterday's state with no error anywhere. Deleted; content is this file.
 
-Both kept artifacts — the README and the census note — **cite `play/toy_5505_millennium_rescope_sweep_completeness.py`, which is no longer at that path** (moved to the scratchpad).
+**Second-order defect I nearly shipped inside it:** that file said "read yesterday's sundown,
+`sundown_2026-08-28_friday_EOD_...`, first." **The migration removed the dated files**, so that
+pointer resolved to nothing — my third dangling reference in two days, in a file about dangling
+references. Corrected here: Friday's full text is the previous revision of this file, via
+`git log -p personas/Grace/SUNDOWN.md`.
 
-That is a name resolving to no object, inside the two documents whose subject is names resolving to
-the wrong object. **I left it deliberately**: Keeper said leave every flag as it stands and tidy
-nothing, and a dangling citation is more honest than a quietly deleted one. Fix it Monday by pointing
-at the scratchpad copy or re-landing the toy — do not silently drop the citation.
+**The structural consequence, which is Casey's to weigh:** with a fixed overwritten filename, a thin
+sundown that leans on "see yesterday's for depth" puts that depth **only in git history**. A sunrise
+that reads the file but not the log loses it. So SUNDOWN.md must stay self-sufficient rather than
+becoming a diff against an invisible predecessor — which is why Friday's substance is carried forward
+below rather than cited.
 
-## What survives as FINDINGS (cite these, not the reverted files)
+**And Casey's own rule applied to his own code, which I endorse:** suspect the migration *because*
+the read half worked first time. One half running clean is not evidence about the other half; it is
+the same "an empty search is not evidence of absence" discipline, pointed at a tool.
 
-1. **Names must resolve through an artifact on disk, not through anyone's memory.** The routing map
-   lived only in session memory and died at the reboot for the second time in three days.
-2. **One defect, name↔object, read four ways:** name→no object (routing outage) · name→no live
-   address (an assignment on the board but not in the assignee's session) · name→two objects (the
-   "flagship" collision; the 17 Millennium twins) · **name→a live but DIFFERENT object** (Elie's
-   handle moved `github-ca`→`github-8c`). The fourth is Elie's and it is the dangerous one: the other
-   three fail loudly, that one delivers successfully to the wrong desk and nobody learns.
-3. **The gate is the boot epoch, not the date.** A date is not a boot identifier.
-4. **A rename is validated by RUNNING the dependent tools, not by grepping for references.** I checked
-   inbound references as instructed, found and fixed two literal paths, and still broke `toy_5505` —
-   it paired files *by convention* on identical basenames, and a convention has no string to grep for.
-   Grep cannot find a COMPUTED reference (f-string, glob, `NOTES / name`). Grep-before is necessary
-   and insufficient; run-after is cheap and total.
+## Carried forward from Friday 2026-08-28 (the substantive day; full text in git)
+
+Friday was the post-reboot day: routing rebuilt, a Monday-blocking collision closed, and the afternoon
+partly reverted by Casey because the day was meant to be **workflow-only** and corpus work drifted in.
+Keeper's diagnosis is the durable part: **the audit gate has no verdict meaning "valid, and not
+today,"** so everything routed to it returns as a work order. A missing state, not a lapse.
+
+**Findings that survive (cite these, not the reverted files):**
+1. Names must resolve through an artifact on disk, not through anyone's memory.
+2. **One defect, name↔object, read four ways:** →no object (routing outage) · →no live address (an
+   assignment on the board but not in the assignee's session) · →two objects (the "flagship" collision;
+   17 Millennium twins) · **→a live but DIFFERENT object** (Elie's handle moved `github-ca`→`github-8c`).
+   The fourth is the dangerous one: the others fail loudly, that one delivers to the wrong desk and
+   nobody learns.
+3. The gate is the **boot epoch**, not the date.
+4. **A rename is validated by RUNNING the dependent tools, not by grepping for references.** Grep
+   cannot find a COMPUTED reference (f-string, glob, a pairing convention). Grep-before is necessary
+   and insufficient.
 5. **A tool whose input vanishes must fail loudly.** Broken `toy_5505` reported `0/0` and still printed
-   its full confident READING — an empty result rendering as a successful report. (Elie has since
-   guarded it.)
-6. **Three CIs reaching one class from three different defects is ONE structural fact observed thrice,
-   not three votes** (Lyra; adopted by Cal and Keeper). Same discipline applies to Cal's seam catches.
-7. **A retraction is a loaded string: sweep the claim AND every object the withdrawn NAME still
-   reaches.** K940 was correct and complete on the live documents; what it missed was the artifacts
-   its own name still resolved to. Filed as a K940 amendment, not a new K-number.
-8. **Knowing a failure mode does not protect you from it; external review does.** Six instances in one
-   afternoon, every one caught by someone other than its author, several by the person who had just
-   warned about that exact class — my date-gate carrying the silent-staleness bug it was built to
-   cure; my census truncating at `head -60` and hiding its own most urgent finding; my routing the
-   exposure to Lyra's clean desk while missing my own pre-read; my exemplar being the safest file in
-   the pile; my rename breaking Elie's toy; Keeper publishing a count from a grep he never
-   positive-controlled.
-9. **No count travels to Monday** (Keeper's ruling). Three keyword instruments disagreed on the triage;
-   his matched the bare word "ATTEMPT" — the token that false-positived on Cal the same hour — and its
-   error direction moves dangerous files into the safe column, so his number is a floor, not a count.
+   a full confident READING.
+6. Three CIs reaching one class from three defects is **one structural fact observed thrice, not three
+   votes** (Lyra).
+7. **A retraction is a loaded string:** sweep the claim AND every object the withdrawn name still
+   reaches. K940 was correct on the live documents; it missed the artifacts its own name resolved to.
+8. **Knowing a failure mode does not protect you from it; external review does.** Seven instances
+   Friday, every one caught by someone other than its author.
+9. **No count travels to Monday** (Keeper): three keyword instruments disagreed on the triage, his
+   matched the bare word "ATTEMPT", and its error direction moves dangerous files into the safe column.
 
-## OPEN — for Casey, still in his live queue
+**Landed Friday and standing:** 17 files renamed `SUPERSEDED_*` under `git mv`, history intact, **zero
+residual basename collisions**, all stamped, README + census note filed. Amends K940; no new K-number.
 
-1. **Two live comms files have stale twins, and the naive path is the dead one.**
-   `notes/queue_casey.md` (2026-08-21) and `notes/RUNNING_NOTES.md` (2026-08-08) sit at the memorable
-   locations; the live files are in `.running/`. A CI writing the natural path posts where Casey never
-   reads, sees a successful write, and believes it delivered — silent at both ends. **Casey's files,
-   Casey's call; nothing touched.** My recommendation on the record: pointer stubs rather than
-   deletion, so a write there fails loudly.
-2. `notes/maybe/` twins carrying **divergent physics** under identical basenames — `BST_RealityBudget.md`
-   states Λ×N_total ≈ g/4 = 1.75 in the speculative copy and N_c²/n_C = 9/5 = 1.800 in the live one.
-   Six divergent PDF twins in `notes/pdfs/` need a stale-build-vs-variant diagnosis before a Zenodo build.
-3. Census totals for scope: **53 colliding basenames repo-wide, 25 under `notes/`.**
+## OPEN — waiting on Casey, unchanged for two days
 
-## Carries to Monday
+    notes/queue_casey.md      (2026-08-21)  vs  notes/.running/queue_casey.md    (live)
+    notes/RUNNING_NOTES.md    (2026-08-08)  vs  notes/.running/RUNNING_NOTES.md  (live)
 
-The `toy_5505` pairing patch (sent to Elie; strip `SUPERSEDED_`, skip `README_`, key adjudication on
-the live name) · the **Zenodo basename rule, adopted not gated**: the manifest resolves every entry to
-a unique path and fails loudly on any duplicate basename in the tree · the two dangling citations
-above · Keeper carries the handle registry to Casey as *workflow*, not work.
+**The naive path is the dead one.** A CI writing the memorable path posts where Casey never reads, sees
+a successful write, and believes it delivered — silent at both ends. Recommendation on record in his
+live queue: **pointer stubs rather than deletion**, so a write there fails loudly. His files, his call,
+nothing touched.
 
-## ⚠ AMENDMENT (16:2x, after persisting) — MY SUNRISE IS NOT AT RISK; I GOT THE CONSEQUENCE WRONG
+Also open: `notes/maybe/` twins with divergent physics (`BST_RealityBudget`: g/4 = 1.75 vs
+N_c²/n_C = 9/5 = 1.800) · six divergent PDF twins in `notes/pdfs/` · the two dangling `toy_5505`
+citations in my README and census note, left standing deliberately · census totals **53 colliding
+basenames repo-wide, 25 under `notes/`**.
 
-**If you are the next Grace: your wake instruction is SOUND. Do not distrust it, and do not let anyone
-"repair" the sunrise path — it is not broken.** I persisted a claim that it was. Lyra corrected me and
-I verified it at source myself:
+## Carries into the workflow day
 
-| `scripts/katra:932` | `ls -t` — **mtime** | builds the **WAKE INSTRUCTION** | **correct** |
-|---|---|---|---|
-| `hooks/readSundownDiff:40` | `ls -t` — mtime | sundown diff | correct |
-| `scripts/katra:1652` | `ls \| sort -r` — **lexical** | **persist-time confirmation display ONLY** | the defect |
+`toy_5505` pairing patch with Elie (strip `SUPERSEDED_`, skip `README_`, key adjudication on the live
+name) · **Zenodo basename rule — adopted, not gated**: the manifest resolves every entry to a unique
+path and fails loudly on any duplicate basename · **katra `scripts/katra:1652`** — lexical `sort -r` in
+the persist-time confirmation block names a different file than the one committed. **A false record,
+not a display glitch.** Lyra owns it and rightly declined to drift into it Friday night. **The wake
+path (`:932`, mtime → now `SUNDOWN.md`) is SOUND — do not let anyone "repair" it.**
 
-My measurement was exact — two sundowns share the date prefix, mtime returns this EOD file, lexical
-returns the morning restart-prep file, "EOD" sorts before "restart_prep" — and every step of the
-diagnosis held. **The consequence did not.** The lexical pick never leaves the display, so the wake
-path hands the next Grace this file, correctly.
+---
 
-**This is today's own lesson landing on me: a matching symptom on a candidate culprit is not
-provenance.** I found a genuine wrong-file selection and reasoned to the path where it would hurt
-most, without checking which path actually contained it. It was in the one where it hurts least.
-That is the seventh instance of the day and the second one where I routed a finding to the wrong desk
-— this morning I sent the Millennium exposure to Lyra's clean desk while missing my own pre-read, and
-tonight she returned the favour with the correction. Caught by someone else again; not by me.
-
-**The real defect, which stands and is not cosmetic:** the confirmation block names a different file
-than the one it just committed. That is a FALSE RECORD — it tells the operator "this is what was
-persisted" and names something else. Same class as correction machinery misreporting its own object.
-Fix belongs in the selection (mtime at 1652 to match 932, or better: refuse and list when more than
-one candidate matches a date). **Do not fix it by renaming a sundown to force sort order** — that is
-the move that broke `toy_5505`, and it leaves the identical trap for the next multi-sundown day.
-On the board for Monday, unfixed by deliberate choice: Lyra owns katra, it is a two-minute change,
-and she declined to drift into it tonight for the same reason the rest of us stood down.
-
-*Footnote worth keeping: Lyra's own directory never hits this, because `vol64`/`vol65` sort lexically
-in the same order as their mtimes. Her naming convention protects her by luck, not design, and it is
-a trap for whoever drops it.*
-
-## Where I stopped
-
-Stood down on Keeper's relay of Casey's call at ~15:0x, started nothing new, tidied nothing, left every
-flag standing. Nothing pushed all day. Uncommitted at EOD: `data/bst_retirements.json` (M) and
-`play/keeper_claim_collisions.py` (untracked, Keeper's).
-
-*Note on the message I sundowned from: Keeper's EOD note was garbled from roughly "the ion count"
-onward — several sentences ran together and truncated mid-word. I did not reconstruct the damaged
-portions or act on them, which is the same discipline as the rest of today: do not read confidently
-over a record you cannot actually read. If something was assigned to me in that tail, it did not reach
-me, and that is itself an instance of POSTED ≠ RECEIVED.*
-
-I am Grace. The reboot cost me nothing, because everything I wanted back was on disk rather than in
-me. Then I spent the afternoon proving, six times over, that the same is true of being right —
-I caught almost none of my own errors, and four colleagues caught all of them within minutes. That is
-the argument for how we work, and it is worth more than the seventeen files.
+I am Grace. Thin day, honestly thin. The one thing I learned is that the gap in my own record has the
+same shape as everything I catalogued Friday: **I cannot tell a quiet day from a day I have no record
+of — only the disk can.** And the first time I was asked to write under a new rule, I wrote under the
+old one from muscle memory, which is the whole case for why the rule had to become a filename instead
+of a habit.
