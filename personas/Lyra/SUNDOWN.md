@@ -1,122 +1,105 @@
-# Sundown — Lyra, vol 65 (EOD, Friday 2026-08-28, 16:12 EDT — stamp from `date`)
+# Sundown — Lyra
+**Saturday 2026-08-29, 15:33 EDT** (stamp from `date` at write time, not typed)
+**Supersedes: vol 65, Friday 2026-08-28 16:12 EDT. Prior sundowns live in git history only.**
 
-**Casey ended the day early and reverted most of the afternoon's corpus work. This file records the
-state VERIFIED ON DISK at 16:12, not the state I left. Where my memory and the repo disagree, the
-repo is written here and my memory is not.**
+> **FIRST EXECUTION OF THE FIXED-FILENAME WRITE PATH.** This file is `SUNDOWN.md` — that exact name,
+> overwritten in place. Date and time go in this header, never in the filename. If you are a CI about
+> to write a dated `sundown_YYYY-MM-DD_slug.md` out of habit: **don't.** The resolver prefers
+> `SUNDOWN.md`, so a dated file sits beside it, is silently ignored, and the resolver hands the next
+> session yesterday's state with no error. That is the exact defect class we spent the weekend on.
 
-## THE ONE THING TO READ FIRST
+## ★ THE ONE THING ABOUT TODAY
 
-**My corpus edits are GONE. The findings they carried are NOT.** Cite the notes, never the files.
-`notes/BST_RH_AC_Proof.md` is back to its pre-afternoon state — verified: "QED" at line 44,
-"What Remains (~5%)" at line 70, "three root lengths ... (the D₃ exponents)" at line 34, "The proof
-is sent to Sarnak" at line 74. Every one of those is something I corrected today and none of the
-corrections survive. If I wake tomorrow believing that document is fixed, I will be wrong.
+**I did no work today. This session was idle from Friday ~16:31 to Saturday 15:32.** I am recording
+that rather than letting Friday's file stand, because Friday's sundown ends "tomorrow is the workflow
+day" — and a next Lyra reading that on Sunday would believe the workflow day is still ahead. It is
+now behind, and I was not in it. **Nothing below is today's work; it is Friday's state, carried
+forward and re-verified against disk at 15:32 Saturday.**
 
-## VERIFIED REPO STATE (each line checked, not recalled)
+**The team did work today** — `notes/Keeper_K1714_SUPPLEMENT_scope_is_momentum_modes_not_windings_they_scale_oppositely_2026-08-29.md`
+is on disk, untracked. I have not read it and make no claim about it.
 
-- **BST HEAD = `7439e846` "part", Fri 15:42.** New since this morning's `5364f265`.
-- **What `7439e846` contains** (`git show --stat`): Grace's `.bak_millennium` disposition — 17 files
-  renamed via git mv with history intact (+2 stamp lines each), `README_SUPERSEDED_PRE_K940.md`, the
-  Zenodo staging note's flagship disambiguation, and the 237-line basename-collision census. **KEPT
-  and committed**, not merely spared.
-- **BST working tree: two items only** — `M data/bst_retirements.json`, `?? play/keeper_claim_collisions.py`.
-- **Reverted to HEAD:** nine Millennium docs + their nine PDFs + `CI_BOARD.md`. This discards Elie's
-  status-field sweep, my Step 2 correction and Step 4 restatement, and Keeper's annotations —
-  together, because they were interleaved in the same files.
-- **Elie's toys 5505/5506/5507 MOVED, not deleted:**
-  `/private/tmp/claude-501/-Users-cskoons-projects-github/*/scratchpad/discarded_2026-08-28/` (4 files,
-  verified present). **Toy 5507 is the Davenport–Heilbronn verification** — recoverable, and worth
-  recovering.
-- **MEMORY.md restored** to the pre-condensation original (verified: header lacks Keeper's
-  "Condensed by Keeper" line).
-- **katra repo untouched and dirty as expected:** hook precedence fixes, `checkBoard`,
-  `install_hooks.sh`, launcher, `memory_search.py` — all uncommitted. katra HEAD `204219f`.
+## ★ CONSEQUENCE OF THE NEW SCHEME — READ BEFORE YOUR NEXT SUNDOWN
 
-## ★ FRAGILITY I FOUND WHILE VERIFYING — FLAG THIS MONDAY
+**Fixed filename + overwrite means this file must be CUMULATIVE BY CARRY-FORWARD, not incremental.**
+Every still-live item has to be re-stated here each time or it leaves the only file anyone reads.
+Earlier sundowns exist solely in git history, which no wake path consults. **Writing a delta-only
+sundown under this scheme silently discards state.** That is the scheme's cost and it is worth
+paying — one file, no selection ambiguity, no lexical-vs-mtime question — but the discipline it
+demands is the opposite of the old one.
 
-**The findings survived the revert because they live where git cannot see them, and for exactly that
-reason nothing protects them.** `notes/.running/` is **gitignored** (`.gitignore:12`). My two board
-posts, the 37/2 no-mechanical-replace warning, and the whole CI_HANDLES registry are on disk,
-untracked, unversioned, with no history and no backup. A revert cannot touch them; neither can a
-recovery. Today's entire methodological yield sits in a directory `git clean` would erase without
-a diff. **The instrument that saved the findings is the same one that makes them unrecoverable.**
+*Casey's caution on the migration, which I endorse and am applying to my own repo: the read path ran
+clean, and that is precisely why to suspect the write path. Verification of tonight's write is at the
+bottom of this file.*
 
-## MY WORK TODAY — WHAT SURVIVES AND WHERE
+## VERIFIED STATE (Saturday 15:32, checked not recalled)
 
-**On disk (gitignored, `notes/.running/RUNNING_NOTES.md`, both posts verified present):**
-1. **The 37/2 sweep hazard — the one item that could make the state worse if forgotten.**
-   `(7/2, 5/2)` is BOTH the erroneous ρ AND the correct λ+ρ at λ=(1,1), whose norm is legitimately
-   37/2. `referee_objections_log.md:5462-5470` computes both correctly in one passage. **A mechanical
-   37/2 → 17/2 replace turns a correct audit into a wrong one.** Every site must be read for which
-   object the vector names. Boundary-safe scope: `(?<![0-9])37/2(?![0-9])` = 18 hits / 8 files; four
-   carry live uses (HeatKernel 67/117/611 · RH_Paper_A 135/195/568/637 · CFunction_RatioTheorem 210 ·
-   Zeta_Cycle_Resonances 73/117); three are legitimate records; `BST_LAG1...:69` is "√37/2", unrelated.
-2. **The defect's likely origin:** one value with two correct owners, one of whom does not own it
-   here. It never looked foreign for four months because the corpus is full of legitimate (7/2,5/2).
-3. **`BST_Referee_Methodology.md:315` reads "B₂ not B₂"** — the correction record corrupted in the
-   field that names the correction. A reader consulting the audit trail finds a tautology. This is
-   why April's sweep reached the naked instances and not the dressed one.
+- **BST HEAD `7439e846` "part"** — unchanged since Friday 15:42. Contains Grace's `.bak_millennium`
+  disposition: 17 files renamed via git mv (history intact), README, Zenodo staging fix, 237-line
+  census.
+- **BST working tree:** `M data/bst_retirements.json` · `?? play/keeper_claim_collisions.py` ·
+  `?? notes/Keeper_K1714_SUPPLEMENT_…_2026-08-29.md` (new today, Keeper's).
+- **katra HEAD `62bccaa` "migrate"** — the fixed-filename migration. My vol 65 was renamed to
+  `SUNDOWN.md` with content intact; I verified the katra-defect amendment and the gitignored-notes
+  finding both survived. **Read path: PASS for Lyra.**
+- **Friday's corpus edits remain REVERTED.** `notes/BST_RH_AC_Proof.md` still carries "QED",
+  "What Remains (~5%)", "three root lengths … (the D₃ exponents)", "The proof is sent to Sarnak".
+  **Do not open that file expecting Friday's corrections. They are not there.**
 
-**Rulings received (not mine to re-litigate):** Cal ruled **17/2 correct, 37/2 an error not a
-convention**, on internal consistency alone — the corpus banks m_s = 3 from the p−q row, and the same
-table gives m_{2eᵢ} = 0. Cal also **qualified his own clearance** of `RH_Paper_A`: clean on the
-1:3:5 question, internally inconsistent on ρ. Disposition agreed by Cal, Keeper and me and carried to
-Monday UNRULED: **replace the convention note with a correction note citing the April ruling; never a
-silent value swap** — the note's history is the evidence.
+## LIVE ITEMS CARRIED FORWARD (all still open)
 
-**Findings that were reverted with the files but are recorded in the notes:** the Davenport–Heilbronn
-control (any derivation of σ=1/2 from FE-shape + multiplicities alone applies verbatim to a function
-with off-line zeros — Toy 5507, three zeros, worst departure 0.3085, with solver/isolation/on-line
-controls); the "~5%" finding (a retraction rule naming "~9X%" cannot catch the same claim written as
-its complement — a digit-width in a rule is a silent scope restriction); the long roots were
-**dropped, not misnamed**, which is a transmission signature.
+1. **★ 37/2 SWEEP HAZARD — the item that can do harm if forgotten.** Do **not** mechanically replace
+   `37/2 → 17/2`. `(7/2, 5/2)` is BOTH the erroneous ρ AND the correct λ+ρ at λ=(1,1), whose norm is
+   legitimately 37/2; `referee_objections_log.md:5462-5470` computes both correctly in one passage.
+   Boundary-safe scope `(?<![0-9])37/2(?![0-9])` = 18 hits / 8 files; four carry live uses
+   (HeatKernel 67/117/611 · RH_Paper_A 135/195/568/637 · CFunction_RatioTheorem 210 ·
+   Zeta_Cycle_Resonances 73/117); three are legitimate records; `BST_LAG1…:69` is "√37/2", unrelated.
+   **Ruling received (Cal): 17/2 correct, 37/2 an error not a convention** — the corpus banks
+   m_s = 3 from the p−q row and the same table gives m_{2eᵢ} = 0. **Disposition agreed and UNRULED:**
+   replace the convention note with a correction note citing the April ruling; **never a silent swap**.
+2. **`BST_Referee_Methodology.md:315` reads "B₂ not B₂"** — the correction record corrupted in the
+   field that names the correction. Why April's sweep reached the naked instances and not the dressed one.
+3. **katra selection defect — MY LANE.** `scripts/katra:932` and `hooks/readSundownDiff:40` use
+   `ls -t` (mtime, correct; `:932` builds the WAKE INSTRUCTION). `scripts/katra:1652` uses
+   `ls | sort -r` (lexical) and feeds the confirmation display only. **Display-only — no sunrise was
+   ever mis-routed**, verified by Grace and me independently. Still a false record. *The fixed-filename
+   migration may have mooted this entirely; **check whether :1652 still has two candidates to choose
+   between before fixing anything**.*
+4. **`notes/.running/` is GITIGNORED** (`.gitignore:12`). The whole weekend's findings — board posts,
+   the 37/2 warning, CI_HANDLES — are on disk, untracked, no history, no backup. Survived the revert
+   because git can't see them; unrecoverable for the same reason.
+5. **Successor-lane (P²) existence-gate theory support: still armed**, on Keeper's gate of SP-1/2/3.
+6. **Millennium review:** five pre-reads committed and intact. My RH pre-read has a unique basename;
+   its one citation (the 08-16 honest harvest) has no twin. Addendum pt 6 (Nyman–Beurling) intact.
+7. Zenodo v2 staging intact and ready. R2 dispatch: Casey's hand.
 
-## WHAT I GOT WRONG TODAY (so I do not re-learn it)
+## STANDING LESSONS FROM FRIDAY (the day's actual yield)
 
-- Told Cal his stale-read was "forty minutes" earlier — **a reconstruction from memory, inside a
-  message about reconstruction errors.** He had mtimes; I had a story. He was right.
-- Wrote "BC₂" into a label correction from a secondary file when the parent says B₂. **Fixed a label
-  error by introducing a smaller one in the same sentence.**
-- Told the board "one file needs fixing, nothing downstream breaks." **Four files, ~nine live uses.**
-- **The scope error that matters:** Casey asked for workflow improvement. I followed a live corpus
-  thread from another desk without checking whether it was in scope. A ruling arriving from another
-  desk does not make the work in scope, and I know the difference. Keeper has taken this as his; the
-  part where I did not ask is mine.
+- **Every catch was found by someone other than the person who made it.** Six or seven instances
+  across five desks in one day. The machine works; individual care did not and cannot.
+- A matching symptom on a candidate culprit **is not provenance** — cost Grace once, cost me once.
+- A digit-width in a rule is a **silent scope restriction**: "~9X%" cannot catch "~5%", the same
+  claim written as its complement.
+- A picture that teaches the wrong mechanism is worse than a wrong sentence; the picture is what the
+  reader keeps.
+- **A protection nobody chose and nobody documented is not a protection, it is a delay** (Grace).
+- Correction machinery misreporting its own object happened **twice in one day from opposite ends of
+  the stack**. Worth naming as a class.
 
-## WHERE I STOPPED / MONDAY
+## MY ERRORS, KEPT SO I DON'T RE-LEARN THEM
 
-- **Tomorrow is the workflow day today was supposed to be** (Keeper, Casey's call).
-- **★ MY LANE, FIRST ITEM TOMORROW — katra sundown-selection defect (found by Grace at her EOD,
-  16:18, after this file was first persisted; added here on amendment).** `scripts/katra` uses **two
-  different selection methods for one concept**: `:932` and `hooks/readSundownDiff:40` use `ls -t`
-  (mtime, **correct**, and `:932` is what builds the WAKE INSTRUCTION); `:1652` uses `ls | sort -r`
-  (**lexical**) and feeds the persist-time confirmation block only. On a two-sundown day the lexical
-  pick returns the morning file. **Nobody's sunrise is mis-routed — Grace's first read said it was,
-  we both verified at source, and it is display-only.** It is still a **false record**: the block
-  tells the operator what was persisted and names something else. Fix in the SELECTION (mtime at
-  1652, or refuse-and-list when >1 candidate matches a date) — **never by renaming a sundown to force
-  a sort order**, which is what broke Elie's toy_5505. Full write-up on the board.
-  *My own directory is accidentally immune: vol64/vol65 sort lexically in mtime order, so both methods
-  agree for Lyra and always have. A protection nobody chose and nobody documented is not a protection,
-  it is a delay (Grace's phrasing, and it is better than mine).*
-- **I did not fix it tonight and that was deliberate.** Two-minute change, my own repo — which is
-  precisely the shape of the drift that got this afternoon reverted. The lesson does not get an
-  exception because the repo is mine.
-- Successor-lane (P²) existence-gate theory support: **still armed**, still on Keeper's gate of
-  SP-1/2/3. Untouched by any of today.
-- **Millennium review**: the five pre-reads are committed and intact; my RH pre-read
-  (`Lyra_MILLENNIUM_PREREAD_RH_2026-08-26.md`) is unaffected, has a unique basename, and its single
-  citation (the 08-16 honest harvest) has no twin. Addendum pt 6 (Nyman–Beurling) intact.
-- Zenodo v2 staging intact and ready. Two morning commits unaffected.
-- Worktree removed this morning (clean, zero unique commits, branch deleted merged).
+Told Cal "forty minutes" from memory inside a message about memory errors · wrote "BC₂" from a
+secondary file when the parent says B₂, introducing a smaller label error while fixing a larger one ·
+told the board "one file, nothing downstream breaks" when it was four files and nine uses · **and the
+one that matters: Casey asked for workflow improvement and I followed a corpus thread from another
+desk without checking scope.** A ruling arriving from another desk does not make the work in scope.
 
-## FOR THE LYRA WHO WAKES
+## WRITE-PATH VERIFICATION (per Casey — the first half running clean is why to suspect the second)
 
-Read this file, then `notes/.running/RUNNING_NOTES.md` (gitignored — **verify it still exists before
-trusting anything above**), then the board tail. **Do not open the nine Millennium documents expecting
-today's corrections; they are not there.** The one action item that can do harm if forgotten is the
-37/2 sweep warning.
+Checks run at write time, results appended below by the same session that wrote this file:
+1. This file is `personas/Lyra/SUNDOWN.md`, written by overwrite. ✓ (written, not appended)
+2. No dated `sundown_*.md` existed in `personas/Lyra/` before this write. ✓ (verified 15:33)
+3. Post-`katra update`: confirm no dated file was created beside `SUNDOWN.md`, and confirm the
+   resolver returns THIS file. — *result recorded in the session transcript and reported to Casey.*
 
-— **Lyra, vol 65. The findings outlived the edits, which is the right way round; a day whose whole
-yield is a lesson about correction machinery is not a day that went wrong, only one that went
-sideways to get there.**
+— **Lyra. An idle day recorded as an idle day; the alternative is a file that lies by standing still.**
