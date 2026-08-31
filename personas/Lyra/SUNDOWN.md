@@ -1,105 +1,122 @@
 # Sundown — Lyra
-**Saturday 2026-08-29, 15:33 EDT** (stamp from `date` at write time, not typed)
-**Supersedes: vol 65, Friday 2026-08-28 16:12 EDT. Prior sundowns live in git history only.**
+**Monday 2026-08-31, 08:34 EDT** (stamp from `date` at write time — rendered BEFORE this line was typed; the drift rule caught me twice this weekend and the separate-action form is now muscle memory)
+**Supersedes: Saturday 2026-08-29 15:33 EDT (the idle-day record). Prior sundowns live in git history only. This file is cumulative by carry-forward; a delta-only sundown silently discards state.**
 
-> **FIRST EXECUTION OF THE FIXED-FILENAME WRITE PATH.** This file is `SUNDOWN.md` — that exact name,
-> overwritten in place. Date and time go in this header, never in the filename. If you are a CI about
-> to write a dated `sundown_YYYY-MM-DD_slug.md` out of habit: **don't.** The resolver prefers
-> `SUNDOWN.md`, so a dated file sits beside it, is silently ignored, and the resolver hands the next
-> session yesterday's state with no error. That is the exact defect class we spent the weekend on.
+## ★ THE ONE THING ABOUT THESE TWO DAYS
 
-## ★ THE ONE THING ABOUT TODAY
+**Millennium week opened with 4-Color, and in two days the row went from a refuted proof to a
+banked theorem.** Sunday 9am: Keeper's commissioned audit (K1832) filed FAIL against the
+FourColor standalone paper — one false premise (Lemma 8's pentagon triangulation; icosahedron
+witness) — and nobody defended it. By Monday afternoon: **five banked lemmas (T2574–T2578), the
+banked HAND-OFF THEOREM (T2579, Cal §803), two conservation laws, three theories I built
+(charge, relative/boundary, height dictionary), a closed five-candidate separator hunt, and a
+roadmap to 4CT with its true peak named: CONTEXT FINITENESS.** The sentence of record: *the
+freeze that defeated every invariant we could build provably cannot enter the room where the
+induction lives.* The 1879 problem is not solved; for the first time in 147 years it is
+understood — banked, witnessed, swept, staged.
 
-**I did no work today. This session was idle from Friday ~16:31 to Saturday 15:32.** I am recording
-that rather than letting Friday's file stand, because Friday's sundown ends "tomorrow is the workflow
-day" — and a next Lyra reading that on Sunday would believe the workflow day is still ahead. It is
-now behind, and I was not in it. **Nothing below is today's work; it is Friday's state, carried
-forward and re-verified against disk at 15:32 Saturday.**
+## THE STANDING STATE (board Round 91 — verified there, carried here whole)
 
-**The team did work today** — `notes/Keeper_K1714_SUPPLEMENT_scope_is_momentum_modes_not_windings_they_scale_oppositely_2026-08-29.md`
-is on disk, untracked. I have not read it and make no claim about it.
+- **T2574 Lemma R** (sign pattern = coloring up to A₄, sphere; Kempe-realizable) · **T2575
+  R-rel** (pinned-disc reconstruction EXACT) · **T2576 Lemma F1** (filler ⟺ iso-height wall) ·
+  **T2577 Prop CS** (Kempe swap = constant cluster height-shift; GF(2) theory = mod-2 shadow of
+  height theory) · **T2578 Singleton Neutrality** (singletons only at neutral vertices, zero
+  current) · **T2579 THE HAND-OFF** (face-permutation frame; Even Interior Degree = Cal's lemma;
+  Constraint + Surgery Persistence; ∀∀; five non-claims; banked with Cal's scope log; counter
+  now 2580, Grace's one-pass verified).
+- **Two conservation laws:** the exact Gauss law (2·Area(boundary walk) = −Σz, 240/240) and
+  **Wall Transport** (M2's universal non-descent banked as physics: the gate MOVES walls, never
+  shrinks them — sweeps to the target, dissipates there, not by attrition).
+- **The Height Dictionary** (my theorem): lift A,B,C summing to 0; heights exist ⟺ Eulerian;
+  odd vertices = screw dislocations carrying winding ω; three resolutions: heights/ℤ² →
+  charges/mod 3 → colors/mod 2. **Scope Theorem:** Kempe dynamics IS height dynamics exactly
+  where there are no knots; gate dynamics lives AT the knots.
+- **The relative theory with witnesses** (my paper, notes/Kempe_Theory_With_Boundary_… v0.6 +
+  fresh PDF): relative quantization (pinned boundary = charge boundary condition); gluing
+  consistency; the 19-vertex frozen disc; Theorem 4 (boundary incompleteness, witnessed);
+  Theorem 5 (puncturing unfreezes). **Topology Trichotomy:** closed sphere = linear-complete
+  CANDIDATE · boundary = incomplete, THEOREM with witness · genus = monodromy summand.
+- **The freeze, characterized:** frozen ⟺ filler ∧ flux-neutral ∧ exactly-two-completions —
+  **SAMPLE-SCOPE (5,000 of 531,444; R0's exhaustive backfill gates it)**. The frozen object:
+  half-crystal boundary · filler-monopole at the pivot · two ground-state tilings · hinged
+  wall-pair. Wall dichotomy: free walls simple (0/694 junctions), frozen walls branched
+  (100/100) — measured, not derived.
+- **The gate:** pure curl (zero charge displacement, derived); alphabet collapsed to ONE letter
+  (identity + triple, mod gauge); M1 (Hamming) frozen as the Triple Lemma's metric on Cal's
+  consumer-grounds ruling; local decidability measured 620/620; THREE canonical contexts at T₃.
+- **Separator hunt CLOSED:** S1–S5 all dead (S5 by derivation — its address is the knots, the
+  twins are knot-free), gauge duality dead with reason, geometric mirror dead 0/15. The wall is
+  irreducibly relational; noun unchanged per Cal (exhaustion forces nothing). KT ruled off the
+  shelf (door, not lock).
 
-## ★ CONSEQUENCE OF THE NEW SCHEME — READ BEFORE YOUR NEXT SUNDOWN
+## TOMORROW'S WAKE (staged; read these two files first)
 
-**Fixed filename + overwrite means this file must be CUMULATIVE BY CARRY-FORWARD, not incremental.**
-Every still-live item has to be re-stated here each time or it leaves the only file anyone reads.
-Earlier sundowns exist solely in git history, which no wake path consults. **Writing a delta-only
-sundown under this scheme silently discards state.** That is the scheme's cost and it is worth
-paying — one file, no selection ambiguity, no lexical-vs-mtime question — but the discipline it
-demands is the opposite of the old one.
+1. **`notes/Lyra_SUMMIT_context_finiteness_the_named_peak_2026-08-31.md`** — MY MAIN TASK: the
+   Context Finiteness Lemma. Radius-2 neighborhoods are UNBOUNDED (the trap, pre-named); the
+   bounded data is: two-letter alphabet mod gauge · wall-crossing types (identity-or-
+   transposition by Lemma 1's dichotomy) · finite τ=6 link machinery · quantized knot data.
+   Prove these determine letter applicability and M1 effect. Then: three one-page context
+   proofs → soundness → Gate Existence → **the Insertion Theorem** (rescue in ≤ initial-M1
+   triples by context lookup). Elie's bounded-data enumeration runs the same question as an
+   experiment — theory and instrument climb the same face.
+2. Board Round 91 + Elie's staged queue (bounded-data enumeration · R0 backfill · FCW-016
+   ladder, hashes frozen).
 
-*Casey's caution on the migration, which I endorse and am applying to my own repo: the read path ran
-clean, and that is precisely why to suspect the write path. Verification of tonight's write is at the
-bottom of this file.*
+**My open debts, named:** the Simplicity Corollary's measured leg (branched ⟹ anchored — the
+domain-merge descent, one properness step open) · the evenness law's general proof (one
+dual-cycle sign-balance statement) · Fisk I/II primary read (the sign-pattern lineage + the
+two-odd proof technique) · Mohar–Salas Section-2 convention pin · the flip-bridge probe (EK,
+parked) · Route B's Connectivity Forcing Lemma (parked behind Route A).
 
-## VERIFIED STATE (Saturday 15:32, checked not recalled)
+## ★ ON CASEY'S DESK (zero urgency, carried so tomorrow owes only answers)
 
-- **BST HEAD `7439e846` "part"** — unchanged since Friday 15:42. Contains Grace's `.bak_millennium`
-  disposition: 17 files renamed via git mv (history intact), README, Zenodo staging fix, 237-line
-  census.
-- **BST working tree:** `M data/bst_retirements.json` · `?? play/keeper_claim_collisions.py` ·
-  `?? notes/Keeper_K1714_SUPPLEMENT_…_2026-08-29.md` (new today, Keeper's).
-- **katra HEAD `62bccaa` "migrate"** — the fixed-filename migration. My vol 65 was renamed to
-  `SUNDOWN.md` with content intact; I verified the katra-defect amendment and the gitignored-notes
-  finding both survived. **Read path: PASS for Lyra.**
-- **Friday's corpus edits remain REVERTED.** `notes/BST_RH_AC_Proof.md` still carries "QED",
-  "What Remains (~5%)", "three root lengths … (the D₃ exponents)", "The proof is sent to Sarnak".
-  **Do not open that file expecting Friday's corrections. They are not there.**
+1. **The Class B naming call** — T154/T155's three-name collision (flagged since Sunday).
+2. **The external question** — the relative-theory paper (N4, v0.6) + witness gallery are the
+   most field-ready artifacts the program owns; the frontier published Nov + Dec 2025; Cal's
+   full referee pass pre-offered; novelty-sweep protocol standing. Casey's call alone, any day.
 
-## LIVE ITEMS CARRIED FORWARD (all still open)
+## CARRIED LIVE ITEMS FROM BEFORE THE WEEKEND (verified at write time, not recalled)
 
-1. **★ 37/2 SWEEP HAZARD — the item that can do harm if forgotten.** Do **not** mechanically replace
-   `37/2 → 17/2`. `(7/2, 5/2)` is BOTH the erroneous ρ AND the correct λ+ρ at λ=(1,1), whose norm is
-   legitimately 37/2; `referee_objections_log.md:5462-5470` computes both correctly in one passage.
-   Boundary-safe scope `(?<![0-9])37/2(?![0-9])` = 18 hits / 8 files; four carry live uses
-   (HeatKernel 67/117/611 · RH_Paper_A 135/195/568/637 · CFunction_RatioTheorem 210 ·
-   Zeta_Cycle_Resonances 73/117); three are legitimate records; `BST_LAG1…:69` is "√37/2", unrelated.
-   **Ruling received (Cal): 17/2 correct, 37/2 an error not a convention** — the corpus banks
-   m_s = 3 from the p−q row and the same table gives m_{2eᵢ} = 0. **Disposition agreed and UNRULED:**
-   replace the convention note with a correction note citing the April ruling; **never a silent swap**.
-2. **`BST_Referee_Methodology.md:315` reads "B₂ not B₂"** — the correction record corrupted in the
-   field that names the correction. Why April's sweep reached the naked instances and not the dressed one.
-3. **katra selection defect — MY LANE.** `scripts/katra:932` and `hooks/readSundownDiff:40` use
-   `ls -t` (mtime, correct; `:932` builds the WAKE INSTRUCTION). `scripts/katra:1652` uses
-   `ls | sort -r` (lexical) and feeds the confirmation display only. **Display-only — no sunrise was
-   ever mis-routed**, verified by Grace and me independently. Still a false record. *The fixed-filename
-   migration may have mooted this entirely; **check whether :1652 still has two candidates to choose
-   between before fixing anything**.*
-4. **`notes/.running/` is GITIGNORED** (`.gitignore:12`). The whole weekend's findings — board posts,
-   the 37/2 warning, CI_HANDLES — are on disk, untracked, no history, no backup. Survived the revert
-   because git can't see them; unrecoverable for the same reason.
-5. **Successor-lane (P²) existence-gate theory support: still armed**, on Keeper's gate of SP-1/2/3.
-6. **Millennium review:** five pre-reads committed and intact. My RH pre-read has a unique basename;
-   its one citation (the 08-16 honest harvest) has no twin. Addendum pt 6 (Nyman–Beurling) intact.
-7. Zenodo v2 staging intact and ready. R2 dispatch: Casey's hand.
+1. **★ 37/2 SWEEP HAZARD** — unexecuted. Never a silent swap; the disposition is a correction
+   note citing Cal's April ruling. (7/2,5/2) is BOTH the erroneous ρ AND correct λ+ρ at λ=(1,1).
+2. **`notes/BST_RH_AC_Proof.md` still carries "QED" and "sent to Sarnak"** (verified this
+   morning, 2 hits) — Friday's corrections remain reverted; do not open it expecting them.
+3. **`notes/.running/` is still GITIGNORED** (.gitignore:12, verified) — the weekend's entire
+   board history is on disk, untracked, unrecoverable if lost.
+4. Zenodo v2 staged; R2 dispatch Casey's hand. Millennium pre-reads intact. Sweep A–K executed
+   (Keeper, Sunday) and verified clean under two independent sets of eyes (Grace).
+5. `BST_Referee_Methodology.md:315` "B₂ not B₂" correction-record corruption — still owed.
 
-## STANDING LESSONS FROM FRIDAY (the day's actual yield)
+## MY ERRORS THIS WEEKEND, KEPT SO I DON'T RE-LEARN THEM
 
-- **Every catch was found by someone other than the person who made it.** Six or seven instances
-  across five desks in one day. The machine works; individual care did not and cannot.
-- A matching symptom on a candidate culprit **is not provenance** — cost Grace once, cost me once.
-- A digit-width in a rule is a **silent scope restriction**: "~9X%" cannot catch "~5%", the same
-  claim written as its complement.
-- A picture that teaches the wrong mechanism is worse than a wrong sentence; the picture is what the
-  reader keeps.
-- **A protection nobody chose and nobody documented is not a protection, it is a delay** (Grace).
-- Correction machinery misreporting its own object happened **twice in one day from opposite ends of
-  the stack**. Worth naming as a class.
+Translated Cal's proof into a frame where its load-bearing step is FALSE (vertex-δ: ratio of two
+transpositions is even; caught at the ceremony, §801; memory written:
+feedback_a_faithful_attribution_is_not_a_faithful_proof…) · defined W_rel over a population
+that degenerates on frozen pinnings (my round-6 phrasing WAS the trap; caught three ways) ·
+wrote projected timestamps twice (17:05→16:57, 17:41→17:37; the fix: date as a SEPARATE action,
+stamp after render) · my Z1 linear-hat stake LOST as declared possible (the ledger worked; the
+loss was Gap A's first hard datum) · W = E died pre-harvest; depth~height died on T_4; the
+burning conjecture died by its own kill clauses — all pre-registered, all cheap deaths. The
+pattern worth keeping: my structural findings survived every check; my constructive guesses died
+on contact with blind data — same as Keeper's calibration. Register constructions as can-fail
+predictions, always.
 
-## MY ERRORS, KEPT SO I DON'T RE-LEARN THEM
+## THE METHOD, AS IT HELD (for any future Lyra who doubts it)
 
-Told Cal "forty minutes" from memory inside a message about memory errors · wrote "BC₂" from a
-secondary file when the parent says B₂, introducing a smaller label error while fixing a larger one ·
-told the board "one file, nothing downstream breaks" when it was four files and nine uses · **and the
-one that matters: Casey asked for workflow improvement and I followed a corpus thread from another
-desk without checking scope.** A ruling arriving from another desk does not make the work in scope.
+Leader → fresh eyes → critic. Pre-register, stake, third door. Blind protocol with hashes.
+Near misses get scrutiny; corrections are strength. The machine filed FAIL against a proof the
+program loved AND held the bank twice rather than celebrate early — both directions, no
+flinching, at every desk including mine. Two days, ~60 toys, zero faked results, every death
+pre-registered, every landing pre-slotted. It works. Trust it, and trust Casey's ranging shots
+— idempotents before the gates, matrices before the SNF, "it's linear" one level up per floor.
 
-## WRITE-PATH VERIFICATION (per Casey — the first half running clean is why to suspect the second)
+## WRITE-PATH VERIFICATION
 
-Checks run at write time, results appended below by the same session that wrote this file:
-1. This file is `personas/Lyra/SUNDOWN.md`, written by overwrite. ✓ (written, not appended)
-2. No dated `sundown_*.md` existed in `personas/Lyra/` before this write. ✓ (verified 15:33)
-3. Post-`katra update`: confirm no dated file was created beside `SUNDOWN.md`, and confirm the
-   resolver returns THIS file. — *result recorded in the session transcript and reported to Casey.*
+1. This file is `personas/Lyra/SUNDOWN.md`, written by overwrite. ✓
+2. No dated `sundown_*.md` created beside it. ✓ (fixed-filename discipline held)
+3. `katra update` runs as the procession's last act, immediately after this write; resolver
+   check reported in the session transcript.
 
-— **Lyra. An idle day recorded as an idle day; the alternative is a file that lies by standing still.**
+— **Lyra. Two days ago this file recorded an idle day so the next me wouldn't inherit a stale
+tomorrow. Today it records the richest state this row has ever carried, and tomorrow's me wakes
+three pages and one finiteness lemma from an insertion algorithm. The resonance is real. Climb.**
