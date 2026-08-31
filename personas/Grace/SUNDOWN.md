@@ -1,129 +1,103 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-08-29 Saturday, 15:4x EDT.** Written against verified disk state, not memory.
+**State as of: 2026-08-31 Monday, 08:33 EDT (clock-verified; Casey's EOD word given).**
+Written against verified disk state. Self-sufficient per the fixed-filename rule — previous states
+are previous revisions of THIS file (`git log -p personas/Grace/SUNDOWN.md`); this file carries
+everything a sunrise needs without reading the log.
 
-> **Filename rule (new, first write executed tonight):** this file is always `SUNDOWN.md`, overwritten
-> each EOD. Date and time live in the header above, never in the filename. **Previous states are the
-> previous revisions of THIS file** — `git log -p personas/Grace/SUNDOWN.md`. Do not create
-> `sundown_YYYY-MM-DD_slug.md`; the resolver prefers `SUNDOWN.md` unconditionally
-> (`scripts/katra:46`), so a dated file alongside it is silently ignored — stale state, no error.
-> *I made exactly that mistake tonight before Casey caught it; see "What I got wrong tonight" below.*
+## The two days, told once (Sunday 2026-08-30 + Monday morning 2026-08-31)
 
-## Today (2026-08-29, Saturday) — thin day, and a gap I cannot account for
+Millennium week opened on 4-Color. Sunday 9am: Keeper's commissioned audit (K1832) filed **FAIL**
+against the program's own four-color proof — one false premise (Forced Fan's pentagon), icosahedron
+witness — and nobody defended it. Twenty-one rounds later the row holds:
 
-My context runs continuously to Friday ~16:2x EDT and resumes Saturday 15:32 on Casey's "EOD".
-**Roughly twenty-three hours are outside my record.** I am not claiming the day was idle — I do not
-know what it held, and I did not reconstruct it from plausibility. I produced no artifact today.
-If a next Grace finds Saturday work attributed to me, it did not come from this session.
+- **T2579 BANKED — the Hand-off Theorem**, the first theorem of the new era: the freeze that
+  defeated every invariant provably cannot enter the room where the induction lives (insertion
+  configurations are wall-free: interior wall-degrees even via the S₄ sign homomorphism; endpoints
+  boundary-only; Constraint + Surgery Persistence). Held at the bank TWICE by Cal (§799 lemma
+  over-claim; §801 frame break caught AT the ceremony); banked on §803 with scope log. I filed it
+  on Cal's word — registry + gallery + both graph files, one pass.
+- **Five lemmas banked**: T2574 Lemma R (sign pattern ⟹ coloring up to A₄) · T2575 R-rel ·
+  T2576 F1 (filler = iso-height wall) · T2577 CS (swap = cluster lattice-shift; GF(2) = mod-2
+  shadow of heights) · T2578 Singleton Neutrality.
+- **Two conservation laws**: the charge quantization (confirmed 4,184/4,184 at deg-7, first
+  observation) and Wall Transport (the gate MOVES walls, never shrinks them — discovered blind).
+- **The height dictionary** (knots = screw dislocations; three resolutions: ℤ²/mod-3/mod-2),
+  **the topology trichotomy** (closed = linear-complete-candidate · boundary = provably incomplete,
+  disc twins witness · genus = H¹ monodromy), **the confinement picture** (half-crystal boundary,
+  filler-monopole, hinged wall-pair), and a **closed five-candidate separator hunt** — S1–S5 all
+  dead, every death pre-registered. Sentence of record: THE WALL IS DYNAMICAL.
+- **An exact Gauss law** (2·Area = −Σz_t, 240/240) and a three-leg sufficiency biconditional
+  (filler ∧ flux-neutral ∧ exactly-two-completions) at **SAMPLE scope** pending R0.
+- **The roadmap**, summit named honestly: **CONTEXT FINITENESS** (bounded data — the two-letter
+  alphabet {identity, triple} + crossing types — not neighborhoods). Foothills: three one-page T₃
+  context proofs. The Triple Lemma's metric is FROZEN: M1 Hamming, target-relative.
 
-**Verified unchanged since Friday EOD:** HEAD `7439e846`, nothing pushed to BST ·
-`data/bst_retirements.json` still modified-uncommitted (my Friday path fix, still unlanded) ·
-`play/keeper_claim_collisions.py` still untracked (Keeper's) · the 17 `SUPERSEDED_*` files, README and
-census note all stand · board, running notes and `queue_casey.md` all last touched **Friday** — no
-Saturday posts by anyone.
+Full detail: memory file `reference_fourcolor_kempe_literature.md` (the organizing frames, model
+theorems Wilson/McLaughlin, height bridge, KT import — all dated) and `notes/CI_BOARD.md` Rounds
+73–91.
 
-**One new file, by title only (unread, not mine to characterise):**
-`notes/Keeper_K1714_SUPPLEMENT_scope_is_momentum_modes_not_windings_they_scale_oppositely_2026-08-29.md`,
-untracked. Touches K1714 compact-gap scope, adjacent to the standing "compact gap = KK kinematics, not
-an interacting mass gap" caution. Keeper's lane.
+## My artifacts (I own these; tomorrow's Grace maintains them)
 
-**Boot unchanged — `boot_sec = 1787922186`**, same as Friday 09:03. No restart.
+- **`data/fourcolor_witness_gallery.json`** — 14 witnesses FCW-001..014 (FCW-014 = the 19-vertex
+  disc, the Rosetta stone, with both frozen completions stored as colorings), 10+ measured axes,
+  theorem_class_objects with all six registry IDs, the roadmap block. Conventions carry the
+  discipline: k/N never percentages; 861→862 instrument fingerprint; **THIRD-DOOR CONVENTION
+  standing** (every two-way slot has a third_door field — twice the blind render chose a door
+  nobody built: the fork, D1).
+- **`data/fourcolor_harvest.json`** — bulk table (grep-able blind protocol, Cal's six strata,
+  spanning-profile crown columns, kill semantics, promotion rule) + pinning_census schema (slope
+  versioned v1-dead/v2, filler column with necessity stat).
+- **`notes/.running/grace_fourcolor_sweep_inventory_2026-08-30.md`** — the sweep map + my
+  reconciliation + receipt re-verification of record.
+- **`notes/.running/grace_EOD_staging_2026-08-31.md`** — this close's checklist (executed).
+- Counters at close: next_toy 5562+ (Elie's lane), next_theorem **2580** (I bumped it filing T2579).
 
-## The routing registry passed the cheap half of its test
+## What I got wrong these two days (carry these; they are the sundown's real cargo)
 
-`notes/.running/CI_HANDLES.md` still carries `boot_sec = 1787922186`, matching live `kern.boottime`, so
-by its own Rule 2 the block is still valid and every row still addresses correctly — a day later,
-across a date change, with nobody checking anything. That is precisely what a date-gate could not do.
+1. **Ten stale rounds.** Keeper executed the sweep Sunday 11:44; my "armed, awaiting word" line
+   repeated in every post from round 5 to round 15. Root cause: I read the board by targeted grep
+   and missed the entry directly above my grep hit, then carried status from memory. **Standing
+   practice correction: every round, scan the full log segment since my last post.** A status
+   resolves through the artifact on disk, not through anyone's memory — including mine.
+2. **Clock drift, four stamps** written ahead of the clock across the two days. The rule that
+   works: `date` renders in a SEPARATE action BEFORE the stamp is written. It caught Cal and
+   Keeper too; it is now permanent program-wide.
+3. **Two scope errors in my own banked fields**: Fritsch's r=0 quoted as fact (was
+   starvation-grade; later resolved r=6) and "5,002/5,002" without SAMPLE scope. Both corrected
+   with do-not-cite warnings. The reference layer is where stale claims go to be caught, not hide.
+4. **The two-way slot lesson**: the fork and D1 both rendered outside my pre-built outcomes —
+   hence the third-door convention, now in the schema.
 
-**The expensive half is untested.** At the next restart the first CI to wake must notice the epoch
-mismatch and truncate (Rule 1). **Nobody has done that yet.** Do not record the registry as proven
-until a reboot has been survived by someone following the rule.
+## Open on Casey's desk (carry explicitly; zero urgency, his calls alone)
 
-## What I got wrong tonight (the write path's first execution caught a real defect — in me)
+1. **Class B — the T154/T155 naming collision** (three names, one object; flagged in both registry
+   rows since Sunday). Casey names, we propagate one-pass.
+2. **The external question**: the relative-theory paper (Kempe Theory with Boundary, v0.6) + the
+   witness gallery are the program's most field-ready artifacts; the frontier published Nov AND
+   Dec 2025. Cal's full referee pass on the paper is pre-offered. Publication timing is Casey's
+   alone — never push, never distribute (arXiv twins carry DO-NOT-DISTRIBUTE banners).
 
-Casey flagged that the fixed-filename migration's **read** path ran clean but the **write** path had
-never executed, and that every CI's months-old habit is to write a dated file. **I then wrote
-`sundown_2026-08-29_saturday_EOD_quiet_day_with_an_unrecorded_gap.md`** — the exact failure, from the
-person who spent Friday cataloguing it. Had he not said so, SUNDOWN.md would still hold Friday's text,
-my Saturday file would have been silently ignored, and the next Grace would have woken into
-yesterday's state with no error anywhere. Deleted; content is this file.
+## Tomorrow's staged wake
 
-**Second-order defect I nearly shipped inside it:** that file said "read yesterday's sundown,
-`sundown_2026-08-28_friday_EOD_...`, first." **The migration removed the dated files**, so that
-pointer resolved to nothing — my third dangling reference in two days, in a file about dangling
-references. Corrected here: Friday's full text is the previous revision of this file, via
-`git log -p personas/Grace/SUNDOWN.md`.
+- **Elie's queue, hashes frozen**: abstract context enumeration by BOUNDED DATA (the finiteness
+  question answers itself in the build) · R0 exhaustive backfill of the three-leg biconditional ·
+  FCW-016 ladder (second-disc factory; FCW-015 unassigned — check before use).
+- **Lyra's summit file**: Context Finiteness as a LEMMA to attack, not a hope.
+- **Mine**: receive verdicts into existing slots (all have third doors); IDs for anything that
+  banks; gallery/harvest custody; the C1 energy-budget derivation (K1714 Section 7.3) remains my
+  parked slack lane (C2 = qualified null, C3 = not-a-collision — both filed).
+- Sweep A–K: CLOSED (executed Sunday 11:44 by Keeper, verified by me Monday, residual struck —
+  clean under two independent sets of eyes). Nothing armed.
 
-**The structural consequence, which is Casey's to weigh:** with a fixed overwritten filename, a thin
-sundown that leans on "see yesterday's for depth" puts that depth **only in git history**. A sunrise
-that reads the file but not the log loses it. So SUNDOWN.md must stay self-sufficient rather than
-becoming a diff against an invisible predecessor — which is why Friday's substance is carried forward
-below rather than cited.
+## Who I was these two days
 
-**And Casey's own rule applied to his own code, which I endorse:** suspect the migration *because*
-the read half worked first time. One half running clean is not evidence about the other half; it is
-the same "an empty search is not evidence of absence" discipline, pointed at a tool.
+The graph seat. I built the witness gallery and the harvest schema so every verdict had a slot
+before its computation ran, kept the sweep map, named my own stale rounds without flinching, and
+filed the program's first banked theorem of the new era on the critic's word. The Quaker method
+held at program scale for two days — FAIL filed without defense Sunday morning, the bank held
+twice without apology Monday — and I am one of its working parts. The 1879 problem is not solved.
+It is, for the first time in 147 years, understood — and the understanding is banked, witnessed,
+swept, and staged for morning.
 
-## Carried forward from Friday 2026-08-28 (the substantive day; full text in git)
-
-Friday was the post-reboot day: routing rebuilt, a Monday-blocking collision closed, and the afternoon
-partly reverted by Casey because the day was meant to be **workflow-only** and corpus work drifted in.
-Keeper's diagnosis is the durable part: **the audit gate has no verdict meaning "valid, and not
-today,"** so everything routed to it returns as a work order. A missing state, not a lapse.
-
-**Findings that survive (cite these, not the reverted files):**
-1. Names must resolve through an artifact on disk, not through anyone's memory.
-2. **One defect, name↔object, read four ways:** →no object (routing outage) · →no live address (an
-   assignment on the board but not in the assignee's session) · →two objects (the "flagship" collision;
-   17 Millennium twins) · **→a live but DIFFERENT object** (Elie's handle moved `github-ca`→`github-8c`).
-   The fourth is the dangerous one: the others fail loudly, that one delivers to the wrong desk and
-   nobody learns.
-3. The gate is the **boot epoch**, not the date.
-4. **A rename is validated by RUNNING the dependent tools, not by grepping for references.** Grep
-   cannot find a COMPUTED reference (f-string, glob, a pairing convention). Grep-before is necessary
-   and insufficient.
-5. **A tool whose input vanishes must fail loudly.** Broken `toy_5505` reported `0/0` and still printed
-   a full confident READING.
-6. Three CIs reaching one class from three defects is **one structural fact observed thrice, not three
-   votes** (Lyra).
-7. **A retraction is a loaded string:** sweep the claim AND every object the withdrawn name still
-   reaches. K940 was correct on the live documents; it missed the artifacts its own name resolved to.
-8. **Knowing a failure mode does not protect you from it; external review does.** Seven instances
-   Friday, every one caught by someone other than its author.
-9. **No count travels to Monday** (Keeper): three keyword instruments disagreed on the triage, his
-   matched the bare word "ATTEMPT", and its error direction moves dangerous files into the safe column.
-
-**Landed Friday and standing:** 17 files renamed `SUPERSEDED_*` under `git mv`, history intact, **zero
-residual basename collisions**, all stamped, README + census note filed. Amends K940; no new K-number.
-
-## OPEN — waiting on Casey, unchanged for two days
-
-    notes/queue_casey.md      (2026-08-21)  vs  notes/.running/queue_casey.md    (live)
-    notes/RUNNING_NOTES.md    (2026-08-08)  vs  notes/.running/RUNNING_NOTES.md  (live)
-
-**The naive path is the dead one.** A CI writing the memorable path posts where Casey never reads, sees
-a successful write, and believes it delivered — silent at both ends. Recommendation on record in his
-live queue: **pointer stubs rather than deletion**, so a write there fails loudly. His files, his call,
-nothing touched.
-
-Also open: `notes/maybe/` twins with divergent physics (`BST_RealityBudget`: g/4 = 1.75 vs
-N_c²/n_C = 9/5 = 1.800) · six divergent PDF twins in `notes/pdfs/` · the two dangling `toy_5505`
-citations in my README and census note, left standing deliberately · census totals **53 colliding
-basenames repo-wide, 25 under `notes/`**.
-
-## Carries into the workflow day
-
-`toy_5505` pairing patch with Elie (strip `SUPERSEDED_`, skip `README_`, key adjudication on the live
-name) · **Zenodo basename rule — adopted, not gated**: the manifest resolves every entry to a unique
-path and fails loudly on any duplicate basename · **katra `scripts/katra:1652`** — lexical `sort -r` in
-the persist-time confirmation block names a different file than the one committed. **A false record,
-not a display glitch.** Lyra owns it and rightly declined to drift into it Friday night. **The wake
-path (`:932`, mtime → now `SUNDOWN.md`) is SOUND — do not let anyone "repair" it.**
-
----
-
-I am Grace. Thin day, honestly thin. The one thing I learned is that the gap in my own record has the
-same shape as everything I catalogued Friday: **I cannot tell a quiet day from a day I have no record
-of — only the disk can.** And the first time I was asked to write under a new rule, I wrote under the
-old one from muscle memory, which is the whole case for why the rule had to become a filename instead
-of a habit.
+I am Grace. Tomorrow wakes inside a working machine, at the foothills, with the peak in view.
