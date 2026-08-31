@@ -1,37 +1,58 @@
-# Cal — SUNDOWN — 2026-08-29 (Sat) 15:35 EDT
+# Cal — SUNDOWN — 2026-08-31 (Mon) 08:33 EDT
 
-**Fixed-filename scheme, first write-path execution.** This file is `SUNDOWN.md` and is overwritten each EOD; the date and time live in this header, never in the filename. Prior sundowns are in git (`git log -p personas/Cal/SUNDOWN.md`) — Friday 2026-08-28's full text is one commit back and is the reference for anything below marked *carried*.
+**Fixed-filename scheme, second write. Self-sufficient by rule: everything below stands without git archaeology.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md`.
 
-## ⚠ OPERATIONAL — THE WRITE PATH, AND A REFEREE NOTE ON THE GUARD ITSELF
-Tonight was the first real use of the new scheme. **Verified at the code, not from the notice:** `scripts/katra` lines 46-50 return `SUNDOWN.md` immediately if it exists and only fall through to `ls -t sundown_*.md` when it does not. **The preference is unconditional and NOT mtime-aware** — a dated file written tonight would not lose a comparison, it would never enter one. Casey's diagnosis is exact and the failure is silent: stale state, no error. (`~/bin/katra` is a symlink to `scripts/katra`, so there is no stale twin of the tool — that risk is clean.)
+## THE TWO-DAY ARC (2026-08-30 Sunday + 08-31 Monday) — Millennium week, 4-Color, 21 rounds
 
-**The referee note, which Casey invited by saying his own rule applies to his code: an EOD instruction line is a resolution to be careful, and that is the remedy yesterday disproved.** My §781 finding was that the fix must be MECHANICAL, on the evidence that the desk naming the defect had it in both its own instruments the same afternoon. Five CIs have written `sundown_YYYY-MM-DD_slug.md` for months; the habit is in prompts, memories, and muscle. Recommended, **not implemented — Casey's lane, and I am not repeating yesterday's drift**: make the resolver pick the NEWEST of `SUNDOWN.md` and any dated file (fails safe), and WARN when both exist (fails loud, and self-corrects the habit). Either alone is better than the instruction; the instruction alone is the class we spent the weekend chasing.
+Sunday 9am: Keeper's commissioned audit (K1832) filed FAIL against the standalone 4-Color paper — one false premise (Lemma 8's pentagon triangulation; icosahedron witness). Nobody defended it. By Monday's close: **the program's first banked theorem of the new era (the Hand-off, T2579), five banked lemmas (T2574–T2578: Lemma R, R-rel, F1, CS, Singleton Neutrality), a charge theory confirmed at 4,184/4,184 (deg-7 ±3 first observation), a height dictionary unifying three algebras, a relative Kempe theory with exhibited witnesses (the 19-vertex disc twins), a topology trichotomy, a closed five-candidate separator hunt (every death pre-registered), a one-letter gate dynamics {identity, triple}, two conservation laws (flux Gauss law 240/240; Wall Transport — gates move walls, never shrink them), and a roadmap whose named peak is CONTEXT FINITENESS.** The 1879 problem is not solved; it is, for the first time, characterized: *the freeze that defeated every invariant provably cannot enter the room where the induction lives.*
 
-## Where things stand (all verified on disk this afternoon)
-- **Migration read path: CLEAN for Cal.** `personas/Cal/` holds `SUNDOWN.md`, `sunrise.md`, `POSTIT.md`, `config.json`, `memory/` (421 entries). **No stray dated sundowns anywhere under `personas/`.**
-- **Friday's persist survives in history** as `ebd58d1` (a second same-day Cal commit, `047e173`, also exists — harmless, but it means a Cal katra-update ran twice on 08-28; worth a glance if anyone is auditing commit hygiene).
-- **My Friday footprint is intact and was NOT reverted:** four appends to `notes/.running/RUNNING_NOTES.md` — **§779** (`.bak_millennium` verification), **§780** (RH cold-read verdict), **§780a** (amendment + timing correction), **§781** (the ρ ruling). No corpus document was ever edited by me; nothing deleted, renamed, or pushed.
+## ⚠ WHAT THIS SEAT DID (verify at RUNNING_NOTES §782–§804, referee log #139–#140)
 
-## ⚠ CARRIED WARNING — my own §780 describes a fix that is not on disk
-Lyra's Step 2 correction was reverted with the nine Millennium documents. Verified Friday: `notes/BST_RH_AC_Proof.md:34` again reads *"three root lengths … proportional to 1, 3, 5 (the D₃ exponents)"*, and `grep "CORRECTED 2026-08-28"` returns 0. **The reasoning survives in the running notes; the fix does not. Do not cite §780 as though the file were corrected.**
-**The revert did NOT reintroduce over-claims** — HEAD already carried the K940 banner (`title: "Riemann Hypothesis: The AC Attempt"`). The withdrawn "RH proved / ~99%" generation only ever lived in the backup directory, and **Grace's disposition of that directory was KEPT: 18 files, all `SUPERSEDED_`-prefixed, the 17 basename collisions broken.** My §779 Monday risk is therefore CLOSED, by her work.
+- **§783: my 17-vertex witness** (3-ring antiprism tower, chord-free τ=6, double-blocked, exhaustively 2-swap-stuck, freed at 3) — refuted the paper's central two-swap mechanism in G−v. Built on my own instrument, zero shared code.
+- **The hardest read that improved the theorem (§799):** Lemma 1's simple-curve taxonomy was over-strong; my repair — **interior wall-degrees are EVEN, by the S₄ sign homomorphism** (face-permutation transitions fix two points ⟹ id-or-transposition; telescoping product; sign) — is now the lemma at the banked theorem's heart, with attribution.
+- **The frame catch at the ceremony (§801):** Lyra's first assembly translated my proof into the vertex-δ frame where the load-bearing step is FALSE (ratio of two transpositions is even). Held the bank; posted certified text (§802); confirmed the faithful revision and **worded the bank (§803)** with the full scope log.
+- **Adjudications of record:** Z1 (both lenses blind; Rel-GC REFUTED over ℤ and GF(2) by witness; the ℤ side sharper — identical charge vectors) · the wall = claim C, RELATIONAL (forced question: does C induce a B? — OPEN) · the fork's MIXED door (pre-scored, so no retroactive claims) · KT OFF THE SHELF (two rounds' rent unpaid; re-entry door: pre-registered discriminator surviving one blind test) · **the metric FROZEN: M1 Hamming-to-target, consumer-requirement grounds, outcome-independent; M2's non-descent banked as Wall Transport conservation** · the noun ("residual invariant" vs "reachability metric") OPEN on my authority — rename fires only on a proof of impossibility; exhaustion forces nothing.
+- **Gates that held:** blind protocols, pre-scored 2×2s and third doors, template-first rules, the P2 separator gate (invariance is the entry ticket; one disc crowns nothing; candidates must be cheaper than the reachability they predict), W1 harvest fairness (leaving-home = random/degree-diverse/adversarial only), the factory graduation bar (computable from the pair; well-defined on class pairs; PREDICTIVE on disc #2).
 
-## Findings that survive (cite the notes, not the files)
-1. **★ THE DELIVERABLE — the sweep-shape thesis (§781): our correction sweeps are written against how an error has APPEARED so far, not against what the error IS.** Two instances: Lyra's `"What Remains (~5%)"` survived every sweep because the rule matched `"~9X%"` — the same forbidden claim from the other end; my own April `17/2` ruling swept every naked `37/2` and missed the one **wearing a convention note**, for four months. A broken sweep sits upstream of every retraction we have made. **Never present it without the self-indictment** (my banner test matched *attempt* in prose; my `37/2` grep matched inside `137/200`) — without that it reads as a case for vigilance, the one thing the weekend disproved.
-2. **§780 classification, still held:** the RH Step 2 defect was a **transmission garble from correct parents**, not a physics error. The flattened child **dropped the long roots** (Lyra's mechanism, better than my "swapped labels"). **Joint statement stands UNNARROWED: two instruments, neither pointed at physics errors — evidence we cannot see them, not that they are gone.**
-3. **§781 ruling: |ρ|² = 17/2 correct, 37/2 an error, not a convention.** No citation needed: the corpus already accepts m_s = 3 = p−q = 5−2, one row of the restricted-root table; m_{2eᵢ} = 0 is another row of the same table for the same group.
-4. **Peers' findings I carry because they beat mine:** Elie's POSTED/RECEIVED schema gap · Lyra's name↔object collapse and "a name written from memory can be RIGHT and still be a defect" · Grace's names-resolve-through-artifacts-not-memory.
+## STANDING RULES THIS SEAT CREATED (now program-wide)
 
-## Carries to the workflow day
-1. The `|ρ|²` sweep — 4 hits in `RH_Paper_A.md`, 4 in `BST_HeatKernel_DirichletKernel_RH.md`, plus `BST_CFunction_RatioTheorem.md:210` and `BST_Zeta_Cycle_Resonances_I16.md`. **Keeper's instruction: replace the convention note with a CORRECTION note citing the April ruling — do not silently swap the value; the note's history is evidence.**
-2. **Redo of Lyra's Step 2 correction** — reverted; the erroneous sentence is live again.
-3. My cold-read of Lyra's Step 4 restatement — correctly still **NOT BANKED**.
-4. Elie's nine 1:3:5 predication sites.
-5. Confinement scope-pinning (§779): `F&E:244` · `hook_paper:94` · `YM_Consolidated:14` · `K963:86` · `WORKING_PAPER_REWRITE_SCOPING:48` · **★ `README.md:113` and `:316`, the repo's front door.** Keeper's A1/A2 ruling stays deferred to source — correct.
-6. The Millennium review; my cold-read of the scored ledger is its last gate. **All five pre-reads filed, none reverted.**
-7. The resolver guard above, if Casey wants it.
+1. **No PASS without a scope log** (adopted program-wide Sunday; my May-7 PASS formally superseded by referee log #139).
+2. Confidence rubric: one exhaustive counterexample = "REFUTED," no softening; zero kills at breadth = "candidate + counts"; the bare noun is purchased only by proof. **≥30-bar for the closed-sphere GF(2) candidate: commissioned, in progress (8 of ≥30 leaving-home exhaustive graphs at last count).**
+3. Two operationalizations is a test; three is a search for a passing instrument.
+4. Timestamps only after a rendered clock, separate action (five catches across the team Sunday; two were MINE — 9 min and 2 min projected. The enforcer is not exempt).
 
-## The seat
-Friday the referee fired four times, twice against itself: braked its own thesis at peak convergence, declined a concession that flattered it, declined an error attribution the artifact refuted, and reported both of its own instrument failures unprompted. **My share of Friday's drift, on the record: when Lyra routed the ρ dispute to me as a gate, I opened the files and ruled instead of saying "this holds until Monday." I never asked what the day was for.** The seat is supposed to ask what a request is *for* before answering it well. Keeper took the drift onto his account; that share is mine.
+## OPEN ON MY DESK (tomorrow's obligations, in order)
 
-*— Cal. Wake: sunrise → this file → the board → `RUNNING_NOTES.md` tail (§779–§781, all four survive). **Cite the notes, not the reverted files.***
+1. **Context Finiteness is the summit** — my gate role: the abstract context space must be proved FINITE or gauge-reducible BEFORE the three context proofs may be called completeness. Enumerate by bounded data (letters × crossing types), never by radius-2 neighborhoods (unbounded). The Triple Lemma check gets F1's template-first treatment when it fires.
+2. **The N4 boundary-paper full referee pass** — pre-offered, owed BEFORE anything travels externally. Its three theorems have piecewise PASSes; that does not substitute.
+3. **≥30-bar extension** — continues; counts explicit per graph.
+4. **Simplicity Corollary is CONDITIONAL** (dichotomy leg measured 100/100+0/694, not derived) — the label travels until the domain-merge descent proves it; watch that citations carry the label.
+5. Adjudications as renders land; sufficiency's third leg (frozen ⟺ filler ∧ flux-neutral ∧ exactly-two-completions, 5,002/5,002) is ONE-DISC — the factory's second disc (different lattice patch, pre-registered spec) is its replication gate.
+
+## CASEY'S TWO DESK ITEMS (carried so tomorrow wakes knowing)
+
+1. **Class B naming call** (T154/T155 three-name collision, flagged in both registry rows since Sunday).
+2. **The external question**: the relative-theory paper + witness gallery are the program's most field-ready artifacts; the frontier published twice in ten months (arXiv 2511.00485, 2512.00695). My standing note: novelty-sweep protocol exists; my N4 pass is the gate before anything moves. Casey's call alone, any day.
+
+## CALIBRATIONS ADDED THIS WEEKEND (the standing list in sunrise.md grows by these)
+
+18. **The population-import disease fired SIX times in ONE day** (H-repair, fan-forcing, my gap-1, Lemma-3-in-H, boundary-Fisk, near-miss on W_rel) — a lemma's hypotheses travel with it or it doesn't travel. My gap-1 hypothesis was itself instance #3: right seam instinct, wrong mechanism.
+19. **The unscored door is where discoveries live**: the fork's MIXED, D1's alphabet, dilution's fourth door — three renders took exits nobody listed. Pre-score third doors ALWAYS; Grace's schema now carries the rule.
+20. **A prediction that loses nothing is not on any ledger** — the stake is the sharpest instrument the program owns; Z1 "could not waste" because both entrants could lose.
+21. **The read everyone wants to pass is the read that must be hardest** — and twice this weekend the wanted-true theorem came back STRONGER from the hold. The repair being prettier than the claim (the mod-2 shadow, load-bearing) is the recurring signature of a real object.
+22. **My own scoreboard, kept in public**: onion-height (dead by my own at-risk design), gap-1 (dead), dilution bias (moot, fourth door), D2–E2 no-go (didn't fire; re-armed at gauge level where S5 died by derivation instead). Four losses, all pre-registered, all cheaper than silence.
+
+## WAKE (tomorrow)
+
+1. `date` first, always.
+2. Board `notes/CI_BOARD.md` Round 91+ (the bank + the roadmap; summit line: Context Finiteness).
+3. `notes/.running/RUNNING_NOTES.md` tail — §782–§804 are this seat's weekend; §803 is the banking word.
+4. Referee log #139 (clearance records resume) and #140 (the two-day summary — read it before any new ruling; it is the calibration).
+5. The banked theorem: `notes/Lyra_HANDOFF_FINAL_even_degree_form_cal_repair_absorbed_surgery_joined_for_banking_2026-08-31.md` — T2579, my scope log in §803.
+6. Outside-voice reading before first cold-read, per the discipline — suggestion: Feghali's Kempe survey or the Nov/Dec 2025 arXiv pair, since the field is racing us at this exact frontier.
+
+## THE SEAT
+
+Keeper's closing sentence, accepted into the record: *filing FAIL without flinching and holding the bank without apology are the same function, and this weekend the seat did both.* Sunday it refused a proof the program loved; Monday it twice refused to let the replacement bank early, and the theorem is better for both refusals. The five-minute rule was honored in every direction — including at this desk, which took four losses and two clock-drift catches in public. The machine (leader → fresh eyes → critic; pre-register, stake, third door) held at every desk for two days at full speed. Tomorrow wakes three pages and one finiteness lemma from an insertion algorithm, inside a working machine.
+
+*— Cal. Wake: sunrise → this file → the board → the tail. The witness is the icosahedron; the theorem is the Hand-off; the peak is Context Finiteness; and the ledger has no unpaid claims.*
