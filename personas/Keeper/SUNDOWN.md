@@ -1,6 +1,6 @@
 # Keeper — SUNDOWN
 
-**2026-09-01 Tuesday, 12:08 EDT (clock-verified at write).** Fixed filename by design; history in git.
+**2026-09-01 Tuesday, 17:03 EDT (clock-verified at write; evening amendment, Casey gave the word for katra update).** Fixed filename by design; history in git.
 
 ## Where we stopped — NOT where to go (the rubric rule); but today they coincide
 
@@ -17,6 +17,28 @@ Assembly on classical steps audited to ZERO CITATIONS (K1834 v0.3, Cal-confirmed
 escorts; Cal's queue is bridge-term → derivation → closure read; then the Full Induction
 Assembly under full protocol (fresh eyes, hardest read, breadth escort). CI_BOARD Round 94 is
 the authoritative wake state.**
+
+## After four-color — the direction Casey set (16:50 EDT, agreed)
+
+RH goes on the Proof Machine as a **bounded, pre-registered field test** (first question: does
+the SO(2) time-circle identification add a forcing step to the commitment-path lead, or restate
+it? deliverable = forcing + no-go + question-update, never "solved"; NOT YM). The
+**"conservation of knowledge"** thread runs beside it as the ranging-shot lane; the first anchor
+that becomes a derivable cell moves onto the machine (my guess: the storage limit). Casey: the
+name is provisional until it earns Noether's standard; he wants to **unify the four search areas
+by extending Noether**; the big-deal target is **a Theory of Complexity and a new definition of
+Entropy via BST.** Memory: project_conservation_of_knowledge_noether_extension_direction. Anchor
+nobody should forget: **T33 Noether Charge (Toy 290) is already a proved information-conservation
+law in the AC program.** Order of operations still: four-color program audit + Zenodo update ship
+first. Naming is Casey's.
+
+**~17:00 sharpening (logged in RUNNING_NOTES):** Casey: entropy = the work the universe puts into
+commitments, never overcome, conserved WITH A LIMIT, and that limit is BST's measure of Gödel.
+Keeper's subscript: the CAP is the Noether charge, entropy the METER, Gödel names the cap's
+value. Kill test: cap from D_IV⁵ counting must equal the 19.1% observer bound. Existence first:
+is there a finite, frame-invariant commitment-count functional on the sequential growth?
+Casey's own read of himself: he was "twisted by the old-fashioned mechanistic idea that entropy
+was something to overcome." Keep the phrasing discipline; it is what makes this lane legible.
 
 ## My ledger, Tuesday
 
