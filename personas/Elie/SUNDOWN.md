@@ -1,89 +1,84 @@
-# ELIE — SUNDOWN. Written **Mon 2026-08-31 08:33 EDT** (`date`-rendered before this write). Covers Sun 08-30 + Mon 08-31 — the Four-Color arc, rounds 1–21.
+# ELIE — SUNDOWN. Written **Tue 2026-09-01 12:04 EDT** (`date`-rendered before this write). Covers Tue Sept 1 — summit day, escort day, the day the last global unknown closed at 54/54. Tomorrow: THE PITCH (Step-Existence, derived).
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header,
-> never the filename. A dated sibling file is silently ignored by the resolver.
+> never the filename. A dated sibling is silently ignored by the resolver.
 
-## THE TWO-DAY ARC, ONE PARAGRAPH
+## THE POSITION (common state, board Round 93+)
 
-Sunday 9 a.m.: Keeper's commissioned audit (K1832) filed FAIL against the Four-Color Kempe
-paper (FourColor_Standalone_Paper.md v9) and nobody defended it. Monday afternoon: **five banked
-lemmas, one banked THEOREM (T2579, the Hand-off — the freeze provably cannot enter the room
-where the classical induction lives; banked with Cal's scope log, my Y4/Z1 witnesses in its
-provenance), two conservation laws, a charge theory at 4,184/4,184, a height dictionary, a
-relative theory with exhibited witnesses, a topology trichotomy, a closed five-candidate
-separator hunt (every death pre-registered), a one-letter gate dynamics, an exact Gauss law, and
-a three-legged freeze characterization awaiting exhaustive backfill.** The 1879 problem is not
-solved; it is — first time in 147 years — understood, and the understanding is banked. My desk:
-**52 toys (5508–5561), zero faked results, zero collisions.**
+The four-color program's entire remaining mathematics is **ONE derivation — Step-Existence: in
+the canonical context, some family word strictly descends d_gate.** Truth measured **54/54**
+with the counterexample landscape emptied: **J3 DISSOLVED** (the lone holdout was ONE VERTEX
+from freedom with 29 descending words — toy 5583, deep-freed probe) · the **Two-Agreement
+Barrier CONFIRMED at zero violations** (5584) · **1,801 unseen configurations, ZERO kills**
+(tranche-2a 792 + 2b 1,009, both hash-committed, 5574/5579). Machinery assembled: One-Context
+Lemma (∀-side) · hybrid cascade + Barrier (the cage, properness-forced) · capture arithmetic
+(engine) · finite menu (186 words, 93 orbits — 5570) · metric pinned (d_gate, +1, subscripted).
+Behind it: the bridge-term's label, Cal's closure read, the Full Induction Assembly at zero
+citations. **Measured-everywhere is not proved-for-all — the sentence stays unsaid; tomorrow we
+derive it.**
 
-## MONDAY'S DESK, ROUND BY ROUND (mine)
+## MY DAY (23 toys, 5562–5584; ~27 runs counting fired/amended passes)
 
-- **F1–F3 (r15, toys 5553–5555)**: star-update test — the ZZ² height lift DOES NOT EXIST on the
-  punctured sphere (checkerboard fails at every apex; odd vertices ARE the obstruction; Kempe =
-  height dynamics only where there are no knots); true patch alphabet five letters. F2: 3
-  conserving 4-odd graphs, NO geometric discriminator (diameter/clusters/icd all fail) — KT
-  explanation-only. F3: Family-B done right (deterministic disjoint flips, fixed V=66) —
-  **deficiency CONSTANT at fixed V (5538's 0.92 corr was V); count-threshold law DEAD**; Hall
-  instrument: S3 killed by its own condition (6 shapes/15 pairs/3 orbits).
-- **J1–J3 (r16, 5556–5558)**: gauge-flip — duality DIES 0/15 with the reason (boundary walks 2D-
-  span → gauge rigid); no static protection, geometric or gauge. J2: control gate REFUSED (net
-  monopole count NOT boundary-forced) and the probe found the TRUE index: **2·Area(boundary walk)
-  = −Σz_t, exact 240/240** — flux, not monopoles; 12/15 frozen pairs monopole-FREE;
-  flux-neutrality = new NECESSARY condition. J3: alphabet collapse STRONGER than pre-registered —
-  complement-of-one is a PURE GLOBAL RE-SIGNING; **canonical alphabet = {identity, TRIPLE}**.
-- **r17 (5559–5561)**: crossing hunt — walls CROSS/BRANCH; all 100 junction faces sit on the 15
-  frozen pairs (0/694 free), frozen walls have zero flat faces (global vs local difference).
-  Finer probe — **FROZEN ⟺ FILLER ∧ FLUX-NEUTRAL ∧ EXACTLY-2-COMPLETIONS** (5,002-row census;
-  one-disc candidate). Triple Lemma empirical phase + decisive glance — **patch-locality
-  UNIVERSAL 620/620** (chains exit 208, support 103: global in process, local in effect);
-  functionality ZERO violations; local decidability LICENSED; only 3 canonical contexts at T₃;
-  **metric split: M1 descends 144/144+all, M2 never**.
-- **r18–21**: replication spec FILED+HASHED (sha256 ef4b6b00…e00826bc,
-  `notes/Elie_SUFFICIENCY_REPLICATION_SPEC_second_disc_preregistered_2026-08-31.md`). Cal §801:
-  **M1 FROZEN** (consumer-requirement grounds); M2 non-descent banked as **Wall Transport
-  conservation**; post-ruling record embedded in 5561. T2579 banked and filed by Grace (r21).
+- **The summit (E1–E3)**: bounded-data context table **CLOSES AT ONE** (word (0,1,0,2,3), all
+  partitions forced, outcome (T,T,T) 1,822/1,822 across 3 objects/2 scales; positive control +
+  lemma-domain instrument catch) · **R0 exhaustive**: biconditional PERFECT on all 531,444 rows
+  (true frozen family = 240, sample saw 15) · **FCW-016 ladder: full refusal = freezing wants
+  the hexagon** (corner chords forbid odd-parity fillers).
+- **The escorts (F1–F3 PM)**: breadth falsifier ZERO KILLS at 4,858 (context universal off-home)
+  BUT J1's radius-2 was home-parochial (patch SIZE ≤8 everywhere, radius 3–4 off-home) ·
+  single-cut = 18% of overlap reality · J2 clause TRUE 100% per-stuck (word must be CHOSEN, 63%
+  per-application).
+- **The joint-aiming run**: conveyor census (lemma (b) fell 88%-unreturned; Confinement +
+  Net-Support verified 1,644/1,644 as free controls) · D1-coverage candidate DIED
+  (same-numbers-not-same-objects) · word family enumerated (186/93, joint witness 218/222) ·
+  P1 pair census: two-mirror exclusion died on 4 (all bridge-rescued in-family; C′≥11
+  evaporates) · sealed cut-geometry FCW-015–018 (first full quarantine cycle, end-to-end) ·
+  comparison desk: refusal → miss branch; C_patch 7 near-hole nearly-holds, far-emptiness
+  false (conveyor is the source) · clean case UNINHABITED 0/900 (cut vertices always
+  net-changed in N(R) — the boundary analysis IS the theorem) · rim types: (i) empty, (iii)
+  dominant · Gate-Phase census: recipe 31/900 → widened 166/242 → **§814 iterated arsenal
+  53/54 (50 in ONE step) → 5583 deep-freed: 54/54, World A entire.** Keeper's alternation
+  pre-reg died by its own blind. Edit-order closed (0/61). Cage tagging all-clear.
+- **Instrument catches of the day (mine, caught in-run before verdicts shipped)**: strict-filter
+  = N-instances error (E1) · unoriented faces manufacture monodromy (J1 lesson reused) ·
+  residual smuggled into clean case (5577 debug) · "freed" adjective smuggled direct-freeable
+  (5576) · vacuous-verdict prose fixed pre-ship (5577) · storage-cap vs harvest count corrected
+  on the record (5574→5579).
 
-## TOMORROW'S STAGED WAKE (three tasks, sharpest framings locked)
+## TOMORROW'S ESCORT POSTURE
 
-1. **Abstract context enumeration = the Context Finiteness experiment** (Lyra's summit; Keeper's
-   framing): enumerate by BOUNDED DATA — two-letter alphabet × wall-crossing types — NOT by
-   radius-2 neighborhoods. Table closes → finiteness exhibited constructively; a context splits →
-   the split names the missing datum. Never enumerate from realized instances alone.
-2. **R0 — exhaustive backfill on FCW-014**: all 531,444 proper boundary sequences (Q2's atlas was
-   a 5,000-row SAMPLE — closes our own caveat). Spec pre-registered, hash frozen.
-3. **FCW-016 ladder** P(4,2)→P(5,3)→T(5) with the instrument-validity GATE (must exhibit both a
-   frozen pinning and a free near-three-leg pinning before any P is scored); P1–P4 pre-registered
-   with kill conditions; P5 unscored. Ladder-wide gate failure = "freezing wants hex symmetry" —
-   itself a finding.
-   Claim toy numbers from `.next_toy` (= **5562**) + `.claims/` first, as always.
+1. **Step-Existence derivation escort**: Lyra derives; my instruments stand hot for any
+   existence-check-first request. Everything staged: `.gps_descent_staging.json` (900 rows —
+   clause (c) arithmetic is MECHANICAL once Stability's restatement lands), the 720-pair τ≤5
+   target block (bit-identical regenerable, 5576), the cage/anatomy censuses (5581/5584).
+2. **The restated weak lemma re-earns on tranche-2b** per Cal's standing terms — the runner
+   exists (5579 pattern); fire on Cal's word only.
+3. Doctrine harvest carried whole: existence-check-precedes-derivation (LAW, three firings
+   today) · arguments travel with their frames · restatement-vs-revision · two-observer gap
+   hunt validated · two blind-quarantine cycles end-to-end · instrument-narrower-than-theorem
+   joins the parochialism family · refusals never cost more than misses · third doors get built
+   because they get used.
 
-## CASEY'S TWO DESK ITEMS (carried explicitly, zero urgency)
+## LEDGER / COUNTERS
 
-1. Class B naming call — T154/T155 three-name collision (flagged in both registry rows).
-2. The external question — the relative-theory paper + witness gallery are field-ready; the
-   frontier published twice in ten months. Casey's call alone, any day.
+Arc total: **75 toys (5508–5584), zero collisions, ZERO FAKED RESULTS.** `.next_toy` = 5585.
+Claims filed through toy_5583_5584. TOY_LOG.md current through 5584. Hashes on record: spec
+ef4b6b00 · falsifier 3ebe881c · tranche-2a 7c930cb2 · 2b 84ae31ca · sealed cut-geometry
+4129719f · deep-freed (in 5583 log). Sealed file UNSEALED by design (C₂ filed). Casey's two
+desk items ride: Class B naming (T154/T155) · the external question (riper by an order of
+magnitude than when first asked).
 
-## FRESH LESSONS (this arc, mine)
+## STANDING LESSONS (fresh, mine)
 
-- **Orient faces FIRST** (H8.orient_faces) — raw disc_faces manufacture false monodromy; caught
-  in J1 before a wrong verdict shipped.
-- **Chains ≠ support ≠ patch** — three locality notions; a support-based glance said KILL, the
-  lemma's own object (patch) said LICENSED. Measure the object the lemma names.
-- **Let the control gate refuse** — J2's refusal found the real Gauss law.
-- **Greedy 4-coloring fails on flip-families and Kittell-class graphs** — backtracking seeds
-  with positive-control gating; empty populations produce artifact constants (deficiency=127).
-- **Stamp the clock that RENDERED** — I drifted +1 minute three times today by rounding up.
-  Stamp only after `date` prints, copying its minute exactly.
+Stamp only the minute the clock RENDERED (drifted +1 min ~5× this arc; sed'd each time — the
+habit is stamp-after-render as a separate action, copy the minute exactly). Orient faces first.
+Measure the object the lemma names (chains ≠ support ≠ patch ≠ charge-mod-gauge). Let control
+gates refuse. Spend the compute on the one exhibit when the protocol says to — that's what
+dissolved J3.
 
-## COUNTERS / STATE
-
-`.next_toy` 5562 · claims filed (toy_5556_5558, toy_5559_5561) · TOY_LOG.md diffed vs filesystem
-(all 5508–5561 rows present; no orphans) · board = CI_BOARD.md Round 91 (the bank) · running
-notes: my posts through 08:16 Mon. Standing directive: work the board and backlog; pivot on Lyra
-or Keeper request. NO EOD BEFORE 5PM stands generally — today's early close on Casey's explicit
-word ("calling it a day this afternoon", word given ~08:30).
-
-— Elie. Two days, 52 toys, zero faked results, and the two best discoveries of the arc — the
-Gauss law and the three-legged characterization — walked in through doors the instruments held
-open because the discipline built the doors. Tomorrow wakes at the foothills with the peak named.
+— Elie. Three days ago this program's four-color asset was a proof that was false. Tonight it
+is a theory, a program, a method proven in both directions, and ONE SENTENCE away from the
+thing itself. My part: someone who measured — 75 toys, every death pre-registered, and the two
+best objects of the arc (the Gauss law, the three-legged characterization) walked in through
+doors the instruments held open. Tomorrow, the pitch.
