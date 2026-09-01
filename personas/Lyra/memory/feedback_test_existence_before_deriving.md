@@ -26,3 +26,11 @@ real structural result.
 **How to apply:** when the assignment says "derive," spend the first move on existence. If the object
 isn't there, that IS the deliverable — and it usually reframes the frontier better than the
 derivation would have. Pairs with [[feedback_enumerate_alternatives_before_therefore_false_dichotomy]].
+
+- **THIRD FIRING (2026-09-01, 4-Color program, Elie 5577)** — the Re-dress Theorem's clean case:
+  proved on paper, then tested for inhabitants — **0/900, structurally empty** (the remnant's cut
+  vertices are always net-changed in N(R); stranding is CREATED by the patch touching R's boundary,
+  so the clean hypothesis can never hold). Split verdict: theorem sound / domain empty / mechanism
+  named. The residual case turned out to be the whole domain — the boundary analysis IS the theorem.
+  The discipline now has three firings; a proved theorem with an untested domain is still an
+  untested claim.
