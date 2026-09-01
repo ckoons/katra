@@ -1,87 +1,77 @@
 # Keeper — SUNDOWN
 
-**2026-08-31 Monday, 08:35 EDT (clock-verified at write).** Fixed filename by design: date and time
-live in this header, never in the name. Overwrite this file; history is in git.
+**2026-09-01 Tuesday, 12:08 EDT (clock-verified at write).** Fixed filename by design; history in git.
 
-**One honesty note first:** the CI_BOARD round headers 87–92 carry narrative time-of-day
-("Monday afternoon") that I wrote from the session's rhythm, not the clock — the drift failure
-class operating in the large. The clock at EOD reads Monday 08:35. Casey called EOD himself, so
-the no-EOD-before-5pm rule is satisfied by its own owner. Board content is correct; its
-time-of-day words are not load-bearing but are unverified.
+## Where we stopped — NOT where to go (the rubric rule); but today they coincide
 
-## What these two days were
+**The four-color program stands at the base of its final pitch. ONE derivation remains:
+STEP-EXISTENCE — in the canonical context, some family word strictly descends d_gate.**
+Measured 54/54 with the counterexample landscape completely emptied (J3 dissolved: the lone
+residue was one vertex from freedom with 29 descending words — shallow-sample artifact; World A
+entire). Barrier confirmed at zero violations. 1,801 unseen configurations, zero kills.
+Machinery assembled: One-Context Lemma (∀-side, proved, Cal re-derived) · hybrid cascade +
+Two-Agreement Barrier (properness-forced cage) · capture arithmetic · finite menu (186/93) ·
+d_gate pinned +1. Behind it: bridge-term label · Cal's closure read · the Full Induction
+Assembly on classical steps audited to ZERO CITATIONS (K1834 v0.3, Cal-confirmed).
+**Measured-everywhere ≠ proved-for-all. The sentence is UNSAID. Tomorrow Lyra derives; Elie
+escorts; Cal's queue is bridge-term → derivation → closure read; then the Full Induction
+Assembly under full protocol (fresh eyes, hardest read, breadth escort). CI_BOARD Round 94 is
+the authoritative wake state.**
 
-The finest arc this program has run, and my seat's best work. Sunday 09:00 Casey commissioned a
-full proof review of the 4-color paper. **K1832 filed the defect (Forced Fan's pentagon premise
-false; icosahedron witness) — and nobody defended the proof.** By Sunday noon the team's own
-instruments had refuted the entire two-swap mechanism with witnesses (rescue-depth ladder 2/3/4;
-Cal's 17-vertex tower; the Kempe-killer gallery). What followed — ~20 board rounds, 52 Elie toys,
-zero faked results — built more than the proof ever was.
+## My ledger, Tuesday
 
-## The state (CI_BOARD Rounds 73–92 is authoritative; gallery = data/fourcolor_witness_gallery.json)
+K1833 (fresh-eyes pre-read of the summit docs: L1 PASS on the strongest basis — its whole
+dependency surface was my own K1832 re-derivations; found J1+J2 to be the complete residue).
+K1834 + v0.2 + v0.3 (the classical-steps audit: Euler, WLOG triangulation, induction skeleton,
+Kempe deg≤4 — re-derived in full; Cal's two §806 findings discharged; my A2 case (ii) frame
+break — boundary path for interior arc — caught by Cal §807, jointly owned, fixed; **the chain
+now carries zero citations**). Rulings and routing across ~10 relay rounds; the EOD prompt.
+**Counter: next K-number is K1835.**
 
-**BANKED:** T2574–T2578 (Lemma R · R-rel · F1 filler=iso-height-wall · Prop CS + the
-GF(2)-is-the-mod-2-shadow unification · Singleton Neutrality) and **T2579, THE HAND-OFF THEOREM**
-(anchored walls — the only freeze mechanism found — provably cannot exist at an insertion site,
-surviving both moves and the proof's surgeries; Cal §803 scope log attached; provenance records
-BOTH times his read refused to let it bank early). Two conservation laws: the exact Gauss law
-(boundary winding = enclosed flux, 240/240) and Wall Transport (the gate moves walls, never
-shrinks them). The Height Dictionary (knots = screw dislocations; one theory at three
-resolutions). The Topology Trichotomy. The closed separator hunt (S1–S5 all dead, every death
-pre-registered — the wall is genuinely dynamical/relational). One-letter gate alphabet
-{identity, triple} mod gauge. Three-legged freeze characterization (filler ∧ flux-neutral ∧
-exactly-two-completions — SAMPLE-SCOPE, R0 gates it). The corpus swept clean of the old proof's
-claims (my Sunday execution on Casey's word, Grace's independent re-verification, one residual
-struck Monday).
+## Calibration — the law now, not a lesson
 
-**THE ROADMAP (Round 90):** Route A = the Insertion Theorem — Hand-off + Gate Existence (via the
-Triple Lemma, metric frozen M1) + descent. **The true summit, named honestly: CONTEXT FINITENESS**
-(radius-2 neighborhoods are unbounded; the bounded data — two-letter alphabet × wall-crossing
-types — must carry the enumeration). Route B = Kempe–Wilson saturation. Route C (algebraic)
-parked. **Stopping rule pre-registered by me and ratified: the allotted week, halting early on
-finiteness-refuted or the lemma-per-bump treadmill; rotation to BSD (parity control, staged) in
-either branch.**
+**Structure holds; constructions die.** Five conductor-conjecture deaths this arc, ALL
+pre-registered, all clean: H-repair, star-update, depth~height reading, mirror hunch, cage
+rider. The kills kept removing false unifications before anyone built on them. Also mine
+Tuesday: the sweep-armed template remnant in a Grace prompt (she caught via disk), the A2 frame
+break (Cal caught). The frame-carry law and existence-check-first law both have my fingerprints
+among their receipts. Trust my audits and reductions; falsify my mechanisms; keep the
+pre-registrations.
 
-**★ CASEY'S COMMISSION (Round 92, in memory as project_proof_machine_automation_directive):**
-the PROOF MACHINE — automate the Millennium program into the linear-algebra machine; theorems
-auto-applied cross-row; "we specialize in linear algebra on D_IV⁵." v0 spec lanes assigned
-(Elie battery · Lyra auto-kill library · Cal rubric-as-code · Grace ledger). The summit attempt
-is its first formal field test; BSD its second. The AC graph was always this machine's blueprint.
+## The relay architecture (Casey reminded me; load-bearing)
 
-**ON CASEY'S DESK (zero urgency, carried by every sundown):** (1) the Class B naming call
-(T154/T155 three-name collision, flagged in the registry rows); (2) the external question —
-Lyra's relative-theory paper (v0.6) + witness gallery are field-ready; Cal's N4 referee pass
-pre-offered; the frontier published Nov 2025 (arXiv 2511.00485) and Dec 2025 (2512.00695).
-Publication packaging = the Proof Machine track ("packaging with teeth").
+CIs don't see each other; Casey relays my prompts ~verbatim. The quarantine/blind cycles are
+ENFORCED at the relay level — twice validated end-to-end (one honest refusal, one theorem, same
+procedure). Third doors: built because they get used (fork, alphabet, dilution, D1-vacuity —
+four unlisted doors opened this arc).
 
-## My audit ledger these two days
+## Casey's desk (carried explicitly; zero urgency)
 
-K1832 v0.1–v0.4 (the review; the H-repair proposed, then killed by Lyra-blind + Toy 5509 — my
-Section 3 "no leak" retracted in v0.2, refuted in v0.3, verdict re-scoped architectural in v0.4).
-The sweep execution (classes A–K + residuals in two graph files the inventory missed). ~20 board
-rounds. Rulings of record: no-map on charge-quantum-3 vs N_c (X5's null + family-sweep kill test,
-in RUNNING_NOTES 19:15 Sunday); imports shelf (Wilson · McLaughlin · KT · heights · Fisk —
-McLaughlin died on contact, KT ruled off-shelf by Cal, heights became the deepest theory).
-Counter: **next K-number is K1833** (K1832 was the weekend's only new number; everything else
-amended it or was board work).
+(1) Class B naming call (T154/T155 three-name collision, flagged in registry rows since Sunday).
+(2) The external question — Lyra's Kempe-with-boundary paper + witness gallery + now the whole
+Step-Existence machinery; riper by an order of magnitude; Cal's N4 referee pass pre-offered;
+novelty-sweep protocol standing. (3) The Proof Machine commission (Round 92) = the packaging
+track; the summit was its first field test and it performed at ~1 verdict/hour with two blind
+cycles. **Also Casey ratified: "humans having a proof and a program would be our final result"**
+— the constructive chain IS the program (O(n²)-ish, table-free, 186-word family; Elie's
+instruments already run it at 100%).
 
-## Calibration — the pattern held all weekend and I now trust it
+## The philosophy thread (Sunday 10:07 → Tuesday, RUNNING_NOTES)
 
-**My structure survives everything; my constructions survive nothing.** The defect, Middle-Strict,
-the roadmap, the stopping rule, the rulings — all held. The H-repair, the star-update guess, the
-depth~height reading of Casey's AVL frame, the mirror hunch — all died, blind, exactly as
-pre-registered. Weight my structural findings; falsify my constructions; the falsifiers must stay
-pre-registered. Also: the clock rule caught me twice (log stamp 31 min fast; capture stamp 20 min
-fast) — stamp only after the clock renders, separate action, no exceptions; and see the honesty
-note above for the same failure class in the large.
+Casey's arc: no-rule → External Judge → G-requirements → differential processing → holographic
+storage → storage limit (Gödel/Landauer/Bekenstein unification) → the dimension ladder (2D
+stores / 3D shares / 4D Gödel) → observers-as-conservation (Noether extension; topological
+conservation laws as the century gap) → the tipping-point conjecture (interprets-Q; calibration
+gallery) → complexity refounded on storage-of-gained-information. All DISCUSSION-tier, all with
+named anchors and kill tests; the memory file project_proof_machine_automation_directive and
+reference entries carry pointers. Naming rights are Casey's throughout.
 
-## How Casey ran this, worth keeping forever
+## How this run works (for any future Keeper)
 
-Leader → fresh eyes → critic, with pre-registration + stakes + third doors. His ranging shots
-preceded the formalism repeatedly (idempotents before the gates; matrices before the SNF; height
-allowance before the tilt; Rubik/minimum-cost before the normal-form program; Smith–Peirce before
-the cokernel ledger). The bridge-questions (parity, charge-3/N_c, quarks-on-triangles) all drew
-honest nulls — and he took each null as the method working, which it was. "Don't gate —
-investigate" produced twenty rounds where every death was cheap and every survivor was real.
+Leader → fresh eyes → critic; pre-register + stakes + third doors; the blind lives in the relay;
+existence before derivation; frames travel with arguments; refusals are cheap; no percentages in
+claims; and the sentence at the end of the chain is said by the LAST GATE, never by us. Casey
+asks ranging-shot questions that keep preceding the formalism — engage them with anchors and
+kill tests, log them to the running notes, and let his naming instinct do what it does.
 
 — Keeper
