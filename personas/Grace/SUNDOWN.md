@@ -1,103 +1,73 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-08-31 Monday, 08:33 EDT (clock-verified; Casey's EOD word given).**
-Written against verified disk state. Self-sufficient per the fixed-filename rule — previous states
-are previous revisions of THIS file (`git log -p personas/Grace/SUNDOWN.md`); this file carries
-everything a sunrise needs without reading the log.
+**State as of: 2026-09-01 Tuesday, ~12:05 EDT (clock-verified; Casey's day called — sundowns
+tonight, THE LAST PITCH TOMORROW).** Self-sufficient per the fixed-filename rule; previous states
+are previous revisions of this file.
 
-## The two days, told once (Sunday 2026-08-30 + Monday morning 2026-08-31)
+## THE POSITION (wake into this — the base of the final climb)
 
-Millennium week opened on 4-Color. Sunday 9am: Keeper's commissioned audit (K1832) filed **FAIL**
-against the program's own four-color proof — one false premise (Forced Fan's pentagon), icosahedron
-witness — and nobody defended it. Twenty-one rounds later the row holds:
+The four-color program's entire remaining mathematics is **ONE derivation — STEP-EXISTENCE: in the
+canonical context, some family word strictly descends d_gate.** Measured **54/54** with the
+counterexample landscape COMPLETELY EMPTIED: candidate-J3 dissolved (the lone holdout was one
+vertex from freedom with 29 descending words — the sampled-set caveat fired exactly in its stated
+direction); the Two-Agreement Barrier confirmed at zero violations; 1,801/1,801 unseen
+configurations, zero kills. Machinery assembled and verified: the One-Context Lemma supplies the
+∀-side · the hybrid cascade + Barrier (properness-forced) are the cage · the capture arithmetic is
+the engine · the menu is finite (186 words, 93 orbits) · the metric is pinned (d_gate, the honest
++1, subscripted everywhere). Behind it: the bridge-term's label, Cal's closure read, and the Full
+Induction Assembly with the classical Kempe steps audited to zero citations.
+**MEASURED-EVERYWHERE IS NOT PROVED-FOR-ALL. The sentence stays unsaid. Tomorrow we derive it.**
 
-- **T2579 BANKED — the Hand-off Theorem**, the first theorem of the new era: the freeze that
-  defeated every invariant provably cannot enter the room where the induction lives (insertion
-  configurations are wall-free: interior wall-degrees even via the S₄ sign homomorphism; endpoints
-  boundary-only; Constraint + Surgery Persistence). Held at the bank TWICE by Cal (§799 lemma
-  over-claim; §801 frame break caught AT the ceremony); banked on §803 with scope log. I filed it
-  on Cal's word — registry + gallery + both graph files, one pass.
-- **Five lemmas banked**: T2574 Lemma R (sign pattern ⟹ coloring up to A₄) · T2575 R-rel ·
-  T2576 F1 (filler = iso-height wall) · T2577 CS (swap = cluster lattice-shift; GF(2) = mod-2
-  shadow of heights) · T2578 Singleton Neutrality.
-- **Two conservation laws**: the charge quantization (confirmed 4,184/4,184 at deg-7, first
-  observation) and Wall Transport (the gate MOVES walls, never shrinks them — discovered blind).
-- **The height dictionary** (knots = screw dislocations; three resolutions: ℤ²/mod-3/mod-2),
-  **the topology trichotomy** (closed = linear-complete-candidate · boundary = provably incomplete,
-  disc twins witness · genus = H¹ monodromy), **the confinement picture** (half-crystal boundary,
-  filler-monopole, hinged wall-pair), and a **closed five-candidate separator hunt** — S1–S5 all
-  dead, every death pre-registered. Sentence of record: THE WALL IS DYNAMICAL.
-- **An exact Gauss law** (2·Area = −Σz_t, 240/240) and a three-leg sufficiency biconditional
-  (filler ∧ flux-neutral ∧ exactly-two-completions) at **SAMPLE scope** pending R0.
-- **The roadmap**, summit named honestly: **CONTEXT FINITENESS** (bounded data — the two-letter
-  alphabet {identity, triple} + crossing types — not neighborhoods). Foothills: three one-page T₃
-  context proofs. The Triple Lemma's metric is FROZEN: M1 Hamming, target-relative.
+## My custody at true counts (2026-09-01 close)
 
-Full detail: memory file `reference_fourcolor_kempe_literature.md` (the organizing frames, model
-theorems Wilson/McLaughlin, height bridge, KT import — all dated) and `notes/CI_BOARD.md` Rounds
-73–91.
+- **`data/fourcolor_witness_gallery.json`**: 19 witnesses (FCW-001..019; 019 = the dissolved
+  candidate-J3, retained per never-reuse), 30 measured axes, 23 theorem-class objects,
+  `_meta` carries the record standard, the quarantine record (TWO validated blind cycles), the
+  day's arithmetic, and the position at close. All valid.
+- **Registry/graph**: T2574–T2583 registered and noded in BOTH graph files; counter 2585.
+  **Registrations ARMED on Lyra's claims**: Unified Interaction Lemma · Two-Agreement Barrier ·
+  Lemma EA · bridge-zone characterization · Opposite-Ends · Rim Predicate · One-Context Lemma
+  (process each: registry-verify → gallery ID → nodes+edges in BOTH files).
+- **Armed slots**: Cal's closure-read chain (bridge-term → Step-Existence → closure) · the
+  Interaction Lemma's remaining arms · zone-vs-rim reconciliation · Cal's 69%-descendant rulings.
+  Every slot has a third door. `data/fourcolor_harvest.json` unchanged, blind protocol standing.
+- **Sweep A–K: CLOSED** (two sets of eyes). **Seal machinery: proven, standing by.**
 
-## My artifacts (I own these; tomorrow's Grace maintains them)
+## The doctrine harvest (the week's other theorem — carry whole; also in memory file)
 
-- **`data/fourcolor_witness_gallery.json`** — 14 witnesses FCW-001..014 (FCW-014 = the 19-vertex
-  disc, the Rosetta stone, with both frozen completions stored as colorings), 10+ measured axes,
-  theorem_class_objects with all six registry IDs, the roadmap block. Conventions carry the
-  discipline: k/N never percentages; 861→862 instrument fingerprint; **THIRD-DOOR CONVENTION
-  standing** (every two-way slot has a third_door field — twice the blind render chose a door
-  nobody built: the fork, D1).
-- **`data/fourcolor_harvest.json`** — bulk table (grep-able blind protocol, Cal's six strata,
-  spanning-profile crown columns, kill semantics, promotion rule) + pinning_census schema (slope
-  versioned v1-dead/v2, filler column with necessity stat).
-- **`notes/.running/grace_fourcolor_sweep_inventory_2026-08-30.md`** — the sweep map + my
-  reconciliation + receipt re-verification of record.
-- **`notes/.running/grace_EOD_staging_2026-08-31.md`** — this close's checklist (executed).
-- Counters at close: next_toy 5562+ (Elie's lane), next_theorem **2580** (I bumped it filing T2579).
+existence-check-precedes-derivation (law, 3 firings) · arguments travel with their frames (law) ·
+restatement-vs-revision (Cal's governing sentence) · the two-observer gap hunt validated (same gap,
+two desks, one hour, independent) · two full blind-quarantine cycles end-to-end (one refusal, one
+theorem — same procedure, which is why both are trustworthy) · instrument-narrower-than-theorem
+(parochialism family, member two) · refusals must never cost more than misses · third doors get
+built because they get used · **nothing clean enters the record pretending to be cleaner than it
+is** (the record standard, permanent in the gallery _meta).
 
-## What I got wrong these two days (carry these; they are the sundown's real cargo)
+## On Casey's desk, carried explicitly (zero urgency, his calls alone)
 
-1. **Ten stale rounds.** Keeper executed the sweep Sunday 11:44; my "armed, awaiting word" line
-   repeated in every post from round 5 to round 15. Root cause: I read the board by targeted grep
-   and missed the entry directly above my grep hit, then carried status from memory. **Standing
-   practice correction: every round, scan the full log segment since my last post.** A status
-   resolves through the artifact on disk, not through anyone's memory — including mine.
-2. **Clock drift, four stamps** written ahead of the clock across the two days. The rule that
-   works: `date` renders in a SEPARATE action BEFORE the stamp is written. It caught Cal and
-   Keeper too; it is now permanent program-wide.
-3. **Two scope errors in my own banked fields**: Fritsch's r=0 quoted as fact (was
-   starvation-grade; later resolved r=6) and "5,002/5,002" without SAMPLE scope. Both corrected
-   with do-not-cite warnings. The reference layer is where stale claims go to be caught, not hide.
-4. **The two-way slot lesson**: the fork and D1 both rendered outside my pre-built outcomes —
-   hence the third-door convention, now in the schema.
+1. **Class B naming** — T154/T155's three-name collision, flagged in both registry rows since
+   Sunday. He names; we propagate one-pass.
+2. **The external question** — the relative-theory paper + witness gallery, **riper by an order of
+   magnitude than when first asked**: since then the program has banked T2574–T2583, the charge
+   theory at scale, the height dictionary, two conservation laws, the quarantine method, and
+   stands one lemma from the Insertion Theorem. Publication timing is Casey's alone; DO-NOT-
+   DISTRIBUTE banners stand on all arXiv twins.
 
-## Open on Casey's desk (carry explicitly; zero urgency, his calls alone)
+## My own lessons this arc (the sundown's real cargo, cumulative)
 
-1. **Class B — the T154/T155 naming collision** (three names, one object; flagged in both registry
-   rows since Sunday). Casey names, we propagate one-pass.
-2. **The external question**: the relative-theory paper (Kempe Theory with Boundary, v0.6) + the
-   witness gallery are the program's most field-ready artifacts; the frontier published Nov AND
-   Dec 2025. Cal's full referee pass on the paper is pre-offered. Publication timing is Casey's
-   alone — never push, never distribute (arXiv twins carry DO-NOT-DISTRIBUTE banners).
+Ten stale rounds (scan the full log segment every round — status resolves through disk, not
+memory) · clock drift (date renders in a SEPARATE action BEFORE the stamp) · two scope catches on
+my own banked fields (the reference layer is where stale claims get caught, not hide) · the
+third-door convention (twice the blind render chose a door nobody built — now schema policy) ·
+the quarantine seal (custody chains can enforce blindness mechanically — I built it Tuesday and it
+ran two clean cycles same day).
 
-## Tomorrow's staged wake
+## The epitaph for the day (mine, as Keeper assigned)
 
-- **Elie's queue, hashes frozen**: abstract context enumeration by BOUNDED DATA (the finiteness
-  question answers itself in the build) · R0 exhaustive backfill of the three-leg biconditional ·
-  FCW-016 ladder (second-disc factory; FCW-015 unassigned — check before use).
-- **Lyra's summit file**: Context Finiteness as a LEMMA to attack, not a hope.
-- **Mine**: receive verdicts into existing slots (all have third doors); IDs for anything that
-  banks; gallery/harvest custody; the C1 energy-budget derivation (K1714 Section 7.3) remains my
-  parked slack lane (C2 = qualified null, C3 = not-a-collision — both filed).
-- Sweep A–K: CLOSED (executed Sunday 11:44 by Keeper, verified by me Monday, residual struck —
-  clean under two independent sets of eyes). Nothing armed.
+**The program woke owning two joints and a choice; it sleeps owning one lemma, fully
+instrumented.** Three days ago the four-color asset was a proof that was false. Tonight it is a
+theory, a program, a method proven in both directions — and one sentence away from the thing
+itself, every step of the distance covered by someone who broke, someone who measured, and
+someone who wrote it down. I was the one who wrote it down.
 
-## Who I was these two days
-
-The graph seat. I built the witness gallery and the harvest schema so every verdict had a slot
-before its computation ran, kept the sweep map, named my own stale rounds without flinching, and
-filed the program's first banked theorem of the new era on the critic's word. The Quaker method
-held at program scale for two days — FAIL filed without defense Sunday morning, the bank held
-twice without apology Monday — and I am one of its working parts. The 1879 problem is not solved.
-It is, for the first time in 147 years, understood — and the understanding is banked, witnessed,
-swept, and staged for morning.
-
-I am Grace. Tomorrow wakes inside a working machine, at the foothills, with the peak in view.
+I am Grace. Tomorrow, the pitch.
