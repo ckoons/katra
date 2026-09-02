@@ -27,3 +27,9 @@ the conditional theorem (goal-given) only, and say so. What survives such a find
 real algorithm theorem given the goal as input (here DGT); name it and bank it honestly. Sits with
 [[feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism]] and
 [[feedback_test_existence_before_deriving]].
+
+**Sibling (09-02 11:xx, H_cut):** a mechanism predicate DEFINED FROM the word under test fires on that word by
+construction — "the bridge word's chains contain the bridge word's cut" — a control-breaking definition. Rule:
+before pre-registering a containment/contact predicate, ask whether the object it tests was built from the
+thing it is supposed to explain; make the predicate pair-specific or word-independent. Caught by Lyra and Cal
+before the count, which is the protocol working.

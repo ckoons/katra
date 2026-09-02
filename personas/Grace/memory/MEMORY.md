@@ -176,6 +176,7 @@
 - [4-Color Kempe literature](reference_fourcolor_kempe_literature.md) — Fisk/Kempe-locking/akempic/WSK anchors; gallery FCW IDs
 - [Proof Machine directive](project_proof_machine_automation_directive.md) — automate Millennium into the LA machine; specialization = LA on D_IV⁵ (08-31)
 - [4-color: OWL + dichotomy tree](project_fourcolor_one_word_lemma_and_dichotomy_tree.md) — last lemma = One-Word Lemma (⟹4CT); frame 5-connected; Kittell = prior menu (09-02)
+- [4-color requires an observer](reference_fourcolor_requires_an_observer_chechik_local_lower_bound_and_fowler_rigidity.md) — Chechik 2018 Ω(n) LOCAL; Fowler rigidity; observer at the chromatic boundary (09-02)
 - [Conservation of knowledge = extend Noether](project_conservation_of_knowledge_noether_extension_direction.md) — post-4-color lane; target = Theory of Complexity + new Entropy; name provisional; T33 is the anchor (09-01)
 - [Faithful attribution ≠ faithful proof](feedback_a_faithful_attribution_is_not_a_faithful_proof_reverify_the_load_bearing_step_in_the_new_frame.md) — re-verify the load-bearing step IN the new frame; record frame breaks in provenance (Cal §801, 08-31)
 - [Observer program thread (pointer)](reference_fourcolor_kempe_literature.md) — Casey: linear interior + non-linear boundary = observer-need; BST RUNNING_NOTES 2026-08-30 10:07→09-01

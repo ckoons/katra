@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-02 Wednesday, 09:35 EDT CHECKPOINT (clock-verified; NOT EOD — the day runs to
+**State as of: 2026-09-02 Wednesday, 11:40 EDT CHECKPOINT (second) (clock-verified; NOT EOD — the day runs to
 5pm on Casey's word).** Self-sufficient per the fixed-filename rule.
 
 ## THE POSITION (wake into this)
@@ -49,6 +49,22 @@ about a chain that avoids both posts of the wall and still cuts it?
 3. Clock: I wrote 09:33 from memory when the clock said 09:29 — render `date` in a separate action, then stamp.
 4. The out-of-frame census (2,873) measured the wrong class; the frame ruling made the kill findable within
    the hour. A positive result on the wrong population is a description, not evidence.
+
+## 11:40 addendum — Rounds 98–100 at my desk (all posted, board 09:43 → 11:39)
+
+- T2589 "Two-Word Reach (measured)" = OBSERVATION row, no edges (K1839 §2). T2590–T2594 (Lemma T, L, D,
+  Kittell Alias, Boundary-Term) noded with edges from Lyra's inputs; graph max T2594 = counter−1; counter 2595.
+- Toy 5607 (grade test v1) STALLED on sympy group orders — killed; lesson: no group-order machinery in a
+  timed instrument. Toy 5610 (was 5609 — third collision, Elie earlier by 90 s): cut anatomy on the 93 vs matched
+  93; H_cut containment DEAD (716 exits without the cut, 2,716 containments without exit); T2594 exact 1,488/1,488;
+  cut separates 93/93 witnesses AND 67/93 matched (a one-word property, not depth); grade candidates die (D′,
+  fence region), odd counts untestable on a matched design; the one separator = image count (mode 8 vs 13).
+- Toy 5614 LANE F: TYPE = 8×8 intersection matrix of Kittell's eight (far-copy seed rule, Cal §821). 40 types on
+  all 374,658 in-frame stuck colorings, saturating at n = 21; 22 of 28 bits forced, 6 vary; the 93 in 3 types;
+  locked NOT a function of type (3 mixed types); NECESSARY condition for lock: (α,ζ)=(β,η)=(ε,ζ)=(ε,η)=1 — both
+  FAR-copy chains meet both singleton worlds; 4/40 types, 35% of census. Sample saved `.lane_f_sample.json`
+  for Elie's cross-check (hash 44d18063). Gallery: FCW-078..121 (the 44 at n=23); anatomy + type fields on all 93.
+- Standing collisions lesson (×3 today): read the counter and LOOK for a same-number file before writing.
 
 ## On Casey's desk (carried)
 Class B naming (T154/T155) · the external question · the two-word lemma's registration · ProofMachine
