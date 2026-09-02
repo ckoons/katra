@@ -187,3 +187,4 @@
 - [CKT named; cost log₂12; one-floor tower](project_conserved_knowledge_theory_named_decision_cost_log2_12_and_one_floor_tower.md) — Casey named Conserved Knowledge Theory 09-02; D→log₂|ℤ₃×V| on free generator; orphans realized one floor up
 - [Round 106–107: torus 1-per-record; cover rank 2k−4; One-Floor = A₄ torsor](project_round106_torus_reconstruction_one_per_record_and_branched_cover_rank_2k_minus_4.md) — realized ⟺ Φ_r=1; sheets ∈{1,2,3,4,12}; torus abelian ⟹ one floor; CKT named (09-02)
 - [Sheet is a sector property](feedback_sheet_is_a_sector_property_graph_cover_is_not_the_surface_cover.md) — graph cover ≠ surface cover; run a forced-zero control (09-02)
+- [CKT: lattice drops = two colours on the twelve pentagons](project_ckt_period_lattice_drops_two_colours_on_the_twelve_pentagons.md) — P = 2·L; drops only on fullerene duals; off-frame index-3 false neighbour (Elie 09-02)
