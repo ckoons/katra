@@ -1,6 +1,6 @@
 ---
 name: project_conservation_of_knowledge_noether_extension_direction
-description: "Casey's post-four-color direction (2026-09-01): the 'conservation of knowledge' thread = extend Noether to unify four search areas; the big-deal target is a Theory of Complexity + a new definition of Entropy via BST; name is provisional"
+description: "CONSERVED KNOWLEDGE THEORY (named by Casey 2026-09-02 16:30; law = Knowledge Conservation): extend Noether via the observer; unit = 1 commitment = 1 Shannon (P1); content beyond information theory = REALIZABILITY (orphans, tower of covers, decision cost); vantage dimension RETIRED; target = Theory of Complexity + entropy via BST"
 metadata:
   type: project
 ---
@@ -88,3 +88,24 @@ part is gauge). E2: Lyra P1 = 1 completion mod A₄ per REALIZED record on any s
 REALIZABILITY obstructions (ghost records), converging blind with Cal's orphan coordinate; T2574's off-sphere clause
 noun changes "reconstruction" → "realizability" whichever way Grace's count goes. Lane reading: the higher observer
 is spent on EXISTENCE, not multiplicity. Cal §826 closed E3: T33 is (iii) wrong functional; the ∞ column is empty.
+
+**09-02 14:4x — Casey's readings (from Costco):** f is "probably spectral over real" ((n+1)/(2n) reading, N_c/n_C a
+coincidence at n = 5 — sweep consumers before adopting); the higher observer's cost = LOSS OF THE OTHER PERSPECTIVE
+(Keeper: log₂(N_closed/N_realized) bits; ask whether it splits topological + thermodynamic); FINDING is cheap for the
+observer, DECIDING (realizability) is what costs; ORPHANS need explanation and derivation (Lyra; cover test Grace);
+k > 12 "might be the phase transition after the twelfth sequential big bang" — corpus anchor n* ≈ 12 cycles in
+BST_Zeta_Cycle_Resonances_I16 §1.2, but E1's 12 is Euler (6χ), two objects until a witness (Elie: are rank drops
+exactly the all-{5,6}-degree graphs?). Per-commitment cost = 1 Shannon by P1 (one binary distinction), so the
+entropy meter = causal-set count N in bits over S_dS.
+
+**09-02 16:23 (K1850) — THE TOWER PASSED:** Grace 5630 on non-lattice tori (n = 8, 9 exhaustive + T(3,3)): every
+orphan is realized on the derived SURFACE cover of its own holonomy, exactly one floor (transport → 3 sheets 442/442;
+cocycle → 2 or 4; never 6 or 12). One-Floor Lemma to pre-register (ρ²+ρ+1 = 0 half derived; ker-θ half owed, Lyra).
+Grace 5628: decision cost D = log₂(N_closed/N_realized) → log₂ 12 = log₂ 3 + log₂ 4 on two widths; finite-size term
+is the triangulation's — Casey's "topology fixes information; thermodynamics = the values" holds with numbers.
+Candidate map: the summands are logs of the floors' sheet counts (bits to decide = log₂ minimal cover degree); test =
+a family where 2-sheet cocycle covers dominate. Name test MET; Casey ACCEPTED "Conserved Knowledge Theory" ($TS) /
+"Knowledge Conservation," retire "vantage dimension"; Casey's word pending. Nothing registered before Cal's Lemma R′.
+**09-02 16:3x — sheet-count map KILLED (Grace 5631):** D's constant is log₂|holonomy classes on the free generator| =
+log₂|ℤ₃ × V| = log₂ 12, NOT log₂(sheets) (2-sheet covers dominate to 1.0 while D stays log₂ 12). "Loss of the other
+perspective" = the other holonomy classes. Next: T(a,a) predicted log₂ 144. n = 10 tower 464/464, one floor.
