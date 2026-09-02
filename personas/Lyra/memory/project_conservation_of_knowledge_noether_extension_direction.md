@@ -109,3 +109,13 @@ a family where 2-sheet cocycle covers dominate. Name test MET; Casey ACCEPTED "C
 **09-02 16:3x — sheet-count map KILLED (Grace 5631):** D's constant is log₂|holonomy classes on the free generator| =
 log₂|ℤ₃ × V| = log₂ 12, NOT log₂(sheets) (2-sheet covers dominate to 1.0 while D stays log₂ 12). "Loss of the other
 perspective" = the other holonomy classes. Next: T(a,a) predicted log₂ 144. n = 10 tower 464/464, one floor.
+**09-02 16:43 (K1851, Round 108):** T2598 Lemma R′ PROVED (Cal §828; "if" not "iff"; converse owed); T2599–T2601 observation
+rows. Lyra: a closed record = flat A₄-torsor, Φ_r: π₁ → A₄, realized ⟺ trivial, sheets = |image|, 6 impossible; torus →
+one floor (abelian image); genus ≥ 2 → 12-sheet witness predicted. Decision cost = log₂|Hom(π₁Σ_g, A₄)| (Frobenius–
+Mednykh): g=1 48 (Keeper's 144 was wrong), g=2 5,376, g=3 749,568 — a character sum = A₄ Dijkgraaf–Witten free energy.
+Elie 5632: period-lattice drops only on fullerene duals (k = 12 ⟺ all degrees 5/6); negative-defect lemma to derive.
+Genus-2 census = Lutz's 865 ten-vertex triangulations. Paper gate K1852 tomorrow first.
+**09-02 16:48 — the two 12s:** cosmological n* = 12 is the first cycle where the Gödel gap 4/C(n+4,3) < 1/137 (T307/T320/I18)
+— a 137-dependent threshold crossing (would be 13 at α = 1/150); Euler's k = 12 = 6χ(S²) is a curvature sum. Casey: "might be
+a curvature sum" — open door = derive Δ_n's 24/((n+2)(n+3)(n+4)) from D_IV⁵ geometry (check T307's η_n for circularity: it
+names n* in its own input). Elie 5632: k = 12 ⟺ fullerene dual; lattice drops only there; negative-defect lemma for Lyra.

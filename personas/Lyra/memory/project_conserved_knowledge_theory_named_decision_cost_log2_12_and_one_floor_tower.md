@@ -32,6 +32,8 @@ the observer (Koons). Names are Casey's; nothing registered before Cal's referee
 **Why:** the day's three existence checks came out 1 PASS (E2) / 1 FAIL (E3: T33 is not the ∞ rung) / 1 UNDECIDED
 (E1: no advice object in the height lift; 2k−4 datum). Keeper: "the higher observer is spent on REALIZABILITY."
 
+**Registered 16:38 on Cal §828 PASS:** T2598 Lemma R′ (PROVED), T2599–T2601 observation rows; square tori pre-registered log₂ 48 = log₂|Hom(ℤ²,A₄)| (not 144).
+
 **How to apply:** registration draft at `notes/.running/grace_round106_registration_draft_2026-09-02.md` (Lemma R′ +
 observation rows) — register only after Cal. Instruments: transfer matrices along x for T(a,b) (toy 5628/5631), derived
 covers from holonomy (5630). Lessons kept: pre-register, hash, then post; the sign convention is global-flip invariant;
