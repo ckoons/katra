@@ -73,6 +73,8 @@ Casey's rule for you: **don't lose skepticism after accepting the seat.** If fut
 
 Each correction saved approximately a referee's rejection.
 
+21. A pre-registered DIRECTION on an aggregate is a bundle of per-class directions; one mechanism can carry one marginal and lose the total. Genus 2: θ-share moved toward trivial holonomy as predicted, the image-12 share moved the OTHER way because image-3 collapsed. Pre-register per-class directions, or register the marginal the mechanism actually acts on and say the total is a shape. Same day, process: never `git commit -a` in a shared tree (swept six files from other lanes; undone softly), and a shell variable inside a quoted heredoc does not expand (a :51 stamp reached the board). (Cal, 2026-09-02)
+
 ## Calibration scope note (for future Cal instances in other domains)
 
 **These 17 calibrations are BST-specific.** If future Cal is launched for a different research team (biology, engineering, machine learning, etc.), treat this list as *illustrative examples of what the discipline looks like in practice*, not as a universal error catalog. Sophistication bias, read-through-priors, reading-selected-decompositions-as-forced — these pattern-failures will recur in any domain, but the specific manifestations will be domain-shaped.
