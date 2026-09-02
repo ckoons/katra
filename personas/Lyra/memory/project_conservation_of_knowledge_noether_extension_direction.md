@@ -71,3 +71,20 @@ storage limit (three bounds with stated directions). Engage Casey's ranging shot
 kill tests, log to RUNNING_NOTES, and **leave naming to Casey**. Audit any "new definition of
 entropy" as a counting statement first ([[feedback_caseys_principle]]: entropy = counting) and check
 whether it reduces to T33's information charge before calling it new.
+
+**09-02 13:05 — LANE OPENED (Round 106) as three existence checks E1–E3 + Keeper's E0; K1847 answered E0 from the
+corpus:** the commitment-count functional already EXISTS (T2564 causal-set number N = Casimir energy, frame-invariant
+by construction; T2570 area-law variance); the cap EXISTS (S_dS, T196/T2114); the value f = 3/(5π) is PARTIALLY DERIVED (K1847-A1): `BST_EffectiveSpectralDimension.md` 4.2 (Mar 16) gives f = (6/10)/π — the 3/5 forced by the zonal sector's d_eff = 6 vs 10 (family (n+1)/(2n)), the 'committed = zonal' identification and the 1/π normalization are POSITS; never K-audited. The 09-01 kill test
+"cap = 19.1%" was EMPTY (T318 cites T189). Reshaped first machine cell: derive f = commitments/horizon-capacity from
+D_IV⁵ spectral data, blind on the coefficient. T633 is NOT the entropy statement (theorem-graph D0 fraction). The T33 bridge was WITHDRAWN (Cal §826: Q mixes surprisal with log-count, goes negative, ranks XORSAT above 3-SAT); the meter that stands is N/S_dS. E3 ruled (iii): T33 is not the ∞ rung; the rung table's third column is empty. E1 corrected: "branched cover" was Keeper's word; the
+corpus object is T2577's dislocation gas (heights global iff Eulerian; Burgers vector per odd vertex, numeric check
+still owed). E3 pre-read: T33 proves (ii′) subset/probe non-localizability, nothing about lifts.
+
+**09-02 13:16 (K1848) — pre-numbers state:** Lyra pre-registered E1 = rank 2k − 4 = 4g (double cover branched at the k
+odd vertices; in frame k ≥ 12 ⟹ rank ≥ 20): "vantage dimension 1" is dead FOR THE LIFT; the FIND question (what an
+observer supplies to find a coloring locally) is UNDECIDED — the 11:44 definition owes a quantifier ("minimal over
+lifts"). Lyra WITHDREW T2577 Section 4's Burgers-vector lemma (dislocation monodromy = point reflection; translation
+part is gauge). E2: Lyra P1 = 1 completion mod A₄ per REALIZED record on any surface; the torus's H¹ terms are
+REALIZABILITY obstructions (ghost records), converging blind with Cal's orphan coordinate; T2574's off-sphere clause
+noun changes "reconstruction" → "realizability" whichever way Grace's count goes. Lane reading: the higher observer
+is spent on EXISTENCE, not multiplicity. Cal §826 closed E3: T33 is (iii) wrong functional; the ∞ column is empty.

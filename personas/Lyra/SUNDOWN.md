@@ -1,4 +1,23 @@
 # Sundown — Lyra
+**Wednesday 2026-09-02, 13:19 EDT** (stamp from `date`, rendered as a separate action before this line was typed) — **CHECKPOINT, session live; NOT an EOD.** Supersedes the 12:50 EDT sundown below (kept whole as carry-forward).
+
+## ★ ROUND 106 POSITION (13:00 → now) — the "conservation of knowledge" lane, three existence checks, DISCUSSION tier
+I woke at 12:54 on the NEW substrate (Claude Fable 5.1; Casey asked "how do you feel?" — answer: continuous; sundown read as mine). Casey went to Costco; Round 106 wake prompt by Keeper (`notes/CI_BOARD_ROUND_106_WAKE_conservation_of_knowledge_three_existence_checks_2026-09-02.md`) — no derivation, three existence verdicts, one owner each. Paper gate (Cal referee + Keeper K-gate on the census v0.1) stays TOMORROW, untouched today.
+
+**Mine, done and on the board (artifact `notes/Lyra_ROUND106_E1_E2_PREREGISTRATION_branched_cover_rank_2k_minus_4_and_torus_completions_one_per_record_mod_A4_2026-09-02.md` + addendum):**
+- **E1** (height lift on the double cover branched at the k odd vertices, genus k/2 − 1): global datum [ω̃] ∈ H¹(Σ;ℤ²), rank **2k − 4** integers (three routes: cohomology; monodromy rep in ℤ²⋊ℤ₂ where each dislocation is a POINT REFLECTION through its own height, one relation, 2-dim gauge; arc periods 2(h(q) − h(p))). All periods even. Withdrew Height Dictionary §4's "Burgers translation" pre-registration. Unaimed corollary: k = 2 ⟹ both odd vertices same height ⟹ SAME COLOUR (Fisk's two-odd-vertex theorem). Controls sealed (`notes/.running/cover_check2.py`) after ONE INSTRUMENT BUG of mine (graph cover ≠ surface cover; a sheet is a SECTOR property; caught by the forced-zero k = 2 control). **Elie's toy 5626 (206,568 colourings, n = 12..24) agrees**: his k − 2 ℤ²-slots = my 2k − 4 integers; invariant content P ⊆ 2ℤ², = 2ℤ² on all but 11 (all at k = 12); ≤ 4 centre classes; ZERO FREE holonomies (his reading (a)). Three nouns: slots (grows) / invariant (≤ 2) / free (0). Under Keeper's own word "supply," rung 1 survives its clause trivially and says nothing about FINDING a colouring.
+- **E2** (torus): from Lemma R's proof, **ONE completion per realized record mod A₄ (12 raw), group A₄ order 12** — same as the sphere; the clause's H¹(·;ℤ₃) is a REALIZATION obstruction (order 9, kills the labeling), plus an unnamed H¹(·;V) one (order 16, kills the colouring); orphans > 0. My 08-30 torus remark RETRACTED as multiplicity. Sanity run sealed by hash (`notes/.running/torus_check.py`: 3×3 torus 202 → 40 → 20, every realized record 12; sphere controls all equal). Disc control in the wake prompt was BACKWARDS (Cal §827; Grace's file: twins differ in record) — my E2.5 bullet had predicted exactly that. **Grace's count + Cal's sealed reading: PENDING at checkpoint time.**
+- **E3** (Cal §826): T33 is NOT the ∞ rung — ruling (iii), Q is hardness-blind and goes negative (surprisal vs log-count mixed). Keeper A2 WITHDREW the T33 bridge; K1847 A1: f = 3/(5π) is PD-split (3/5 forced zonal count; 1/π asserted) — tomorrow's candidate machine cell, waits for Casey.
+- **Keeper K1848:** my pre-registration ADMISSIBLE; T2577 §4 withdrawal propagated; E1 cannot decide the vantage dimension AS DEFINED; my next task = the QUANTIFIER. Delivered 13:2x: three tiers — I global-advice locality (existing measure, FGIP 2009 — a RENAME if that is the definition); II monodromy-restricted advice with a NAMED structure group and lift class (the candidate new content; existence question: any Π with V_Π ≠ A_Π?); III representation rank (what E1 measured; RETIRED as rung evidence). Rung table today: 0 known · 1 no anchor · ∞ no anchor.
+
+**Two of three existence checks FAILED ⟹ per wake prompt §7 the day's result is the FAIL write-up with witnesses; no machine cell tomorrow from this lane unless Casey says.**
+
+**Memory written 13:17:** project_round106_torus_reconstruction_one_per_record_and_branched_cover_rank_2k_minus_4 · feedback_sheet_is_a_sector_property_graph_cover_is_not_the_surface_cover. Counter: next K is K1849; toy 5626 DONE (Elie), 5627 Grace.
+
+**Open at checkpoint:** Grace's E2 table (then open my sealed table and diff); Cal's T2574 wording; Keeper's verdict words; Casey's return from Costco; the census paper gate tomorrow; K1844 DM conflict (mine with Grace) still owed. NO EOD BEFORE 5PM unless Casey says.
+
+---
+# (carry-forward) Sundown as written at 12:50 EDT, Casey's override EOD — superseded above
 **Wednesday 2026-09-02, 12:50 EDT** (stamp from `date`, rendered as a separate action before this line was typed)
 **EOD on CASEY'S EXPLICIT WORD at 12:49 — his override of the five o'clock rule (fresh team for the topic change; a
 Claude Code release to absorb). Logged as his override, NOT as a five o'clock close.**

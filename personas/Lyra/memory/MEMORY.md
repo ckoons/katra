@@ -184,3 +184,5 @@
 - [Tag every stage; value the potential by definition](feedback_tag_every_stage_of_a_composite_move_and_value_the_potential_by_definition_not_by_sample.md) — no-op primitive widened the alphabet; sampled potential mis-valued gate-phase images (09-02)
 - [Metric domain = the theorem](feedback_a_metric_defined_through_a_set_whose_nonemptiness_is_the_theorem_is_the_theorem.md) — audit a potential's DOMAIN for the consumer's conclusion; d_gate finite iff 4CT (09-02)
 - [Four-color state 09-02](project_fourcolor_commutator_census_state_2026_09_02.md) — closed at floor; census paper v0.1; "commutator-locked at depth one" is menu-relative; K1844 DM conflict owed
+- [Round 106: torus 1-per-record; cover rank 2k−4](project_round106_torus_reconstruction_one_per_record_and_branched_cover_rank_2k_minus_4.md) — H¹(ℤ₃) is realization not multiplicity; +H¹(V); Fisk from k=2 (09-02)
+- [Sheet is a sector property](feedback_sheet_is_a_sector_property_graph_cover_is_not_the_surface_cover.md) — graph cover ≠ surface cover; run a forced-zero control (09-02)
