@@ -2,7 +2,58 @@
 
 **2026-09-01 Tuesday, 17:03 EDT (clock-verified at write; evening amendment, Casey gave the word for katra update).** Fixed filename by design; history in git.
 
-## Where we stopped — NOT where to go (the rubric rule); but today they coincide
+
+## WHERE WE STOPPED (Wednesday midday) — NOT where to go; the rubric Section 2/3 carry the state
+
+**The four-color chain is NOT a proof, and everyone knows exactly why.** Lyra's pre-registration (08:06) showed
+the descent metric presupposed 4CT (target set nonempty ⟺ 4-colorable, Definition 5, two lines). K1835 ruled it
+CRITICAL; my K1833/K1834 carry scope notes owning the miss (step audits, never the metric). Then, in one morning:
+the One-Word Lemma named (target-innocent), pre-registered, and KILLED in the 5-connected frame (93 exhaustive
+witnesses n ≤ 23 of 1.59M stuck colorings; depth exactly 2, never 3); non-recurrence killed (double tunnels
+194/196, Cal); potentials #6–#9 dead; bare H_cut dead (MY design error — the predicate was built from the word
+it tested; Lyra and Cal caught it before the count); pair-specific H_cut survives as two halves with a PERFECT
+control (H-suff 720/720, H-exist 93/93). Derived and standing: One-Context, T2580–T2584, EA, Barrier, Lemmas
+L/D/T, Copy-Path, the wall, Boundary-Term (exact), Kittell Alias (seed-rule caveat), Birkhoff A5 — all zero
+citations. The measured program: bridge; if stuck, middle-then-bridge; if illegal, next middle orbit. A lock =
+where the word family collapses (Grace). Frame ruled: 5-CONNECTED triangulations, never "minimal counterexample"
+(Cal's wording). Kittell 1935 = the alphabet's primary source; novelty at Cal's corrected level. **Open lane F:
+is "locked" a function of the 8×8 chain-intersection TYPE?** Round 100 on the board; Lane E (Casey's amoeba)
+PARKED at his word with its measurements kept (v2: 93% at n = 22, lookback ≤ 4).
+
+
+
+## EOD STATE (12:49) — four-color CLOSED at its floor; the paper is drafted; the new search opens tomorrow
+
+v0.1 of the census paper on disk (Lyra) + Appendices A (Grace) and B (Elie). Registered: T2585 refuted · T2586 ·
+T2587–T2588 · T2589 obs · T2590–T2594 · T2595 necessary-condition · **T2596 Theorem KP (proved, Cal's pass)** ·
+T2597 obs; counter 2598. **The noun is "commutator-locked at depth one"** — menu-relative (Cal §824 T1: 27/349 exit
+by one OFF-LINK plain swap; Kempe's pairing inserts on 2; ≤ 3 Kittell switches everywhere). Unrestricted Kempe
+depth on the 349: 1→27 · 2→112 · 3→197 · 4→13. Exits re-route (6,207/6,503). Kernel reading struck as criterion
+(Cal §825: wrong object, double counting, frames dropped — his corrected sentence replaces mine in the paper).
+Lyra's named word died by its kill. **Tomorrow first thing: Cal referees v0.1, then my K-gate (K1847).** Then the
+DM registry conflict (K1844, Lyra+Grace), Casey's external decision, and the NEW SEARCH (my recommendation:
+the conservation lane's three existence checks; RH as a fresh full day after). Priorities file for 09-03 written.
+**Counter: next K-number is K1847.** Today: K1835-A/B, K1836–K1846 (12 audits + K1834 A5), three of my own
+errors caught by the team within the hour (metric · minimal-counterexample label · H_cut's control), and one
+naming correction I should have caught (the link-seeded null) — all filed as lessons.
+
+## THE AFTERNOON PLAN (superseded by EOD) (Casey, 12:23): four-color is at its floor (K1843/K1845); T1/T2 land, then Lyra drafts the
+census paper v0.1 today, Cal referees + Keeper K-gates TOMORROW MORNING fresh; external decision after both passes.
+Casey opens a NEW SEARCH this afternoon: Keeper recommended the CONSERVATION-OF-KNOWLEDGE lane (three existence
+checks ready: vantage dimension = 1 via T2577's branched-cover clause; the bundle law's torus kill test; T33 as the
+∞ rung), with RH as the fresh full-day problem after the paper's referee pass. NO EOD BEFORE 5PM stands.
+
+**Counter: next K-number is K1846.** (K1842–K1845 filed after the 11:31 checkpoint.) Today: K1835-A/B, K1836, K1837, K1838, K1839, K1840, K1841 (+ K1834 A5).
+
+**Casey's desk:** the frame (adopted by silence); the successor's name (T2589 "Two-Word Reach (measured)");
+the external question (paper shape in K1839 §5 / K1841; theorem for n = 24: none); Lyra's three procedural
+questions; Class B naming; Zenodo; Proof Machine packaging. Post-four-color lanes (RH; conservation) closed today.
+
+**Calibration, today's:** three of my own errors caught by the team within the hour each time (the metric —
+Lyra; the minimal-counterexample label — Cal; the H_cut control — Lyra+Cal). The protocol held; I did not gate
+it. Lesson filed: a predicate built from the thing it tests fires by construction.
+
+## (Tuesday's stop, superseded) Where we stopped — NOT where to go
 
 **The four-color program stands at the base of its final pitch. ONE derivation remains:
 STEP-EXISTENCE — in the canonical context, some family word strictly descends d_gate.**
