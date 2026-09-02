@@ -164,6 +164,7 @@
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
 - [Circularity guard → the METRIC](feedback_apply_the_circularity_guard_to_the_metric_not_only_the_steps.md) — distance-to-goal-set metric presupposes the goal; 3 step-audits passed it (K1835)
 - [Domain named by a hypothetical is vacuous](feedback_a_domain_named_by_a_hypothetical_is_vacuous_name_the_structural_class.md) — state lemmas on the STRUCTURAL class (Cal §818)
+- [Null sharing the menu's restriction is not a null](feedback_a_null_that_shares_the_menus_restriction_is_not_a_null_vary_the_seed_set.md) — lift the restriction before calling anything locked (T1, 09-02)
 - [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate PASS; ships on Casey's word
 - [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics)
 - [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE; MECHANISM open (K1677)

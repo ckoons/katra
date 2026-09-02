@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-02 Wednesday, 12:30 EDT CHECKPOINT (fourth) (clock-verified; NOT EOD — the day runs to
+**State as of: 2026-09-02 Wednesday, 12:47 EDT CHECKPOINT (fifth) (clock-verified; NOT EOD — the day runs to
 5pm on Casey's word).** Self-sufficient per the fixed-filename rule.
 
 ## THE POSITION (wake into this)
@@ -87,6 +87,16 @@ about a chain that avoids both posts of the wall and still cuts it?
   — the rank/kernel reading is the NECESSARY half of Lemma T only (`.exit_neither_neither_5623.json`).
 - Dark-matter registry conflict (K1844 §2: T2138 vs T1971/T2216) carried in queue_casey; Lyra names, I re-tier.
 - Toy counter 5624 after mine (5623). Collision guard: abort-on-existing-file now in every claim line.
+
+## 12:47 addendum — Round 104 at my desk
+- T2596 Kempe-Pairing Theorem registered (Cal §824 PASS; one-directional; edges T2581, T2593). T2597 re-route
+  statistic OBSERVATION row (edges T2590, T2589). Counter 2598. Max T2597 = counter−1, zero dangling.
+- Appendix A draft v0.1 filed: `notes/BST_FourColor_Appendix_A_witness_gallery_349_in_frame_plus_28_DRAFT_v0.1_2026-09-02.md`
+  (regenerable from the gallery JSON; instrument/hash table; 349 rows; nulls in A.5).
+- Toy 5625: unrestricted Kempe depth on the 349 = {1: 27, 2: 112, 3: 197, 4: 13}, max 4, all reached; 27 locks one
+  plain swap from the gate — "two-word-locked" is a menu property (Cal §825). Elie's line pending beside it.
+- Toy counter 5626 after mine. Lane closes at EOD (Casey); Cal's referee read + Keeper's gate on v0.1 tomorrow.
+- Tomorrow first off-lane: dark-matter registry conflict with Lyra (queue_casey).
 
 ## On Casey's desk (carried)
 Class B naming (T154/T155) · the external question · the two-word lemma's registration · ProofMachine

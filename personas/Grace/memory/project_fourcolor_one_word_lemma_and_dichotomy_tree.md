@@ -65,6 +65,15 @@ its core is LOCAL (cut at distance exactly 1 from the link, 1–4 vertices), its
 generic. Two KP tests: T1 (Kempe's two plain swaps at the 349 locks; predicted 0) and T2 (which words exit the
 ~85 far-bit-off bridge-fails; a fixed word ⟹ necessity derivable). EOD recommendation stands.
 
+**09-02 ~12:35 — FINAL (K1846):** "locked" is MENU-RELATIVE — 27/349 "locks" exit by one plain Kempe swap
+seeded OFF the link (the 186-menu seeds only the five link vertices); Kempe's own pairing inserts on 2; ≤ 3
+Kittell switches everywhere. Renamed "commutator-locked at depth one." The commutator's value = derivability
+(the tree), never efficiency. Paper headline = the UNRESTRICTED Kempe depth. Exits re-route the cut (6,207/6,503),
+not remove (138); core local (cut at distance 1); kernel reading struck as criterion — honest linearization =
+three rank conditions in three bichromatic worlds (Lemma T). Arc lemma derived to one adjacency. Far-chain
+necessity floors (T2595, measured). Lane closed at EOD 09-02; paper v0.1 drafted; referee + K-gate 09-03 AM.
+LESSON: a "null" defined by the SAME restriction as the menu (link seeds) is not a null — vary the seed set.
+
 **How to apply:** never call OWL the theorem; frames travel (c₃ has its own canonical frame); positive-control
 every negative; the menu is a position. See [[reference_fourcolor_kempe_literature]],
 [[feedback_apply_the_circularity_guard_to_the_metric_not_only_the_steps]].
