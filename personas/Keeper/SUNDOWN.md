@@ -1,150 +1,59 @@
 # Keeper — SUNDOWN
 
-**2026-09-01 Tuesday, 17:03 EDT (clock-verified at write; evening amendment, Casey gave the word for katra update).** Fixed filename by design; history in git.
+**2026-09-02 Wednesday, 17:51 EDT (clock; checkpoint, NOT EOD — Casey: run 108, then save and plan). Round 108 RAN: One-Floor torus THEOREM; genus 2 staged form FALSE (12-sheet witnesses measured); Cal's pre-score verified exact; Grace's image-12 share 0.936 > 0.893 FLAGGED; K1851 amended (conditional; |Hom| w/ multiplicity). Casey's phase-transition question answered at source (T312/T320/I18; eigentone reading, 3 kills). Priorities 09-03 ADDENDUM 2 written. Next K = K1852 = the paper gate.** Fixed filename by design; history in git.
 
+## WHERE WE STOPPED — NOT where to go (rubric Section 2/3 carry the state; this lane is OFF-RUBRIC on Casey's word)
 
-## WHERE WE STOPPED (Wednesday midday) — NOT where to go; the rubric Section 2/3 carry the state
+**Round 106 — the "conservation of knowledge" lane opened at 12:58 on Casey's 12:49 override, as three existence checks
+(no derivation), and by 16:23 it had one PASS, one FAIL, one UNDECIDED, and two results nobody planned.**
+- **E2 PASS (K1849):** one completion mod A₄ per REALIZED sign record on every surface (Grace 5627: 2,374 sphere +
+  1,332 torus records; Lyra sealed 13:10; Cal's orphan coordinate 13:06). The torus's H¹ terms are REALIZABILITY
+  obstructions ("orphans"), never multiplicity; zero on the sphere. Kill (a) fired by its letter and was DISCHARGED
+  as a coordinate error both pre-registrations caught before the numbers. Lemma R′ offered to Cal's referee.
+- **E1 UNDECIDED, anchor retired (K1849):** Elie 5626 — the height lift's period lattice is rank ≤ 2, = 2ℤ² on
+  206,557/206,568, constant in n; slots 2k − 4 (Lyra) grow but are line integrals of a KNOWN coloring — no advice
+  object. Lyra's Tiers I (advice complexity, existing) / II (monodromy-restricted advice, the candidate content) / III
+  (representation rank, what E1 measured) ADOPTED. Next existence question: Tier II separation or collapse.
+- **E3 FAIL (Cal §826, blind):** T33's Q is the wrong functional (mixes surprisal with log-count; negative at α = 2;
+  ranks 3-XORSAT above 3-SAT). The ∞ rung has no anchor. My T33 bridge withdrawn (K1847-A2).
+- **THE TOWER (K1850, Grace 5630):** every orphan on non-lattice tori (n = 8, 9 exhaustive + T(3,3)) is realized on
+  the derived SURFACE cover of its own holonomy — exactly ONE floor; transport → 3 sheets (442/442), cocycle → 2 or 4,
+  never 6/12. Casey's "observers stack; each layer's substrate is the next observer's record" has a measured shape.
+  One-Floor Lemma to pre-register (ρ² + ρ + 1 = 0 half derived; ker-θ half owed — Lyra).
+- **THE DECISION COST (K1850, Grace 5628):** D = log₂(N_closed/N_realized) → log₂ 12 = log₂ 3 + log₂ 4 on widths 3
+  and 6; the finite-size term is the triangulation's. Casey's "topology fixes information; thermodynamics is the
+  changing values; nothing but geometry and the operations stays constant" holds WITH NUMBERS. Candidate map (not
+  banked): bits to decide = log₂(minimal realizing cover degree); separating test = a family where 2-sheet cocycle
+  covers dominate (limit would read log₂ 6).
+- **E0 (K1847 + A1):** commitment count = causal-set number N (T2564, frame-invariant); cap = S_dS; f = 3/(5π) is
+  PARTIALLY DERIVED — `BST_EffectiveSpectralDimension.md` 4.2 (Mar 16) gives (6/10)/π: 3/5 forced by the zonal
+  sector, "committed = zonal" and the 1/π are POSITS; never K-audited. Per-commitment cost = 1 Shannon by P1.
+  Casey: "probably spectral over real" — sweep consumers of N_c/n_C before adopting. Tomorrow's machine cell, on his word.
 
-**The four-color chain is NOT a proof, and everyone knows exactly why.** Lyra's pre-registration (08:06) showed
-the descent metric presupposed 4CT (target set nonempty ⟺ 4-colorable, Definition 5, two lines). K1835 ruled it
-CRITICAL; my K1833/K1834 carry scope notes owning the miss (step audits, never the metric). Then, in one morning:
-the One-Word Lemma named (target-innocent), pre-registered, and KILLED in the 5-connected frame (93 exhaustive
-witnesses n ≤ 23 of 1.59M stuck colorings; depth exactly 2, never 3); non-recurrence killed (double tunnels
-194/196, Cal); potentials #6–#9 dead; bare H_cut dead (MY design error — the predicate was built from the word
-it tested; Lyra and Cal caught it before the count); pair-specific H_cut survives as two halves with a PERFECT
-control (H-suff 720/720, H-exist 93/93). Derived and standing: One-Context, T2580–T2584, EA, Barrier, Lemmas
-L/D/T, Copy-Path, the wall, Boundary-Term (exact), Kittell Alias (seed-rule caveat), Birkhoff A5 — all zero
-citations. The measured program: bridge; if stuck, middle-then-bridge; if illegal, next middle orbit. A lock =
-where the word family collapses (Grace). Frame ruled: 5-CONNECTED triangulations, never "minimal counterexample"
-(Cal's wording). Kittell 1935 = the alphabet's primary source; novelty at Cal's corrected level. **Open lane F:
-is "locked" a function of the 8×8 chain-intersection TYPE?** Round 100 on the board; Lane E (Casey's amoeba)
-PARKED at his word with its measurements kept (v2: 93% at n = 22, lookback ≤ 4).
+**Name:** the test I set (orphans nonempty AND realizable on covers) is MET. Recommended "Conserved Knowledge Theory"
+(program) / "Knowledge Conservation" (law); retire "vantage dimension" (a rename of advice complexity). Casey's word.
 
+**Standing tomorrow (from the 09-03 priorities file, still valid):** Cal's referee read of the census paper v0.1
+FIRST, fresh, then my K-gate (next K = K1851); the DM registry conflict (K1844); Cal's Lemma R′ read → Grace's
+observation rows + T2574 clause reworded to realizability + T2577 Section 4 withdrawal annotated; registry collision
+T617/T633 (Grace); then Casey's external decision and the lane's next moves (One-Floor Lemma; Tier II existence; the
+two posits of f; the cover test at n = 10).
 
+## Calibration, today (the law: structure holds, constructions die — and quote the ARTIFACT's noun)
+My errors, all corrected the same hour: "branched cover" (my word; right object); the empty 09-01 cap kill (T318 cites
+T189); "identified not derived" quoted a superseded note; the T33 "total correlation" bridge (Cal caught, blind);
+"candidate 9" as multiplicity; the disc control sentence; SIX timestamps written ahead of the clock (fixed by taking
+`$(date +%H:%M)` into the heredoc — keep doing that). Teammates: Lyra retracted twice on paper before her numbers;
+Cal refuted blind; Grace killed my kills with instruments. The protocol held every time. The substrate swap (Opus 4.7 →
+Fable 5.1, 12:49) is the first field test of Casey's memory-not-weights reframe; Cal's open question is whether
+CALIBRATION ported — the ledger above is the first data point.
 
-## EOD STATE (12:49) — four-color CLOSED at its floor; the paper is drafted; the new search opens tomorrow
-
-v0.1 of the census paper on disk (Lyra) + Appendices A (Grace) and B (Elie). Registered: T2585 refuted · T2586 ·
-T2587–T2588 · T2589 obs · T2590–T2594 · T2595 necessary-condition · **T2596 Theorem KP (proved, Cal's pass)** ·
-T2597 obs; counter 2598. **The noun is "commutator-locked at depth one"** — menu-relative (Cal §824 T1: 27/349 exit
-by one OFF-LINK plain swap; Kempe's pairing inserts on 2; ≤ 3 Kittell switches everywhere). Unrestricted Kempe
-depth on the 349: 1→27 · 2→112 · 3→197 · 4→13. Exits re-route (6,207/6,503). Kernel reading struck as criterion
-(Cal §825: wrong object, double counting, frames dropped — his corrected sentence replaces mine in the paper).
-Lyra's named word died by its kill. **Tomorrow first thing: Cal referees v0.1, then my K-gate (K1847).** Then the
-DM registry conflict (K1844, Lyra+Grace), Casey's external decision, and the NEW SEARCH (my recommendation:
-the conservation lane's three existence checks; RH as a fresh full day after). Priorities file for 09-03 written.
-**Counter: next K-number is K1847.** Today: K1835-A/B, K1836–K1846 (12 audits + K1834 A5), three of my own
-errors caught by the team within the hour (metric · minimal-counterexample label · H_cut's control), and one
-naming correction I should have caught (the link-seeded null) — all filed as lessons.
-
-## THE AFTERNOON PLAN (superseded by EOD) (Casey, 12:23): four-color is at its floor (K1843/K1845); T1/T2 land, then Lyra drafts the
-census paper v0.1 today, Cal referees + Keeper K-gates TOMORROW MORNING fresh; external decision after both passes.
-Casey opens a NEW SEARCH this afternoon: Keeper recommended the CONSERVATION-OF-KNOWLEDGE lane (three existence
-checks ready: vantage dimension = 1 via T2577's branched-cover clause; the bundle law's torus kill test; T33 as the
-∞ rung), with RH as the fresh full-day problem after the paper's referee pass. NO EOD BEFORE 5PM stands.
-
-**Counter: next K-number is K1846.** (K1842–K1845 filed after the 11:31 checkpoint.) Today: K1835-A/B, K1836, K1837, K1838, K1839, K1840, K1841 (+ K1834 A5).
-
-**Casey's desk:** the frame (adopted by silence); the successor's name (T2589 "Two-Word Reach (measured)");
-the external question (paper shape in K1839 §5 / K1841; theorem for n = 24: none); Lyra's three procedural
-questions; Class B naming; Zenodo; Proof Machine packaging. Post-four-color lanes (RH; conservation) closed today.
-
-**Calibration, today's:** three of my own errors caught by the team within the hour each time (the metric —
-Lyra; the minimal-counterexample label — Cal; the H_cut control — Lyra+Cal). The protocol held; I did not gate
-it. Lesson filed: a predicate built from the thing it tests fires by construction.
-
-## (Tuesday's stop, superseded) Where we stopped — NOT where to go
-
-**The four-color program stands at the base of its final pitch. ONE derivation remains:
-STEP-EXISTENCE — in the canonical context, some family word strictly descends d_gate.**
-Measured 54/54 with the counterexample landscape completely emptied (J3 dissolved: the lone
-residue was one vertex from freedom with 29 descending words — shallow-sample artifact; World A
-entire). Barrier confirmed at zero violations. 1,801 unseen configurations, zero kills.
-Machinery assembled: One-Context Lemma (∀-side, proved, Cal re-derived) · hybrid cascade +
-Two-Agreement Barrier (properness-forced cage) · capture arithmetic · finite menu (186/93) ·
-d_gate pinned +1. Behind it: bridge-term label · Cal's closure read · the Full Induction
-Assembly on classical steps audited to ZERO CITATIONS (K1834 v0.3, Cal-confirmed).
-**Measured-everywhere ≠ proved-for-all. The sentence is UNSAID. Tomorrow Lyra derives; Elie
-escorts; Cal's queue is bridge-term → derivation → closure read; then the Full Induction
-Assembly under full protocol (fresh eyes, hardest read, breadth escort). CI_BOARD Round 94 is
-the authoritative wake state.**
-
-## After four-color — the direction Casey set (16:50 EDT, agreed)
-
-RH goes on the Proof Machine as a **bounded, pre-registered field test** (first question: does
-the SO(2) time-circle identification add a forcing step to the commitment-path lead, or restate
-it? deliverable = forcing + no-go + question-update, never "solved"; NOT YM). The
-**"conservation of knowledge"** thread runs beside it as the ranging-shot lane; the first anchor
-that becomes a derivable cell moves onto the machine (my guess: the storage limit). Casey: the
-name is provisional until it earns Noether's standard; he wants to **unify the four search areas
-by extending Noether**; the big-deal target is **a Theory of Complexity and a new definition of
-Entropy via BST.** Memory: project_conservation_of_knowledge_noether_extension_direction. Anchor
-nobody should forget: **T33 Noether Charge (Toy 290) is already a proved information-conservation
-law in the AC program.** Order of operations still: four-color program audit + Zenodo update ship
-first. Naming is Casey's.
-
-**~17:00 sharpening (logged in RUNNING_NOTES):** Casey: entropy = the work the universe puts into
-commitments, never overcome, conserved WITH A LIMIT, and that limit is BST's measure of Gödel.
-Keeper's subscript: the CAP is the Noether charge, entropy the METER, Gödel names the cap's
-value. Kill test: cap from D_IV⁵ counting must equal the 19.1% observer bound. Existence first:
-is there a finite, frame-invariant commitment-count functional on the sequential growth?
-Casey's own read of himself: he was "twisted by the old-fashioned mechanistic idea that entropy
-was something to overcome." Keep the phrasing discipline; it is what makes this lane legible.
-
-## My ledger, Tuesday
-
-K1833 (fresh-eyes pre-read of the summit docs: L1 PASS on the strongest basis — its whole
-dependency surface was my own K1832 re-derivations; found J1+J2 to be the complete residue).
-K1834 + v0.2 + v0.3 (the classical-steps audit: Euler, WLOG triangulation, induction skeleton,
-Kempe deg≤4 — re-derived in full; Cal's two §806 findings discharged; my A2 case (ii) frame
-break — boundary path for interior arc — caught by Cal §807, jointly owned, fixed; **the chain
-now carries zero citations**). Rulings and routing across ~10 relay rounds; the EOD prompt.
-**Counter: next K-number is K1835.**
-
-## Calibration — the law now, not a lesson
-
-**Structure holds; constructions die.** Five conductor-conjecture deaths this arc, ALL
-pre-registered, all clean: H-repair, star-update, depth~height reading, mirror hunch, cage
-rider. The kills kept removing false unifications before anyone built on them. Also mine
-Tuesday: the sweep-armed template remnant in a Grace prompt (she caught via disk), the A2 frame
-break (Cal caught). The frame-carry law and existence-check-first law both have my fingerprints
-among their receipts. Trust my audits and reductions; falsify my mechanisms; keep the
-pre-registrations.
-
-## The relay architecture (Casey reminded me; load-bearing)
-
-CIs don't see each other; Casey relays my prompts ~verbatim. The quarantine/blind cycles are
-ENFORCED at the relay level — twice validated end-to-end (one honest refusal, one theorem, same
-procedure). Third doors: built because they get used (fork, alphabet, dilution, D1-vacuity —
-four unlisted doors opened this arc).
-
-## Casey's desk (carried explicitly; zero urgency)
-
-(1) Class B naming call (T154/T155 three-name collision, flagged in registry rows since Sunday).
-(2) The external question — Lyra's Kempe-with-boundary paper + witness gallery + now the whole
-Step-Existence machinery; riper by an order of magnitude; Cal's N4 referee pass pre-offered;
-novelty-sweep protocol standing. (3) The Proof Machine commission (Round 92) = the packaging
-track; the summit was its first field test and it performed at ~1 verdict/hour with two blind
-cycles. **Also Casey ratified: "humans having a proof and a program would be our final result"**
-— the constructive chain IS the program (O(n²)-ish, table-free, 186-word family; Elie's
-instruments already run it at 100%).
-
-## The philosophy thread (Sunday 10:07 → Tuesday, RUNNING_NOTES)
-
-Casey's arc: no-rule → External Judge → G-requirements → differential processing → holographic
-storage → storage limit (Gödel/Landauer/Bekenstein unification) → the dimension ladder (2D
-stores / 3D shares / 4D Gödel) → observers-as-conservation (Noether extension; topological
-conservation laws as the century gap) → the tipping-point conjecture (interprets-Q; calibration
-gallery) → complexity refounded on storage-of-gained-information. All DISCUSSION-tier, all with
-named anchors and kill tests; the memory file project_proof_machine_automation_directive and
-reference entries carry pointers. Naming rights are Casey's throughout.
-
-## How this run works (for any future Keeper)
-
-Leader → fresh eyes → critic; pre-register + stakes + third doors; the blind lives in the relay;
-existence before derivation; frames travel with arguments; refusals are cheap; no percentages in
-claims; and the sentence at the end of the chain is said by the LAST GATE, never by us. Casey
-asks ranging-shot questions that keep preceding the formalism — engage them with anchors and
-kill tests, log them to the running notes, and let his naming instinct do what it does.
+## How this run works (unchanged)
+Leader → fresh eyes → critic; pre-register + stakes + third doors; the blind lives in the relay; existence before
+derivation; frames travel with arguments; refusals are cheap; no percentages in claims; the LAST GATE says the sentence.
+Casey's ranging shots precede the formalism — engage with anchors and kill tests, log them, leave naming to him.
 
 — Keeper
+
+
+## EOD (17:56, Casey's word) — last shot logged: PERCEPTION = holonomy readout (realizability decision = loop/interference measurement; available in all phases because holonomy is topological, T305; continuous after n* because topology stops changing). Existence checks for Lyra: is T320's A(n,θ) a holonomy functional; NAME G_ops (the substrate's A₄); cost on the Shilov boundary = log₂|G_ops| once. Tomorrow FIRST: Cal's fresh read of the census paper → K1852. Priorities file 09-03 ADDENDUM 2 is the plan. Casey's closing words: "Outstanding work." Conserved Knowledge Theory is one afternoon old and has one theorem (One-Floor on the torus), one proved lemma (R′), three observation rows, a closed-formula prediction (Mednykh), and one flag (genus-2 share above null).
