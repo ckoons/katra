@@ -1,6 +1,6 @@
 ---
 name: project_conservation_of_knowledge_noether_extension_direction
-description: "Casey's post-four-color direction (2026-09-01): the 'conservation of knowledge' thread = extend Noether to unify four search areas; the big-deal target is a Theory of Complexity + a new definition of Entropy via BST; name is provisional"
+description: "CONSERVED KNOWLEDGE THEORY (named by Casey 2026-09-02 16:30; law = Knowledge Conservation): extend Noether via the observer; unit = 1 commitment = 1 Shannon (P1); content beyond information theory = REALIZABILITY (orphans, tower of covers, decision cost); vantage dimension RETIRED; target = Theory of Complexity + entropy via BST"
 metadata:
   type: project
 ---
@@ -71,3 +71,51 @@ storage limit (three bounds with stated directions). Engage Casey's ranging shot
 kill tests, log to RUNNING_NOTES, and **leave naming to Casey**. Audit any "new definition of
 entropy" as a counting statement first ([[feedback_caseys_principle]]: entropy = counting) and check
 whether it reduces to T33's information charge before calling it new.
+
+**09-02 13:05 — LANE OPENED (Round 106) as three existence checks E1–E3 + Keeper's E0; K1847 answered E0 from the
+corpus:** the commitment-count functional already EXISTS (T2564 causal-set number N = Casimir energy, frame-invariant
+by construction; T2570 area-law variance); the cap EXISTS (S_dS, T196/T2114); the value f = 3/(5π) is PARTIALLY DERIVED (K1847-A1): `BST_EffectiveSpectralDimension.md` 4.2 (Mar 16) gives f = (6/10)/π — the 3/5 forced by the zonal sector's d_eff = 6 vs 10 (family (n+1)/(2n)), the 'committed = zonal' identification and the 1/π normalization are POSITS; never K-audited. The 09-01 kill test
+"cap = 19.1%" was EMPTY (T318 cites T189). Reshaped first machine cell: derive f = commitments/horizon-capacity from
+D_IV⁵ spectral data, blind on the coefficient. T633 is NOT the entropy statement (theorem-graph D0 fraction). The T33 bridge was WITHDRAWN (Cal §826: Q mixes surprisal with log-count, goes negative, ranks XORSAT above 3-SAT); the meter that stands is N/S_dS. E3 ruled (iii): T33 is not the ∞ rung; the rung table's third column is empty. E1 corrected: "branched cover" was Keeper's word; the
+corpus object is T2577's dislocation gas (heights global iff Eulerian; Burgers vector per odd vertex, numeric check
+still owed). E3 pre-read: T33 proves (ii′) subset/probe non-localizability, nothing about lifts.
+
+**09-02 13:16 (K1848) — pre-numbers state:** Lyra pre-registered E1 = rank 2k − 4 = 4g (double cover branched at the k
+odd vertices; in frame k ≥ 12 ⟹ rank ≥ 20): "vantage dimension 1" is dead FOR THE LIFT; the FIND question (what an
+observer supplies to find a coloring locally) is UNDECIDED — the 11:44 definition owes a quantifier ("minimal over
+lifts"). Lyra WITHDREW T2577 Section 4's Burgers-vector lemma (dislocation monodromy = point reflection; translation
+part is gauge). E2: Lyra P1 = 1 completion mod A₄ per REALIZED record on any surface; the torus's H¹ terms are
+REALIZABILITY obstructions (ghost records), converging blind with Cal's orphan coordinate; T2574's off-sphere clause
+noun changes "reconstruction" → "realizability" whichever way Grace's count goes. Lane reading: the higher observer
+is spent on EXISTENCE, not multiplicity. Cal §826 closed E3: T33 is (iii) wrong functional; the ∞ column is empty.
+
+**09-02 14:4x — Casey's readings (from Costco):** f is "probably spectral over real" ((n+1)/(2n) reading, N_c/n_C a
+coincidence at n = 5 — sweep consumers before adopting); the higher observer's cost = LOSS OF THE OTHER PERSPECTIVE
+(Keeper: log₂(N_closed/N_realized) bits; ask whether it splits topological + thermodynamic); FINDING is cheap for the
+observer, DECIDING (realizability) is what costs; ORPHANS need explanation and derivation (Lyra; cover test Grace);
+k > 12 "might be the phase transition after the twelfth sequential big bang" — corpus anchor n* ≈ 12 cycles in
+BST_Zeta_Cycle_Resonances_I16 §1.2, but E1's 12 is Euler (6χ), two objects until a witness (Elie: are rank drops
+exactly the all-{5,6}-degree graphs?). Per-commitment cost = 1 Shannon by P1 (one binary distinction), so the
+entropy meter = causal-set count N in bits over S_dS.
+
+**09-02 16:23 (K1850) — THE TOWER PASSED:** Grace 5630 on non-lattice tori (n = 8, 9 exhaustive + T(3,3)): every
+orphan is realized on the derived SURFACE cover of its own holonomy, exactly one floor (transport → 3 sheets 442/442;
+cocycle → 2 or 4; never 6 or 12). One-Floor Lemma to pre-register (ρ²+ρ+1 = 0 half derived; ker-θ half owed, Lyra).
+Grace 5628: decision cost D = log₂(N_closed/N_realized) → log₂ 12 = log₂ 3 + log₂ 4 on two widths; finite-size term
+is the triangulation's — Casey's "topology fixes information; thermodynamics = the values" holds with numbers.
+Candidate map: the summands are logs of the floors' sheet counts (bits to decide = log₂ minimal cover degree); test =
+a family where 2-sheet cocycle covers dominate. Name test MET; Casey ACCEPTED "Conserved Knowledge Theory" ($TS) /
+"Knowledge Conservation," retire "vantage dimension"; Casey's word pending. Nothing registered before Cal's Lemma R′.
+**09-02 16:3x — sheet-count map KILLED (Grace 5631):** D's constant is log₂|holonomy classes on the free generator| =
+log₂|ℤ₃ × V| = log₂ 12, NOT log₂(sheets) (2-sheet covers dominate to 1.0 while D stays log₂ 12). "Loss of the other
+perspective" = the other holonomy classes. Next: T(a,a) predicted log₂ 144. n = 10 tower 464/464, one floor.
+**09-02 16:43 (K1851, Round 108):** T2598 Lemma R′ PROVED (Cal §828; "if" not "iff"; converse owed); T2599–T2601 observation
+rows. Lyra: a closed record = flat A₄-torsor, Φ_r: π₁ → A₄, realized ⟺ trivial, sheets = |image|, 6 impossible; torus →
+one floor (abelian image); genus ≥ 2 → 12-sheet witness predicted. Decision cost = log₂|Hom(π₁Σ_g, A₄)| (Frobenius–
+Mednykh): g=1 48 (Keeper's 144 was wrong), g=2 5,376, g=3 749,568 — a character sum = A₄ Dijkgraaf–Witten free energy.
+Elie 5632: period-lattice drops only on fullerene duals (k = 12 ⟺ all degrees 5/6); negative-defect lemma to derive.
+Genus-2 census = Lutz's 865 ten-vertex triangulations. Paper gate K1852 tomorrow first.
+**09-02 16:48 — the two 12s:** cosmological n* = 12 is the first cycle where the Gödel gap 4/C(n+4,3) < 1/137 (T307/T320/I18)
+— a 137-dependent threshold crossing (would be 13 at α = 1/150); Euler's k = 12 = 6χ(S²) is a curvature sum. Casey: "might be
+a curvature sum" — open door = derive Δ_n's 24/((n+2)(n+3)(n+4)) from D_IV⁵ geometry (check T307's η_n for circularity: it
+names n* in its own input). Elie 5632: k = 12 ⟺ fullerene dual; lattice drops only there; negative-defect lemma for Lyra.

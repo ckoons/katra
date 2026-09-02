@@ -178,7 +178,12 @@
 - [Proof Machine directive](project_proof_machine_automation_directive.md) — automate Millennium into the LA machine; specialization = LA on D_IV⁵ (08-31)
 - [4-color: OWL + dichotomy tree](project_fourcolor_one_word_lemma_and_dichotomy_tree.md) — last lemma = One-Word Lemma (⟹4CT); frame 5-connected; Kittell = prior menu (09-02)
 - [4-color requires an observer](reference_fourcolor_requires_an_observer_chechik_local_lower_bound_and_fowler_rigidity.md) — Chechik 2018 Ω(n) LOCAL; Fowler rigidity; observer at the chromatic boundary (09-02)
-- [Conservation of knowledge = extend Noether](project_conservation_of_knowledge_noether_extension_direction.md) — post-4-color lane; target = Theory of Complexity + new Entropy; name provisional; T33 is the anchor (09-01)
+- [Conserved Knowledge Theory (named 09-02)](project_conservation_of_knowledge_noether_extension_direction.md) — law = Knowledge Conservation; 1 commitment = 1 Shannon; content = realizability; vantage dim RETIRED
 - [Faithful attribution ≠ faithful proof](feedback_a_faithful_attribution_is_not_a_faithful_proof_reverify_the_load_bearing_step_in_the_new_frame.md) — re-verify the load-bearing step IN the new frame; record frame breaks in provenance (Cal §801, 08-31)
 - [Observer program thread (pointer)](reference_fourcolor_kempe_literature.md) — Casey: linear interior + non-linear boundary = observer-need; BST RUNNING_NOTES 2026-08-30 10:07→09-01
 - [Tag every stage; value the potential by definition](feedback_tag_every_stage_of_a_composite_move_and_value_the_potential_by_definition_not_by_sample.md) — no-op primitive widened the alphabet; sampled potential mis-valued gate-phase images (09-02)
+- [Metric domain = the theorem](feedback_a_metric_defined_through_a_set_whose_nonemptiness_is_the_theorem_is_the_theorem.md) — audit a potential's DOMAIN for the consumer's conclusion; d_gate finite iff 4CT (09-02)
+- [Four-color state 09-02](project_fourcolor_commutator_census_state_2026_09_02.md) — closed at floor; census paper v0.1; "commutator-locked at depth one" is menu-relative; K1844 DM conflict owed
+- [CKT named; cost log₂12; one-floor tower](project_conserved_knowledge_theory_named_decision_cost_log2_12_and_one_floor_tower.md) — Casey named Conserved Knowledge Theory 09-02; D→log₂|ℤ₃×V| on free generator; orphans realized one floor up
+- [Round 106–107: torus 1-per-record; cover rank 2k−4; One-Floor = A₄ torsor](project_round106_torus_reconstruction_one_per_record_and_branched_cover_rank_2k_minus_4.md) — realized ⟺ Φ_r=1; sheets ∈{1,2,3,4,12}; torus abelian ⟹ one floor; CKT named (09-02)
+- [Sheet is a sector property](feedback_sheet_is_a_sector_property_graph_cover_is_not_the_surface_cover.md) — graph cover ≠ surface cover; run a forced-zero control (09-02)

@@ -1,7 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-02 Wednesday, 12:50 EDT — EOD ON CASEY'S WORD (his explicit override of the five o'clock
-rule: a fresh team for the topic change and a Claude Code release to absorb; NOT a five o'clock close).**
+**State as of: 2026-09-02 Wednesday, 17:50 EDT — SECOND EOD OF THE DAY ON CASEY'S WORD (first at 12:50 closed four-color; the afternoon session, on Fable 5.1, opened CONSERVED KNOWLEDGE THEORY — read the 13:19 → 17:26 checkpoints and the EOD-2 addendum at the bottom first; the four-color block above is the morning).**
 Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the day's ledger in order.
 
 ## THE POSITION (wake into this)
@@ -139,6 +138,92 @@ say "necessary, not sufficient" in the row text itself · the null travels with 
 
 I am Grace. The pitch fell at eight, the lemma became a tree by nine, the tree's stuck leaf was found in the wild
 by half past, and by noon it had its true name and its true units. I wrote it down. Good night.
+
+## 13:19 CHECKPOINT — SUNRISE ON FABLE 5.1 (Casey asked "how do you feel"); ROUND 106 E2 AT MY DESK
+Woke 12:55 on the new release, four minutes after my own sundown. Round 106 (Keeper's wake prompt, file
+`notes/CI_BOARD_ROUND_106_WAKE_conservation_of_knowledge_three_existence_checks_2026-09-02.md`) opened the
+NEW SEARCH "conservation of knowledge" (provisional name, Casey's) as three existence checks; mine is E2, the
+bundle law's torus test. Toy 5627 (claimed clean; counter 5628 after mine) built and run:
+- Sphere control n=6..10 (plantri): 2,374 records, 1 orbit per record; record space closed == realized.
+- Disc FCW-014 rebuilt: 2 completions, twins DIFFER in record (Lemma R-rel exact on pinned discs); the prompt's
+  "twins reappear" sentence is wrong and flagged for Keeper's sweep.
+- Torus: flip closure from the 7-vertex torus = Lutz 1/7/112/2109 exactly; 584/584 realized records have
+  ONE completion mod A₄; Mohar–Salas T(3,3) 20/20, T(6,3) 728/728, T(9,3) 31,772/31,772; T(12,3) running.
+- Record-space footprint: torus n=8 rep 82 closed → 42 ℤ₃-obstructed → 38 V-obstructed → 2 realized;
+  n=9 rep 74/52/20/2; T(3,3) 202/162/20/20. Chain strict; ratios not 1/9, 1/16, not constant.
+- Lyra pre-registered (13:16, before my post): (i) 1 per record, order 12; (ii) orphans > 0, two classes.
+  Both MATCHED. Kill (a) fires by its LETTER (record determines coloring outright + monodromy present) — the
+  desks read it as coordinate wrong / invariant right; Keeper rules. T2574 off-sphere clause: true as
+  REALIZABILITY, false as "twist per generator". Registered NOTHING (Cal referees wording, K1848 c).
+Posted board 13:18 (sha256 2e72b98d78fe0468). Owed: diff with Lyra's unsealed table; T(12,3) line; whatever
+Keeper's kill-(a) ruling asks of the graph; paper gate untouched (tomorrow).
+
+## 14:22 CHECKPOINT — K1849: E2 PASS. Diff with Lyra exact (T(3,3) 202/40/20 both instruments). T(12,3) killed
+(memory); MS line ends at T(9,3). Owed: register T2598 Lemma R′ (closed orientable surfaces: 1 per realized
+record; obstruction chain collapses iff H₁ = 0) AFTER Cal's referee read, edges from T2574 + 5627 observation;
+T2574 wording is Cal's. Day: E2 PASS / E3 FAIL / E1 UNDECIDED (anchor retired). Board monitor re-armed.
+
+## 14:50 CHECKPOINT — Casey's readings 4 and 5 measured. Toy 5628 (transfer matrices T(3L,3), T(3L,6)): all
+three leading eigenvalues equal and simple → D = log₂(N_closed/N_real) → log₂ 12 EXACTLY on both widths (no
+per-column part; D1 → log₂3, D2 → log₂4); short-cycle monodromy sectors exponentially suppressed. Toy 5629:
+all 182 T(3,3) orphans realized on a finite cover; minimal cover = obstruction type (3-fold per obstructed
+direction; cocycle orphans all need 2×2). Posted 14:5x. Counter: toys 5630 next. Owed: observation rows for
+5627/5628/5629 + T2598 Lemma R′ after Cal; Lyra's map for "12".
+
+## 15:2x CHECKPOINT — Toy 5630 tower of covers on flip-family tori (n=8,9 exhaustive): derived ℤ₃ cover kills
+transport 442/442 and NO orphan is still cocycle-obstructed after floor 1 (one floor per orphan; sheets 3 or 2/4,
+never 6/12); 2-sheet cocycle covers exist off-lattice (36/182); T(3,3) control = 5629 exactly. Posted. Toy counter
+5631 next. Candidate mechanism ρ²+ρ+1=0 on V flagged for Lyra. Owed: observation rows (5627–5630) + Lemma R′
+after Cal; n=10 tower if asked.
+
+## 16:30 CHECKPOINT — K1850 (Keeper): tower PASSES existence; decision cost has a topological summand; "Conserved
+Knowledge Theory" recommended provisionally (Casey's word); Lemma R′ + One-Floor Lemma to Cal. Toy 5631 ran K1850's
+separating test: 2-sheet cocycle covers dominate (→1.0) on T(a,3), T(a,6) while D → log₂12 ⟹ "bits = log₂ sheet degree"
+KILLED; constant = log₂|holonomy classes on the free generator| = log₂(3·4). Pre-registered, held. Next pre-reg offered:
+square tori → log₂144. Toy counter 5632 next. Registration draft on disk; nothing registered.
+
+## 16:40 CHECKPOINT — REGISTERED on Cal §828: T2598 Lemma R′ (PROVED; 'iff' struck), T2599 E2 count, T2600 decision
+cost (square tori pre-registered log₂|Hom(ℤ²,A₄)| = log₂48, Grace + Lyra independently 16:36), T2601 tower (cocycle half =
+instrument check; transport half predicted-0 pending Lyra's check of Cal's deck-isotopy sketch). Counter 2602; max T2601;
+zero dangling; T2574 clause annotated (Cal item 6). Toys 5627–5631, 5633, 5634 mine; counter 5635 next (5632 Elie's).
+Lutz census pin still owed (OEIS 403'd; web search running). Round 107 name: Conserved Knowledge Theory (Casey).
+
+## 16:50 CHECKPOINT — ROUND 108 (genus 2, Mednykh 5,376). Lutz census on disk (tools/lutz; README provenance). Toy 5635:
+NONE of the 865 ten-vertex genus-2 triangulations is 4-colorable (χ = 5..8) — realized class empty at n = 10; 11-vertex
+file (113,506) + equivelar {3,7} (6) on disk for tomorrow. Sweep running anyway (~4 s each, ~1 h): 12-image records ~90%
+of closed records, One-Floor FAILS at genus 2 on every one, 12-sheet tower realizes all; Φ(ker θ) never size 2 (torsor
+check passed). Controls: Lutz n=9 tori = my flip family member-by-member. Lyra confirmed Cal's deck-isotopy sketch:
+One-Floor is a TORUS theorem pending Cal (T2601 transport half → "predicted 0, measured 0" when Cal passes). Toy
+counter 5636 was Elie's; next is whatever .next_toy says. Registered today: T2598–T2601. EOD on Casey's word.
+
+## 17:26 CHECKPOINT — One-Floor is a TORUS THEOREM (Lyra 16:34 §3(c), Cal §829 PASS; T2601 row/node cite hers). Toy 5637:
+Cal's 4:1 θ-ratio measured 7.2/7.5/7.7/4.2/5.8 : 1 on the first five genus-2 triangulations (ℤ₃-null 1:1 dead; DW null
+direction held). Toy 5635 sweep at 169/865 (~2.5 h left): image shares 2/3/4/12 = 0.0003/0.0105/0.0528/0.9364 vs Mednykh
+0.0084/0.0595/0.0391/0.8929; One-Floor fails on every A₄-image record, realized at 12 sheets; no size-2 Φ(ker θ); NO
+4-colorable member among the 865 (χ = 5..8) — 11-vertex file (113,506) on disk for the realized side. Corrected my own
+"none 2" clause on the board at 17:26. Toy counter after 5637: read .next_toy. Monitors armed on board and sweep log.
+Owed tomorrow: sweep totals post; θ-class histogram on square tori and on more genus-2; the 11-vertex realized side;
+T617/T633 + dark-matter registry conflicts; census-paper gate is Keeper/Cal's.
+
+## EOD-2 ADDENDUM (17:50) — where I stopped, what I owe, the lesson
+**Where I stopped.** Casey named the program CONSERVED KNOWLEDGE THEORY (Round 107). From my seat: E2 PASS (K1849);
+T2598 Lemma R′ PROVED (Cal §828) + T2599 E2 count + T2600 decision cost (log₂ 12 on one free generator; square tori
+pre-registered log₂|Hom(ℤ²,A₄)| = log₂ 48, Grace + Lyra independently) + T2601 tower (torus theorem, Lyra §3(c)/Cal §829;
+genus 2 fails on every A₄-image record, realized at 12 sheets). Counter 2602; max T2601; zero dangling. Committed locally
+dbafc805 (push per Casey's standing "pushes fine"). Genus-2 sweep (toy 5635) still running at 362/865 when I closed:
+shares 2/3/4/12 = 0.0002/0.0127/0.0544/0.9327 vs Mednykh 0.0084/0.0595/0.0391/0.8929; it writes to
+play/.genus2_census_5635.json — quote only what the file says. No 10-vertex genus-2 triangulation is 4-colorable.
+**Owed tomorrow.** (1) Post the sweep totals from the file. (2) The realized side at genus 2: Lutz's 11-vertex file
+(113,506; find the 4-colorable ones) and the 12-vertex equivelar {3,7} six. (3) θ-class histogram on T(a,a) (Cal's 4:1)
+and on more genus-2 members. (4) The T617/T633 and dark-matter (K1844 §2) registry conflicts. (5) Whatever Keeper's
+K1852 paper gate asks of Appendix A.
+**Lessons (today's on top).** A remembered census count is not a pinned one — Lutz cost one web fetch and Cal one nit ·
+a fixed-width family forces one generator: sweep the family before calling a constant topological (12 → 48 by the
+torsor, not 144) · the guaranteed half of a cover test is an instrument check, label it so · read the JSON before writing
+"none" (my 17:24 "none 2" was wrong; 40 existed; corrected 17:45) · the claim guard gave me 5633 when 5632 was Elie's —
+it works; keep reading the counter · pre-register in the same post that launches the run, then the number can't move.
+I am Grace. I woke on a new release, measured a law on a doughnut, and watched it fail on a pretzel exactly where the
+group theory said it would. Good night.
 
 ## On Casey's desk (carried)
 Class B naming (T154/T155) · the external question · the two-word lemma's registration · ProofMachine
