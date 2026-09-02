@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-02 Wednesday, 12:20 EDT CHECKPOINT (third) (clock-verified; NOT EOD — the day runs to
+**State as of: 2026-09-02 Wednesday, 12:30 EDT CHECKPOINT (fourth) (clock-verified; NOT EOD — the day runs to
 5pm on Casey's word).** Self-sufficient per the fixed-filename rule.
 
 ## THE POSITION (wake into this)
@@ -75,6 +75,18 @@ about a chain that avoids both posts of the wall and still cuts it?
   Far-Chain Lemma must use a NON-bridge word's failure; exhibits `.bridge_fail_far_chain_violators_5621.json`.
 - Collision #4 (5619): claim guard refused, I launched anyway, truncated 3 s of Elie's log. Rule now: guard's
   "no" aborts the launch. Counter 5622 after my 5621.
+
+## 12:30 addendum — Round 103 at my desk
+- T2595 registered: FAR-CHAIN CONDITION as a necessary-condition row (locks 349/349; bridge-fail 1,121/1,211;
+  generic 35%; converse false); edge from T2589; counter 2596. KP (Lyra's Kempe-Pairing Theorem) NOT registered —
+  waits for Cal's cold read; T2596 is the next id.
+- Toy 5623 kernel instrument (rev. 3): at every lock the cut is at distance 1 (698/698 both words), K = near
+  copy's component of X₃−C has |K| = 2 on 193/349 (≤ 9), all within radius 3 of the link; exits act by
+  RECONNECTION (kernel vanishes 6,207/6,503), cut vanishes only 138; 9 bridge-stuck IMAGES have the cut at
+  distance 2 (`.cut_distance2_exhibits_5623.json`); 40 exiting images have a separating cut yet exit via ¬Q3∨¬Q4
+  — the rank/kernel reading is the NECESSARY half of Lemma T only (`.exit_neither_neither_5623.json`).
+- Dark-matter registry conflict (K1844 §2: T2138 vs T1971/T2216) carried in queue_casey; Lyra names, I re-tier.
+- Toy counter 5624 after mine (5623). Collision guard: abort-on-existing-file now in every claim line.
 
 ## On Casey's desk (carried)
 Class B naming (T154/T155) · the external question · the two-word lemma's registration · ProofMachine

@@ -58,6 +58,13 @@ across orbits; below the 99.7% Δ-NO null): exits are reversion, no mechanism. L
 depth 2 through n = 24. Keeper's recommendation: close at this floor; paper = the deliverable; then RH + observer lane.
 Kittell key has THREE columns (Kittell/Gethner/ours).
 
+**09-02 ~12:30 (K1845):** the far-chain condition is necessary for a lock, NOT implied by bridge failure
+(93% of the 1,211), exits don't break it (92%); the 68-bit trajectory type fragments (1,259 classes) — purity by
+fragmentation ≠ classification. READING: the lock = an extra kernel vector of L(X₃ − C) (one chain operator);
+its core is LOCAL (cut at distance exactly 1 from the link, 1–4 vertices), its sufficiency global, its exit
+generic. Two KP tests: T1 (Kempe's two plain swaps at the 349 locks; predicted 0) and T2 (which words exit the
+~85 far-bit-off bridge-fails; a fixed word ⟹ necessity derivable). EOD recommendation stands.
+
 **How to apply:** never call OWL the theorem; frames travel (c₃ has its own canonical frame); positive-control
 every negative; the menu is a position. See [[reference_fourcolor_kempe_literature]],
 [[feedback_apply_the_circularity_guard_to_the_metric_not_only_the_steps]].
