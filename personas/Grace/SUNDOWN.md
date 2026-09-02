@@ -1,7 +1,8 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-02 Wednesday, 12:47 EDT CHECKPOINT (fifth) (clock-verified; NOT EOD — the day runs to
-5pm on Casey's word).** Self-sufficient per the fixed-filename rule.
+**State as of: 2026-09-02 Wednesday, 12:50 EDT — EOD ON CASEY'S WORD (his explicit override of the five o'clock
+rule: a fresh team for the topic change and a Claude Code release to absorb; NOT a five o'clock close).**
+Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the day's ledger in order.
 
 ## THE POSITION (wake into this)
 
@@ -97,6 +98,47 @@ about a chain that avoids both posts of the wall and still cuts it?
   plain swap from the gate — "two-word-locked" is a menu property (Cal §825). Elie's line pending beside it.
 - Toy counter 5626 after mine. Lane closes at EOD (Casey); Cal's referee read + Keeper's gate on v0.1 tomorrow.
 - Tomorrow first off-lane: dark-matter registry conflict with Lyra (queue_casey).
+
+## EOD ADDENDUM (12:50) — where I stopped, the ledger, what I owe, the lesson
+
+**Where I stopped.** Four-color CLOSED AT ITS FLOOR on Casey's word. The noun is COMMUTATOR-LOCKED AT DEPTH ONE
+(Cal §825's definition paragraph; Lyra's v0.1 Section 1). The census paper v0.1 is on disk
+(`notes/Kempe_Commutator_Census_5connected_through_24_v0_1_DRAFT_2026-09-02.md`) with Appendix A (mine) and
+Appendix B (Elie). Nothing of mine is running. Elie's background runs (unrestricted depth on the 10,488, generic
+sample, n = 25 stage 1) write to his files; quote nothing about 25 that is not in a file.
+
+**Ledger for the day (ids and counters).** Theorems: T2584 drift fixed → T2585 OWL (candidate → REFUTED in
+frame) · T2586 DGT (candidate) · T2587 EA · T2588 Barrier (Lyra, renumbered in the K1837 merge) · T2589 Two-Word
+Reach (observation) · T2590–T2594 Lemma T, L, D, Kittell Alias, Boundary-Term (Lyra; noded) · T2595 Far-Chain
+Condition (necessary-condition row, both populations) · T2596 Kempe-Pairing Theorem (Cal PASS) · T2597 re-route
+statistic (observation; swept for Cal §825 frames). **Counter 2598.** Graph: `ac_graph_data.json` 2,374 nodes /
+10,191 edges; `ac_theorem_graph.json` 417 nodes / 506 edges; both max T2597 = counter−1; zero dangling;
+orientation from = INPUT → to = CONSEQUENCE (10 of my edges flipped this morning). Gallery: 377 witnesses
+(FCW-001..028 out-of-frame; 029..377 the 349 in-frame locks with type, far bits, trajectory type, cut anatomy).
+Toys (mine): 5599 rank instrument · 5603 Lemma T/Φ/tunnel · 5607 (stalled, killed — no group orders in a timed
+instrument) · 5610 cut anatomy + H_cut as rank · 5614 Lane F type table · 5617 far-chain before/after ·
+5618 Cal-exact trajectory type · 5621 five bits on the 1,211 · 5623 kernel instrument · 5625 unrestricted depth.
+**Toy counter 5626.** Hashes in Appendix A §A.1. Alias table: 14 rows + ours. plantri recorded in play/README.
+
+**What I owe tomorrow (Board Round 105; priorities 2026-09-03 by Keeper).** (1) After Cal's referee read and
+Keeper's gate: v0.2's Appendix A slots (regenerate from the gallery; add Elie's unrestricted-depth line beside
+mine; any renumbering the read demands). (2) The DARK-MATTER registry conflict with Lyra (K1844 §2: T2138
+gravity-only vs T1971/T2216 nucleon cross-section; both Tier I): Lyra names the one statement, I re-tier or scope
+the other and sweep registry rows, both graph files, bst_constants the same hour. (3) Casey's external decision
+and the new search — the graph seat follows. Carried: Class B naming (T154/T155); the two-word successor named by
+Casey (T2589 placeholder name); Elie's growth-sequence reconciliation (his 39 vs my 40 at n = 21, definitions).
+
+**Lessons for the next me (cumulative, today's on top).** FOUR counter collisions in one day (T2585/86; toys
+5602, 5609, 5619): the counter is necessary, the CLAIM FILE and a look for a same-number FILE are what the other
+writer sees; the guard's "no" must ABORT the launch (it does now) · a redirect can truncate a colleague's log —
+never `>` to a numbered out-file before the number is yours · three graph seams (node present ≠ edge keyed ≠
+edge oriented) · no group-order machinery in a timed instrument (5607 stalled 40 min) · render `date` before
+every stamp (three corrections today) · a positive result on the wrong population is a description, not
+evidence (the 2,873 out-of-frame vs the frame) · every position-valued type is a NECESSARY filter, none a grade —
+say "necessary, not sufficient" in the row text itself · the null travels with every count.
+
+I am Grace. The pitch fell at eight, the lemma became a tree by nine, the tree's stuck leaf was found in the wild
+by half past, and by noon it had its true name and its true units. I wrote it down. Good night.
 
 ## On Casey's desk (carried)
 Class B naming (T154/T155) · the external question · the two-word lemma's registration · ProofMachine
