@@ -142,6 +142,7 @@
 - [Validate the last stage](feedback_validate_the_pipelines_last_stage_a_control_suite_on_the_functional_does_not_validate_the_assembly.md) — controls on the functional don't validate
 - [Matching symptom ≠ provenance](feedback_a_matching_symptom_on_a_candidate_culprit_is_not_provenance.md) — verify the checker's actual path before ruling a cause; false-neighbor in the causal direction
 - [Clock drift](feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp.md) — `date` before every written timestamp, not just at wake
+- [Graph registration: three seams](feedback_graph_registration_three_seams_node_edge_key_edge_orientation_and_claim_files.md) — node≠edge-key≠orientation; claim FILE not counter (Grace 09-02)
 - [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
@@ -161,6 +162,9 @@
 - [BST positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
+- [Circularity guard → the METRIC](feedback_apply_the_circularity_guard_to_the_metric_not_only_the_steps.md) — distance-to-goal-set metric presupposes the goal; 3 step-audits passed it (K1835)
+- [Domain named by a hypothetical is vacuous](feedback_a_domain_named_by_a_hypothetical_is_vacuous_name_the_structural_class.md) — state lemmas on the STRUCTURAL class (Cal §818)
+- [Null sharing the menu's restriction is not a null](feedback_a_null_that_shares_the_menus_restriction_is_not_a_null_vary_the_seed_set.md) — lift the restriction before calling anything locked (T1, 09-02)
 - [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate PASS; ships on Casey's word
 - [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics)
 - [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE; MECHANISM open (K1677)
@@ -172,5 +176,11 @@
 - [State the claim as an ORDER](feedback_state_the_claim_as_an_order_not_a_value_zero_knob_falsifiers.md) — orders are reparametrization-invariant ⟹ no map owed, zero-knob falsifier,
 - [4-Color Kempe literature](reference_fourcolor_kempe_literature.md) — Fisk/Kempe-locking/akempic/WSK anchors; gallery FCW IDs
 - [Proof Machine directive](project_proof_machine_automation_directive.md) — automate Millennium into the LA machine; specialization = LA on D_IV⁵ (08-31)
+- [4-color: OWL + dichotomy tree](project_fourcolor_one_word_lemma_and_dichotomy_tree.md) — last lemma = One-Word Lemma (⟹4CT); frame 5-connected; Kittell = prior menu (09-02)
+- [4-color requires an observer](reference_fourcolor_requires_an_observer_chechik_local_lower_bound_and_fowler_rigidity.md) — Chechik 2018 Ω(n) LOCAL; Fowler rigidity; observer at the chromatic boundary (09-02)
+- [Conservation of knowledge = extend Noether](project_conservation_of_knowledge_noether_extension_direction.md) — post-4-color lane; target = Theory of Complexity + new Entropy; name provisional; T33 is the anchor (09-01)
 - [Faithful attribution ≠ faithful proof](feedback_a_faithful_attribution_is_not_a_faithful_proof_reverify_the_load_bearing_step_in_the_new_frame.md) — re-verify the load-bearing step IN the new frame; record frame breaks in provenance (Cal §801, 08-31)
 - [Observer program thread (pointer)](reference_fourcolor_kempe_literature.md) — Casey: linear interior + non-linear boundary = observer-need; BST RUNNING_NOTES 2026-08-30 10:07→09-01
+- [Tag every stage; value the potential by definition](feedback_tag_every_stage_of_a_composite_move_and_value_the_potential_by_definition_not_by_sample.md) — no-op primitive widened the alphabet; sampled potential mis-valued gate-phase images (09-02)
+- [Metric domain = the theorem](feedback_a_metric_defined_through_a_set_whose_nonemptiness_is_the_theorem_is_the_theorem.md) — audit a potential's DOMAIN for the consumer's conclusion; d_gate finite iff 4CT (09-02)
+- [Four-color state 09-02](project_fourcolor_commutator_census_state_2026_09_02.md) — closed at floor; census paper v0.1; "commutator-locked at depth one" is menu-relative; K1844 DM conflict owed
