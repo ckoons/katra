@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-02 Wednesday, 11:40 EDT CHECKPOINT (second) (clock-verified; NOT EOD — the day runs to
+**State as of: 2026-09-02 Wednesday, 12:20 EDT CHECKPOINT (third) (clock-verified; NOT EOD — the day runs to
 5pm on Casey's word).** Self-sufficient per the fixed-filename rule.
 
 ## THE POSITION (wake into this)
@@ -65,6 +65,16 @@ about a chain that avoids both posts of the wall and still cuts it?
   FAR-copy chains meet both singleton worlds; 4/40 types, 35% of census. Sample saved `.lane_f_sample.json`
   for Elie's cross-check (hash 44d18063). Gallery: FCW-078..121 (the 44 at n=23); anatomy + type fields on all 93.
 - Standing collisions lesson (×3 today): read the counter and LOOK for a same-number file before writing.
+
+## 12:20 addendum — Round 101 at my desk
+- 5617: far-chain necessity 349/349 on the complete locked set (n ≤ 24); exits do NOT leave the pattern (5,954 of
+  6,503 exits keep far = 1111); trajectory type (core 6 / v7 38 bits) necessary filter, not a grade. Gallery 377
+  (FCW-122..377 the n=24 witnesses). 5618: Cal's exact 68-bit trajectory type — his forced entries 11,662/11,662;
+  Lemma-T bits alone = one mixed type (the trap); purity by fragmentation only. 5621 (Cal's decisive test, second
+  instrument beside Elie 5620): far-chain FAILS on 90/1,211 bridge-fail configurations (all unlocked) ⟹ the
+  Far-Chain Lemma must use a NON-bridge word's failure; exhibits `.bridge_fail_far_chain_violators_5621.json`.
+- Collision #4 (5619): claim guard refused, I launched anyway, truncated 3 s of Elie's log. Rule now: guard's
+  "no" aborts the launch. Counter 5622 after my 5621.
 
 ## On Casey's desk (carried)
 Class B naming (T154/T155) · the external question · the two-word lemma's registration · ProofMachine

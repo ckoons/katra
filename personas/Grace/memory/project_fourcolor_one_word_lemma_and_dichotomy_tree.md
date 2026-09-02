@@ -41,6 +41,23 @@ n=22, lookback ≤ 4, failures where Kempe's structure re-enters. Lane F: the TY
 Kittell's eight chains; is locked a function of type? Novelty at Cal's level: W_i = Kittell's δ∘γ; ours =
 isolating the commutator + dichotomy + exhaustive census. Kittell 1935 Bull. AMS 41:407 = primary source.
 
+**09-02 ~12:10 (K1842):** depth 2 holds through n = 24 (7.38M stuck; 349 witnesses); the c₀ chain-intersection
+TYPE is finite and derived (22/28 bits forced by One-Context; 40 of 64 realized) and locked is NOT a function of
+it; NECESSARY: every lock has the FAR copy's chains reaching both singleton worlds (4/40 types) — "the lock is
+decided by where the far chains go." H-suff not derived (containment ≠ dissolution; stage-3 excision decides).
+Exit mechanism M2 (road-breaking) vs M3 (re-bridging, 89% by one classification) is settled by Lemma T on the
+image, two instruments. Next finite object: Cal's TRAJECTORY TYPE (stage-chain intersections, 0/1 only). Corpus:
+linear interior (One-Context in GF(2)²⁸) / nonlinear boundary (the lock) — an instance of Casey's 08-30 sentence.
+
+**09-02 ~12:20 — THE FLOOR (K1843):** Theorem KP (Lyra): Kempe 1879 is correct wherever the far chain ζ misses
+the middle road F_i (Heawood = ζ touching F_i), and the fixed-seed commutator of Kempe's chains is the IDENTITY
+— the shape hides its own exit. Five necessary intersection bits for a lock (four far-chain + one), a property of
+BRIDGE-STUCKNESS (14,279/14,279; 349/349 out of sample incl. 256 unseen). No 0/1 incidence type at any depth is
+sufficient; sufficiency = rank of X₃ minus the cut (connectivity inside one chain). The Δ-flip is generic (flat
+across orbits; below the 99.7% Δ-NO null): exits are reversion, no mechanism. Locks are rare (4.4e-5) and fragile;
+depth 2 through n = 24. Keeper's recommendation: close at this floor; paper = the deliverable; then RH + observer lane.
+Kittell key has THREE columns (Kittell/Gethner/ours).
+
 **How to apply:** never call OWL the theorem; frames travel (c₃ has its own canonical frame); positive-control
 every negative; the menu is a position. See [[reference_fourcolor_kempe_literature]],
 [[feedback_apply_the_circularity_guard_to_the_metric_not_only_the_steps]].

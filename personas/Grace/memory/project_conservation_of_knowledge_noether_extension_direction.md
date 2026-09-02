@@ -41,6 +41,30 @@ test: derive the cap from D_IV⁵ counting; it must equal the 19.1% observer bou
 RUNNING_NOTES 2026-09-01 ~17:00. The Shannon as unit of information charge = deliberate credit to
 Claude Shannon.
 
+**09-02 ~11:45 — the lane's FIRST DEFINITION (Casey's, made precise by Keeper):** the VANTAGE DIMENSION of a
+problem = the minimal number of global coordinates (holonomies) an observer must supply so that a local rule then
+solves it. "(x,y) insufficient, (x,y,z) sufficient." Rungs with kill tests: 0 = local rule exists (log*-class);
+1 = one lift, one holonomy (planar 4-coloring via the Height Dictionary T2577 — literal z; 2-coloring bipartite);
+∞ = no finite lift localizes (3-SAT: T33's non-localizable charge, PROVED). A complexity measure by storage of
+global information — the sentence this lane needed. Anchors: Chechik 2018 (Ω(n) LOCAL 4-coloring), Fowler
+rigidity, the LOCAL gap theorems. Naming Casey's. Pre-register the three rungs before anything is claimed.
+
+**09-02 ~11:50 — the CONSERVATION LAW, Casey's form made precise:** record R (n−1 local dims) = base; the nth
+coordinate's values = fiber; knowledge K = total space. Conserved: K is determined by R up to the structure group
+G (a second observer reconstructs K up to G; the G-orbit is the invariant — the Noether shape). "Some knowledge
+requires a higher observer" ⟺ nontrivial monodromy (record ≠ lift globally). PROVED INSTANCE: Lemma R (T2574) —
+sign pattern determines the 4-coloring up to A₄ on the closed sphere; PREDICTED FAILURE measured: incomplete on
+discs with boundary (topology trichotomy, FCW-014); monodromy = dislocations at odd vertices (T2577). Kill tests
+(a)–(c) logged in RUNNING_NOTES 09-02.
+
+**09-02 ~12:00 — naming and the endpoint (Casey):** the lineage is symmetry (Noether) → information (Shannon)
+→ the OBSERVER (Koons); the paper names predecessors, adds one concept, proves it; the field attaches the name
+later. Candidate names: "Knowledge Conservation" (the law; Keeper's recommendation — states the claim, sits in
+the pattern) and "vantage dimension" (the measure); "knowledge theory" rejected as generic. Casey: the program's
+final result may be "conserved knowledge theory, or the ARROW OF COMPLEXITY" — the monotone growth of what
+observers can hold along the commitment order, paired with entropy-as-meter. CI persistence nuance: a
+never-retiring auditor keeps claim and retraction together, which makes a name attachable while the author lives.
+
 **How to apply:** Keeper's ruling stands — no derivation before existence: the thread does not go on
 the machine until it has a theorem-shaped first sentence with a kill test. Likeliest first cell: the
 storage limit (three bounds with stated directions). Engage Casey's ranging shots with anchors and
