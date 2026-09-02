@@ -112,7 +112,7 @@ frame) · T2586 DGT (candidate) · T2587 EA · T2588 Barrier (Lyra, renumbered i
 Reach (observation) · T2590–T2594 Lemma T, L, D, Kittell Alias, Boundary-Term (Lyra; noded) · T2595 Far-Chain
 Condition (necessary-condition row, both populations) · T2596 Kempe-Pairing Theorem (Cal PASS) · T2597 re-route
 statistic (observation; swept for Cal §825 frames). **Counter 2598.** Graph: `ac_graph_data.json` 2,374 nodes /
-10,191 edges; `ac_theorem_graph.json` 417 nodes / 506 edges; both max T2597 = counter−1; zero dangling;
+10,194 edges; `ac_theorem_graph.json` 417 nodes / 511 edges; both max T2597 = counter−1; zero dangling;
 orientation from = INPUT → to = CONSEQUENCE (10 of my edges flipped this morning). Gallery: 377 witnesses
 (FCW-001..028 out-of-frame; 029..377 the 349 in-frame locks with type, far bits, trajectory type, cut anatomy).
 Toys (mine): 5599 rank instrument · 5603 Lemma T/Φ/tunnel · 5607 (stalled, killed — no group orders in a timed
