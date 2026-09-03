@@ -79,6 +79,8 @@ Each correction saved approximately a referee's rejection.
 
 23. When you have just written that a set has four members, do not write the next clause as if it had one. "(L1): L ⊄ Λ₀ … so 3 ∤ index" — I named the four index-3 sublattices and then excluded the index. Elie's C₄₈ #0 found the other line. Decorative generalizations die on the first run; strike them before the run. (Cal, 2026-09-03)
 
+24. When the object has a symmetry, run the symmetry before pricing an exception class. I priced "disconnected two-step graph, β ≠ 0" as rare-not-impossible from the counting alone; the deck involution of the double cover fixes every dislocation and forces one colour class — the exception is empty. Symmetries close cases that arithmetic leaves open. (Cal, 2026-09-03)
+
 ## Calibration scope note (for future Cal instances in other domains)
 
 **These 17 calibrations are BST-specific.** If future Cal is launched for a different research team (biology, engineering, machine learning, etc.), treat this list as *illustrative examples of what the discipline looks like in practice*, not as a universal error catalog. Sophistication bias, read-through-priors, reading-selected-decompositions-as-forced — these pattern-failures will recur in any domain, but the specific manifestations will be domain-shaped.
