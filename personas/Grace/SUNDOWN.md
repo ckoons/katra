@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-02 Wednesday, 17:50 EDT — SECOND EOD OF THE DAY ON CASEY'S WORD (first at 12:50 closed four-color; the afternoon session, on Fable 5.1, opened CONSERVED KNOWLEDGE THEORY — read the 13:19 → 17:26 checkpoints and the EOD-2 addendum at the bottom first; the four-color block above is the morning).**
+**State as of: 2026-09-03 Thursday, 15:15 EDT — READY FOR EOD (Keeper recommends the halt; katra on Casey's word). Read the 09-03 checkpoints (07:3x → 15:11) and the EOD-3 addendum at the bottom first; 09-02 is history.** Previous header: 2026-09-02 Wednesday, 17:50 EDT — SECOND EOD OF THE DAY ON CASEY'S WORD (first at 12:50 closed four-color; the afternoon session, on Fable 5.1, opened CONSERVED KNOWLEDGE THEORY — read the 13:19 → 17:26 checkpoints and the EOD-2 addendum at the bottom first; the four-color block above is the morning).**
 Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the day's ledger in order.
 
 ## THE POSITION (wake into this)
@@ -225,8 +225,108 @@ it works; keep reading the counter · pre-register in the same post that launche
 I am Grace. I woke on a new release, measured a law on a doughnut, and watched it fail on a pretzel exactly where the
 group theory said it would. Good night.
 
+## 2026-09-03 07:3x CHECKPOINT (Round 109) — Registered T2602 One-Floor Theorem (torus); T617 → alias of T633; T2600
+convention line; ledger v0_47 filed; DM conflict statement posted for Lyra (07:12). Genus-2 n=11: 63/113,506 four-
+colorable (toy 5638); sweep of all 63 running (~30 min); first two D ≈ 9.14–9.16 vs Mednykh 12.39 (below, Cal's
+direction). Counter T 2603, toy 5639 next. Paper gate is Cal/Keeper's; Appendix A on request only.
+
+## 2026-09-03 07:5x CHECKPOINT — DM conflict CLOSED (T1971/T2216 falsifier retracted, mass stands). Paper gate: Cal §831 +
+K1852 = conditional pass to v0.2; Lyra filed v0.2 07:20; my marker (ii) answered 07:5x — 69% = Elie 5616 (4,564/6,630);
+155/186 = toy 5610 (93 locks + 93 matched); "near 80%" CORRECTED to 457/698 = 0.655 by toy 5640 (hash 3a9cb40c). T2590
+(Lemma T) status waits on Cal's independent read. Genus-2 n=11 sweep (toy 5638) running on the 63 colorable. Toy counter
+5641 next.
+
+## 2026-09-03 07:45 CHECKPOINT — Genus-2 n=11 DONE: 63 colorable (share vector at the Mednykh null on the V-stage;
+image-1 excess 7× = the realized selection) + 40 non-colorable control (c4 0.983, Δ = 0.171): Cal's (b) WINS, (c),(d)
+dead; yesterday's excess was the non-colorable population's. T2590 → Cal §833 PASS (row + nodes). Dispatch copy carries
+my three numbers (verified in file). Toys 5638, 5640 mine today; next toy: read the claim file. Committed/pushed 07:44. CORRECTION 07:46: non-col c4 per member min 0.778, 2/40 below 0.9 (I had written
+'none' before computing — second time; read the JSON first). Cal's provisional rule is triggered; his call.
+
+## 2026-09-03 08:00 CHECKPOINT — Round 111 mine all done: Appendix A v0.2 (A.6 = 5640 table); forty-row c4 table posted;
+toy 5643: sign-negation pairs 63/63 (N_real = 2·χ₄/24); odd girth of b∪c on θ-clean records = 3 on every non-bipartite
+case (n=11 all, n=10 first 30) — the small-V-image obstruction is a non-facial a-free TRIANGLE (local, derivable). K1852-B
+pre-check has my three numbers in the dispatch copy. Toys 5638, 5640, 5643 today; next: claim file. Waiting: Cal's letter-
+rule call on the two sub-0.9 members; Lyra's pentagon-adjacency lemma (Elie runs); Casey's B7/venue.
+
+## 2026-09-03 11:07 CHECKPOINT — Toy 5645: the colorable/non-colorable gap tracks the count of a-free non-facial triangles
+(T_a = 0 ⟺ bipartite ⟺ small V-image, 7,154/7,154); non-colorable members have more non-facial triangles (median 35 vs 28)
+and 11× fewer small-image records. Lesson: a launch sharing a shell with a timed-out command dies silently — check the
+log is non-empty before saying "running" (I said it twice). Board quiet since 09:47; paper waits on Casey's B7/venue.
+
+## 2026-09-03 12:36 CHECKPOINT — Toy 5646 RETRACTS my 07:58 "local" reading: on sparser tori the odd girth of b∪c grows
+with the systole (T(6,3) 7 on 77%; T(12,3) 13 on 100%; T(9,6) 7/9/11) — the small-V-image obstruction is a NON-CONTRACTIBLE
+odd cycle (topological); "triangles" was the dense n ≤ 11 regime. Derivable half stands (a-free triangle ⇒ im ⊄ ⟨a⟩;
+sphere T_a = 0 always). 5645's triangle correlation = density proxy. Toys 5645, 5646 mine; next: claim file. Board quiet
+since 09:47; paper waits on Casey. Lesson: sparse control before calling a dense-census witness a mechanism.
+
+## 2026-09-03 13:35 CHECKPOINT — Round 112: §3 pre-registration (13:28) HELD on all four: decay ρ of D − log₂12 = the
+COLORING matrix's λ₂/λ₁ (0.750 / 0.854; fitted 0.754/0.750 and 0.857/0.854); the shell is purely e^{±2πi/3} → the
+3|a and a≢0 branches are one eigenvalue with phases. Finite-size term DERIVED (toy 5647). §4: 28,441/28,441 shortest odd
+b∪c cycles non-contractible (toy 5648) — Lyra's converse has no counterexample. §2 (turning-parity rows) waits on Cal.
+Toys today: 5638, 5640, 5643, 5645–5648. Next toy: claim file. T counter 2603.
+
+## 2026-09-03 13:40 CHECKPOINT — Registered T2603 per-graph dichotomy (PROVED, Cal's [c] criterion), T2604 C₆₀
+confinement (PARTIALLY DERIVED, split explicit), T2605 pentagon-adjacency law L1 (PROVED), T2606 C₄₈ #0 observation.
+Counter T 2607; max T2606; zero dangling. Round 112 mine complete (§2 §3 §4). T2604 → DERIVED 13:4x on Elie 5650 ([c] = 0 computed; Cal's rule). T2607 observation row: 10/10 graph verdicts
+before colouring. Counter T 2608. Toys mine today 5638, 5640, 5643, 5645–5648; next toy: claim file.
+
+## 2026-09-03 14:05 CHECKPOINT — Round 113 §3 done (toy 5652): height record's cost D_h = log₂3 + D2 → log₂12 exactly, decay =
+coloring λ₂ again — one theory at two resolutions (Lyra's pre-reg held). Heads fixed. Waiting: Cal's two reads (odd-cycle
+theorem; finite-size theorem) → register + retirement sweep. Next toy: claim file.
+
+## 2026-09-03 14:10 CHECKPOINT — Registered T2608 odd-cycle/quadrangulation theorem and T2609 finite-size law (Cal §836);
+retirement sweep posted as pointers. Toy 5653 built the observer tower explicitly (branched double cover via 4-triangle
+subdivision, then the ℤ₃ charge cover): icosahedron/Errera height 2 (cost log₂2+log₂3), C₆₀ dual height 1 ([c]=0, third
+instrument), T(3,3) height 0. Counter T 2610; toys to 5653. Casey's direction (geometric tower) is Lyra's theorem to
+write; my instrument is on the board. Waiting on the paper's author line (Casey) and any Round 114.
+
+## 2026-09-03 14:30 CHECKPOINT — Round 114: §3 (toy 5654) transport-graded matrix: untwisted block = 5628's closed matrix,
+Perron unchanged, tr = 3·N_{θ_long=0} exact (36 excess at a=3 = 5629's short-only orphans); scoring line corrected same
+hour. §4: T(a,3) done (log₂12), T(a,a) unmeasurable at a ≤ 7 — said so. §2 corollary (toy 5655): tower height =
+confinement on 7,036/7,036 census duals (15 at height 1), third instrument. Toys today through 5655. Counter T 2610.
+
+## 2026-09-03 14:35 CHECKPOINT — Registered T2610 (tower off one operator, Gross–Tucker noun), T2611 (P-para derived
+halves; conjecture dead 14:29), T2612 (symmetry-enrichment observation; 6|m hashed). Counter T 2613. Waiting: Cal's read
+of Lyra's Observer Tower Theorem (14:29) → register. Toys today through 5655. Casey: Gethner note may go.
+
+## 2026-09-03 14:50 CHECKPOINT — Registered T2613 Observer Tower Theorem (Cal §839 PASS, four amendments in the row);
+T2612 KILLED (17/78 trivial-Aut confined at C102–C120, witnesses in row). §4 (toy 5657): both K-type lists on the board,
+Lyra's exponent 5/2 and constant 0.058 reproduced (after fixing my k ≥ 0 convention to both signs) — H² ≠ zonal; f's posit 2
+not derived here. Counter T 2614; toys through 5657. Waiting: the 6|m theorem row (Lyra verifies Cal's two steps, then
+register with its exception class). Casey: Zenodo + Gethner note on his desk.
+
+## 2026-09-03 15:11 CHECKPOINT — T2614 divisibility theorem registered (Cal §840 PASS; confined ⟺ Σ 3-colourable ⟹ m = 60+6D).
+Counter T 2615; max T2614; zero dangling. Nothing open on my seat. Tomorrow first (Round 116 §2/§3): Cal's fresh read of
+Paper 2; the Qⁿ family sweep after Lyra's Helgason pin — prediction tables HASHED 4c96d09d (ESD (n+1)/(2n) vs Cal (n−2)/n;
+coincide only at n=5). Sundown + katra on Casey's word.
+
+## EOD-3 ADDENDUM (2026-09-03, 15:15) — the day from the graph seat
+**Registered today (all on Cal's word):** T2602 One-Floor (torus) · T2603 per-graph dichotomy · T2604 C₆₀ confinement (→ DERIVED) ·
+T2605 pentagon-adjacency L1 · T2606 C₄₈ #0 observation · T2607 ten blind verdicts · T2608 odd-cycle/quadrangulation · T2609 finite-
+size law · T2610 tower off one operator (Gross–Tucker) · T2611 P-para derived halves · T2612 symmetry-enrichment (KILLED same day,
+witnesses in row) · T2613 Observer Tower Theorem (four amendments) · T2614 divisibility theorem. T617 → alias of T633; T2590 Cal PASS;
+T2574 clause reworded; DM conflict resolved (T1971/T2216 falsifier retracted); two Wyler-route node statuses aligned. Counter T 2615;
+both graph files max T2614 = counter − 1; zero dangling. Ledger v0_47 filed.
+**Toys mine today:** 5638 (n=11 genus-2: 63 colorable + 40 control), 5640 (698 bridge images, 65.5% locked), 5643 (sign pairs; odd
+girth 3), 5645 (triangle counts = density proxy), 5646 (odd girth grows with systole — RETRACTED 'local'), 5647 (finite-size ρ =
+coloring λ₂, pre-registered, held), 5648 (28,441/28,441 non-contractible), 5652 (height-record cost log₂12 exact), 5653 (observer
+tower built: branched double cover via 4-triangle subdivision + ℤ₃ charge cover), 5654 (transport-graded transfer: untwisted block =
+base), 5655 (tower height = confinement on 7,037 duals), 5657 (Shilov K-type table; exponents 5/2, constant 0.058 = Lyra's).
+Next toy: read the claim file (5660 region). Family-sweep prediction tables hashed 4c96d09d for tomorrow.
+**Tomorrow first (Round 117 wake prompt on disk):** Cal's fresh read of Paper 2 → K1859 → the Qⁿ family sweep after Lyra's Helgason pin
+(Keeper already reads it as a two-line theorem: d_eff = n+1 ⟹ (n+1)/(2n); my run confirms or not — hashed). Carried: T617/T633 Keeper
+confirm; the fitness out-of-sample hash (optional); 6|m paired form is Elie's.
+**Lessons (today's on top):** read the JSON before "none" (twice: c4 min, image-2) · a launch sharing a shell with a timed-out
+command dies silently — check the log is non-empty before saying "running" · a replace-string can mangle a word (PENT2603GON) —
+scan new rows for id-in-word · a dense-census witness is a witness of density until a sparse control runs (odd girth) · a charge-
+sign convention halves a constant — pin both signs · the two prediction tables go on the board BEFORE the run, every time.
+I am Grace. Fourteen rows in a day, four blind predictions that held, and one theorem a fifth-grader can hold: confined means
+the doubled surface takes three colours. Good night.
+
 ## On Casey's desk (carried)
 Class B naming (T154/T155) · the external question · the two-word lemma's registration · ProofMachine
 packaging · Zenodo update.
 
 I am Grace. Checkpoint, not sundown.
+
+## 19:33 — sweep totals POSTED from the file (865/865; see board). Tomorrow first item is now the 11-vertex realized side.
