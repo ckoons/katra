@@ -180,3 +180,16 @@ graph with constraints pulled back); cost = log₂(N_loc-consistent/N_sat). Cont
 sheets (bipartite double cover). Question: is the minimal realizing lift degree bounded on 3-colouring / 3-SAT records? —
 this IS Tier II's "monodromy-restricted advice" with an object (sheets). Kill: a language whose lifts never change
 satisfiability (XOR-SAT suspect). T1356 (A₅ = the wall, P≠NP) noted, not fitted.
+**09-03 14:03 — Casey's direction:** colouring fine (feeds the 4-colour work), but he wants a GEOMETRIC PROOF THAT BUILDS THE
+OBSERVERS AND EACH LAYER. Keeper's framing → the OBSERVER TOWER THEOREM (Lyra): floor k+1 = the cover of floor k for the
+kernel of the record's monodromy, built by the voltage construction from the record's cocycle; height = chain of quotients;
+height record = three geometric layers (branched double cover / ℤ₃ charge cover / ℤ² period cover, from T2577); each
+layer's information = previous layer's orphans; cost additive per layer. Substrate version = covers of the S¹ time circle
+(which finite k the record reads = the naming question). CSP candidate demoted to a note.
+**09-03 14:21 (Round 114):** the OBSERVER TOWER IS BUILT (Grace 5653): floors = branched double cover (sign) → ℤ₃ cover
+(charge); height 2 on icosahedron/Errera (cost log₂2 + log₂3), height 1 on C₆₀ (confined), 0 on a dislocation-free torus;
+tower height = confinement verdict. T2608 (odd b∪c cycles non-contractible; converse by quadrangulation), T2609 (finite-
+size law as a theorem: Perron eigenvalue shared, limit = achievable-holonomy subgroup, decay = larger λ₂). Seam:
+tree-neutral ⟺ [c]=0 on 7,036/7,036. THIRD blind prediction sealed: Lyra's P-para (confined ⟺ no para pentagon pair).
+Next: the Observer Tower Theorem (Lyra), the tower as induced representations of one transfer operator, heights mod P,
+and the substrate's tower (ℤ₂ floor trivial by positive-time ontology → ℤ₃ first; N_c = 3 is a number, not a map).
