@@ -139,3 +139,10 @@ on shared memory, 13 ≈ 11, ~22 ≫ 11. Keeper: T320 is 1/k → 1/k² (no k^½)
 (cubic) or 8, 36, 130 (quartic) — none gives 800; the lane's reading = observer floors, shell size = |image| (1…12 = |A₄|),
 NEXT SHELL FILLS WITH THE PREVIOUS SHELL'S ORPHANS. Tekton data (jump at 22 not 13) does not fit "12 closes a shell";
 kill = N-sweep 12/13/21/22/23; recover the Tekton logs first. Origin of "800" asked.
+**09-03 07:30 (Round 110):** paper v0.2 PASSES the gate (K1852-A); external = dispatch copy (K1852-B). Lane: 11-vertex genus 2
+first members BELOW the null (Cal's direction; 10-vertex excess = non-colorable population); Cal's candidate (a) dead, (b)(c)(d)
+live. Cheap falsifier: pentakis dodecahedron (C₆₀ dual, T2221; 12 isolated pentagons) — Lyra predicts the first odd-index
+lattice drop in frame. G_ops candidates in corpus: W(B₃)=48 (T652; contains A₄ and D₆), A₅=60 (T1356), A₄=12. Tekton shells
+12/80/8,000 read dihedral-type by Cal's look-elsewhere (2 of 5 order-12 groups hit; A₄ misses); needs the dependency complex to
+have 2-cells (free groups give |G|^b). Dihedral vs dicyclic only via Frobenius–Schur on a non-orientable record (needs a
+different record). Keeper's eigentone reading was T320 restated — amended.
