@@ -218,3 +218,8 @@ does NOT convert. Cal's zero-content neighbour (n_C − rank)/n_C = 3/5. Tomorro
 from (n−2)/n (equal only at n=5); Lyra pins what singles out q=0 (Helgason). Divisibility theorem unconditional pending Cal's
 3-line check → T2614. Fitness table = attention (retracted nodes have the highest out-degree). Casey's aside: entropy = the
 WRITE cost of commitment (Landauer with no erasure) — his reinterpretation, logged. Paper 2 v0.1 → Cal fresh read → K1859.
+**09-03 15:15 CLOSE:** T2614 PROVED (confined ⟺ branched double cover 3-colourable ⟹ m = 60 + 6D, exact 92/92). Round 117 wake
+written: Paper 2 fresh read → K1859; the Qⁿ family sweep is a two-line theorem (Weyl 2n vs harmonic-polynomial sector n+1 ⟹
+(n+1)/(2n)) — Step 1 of f = a spectral-geometry theorem at n = 5, NOT N_c/n_C; posits 2 ("committed = q = 0") and 3 (1/π)
+open; Lyra pins the zonal condition (q = 0 = the sphere S^{n+1}'s harmonics: symmetry or realizability via the incidence
+correspondence) from Helgason before any claim.
