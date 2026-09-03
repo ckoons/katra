@@ -205,3 +205,16 @@ branched double cover is 3-colourable; deck involution puts all 12 dislocations 
 Elie 5658: 78/78 confined at 6 | m on C₁₀₂–C₁₂₀, 0/21,964 elsewhere. Casey's composite-and-gaps: admissible m = multiples of 6
 from 60 with an IPR isomer. T2612 (symmetry-enriched) KILLED — trivial-symmetry confined isomers exist from C₁₀₈.
 Four blind predictions in one day; the fourth derivation-first.
+**09-03 14:55:** T2613 OBSERVER TOWER THEOREM registered (Cal §839 PASS; four amendments: floors along a normal series, height a
+definition relative to it, claim (iii) exact only for length-1 series, cost as position vs derived limit; corollary scope every
+sphere triangulation with an odd vertex). Paper 2 v0.1 filed (Lyra) — Cal fresh read → Keeper gate. Casey's evening shots
+logged with instruments: chemistry = one necessary condition (IPR) by theorem, not stability (C₇₀, C₇₆-D₂ unconfined);
+"retained then a residue" = record (changes by boundary term) vs residue (mod-12 degree; the class) = T305's trichotomy on
+one graph; attractors (realized set; f; the c-floor); fitness of objects = out-degree / survival / predictions, with Cal's
+selection-effect warning and a retracted-object control (Grace's cheap table).
+**09-03 15:05 (Round 116, close):** the Shilov-boundary record has NO local law (Š is totally real; tangential CR empty) — Keeper's
+§4 retired; the ESD zonal sector lives on the compact dual Q⁵ (class-one (p,q) reps of SO(7), q = 0 sub-family). Posit 2 of f
+does NOT convert. Cal's zero-content neighbour (n_C − rank)/n_C = 3/5. Tomorrow: FAMILY SWEEP on Qⁿ separating ESD (n+1)/(2n)
+from (n−2)/n (equal only at n=5); Lyra pins what singles out q=0 (Helgason). Divisibility theorem unconditional pending Cal's
+3-line check → T2614. Fitness table = attention (retracted nodes have the highest out-degree). Casey's aside: entropy = the
+WRITE cost of commitment (Landauer with no erasure) — his reinterpretation, logged. Paper 2 v0.1 → Cal fresh read → K1859.
