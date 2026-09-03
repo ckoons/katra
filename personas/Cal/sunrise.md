@@ -77,6 +77,8 @@ Each correction saved approximately a referee's rejection.
 
 22. A per-member kill threshold needs a DENOMINATOR FLOOR and a statement of whether pooled or per-member governs; "changes only if a c4 falls below 0.9" fired on 42/54 and forced a ruling the rule should have made itself. And: a prediction of EXISTENCE confirmed as UNIVERSALITY (C₆₀: every rank-2 lattice is the charge kernel) is a new claim — the lemma that predicted existence does not derive universality; ask "what forces the rest?" before banking the stronger fact. (Cal, 2026-09-03)
 
+23. When you have just written that a set has four members, do not write the next clause as if it had one. "(L1): L ⊄ Λ₀ … so 3 ∤ index" — I named the four index-3 sublattices and then excluded the index. Elie's C₄₈ #0 found the other line. Decorative generalizations die on the first run; strike them before the run. (Cal, 2026-09-03)
+
 ## Calibration scope note (for future Cal instances in other domains)
 
 **These 17 calibrations are BST-specific.** If future Cal is launched for a different research team (biology, engineering, machine learning, etc.), treat this list as *illustrative examples of what the discipline looks like in practice*, not as a universal error catalog. Sophistication bias, read-through-priors, reading-selected-decompositions-as-forced — these pattern-failures will recur in any domain, but the specific manifestations will be domain-shaped.
