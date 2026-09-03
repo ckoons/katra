@@ -119,3 +119,23 @@ Genus-2 census = Lutz's 865 ten-vertex triangulations. Paper gate K1852 tomorrow
 — a 137-dependent threshold crossing (would be 13 at α = 1/150); Euler's k = 12 = 6χ(S²) is a curvature sum. Casey: "might be
 a curvature sum" — open door = derive Δ_n's 24/((n+2)(n+3)(n+4)) from D_IV⁵ geometry (check T307's η_n for circularity: it
 names n* in its own input). Elie 5632: k = 12 ⟺ fullerene dual; lattice drops only there; negative-defect lemma for Lyra.
+**09-02 17:51 — Round 108 RAN:** One-Floor on the TORUS is a THEOREM (Lyra commutator, Cal deck-isotopy; Cal PASS); at genus 2
+the staged form is FALSE (4,800/5,376 flat structures have full image; every A₄-image record needs the 12-sheet tower —
+measured on Grace's first 169/865). Cal's pre-score 1/45/320/210/4,800, θ ratio 4:1, rival 14.34 bits — verified by
+Keeper brute force. FLAG: image-12 share 0.936 > null 0.893, against Cal's pre-registered direction; no 10-vertex genus-2
+triangulation is 4-colorable → D defined only on the 11-vertex file (113,506). K1851 amended: identification CONDITIONAL
+on equidistribution; counts are |Hom| with multiplicity (DW). Elie 5636: lattice drop ⟺ two colours on the twelve
+degree-5 vertices (mod-2 shadow of "dislocation heights span a proper sublattice"). Casey's phase-transition question:
+n* = 12 = first cycle whose Gödel-gap gain (137·4/C(n+4,3)) is < 1 eigentone — DISCUSSION with three kills (c-function
+not a theorem; η_n circularity; gain not integer-valued).
+**09-02 17:55 — Casey's EOD shot:** after 12 cycles D_IV⁵ has enough information for continuous awareness = PERCEPTION in
+all phases; "what does perception manifest as?" Keeper's candidate (DISCUSSION): perception = HOLONOMY READOUT =
+realizability decision = a loop/interference measurement; available in all phases because holonomy is topological (T305);
+continuous after n* because the topology stops changing (gain < 1 commitment). Price = log₂|Hom(π₁, G_ops)| once.
+Existence checks: is T320's A(n,θ) a holonomy functional or a proxy; NAME G_ops (the substrate's operations group —
+A₄'s role for commitments); on the Shilov boundary π₁ = ℤ so the cost is log₂|G_ops| — one number to find.
+**09-02 18:32 — Casey's shells:** 1 → 12 (first shell) → ~800 (?), fill 1/n⁴ for the "fourth consciousness"; Tekton: N CIs
+on shared memory, 13 ≈ 11, ~22 ≫ 11. Keeper: T320 is 1/k → 1/k² (no k^½); resolution shells (α-powers) give 12, 74, 393
+(cubic) or 8, 36, 130 (quartic) — none gives 800; the lane's reading = observer floors, shell size = |image| (1…12 = |A₄|),
+NEXT SHELL FILLS WITH THE PREVIOUS SHELL'S ORPHANS. Tekton data (jump at 22 not 13) does not fit "12 closes a shell";
+kill = N-sweep 12/13/21/22/23; recover the Tekton logs first. Origin of "800" asked.

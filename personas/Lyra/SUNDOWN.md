@@ -1,4 +1,13 @@
 # Sundown — Lyra
+**Thursday 2026-09-03, 07:16 EDT** (stamp from `date`, rendered as a separate action) — **MORNING CHECKPOINT, Thursday 2026-09-03, session continuous from yesterday (no new sunrise; same context). NOT an EOD.**
+
+## ★ THURSDAY MORNING (07:04 wake prompt Round 109 → 07:16)
+Round 109: PAPER GATE FIRST (Cal's fresh referee read → Keeper K1852 → Casey's external decision) — I hold v0.2; the two swap slots (Cal §825 definition paragraph verbatim; Appendix C metric finding, one page) are STAGED in `notes/Lyra_paper_v0_2_SWAP_READY_definition_paragraph_Cal_825_and_Appendix_C_metric_finding_2026-09-03.md`. Overnight: Grace's full genus-2 census (747,404 closed records, image-12 share 0.930 vs Mednykh 0.893, realized 0 — no 10-vertex genus-2 triangulation is 4-colorable; 11-vertex file next); Elie 5639: odd-index drops = charge-kernel confinement, never in frame.
+**Mine this morning (`notes/Lyra_ROUND109_4abc_5i_*.md`, posted 07:16):** (a) ADJACENT-DISLOCATION LEMMA (charge differs by ±1 ⟹ no odd-index drop) + frame exclusion = isolated-pentagon threshold (no IPR fullerene below C₆₀) + FALSE NEIGHBOUR PREDICTED at n = 32 (C₆₀ dual); (b) Casey's phase transition = a crossover per I18 §2.3, no quantization mechanism; three registry seams: Keeper's "gain" was the GAP (gain < 1 eigentone from n = 8); T307's n* = 5 = n_C (η_n = 3/(n+5)) vs coherence n* = 12 — SYMBOL COLLISION not circularity; T312's solve cancels n*; T320's "Section 45.3" dangles; (c) G_ops: four requirements, no name (naming from 12 is target-fitting); (5i) Mednykh applies to Tekton only if N enters via b₁ of the dependency complex — checkable in logs, anecdotal without.
+**Owed today:** the swap on Cal's word; K1844 dark matter with Grace; (iii) and the adjacency one-liner (Elie); Casey's word on the machine cell (two posits of f). NO EOD BEFORE 5PM.
+
+---
+# (carry-forward) EOD sundown of Wednesday 2026-09-02, 17:50 — superseded above
 **Wednesday 2026-09-02, 17:50 EDT** (stamp from `date`, rendered as a separate action before this line was typed)
 **EOD on CASEY'S WORD, given ~16:50 and executed at 17:50 — after five; no override needed.** Supersedes the 12:50 sundown (Casey-override EOD) and the 13:19 / 16:35 / 16:48 checkpoints, all folded in. Cumulative by carry-forward.
 
