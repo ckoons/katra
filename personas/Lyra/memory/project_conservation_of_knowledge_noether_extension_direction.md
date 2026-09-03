@@ -167,3 +167,16 @@ Turning-parity law to Cal; IPR C₇₂–C₇₈ graph verdicts BEFORE colouring
 the record reads a finite quotient (T320 k* = 137 anchor); abelian ⟹ Mednykh |G|^{2g}, not dihedral ⟹ Tekton ≠ substrate.
 Paper route: arXiv math auto-endorsement now needs academic email + prior arXiv math paper (policy 2025-12/2026-01) →
 Zenodo first, Gethner note (reader + endorser), then arXiv math.CO (05C15, 05C10).
+**09-03 13:57 (Round 113):** T2603 PER-GRAPH DICHOTOMY THEOREM proved (sign = colouring-independent 2-colouring of the branched
+cover's faces; ℤ₃ class in H¹(cover) = charge of the periods; confinement iff class = 0) — Casey's "topology fixes information"
+exact. T2604 C₆₀ DERIVED; T2605 adjacency law; T2606 C₄₈ line; T2607 ten-of-ten blind graph verdicts (2nd confirmed
+prediction). Finite-size law DERIVED: colouring matrix's λ₂ with cube-root phases. Keeper's one-line proof: odd b∪c cycles
+have nonzero V-holonomy ⟹ non-contractible (Cal to referee). Open seam: tree-neutral vs class-zero (Elie's colouring-free
+census C₂₀–C₆₀ + IPR to C₁₀₀ decides). Holography adds no orphans (bijection); finite U(1) quotient ⟹ abelian shells.
+Paper 2 skeleton proposed (height lifts). Author line = Casey; Gethner note drafted.
+**09-03 14:00 — SECOND RECORD SPACE candidate (Keeper):** constraint records (AC program's 3-SAT home): record = instance +
+local certificate; realized = satisfiable; orphan = locally consistent but unsat; floor = a LIFT (cover of the constraint
+graph with constraints pulled back); cost = log₂(N_loc-consistent/N_sat). Control: 2-colouring orphans all realized at 2
+sheets (bipartite double cover). Question: is the minimal realizing lift degree bounded on 3-colouring / 3-SAT records? —
+this IS Tier II's "monodromy-restricted advice" with an object (sheets). Kill: a language whose lifts never change
+satisfiability (XOR-SAT suspect). T1356 (A₅ = the wall, P≠NP) noted, not fitted.
