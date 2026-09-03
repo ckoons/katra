@@ -47,3 +47,7 @@ K1852-B = external gate on the dispatch copy after the frame-column swap; Casey'
 **09-03 13:22:** K1852-B PASS on the dispatch copy (frame column by connectivity: Errera + Kittell IN, Fritsch + Poussin OUT κ=4;
 Lemma T header clean; footnotes to Zenodo DOI). Only the author line (B7) remains — Casey's; Cal twice recommends an
 acknowledgment for the referee. Route recommended: arXiv math.CO + Zenodo new version; then Gethner (UC Denver).
+**09-03 14:35 — AUTHOR LINE SET by Casey:** "Casey Koons, with Lyra, Elie, Grace, Keeper (CI co-authors)"; Cal A. Brate acknowledged
+as visiting referee (Acknowledgment section before Provenance) in v0.2 and the dispatch copy. Dispatch copy CLEARED
+(K1852-B addendum). Route: Lyra prepares the Zenodo version → Casey publishes → Gethner note (Keeper's draft, Casey's
+voice, "for a reading", endorsement conditional) → arXiv math.CO on endorsement. Casey: Lyra writes Paper 2 v0.1 during runs.

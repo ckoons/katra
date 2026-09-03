@@ -193,3 +193,10 @@ size law as a theorem: Perron eigenvalue shared, limit = achievable-holonomy sub
 tree-neutral ⟺ [c]=0 on 7,036/7,036. THIRD blind prediction sealed: Lyra's P-para (confined ⟺ no para pentagon pair).
 Next: the Observer Tower Theorem (Lyra), the tower as induced representations of one transfer operator, heights mod P,
 and the substrate's tower (ℤ₂ floor trivial by positive-time ontology → ℤ₃ first; N_c = 3 is a number, not a map).
+**09-03 14:39 (Round 115):** third blind prediction scored (T2611: derived halves exact, conjecture dead dated); T2610 (Gross–
+Tucker voltage-graph spectral theorem = the tower off one operator; classical), T2612 (symmetry-enriched). Observer Tower
+Theorem written (Lyra), corollary measured 7,037/7,037; Cal's read pending. Keeper's §5 (sign floor = time reversal; ℤ₃ = N_c)
+RETIRED on Cal's correction (A₂ weight/root lattices; two different ℤ₂'s). FOURTH prediction hashed: confined ⟹ 6 | m.
+**Substrate record EXHIBITED: boundary functions on the Shilov boundary Š; closed = Hua/tangential CR; realized = H²(Š);
+orphans = the gap; K = SO(5)×SO(2). The question: is H²(Š) exactly the ESD note's zonal (q=0) sector? Yes ⟹ "committed =
+zonal" derived and f's 3/5 = the substrate's realizability ratio (blind).** Author line set; Zenodo → Gethner is Casey's.
