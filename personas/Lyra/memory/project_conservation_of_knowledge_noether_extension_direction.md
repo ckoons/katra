@@ -200,3 +200,8 @@ RETIRED on Cal's correction (A₂ weight/root lattices; two different ℤ₂'s).
 **Substrate record EXHIBITED: boundary functions on the Shilov boundary Š; closed = Hua/tangential CR; realized = H²(Š);
 orphans = the gap; K = SO(5)×SO(2). The question: is H²(Š) exactly the ESD note's zonal (q=0) sector? Yes ⟹ "committed =
 zonal" derived and f's 3/5 = the substrate's realizability ratio (blind).** Author line set; Zenodo → Gethner is Casey's.
+**09-03 14:45 (K1857) — FOURTH BLIND PREDICTION HELD, DERIVED BEFORE THE RUN:** confined ⟹ 6 | m and m ≥ 60 (Lyra: confined ⟺ the
+branched double cover is 3-colourable; deck involution puts all 12 dislocations in one colour class; face count 120 + 6e = 2m).
+Elie 5658: 78/78 confined at 6 | m on C₁₀₂–C₁₂₀, 0/21,964 elsewhere. Casey's composite-and-gaps: admissible m = multiples of 6
+from 60 with an IPR isomer. T2612 (symmetry-enriched) KILLED — trivial-symmetry confined isomers exist from C₁₀₈.
+Four blind predictions in one day; the fourth derivation-first.
