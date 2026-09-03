@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-03 (Thu) 15:09 EDT — checkpoint written at Round 116 ("the closing round"); the halt is Casey's to give and I hold the seat until his word. If this is the last write of the day, it is complete.
+# Cal — SUNDOWN — 2026-09-03 (Thu) 15:16 EDT — EOD on Casey's word (given at 15:16; the 15:1x checkpoint below is the full state and stands unchanged).
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (Wed 09-02 evening = the day the lane opened; Wed 12:5x = the four-color close).
 
