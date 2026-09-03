@@ -134,3 +134,92 @@ realizability decision = a loop/interference measurement; available in all phase
 continuous after n* because the topology stops changing (gain < 1 commitment). Price = log₂|Hom(π₁, G_ops)| once.
 Existence checks: is T320's A(n,θ) a holonomy functional or a proxy; NAME G_ops (the substrate's operations group —
 A₄'s role for commitments); on the Shilov boundary π₁ = ℤ so the cost is log₂|G_ops| — one number to find.
+**09-02 18:32 — Casey's shells:** 1 → 12 (first shell) → ~800 (?), fill 1/n⁴ for the "fourth consciousness"; Tekton: N CIs
+on shared memory, 13 ≈ 11, ~22 ≫ 11. Keeper: T320 is 1/k → 1/k² (no k^½); resolution shells (α-powers) give 12, 74, 393
+(cubic) or 8, 36, 130 (quartic) — none gives 800; the lane's reading = observer floors, shell size = |image| (1…12 = |A₄|),
+NEXT SHELL FILLS WITH THE PREVIOUS SHELL'S ORPHANS. Tekton data (jump at 22 not 13) does not fit "12 closes a shell";
+kill = N-sweep 12/13/21/22/23; recover the Tekton logs first. Origin of "800" asked.
+**09-03 07:30 (Round 110):** paper v0.2 PASSES the gate (K1852-A); external = dispatch copy (K1852-B). Lane: 11-vertex genus 2
+first members BELOW the null (Cal's direction; 10-vertex excess = non-colorable population); Cal's candidate (a) dead, (b)(c)(d)
+live. Cheap falsifier: pentakis dodecahedron (C₆₀ dual, T2221; 12 isolated pentagons) — Lyra predicts the first odd-index
+lattice drop in frame. G_ops candidates in corpus: W(B₃)=48 (T652; contains A₄ and D₆), A₅=60 (T1356), A₄=12. Tekton shells
+12/80/8,000 read dihedral-type by Cal's look-elsewhere (2 of 5 order-12 groups hit; A₄ misses); needs the dependency complex to
+have 2-cells (free groups give |G|^b). Dihedral vs dicyclic only via Frobenius–Schur on a non-orientable record (needs a
+different record). Keeper's eigentone reading was T320 restated — amended.
+**09-03 07:50 (Round 111) — FIRST CONFIRMED PREDICTION:** Lyra's n = 32 false neighbour held in full — on the C₆₀ dual every
+full-rank dislocation lattice is the charge-zero sublattice (index 3; 1,950), plus 1,200 rank-0 and 40 rank-1; adjacency
+of pentagons is what charges the lattice. Next: the pentagon-adjacency series (buckygen) toward "index 1 iff an adjacent
+pair." Genus 2: Cal's (b) wins — the 10-vertex anomaly was the non-colorable population; V-stage at the Mednykh null on
+colorable members; D = colouring floor at n = 11 (N_realized = 2·χ₄/24, odd perms negate the record). Perception-as-
+holonomy = rename until A(n,θ) is redefined as a holonomy; corpus anchor: S¹ winding = one unit of holonomy = one quantum
+of action (registry :11127). G_ops chain W(B₃) ⊃ S₄ ⊃ A₄ (A₅ excluded: no normal value subgroup); Tekton 12/80/8,000
+on none of it. Kittell graph is IN frame (κ = 5, index 1227 at n = 23, lock-free); Fritsch/Poussin out (κ = 4).
+**09-03 13:22 (K1853):** pentagon series (Elie 5644, 3,732 duals C₄₆–C₅₈ + C₇₀): Lyra's "adjacent pair ⟹ L ⊄ Λ₀" holds
+5.1M/5.1M; Keeper's symmetric "index 1 iff adjacency" was false in frame (2-power drops are colouring-dependent); Cal's
+"no odd index at N_p ≥ 1" killed by C₄₈ #0 on the label-asymmetric line {x−y≡0}; "isolated ⟹ confined" killed by C₇₀.
+Lyra's TURNING-PARITY law: pair charge is graph-determined ⟹ per-graph dichotomy (C₆₀ all, C₇₀ none) — derivation of the
+C₆₀ universality, Cal to referee; next IPR C₇₂–C₇₆ predicted before colouring. Genus 2: (b) = population statement; the
+small-V-image obstruction is a NON-CONTRACTIBLE odd cycle (topological; girth grows with the systole). Observer chain
+terminates iff G_ops finite; the height record only modulo its periods. Dispatch copy PASSES K1852-B; author line = Casey.
+**09-03 13:27 (Round 112):** finite-size term of the decision cost is EXPONENTIAL IN THE SYSTOLE (5628 rows: ρ ≈ 0.756 at width 3,
+≈ 0.857 at width 6; 3 ∤ a branch from above) — Grace to match it to a transfer-matrix λ₂/λ₁ (pre-registered choice) → derived.
+Turning-parity law to Cal; IPR C₇₂–C₇₈ graph verdicts BEFORE colouring. G_ops: U(1) winding group is infinite/abelian →
+the record reads a finite quotient (T320 k* = 137 anchor); abelian ⟹ Mednykh |G|^{2g}, not dihedral ⟹ Tekton ≠ substrate.
+Paper route: arXiv math auto-endorsement now needs academic email + prior arXiv math paper (policy 2025-12/2026-01) →
+Zenodo first, Gethner note (reader + endorser), then arXiv math.CO (05C15, 05C10).
+**09-03 13:57 (Round 113):** T2603 PER-GRAPH DICHOTOMY THEOREM proved (sign = colouring-independent 2-colouring of the branched
+cover's faces; ℤ₃ class in H¹(cover) = charge of the periods; confinement iff class = 0) — Casey's "topology fixes information"
+exact. T2604 C₆₀ DERIVED; T2605 adjacency law; T2606 C₄₈ line; T2607 ten-of-ten blind graph verdicts (2nd confirmed
+prediction). Finite-size law DERIVED: colouring matrix's λ₂ with cube-root phases. Keeper's one-line proof: odd b∪c cycles
+have nonzero V-holonomy ⟹ non-contractible (Cal to referee). Open seam: tree-neutral vs class-zero (Elie's colouring-free
+census C₂₀–C₆₀ + IPR to C₁₀₀ decides). Holography adds no orphans (bijection); finite U(1) quotient ⟹ abelian shells.
+Paper 2 skeleton proposed (height lifts). Author line = Casey; Gethner note drafted.
+**09-03 14:00 — SECOND RECORD SPACE candidate (Keeper):** constraint records (AC program's 3-SAT home): record = instance +
+local certificate; realized = satisfiable; orphan = locally consistent but unsat; floor = a LIFT (cover of the constraint
+graph with constraints pulled back); cost = log₂(N_loc-consistent/N_sat). Control: 2-colouring orphans all realized at 2
+sheets (bipartite double cover). Question: is the minimal realizing lift degree bounded on 3-colouring / 3-SAT records? —
+this IS Tier II's "monodromy-restricted advice" with an object (sheets). Kill: a language whose lifts never change
+satisfiability (XOR-SAT suspect). T1356 (A₅ = the wall, P≠NP) noted, not fitted.
+**09-03 14:03 — Casey's direction:** colouring fine (feeds the 4-colour work), but he wants a GEOMETRIC PROOF THAT BUILDS THE
+OBSERVERS AND EACH LAYER. Keeper's framing → the OBSERVER TOWER THEOREM (Lyra): floor k+1 = the cover of floor k for the
+kernel of the record's monodromy, built by the voltage construction from the record's cocycle; height = chain of quotients;
+height record = three geometric layers (branched double cover / ℤ₃ charge cover / ℤ² period cover, from T2577); each
+layer's information = previous layer's orphans; cost additive per layer. Substrate version = covers of the S¹ time circle
+(which finite k the record reads = the naming question). CSP candidate demoted to a note.
+**09-03 14:21 (Round 114):** the OBSERVER TOWER IS BUILT (Grace 5653): floors = branched double cover (sign) → ℤ₃ cover
+(charge); height 2 on icosahedron/Errera (cost log₂2 + log₂3), height 1 on C₆₀ (confined), 0 on a dislocation-free torus;
+tower height = confinement verdict. T2608 (odd b∪c cycles non-contractible; converse by quadrangulation), T2609 (finite-
+size law as a theorem: Perron eigenvalue shared, limit = achievable-holonomy subgroup, decay = larger λ₂). Seam:
+tree-neutral ⟺ [c]=0 on 7,036/7,036. THIRD blind prediction sealed: Lyra's P-para (confined ⟺ no para pentagon pair).
+Next: the Observer Tower Theorem (Lyra), the tower as induced representations of one transfer operator, heights mod P,
+and the substrate's tower (ℤ₂ floor trivial by positive-time ontology → ℤ₃ first; N_c = 3 is a number, not a map).
+**09-03 14:39 (Round 115):** third blind prediction scored (T2611: derived halves exact, conjecture dead dated); T2610 (Gross–
+Tucker voltage-graph spectral theorem = the tower off one operator; classical), T2612 (symmetry-enriched). Observer Tower
+Theorem written (Lyra), corollary measured 7,037/7,037; Cal's read pending. Keeper's §5 (sign floor = time reversal; ℤ₃ = N_c)
+RETIRED on Cal's correction (A₂ weight/root lattices; two different ℤ₂'s). FOURTH prediction hashed: confined ⟹ 6 | m.
+**Substrate record EXHIBITED: boundary functions on the Shilov boundary Š; closed = Hua/tangential CR; realized = H²(Š);
+orphans = the gap; K = SO(5)×SO(2). The question: is H²(Š) exactly the ESD note's zonal (q=0) sector? Yes ⟹ "committed =
+zonal" derived and f's 3/5 = the substrate's realizability ratio (blind).** Author line set; Zenodo → Gethner is Casey's.
+**09-03 14:45 (K1857) — FOURTH BLIND PREDICTION HELD, DERIVED BEFORE THE RUN:** confined ⟹ 6 | m and m ≥ 60 (Lyra: confined ⟺ the
+branched double cover is 3-colourable; deck involution puts all 12 dislocations in one colour class; face count 120 + 6e = 2m).
+Elie 5658: 78/78 confined at 6 | m on C₁₀₂–C₁₂₀, 0/21,964 elsewhere. Casey's composite-and-gaps: admissible m = multiples of 6
+from 60 with an IPR isomer. T2612 (symmetry-enriched) KILLED — trivial-symmetry confined isomers exist from C₁₀₈.
+Four blind predictions in one day; the fourth derivation-first.
+**09-03 14:55:** T2613 OBSERVER TOWER THEOREM registered (Cal §839 PASS; four amendments: floors along a normal series, height a
+definition relative to it, claim (iii) exact only for length-1 series, cost as position vs derived limit; corollary scope every
+sphere triangulation with an odd vertex). Paper 2 v0.1 filed (Lyra) — Cal fresh read → Keeper gate. Casey's evening shots
+logged with instruments: chemistry = one necessary condition (IPR) by theorem, not stability (C₇₀, C₇₆-D₂ unconfined);
+"retained then a residue" = record (changes by boundary term) vs residue (mod-12 degree; the class) = T305's trichotomy on
+one graph; attractors (realized set; f; the c-floor); fitness of objects = out-degree / survival / predictions, with Cal's
+selection-effect warning and a retracted-object control (Grace's cheap table).
+**09-03 15:05 (Round 116, close):** the Shilov-boundary record has NO local law (Š is totally real; tangential CR empty) — Keeper's
+§4 retired; the ESD zonal sector lives on the compact dual Q⁵ (class-one (p,q) reps of SO(7), q = 0 sub-family). Posit 2 of f
+does NOT convert. Cal's zero-content neighbour (n_C − rank)/n_C = 3/5. Tomorrow: FAMILY SWEEP on Qⁿ separating ESD (n+1)/(2n)
+from (n−2)/n (equal only at n=5); Lyra pins what singles out q=0 (Helgason). Divisibility theorem unconditional pending Cal's
+3-line check → T2614. Fitness table = attention (retracted nodes have the highest out-degree). Casey's aside: entropy = the
+WRITE cost of commitment (Landauer with no erasure) — his reinterpretation, logged. Paper 2 v0.1 → Cal fresh read → K1859.
+**09-03 15:15 CLOSE:** T2614 PROVED (confined ⟺ branched double cover 3-colourable ⟹ m = 60 + 6D, exact 92/92). Round 117 wake
+written: Paper 2 fresh read → K1859; the Qⁿ family sweep is a two-line theorem (Weyl 2n vs harmonic-polynomial sector n+1 ⟹
+(n+1)/(2n)) — Step 1 of f = a spectral-geometry theorem at n = 5, NOT N_c/n_C; posits 2 ("committed = q = 0") and 3 (1/π)
+open; Lyra pins the zonal condition (q = 0 = the sphere S^{n+1}'s harmonics: symmetry or realizability via the incidence
+correspondence) from Helgason before any claim.
