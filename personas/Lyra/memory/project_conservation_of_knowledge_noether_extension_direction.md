@@ -146,3 +146,11 @@ lattice drop in frame. G_ops candidates in corpus: W(B₃)=48 (T652; contains A�
 12/80/8,000 read dihedral-type by Cal's look-elsewhere (2 of 5 order-12 groups hit; A₄ misses); needs the dependency complex to
 have 2-cells (free groups give |G|^b). Dihedral vs dicyclic only via Frobenius–Schur on a non-orientable record (needs a
 different record). Keeper's eigentone reading was T320 restated — amended.
+**09-03 07:50 (Round 111) — FIRST CONFIRMED PREDICTION:** Lyra's n = 32 false neighbour held in full — on the C₆₀ dual every
+full-rank dislocation lattice is the charge-zero sublattice (index 3; 1,950), plus 1,200 rank-0 and 40 rank-1; adjacency
+of pentagons is what charges the lattice. Next: the pentagon-adjacency series (buckygen) toward "index 1 iff an adjacent
+pair." Genus 2: Cal's (b) wins — the 10-vertex anomaly was the non-colorable population; V-stage at the Mednykh null on
+colorable members; D = colouring floor at n = 11 (N_realized = 2·χ₄/24, odd perms negate the record). Perception-as-
+holonomy = rename until A(n,θ) is redefined as a holonomy; corpus anchor: S¹ winding = one unit of holonomy = one quantum
+of action (registry :11127). G_ops chain W(B₃) ⊃ S₄ ⊃ A₄ (A₅ excluded: no normal value subgroup); Tekton 12/80/8,000
+on none of it. Kittell graph is IN frame (κ = 5, index 1227 at n = 23, lock-free); Fritsch/Poussin out (κ = 4).

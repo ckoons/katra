@@ -39,3 +39,8 @@ Kittell switches" — 13 locks at depth 4), A5 (deaths without dates/artifacts),
 author line + citation form + external decision. Kittell's Fig. 10 (1935) = a menu-relative lock in his frame (Cal B2).
 
 **2026-09-03 07:20 — PAPER GATE PASSED TO v0.2:** Cal §831 (PASS to v0.2 with fixes; one factual slip A4′ "≤ 3 switches" was a 49-population number) and Keeper K1852 (CONDITIONAL PASS; K-1 Errera is IN frame, plantri -c5 n=17 idx 3, lock-free). v0.2 FILED: notes/Kempe_Commutator_Census_5connected_through_24_v0_2_DRAFT_2026-09-03.md (Cal's §825 definition paragraph + three-world sentence verbatim; Table 3.3 unrestricted depth 27/112/197/13 · 3,682/5,652/1,142/12 · 929/7; six deaths dated; Appendix C metric finding; Kittell Fig. 10 as the 1935 menu-relative lock). Three markers open (Elie connectivity of classical killers; Grace three populations; Cal Lemma T explicit pass). K1852-A on v0.2 then Casey's external decision; B4 internal ids → public footnotes for dispatch; B7 author line is Casey's.
+**09-03 07:50:** K1852-A: v0.2 PASSES as the program's artifact; dispatch copy filed (Zenodo-DOI footnotes). Cal passed Lemma T
+explicitly (T2590 cleared). Numbers corrected in v0.2: "near 80%" → 0.655 (457/698); "69%" = toy 5616; "155/186" = 93+93.
+Frame column: Errera AND Kittell IN (κ = 5; Kittell = plantri -c5 n=23 index 1227, no lock), Fritsch/Poussin OUT (κ = 4).
+K1852-B = external gate on the dispatch copy after the frame-column swap; Casey's B7 (Cal: acknowledgment) + venue
+(arXiv math.CO + Zenodo; first reader Ellen Gethner, UC Denver CSE).
