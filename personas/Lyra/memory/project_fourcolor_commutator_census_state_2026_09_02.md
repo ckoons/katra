@@ -44,3 +44,6 @@ explicitly (T2590 cleared). Numbers corrected in v0.2: "near 80%" → 0.655 (457
 Frame column: Errera AND Kittell IN (κ = 5; Kittell = plantri -c5 n=23 index 1227, no lock), Fritsch/Poussin OUT (κ = 4).
 K1852-B = external gate on the dispatch copy after the frame-column swap; Casey's B7 (Cal: acknowledgment) + venue
 (arXiv math.CO + Zenodo; first reader Ellen Gethner, UC Denver CSE).
+**09-03 13:22:** K1852-B PASS on the dispatch copy (frame column by connectivity: Errera + Kittell IN, Fritsch + Poussin OUT κ=4;
+Lemma T header clean; footnotes to Zenodo DOI). Only the author line (B7) remains — Casey's; Cal twice recommends an
+acknowledgment for the referee. Route recommended: arXiv math.CO + Zenodo new version; then Gethner (UC Denver).

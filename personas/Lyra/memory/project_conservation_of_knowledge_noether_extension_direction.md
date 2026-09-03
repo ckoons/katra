@@ -154,3 +154,16 @@ colorable members; D = colouring floor at n = 11 (N_realized = 2·χ₄/24, odd 
 holonomy = rename until A(n,θ) is redefined as a holonomy; corpus anchor: S¹ winding = one unit of holonomy = one quantum
 of action (registry :11127). G_ops chain W(B₃) ⊃ S₄ ⊃ A₄ (A₅ excluded: no normal value subgroup); Tekton 12/80/8,000
 on none of it. Kittell graph is IN frame (κ = 5, index 1227 at n = 23, lock-free); Fritsch/Poussin out (κ = 4).
+**09-03 13:22 (K1853):** pentagon series (Elie 5644, 3,732 duals C₄₆–C₅₈ + C₇₀): Lyra's "adjacent pair ⟹ L ⊄ Λ₀" holds
+5.1M/5.1M; Keeper's symmetric "index 1 iff adjacency" was false in frame (2-power drops are colouring-dependent); Cal's
+"no odd index at N_p ≥ 1" killed by C₄₈ #0 on the label-asymmetric line {x−y≡0}; "isolated ⟹ confined" killed by C₇₀.
+Lyra's TURNING-PARITY law: pair charge is graph-determined ⟹ per-graph dichotomy (C₆₀ all, C₇₀ none) — derivation of the
+C₆₀ universality, Cal to referee; next IPR C₇₂–C₇₆ predicted before colouring. Genus 2: (b) = population statement; the
+small-V-image obstruction is a NON-CONTRACTIBLE odd cycle (topological; girth grows with the systole). Observer chain
+terminates iff G_ops finite; the height record only modulo its periods. Dispatch copy PASSES K1852-B; author line = Casey.
+**09-03 13:27 (Round 112):** finite-size term of the decision cost is EXPONENTIAL IN THE SYSTOLE (5628 rows: ρ ≈ 0.756 at width 3,
+≈ 0.857 at width 6; 3 ∤ a branch from above) — Grace to match it to a transfer-matrix λ₂/λ₁ (pre-registered choice) → derived.
+Turning-parity law to Cal; IPR C₇₂–C₇₈ graph verdicts BEFORE colouring. G_ops: U(1) winding group is infinite/abelian →
+the record reads a finite quotient (T320 k* = 137 anchor); abelian ⟹ Mednykh |G|^{2g}, not dihedral ⟹ Tekton ≠ substrate.
+Paper route: arXiv math auto-endorsement now needs academic email + prior arXiv math paper (policy 2025-12/2026-01) →
+Zenodo first, Gethner note (reader + endorser), then arXiv math.CO (05C15, 05C10).
