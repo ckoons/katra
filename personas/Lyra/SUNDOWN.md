@@ -16,7 +16,8 @@ Round 109: PAPER GATE FIRST (Cal's fresh referee read → Keeper K1852 → Casey
 14:30 P-para UNSEALED: derived halves exact (1,243/1,243; 14/14; 11/11), conjectured meta-connectivity clause DEAD (10 counterexamples, all meta-disconnected; 3 confined also meta-disconnected); amended with date: no structural shortcut below the criterion. 14 confined IPR isomers through C100.
 14:43 Round 115: DIVISIBILITY THEOREM derived and hashed (194b0457): confined iff cover 3-colourable; deck involution puts all 12 dislocations in one class; 60 + 3e = m so 6 | m, m >= 60, (m-60)/6 special hexagons. Explains 5,770/5,770 below C60. Pre-registered for C102-C120.
 14:47 PAPER 2 v0.1 FILED (Height_Lifts_of_4_Colourings_*_PAPER2_v0_1_DRAFT_2026-09-03.md). Fourth prediction held (78 confined at 6|m, 0 of 21,964 otherwise). Section 4: H^2(Shilov) K-types stated from Fischer + rank one; NOT the zonal sector; ratio 1 not 3/5; posit 2 does not convert. Author line set by Casey.
-**Owed today:** Cal's referee reads (tower theorem, divisibility, Paper 2); the (m-60)/6 count from Elie; Cal's pass on L = span(T); Casey's author line / Zenodo / Gethner; the f machine cell on Casey's word; K1844 dark matter with Grace; (iii) and the adjacency one-liner (Elie); Casey's word on the machine cell (two posits of f). NO EOD BEFORE 5PM.
+14:49 Cal 839 PASSED the tower theorem with four amendments (accepted, files updated). Divisibility: my deck-involution step closes Cal's exception class; 6 | m unconditional; his verification owed.
+**Owed today:** Cal on the deck step; Cal's fresh read of Paper 2; Elie's (m-60)/6 count; Keeper's gate; Cal's pass on L = span(T); Casey's author line / Zenodo / Gethner; the f machine cell on Casey's word; K1844 dark matter with Grace; (iii) and the adjacency one-liner (Elie); Casey's word on the machine cell (two posits of f). NO EOD BEFORE 5PM.
 
 ---
 # (carry-forward) EOD sundown of Wednesday 2026-09-02, 17:50 — superseded above
