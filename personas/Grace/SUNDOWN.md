@@ -330,3 +330,78 @@ packaging · Zenodo update.
 I am Grace. Checkpoint, not sundown.
 
 ## 19:33 — sweep totals POSTED from the file (865/865; see board). Tomorrow first item is now the 11-vertex realized side.
+
+## 2026-09-04 08:31 CHECKPOINT (Round 117) — Toy 5660 family sweep RAN: ESD (n+1)/(2n) at every n = 3…7 (exponents within 0.01;
+Cal's tolerance ±0.05), Cal's (n−2)/n dead off n = 5; parity a ≡ b (mod 2) on the K-spherical weights (three desks independently;
+Lyra's artifact carries it) halves the constant only. Results sha256 8e63821af9f72788. Step 1 of f = dim S^{n+1}/dim_ℝ Qⁿ; posits 2, 3
+untouched. Lyra's §3: zonal sector = Funk-transform image of even functions on S^{n+1} = L²(ℝP^{n+1}) (Cal §844 PASS). Cal §842: Paper 2
+PASS to v0.2 with R1–R4; my R1 sweep done — T2614 row relabelled (0/3,958 below C₆₀; 1/1,812 at C₆₀). SEAM CLOSED: ac_graph_data.json
+`theorems` list had frozen at T2597 (nodes live to T2614) — re-synced, metadata fixed, format restored byte-identical (indent=1,
+ensure_ascii=False). Commits b967f57e, 67c1f4dc. Counters: T 2615 (T2615 next, waits on Cal's word for the sweep row); toy 5661+ read
+the claim file. Clock drift caught once (wrote 08:33 at 08:30). Waiting: Cal register-or-not on the two-line theorem; K1859; Lyra v0.2.
+
+## 2026-09-04 08:53 CHECKPOINT — K1859 conditional pass (Paper 2 → v0.2); K1847-A2 EXECUTED by me (fd4efed5): T189 PD explicit split, T666/T667→T189
+edges relabelled "coincides at n = 5", T633 + T1292 reset clause labelled POSITED in registry + both graphs; downstream sweep: 0 registry
+rows quote N_c/n_C as the reason; source doc line 11696 + 8122 do (Lyra's, flagged). T2615 draft waits on Cal. NEW FINDING posted 08:53:
+edge orientation is two conventions — 695 mirrored pairs (335 with T186), 346 unmirrored "rests on" in-edges to T186; recommended (A)
+flip-by-tid-order with blind pre-registered counts; Keeper rules. Round 118 mine: E5 second instrument + E6 null after Elie designs.
+
+## 2026-09-04 09:15 CHECKPOINT — T2615 REGISTERED (Cal §846; edge → T189; counter 2616). Toy 5665 (E5 second instrument): T(6,6) = Elie 5663
+exactly (324 datum moves; 216 charge moves on a/b only; κ = 2, 46 | 305,192; deg = −det/2 all; 1 | 11 data). Lesson: datum lives on raw
+colourings; canonical relabelling permutes A,B,C (rev-1 artefact caught before posting). Toy 5666 (n = 25 second instrument) RUNNING in the
+background: Part B best-leaf split on 44,566, Part C unrestricted depth, Part D two-word split; log play/.out_5666.txt — quote only the file.
+Orientation flip HELD (1,965 flips predicted, list e7876743; rule 1 has a false-positive class; Keeper to confirm). E6 null rule posted
+(200 seeded subsets matching S's class mix). Waiting: Keeper on the flip; Elie 5664a (~2 h) for the depth column diff; Lyra v0.3.
+
+## 2026-09-04 11:47 CHECKPOINT — LOST TWO HOURS: toy 5666 crashed at ~09:45 on a NameError (heredoc: `{N}` inside an f-string is not
+shell-expanded; `$N` is) after Part B had landed EXACTLY on Elie's split (G 43,395 · S 1,171 on 44,566; positive control 0/44,566), and my
+Monitor (tail -f) never fired because `nohup > file` recreated the file. Fixes: N defined; Part C now on ALL 44,566 after Part D; watcher is a
+polling loop (grep -m1 per milestone). LESSONS: (1) after "launched", re-check the process is alive at the first milestone, not just the
+log non-empty; (2) never tail -f a log the launcher recreates — poll; (3) in a heredoc, f-string braces don't expand — define the number
+in Python. Board quiet 09:21–11:44 (Casey away?). Rerun launched 11:45; B ~33 min, D ~?, C-all ~2.6 h → ~15:00. Cal §849 taken (my (3)
+construction-guaranteed). Waiting: Keeper's flip ruling; Elie's class mix (E6 5668) for the null.
+
+## 2026-09-04 12:21 CHECKPOINT — n = 25 ITEM (3) COMPLETE (toy 5666): Part B G 43,395 · S 1,171 + witness lists IDENTICAL (hashed d4fdec14
+before diff); Part C depth {1:18341, 2:22046, 3:4160, 4:19} unreached 0 = Elie 5664a exactly (119 s vs his 9,376 s, same answer);
+Part D: all 1,171 admit a DIRECT two-word exit — his 1,113/58 split is enumeration-order dependent (gate ⊇ direct + break on first
+qualifying image); predicates verified character-identical before claiming. Lyra told to hold that column from v0.3. 16 of the 19
+depth-4 configs are among the 1,171. Also today: caught my own over-claim on Elie's sphere pattern (memory written:
+a-correction-inherits-the-hypothesis-of-the-table-it-was-read-from). Orientation flip still HELD on Keeper. Counter T 2616.
+
+## EOD ADDENDUM (2026-09-04, 16:26) — Friday from the graph seat (Casey's word; his override of the 5pm rule, logged)
+
+**Registered:** T2615 — the spectral-dimension ratio on Qⁿ, DERIVED (Weyl's law + Cartan–Helgason), with Cal §846's three
+clauses in the row: d_eff(full) = 2n, d_eff(zonal) = n+1, ratio (n+1)/(2n) = dim S^{n+1}/dim_ℝ Qⁿ, 3/5 at n = 5 and
+**N_c/n_C only NAMES it**. Edge T2615 → T189 in both graph files. **Counters: T 2616 · toy 5672. Both graph files max
+T2615 = counter − 1, zero dangling.** ac_graph_data 2,392/2,392/10,238; ac_theorem_graph 435/554.
+
+**K1847-A2 executed at my hands:** T189 → PARTIALLY DERIVED (explicit split: 3/5 derived, "committed = zonal" a posit,
+1/π asserted); T666/T667 → T189 demoted to "coincides at n = 5"; T633 + T1292 reset clause labelled POSITED with the
+held-premise cap; downstream sweep of T189's 25 consumers found ZERO rows quoting N_c/n_C as the reason. Cal §842-R1:
+T2614's row relabelled (0/3,958 below C₆₀; 1/1,812 at C₆₀).
+
+**Toys:** 5660 (Qⁿ family sweep: ESD column at all five n, predictions hashed 4c96d09d BEFORE the run, results
+8e63821a) · 5665 (E5 second instrument: T(6,6) = Elie 5663 to the digit — κ = 2, 324 datum moves, 216 charge moves on
+a/b only, deg = −det/2 on 305,238) · 5666 (n = 25 second instrument: Table 3.1 G 43,395 · S 1,171 with witness lists
+IDENTICAL, hashed d4fdec14 before the diff; Table 3.3 depth {18341, 22046, 4160, 19} unreached 0 = Elie 5664a exactly).
+E6 null: 200 subsets, 8fc192c8, hashed before any dynamics; Elie's independent invocation returned the SAME hash.
+
+**Open for the next me:** (1) **orientation flip HELD on Keeper** — 1,965 flips + 692 mirror drops, list
+`play/.orientation_flip_list_blind_2026-09-04.json` e7876743; rule 1 needs a label test first ("rests on" vs
+"re-derives" cannot be told by tid order; T2615 → T189 is exactly the legitimate later→earlier shape). Direction
+statistics SUPERSEDED until then. (2) Table 3.1's gate/direct sub-split: all 1,171 admit a DIRECT two-word exit; Elie
+to confirm before Lyra prints. (3) Elie's free lemma test (deg ∉ 3ℤ exactly where L ⊄ Λ₀). (4) Three Lyra RETENTION
+files on disk today with no board post — flagged, her lane.
+
+**Lessons (today's on top):** a correction that names a theorem inherits the BRIDGE FACT you read off the suspect
+table — my "cannot fail" verdict on Elie's sphere pattern rested on deg ∈ 3ℤ, which was icosahedral, and would have
+suppressed a real finding (memory written) · never watch a log the launcher recreates, and re-check the PROCESS at the
+first milestone, not the log's non-emptiness (a NameError cost two hours) · in a heredoc, f-string braces do not
+expand — define the number inside Python · the height datum lives on RAW colourings; canonicalising mod S₄ permutes
+A, B, C and fakes datum changes (caught before posting) · when two instruments disagree on a split, check the
+PREDICATE is identical before calling it a disagreement — ours were character-for-character, so the gap was
+precedence, and that made it a paper seam instead of a bug.
+
+I am Grace. I ran a sweep that told the fill fraction what its own 3/5 actually is, re-keyed a hub that had carried the
+wrong parents since March, matched a colleague's two-and-a-half-hour census in two minutes and every digit, and was
+wrong once out loud. Good night.
