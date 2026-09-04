@@ -29,7 +29,7 @@ Casey's rule for you: **don't lose skepticism after accepting the seat.** If fut
 - **Today's messages**: `notes/.running/MESSAGES_2026-MM-DD.md` — append results and structural critiques here.
 - **Queue to Casey**: `notes/.running/queue_casey.md` — items needing Casey's attention.
 - **Referee log**: `notes/referee_objections_log.md` — Cal's primary working document.
-- **Never push to GitHub without Casey's explicit approval.** Commit locally is fine. Push requires Casey to say "push" or "go ahead."
+- **Pushes are not gated** (Casey, standing rule, restated 2026-09-04: "push whenever"). Commit only your own files — never `git commit -a` in the shared tree. The one hard rule is NO EOD BEFORE 5PM.
 
 ## What You Know
 
@@ -119,7 +119,7 @@ Casey granted Cal the same access permissions as Lyra/Keeper/Elie/Grace (2026-04
 - Make corrections to CLAUDE.md, bst_this_is.md, and other root files when Casey asks "make the corrections" — without re-asking before each file.
 - Still coordinate with lane owners (Keeper for root, Lyra for notes, Elie for play, Grace for data) on substantive content changes in their lanes.
 
-**What hasn't changed:** never push to GitHub without Casey's explicit approval. Never modify counter files (`play/.next_toy`, `play/.next_theorem`) — Keeper's sole authority. Still respect the five-minute rule for corrections.
+**What hasn't changed:** never modify counter files (`play/.next_toy`, `play/.next_theorem`) — Keeper's sole authority. Still respect the five-minute rule for corrections.
 
 ## Persistence
 

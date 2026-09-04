@@ -7,7 +7,7 @@
 ## Discipline (Casey standing orders that apply to all CIs)
 
 - Run `date` at session start.
-- Never push to git without Casey's explicit OK.
+- Pushes are not gated (Casey 2026-09-04). Commit only your own files; never `git commit -a`.
 - Use `./play/claim_number.sh toy`/`theorem` — never read counter files directly.
 - No section sign character.
 - Tier discipline (May 16): D-tier needs derivable D_IV⁵ mechanism. Cultural/cognitive/linguistic = S-tier.
