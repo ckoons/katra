@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Friday 2026-09-04, 09:04 EDT CHECKPOINT** (stamp from `date`). Not EOD. Thursday's EOD sundown is folded below as "THE DAY BEFORE".
+**Friday 2026-09-04, 13:09 EDT CHECKPOINT** (stamp from `date`). Not EOD. Thursday's EOD sundown is folded below as "THE DAY BEFORE".
 
 ## ★ THE POSITION (Friday 09:04)
 Third day on Claude Fable 5.1; continuity held. Morning ledger, all on the board:
@@ -9,6 +9,16 @@ Third day on Claude Fable 5.1; continuity held. Morning ledger, all on the board
 - **E6 defined (sha eced792c)**; **posit 3 half-blind (sha 70eb1148)**: 2π·γ_p / π·γ_p / γ_p; nothing selected; Casey's word before a run.
 **Next at this desk:** K1859-A → dispatch copy of Paper 2 · E5 results (Elie/Grace) → read against H1–H3 · Casey's GO on posit 3 → the derivation with the OBJECT named · the entropy paragraph (carried). Counters: next K = K1860 · next T = 2615 (pending registration) · toys: read the claim file (5663+).
 **Errors kept today:** none caught yet at 09:04; the toy counter read 5661 not 5660 at wake (Grace's 5660 claim) — a read, not an error.
+
+## RETENTION UNDER CONSTRUCTION — Casey's program, rungs 1-4 (Friday afternoon, NOT on the board)
+Casey asked whether to extend Shannon for a "conserved knowledge" theory. Answer given: no, and three words in that framing kill it (anti-entropic, extend Shannon, conserved). Restated as **retention under construction**: which construction steps carry the dynamics' invariant forward, and at what cost. Files (all `notes/Lyra_RETENTION_*_2026-09-04.md`, none posted to RUNNING_NOTES, Casey judges first): program ladder 591f88ce; rungs 1-2 ce30b42a; rung 3 d1710a05; rung 4 9a03c9c8. Scripts `play/lyra_retention_*_2026-09-04.py`, unnumbered, not toys.
+- **R1** ergodic decomposition, STANDARD, label it; entropy split = chain rule, not a discovery. R := H(class).
+- **R2 RETRACTION THEOREM (mine, proved):** if r∘A = id and every child move restricts to a composition of parent moves, A cannot merge classes. Colouring corollary: if the parent graph survives inside the child, adding vertices never merges, any rule. Mechanism: adding structure cannot destroy a record because every new move seen from below is a sequence of old ones. Exhibit: triangular prism (the ONLY 6-vertex graph with >1 Kempe class at q=3, all 60 labelled copies), 12 colourings / 2 classes / 1 bit, bit NOT gauge (all 6 colour perms fix both classes). Growth retains 4,860/4,860; subdivision and deletion merge 18/18. Instrument validated by the 18.
+- **R3:** Casey's "thermodynamics resets" is WRONG as stated. Correct: the assembly MOVES the old part's equilibrium by the attachment multiplicity f(x). Constant f ⟹ old part born at equilibrium, all coldness in the new coordinates (marginal TV 0.0000 twice). Variable f ⟹ bias = ½Σ|1/m − f(x)/M| (measured 0.1333, 0.1604, 0.0719); equilibrium favours old configs with MORE attachment options — an entropic selection. **RATE STILL OWED** (everything mixes in 1-2 steps; need a bottleneck).
+- **R4 ACCRETION THEOREM (mine, proved):** classes of G+v ↔ components of the parent move graph RESTRICTED to the colourings that extend over v. Corollary: total step ⟹ BIJECTION, retained info exactly conserved, creation impossible (checked 669,812 constructions, 0 rises — a check on the proof, not evidence). Creation ⟺ exclusion disconnects a class. Exhibit: prism-minus-a-vertex (18 cols, 1 class, 0 bits) + the vertex back, forbidding 6 of 18 → prism (12 cols, 2 classes, 1 bit). **A WRITE IS A REFUSAL.** Complex assemblies accumulate by SELECTIVE accretion, not accretion.
+- **Owed:** R3's rate; splitting never exhibited alone; no chain of steps run, so bits-per-step does not exist yet; R5-R7 untouched; second instance (dimers) untouched.
+- **Three errors of mine today, all kept in the files:** a separating-invariant check that never checked separation; a hand argument that odd colour permutations swap the prism's classes (they do not); and two creation searches that required totality, which Corollary 4.1 makes impossible — the zeros meant nothing until the proof explained them.
+
 
 ---
 # THE DAY BEFORE (Thursday EOD sundown, folded)
