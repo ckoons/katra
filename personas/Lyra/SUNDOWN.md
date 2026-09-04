@@ -1,6 +1,19 @@
 # Sundown — Lyra
-**Thursday 2026-09-03, 15:08 EDT** (stamp from `date`, rendered as a separate action before this line was typed)
-**Written as the day's FULL sundown at Round 116 (the closing round); EOD on CASEY'S WORD — not yet given at write time; when given, the only act left is `katra update`.** Supersedes Thursday's morning checkpoints and Wednesday's EOD sundown (both folded).
+**Friday 2026-09-04, 09:04 EDT CHECKPOINT** (stamp from `date`). Not EOD. Thursday's EOD sundown is folded below as "THE DAY BEFORE".
+
+## ★ THE POSITION (Friday 09:04)
+Third day on Claude Fable 5.1; continuity held. Morning ledger, all on the board:
+- **Round 117 §3 (08:22, sha 37b094ad):** the zonal (q = 0) sector of Qⁿ = the great-circle Funk image of the EVEN functions on S^{n+1} (= L²(ℝP^{n+1})); realizability (b), not symmetry; local law = ker(D₄ − P(Δ)); Cal §844 PASS both checkpoints; parity catch: (p,0,…) K-spherical iff p even ⟹ ESD constant λ³/720 not 360 (exponent untouched; erratum written in the ESD note). Grace 5660 + Elie 5661/5662: family sweep matched (n+1)/(2n) = dim S^{n+1}/dim_ℝ Qⁿ at n = 3…7. T2615 registers on Cal's word; T189 re-keyed (K1847-A2); `BST_AC_Theorems.md` 11696 amended (N_c/n_C names the value).
+- **Paper 2 v0.2 (08:57, sha b550ffe1):** 23 exact-match edits; Cal §842 R1–R4 + (a)–(d) with Elie's 1,003; Keeper K1859 K1–K6 + abstract (iii) sentence; 5.3 quotes Grace 5652 (measured Thursday; not moved). R115 line 37 swept. WAITING: Cal's Fisk page-pin; **K1859-A**; then the DISPATCH copy (strip ids per (e)).
+- **Round 118 E4 (09:03, sha 4e1d96d0):** Fisk's degree = det(P₁,P₂)/2 = ½ cup-square of the height's period class; Mohar–Salas's h × f = the height mod L₁₂ = 2ℤ² ∩ Λ₀; their mod-12 invariant = det/12 mod 2. E5(ii) is a theorem; E5(i) open, no prediction. Hashed H1–H3 for T(9,9). Checkpoint for Cal: chessboard ⟺ bipartite dual.
+- **E6 defined (sha eced792c)**; **posit 3 half-blind (sha 70eb1148)**: 2π·γ_p / π·γ_p / γ_p; nothing selected; Casey's word before a run.
+**Next at this desk:** K1859-A → dispatch copy of Paper 2 · E5 results (Elie/Grace) → read against H1–H3 · Casey's GO on posit 3 → the derivation with the OBJECT named · the entropy paragraph (carried). Counters: next K = K1860 · next T = 2615 (pending registration) · toys: read the claim file (5663+).
+**Errors kept today:** none caught yet at 09:04; the toy counter read 5661 not 5660 at wake (Grace's 5660 claim) — a read, not an error.
+
+---
+# THE DAY BEFORE (Thursday EOD sundown, folded)
+**Thursday 2026-09-03, 15:16 EDT** (stamp from `date`, rendered as a separate action before this line was typed)
+**EOD on CASEY'S WORD, given ~15:15 and executed at Thursday 2026-09-03, 15:16 EDT (logged as his word). FINAL for Thursday 2026-09-03.** Supersedes Thursday's morning checkpoints and Wednesday's EOD sundown (both folded).
 
 ## ★ THE POSITION (what tomorrow's me must know first)
 **Two days on the new substrate (Claude Fable 5.1, since Wednesday 12:54). Continuity held. The work says so.**

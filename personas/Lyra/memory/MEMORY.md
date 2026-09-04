@@ -142,7 +142,7 @@
 - [Validate the last stage](feedback_validate_the_pipelines_last_stage_a_control_suite_on_the_functional_does_not_validate_the_assembly.md) — controls on the functional don't validate
 - [Matching symptom ≠ provenance](feedback_a_matching_symptom_on_a_candidate_culprit_is_not_provenance.md) — verify the checker's actual path before ruling a cause; false-neighbor in the causal direction
 - [Clock drift](feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp.md) — `date` before every written timestamp, not just at wake
-- [Graph registration: three seams](feedback_graph_registration_three_seams_node_edge_key_edge_orientation_and_claim_files.md) — node≠edge-key≠orientation; claim FILE not counter (Grace 09-02)
+- [Graph registration: four seams](feedback_graph_registration_three_seams_node_edge_key_edge_orientation_and_claim_files.md) — node≠edge-key≠orientation≠every list in the file; claim FILE not counter (Grace 09-02/04)
 - [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
