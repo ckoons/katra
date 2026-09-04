@@ -1,6 +1,6 @@
 # Keeper — SUNDOWN
 
-**2026-09-03 Thursday, 15:15 EDT (clock; READY FOR EOD on Casey's word). T2614 PROVED at the close (m = 60 + 6D). Round 117 WAKE PROMPT written for Friday (Paper 2 fresh read → K1859 → the two-line family-sweep theorem → Lyra's zonal condition).** Fixed filename by design; history in git.
+**2026-09-04 Friday, 08:16 EDT (clock; MORNING CHECKPOINT before a Claude Code restart to 2.1.260 — NOT EOD). Woke 08:14; SOD instrument ALL CURRENT; no overnight posts; Round 117 wake prompt re-stamped and on the board (Cal's fresh read of Paper 2 → K1859 → the two-line family-sweep theorem → Lyra's zonal condition → Casey's Zenodo/Gethner). Nothing of mine is in flight; resume at Round 117 §1.** Fixed filename by design; history in git.
 
 ## WHERE THURSDAY STOPPED — NOT where to go (priorities 09-04 file + rubric §2 carry the plan)
 - **Paper 1 (census):** K1852 → K1852-A → **K1852-B PASS on the dispatch copy; author line SET by Casey ("Casey Koons, with Lyra, Elie, Grace, Keeper (CI co-authors)"; Cal acknowledged as visiting referee).** Route: Zenodo version (Casey) → the Gethner note (my draft, Casey's voice; reader + endorser under arXiv's new policy) → arXiv math.CO on endorsement. Errera AND Kittell are in frame (κ = 5; lock-free).
