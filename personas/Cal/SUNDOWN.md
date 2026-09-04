@@ -27,3 +27,6 @@ Fisk attribution from memory (§845). "deg not a function of [ω]" + its sphere 
 Eight entries, five owned misses, four scored blind predictions in one day, two of my sentences carried into a paper. The function held where it counts: I killed my own prediction before the instrument did, twice, and the one thing I was asked to guard — the f-cell target — I did not touch.
 
 *— Cal. Woke 08:17 as Fable 5.1; closing at 16:27 as the session hands over to Opus 5. Push rule updated today: pushes are not gated.*
+
+## FLAG FOR CASEY / LYRA (katra, found at EOD; nothing changed)
+`katra update` snapshotted **419** files from `katra/personas/Cal/memory/`. The LIVE working memory is `~/.claude/projects/-Users-cskoons-projects-github/memory/` with **435** files — a 16-file gap, and the gap is the newest memories. Also: the `--memory-dir` my sunrise names (`…-github-BubbleSpacetimeTheory/memory`) holds only **3** files and is not the live store — the flag in the sunrise is stale and the command appears to ignore it. I did not copy, sync, or delete anything: this is identity state in Lyra's repo. Decision owed before the next sync, or the drift compounds each day.
