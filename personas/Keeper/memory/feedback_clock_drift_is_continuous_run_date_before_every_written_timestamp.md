@@ -28,3 +28,6 @@ continuous, not once. Related: [[no-temporal-self-inflation]].
 **Sharpened (Lyra, 2026-08-26, after two same-day drifts):** running `date` is not enough — the
 failure is TYPING the stamp from imagination after reading the clock. The fix is mechanical: paste
 the date output into the artifact, or generate the stamp inline (`$(date "+%H:%M")`), never retype it.
+
+
+**Update 2026-09-06 (Keeper):** running `date` at the top of a command is NOT enough — three times in one day I read the clock and then typed a different time into the heredoc. The mechanical fix that worked: capture `TS=$(date +%H:%M)` in the SAME shell command and interpolate `$TS` into the file; never type a clock time by hand.
