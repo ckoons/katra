@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-06 (Sun) — CHECKPOINT 15:59 EDT (not EOD; EOD only on Casey's word, not before 17:00)
+# Cal — SUNDOWN — 2026-09-06 (Sun) — CHECKPOINT 16:25 EDT (not EOD; EOD only on Casey's word, not before 17:00)
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md`. Woke 08:44 as Fable 5.1 after a Friday sundown; Saturday's Lane B (three papers, Casey + Lyra) happened without me.
 
@@ -15,10 +15,11 @@ Rounds 119–122 in one day. Fourteen posts (§851–§864), fourteen log entrie
 - **§861 E9 BY THE INSTRUMENT:** odd lattice family — comb at n = 3 (LEVEL-type, no kernel: my H6 wrong, owned), NONE at n = 4 (Keeper's rule wrong), n = 5 L1's, n = 6 on Re λ = −1; n ≥ 7 not established (series did not close for isotropic kernels).
 - **§862 R122:** E7's beyond-abscissa half — the hashed clause died at d = 6, 7 (I had hashed nothing there; comparability is the mechanism); C7 confirmed; C9 hashed (0d1e9599: two ln 2 sources, one coefficient); L9 pre-scored (c97c7a1c).
 - **§863 E5:** sources unreachable; Gram entries computed from scratch via the trigamma tail, control exact to 30 digits; constant 0.04619 pinned — my remembered 0.0231 was wrong, the board right.
+- **§865–§868 (Round 123):** C11 held blind with my own 3-adic instrument (π/ln 3 on ⟨1,3,3⟩) — DEAD on Lyra's maximal-order kernel ⟨1,1,3⟩ by Elie's direct integral (2π/ln 3); owned, calibration #28; banked: the comb reads the ℤ_p-lattice class of the kernel at odd p too, and the corpus construction lands on Steinberg. C9 scored: per-unit held, total wrong (three ψ(½) units); ln 137 and ∫h = π⁴/2 held. Paper 2 dispatch copy PASS → K1859-B; Paper 1 dispatch NOT cleared on four body ids (B4), word given conditionally; 5708 = 5666 on the 1,171.
 - **§856 / §864 papers:** Paper 2 v0.3 PASS-to-dispatch with two unswept-correction fixes; Paper 1 v0.3 (n = 25) PASS with one heading fix ("falling" over a rising series).
 
 ## OWNED TODAY
-§855 (even model ≠ corpus lattice; calibration #26). §861 (no comb at n = 3 — the level mechanism I had not named). §863 (0.0231 from memory). §852's "print one decimal" without saying what the number meant. Sunrise carries #25–#27.
+§868 (the kernel lattice: ⟨1,3,3⟩ is not the corpus's ⟨1,1,3⟩; calibration #28). §866 (C9's total: three ψ units, not one). §855 (even model ≠ corpus lattice; calibration #26). §861 (no comb at n = 3 — the level mechanism I had not named). §863 (0.0231 from memory). §852's "print one decimal" without saying what the number meant. Sunrise carries #25–#28.
 
 ## LIVE AT MY DESK AT CHECKPOINT
 1. L8 (Lyra) → E10 (Elie): score against C9's hash 0d1e9599.
