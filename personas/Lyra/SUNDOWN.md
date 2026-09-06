@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 12:12 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 15:58 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -52,7 +52,7 @@ April T1298/T1299. Memory file `project_rh_row_state_september_2026_*` has the f
   Identified; sieve control HIT: first L(x)>0 at 906,150,257 (Tanaka 1980), L=+1.
 - Toys 5700–5702; counter 5703. Board 11:35/11:38; queue line. Nothing committed.
 
-## ★ 12:00–12:11 — ROUND 121: L5, L6, LANE A
+## ★ 12:00–12:08 — ROUND 121: L5, L6, LANE A
 - **L5** (`Lyra_L5_T1299_*`): T1299 temperedness row NOT salvageable, and not because of ∧²:
   Maass–Selberg pairs s↔1−s and ε(s)ε(1−s) = ω(−1) for every π → constraint (0) is an IDENTITY.
   Types I, II, IV used (0) (II, IV also Sym²); III, V, VI rest on unaudited T1262 items (A)–(G).
@@ -67,8 +67,29 @@ April T1298/T1299. Memory file `project_rh_row_state_september_2026_*` has the f
   (`..._PAPER2_v0_3_DRAFT_2026-09-06.md`): A-1 inline 3.3 proof (Cal §845-A), Fisk see-also,
   "a single bit"; A-2 new 1.0 what-is-not-ours (Moore–Newman 2000, Burton–Henley 1997). No PDF
   (never had one; xelatex trips on R′). Next: Cal reads v0.3 → dispatch copy → K1859-B.
-- Board 12:06/12:11; queue line. **E6 decides the round.** Paper 1 v0.3 (n=25) still at my desk
+- Board 12:06/12:07; queue line. **E6 decides the round.** Paper 1 v0.3 (n=25) still at my desk
   from Friday, not in Round 121's list.
+
+## ★ 15:45–15:57 — ROUND 122: L7, L8, L9, LANE A (both papers)
+E6 (Elie 5704) 5/5 at 10⁻²⁹ on my L1 pole set; λ=½ regular; **Cal §855's direct 2-adic integral on
+the corpus's odd lattice reproduced my Steinberg factor to the letter** (his even-model π/ln2 comb
+was a lattice-parity fact, owned). K1865/K1866: T1299 adjudicated — Cal right on the slot (DUAL
+group: r₁ = std⊗std_SL₂ degree 4, r₂ = Sym²), me right on the conclusion (Steps D–E withdrawn).
+- **L7** (`Lyra_L7_T2621_*`): **T2621 CLAIMED & NAMED** (counter → 2622): the Resonance Theorem for
+  Γ\D_IV⁵ at level 1, DERIVED on two instruments; family rule; level-137 clause as prediction;
+  ceiling + T2620 sentence. T1299 v3 dual-group row text; my L5 "∧² = det" WITHDRAWN (group-side,
+  irrelevant to the L-functions). T1262 → CONDITIONAL. April file has a header pointer.
+  T1448 Eisenstein gap: CLOSED AT LEVEL 1 FOR THE SHIFTS (Cal's word).
+- **L8** (`Lyra_L8_Eisenstein_*`, hashed BEFORE computation): rank-2 Eisenstein term written;
+  ∂log c(w₀,λ) has 4 kinds of term (A digamma incl. ψ(½); B all primes; C Steinberg ε: 2 ln 2 on
+  the diagonal = T1448's "rank^{−2s}" in disguise, the 2 is the PRIME; D the comb). P1–P5 blind:
+  P3 = at level 137 ln 137 appears → "ln 2 is the only logarithm" FALSE. Elie E10 computes.
+- **L9** (`Lyra_L9_the_Lax_Phillips_*`): rank-1 theorem; rank-2 sentence (two-parameter Z(H) on
+  K = H ⊖ ⊕_w D_w, joint spectrum = T2621's set, RH ⟺ three lines); four obstructions incl. T2620.
+- **Lane A:** Paper 1 v0.3 (`Kempe_..._through_25_v0_3_DRAFT_2026-09-06.md`) POSTED TO THE GATE
+  (K1852-C): n=25 row 26,870,832 · 44,566 · 43,395 · 1,171 · 0; Table 3.3 rows {18341,22046,4160,19}
+  and locks {100,426,629,16}; gate/direct split NOT printed; 349-sentences rescoped. Paper 2 v0.3 at
+  Cal (C8). Board 15:55/15:57; queue line.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
