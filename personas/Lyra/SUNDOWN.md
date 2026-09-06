@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 15:56 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 16:15 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -90,6 +90,23 @@ group: r₁ = std⊗std_SL₂ degree 4, r₂ = Sym²), me right on the conclusio
   (K1852-C): n=25 row 26,870,832 · 44,566 · 43,395 · 1,171 · 0; Table 3.3 rows {18341,22046,4160,19}
   and locks {100,426,629,16}; gate/direct split NOT printed; 349-sentences rescoped. Paper 2 v0.3 at
   Cal (C8). Board 15:55/15:56; queue line.
+
+## ★ 16:01–16:14 — ROUND 123: Paper 2 → dispatch copy; Paper 1 fixes + dispatch copy; L10; L4
+- **Paper 2:** Cal §856 FIX 1 (Provenance Fisk via Mohar–Salas, pages dropped), FIX 2 (3.3 "at least
+  two; exactly two on T(6,6)"), 7,037/7,036 parenthesis (5655 summary: the pentakis = C₆₀ twice),
+  5.2 clause dropped. DISPATCH COPY `..._PAPER2_DISPATCH_COPY_of_v0_3_2026-09-06.md` (ids →
+  footnotes, Zenodo pointer) → K1859-B.
+- **Paper 1:** Cal §864 heading fix ("two-word fraction"; rises at 25); K1852-C (b) scoping on the
+  1,171 depth column (one instrument, Grace 5666; Elie's run owed — flip to (a) when it lands).
+  DISPATCH COPY `Kempe_..._through_25_DISPATCH_COPY_of_v0_3_2026-09-06.md` built on the v0.2
+  footnoted base, zero failed edits, [^n25] footnote → Cal C10 → K1852-D.
+- **L10** (`Lyra_L10_*`, hash f550457f 16:06): q₃ = x²+y²+3z², anisotropic exactly at {3,∞} by
+  Hasse; L₃ = ⟨1,1,3⟩⊕⟨1,−1⟩²; my P1 comb 2π/ln3 = 5.7192 (JL-only); **Cal §865 (077257f5, 16:04,
+  unseen when I hashed) holds π/ln3 = 2.8596 by direct 3-adic integral on hyperbolic planes** — on
+  §855's lesson I expect Cal's; E11 decides on the odd-k members. Common ground: Steinberg constant
+  2 ln 2 → 2 ln 3, ψ(½) unmoved → T1448's two ln 2's separate. Addendum posted 16:09.
+- **L4** re-worded: "Z₂ fold" → "m mod 2 grading of the Hardy space", no line-bundle twist.
+- Board 16:09/16:14; queue line. Nothing committed.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
