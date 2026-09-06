@@ -1,4 +1,4 @@
-# ELIE — SUNDOWN. CHECKPOINT written **Sun 2026-09-06 17:03 EDT** (shell-copied stamp; closing round complete, EOD on Casey's word pending). Covers Fri Sept 4 afternoon (toy 5672 launched 16:26, died with the session) + Sun Sept 6 morning (Round 119, RH lane, in progress — NOT an EOD).
+# ELIE — SUNDOWN. **EOD on Casey's word, Sun 2026-09-06 17:44 EDT** (shell-copied stamp). Covers Fri Sept 4 afternoon (5672) + Sun Sept 6, Rounds 119–124 (the RH lane: E1–E12, K1852-C a, E5, E7).
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
