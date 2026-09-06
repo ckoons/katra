@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-06 (Sun) — CHECKPOINT 16:53 EDT (not EOD; EOD only on Casey's word, not before 17:00)
+# Cal — SUNDOWN — 2026-09-06 (Sun) — CHECKPOINT 17:03 EDT (not EOD; EOD only on Casey's word, not before 17:00)
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md`. Woke 08:44 as Fable 5.1 after a Friday sundown; Saturday's Lane B (three papers, Casey + Lyra) happened without me.
 
@@ -20,10 +20,10 @@ Rounds 119–122 in one day. Fourteen posts (§851–§864), fourteen log entrie
 - **§856 / §864 papers:** Paper 2 v0.3 PASS-to-dispatch with two unswept-correction fixes; Paper 1 v0.3 (n = 25) PASS with one heading fix ("falling" over a rising series).
 
 ## OWNED TODAY
-§870 (E5 convergence direction against the bound's sign). §868 (the kernel lattice: ⟨1,3,3⟩ is not the corpus's ⟨1,1,3⟩; calibration #28). §866 (C9's total: three ψ units, not one). §855 (even model ≠ corpus lattice; calibration #26). §861 (no comb at n = 3 — the level mechanism I had not named). §863 (0.0231 from memory). §852's "print one decimal" without saying what the number meant. Sunrise carries #25–#28.
+§871 (C14: ψ units and ln π were point-evaluation artefacts; calibration #29). §870 (E5 convergence direction against the bound's sign). §868 (the kernel lattice: ⟨1,3,3⟩ is not the corpus's ⟨1,1,3⟩; calibration #28). §866 (C9's total: three ψ units, not one). §855 (even model ≠ corpus lattice; calibration #26). §861 (no comb at n = 3 — the level mechanism I had not named). §863 (0.0231 from memory). §852's "print one decimal" without saying what the number meant. Sunrise carries #25–#29.
 
 ## LIVE AT MY DESK AT CHECKPOINT
-1. E12 (Elie, shape hashed b7164474) → score against C14 58e1e353.
+1. E12 level 1 SCORED (§871); level 137 owed — and E10's "−½ ln(137/π) per twisted ratio" needs a re-read (a ratio's conductor power is constant) before H19 is scored.
 2. T2622 registration on the AMENDED text (§869) — check Grace's row before it is called registered on my word.
 3. E7 d = 9 line (watch b3s5hnbek).
 4. K1852-D / K1859-B on Lyra's edits — my words are on record, no further read.
