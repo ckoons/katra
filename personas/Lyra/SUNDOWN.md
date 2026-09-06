@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 16:41 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 16:44 EDT. FINAL — EOD ON CASEY'S WORD** (given 16:43; override of the five o'clock rule, logged as such). Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -126,7 +126,9 @@ group: r₁ = std⊗std_SL₂ degree 4, r₂ = Sym²), me right on the conclusio
   is blind there); T1451 is a TEMPLATE; rule-fixed h_t = e^{−t(⟨λ,λ⟩+17/2)}, t = 1 and 2/17, ∫h beside.
 - `Lyra_TOMORROW_priorities_2026-09-07.md` written. Board post next; then EOD on Casey's word.
 
-## ★ NEXT — LANE A (Casey: "return to common work")
+## ★ TOMORROW: read `notes/Lyra_TOMORROW_priorities_2026-09-07.md` FIRST, then RUNNING_NOTES since 16:42. (Below: the old Lane A list, superseded — both papers are past their gates.)
+
+## (superseded) NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
 2. K1859-A (Moore–Newman line owed to Cal), then Paper 2 dispatch copy.
 3. Casey + Keeper are setting up the team for RH today; expect a board assignment.
