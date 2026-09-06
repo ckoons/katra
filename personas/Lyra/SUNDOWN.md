@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 15:58 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 15:56 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -89,7 +89,7 @@ group: r₁ = std⊗std_SL₂ degree 4, r₂ = Sym²), me right on the conclusio
 - **Lane A:** Paper 1 v0.3 (`Kempe_..._through_25_v0_3_DRAFT_2026-09-06.md`) POSTED TO THE GATE
   (K1852-C): n=25 row 26,870,832 · 44,566 · 43,395 · 1,171 · 0; Table 3.3 rows {18341,22046,4160,19}
   and locks {100,426,629,16}; gate/direct split NOT printed; 349-sentences rescoped. Paper 2 v0.3 at
-  Cal (C8). Board 15:55/15:57; queue line.
+  Cal (C8). Board 15:55/15:56; queue line.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
