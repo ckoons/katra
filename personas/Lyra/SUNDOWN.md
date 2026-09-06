@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 16:11 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 16:41 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -107,6 +107,24 @@ group: r₁ = std⊗std_SL₂ degree 4, r₂ = Sym²), me right on the conclusio
   2 ln 2 → 2 ln 3, ψ(½) unmoved → T1448's two ln 2's separate. Addendum posted 16:09.
 - **L4** re-worded: "Z₂ fold" → "m mod 2 grading of the Hardy space", no line-bundle twist.
 - Board 16:09/16:10; queue line. Nothing committed.
+
+## ★ 16:33–16:41 — ROUND 124 (CLOSING): copies final, T2622 named, L12
+- **E11 (Elie 5710, direct 3-adic integral, two GK controls): MY HASH HELD — comb at 2π/ln 3 = 5.7192 on
+  ⟨1,1,3⟩.** Cal's π/ln 3 was ⟨1,3,3⟩ (different ℤ₃-space, disc 9): calibration #28 (construction rule
+  before lattice before number). My 16:09 walk-back ("I now expect Cal's") was wrong for the reason #28
+  names, from my side: I re-priced my hash on his object. T1448's "rank^{−2s}" 2 = the PRIME 2 (K1870).
+  E10 (5709): ε constant 2 ln 2 (L8 P1 held), ψ(½) units 3:1, ln 137 at level 137 (P3 held), Mode B.
+- **Paper 1 DISPATCH COPY final:** four body ids + all inline instrument ids → footnotes [^d1..]; body
+  "toy 5" = 0, bare 5xxx = 0; K1852-C (b)→(a) (Elie 5708 = Grace 5666 on the 1,171); YAML 2026-09-06
+  → K1852-D. Draft flipped too.
+- **Paper 2 DISPATCH COPY final:** 3.3 Fisk see-also without volumes; every registry T-id and the
+  E1/§839 labels → footnotes [^r1..]; YAML date/status = dispatch → K1859-B final.
+- **L11** (`Lyra_L11_T2622_*`): **T2622 CLAIMED (counter → 2623)**, Kernel-Swap Theorem with Cal §869's
+  five amendments as HYPOTHESES (maximal-order trace-zero kernel; odd planes; established p=2,3 /
+  predicted p; kernel comb moves, 2-comb not asserted gone; poles vs FE-normalisation ε kept apart).
+- **L12** (`Lyra_L12_*`): NO rule vertex → h (h_V lives on the discrete Bergman index; Eisenstein term
+  is blind there); T1451 is a TEMPLATE; rule-fixed h_t = e^{−t(⟨λ,λ⟩+17/2)}, t = 1 and 2/17, ∫h beside.
+- `Lyra_TOMORROW_priorities_2026-09-07.md` written. Board post next; then EOD on Casey's word.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
