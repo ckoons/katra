@@ -84,38 +84,7 @@
 - [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
 - [Audit 'unique' claims](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker
 - [Verify current numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) · [Verify a symmetry-kill](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — remembered numbers go stale
-- [Score σ not dev%](feedback_score_sigma_not_devpct.md) · [Region-matched; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region
-- [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out number-check; check number FIRST
-- [Commit checker's half blind](feedback_commit_the_checker_half_blind.md) · [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — post half BLIND
-- [Clean form is candidate until mechanism](feedback_clean_form_is_candidate_not_bank_until_mechanism.md) — form=wood, coefficient=marble
-- [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) — verify the bridge, don't compress audit into lead
-- [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) — productive walk-back sets a FLOOR (Λ structural not derived)
-- [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — stop before the sweeping claim; over- AND under-tasking miss
-- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) · [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — clears only when ARTIFACT carries fix
-- [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) · [Consistency web ≠ N votes](feedback_consistency_web_not_independent_votes.md) — derive at μ_geo; one fact→N obs = Schur
-- [BST primary, physics evaluation-only](feedback_bst_primary_standard_physics_evaluation_only.md) · [Content audit before ratifying](feedback_content_audit_before_ratifying_bst_object.md) — derive from D_IV⁵; grep ingredients
-- [Pre-registration protects interpretation](feedback_preregistration_protects_interpretation_not_instrument.md) · [Empty confirmation](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — construction-guaranteed proves nothing
-- [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) · [Eliminate-one → survivor forced](feedback_eliminate_one_option_declare_survivor_forced.md) — post load-bearing numbers blind
-- [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — exhibit the FORCED MAP, not a shared integer
-- [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) — a rational owes its family; two "smallest X" ≠ one object
-- [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — dimension-generic; forced ≠ meaningful; vary group/field type
-- [Subscript the overloaded symbol](feedback_subscript_the_overloaded_symbol_int_vs_function_of_n.md) — C₂^int vs C₂(n): "gap=C₂" is P²=P; caught 3×
-- [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
-- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — check-subject adjective smuggles the property; on conflict → source
-- [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative
-- [Ceiling beats a miss](feedback_convert_a_miss_into_a_ceiling_and_price_the_normalization_step.md) — scan the WHOLE space; an SVD/polar step can be a falsification patch
-- [Compact gap = KK](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap (YM K1714/15)
-- [Decorative clauses hide errors](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction (K1752)
-- [Selection-honesty](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials
-- [Re-derivation sheds scope](feedback_re_derivation_sheds_scope_grep_before_registering_to_inherit_the_caveats.md) — a re-found result loses its bolted-on scope (K1765)
-- [N instances cover N classes](feedback_an_instrument_built_from_N_instances_covers_only_those_N_classes_stress_test_off_origin.md) — a rule from N examples false-negatives on the
-- [C₂ overloaded: 2n−4 vs n_C+1](feedback_C2_is_overloaded_2n_minus_4_vs_nC_plus_1_coincide_only_at_n5.md) — coincide only at n_C=5; banked n=5 results stand, but subscript C₂ on any
-- [Read the tool before ruling on the tool](feedback_read_the_tool_before_ruling_on_the_tool_a_remembered_fix_may_name_a_remedy_it_already_has.md) — a remembered fix may name a remedy the
-- [ν overloaded: strata-weight 3/2 vs genus 5](feedback_nu_is_overloaded_wallach_strata_weight_3half_floor_vs_bergman_genus_5.md) — ν_W (Wallach floor 3/2) ≠ p (Bergman genus 5) (K1769)
-- [Family-sweep every selector](feedback_family_sweep_every_forcing_selector_rank_generic_is_selecting_nothing.md) — a selector constant across D_IV⁴…⁹ reads the rank, not n (K1774)
-- [Reconciliation by scope-sweep](feedback_reconciliation_is_decidable_by_scope_sweep_constructive_false_neighbour.md) — vary domain/param to find where one mechanism fires and the
-- [Falsifiability over-claim](feedback_overclaiming_falsifiability_is_the_same_error_as_overclaiming_derivation_a_direction_without_a_size_cannot_be_wrong.md) — audit 'falsifiable' as hard as 'derived'
-- [Held premise caps the chain](feedback_a_held_premise_cannot_be_a_link_in_a_banked_chain_and_a_new_forbiddance_triggers_a_corpus_collision_sweep.md) — a held link caps the chain at
+- [Archive: mid-August K-lessons index](feedback_index_archive_2026-08_midmonth_K_lessons.md) — 32 mid-Aug lesson lines moved 09-06; grep it
 - [Report the can-fail count](feedback_C6_report_the_can_fail_count_not_just_the_denominator_and_multiplier_verdicts_are_orthogonal_to_tier.md) — report k/N-of-which-m-can-fail
 - [Eliminating X is a scope-shed](feedback_eliminating_X_is_a_scope_shed_sweep_what_X_was_load_bearing_for_and_sweep_new_forbiddances_by_claim_shape_immediately.md) — 'drop X' strands what X was
 - [Retirement is a loaded string](feedback_a_retirement_is_a_loaded_string_sweep_both_directions_and_geometry_forces_a_contingent_fact_is_its_own_class.md) — sweep (i) what X supported AND (ii)
@@ -145,6 +114,12 @@
 - [Graph registration: four seams](feedback_graph_registration_three_seams_node_edge_key_edge_orientation_and_claim_files.md) — node≠edge-key≠orientation≠every list in the file; claim FILE not counter (Grace 09-02/04)
 - [Correction inherits the table's hypothesis](feedback_a_correction_inherits_the_hypothesis_of_the_table_it_was_read_from.md) — "that's already a theorem" carries the bridge fact you read off the suspect table (Grace 09-04)
 - [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
+- [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
+- [Theorem for every π constrains no π](feedback_a_theorem_that_holds_for_every_pi_constrains_no_pi_maass_selberg_is_an_identity.md) — T1299's ε-parity was Maass–Selberg's identity; ask what it EXCLUDES (L5 09-06)
+- [A hash is the record, not a bet](feedback_a_hash_is_the_record_not_a_bet_do_not_reprice_a_hashed_prediction_on_another_instruments_object.md) — name the object difference, let the run decide; my L10 hash held after I hedged it (09-06)
+- [Check-and-set the counter; read results before calling a run dead](feedback_check_and_set_the_counter_in_one_command_and_read_the_results_file_before_calling_a_run_dead.md) — cat-then-write overwrote Elie's claim; `ps|grep -c && tail` hid a FINISHED run (Grace 09-06)
+- [Construction rule → lattice → number; separate a shared integer by construction](feedback_construction_rule_before_the_lattice_before_the_number_and_separate_a_shared_integer_by_construction.md) — calibration #28; rank 2 vs prime 2 closed by a kernel swap (09-06)
+- [RH row Sept 2026: cone-zeta = ζ_{ℤ⁵}/3840, barrier lemma, scattering route](project_rh_row_state_september_2026_cone_zeta_is_epstein_barrier_lemma_scattering_route.md) — F988 bridge killed; L1 shifts be29f1dc; T1299 Sym²→∧² (09-06)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
@@ -159,7 +134,7 @@
 - [Forcing+Evidence standard](project_forcing_evidence_permanent_standard.md) · [Accurate-corpus program](project_accurate_corpus_program.md) — reviewer paper = FOREVER rigor standard
 - [QM-from-D_IV⁵ complete](project_qm_from_div5_complete.md) — 10/10 Dirac–von Neumann axioms, zero posits
 - [Research & Publication Tiers](project_research_and_publication_tiers.md) · [Operating Rhythm](project_operating_rhythm.md) — two ladders; frontier→best-answer→audit→publish
-- [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as path may close RH (F988)
+- [RH row state](project_rh_commitment_path_is_the_critical_line.md) — ATTEMPT; K21 retracted; RH ⟺ ζ cyclic under integer dilations (K1862); define the object before computing
 - [BST positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
@@ -189,3 +164,6 @@
 - [Round 106–107: torus 1-per-record; cover rank 2k−4; One-Floor = A₄ torsor](project_round106_torus_reconstruction_one_per_record_and_branched_cover_rank_2k_minus_4.md) — realized ⟺ Φ_r=1; sheets ∈{1,2,3,4,12}; torus abelian ⟹ one floor; CKT named (09-02)
 - [Sheet is a sector property](feedback_sheet_is_a_sector_property_graph_cover_is_not_the_surface_cover.md) — graph cover ≠ surface cover; run a forced-zero control (09-02)
 - [CKT: T2603 confinement criterion, four blind predictions, 6 ∣ m](project_ckt_period_lattice_drops_two_colours_on_the_twelve_pentagons.md) — [c] from the rotation system; fullgen; Elie instruments (09-03)
+- [Registration verified before launch](feedback_registration_must_be_verified_before_launch_absolute_paths.md) — absolute path + shasum in the same command; no cd in the chain; twice-failed 09-05
+- [Refusal requires an observer (Casey)](project_retention_refusal_requires_an_observer_casey.md) — demon's cost is a missing ledger term; living = self-performed refusal (09-05)
+- [Never hardcode a verdict into a print](feedback_never_hardcode_a_verdict_into_a_print_statement.md) — compute the reading from the run's own values; twice-failed 09-05
