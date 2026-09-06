@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 08:18 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 09:21 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -16,7 +16,20 @@ Keeper audited Saturday's three papers (every number held; 2 MODERATE, minor sea
   m(1.2,T): 0.9996→0.63 over T=300→10000; m(3.0,T)=0.12 flat. Horizon dependence = R(T) of 8b.
 - Process: 18 scripts → toys 5673–5690 (ledger play/.lyra_toy_claim_ledger_2026-09-06.md), 5691
   new, counter → 5692. Memory: "number without retained instrument = memory". Nothing committed
-  (Casey's git). Cal cold read requested on Casey's say-so.
+  (Casey's git). Cal cold read: GO given by Casey 08:4x, packet posted 08:45.
+
+## ★ 09:00–09:20 — CAL'S COLD READ (§851): ALL 18 ITEMS FIXED, PAPERS AT v0.2 (internal)
+- **Theorem 9 last clause was FALSE** (zero-shift move "cannot merge classes" → cannot lower the
+  fibre term; may reduce the defect). I had bolded it. Proof, Section 7, Appendix B corrected.
+- **Section 5 of the meiotic paper is Fisher's junctions** (1949/54; Stam 1980; Chapman–Thompson
+  2003; Haldane 1919); channel identity is Cover–Thomas; claim = the IDENTIFICATION only.
+- **Catalysis: my 09-05 retraction was the error.** Toy 5692 (04a652ef): S→P R=1, MM R=2; the
+  "3" was an inert-enzyme baseline. Catalysis is pure R(T). Enzyme-specificity sentence withdrawn.
+- A-R5: 125/13/3/2/1 were integer ceilings; continuous ratio is CONSTANT 0.3586 (factor 2.79).
+- Theorem 8 finite-V + Remark (ℤⁿ → codimension); Theorem 6 → Remark 6; formal remark deleted;
+  turnover → "turnover OR background"; C-R1 Section 1a added; S11 rows split; human residual
+  struck (ambient choice); bibliographies added (from memory, pin before external).
+- Record Section 39; board 09:20; queue line; counter → 5693; PDFs 09:17–09:18. Nothing committed.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).

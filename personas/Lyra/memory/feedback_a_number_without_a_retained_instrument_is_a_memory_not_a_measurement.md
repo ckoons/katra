@@ -15,6 +15,12 @@ from an ad-hoc diagnostic run (a python -c or scratchpad file) that was never sa
 say what T (horizon) produced them. They were unsupported until toy 5691 recomputed them with the
 definition and horizon frozen and hashed before the run.
 
+Second instance the same day: Cal's cold read (§851) found the reaction-network "catalysis destroys
+record" claim rested on an inert-enzyme baseline; no CRN script had been retained either. Toy 5692
+showed my original pre-registered prediction had been right and the "retraction" was the error.
+Also from that read: the clause of Theorem 9 that I had BOLDED as load-bearing was the false one.
+Bold marks where I was most confident, which is where a cold reader should look first.
+
 **Why:** a number in a paper is a claim that someone can rerun. Without the script there is no
 definition, no horizon, no way to tell a convention-carrying coordinate from an invariant, and no
 way to know whether the value was even the quantity the prose names. It is the same family as

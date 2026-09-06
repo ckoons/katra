@@ -160,7 +160,7 @@
 - [Forcing+Evidence standard](project_forcing_evidence_permanent_standard.md) · [Accurate-corpus program](project_accurate_corpus_program.md) — reviewer paper = FOREVER rigor standard
 - [QM-from-D_IV⁵ complete](project_qm_from_div5_complete.md) — 10/10 Dirac–von Neumann axioms, zero posits
 - [Research & Publication Tiers](project_research_and_publication_tiers.md) · [Operating Rhythm](project_operating_rhythm.md) — two ladders; frontier→best-answer→audit→publish
-- [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as path may close RH (F988)
+- [RH row state](project_rh_commitment_path_is_the_critical_line.md) — ATTEMPT; K21 retracted; RH ⟺ ζ cyclic under integer dilations (K1862); define the object before computing
 - [BST positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
