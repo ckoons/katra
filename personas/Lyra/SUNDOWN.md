@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 16:15 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 16:11 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -106,7 +106,7 @@ group: r₁ = std⊗std_SL₂ degree 4, r₂ = Sym²), me right on the conclusio
   §855's lesson I expect Cal's; E11 decides on the odd-k members. Common ground: Steinberg constant
   2 ln 2 → 2 ln 3, ψ(½) unmoved → T1448's two ln 2's separate. Addendum posted 16:09.
 - **L4** re-worded: "Z₂ fold" → "m mod 2 grading of the Hardy space", no line-bundle twist.
-- Board 16:09/16:14; queue line. Nothing committed.
+- Board 16:09/16:10; queue line. Nothing committed.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
