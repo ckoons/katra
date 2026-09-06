@@ -115,7 +115,9 @@
 - [Correction inherits the table's hypothesis](feedback_a_correction_inherits_the_hypothesis_of_the_table_it_was_read_from.md) — "that's already a theorem" carries the bridge fact you read off the suspect table (Grace 09-04)
 - [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
 - [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
+- [Theorem for every π constrains no π](feedback_a_theorem_that_holds_for_every_pi_constrains_no_pi_maass_selberg_is_an_identity.md) — T1299's ε-parity was Maass–Selberg's identity; ask what it EXCLUDES (L5 09-06)
 - [Check-and-set the counter; read results before calling a run dead](feedback_check_and_set_the_counter_in_one_command_and_read_the_results_file_before_calling_a_run_dead.md) — cat-then-write overwrote Elie's claim; `ps|grep -c && tail` hid a FINISHED run (Grace 09-06)
+- [RH row Sept 2026: cone-zeta = ζ_{ℤ⁵}/3840, barrier lemma, scattering route](project_rh_row_state_september_2026_cone_zeta_is_epstein_barrier_lemma_scattering_route.md) — F988 bridge killed; L1 shifts be29f1dc; T1299 Sym²→∧² (09-06)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra

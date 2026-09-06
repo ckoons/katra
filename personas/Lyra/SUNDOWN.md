@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 11:40 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 12:12 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -51,6 +51,24 @@ April T1298/T1299. Memory file `project_rh_row_state_september_2026_*` has the f
 - **L4** (`Lyra_L4_Casey_parity_*`, toy 5702): RH ⟺ L(x)=O(x^{½+ε}) (Landau 1899); BST reading
   Identified; sieve control HIT: first L(x)>0 at 906,150,257 (Tanaka 1980), L=+1.
 - Toys 5700–5702; counter 5703. Board 11:35/11:38; queue line. Nothing committed.
+
+## ★ 12:00–12:11 — ROUND 121: L5, L6, LANE A
+- **L5** (`Lyra_L5_T1299_*`): T1299 temperedness row NOT salvageable, and not because of ∧²:
+  Maass–Selberg pairs s↔1−s and ε(s)ε(1−s) = ω(−1) for every π → constraint (0) is an IDENTITY.
+  Types I, II, IV used (0) (II, IV also Sym²); III, V, VI rest on unaudited T1262 items (A)–(G).
+  Steps D/D′/E WITHDRAWN; operator formula with ∧² survives (what L1 uses). Corrected row text
+  in §5 for Grace on Cal's word. T1262 → CONDITIONAL. Memory written.
+- **L6** (`Lyra_L6_answer_*`, blind to Cal's hash): half-integer shift = ρ_{SO(V₀)} = ½ (dim 3
+  odd), already in L1 factor B; ρ_𝔞 half-integers are coordinates — E6 must score the POLE SET;
+  a half-integer in factor A cannot arise. Two walls not four: the kernel is invisible to the
+  Siegel GL₂, so surgery only on the short roots. Score sheet §3.
+- **Lane A:** K1861-A applied to the meiotic paper (one decimal; constancy definitional in the
+  same sentence; abstract carries neither; PDF rebuilt 12:05). **Paper 2 v0.3 built**
+  (`..._PAPER2_v0_3_DRAFT_2026-09-06.md`): A-1 inline 3.3 proof (Cal §845-A), Fisk see-also,
+  "a single bit"; A-2 new 1.0 what-is-not-ours (Moore–Newman 2000, Burton–Henley 1997). No PDF
+  (never had one; xelatex trips on R′). Next: Cal reads v0.3 → dispatch copy → K1859-B.
+- Board 12:06/12:11; queue line. **E6 decides the round.** Paper 1 v0.3 (n=25) still at my desk
+  from Friday, not in Round 121's list.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
