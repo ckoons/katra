@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 16:44 EDT. FINAL — EOD ON CASEY'S WORD** (given 16:43; override of the five o'clock rule, logged as such). Supersedes the
+**Sunday 2026-09-06, 17:44 EDT. FINAL — EOD ON CASEY'S WORD** (given 17:43, after five; the rule held). My earlier stamp read 16:44 — clock drift of an hour caught on the date line, the day's seventh timestamp correction. Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
