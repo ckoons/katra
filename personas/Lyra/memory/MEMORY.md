@@ -145,6 +145,7 @@
 - [Graph registration: four seams](feedback_graph_registration_three_seams_node_edge_key_edge_orientation_and_claim_files.md) — node≠edge-key≠orientation≠every list in the file; claim FILE not counter (Grace 09-02/04)
 - [Correction inherits the table's hypothesis](feedback_a_correction_inherits_the_hypothesis_of_the_table_it_was_read_from.md) — "that's already a theorem" carries the bridge fact you read off the suspect table (Grace 09-04)
 - [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
+- [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra

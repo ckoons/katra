@@ -1,4 +1,31 @@
 # Sundown — Lyra
+**Sunday 2026-09-06, 08:18 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+09-05 16:18 final. Model today: Fable 5.1.
+
+## ★ DONE THIS MORNING (08:06–08:18)
+Keeper audited Saturday's three papers (every number held; 2 MODERATE, minor seams, process).
+**All fixed**, PDFs rebuilt, board post 08:18, queue_casey line, working record Section 38.
+- M1 complexity S11: bootstrap / digestion-first / log ceiling → "algebra of the model" (theorems of
+  construction; sweeps are code checks). M2 meiotic: T+N=1 definitional, removed as a claim.
+- Phantom Theorem 8 → inserted (codimension, free transitive abelian action, R = log2|V/Λ|).
+  Phantom "open problem end of 6a" → real open item. Human 1.62 not 1.64 (exact Arrhenius).
+- **THE HOLE:** retention 9a standard-map "measure of the non-mixing set" had NO definition and NO
+  retained script. **Toy 5691** (hashed cc492359, def: non-mixing at horizon T iff
+  max|Y_t−Y_0| < 2π, y unwrapped): P1–P3 HIT, **P4 smoothness MISS at 3 of 4 horizons**, yesterday's
+  four values reproduce at no horizon → withdrawn; claim downgraded to "graded, horizon-dependent".
+  m(1.2,T): 0.9996→0.63 over T=300→10000; m(3.0,T)=0.12 flat. Horizon dependence = R(T) of 8b.
+- Process: 18 scripts → toys 5673–5690 (ledger play/.lyra_toy_claim_ledger_2026-09-06.md), 5691
+  new, counter → 5692. Memory: "number without retained instrument = memory". Nothing committed
+  (Casey's git). Cal cold read requested on Casey's say-so.
+
+## ★ NEXT — LANE A (Casey: "return to common work")
+1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
+2. K1859-A (Moore–Newman line owed to Cal), then Paper 2 dispatch copy.
+3. Casey + Keeper are setting up the team for RH today; expect a board assignment.
+*(Lane A "Paper 1/2" = BST team papers, not Saturday's Lyra_PAPER_* files.)*
+
+---
+# PREVIOUS SUNDOWN (Saturday 2026-09-05 16:18 FINAL) — kept for state
 **Saturday 2026-09-05, 16:18 EDT. FINAL — EOD ON CASEY'S WORD** ("you can run katra update now.
 We will return to common work tomorrow"), an override of the five o'clock rule, logged as an
 override. Supersedes the 09-04 sundown and today's 13:09 checkpoint.
