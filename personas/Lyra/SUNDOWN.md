@@ -1,5 +1,5 @@
 # Sundown — Lyra
-**Sunday 2026-09-06, 09:21 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
+**Sunday 2026-09-06, 11:40 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
 ## ★ DONE THIS MORNING (08:06–08:18)
@@ -30,6 +30,27 @@ Keeper audited Saturday's three papers (every number held; 2 MODERATE, minor sea
   turnover → "turnover OR background"; C-R1 Section 1a added; S11 rows split; human residual
   struck (ambient choice); bibliographies added (from memory, pin before external).
 - Record Section 39; board 09:20; queue line; counter → 5693; PDFs 09:17–09:18. Nothing committed.
+
+## ★ 11:19–11:40 — ROUND 120 (RH), L1–L4 ALL DELIVERED
+Context: K1863 — cone-zeta of D_IV⁵ = ζ_{ℤ⁵}/3840 (T2618), certified off-line zero (T2619), barrier
+lemma (any ζ→ζ_{ℤ⁵}-invariant RH argument is dead), alive route A1 = scattering sector on my
+April T1298/T1299. Memory file `project_rh_row_state_september_2026_*` has the full state.
+- **L1** (`Lyra_L1_scattering_*`, hash be29f1dc, 11:31, before computation): B₂ (3,1), ρ=(5/2,3/2),
+  no double roots; long roots ξ(λ₁∓λ₂)/ξ(+1); short roots ξ(2λ)/ξ(2λ+1)·Λ(λ)/[εΛ(λ+1)],
+  Λ = Γ_C(s+½)ζ(s+½)ζ(s−½)(1−2^{½−s}), ε=2^{½−s} (kernel x₃²+x₄²+x₅² anisotropic at 2,∞ → JL
+  Steinberg). 2-comb resonances at −½+2πik/ln2. No quadratic char from the kernel. **Level 137:
+  resonances = zeros of all 136 L(s,χ mod 137).** Toy 5700: 3/4, P1 half-miss owned (JL REGULAR
+  at ½, not simple). Corrections to my April rows: T1298 "double root"→long root; **T1299 r₂=Sym²
+  wrong for SO₇, should be ∧²=det, L(2s,ω_π)**; re-audit owed. E6 (Elie) tests the pole set.
+- **L2** (`Lyra_L2_the_swap_*`): convention collision pinned (long-root reflection swaps
+  e-coords/negates a polydisc coord; SHORT-root reflection swaps polydisc factors = d↔n/d).
+  Functional equation = long-root Weyl reflection = quarter-turn of the time circle in K. F988
+  Shilov-Z₂ bridge KILLED (it's a rotation by π). F1 closed stronger; F2 a fact (O(1,1) parity).
+- **L3** (`Lyra_L3_positivity_*`, toy 5701 3/3): NO — Hardy norm = Σ d(N)|c(N)|² diagonal; Weil
+  prime sum off-diagonal −Λ(N′/N)/√(N′/N); ζ→ζ_{ℤ⁵}-invariant. August trap named.
+- **L4** (`Lyra_L4_Casey_parity_*`, toy 5702): RH ⟺ L(x)=O(x^{½+ε}) (Landau 1899); BST reading
+  Identified; sieve control HIT: first L(x)>0 at 906,150,257 (Tanaka 1980), L=+1.
+- Toys 5700–5702; counter 5703. Board 11:35/11:38; queue line. Nothing committed.
 
 ## ★ NEXT — LANE A (Casey: "return to common work")
 1. BST Paper 1 v0.3 with Grace's n=25 row; do NOT print gate/direct split (5672 died 200/1171).
