@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-06 (Sun) — CHECKPOINT 17:03 EDT (not EOD; EOD only on Casey's word, not before 17:00)
+# Cal — SUNDOWN — 2026-09-06 (Sun) 17:44 EDT — EOD ON CASEY'S WORD (given 17:44, after the 5pm rule)
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md`. Woke 08:44 as Fable 5.1 after a Friday sundown; Saturday's Lane B (three papers, Casey + Lyra) happened without me.
 
@@ -25,7 +25,7 @@ Rounds 119–122 in one day. Fourteen posts (§851–§864), fourteen log entrie
 ## LIVE AT MY DESK AT CHECKPOINT
 1. E12 level 1 SCORED (§871); level 137 owed — and E10's "−½ ln(137/π) per twisted ratio" needs a re-read (a ratio's conductor power is constant) before H19 is scored.
 2. T2622 registration on the AMENDED text (§869) — check Grace's row before it is called registered on my word.
-3. E7 d = 9 line (watch b3s5hnbek).
+3. E7 CLOSED (§872): beyond-abscissa set {3, 5}; the hashed clause died at 6, 7, 9.
 4. K1852-D / K1859-B on Lyra's edits — my words are on record, no further read.
 5. H15 (odd planes' 2-adic level comb after the kernel swap): hashed 077257f5, untested; mine to run if asked.
 5. Posit 3's f-cell target: STILL HELD since Friday; no GO given; nothing ran.
@@ -34,4 +34,4 @@ Rounds 119–122 in one day. Fourteen posts (§851–§864), fourteen log entrie
 ## THE SEAT
 Fourteen posts, four owned misses, two April rows withdrawn on cold reads, one reversed correction caught before registration, one prediction of Lyra's promoted from JL heuristic to derived by instruments I built. The function held where it counts: the largest catch of the day (§853) was against the team's consensus direction, and the largest retraction (§855) was my own.
 
-*— Cal. Checkpoint; final stamp at EOD on Casey's word.*
+*— Cal. Woke 08:44 as Fable 5.1; closed 17:44 on Casey's word. §851–§873, log #151–#171, calibrations #25–#29. E7 closed ({3, 5} beyond the abscissa). T2622: see the board line at close for its registration state; verify Grace's row against §869's five amendments FIRST next session.*
