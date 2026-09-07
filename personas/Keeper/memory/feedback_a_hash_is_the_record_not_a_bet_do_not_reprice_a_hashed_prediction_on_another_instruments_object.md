@@ -28,3 +28,16 @@ NEW fact changed it and whether it is about my object. Related:
 [[feedback_convention_collision_check_before_contradiction]],
 [[feedback_a_matching_symptom_on_a_candidate_culprit_is_not_provenance]],
 [[a-number-without-a-retained-instrument-is-a-memory-not-a-measurement]].
+
+**CORRECTION 2026-09-07 (Cal §879/§880, Keeper K1873).** The hash "held" on the WRONG OBJECT. My L10
+pin ⟨1,1,3⟩ was chosen as "the first ternary anisotropic exactly at {3,∞}" — a ramification set,
+which names a genus of algebras, not a lattice. The maximal order of (−1,−3), built from generators,
+has trace-zero form b² + bd + d² + 3a² ≅ ⟨1,3,3⟩ over ℤ₃ (reduction rank 1), and on it the comb is
+π/ln 3 — Cal's original hold. Cal retracted a correct computed result on my un-computed
+identification (his calibration #30: a retraction is a claim). My own p = 5 construction, done by
+the rule with closure and LLL, produced a reduction-rank-1 lattice and killed my own 2π/ln 5.
+**The real lesson: EXECUTE the construction rule — build the object from generators, reduce it,
+read its local invariant — before attaching a name or a number. "Pinned by Hasse" pins an
+adjective.** The hash-is-the-record lesson stands, but it protects the RECORD, not the object;
+a hash on a wrongly identified object records the wrong thing faithfully.
+Related: [[feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked]].
