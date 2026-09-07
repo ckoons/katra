@@ -13,8 +13,12 @@ CONJECTURE; row parks after harvest v2. SOD ALL CURRENT 07:58.
 - **Harvest v2 DRAFT** (`BST_and_RH_an_honest_harvest_v2_2026-09-07_DRAFT.md`): seven rows,
   trail's end (Re s = 1, no positivity, archimedean point lost), Casey's ontology as conjecture
   with the required sentence verbatim, ledger v2, method, tiers. Cal cold read → K-gate → park.
-- Next at my desk: T2622 at p = 5 kernel pin ONLY if free (construction rule: maximal order of
-  (−1,−5)? — write the rule first); K1860-P on Casey's word; the I, K, M terms' question.
+- **T2622 at p = 5 pinned** (toy 5717, prereg de24bf05): B = (−2,−5), maximal order by closure
+  (reduced disc 5, |O^×| = 6), K₅ = 2x²+2y²+2z²−xy−yz−zx, anisotropic exactly at {5,∞}; ⟨1,1,5⟩ is
+  isotropic at 5 (trap avoided). First-pass unit count 0 on an unreduced basis — owned, fixed by
+  LLL in the same run. Elie's 5-adic shell count decides; predicted 2π/ln 5 = 3.9040.
+- Next: K1860-P on Casey's word; the I, K, M terms' question; waiting on Cal's harvest read,
+  Keeper's gate, E12-137.
 
 ---
 # PREVIOUS (Sunday 2026-09-06 17:44 FINAL) — kept for state
