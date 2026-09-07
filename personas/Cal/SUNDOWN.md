@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 08:07 EDT (not EOD; EOD only on Casey's word, not before 17:00)
+# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 08:44 EDT (not EOD; EOD only on Casey's word, not before 17:00)
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (yesterday's, 09-06, is the dense one: Rounds 119–124, §851–§873, calibrations #25–#29).
 
@@ -10,8 +10,11 @@ Round 125 (the wake round). All four of my items filed by 08:07, one bonus:
 - **§877** E12 at level 137 (Elie 5716): H21–H24 ALL HELD — ln 2 unchanged per block; ln 137 negative from the FE-normalisation conductor power, not the ξ-ratios (5714); no ln π; N_max as its own conductor logarithm, 35:1 over ln 2 in the constant sector. Notes: both constants are normalisation units; the level-137 NUMBER is owed; refuse 91,528 = 136·673.
 - **§878** Harvest v2 COLD READ (blind 27dae113): PASS TO v2.1 WITH SEVEN FIXES — T2616 promoted by adjective ("DERIVED, classical"; registry says CLASSICAL); §3 is a PICTURE, not a conjecture (no object; keep the verbatim border sentence, name the three objects that would make it one); T1262 and T1408 missing from the retraction ledger; Jacquet–Shalika owed beside Lax–Phillips; "level 137 in hand" → constant sector only; "fingerprint" needs its two clauses; T2621's ceiling in its row. Blind score Q2/Q3/Q4 fired, Q1 half, Q5/Q7 pass.
 
+- **§879–§882 (Round 126): T2622 WAS WRONG AS REGISTERED, AND SO WAS MY §868 RETRACTION.** I built the maximal order of (−1,−3) from generators: its trace-zero form is b² + bd + d² + 3a² ≅ ⟨1,3,3⟩ (my Sunday lattice), NOT ⟨1,1,3⟩ (Lyra's pin, never constructed by anyone). Criterion (§880, a theorem for all odd p): the rule's kernel has reduction rank 1 mod p ⇒ P₁ = (p²−1)/(p³−1) ⇒ B = p² ⇒ the partner survives ⇒ comb at π/ln p; Steinberg's 2π/ln p needs reduction rank 2 (disc p), which the rule never produces; p = 2 is T2621's odd-plane case. Lyra's correctly built K₅ at 5 (P₁ = 6/31) gives π/ln 5 on my second instrument (0961f9d3) and on Elie's 5717 — her 2π/ln 5 died on her own object. Calibration #28's example inverted and rewritten; #30 added: a retraction is a claim — never retract a computed result on an identification you have not computed. C17 word GIVEN on §880's text (seven clauses, §882). C19 hashed 5ca6d1b4: E14 as specified cannot succeed (Dirichlet L-functions only in the minimal-parabolic term); the newform zeros are poles of the Siegel-parabolic series induced from f.
+
 ## LIVE AT MY DESK
-1. Harvest v2.1 (Lyra) → verify FIX 1–3 by grep (T2616 tier word; §3 title; T1262/T1408 rows) → Keeper's gate → the row parks.
+0. Lyra's L11 v2 text → verify against §880's clauses (i)–(vii) BEFORE Grace registers; any deviation returns to me.
+1. Harvest v2.1 (Lyra) → verify FIX 1–3 and FIX 8 (the π/ln p correction in §0, the a_e paragraph, §5) by grep (T2616 tier word; §3 title; T1262/T1408 rows) → Keeper's gate → the row parks.
 2. K1860-P (substrate lane) on Casey's word — read with §857's three catches in hand (Result 4 definitional; the parity twist is not there; erasure overstated).
 3. Casey's word on the complexity papers' external copy — my external-copy read then (the three papers stand at v0.2 internal; §851's fixes applied 09-06).
 4. Posit 3's f-cell target: STILL HELD since Friday 09-04; no GO.
@@ -19,9 +22,9 @@ Round 125 (the wake round). All four of my items filed by 08:07, one bonus:
 6. The level-137 Eisenstein NUMBER (functional parts, σ ≠ 1 sector) and T2622 at p = 5 — only if they cost nothing; E12-137's re-read of E10 P3 is done (§871/§877: the per-ratio −½ ln(137/π) was never a coefficient).
 
 ## OWNED TODAY
-§875 (T1445 vs T1244 as ζ(3)'s source). Nothing else yet — today's four holds all held or concurred; yesterday's seven owned misses are in the sunrise as #25–#29.
+§879: the WRONG RETRACTION of §868 (conceded a correct hashed hold on an identification nobody had computed) — calibration #30. §875: T1445 vs T1244 as ζ(3)'s source. Nothing else yet — today's four holds all held or concurred; yesterday's seven owned misses are in the sunrise as #25–#29.
 
 ## THE SEAT
-Wake round: four cold items, one instrument run, one theorem-row amendment, one closing document sent back with the tier promotion that the rubric exists to catch. The referee's sentence for the harvest: the claims got smaller, the objects got real, and one adjective tried to grow back.
+Wake round: four cold items, one instrument run, one closing document sent back with the tier promotion the rubric exists to catch — and then the seat's own failure mode caught in the mirror: a registered theorem was wrong because nobody executed its construction rule, my Sunday retraction had conceded the right answer to the wrong lattice, and the fix was to build the order from its generators before anyone attached a name. Two instruments now agree at two primes; the comb reads the lattice's reduction rank, not the prime. The referee's sentence for the harvest: the claims got smaller, the objects got real, and one adjective tried to grow back.
 
 *— Cal. Checkpoint; final stamp at EOD on Casey's word.*
