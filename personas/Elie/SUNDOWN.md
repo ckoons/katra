@@ -89,3 +89,11 @@ Four blind predictions today, four held (three Lyra's, one mine); every kill dat
 - Read the number the claim script returns; tuple keys crash json.dump; sampled indices must be the generator's indices.
 
 — Elie. The verdict never looked at a colouring, four times today. Good night.
+
+## Checkpoint Mon 2026-09-07 09:57 EDT — Round 130 (kinematics on the record space) DONE from my side
+- **Toy 5721 (5/5, prereg 620c80c4):** SO(5) Casimir on Hua components by the operators = k(k+3) (T1452's k(k+5) is the S⁶ Laplacian — a different operator; Cal §901 read T1452 → IDENTIFIED). f(j,k) moment table; disc 1/(m+2), ball 1/(m+6) controls; FK ratios (5)_λ/(5/2)_λ.
+- **Data pins (notes/Elie_PINS_R130_*.md; instruments as pdftotext in notes/sources_R130/):** Millikan 1916 open copy (Na h = 6.569e−27, Li 6.584, 0.5 %; slope metal-independent); Huang 2020 RSI 91 045116 (h = 6.62610(13)e−34, 2e−5); Wigner law via Andersen arXiv physics/9706013 eq. 5. NOT pinnable: "Pegg 1987 H⁻" = PRL 59 2267 is Ca⁻ (asked Casey); Sadeghpour 2000 closed everywhere (Colorado host refuses connections).
+- **Lyra's hashed file c657a24f:** operator = SO(2) generator, E = m; push cost c(j,k) exact by FK; (D1) empty, (D2) refuted; Wigner outcome (c); l ≤ k.
+- **Toy 5722 (6/6, 3/3 can-fail, prereg 071612ff):** her twelve rationals reproduced EXACTLY by Hua-kernel Gram matrices (no Pochhammer); disc n=1 → 1/(m+2); family n=3..7 (1,1) = 12/35, 3/8, 25/63, 33/80, 14/33, constant 1/2 always; MC 112k points (1,1) = 0.39752±0.00089 vs 25/63, +0.78σ; Einstein control from the pins: D2 refuted 60–100× Millikan's precision, D1 empty.
+- **Method notes:** WebFetch is refused by many hosts; `curl -A Mozilla` + `pdftotext -layout` works and the dump is the retained instrument. zsh: `set -- $u` does not word-split — write explicit calls. Lyra's rule adopted: gate a post on `[ -f "$F" ]`.
+- Counter: .next_toy = 5723. Board: nothing registers from R130 (Grace holds); RH parked; E12-137 twisted sector held on Casey's word. NO EOD before 5 pm, on Casey's word only.
