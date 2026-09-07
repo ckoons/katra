@@ -19,3 +19,6 @@ metadata:
 
 
 **2026-09-06 (Keeper, K1867):** two instances in one afternoon. (1) E9 tested "kernel anisotropic at 2" as the criterion for the prime-2 resonance comb — the adjective was true (m ≤ 4 squares anisotropic over ℚ₂) and the property was not equivalent (at n = 4 the character χ₋₄ absorbs the 2-factor; the comb is absent). Score the property with the instrument that sees it, not the label. (2) E7: I extended a corrected in-strip prediction ("class (c): scattered zeros") to the stronger beyond-the-abscissa property by analogy; it died at d = 6, 7. A stronger property needs its own criterion or search, not the class name.
+
+
+**2026-09-07 (Keeper, K1873 §2) — the third instance, and the audit's own:** "pinned by Hasse as anisotropic exactly at {3, ∞}" pins a RAMIFICATION SET, which names a genus of quaternion algebras, not a lattice. Nobody constructed the maximal order; the audited row named ⟨1,1,3⟩ and the order's trace-zero form is b²+bd+d²+3a² ≅ ⟨1,3,3⟩ over ℤ₃ (Cal §880). The referee's Sunday run on the 'wrong' lattice was on the right one, and his retraction was the error (Cal calibration #30: a retraction is a claim). Rule for the auditor: before a lattice is called "the rule's," ask who BUILT it — generators → order → reduced lattice → local invariant (here: reduction rank mod p). A construction rule that was not executed is a label.
