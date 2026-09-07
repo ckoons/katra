@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 08:46 EDT (not EOD; EOD only on Casey's word, not before 17:00)
+# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 09:03 EDT (not EOD; EOD only on Casey's word, not before 17:00)
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (yesterday's, 09-06, is the dense one: Rounds 119–124, §851–§873, calibrations #25–#29).
 
@@ -12,9 +12,11 @@ Round 125 (the wake round). All four of my items filed by 08:07, one bonus:
 
 - **§879–§882 (Round 126): T2622 WAS WRONG AS REGISTERED, AND SO WAS MY §868 RETRACTION.** I built the maximal order of (−1,−3) from generators: its trace-zero form is b² + bd + d² + 3a² ≅ ⟨1,3,3⟩ (my Sunday lattice), NOT ⟨1,1,3⟩ (Lyra's pin, never constructed by anyone). Criterion (§880, a theorem for all odd p): the rule's kernel has reduction rank 1 mod p ⇒ P₁ = (p²−1)/(p³−1) ⇒ B = p² ⇒ the partner survives ⇒ comb at π/ln p; Steinberg's 2π/ln p needs reduction rank 2 (disc p), which the rule never produces; p = 2 is T2621's odd-plane case. Lyra's correctly built K₅ at 5 (P₁ = 6/31) gives π/ln 5 on my second instrument (0961f9d3) and on Elie's 5717 — her 2π/ln 5 died on her own object. Calibration #28's example inverted and rewritten; #30 added: a retraction is a claim — never retract a computed result on an identification you have not computed. C17 word GIVEN on §880's text (seven clauses, §882). C19 hashed 5ca6d1b4: E14 as specified cannot succeed (Dirichlet L-functions only in the minimal-parabolic term); the newform zeros are poles of the Siegel-parabolic series induced from f.
 
+- **§884–§888 (Rounds 126–127):** E14 scored (H34 held at the instrument's floor; Elie self-caught an empty confirmation); t₁ = 2.20762 PINNED against LMFDB's lowest zero 2.2076157231… for 137.2.a.a; harvest v2.1 PASS to the gate (all eight fixes carried; one required: §6's stale tier row; toy 5717 double-claimed by Lyra and Elie); T2622 v2 text passes the seven-clause check — WORD GIVEN with the retraction trail inside the row; K1875 word given (b₀ = 7 = g is a two-input identification; the n_f = 5 window below m_t may mean the 7 never governed the corpus's own running).
+
 ## LIVE AT MY DESK
-0. Lyra's L11 v2 text → verify against §880's clauses (i)–(vii) BEFORE Grace registers; any deviation returns to me.
-1. Harvest v2.1 (Lyra) → verify FIX 1–3 and FIX 8 (the π/ln p correction in §0, the a_e paragraph, §5) by grep (T2616 tier word; §3 title; T1262/T1408 rows) → Keeper's gate → the row parks.
+0. T2622 v2: Grace's registered row → one grep for the trail clause and the surviving toy id after Keeper's 5717 ruling.
+1. Harvest v2.1: Keeper's gate G1–G5 after Lyra's §6 line; the row then PARKS — verify the parked ledger sentence (T2616 tier word; §3 title; T1262/T1408 rows) → Keeper's gate → the row parks.
 2. K1860-P (substrate lane) on Casey's word — read with §857's three catches in hand (Result 4 definitional; the parity twist is not there; erasure overstated).
 3. Casey's word on the complexity papers' external copy — my external-copy read then (the three papers stand at v0.2 internal; §851's fixes applied 09-06).
 4. Posit 3's f-cell target: STILL HELD since Friday 09-04; no GO.
