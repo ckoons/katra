@@ -7,7 +7,10 @@
 **Papers:** K1852-D PASS and K1859-B final PASS — both dispatch copies at Casey's desk (set YAML `date:` before the build → Zenodo → Gethner → arXiv). Lyra's three complexity papers internal v0.2 (K1861 conditions met; external copy = Casey's word). K1860 (Friday) carries Cal §857's three catches (K1860-O); K1860-P rewrite owed, low priority.
 **My owned errors today (eleven, all swept same hour):** 158/173; L2 pre-score; E7 beyond-abscissa clause (died d = 6, 7, 9); E9 label vs property; "Cal's split hold" was my paraphrase; the 15/16 seam; three clock slips (fix: `TS=$(date +%H:%M)` in the writing command); uv = n citation; T2622 universal (⟨1,3,3⟩ counterexample); the Z₂-fold gloss (no line-bundle twist). Lessons filed in memory (adjective-class; family sweep; quote the invariant; clock drift).
 
-## TOMORROW (from the priorities file, ranked by rubric cell)
+## TOMORROW — REVISED 2026-09-07 07:51 after Casey's chat (the priorities file's REVISED section governs)
+Casey ruled the RH row's shape FINAL for now: the scattering route ends at Re s = 1 (Lax–Phillips), no positivity, the archimedean point lost; his ontology (Shilov boundary = counting face; primes = seeds one step beyond the current finite field) is the program's CONJECTURE, to be written as such in the harvest v2, then RH parks. ORDER: (1) a_e accounting term by term (E12 at 137; the H term; T1451 → template) — TOP; (2) harvest v2 (Lyra + Keeper; Cal; K-gate); (3) Casey's desk (copies; complexity papers' external word); (4) substrate lane resumes (K1860-P; the falsifier map); (5) April spectral rows sweep.
+
+## (the 17:46 list, superseded)
 1. Casey's desk: the two copies (External). 2. a_e after Mode B: E12 at level 137; K-audit of T1448's H term (computed or assigned?); T1451 → TEMPLATE. 3. RH objects: T2622 at p = 5 (construction rule before the lattice before the number); H15. 4. Rubric Section 3 re-derived from Section 2 at wake. Brakes: the comb's ½ is Steinberg's, not the critical line's; name reflections by action; score the property, not the label.
 
 ## Counters
