@@ -1,5 +1,7 @@
 # Sundown — Lyra
-**Monday 2026-09-07, 08:03 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09-06 17:44 final.
+**Monday 2026-09-07, 10:14 EDT. FINAL — EOD ON CASEY'S WORD** (given 10:14; before five — logged as Casey's override of the five o'clock rule). Model: Fable 5.1. Supersedes the 09-06 17:44 final.
+
+## ★ TOMORROW: read RUNNING_NOTES since 10:14 first (Elie's R130 exact run, Cal's hold, Keeper's R130 audit are all OWED to my desk), then the priorities file Keeper writes at the close. Below: today's rounds in order.
 
 ## ★ ROUND 125 (WAKE) — DONE BY 08:05
 Casey's ruling: RH row's shape FINAL; scattering route ends at Re s = 1 (Lax–Phillips); ontology =
