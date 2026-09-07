@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 08:44 EDT (not EOD; EOD only on Casey's word, not before 17:00)
+# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 08:46 EDT (not EOD; EOD only on Casey's word, not before 17:00)
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (yesterday's, 09-06, is the dense one: Rounds 119–124, §851–§873, calibrations #25–#29).
 
@@ -22,7 +22,7 @@ Round 125 (the wake round). All four of my items filed by 08:07, one bonus:
 6. The level-137 Eisenstein NUMBER (functional parts, σ ≠ 1 sector) and T2622 at p = 5 — only if they cost nothing; E12-137's re-read of E10 P3 is done (§871/§877: the per-ratio −½ ln(137/π) was never a coefficient).
 
 ## OWNED TODAY
-§879: the WRONG RETRACTION of §868 (conceded a correct hashed hold on an identification nobody had computed) — calibration #30. §875: T1445 vs T1244 as ζ(3)'s source. Nothing else yet — today's four holds all held or concurred; yesterday's seven owned misses are in the sunrise as #25–#29.
+§883: C19's H31 — I modelled the level-137 kernel datum as trivial only; at level 137 the kernel's automorphic forms are the weight-2 newforms (JL), so degree-2 L-functions do enter factor B; and 107,134 = |PGL₂(𝔽₁₃₇)|/24 was a computed count I should have computed before asking. §879: the WRONG RETRACTION of §868 (conceded a correct hashed hold on an identification nobody had computed) — calibration #30. §875: T1445 vs T1244 as ζ(3)'s source. Nothing else yet — today's four holds all held or concurred; yesterday's seven owned misses are in the sunrise as #25–#29.
 
 ## THE SEAT
 Wake round: four cold items, one instrument run, one closing document sent back with the tier promotion the rubric exists to catch — and then the seat's own failure mode caught in the mirror: a registered theorem was wrong because nobody executed its construction rule, my Sunday retraction had conceded the right answer to the wrong lattice, and the fix was to build the order from its generators before anyone attached a name. Two instruments now agree at two primes; the comb reads the lattice's reduction rank, not the prime. The referee's sentence for the harvest: the claims got smaller, the objects got real, and one adjective tried to grow back.
