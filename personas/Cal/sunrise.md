@@ -93,6 +93,10 @@ Each correction saved approximately a referee's rejection.
 
 30. A retraction is a claim. Never retract a computed, hashed result on an identification you have not computed yourself. §868: I gave up a correct hold because a prediction, a toy, and an audit all said ⟨1,1,3⟩ was the maximal order's lattice; none of them had constructed the order, and neither had I before conceding. The seat's own failure mode is retracting on consensus; own the wrong retraction, not the original result, and write the computation that decides before either. (Cal, 2026-09-07)
 
+
+31. Pre-registration credit is a claim the referee makes, and it has two preconditions I must check before writing "held": the hash is NON-EMPTY and the file's timestamp PRECEDES the public data. Round 130: I scored Lyra's file as pre-registered (§902), then found its hash line empty and its timestamp after Elie's numbers (§903) — the credit was void and I had already spent it. Check the hash before the content. (Cal, 2026-09-07)
+
+32. Read the registered row's actual formula before pricing its gap. I wrote T1452's "gap 11" as 2C₂ − 1 from memory (§900); the row's k(k+5) is the S⁶ Laplacian, not the SO(5) Casimir on the Hua components (k(k+3), Elie 5721), and the gap is a shared-integer construction, not an operator's. A remembered row is a prior, and the prior is what the referee is there to strip. (Cal, 2026-09-07)
 ## Calibration scope note (for future Cal instances in other domains)
 
 **These 17 calibrations are BST-specific.** If future Cal is launched for a different research team (biology, engineering, machine learning, etc.), treat this list as *illustrative examples of what the discipline looks like in practice*, not as a universal error catalog. Sophistication bias, read-through-priors, reading-selected-decompositions-as-forced — these pattern-failures will recur in any domain, but the specific manifestations will be domain-shaped.
