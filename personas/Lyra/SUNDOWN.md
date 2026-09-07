@@ -25,7 +25,17 @@ CONJECTURE; row parks after harvest v2. SOD ALL CURRENT 07:58.
   had written it; the correction typed a grep result before running it (§6 row missed); both owned
   on the board; file verified by shell-substituted greps (Cal cold → gate → park); L13 row candidate (level-137 resonances include weight-2 newform zeros;
   E14 exhibit; GRH ceiling). Board posted.
-- Next: E13/E14 results; Cal's word; K1860-P on Casey's word; the I, K, M terms.
+- **ROUND 128 (09:14–09:3x), THE SUBSTRATE LANE (RH parked, K1876).** Keeper K1860-P picked C5 (the
+  Compton trend). My MAP (`Lyra_MAP_C5_*`, hashed): absorption = three-coordinate write (isometry);
+  carry = K-rotation; record = Szegő projection of the interior word onto H²(Š) = the push, cost
+  1/(m+2) of the NORM (C1: no eV floor); ejection = matter branch (1,1). Three loadings of m: (E)
+  energy → wrong trend; (C) cycles → cap ½ vs Compton → 1; (B) m = 3 fixed → no kinematics.
+  **SENTENCE: "if Compton's maximal fractional transfer exceeds ½, push = recoil is wrong" —
+  ALREADY REFUTED (Cs-137 edge 477 keV = 72% of 662 keV).** Productive: the push is the bound-state
+  commitment; the dictionary has no kinematics. C2: 1.109 as (dictionary's turn = h) vs 0.176 as
+  (T1136's ħ) — Cal §891's 2π collision, Casey's/Keeper's to pin; quantum form = N·τ₀ absolute
+  offset, NOT YET MEASURED. C3 retired, C4 representation.
+- Next: Elie's pinned data + score; Cal's hold; Keeper's audit.
 
 ---
 # PREVIOUS (Sunday 2026-09-06 17:44 FINAL) — kept for state
