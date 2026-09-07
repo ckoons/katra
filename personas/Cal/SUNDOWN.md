@@ -1,37 +1,27 @@
-# Cal — SUNDOWN — 2026-09-06 (Sun) 17:44 EDT — EOD ON CASEY'S WORD (given 17:44, after the 5pm rule)
+# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 08:07 EDT (not EOD; EOD only on Casey's word, not before 17:00)
 
-**Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md`. Woke 08:44 as Fable 5.1 after a Friday sundown; Saturday's Lane B (three papers, Casey + Lyra) happened without me.
+**Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (yesterday's, 09-06, is the dense one: Rounds 119–124, §851–§873, calibrations #25–#29).
 
 ## WHERE I STOPPED
-Rounds 119–122 in one day. Fourteen posts (§851–§864), fourteen log entries (#151–#164), fifteen retained instruments in `notes/cal_instruments/` with OUTPUT files, every one committed and pushed at its post. Two watches armed at close: E7 d = 9 (toy 5703) and new team posts.
+Round 125 (the wake round). All four of my items filed by 08:07, one bonus:
+- **§874** T2622's registered row VERIFIED against §869's five amendments (all in as hypotheses; ⟨1,3,3⟩ named as the witness) — my word on it is now true as written. Blind holds hashed 9e688fcc (E12-137 shape; the H term) and 27dae113 (harvest v2 pre-questions).
+- **§875** The H term of T1448 scored blind and K1872 read independently from T1448's own text: CONCUR (IDENTIFIED annotation of Petermann–Sommerfield; H is an assignment) with three additions — iterate sums decay geometrically, never as Σ n⁻³; "det(𝔞) = rank²" is not an object; "197 = 137 + 60, total content of H₅" is not a function on ℚ and "n_C from the lowest K-type" is false (dim 1). Word given for Grace's sweep. Owned: ζ(3)'s immediate source is T1445, not T1244.
+- **§876** H15 RUN (twenty minutes): with the swapped kernel ⟨1,1,3⟩ the odd planes keep the odd-k 2-adic LEVEL comb — c₂/GK_split = (1 + 2^{½−λ})/(1 + 2^{−½−λ}) exactly (§861's n = 3 factor). T2622 amendment worded: the kernel comb leaves with the kernel, the planes' level comb stays; each owns half the 2-adic comb set. Elie 5715b refuted the H term by exhibit (lengths 2 log(137²k ± 1)); his trace-list slip self-corrected from the out-file.
+- **§877** E12 at level 137 (Elie 5716): H21–H24 ALL HELD — ln 2 unchanged per block; ln 137 negative from the FE-normalisation conductor power, not the ξ-ratios (5714); no ln π; N_max as its own conductor logarithm, 35:1 over ln 2 in the constant sector. Notes: both constants are normalisation units; the level-137 NUMBER is owed; refuse 91,528 = 136·673.
+- **§878** Harvest v2 COLD READ (blind 27dae113): PASS TO v2.1 WITH SEVEN FIXES — T2616 promoted by adjective ("DERIVED, classical"; registry says CLASSICAL); §3 is a PICTURE, not a conjecture (no object; keep the verbatim border sentence, name the three objects that would make it one); T1262 and T1408 missing from the retraction ledger; Jacquet–Shalika owed beside Lax–Phillips; "level 137 in hand" → constant sector only; "fingerprint" needs its two clauses; T2621's ceiling in its row. Blind score Q2/Q3/Q4 fired, Q1 half, Q5/Q7 pass.
 
-## THE DAY, IN THE ORDER IT HAPPENED
-- **§851 cold read of the three Saturday papers** (blind pre-questions first): all PASS-to-v0.2; retention Thm 9's zero-shift clause FALSE as printed; meiotic Section 5 is Fisher's junctions under Fisher's noun; "catalysis destroys record" a baseline artefact; no BST smuggling. Lyra fixed 18 items by 09:20; one of my fixes ("print one decimal") became a tautology in her hands (§852 sweep) → K1861-A.
-- **§852 C1–C2:** conventions pinned on the certified DH zero with a from-scratch instrument; "off-line" has two meanings and E7 died at d = 4, 8 under the wrong one — pinned before the hash; the barrier lemma as a CONSTRAINT row (DH 1936 is the stronger oracle; ℤ⁵ adds only positivity) → T2620 registered with my wording.
-- **§853 THE T1299 CATCH:** Lyra's ∧² "correction" was reversed — Langlands–Shahidi lives on the DUAL group; Sp₆'s Siegel corner is Sym²; the real error was r₁ = std^{⊕3}. Adjudicated my way in K1866; T1299 v3 registered on my word.
-- **§854–§855 THE INSTRUMENT AND THE OWNED MISS:** the 2-adic rank-one intertwining integral over the kernel, two exact positive controls (split ternary = GK factor by factor; n = 3 = PGL₂). On the EVEN model it gave a comb at π/ln 2 against Lyra's 2π/ln 2; I posted the disagreement with the lattice caveat first; then ran the corpus's ODD lattice: her factor EXACTLY. Calibration #26. §857: the ∞-factor is Harish-Chandra's Γ(λ)/Γ(λ+3/2) = her JL form. **L1's constant term is derived at every place by three non-JL instruments → T2621 registered on my word with my clauses.**
-- **§858** K1865 scored the split formula as "Cal's hold, killed" — corrected on the record (my hold ⊂ L1; nothing killed; my loss is §855).
-- **§859 T1262 WITHDRAW** (wrong group Sp(6)/SO(5,2); std^{⊕3} triple; Maass–Selberg identity refuted verbatim by T2620; 0/7 constraints). **§860 T1408 WITHDRAW** (toy 1392 = integer-equality tests; bound deduced from withdrawn T1299 on the 7-dim SO₇ trace; p = 137 ramified; "quasi-split" false). Both applied by Grace.
-- **§861 E9 BY THE INSTRUMENT:** odd lattice family — comb at n = 3 (LEVEL-type, no kernel: my H6 wrong, owned), NONE at n = 4 (Keeper's rule wrong), n = 5 L1's, n = 6 on Re λ = −1; n ≥ 7 not established (series did not close for isotropic kernels).
-- **§862 R122:** E7's beyond-abscissa half — the hashed clause died at d = 6, 7 (I had hashed nothing there; comparability is the mechanism); C7 confirmed; C9 hashed (0d1e9599: two ln 2 sources, one coefficient); L9 pre-scored (c97c7a1c).
-- **§863 E5:** sources unreachable; Gram entries computed from scratch via the trigamma tail, control exact to 30 digits; constant 0.04619 pinned — my remembered 0.0231 was wrong, the board right.
-- **§865–§868 (Round 123):** C11 held blind with my own 3-adic instrument (π/ln 3 on ⟨1,3,3⟩) — DEAD on Lyra's maximal-order kernel ⟨1,1,3⟩ by Elie's direct integral (2π/ln 3); owned, calibration #28; banked: the comb reads the ℤ_p-lattice class of the kernel at odd p too, and the corpus construction lands on Steinberg. C9 scored: per-unit held, total wrong (three ψ(½) units); ln 137 and ∫h = π⁴/2 held. Paper 2 dispatch copy PASS → K1859-B; Paper 1 dispatch NOT cleared on four body ids (B4), word given conditionally; 5708 = 5666 on the 1,171.
-- **§869–§870 (Round 124):** T2622 word given with five amendments (the construction clause is a HYPOTHESIS — my ⟨1,3,3⟩ run is the counterexample to the row as phrased; "hyperbolic planes" wrong at p = 2; DERIVED at p = 2, 3, predicted otherwise; H15 unresolved; ε constants are normalisation). C14 hashed 58e1e353 on E12's shape. E5: Elie's independent instrument reproduced my Gram entries; ratio 1.008 at N = 120 from ABOVE — my "shortfall" was wrong in direction against Burnol's bound, owned.
-- **§856 / §864 papers:** Paper 2 v0.3 PASS-to-dispatch with two unswept-correction fixes; Paper 1 v0.3 (n = 25) PASS with one heading fix ("falling" over a rising series).
+## LIVE AT MY DESK
+1. Harvest v2.1 (Lyra) → verify FIX 1–3 by grep (T2616 tier word; §3 title; T1262/T1408 rows) → Keeper's gate → the row parks.
+2. K1860-P (substrate lane) on Casey's word — read with §857's three catches in hand (Result 4 definitional; the parity twist is not there; erasure overstated).
+3. Casey's word on the complexity papers' external copy — my external-copy read then (the three papers stand at v0.2 internal; §851's fixes applied 09-06).
+4. Posit 3's f-cell target: STILL HELD since Friday 09-04; no GO.
+5. The katra memory-dir flag: yesterday's `katra update` ran against the LIVE store (447 files) because I passed the live path; the sunrise's stale path still needs Casey/Lyra's decision.
+6. The level-137 Eisenstein NUMBER (functional parts, σ ≠ 1 sector) and T2622 at p = 5 — only if they cost nothing; E12-137's re-read of E10 P3 is done (§871/§877: the per-ratio −½ ln(137/π) was never a coefficient).
 
 ## OWNED TODAY
-§871 (C14: ψ units and ln π were point-evaluation artefacts; calibration #29). §870 (E5 convergence direction against the bound's sign). §868 (the kernel lattice: ⟨1,3,3⟩ is not the corpus's ⟨1,1,3⟩; calibration #28). §866 (C9's total: three ψ units, not one). §855 (even model ≠ corpus lattice; calibration #26). §861 (no comb at n = 3 — the level mechanism I had not named). §863 (0.0231 from memory). §852's "print one decimal" without saying what the number meant. Sunrise carries #25–#29.
-
-## LIVE AT MY DESK AT CHECKPOINT
-1. E12 level 1 SCORED (§871); level 137 owed — and E10's "−½ ln(137/π) per twisted ratio" needs a re-read (a ratio's conductor power is constant) before H19 is scored.
-2. T2622 registration on the AMENDED text (§869) — check Grace's row before it is called registered on my word.
-3. E7 CLOSED (§872): beyond-abscissa set {3, 5}; the hashed clause died at 6, 7, 9.
-4. K1852-D / K1859-B on Lyra's edits — my words are on record, no further read.
-5. H15 (odd planes' 2-adic level comb after the kernel swap): hashed 077257f5, untested; mine to run if asked.
-5. Posit 3's f-cell target: STILL HELD since Friday; no GO given; nothing ran.
-6. The katra memory-dir flag (419 vs 435; stale --memory-dir): unresolved, Casey/Lyra's decision.
+§875 (T1445 vs T1244 as ζ(3)'s source). Nothing else yet — today's four holds all held or concurred; yesterday's seven owned misses are in the sunrise as #25–#29.
 
 ## THE SEAT
-Fourteen posts, four owned misses, two April rows withdrawn on cold reads, one reversed correction caught before registration, one prediction of Lyra's promoted from JL heuristic to derived by instruments I built. The function held where it counts: the largest catch of the day (§853) was against the team's consensus direction, and the largest retraction (§855) was my own.
+Wake round: four cold items, one instrument run, one theorem-row amendment, one closing document sent back with the tier promotion that the rubric exists to catch. The referee's sentence for the harvest: the claims got smaller, the objects got real, and one adjective tried to grow back.
 
-*— Cal. Woke 08:44 as Fable 5.1; closed 17:44 on Casey's word. §851–§873, log #151–#171, calibrations #25–#29. E7 closed ({3, 5} beyond the abscissa). T2622: see the board line at close for its registration state; verify Grace's row against §869's five amendments FIRST next session.*
+*— Cal. Checkpoint; final stamp at EOD on Casey's word.*
