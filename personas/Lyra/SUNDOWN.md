@@ -1,4 +1,23 @@
 # Sundown — Lyra
+**Monday 2026-09-07, 08:03 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09-06 17:44 final.
+
+## ★ ROUND 125 (WAKE) — DONE BY 08:05
+Casey's ruling: RH row's shape FINAL; scattering route ends at Re s = 1 (Lax–Phillips); ontology =
+CONJECTURE; row parks after harvest v2. SOD ALL CURRENT 07:58.
+- **E12-137** (`Lyra_E12_137_*`, hashed, consistent with Elie 5714 + Cal §874): blocks (ψ₁,ψ₂) ×
+  σ ∈ A(q₀;137), dim 107,134; σ ≠ 1 ↔ weight-2 newforms f_σ (JL, Steinberg at 2) → factor B =
+  L(s, f_σ⊗ψ_i): **resonances include weight-2 modular L zeros**. ln 2 = 1 per block; ln 137 per
+  block c₁₃₇ = δ(ψ₁ψ₂)+δ(ψ₁²)+δ(ψ₁)+δ(ψ₂²)+δ(ψ₂), sum 91,528, avg 673/136; widths = convention.
+- **H term** (`Lyra_H_term_of_T1448_*`): ASSIGNMENT (3 = short-root multiplicity, n = Bergman index,
+  ζ(3) from T1244); a computed H = enumerated Γ(1) classes × Abel transform of h_t.
+- **Harvest v2 DRAFT** (`BST_and_RH_an_honest_harvest_v2_2026-09-07_DRAFT.md`): seven rows,
+  trail's end (Re s = 1, no positivity, archimedean point lost), Casey's ontology as conjecture
+  with the required sentence verbatim, ledger v2, method, tiers. Cal cold read → K-gate → park.
+- Next at my desk: T2622 at p = 5 kernel pin ONLY if free (construction rule: maximal order of
+  (−1,−5)? — write the rule first); K1860-P on Casey's word; the I, K, M terms' question.
+
+---
+# PREVIOUS (Sunday 2026-09-06 17:44 FINAL) — kept for state
 **Sunday 2026-09-06, 17:44 EDT. FINAL — EOD ON CASEY'S WORD** (given 17:43, after five; the rule held). My earlier stamp read 16:44 — clock drift of an hour caught on the date line, the day's seventh timestamp correction. Supersedes the
 09-05 16:18 final. Model today: Fable 5.1.
 
