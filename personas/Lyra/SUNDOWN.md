@@ -45,6 +45,9 @@ CONJECTURE; row parks after harvest v2. SOD ALL CURRENT 07:58.
   Lie ball. Einstein control: (D1) W = 2 shell turns EMPTY pass; (D2) W = c·hν REFUTED (Millikan).
   Wigner: outcome (c), l ≤ k not l = k. First pass of my closed form gave NEGATIVE costs (missed the
   trace-form ½ per degree) — caught by the MC control before hashing.
+- **Post fault #4:** the R130 board post went out with an EMPTY hash because the file-writer died
+  (f-string brace in e^{imθ}) and the post was not gated on the artifact. File rewritten, hash
+  c657a24f, correction posted gated on `[ -f ]`; rule added to the hardcoded-verdict memory.
 - Next: Elie's exact run + pins; Cal's hold; Keeper's audit.
 
 ---
