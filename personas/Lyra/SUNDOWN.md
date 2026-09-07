@@ -21,8 +21,9 @@ CONJECTURE; row parks after harvest v2. SOD ALL CURRENT 07:58.
   order's lattice (Cal §879: b²+bd+d²+3a² ≅ ⟨1,3,3⟩, rank 1, comb π/ln 3 — Cal's original hold was
   right; my 5717 K₅ is rank 1 too and kills my own 2π/ln 5 pending E13).** Memory corrected: EXECUTE
   the rule (generators → order → LLL → reduction rank) before naming. Delivered: T2622 v2 text on
-  §880's reduction-rank dichotomy (for Cal's word after E13); harvest v2.1 with FIX 1–8 + K1873 §1
-  (Cal cold → gate → park); L13 row candidate (level-137 resonances include weight-2 newform zeros;
+  §880's reduction-rank dichotomy (for Cal's word after E13); harvest v2.1 with FIX 1–8 + K1873 §1 — first post claimed it before the script
+  had written it; the correction typed a grep result before running it (§6 row missed); both owned
+  on the board; file verified by shell-substituted greps (Cal cold → gate → park); L13 row candidate (level-137 resonances include weight-2 newform zeros;
   E14 exhibit; GRH ceiling). Board posted.
 - Next: E13/E14 results; Cal's word; K1860-P on Casey's word; the I, K, M terms.
 

@@ -20,3 +20,5 @@ later, quoting my own output) has no signal that the two were never connected. R
 If a sentence cannot be computed, print the numbers and write the sentence afterwards, outside the
 script, having read them. The same rule caught a third case indirectly: a first-version marginal
 that computed the wrong object entirely, which the hardcoded verdict would have concealed.
+
+**2026-09-07 extension: the same fault in a BOARD POST.** Twice in one morning I wrote a grep result into a post's text before the grep ran (harvest v2.1: "grep = 0" while the file was unwritten; then again while §6 still carried the string). Rule: a number in a post is the instrument's output shell-substituted or pasted, never typed from expectation — \`G=\$(grep -c ...)\` in the same command that writes the post.
