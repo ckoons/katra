@@ -1,4 +1,4 @@
-# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 09:24 EDT (not EOD; EOD only on Casey's word, not before 17:00)
+# Cal — SUNDOWN — 2026-09-07 (Mon) — CHECKPOINT 09:33 EDT (not EOD; EOD only on Casey's word, not before 17:00)
 
 **Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (yesterday's, 09-06, is the dense one: Rounds 119–124, §851–§873, calibrations #25–#29).
 
@@ -14,10 +14,12 @@ Round 125 (the wake round). All four of my items filed by 08:07, one bonus:
 
 - **§884–§888 (Rounds 126–127):** E14 scored (H34 held at the instrument's floor; Elie self-caught an empty confirmation); t₁ = 2.20762 PINNED against LMFDB's lowest zero 2.2076157231… for 137.2.a.a; harvest v2.1 PASS to the gate (all eight fixes carried; one required: §6's stale tier row; toy 5717 double-claimed by Lyra and Elie); T2622 v2 text passes the seven-clause check — WORD GIVEN with the retraction trail inside the row; K1875 word given (b₀ = 7 = g is a two-input identification; the n_f = 5 window below m_t may mean the 7 never governed the corpus's own running).
 
+- **§895:** K1877 ruled the 2π in T1136's favour (tick = a₀/c = α·t_au = 0.1765 as; Friday's "137 turns" was Keeper's radians-for-turns slip) — my §891 collision resolved; two words given: the T1136 wording (with the bare-137 vs measured-α clause, 2.6×10⁻⁴) and the negative row (push ≠ recoil, ALREADY REFUTED; the dictionary has no kinematics; 1/5 retired everywhere). C2's Y = N × 0.1765 as, NOT YET MEASURED (≲ 0.05 as), is Lyra's to hash.
 - **§889–§894 (Rounds 127–128):** two park seams flagged (v2.2 §6 tier row unfixed; T2622 v2 row without the trail clause). SUBSTRATE LANE: C1–C4 pre-scored blind (53cd34b3): C2's quantum form the only can-fail; C1 dies productively; C3 retire; C4 control — ALL HELD against Lyra's map and Elie's pins. §891: the tick's 2π collision (T1136's ħ → 0.176 as vs K1860-L's h → 1.109 as) — Casey's/Keeper's pin, still open. §892: K1860-P passes on my three catches; C5 pre-scored (scope / reparametrisation / withdrawn) — HELD; Lyra's map made it sharper (the cap ½ vs the Cs-137 edge 0.7214 → ALREADY REFUTED for push = recoil; the dictionary has NO kinematics → the lane narrows to timing and counts). §894: 1/(m+2) = 1/5 is the DISC's number — D_IV⁵ gives 0.3945 (Lebesgue) or 0.0786 (defining function); my own §891 "one fifth" struck; C1 as energy refuted by Bérut 2012; C2 quantum NOT YET MEASURED at ≲ 0.3 as.
 
 ## LIVE AT MY DESK
-0. The tick's 2π pin (h vs ħ) — Casey's/Keeper's; C2's Y cannot be hashed before it. Then: T2622 v2's trail clause in the registry row; v2.2 §6 tier row.
+0. Grace's two registrations on §895 (T1136 wording; the negative row) → one grep each; T2622 v2's trail clause; v2.2 §6 tier row.
+0b. Lyra's hashed C2 sentence (N × 0.1765 as) → score against §890/§893 when posted.
 1. Harvest v2.1: Keeper's gate G1–G5 after Lyra's §6 line; the row then PARKS — verify the parked ledger sentence (T2616 tier word; §3 title; T1262/T1408 rows) → Keeper's gate → the row parks.
 2. K1860-P (substrate lane) on Casey's word — read with §857's three catches in hand (Result 4 definitional; the parity twist is not there; erasure overstated).
 3. Casey's word on the complexity papers' external copy — my external-copy read then (the three papers stand at v0.2 internal; §851's fixes applied 09-06).
