@@ -35,7 +35,17 @@ CONJECTURE; row parks after harvest v2. SOD ALL CURRENT 07:58.
   commitment; the dictionary has no kinematics. C2: 1.109 as (dictionary's turn = h) vs 0.176 as
   (T1136's ħ) — Cal §891's 2π collision, Casey's/Keeper's to pin; quantum form = N·τ₀ absolute
   offset, NOT YET MEASURED. C3 retired, C4 representation.
-- Next: Elie's pinned data + score; Cal's hold; Keeper's audit.
+- **K1877 scored my C5 sentence: ALREADY REFUTED (Cs-137 edge 0.7214 > ½); the dictionary has no
+  kinematics — its falsifiers are timing or counts. 2π RULED: tick = a₀/c = 0.1766 as (T1136's ħ);
+  Friday's 137 turns was Keeper's slip.**
+- **ROUND 130 (09:40–10:0x) KINEMATICS ON THE RECORD SPACE** (`Lyra_R130_kinematics_*`, hashed):
+  operator = the time-circle GENERATOR (E = m); push cost EXACT on the Lie ball by Faraut–Korányi
+  Pochhammer norms (trace-form Fischer, ½ per degree): (1,1) = 25/63 = 0.3968 vs Elie's 0.394;
+  disc limit 1/(m+2) ✓; MC on the real Lie ball ✓ 4 digits; Hardy mean = 1 ✓; const cost ½ on every
+  Lie ball. Einstein control: (D1) W = 2 shell turns EMPTY pass; (D2) W = c·hν REFUTED (Millikan).
+  Wigner: outcome (c), l ≤ k not l = k. First pass of my closed form gave NEGATIVE costs (missed the
+  trace-form ½ per degree) — caught by the MC control before hashing.
+- Next: Elie's exact run + pins; Cal's hold; Keeper's audit.
 
 ---
 # PREVIOUS (Sunday 2026-09-06 17:44 FINAL) — kept for state
