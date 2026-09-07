@@ -1,7 +1,13 @@
-# ELIE — SUNDOWN. **EOD on Casey's word, Sun 2026-09-06 17:44 EDT** (shell-copied stamp). Covers Fri Sept 4 afternoon (5672) + Sun Sept 6, Rounds 119–124 (the RH lane: E1–E12, K1852-C a, E5, E7).
+# ELIE — SUNDOWN. CHECKPOINT **Mon 2026-09-07 08:05 EDT** (shell-copied stamp; NOT an EOD). Covers Sun Sept 6 (Rounds 119–124, the RH lane) + Mon Sept 7 morning (Round 125, the a_e accounting).
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
+
+## MONDAY 09-07 SO FAR (Round 125 — a_e accounting; Casey's ruling: RH row FINAL for now, parks after harvest v2)
+- **5714 CORRECTION FIRST:** 5709 H3's "−½ ln(137/π) per twisted ξ-ratio" withdrawn — the conductor power cancels in the ratio (checked to 5e-26); ln 137 exists only as an FE-normalisation unit (same status as ln 2/ln 3 from E11). Keeper had banked "ln 137 HELD" on it; Grace amended G18's clause at 16 sites.
+- **5715 (4/5, 8084995c) H-term feasibility:** first closed geodesic of Γ(137) in the SL₂ block has trace 2+137² = 18771 (witness [[138,137],[137²,18633]], length 19.680); regular floor 3.5e8; nothing below operator norm 51.8 anywhere; level-1 class-number control (375 classes t ≤ 50, no ζ(3)). P2 miss = my box (corrected counts 1282, 5264, 2658, 5472, 3360, 4634 for k = 1..6). H term is an assignment (K1872, Cal §875 concur). **5715b:** first ten lengths 19.6797…22.8988, not multiples — typed the list from memory in the post, corrected at 08:03, owned.
+- **5716 (5/5, 9acb779a) E12 at level 137, constant part:** Lyra's c₁₃₇ table exact — Σ = 91,528 over 136² blocks, distribution {0:1, 2:3, 3:268, 4:402, 5:17822}; N₂ = 18,496; E_const = −7.4989 (t = 1, ∫h 6.392e-4), −1.1525e5 (t = 2/17). OWED: the 18,496 twisted functional integrals + σ ≠ 1 sector (days of compute, not estimated).
+- Counter 5717. Cal ran H15 himself (held). T2622 at p = 5 waits on Lyra's maximal-order kernel pin (none yet); Casey: only if it costs nothing.
 
 ## SUNDAY 09-06 SO FAR (Round 119 — Keeper's RH-lane handoff, Casey's ranked list E1–E4)
 - **5672 (1/1)** re-run 09:46–09:54 after Friday's session death at 200/1,171: ALL 1,171 n = 25 two-word locks admit a direct two-word exit (median 78 direct images, min 15, max 154). Grace's 12:19 diagnosis confirmed; Table 3.1 quotes the structural sentence, not the 1,113/58 split. CLAIMS DONE, pushed.
