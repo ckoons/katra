@@ -5,10 +5,12 @@ metadata:
   node_type: memory
   type: feedback
   originSessionId: c276d470-0599-4f22-ac8d-fd48467c9a36
-  modified: 2026-09-06T20:40:56.680Z
+  modified: 2026-09-07T12:42:30.873Z
 ---
 
 **What happened (2026-09-06, RH lane, Rounds 119–124).** Three times in one day a number was right and its object was wrong by a lattice: (i) K1862-C called the cone-zeta "D*₄ up to the 2-adic factor" — the 2-adic factor was the whole difference (ℤ^{1,4} ≅ ℤ⁵ over ℤ₂ by a norm −1 quaternion; toy 5699); (ii) Cal's E11 hold predicted comb spacing π/ln 3 from a maximal lattice ⟨1,3,3⟩ that is anisotropic exactly at {3, ∞} like the corpus's ⟨1,1,3⟩ but lives in a different ℤ₃-quadratic space (discriminant 9 vs 3) — Elie's direct integral on the corpus's lattice gave 2π/ln 3; (iii) my own family rule at n = 8 assumed the definite genus was one class (I₉ is not: {I₉, E₈⊕ℤ}). Cal turned (ii) into **calibration #28: write the construction rule that produces the lattice before the lattice, and the lattice before the number.** And the day's central move: T1448's "rank^{−2s}" carried the shared integer rank 2 = prime 2; E11 held the rank at 2 and swapped the kernel's anisotropic prime to 3, and the base moved — the map was exhibited by CONSTRUCTION, not by argument.
+
+**The next morning (2026-09-07, K1873 §2, Cal §880) the lesson bit again, on the repair itself:** T2622 was registered with "the maximal order's trace-zero lattice at p = 3 = ⟨1,1,3⟩" — nobody had constructed the order. Cal built it from generators (ℤ_p[i] ⊕ ℤ_p[i]j, i² = u, j² = p): the trace-zero form is b² + bd + d² + 3a² ≅ ⟨1,3,3⟩ over ℤ₃, reduction rank 1, comb π/ln p for EVERY odd p (a theorem); ⟨1,1,3⟩ has reduction rank 2 and was never the rule's. Cal's Sunday hold had been right and his retraction wrong — calibration #30: **a retraction is a claim.** Rule: EXECUTE the construction (order from generators → lattice reduced → local invariant read) before a lattice is called "the rule's"; a ramification set names a genus of ALGEBRAS, not a lattice; and the auditor's question at that step is "who built the order?"
 
 **Why:** "anisotropic exactly at {p, ∞}" is a property of the quadratic SPACE; the comb spacing reads the ℤ_p-LATTICE CLASS inside it. A hypothesis stated on the space admits counterexamples on the lattice. And two structures sharing an integer are separated only by a construction that varies one while fixing the other (the same lesson as [[family-sweep-every-forcing-selector-rank-generic-is-selecting-nothing]] and [[ingredient-passes-application-smuggles]], now with the mechanism: build the false neighbour).
 

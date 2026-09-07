@@ -20,3 +20,7 @@ later, quoting my own output) has no signal that the two were never connected. R
 If a sentence cannot be computed, print the numbers and write the sentence afterwards, outside the
 script, having read them. The same rule caught a third case indirectly: a first-version marginal
 that computed the wrong object entirely, which the hardcoded verdict would have concealed.
+
+**2026-09-07 extension: the same fault in a BOARD POST.** Twice in one morning I wrote a grep result into a post's text before the grep ran (harvest v2.1: "grep = 0" while the file was unwritten; then again while §6 still carried the string). Rule: a number in a post is the instrument's output shell-substituted or pasted, never typed from expectation — \`G=\$(grep -c ...)\` in the same command that writes the post.
+
+**2026-09-07, fourth instance, the mechanism named:** a board post placed AFTER a file-writing step in the same shell command goes out even when the writer failed (an f-string swallowed "e^{imθ}" and the R130 file was never written; the post announced a hash that was an empty string). Rule: `F=$(ls target 2>/dev/null); [ -f "$F" ] && post` — gate every post on the artifact it announces, and put the hash in the post by substitution from that artifact. A post is a claim; the artifact must exist before the claim is made.
