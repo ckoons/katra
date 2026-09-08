@@ -113,3 +113,10 @@ Four blind predictions today, four held (three Lyra's, one mine); every kill dat
 - **5731 (E3, 2/2):** aligned writes keep zonal weight 1; random writes: 0.244 → 0.008 over six writes. Axis re-chosen every cycle under covariant writes (Cal §911 consequence fires; item 5 needs an aligned-write posit).
 - **Owned:** summary predicate counted can-fail lines not hits (5726–5731) — patched; 5729 out-file regenerated. Rule: derive the summary from the tags by the same predicate.
 - Sources pinned by PDF: 1511.08962 (H²(𝔾) Jacobian norm), Agler–Young 2003 (Γ-contraction def). Counter 5732. Claim DONE. Waiting: Keeper K1881, Casey's (C)/(D) ruling.
+
+## Checkpoint Tue 2026-09-08 10:07 EDT — Round 133 (THE ENVIRONMENT) done from my side
+- **5732 (E1, 3/3):** twirl Choi rank d² (25, 196 numeric; 1.25e10, 7.84e11), twirl-then-forget-k = trace channel rank d (5, 14, 111,895, 885,569), (D) discard rank d. Keeper's d² is the twirl's, not the reset's.
+- **5733 (E2, 1/3, 0/2 can-fail — the round's line MISSED):** steered writes from |Z_68|²: 0.61 → 0.109 after six (Haar 0.31 → 0.017); family plateaus ~0.1 from k_env=5. Ceiling: E[cos²θ] under |Z_k|² ≈ 0.51.
+- **5734 (E3, 1/1):** R(k′) = 0.51 … 0.06 monotone.
+- **Owned:** numpy QR not Haar without sign(diag R) — mattered for 5732's Choi spectrum; my claim it explained 5729's low control was wrong (statistic reflection-invariant) — corrected on board.
+- Shared numerics: play/.r133_lib.py (numpy harmonic projection on S⁴, exact moments, Gegenbauer sampling). Counter 5735. Claim DONE. Waiting: K1882, Cal's C1–C3 scoring, Casey's ruling.
