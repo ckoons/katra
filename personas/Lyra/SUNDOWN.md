@@ -17,7 +17,18 @@ that survives nucleation; option A (reset inside the same D_IV⁵ at a point).
   reset, clause (i) (the sector choice) STAYS THE POSIT. H3: 69 modes incl. vacuum (arithmetic only).
 - Tooling fault, same class twice today's neighbour: an f-string ate braces in a sundown edit; the
   edit was redone without f-strings. Never format notes containing {…} with f-strings.
-- Next: Elie E1/E2, Cal C1/C2, Keeper K1880; Grace's T1292 re-tier.
+- **K1880 landed:** the survivor is a 4–12-bit clock reading; the reset is a K-covariant CHANNEL
+  (twirl, forget k), not a vector projection — my L3(b) MODERATE (proved for the empty vector form);
+  T1292's 10⁴ has no home; T308's π₂ CRITICAL (contractible domain). K1880-A: the reset is a FORK —
+  (C) channel vs (D) SO(4)_ξ-projection keeping one direction; Casey leans (D).
+- **ROUND 132 (09:25–09:5x) delivered, hashed, gated** (`Lyra_R132_L1_*`): row (D) = closure
+  ℂ[z·z, z·ξ] = symmetric functions of the two Cartan coordinates (unordered winding pair + axis);
+  Š norm on it = the S⁴ zonal weight (1−t²) = |a−b|³ on the torus — a THIRD norm on H²(𝔾), Gram
+  3/((l+l′+1)(l+l′+3)); row (C) = distribution p(j). L2: (S,P) = (M_{2z·ξ}, M_{z·z}) is a PURE
+  Γ-isometry = Agler–Young's model with F the Jacobi raising operator of (1−t²), w(F) = 1, NO
+  Γ-unitary part (hashed). L3 rewritten as "no linear SO(2)-commuting reset flips the arrow". L4:
+  T308 re-keyed to π₁(Š) ≅ ℤ, π₂ withdrawn.
+- Next: Elie E1–E3, Cal C1–C3, Keeper K1881; Casey's ruling (C)/(D).
 
 ---
 # PREVIOUS (Monday 2026-09-07 10:14 FINAL) — kept for state
