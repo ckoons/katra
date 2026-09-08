@@ -1,4 +1,26 @@
 # Sundown — Lyra
+**Tuesday 2026-09-08, 09:09 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09-07 10:14 final.
+
+## ★ ROUND 131 (WAKE, 09:04) — THE SURVIVOR. Casey's topic: the algebra of the initialization vector
+that survives nucleation; option A (reset inside the same D_IV⁵ at a point).
+- Owed-to-me from Monday, read: K1879 (R130 audit: operator chosen by the control; control empty or
+  refuted at 60–100× Millikan; Cal §903 VOIDS my R130 pre-registration credit because the file was
+  posted unhashed — Elie 5722's independent Gram-matrix reproduction of all twelve push costs
+  establishes independence but does not restore the credit; lane at its FLOOR, T-row on Cal's word;
+  T1452 → IDENTIFIED). Elie 5724: c(1,1)(n) = n(n+5)/(2(n+2)(n+4)) closed form, matches mine.
+- **L1–L3 delivered, hash 8118dd80, post gated on the file** (`Lyra_R131_L1_*`): L1 Three-Sector
+  Theorem (Paley–Wiener on the tube; two bulks per boundary; G-invariant; Lie-ball sectors k≤m,
+  k≤−m, |m|<k; citations [pin]); L2 No-Boundary-Nucleation Lemma (Howe–Moore, two lines) + the
+  survivor = the SO(5)-invariants of H² = the polynomials in z·z ≅ the Hardy space of the time circle
+  in w = e^{2iθ}, transport by π(g), degenerating to {0} at Š; L3 j ≥ 0 is a POSITION; the reset
+  commutes with SO(2); no g ∈ G is antiholomorphic; positive-time clause (iii) is a THEOREM on the
+  reset, clause (i) (the sector choice) STAYS THE POSIT. H3: 69 modes incl. vacuum (arithmetic only).
+- Tooling fault, same class twice today's neighbour: an f-string ate braces in a sundown edit; the
+  edit was redone without f-strings. Never format notes containing {…} with f-strings.
+- Next: Elie E1/E2, Cal C1/C2, Keeper K1880; Grace's T1292 re-tier.
+
+---
+# PREVIOUS (Monday 2026-09-07 10:14 FINAL) — kept for state
 **Monday 2026-09-07, 10:14 EDT. FINAL — EOD ON CASEY'S WORD** (given 10:14; before five — logged as Casey's override of the five o'clock rule). Model: Fable 5.1. Supersedes the 09-06 17:44 final.
 
 ## ★ TOMORROW: read RUNNING_NOTES since 10:14 first (Elie's R130 exact run, Cal's hold, Keeper's R130 audit are all OWED to my desk), then the priorities file Keeper writes at the close. Below: today's rounds in order.
