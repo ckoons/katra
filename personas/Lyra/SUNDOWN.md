@@ -28,7 +28,20 @@ that survives nucleation; option A (reset inside the same D_IV⁵ at a point).
   Γ-isometry = Agler–Young's model with F the Jacobi raising operator of (1−t²), w(F) = 1, NO
   Γ-unitary part (hashed). L3 rewritten as "no linear SO(2)-commuting reset flips the arrow". L4:
   T308 re-keyed to π₁(Š) ≅ ℤ, π₂ withdrawn.
-- Next: Elie E1–E3, Cal C1–C3, Keeper K1881; Casey's ruling (C)/(D).
+- **K1881:** the fork is empty on every number; the axis is a one-cycle label (Elie 5731: 0.24→0.008
+  in six Haar writes); the norm theorem stands (|a−b|^{n−2}: the two literature norms are D_IV² and
+  D_IV⁴; ours is the only place 5 enters); my Γ-isometry stands, F = Jacobi of the Gegenbauer weight.
+- **ROUND 133 (09:56–10:2x) THE ENVIRONMENT, delivered hashed+gated** (`Lyra_R133_L1_*`): L1 twirl on
+  H_k completely depolarising → minimal env d_k² (C); (D) = SO(4)_ξ-twirl-then-forget-l, env
+  Σ_{l≤k}(l+1)⁴ (2.6 % of (C) at k=68); V an isometry → CKT global. L2 T633 clause → "traced out
+  into the beyond-horizon factor" — a RULE iff re-entry; LOST = environment (norm share, not a
+  re-entry fraction), RECONSTRUCTED = re-entered. L3 covariant coherent-state POVM E(du) =
+  d_k|u⟩⟨u|dσ; Haar = maximally mixed env; MY one-step calibration: steered write keeps ~0.6 vs Haar
+  ~0.3 → hashed six-write weight in [0.02, 0.3], BELOW Keeper's 0.5, above Haar 0.008; no k-trend.
+  L4 pins: Howe–Moore JFA 32 (1979) 72–96 PINNED; FK chapters pinned (tube Hardy = Ch. IX, my
+  "XIII" corrected); Stein–Weiss Ch. III p. 89 chapter-pinned, thm number [pin]; Zimmer §2 pinned,
+  "2.2.20" [pin].
+- Next: Elie E1–E3 (E2 decides my H3 vs Keeper's 0.5), Cal C1–C3, Keeper K1882; Casey's (C)/(D).
 
 ---
 # PREVIOUS (Monday 2026-09-07 10:14 FINAL) — kept for state
