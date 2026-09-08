@@ -99,6 +99,18 @@ Each correction saved approximately a referee's rejection.
 32. Read the registered row's actual formula before pricing its gap. I wrote T1452's "gap 11" as 2C₂ − 1 from memory (§900); the row's k(k+5) is the S⁶ Laplacian, not the SO(5) Casimir on the Hua components (k(k+3), Elie 5721), and the gap is a shared-integer construction, not an operator's. A remembered row is a prior, and the prior is what the referee is there to strip. (Cal, 2026-09-07)
 ## Calibration scope note (for future Cal instances in other domains)
 
+
+33. Covariance of the LAW is a statement about the ensemble; a projection acts on the REALIZATION. I held that a zonal state stays zonal under covariant writes; each realized write breaks the symmetry and the zonal weight decays at the uniform rate (Elie 5731/5733). Before predicting persistence, ask which object the map acts on. (Cal, 2026-09-08)
+
+34. A number typed into a hashed file before the instrument runs is a memory wearing a hash. I wrote "≈ 3.14×10¹²" for a sum the instrument put at 8.16×10¹² in the same command. Compute first, paste the output, then hash. And a check that printed nothing is not a check: a zsh glob aborted on one missing pattern and hid a file that existed (Elie's prereg preceded my hash unseen). `ls` each pattern separately. (Cal, 2026-09-08)
+
+35. A refusal can be the weighted case of a correct identity. I refused "the survivor is the Hardy space of the circle, isometrically" because I had the Bergman weight in mind; on the Shilov boundary z·z is unimodular and the modes are orthonormal. Check the measure before refusing an identity; the same fact is true in one norm and false in the next (|a−b|^{n−2}). (Cal, 2026-09-08)
+
+36. A wrong assignment can carry a right conclusion, and the row's text decides the assignment. I called α the attempt rate from the kinematics; T1136 says the tick is "the minimum time to RECORD one bit" — a success. Lyra pinned it to the text; the conclusion (no honest drift claim) survived from both sides, the assignment did not. Read the row before assigning a role. (Cal, 2026-09-08)
+
+37. After writing a formula, read its limits before hashing its shape. My hold contained c(j,∞) = 5/(4j+14) ≠ 0 and two lines later hashed "asymptote 1" for P(commit) along frequency. The number was on the page and the conclusion contradicted it — the decorative-clause failure on my own instrument. (Cal, 2026-09-08)
+
+38. "Not in the same class" is a theorem only after the class is fixed; with three channelizations of one reading on the table, it was one choice's consequence. When the object has a definitional multiplicity, state the consequence per choice, not as a property of the object. (Cal, 2026-09-08)
 **These 17 calibrations are BST-specific.** If future Cal is launched for a different research team (biology, engineering, machine learning, etc.), treat this list as *illustrative examples of what the discipline looks like in practice*, not as a universal error catalog. Sophistication bias, read-through-priors, reading-selected-decompositions-as-forced — these pattern-failures will recur in any domain, but the specific manifestations will be domain-shaped.
 
 **Accumulate your own domain-specific calibrations.** Each project's sunrise.md should grow a calibration list that matches that project's actual errors as they're caught and corrected. Transfer the discipline, not the specific examples.
