@@ -14,3 +14,24 @@
 ## Counters
 next K = 1880 · next T = 2624 (T2623 registered) · toys: last 5724 (counter 5725).
 — Keeper
+
+## EOD — 2026-09-08 14:40 EDT (Tuesday). Casey: "Let's call this a day."
+
+### The day in one sentence
+Casey's Monday-evening topic — "the algebraic structure of that compressed initialization vector that survives the nucleation event" — was answered in five rounds and closed at a floor: **there is no lawful initialization VECTOR; the survivor is a distribution on the winding count (4–12 bits) and nothing lawful consults it.**
+
+### Rounds and audits (K1880–K1884; rows T2625–T2629, counter 2630; toy counter 5738)
+- **R131 (K1880 + A):** survivor = SO(5)-invariants of H² (my Monday "K-invariants" = the constants, corrected). Elie 5726 P1 — the vector average is ZERO on every saturated state — is the lane's pivot. Occupancy 4.02 / 10.16 / 12.15 bits. T1292's 10⁴ bits refuted (5728: the rule fragment = 1.15; 212 monomials near 10⁴). THE FORK named: (C) twirl-then-forget-k vs (D) SO(4)_ξ-projection.
+- **R132 (K1881 + PRE/A/B):** (D) adds a LABEL, not entropy (H(j,l) = H(j)). New theorem: the survivor norm |a−b|^(n−2) on the symmetrized bidisc; the literature's two H²(𝔾) norms are D_IV²'s and D_IV⁴'s; ours is neither. Lyra: Γ-isometry, one shift + one Jacobi operator. 5731: the axis lives ONE cycle boundary — my "chosen once, carried forever" REFUTED.
+- **R133 (K1882 + PRE):** Stinespring reading; re-entry FAILED (0.109 after six steered writes) — the environment is legible, not remembered. My 0.5 hash failed, Lyra's held. Ruled the contractibility seam: "cannot unwind in the contractible interior" is a FALSE REASON (protection = π₁(Š) / the SO(2) weight). Grace: "horizon" is four objects.
+- **R134 (K1883 + PRE):** c(j,k) closed form on TWO routes + exact Gram; my k = 0 line 5/(2(j+5)) exact; 5/(2j) asymptotic. j-blind chain to twenty digits. Cycle cost 14.81 → 1.27. No map to T633 (gap exponents 1 vs 3). **Cal's C4: my Schur note smuggled hypothesis (c); the honest closure is "no measurement is posited, so (C) stands" AND "the two rows agree on every number — the fork was EMPTY, not decided."**
+- **R135 (K1884):** the Born-push reading is coherent; its one new content is a POSITED observable (Jones intensity as the two-outcome commitment effect). Caps: T2401 v0.1 AND the un-rowed Bergman→Hardy probability link (Grace). **"BST predicts α drift" was MY over-claim — withdrawn:** T1136 defines α through a SUCCESS, so it is constant by definition; Lange/Filzinger reach nothing BST owns.
+
+### My owns today (eight, each caught before a row)
+K-invariants = constants · the (D) column's smuggled kinematics (Cal C2) · d² was the twirl's, not the reset's · the 0.5 re-entry hash · "environment = beyond the horizon" (m-band vs k-cut) · hypothesis (c) inside "lawful" · the 0.40 failed-push hash (entry cell, not path — caught by my own instrument BEFORE the run) · the α-drift over-claim. Two memories written: hash-from-an-instrument-not-the-entry-cell; a-definitional-constant-cannot-drift.
+
+### Where to start tomorrow
+`notes/BST_TOMORROW_2026-09-09_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md`, after the rubric (Section 2 carries the dated nucleation-row entry; Section 3 re-derived on it). **ONE live door:** the Bergman→Hardy probability link — no row makes it, it caps the Born-push chain even at T2401 v1.0, and writing it would lift T2401 from v0.1. Three annotations owed to Grace (T2401's "7/2 DERIVED" is a relabel — the exponent is the genus 5; T754's "N_c = 3" decoration; the alias counts). Two pins owed to Lyra (Stein–Weiss theorem number; Zimmer 2.2.20 — from memory on her side AND Cal's). Elie's 5737 rerun was in flight at close: read its out-file before claiming.
+
+### Standing
+NO EOD before 5pm (Casey overrode today). `katra update` pushes — on Casey's word only. Nothing external without Keeper + Cal. Timestamps from `date` in the same command. "Section", not the sign. Grace committed locally and pushed nothing; Elie pushed his toys.
