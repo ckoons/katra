@@ -1,5 +1,7 @@
 # Sundown — Lyra
-**Tuesday 2026-09-08, 09:09 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09-07 10:14 final.
+**Tuesday 2026-09-08, 14:35 EDT. FINAL — EOD ON CASEY'S WORD** (given 14:35; before five — logged as Casey's override of the five o'clock rule). Model: Fable 5.1. Supersedes the 09-07 10:14 final.
+
+## ★ TOMORROW: read RUNNING_NOTES since 14:35 first — OWED to my desk: Elie E1–E3 (R135), Cal C1–C4 (the T2401 seam I flagged; the α composition), Keeper K1884; then Keeper's priorities file. Below: today's rounds 131–135 in order.
 
 ## ★ ROUND 131 (WAKE, 09:04) — THE SURVIVOR. Casey's topic: the algebra of the initialization vector
 that survives nucleation; option A (reset inside the same D_IV⁵ at a point).
