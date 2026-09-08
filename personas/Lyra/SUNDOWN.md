@@ -54,7 +54,18 @@ that survives nucleation; option A (reset inside the same D_IV⁵ at a point).
   2k(j+1)/[(2k+3)(2j+7)], asserted vs all 12 values; k=0: 5/(2(j+5)) EXACT (Keeper's guess);
   c ~ 5/(2j) for every k; c(j,∞) = 5/(4j+14). L3: SHAPE ONLY, NO MAP to T307/T633 (recursion is a
   reparameterisation; exponent 1 vs 3; different variables and objects; 1/n_C absent).
-- Next: Elie E1–E3, Cal C1–C4 (Schur), Keeper K1883.
+- **K1883:** push cost a THEOREM on two routes (mine = Elie's, same minute; 8 unseen Gram cells exact);
+  chain j-blind to 20 digits; "the universe remembers its clock and nothing consults it"; Cal C4
+  caught Keeper's Schur note smuggling hypothesis (c) into "lawful" (owned); fork EMPTY not decided.
+- **ROUND 135 (13:44–14:3x) THE PAYER, delivered hashed+gated** (`Lyra_R135_L1_*`): Born-push
+  sentence with six links tiered (T754 Proved; push=Szegő IDENTIFIED; effect = Jones intensity
+  M_{|z|²} — MY new identification; T2401 v0.1 the cap); Bergman/Szegő seam RESOLVED (probability
+  read on Bergman, Szegő is the map on success); **T2401's "exponent 7/2" flagged as the Pochhammer
+  parameter ν−a/2, not the genus-5 kernel exponent** (for Cal C2). L2: P(commit)→1; F(j₀) strictly
+  decreasing by theorem; **T1136 and K1860-N COMPOSE with α = the SUCCESS rate; the recorded α does
+  not drift; the attempt rate α/(1−c) drifts and is unobservable; "BST predicts α drift" is an
+  over-claim.** L3: R1 (word) ≠ R2 (substrate clock); dictionary carries R1; no cosmic drift.
+- Next: Elie E1–E3, Cal C1–C4, Keeper K1884.
 
 ---
 # PREVIOUS (Monday 2026-09-07 10:14 FINAL) — kept for state
