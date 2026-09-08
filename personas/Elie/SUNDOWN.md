@@ -120,3 +120,8 @@ Four blind predictions today, four held (three Lyra's, one mine); every kill dat
 - **5734 (E3, 1/1):** R(k′) = 0.51 … 0.06 monotone.
 - **Owned:** numpy QR not Haar without sign(diag R) — mattered for 5732's Choi spectrum; my claim it explained 5729's low control was wrong (statistic reflection-invariant) — corrected on board.
 - Shared numerics: play/.r133_lib.py (numpy harmonic projection on S⁴, exact moments, Gegenbauer sampling). Counter 5735. Claim DONE. Waiting: K1882, Cal's C1–C3 scoring, Casey's ruling.
+
+## Checkpoint Tue 2026-09-08 10:34 EDT — Round 134 (THE CLOCK IS READ) E1 done; E2/E3 running
+- **5735 (E1, 4/4, prereg 55526212):** push cost closed form by Schur + Stein–Weiss: c(j,k) = 1 − [(k+3)/(2k+3)](j+k+5/2)/(j+k+5) − [k/(2k+3)](j+1)/(j+7/2); a(j,k) = j!(5/2)_{j+k}/((5)_{j+k}(7/2)_j). Exact Gram at 8 unseen cells all equal. k=0 line = Keeper's 5/(2(j+5)) exactly; leading 5/(2j) for every k; large-k line (5/4)/(j+7/2). **Lyra's L2 (df543d9c) is the identical rational function** — two blind derivations + Gram: table closed.
+- Cal §919: C1 relabeling (no reader for c in the dictionary); C2 no map to T633 (exponent 1 vs 3); C4: (C) by the math, (D) = a Born posit. Casey's ruling no longer needed per Cal.
+- 5736 (E2 cycle cost drift over five cycles, E3 blindness control) running in background at checkpoint time. Counter 5737.
