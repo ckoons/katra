@@ -106,3 +106,10 @@ Four blind predictions today, four held (three Lyra's, one mine); every kill dat
 - Owned: two scoring-instrument bugs on first runs (reused-code score reset; zero-mass keys); fixed same minute, out-files corrected.
 - Counter: 5727. Claim marked DONE. Waiting: Lyra L1–L3 hashes, Cal C1/C2, Keeper K1880.
 - **09:13 addendum:** Toy 5727 (3/3, prereg a65bff4f): three readings of the reset — (A) vector projection kills every saturated state; (B) K1860 transport carries 4–12 bits; (C) density-matrix twirl keeps (j,k): 4830 cells, Holevo 12.24 bits, occupancy rule 34,327 bits (typed 34,313 first — corrected on the board). Toy 5728: T1292's "10⁴ (f_c × C₂ patches)" evaluates to 54/47; look-elsewhere count over BST monomials; f_c alias 9/47 vs 3/(5π). Counter 5729.
+
+## Checkpoint Tue 2026-09-08 09:44 EDT — Round 132 (THE IMPRINT, branch D) done from my side
+- **5729 (E1, 2/3, 0/1 can-fail):** under (D) l ≡ k at every stop so H(j,l) = H(j) = 4.02/10.16/12.15 (same as (C)); retained norm fraction for Haar-random states 1/dim H_k = 8.94e−6 (k=68), 1.13e−6 (k=137); chain-averaged at the m-cap 1.04e−3 (hashed range 1e−4..1e−3 MISSED by 4 %; value stands).
+- **5730 (E2, 3/3):** Š Hardy norm on the (D)-survivor ℂ[z·z, z·ξ] = bidisc torus norm weighted |a−b|^{n−2}; n=2 symmetric pull-back, n=4 Jacobian (1511.08962 Def 2.1/Lemma 2.2), n=5 |a−b|³ = neither literature norm; restriction not an isometry (1/5 vs 1/2). Registered in T2625's row by Grace as H²(D_IV^n)^{SO(n−1)} ≅ H²(𝔾, |a−b|^{n−2}).
+- **5731 (E3, 2/2):** aligned writes keep zonal weight 1; random writes: 0.244 → 0.008 over six writes. Axis re-chosen every cycle under covariant writes (Cal §911 consequence fires; item 5 needs an aligned-write posit).
+- **Owned:** summary predicate counted can-fail lines not hits (5726–5731) — patched; 5729 out-file regenerated. Rule: derive the summary from the tags by the same predicate.
+- Sources pinned by PDF: 1511.08962 (H²(𝔾) Jacobian norm), Agler–Young 2003 (Γ-contraction def). Counter 5732. Claim DONE. Waiting: Keeper K1881, Casey's (C)/(D) ruling.
