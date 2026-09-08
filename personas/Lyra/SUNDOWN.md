@@ -41,7 +41,20 @@ that survives nucleation; option A (reset inside the same D_IV⁵ at a point).
   L4 pins: Howe–Moore JFA 32 (1979) 72–96 PINNED; FK chapters pinned (tube Hardy = Ch. IX, my
   "XIII" corrected); Stein–Weiss Ch. III p. 89 chapter-pinned, thm number [pin]; Zimmer §2 pinned,
   "2.2.20" [pin].
-- Next: Elie E1–E3 (E2 decides my H3 vs Keeper's 0.5), Cal C1–C3, Keeper K1882; Casey's (C)/(D).
+- **K1882:** re-entry FAILED (Elie 5733: 0.017 → 0.109, not 0.5) — MY H3 held on all four prongs,
+  Keeper's hash failed; his three owns (d² was the twirl's not the reset's — my L1 table inherited
+  his object; re-entry hashed from the picture; "environment = beyond the horizon" joined two
+  sectors). Contractibility ruling: "cannot unwind in the contractible interior" is a false reason
+  (a boundary loop bounds an interior disc); the winding is protected as a boundary class + a
+  spectral label writes only raise. Schur fork → Cal C4.
+- **ROUND 134 (10:24–10:4x) THE CLOCK IS READ, delivered hashed+gated** (`Lyra_R134_L1_*`): L1 the
+  j-Blind Chain Theorem ((z·z)^j unimodular on Š → Hardy branching k-only; cycle-invariant write
+  statistics DERIVED in T1292's record-space sense; n_s not reached); one object two norms (Hardy
+  law blind, Bergman push not). L2 CLOSED FORM: c(j,k) = 1 − (k+3)(2j+2k+5)/[2(2k+3)(j+k+5)] −
+  2k(j+1)/[(2k+3)(2j+7)], asserted vs all 12 values; k=0: 5/(2(j+5)) EXACT (Keeper's guess);
+  c ~ 5/(2j) for every k; c(j,∞) = 5/(4j+14). L3: SHAPE ONLY, NO MAP to T307/T633 (recursion is a
+  reparameterisation; exponent 1 vs 3; different variables and objects; 1/n_C absent).
+- Next: Elie E1–E3, Cal C1–C4 (Schur), Keeper K1883.
 
 ---
 # PREVIOUS (Monday 2026-09-07 10:14 FINAL) — kept for state
