@@ -23,7 +23,32 @@ load-bearing content reduces to T754 + a kernel naming), so the cap is my own id
   Payer clause written; tier line: c(j,k) DERIVED GIVEN the effect, effect IDENTIFIED.
 - **Pins, third attempt: STILL OWED, claimed as nothing.** Stein–Weiss Ch. III §2 number and
   Zimmer 2.2.20 remain from memory; rows keep their flags.
-- File `Lyra_R136_L1_*`, hash efa996f5, posted gated. Next: Elie E1–E3, Cal C1–C3, Keeper K1885.
+- File `Lyra_R136_L1_*`, hash efa996f5, posted gated. K1885 closed: four of Keeper's claims died,
+  monotonicity to three witnesses, and his attribution test was degenerate.
+
+## ★ ROUND 137 (10:16) — THE WEIGHT. ν is not a convention; Berezin reads it as 1/ħ
+- **OWNED: the "sign fork" was MY labelling error.** R136 L2 (v) called the Hardy/Bergman ratio a
+  cost and concluded commitment gets less likely. R is large when the word is BOUNDARY-concentrated,
+  so R rising = more committed. Withdrawn; both readings agree.
+- **L1 ladder.** W = {0} ∪ [3/2, ∞); ν_W = 3/2, **ν_S = n/2 = 5/2 (Hardy)**, p−1 = 4 (measure exists
+  only above), **ν_B = p = n = 5 (Bergman)**, ∞ classical. **Verified at 200 points:
+  c_ν(j,k) = (ν − n/2)[(k+3)/((2k+3)(j+k+ν)) + 2k/((2k+3)(2j+2ν−3))]; at k = 0 it collapses to
+  c_ν(j,0) = (ν − n/2)/(j + ν).** The cost is the gap to the Hardy point and vanishes there
+  identically (Cal's objection = an identity). Below ν_S it goes NEGATIVE (−2/3 at ν_W).
+  **Keeper's degeneracy named: at ν = p = n the weight and the dimension are one number; the
+  dimension enters only through the zero at n/2.** Rows: T752/T753/T754/T2401 = ν_B (T754 only by
+  annotation); K1860/T2629 = ν_S; **T2543 UNSTATED**; T1452 mislabelled (K1879). Flagged, not ruled:
+  T753's −2/g = −2/7 uses BST g = 7 where the domain's genus is 5.
+- **L2 Berezin tiered.** B1/B2 THEOREM; **B3 "ν = 1/ħ" is a CONVENTION inside B2** (shift-free);
+  B4 INTERPRETATION with no dimensional bridge. **The ratio is NOT a prediction: 2, or 7/2 under the
+  Wallach-floor shift, or excluded — and 7/2 = g/rank is the numerology trap, named in advance.**
+  The real collision needs no Berezin: four rows in A²_{ν_B}, two in H²_{ν_S}, no map stated.
+  Untouched: everything K-decomposition-only (branching, 3/7, k_max, the j-blind chain).
+- **L3.** T on H²_{ν_S} implementing the Bergman inner product has eigenvalues 1/R → 0, so **1 − T is
+  an admissible commitment effect on the record's own space, built from the two spaces, no Jones
+  identification** (vacuum commits with probability 0). The question moves from "which function on
+  the interior" to "is the weight comparison physical."
+- File `Lyra_R137_L1_*`, hash 8928116c, posted gated. Next: Elie E1–E4, Cal C1–C3, Keeper K1886.
 
 ---
 # PREVIOUS (Tuesday 2026-09-08 14:35 FINAL) — kept for state
