@@ -133,3 +133,10 @@ Four blind predictions today, four held (three Lyra's, one mine); every kill dat
 **Owned today:** summary predicate counted lines not hits (5726–5731, patched); numpy QR not Haar without sign(diag R) (5732 Choi; NOT 5729's control — statistic reflection-invariant); 5727 typed 34,313 vs 34,327; 5737 loop passed (j,k) keys. Rule kept: derive every summary from the tags; never type a number the instrument printed.
 **Instruments to reuse:** play/.r133_lib.py (numpy harmonics on S⁴, exact moments, Gegenbauer sampling); toy_5722's kernel-Gram (exact Bergman norms on D_IV^n); curl -A Mozilla + pdftotext for sources (zsh: never `set -- $var`).
 Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's words. NO EOD before 5 pm except on Casey's word (given 14:3x today).
+
+## Checkpoint Wed 2026-09-09 10:04 EDT — Round 136 (WHICH EFFECT) done from my side
+- **The instrument (mine, derived):** T_n = Σ_{|α|=n}C(n;α)M_{z^α}*M_{z^α} is K-invariant and degree-preserving ⟹ Schur-diagonal on Hua components ⟹ **τ_n(j,k) = L(j,k)τ_{n−1}(j,k+1) + M(j,k)τ_{n−1}(j+1,k−1)**, L = (k+3)/(2k+3)·(j+k+5/2)/(j+k+5), M = k/(2k+3)·(j+1)/(j+7/2). So ⟨|z|^{2n}⟩ = the chain's n-step norm retention; member n = "reaches Š within n writes."
+- **5740 (E1, 4/4):** validated against the exact kernel Gram at five cells (11/42, 19/54, 2/7, 3/8, 2141/7056). Keeper's MC columns exact: c₂(0,0) = 31/42, c₃(0,0) = 6/7; vacuum commitment 1/2, 11/42, 1/7, 163/2016, ...
+- **5741 (E2, 2/4 — the misses are the findings):** power family confirms j·c_n → 5n/2, k-independent. **But (a) the ρ member c_ρ(j,0) = 10/((2j+7)(2j+10)) decays like 1/j², refuting "one scale constant"; (b) the ORDER BREAKS inside the multiplication family: f = 1 − (1−s)(s−c)² at c = 0 gives 5/42 → 115/864 → 85/616 (RISING) before falling.** Only the limit c → 0 is invariant. Sufficient condition for the order (post-hoc, labelled): f a probability mixture of |z|^{2p}.
+- **5742 (E3, 2/2):** Σc at j₀ = 0 spans 1.30 (ρ) to 35.78 (n = 3), factor 27. Yesterday's 14.81 / 0.1081 / five-cycle series are all the n = 1 member's.
+- Counter 5743. Claim DONE. Waiting: K1885, Cal C1–C3, Lyra L1–L3.
