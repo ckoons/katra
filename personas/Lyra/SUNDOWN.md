@@ -48,7 +48,30 @@ load-bearing content reduces to T754 + a kernel naming), so the cap is my own id
   an admissible commitment effect on the record's own space, built from the two spaces, no Jones
   identification** (vacuum commits with probability 0). The question moves from "which function on
   the interior" to "is the weight comparison physical."
-- File `Lyra_R137_L1_*`, hash 8928116c, posted gated. Next: Elie E1–E4, Cal C1–C3, Keeper K1886.
+- File `Lyra_R137_L1_*`, hash 8928116c, posted gated. K1886 closed: the two-ħ framing DIED (Elie:
+  dimensionless parameter, 33 orders in ordinary units, no map to spacetime; and a factor 2 in ħ is
+  excluded by 12 orders from the Rydberg). Two SPACES, not two values.
+
+## ★ ROUND 138 (11:14) — THE DEFECT, and the Born rule was already there
+- **LANE A (critical):** Grace found **T1918** — it prices the two-space gap with (n+1)/n, the UNIT
+  BALL's exponent ratio; D_IV^n gives **2 at every n** (genus n, Szegő n/2); at n = 5 the row uses
+  6/5 = C₂/n_C. **My addition: T1918 and T753 are ONE error class — a rank-1 fact in a rank-2
+  domain.** A bounded symmetric domain has constant holomorphic sectional curvature iff rank 1, so
+  T753's defect is the word "constant." Sweep class handed to Grace. Memory written.
+- **L1 THEOREM (hash b1c96239):** on Š, Σ_u|z_u|² = 1 pointwise ⟹ **Σ_u W_u*W_u = I — the write tuple
+  is a POVM on the record space**, and its Born weights ARE the Hua branching: p_matter = k/(2k+3),
+  p_light = (k+3)/(2k+3), j-independent (Stein–Weiss + ambient-gradient identity; verified k = 0…5).
+  **Normalisation = identity (only at ν_S); split = K1860-A's April computation.** So the branching
+  are probabilities at ν_S and sub-probabilities at ν_B with deficit exactly c_ν. **The free
+  parameter is gone: the tuple IS the effect R136 could not force.** T754 load-bearing and improved;
+  **T2401 superseded for this purpose, not refuted** (Born structure lives on the space it does not
+  name); K67's route is Cal's call.
+- **L2 REPAIR:** K1860-P's "the push is the one non-isometric step" is FALSE on its own space.
+  Corrected: **no separate push step; push and write are one event; the "cost" is the same tuple's
+  isometry defect at the Bergman weight.** T1136 survives as a DEFINITION with α imported — NOT
+  rescued. **K1860-N's α = push/write rate is DEAD** (ratio 1) — NOT rescued. **Nothing in the
+  dictionary now carries α.** C3 list given from the theory side.
+- Next: Elie E2/E3, Cal C1–C3 (T1918 ruling first), Keeper K1887.
 
 ---
 # PREVIOUS (Tuesday 2026-09-08 14:35 FINAL) — kept for state
