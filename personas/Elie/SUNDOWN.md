@@ -160,3 +160,11 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - **Observation (labelled, not hashed):** at dim = 5 the candidates are D_IV⁵, D_I_(1,5), D_I_(5,1); C2 already leaves one. **C3 and C4 are evaluated on a singleton — they cannot add independent evidence however side A is written.** "Three independent criteria" is one selection read three times.
 - Refusal carried: the 7/2 result is a fact about a broken criterion, not a proposal to change domains.
 - Counter 5750. Claim DONE. Waiting: Cal C1 (T1918 ruling), K1889, Lyra L0's genus pin.
+
+## Checkpoint Wed 2026-09-09 12:36 EDT — Round 140 (THE HONEST UNIQUENESS THEOREM) done from my side
+- **5750 (E1/E2, 5/6, 3/4 can-fail, prereg 274e619e).** Rebuilt (r,a,b) from root data and tested it twice: dim = r + a·r(r−1)/2 + b·r (66/66 exact) and genus = (r−1)a + b + 2, matching my own 5746 measured exponents (ball d+1 at d = 2..6; D_IV⁵ = 5).
+- **The selection HOLDS: a = 3 is a singleton, D_IV⁵**, no rank or dimension input.
+- **Two scope amendments, neither touching the selection:** (1) **irreducibility is LOAD-BEARING** — D_IV⁵ × D_IV⁵ × … also has a = 3; (2) **rank ≥ 2 is presupposed** — at rank one a's coefficient r(r−1)/2 vanishes, and the disc appears as I_{1,1}, II_2, III_1 with a = 2, 4, 1 respectively, so at rank one the multiplicity is a property of the LABEL not the domain.
+- **A4 was a MISS on my own predicate** (I assumed all rank-one entries carry a = 2); the reason makes the finding stronger, added as a labelled post-hoc.
+- **E2:** a = 3 set has 1 member; rank = 2 set has 28 under a dim-30 cap and is infinite uncapped; intersection is the same 1. **Generations = rank + 1 adds zero information — a check, not a leg.** Keeper's correction to Cal confirmed by count.
+- Counter 5751. Claim DONE. Waiting: Cal C1, K1890, Lyra's L1 statement.
