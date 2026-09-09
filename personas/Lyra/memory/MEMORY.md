@@ -107,6 +107,7 @@
 - [Archive: late-Aug/early-Sep long lesson lines](feedback_index_archive_2026-08-late_to_09-early_long_lines.md) — 18 lines moved 09-08; grep it
 - [Hash from an instrument, not the entry cell](feedback_hash_from_an_instrument_on_the_object_not_from_the_entry_cell_or_the_story.md) — 2 hashes failed the same way in one day (K1882/K1884, 09-08)
 - [A definitional constant cannot drift](feedback_a_definitional_constant_cannot_drift_read_the_defining_rows_text_before_attaching_a_laboratory_bound.md) — α is defined through a success; read the defining row before pinning a bound (09-08)
+- [Name the space and the rank first](feedback_name_the_space_and_the_rank_before_reading_a_formula_as_physics.md) — (n+1) as genus, "constant curvature", one-radial-coordinate = rank-1 signatures; 3 instances in a week (09-09)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
