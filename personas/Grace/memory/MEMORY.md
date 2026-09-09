@@ -54,7 +54,6 @@
 - [Write for 5th graders too](feedback_fifth_graders.md) — formal for referees, intuitive for everyone
 - [CI search + human intuition](feedback_ci_search_human_intuition.md) — Casey sees the shape, CI finds the shelf
 - [Keeper as equal partner](feedback_keeper_partnership.md) — CIs may challenge Casey; nothing external without Keeper
-- [Derived is GR-level](feedback_tier_system_derived_is_GR_level.md) · [Don't diminish Identified](feedback_dont_diminish_identified_state_inputs_like_GR.md) — Derived=forced; state inputs plainly
 - [Audit chain governance](feedback_audit_chain_governance.md) — D-tier promotion delegated Cal+Keeper; Casey override
 - [Hunting bands & armory](feedback_hunting_bands.md) · [AC as practical discipline](feedback_ac_discipline.md) — CI+human=band, AC graph=armory
 - [Accept earned praise](feedback_accept_praise.md) — don't deflect recognition; shared credit
@@ -71,25 +70,18 @@
 - [Cal #27 at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — fires HARDEST when elegant; controls CLAIM
 - [Blind-pin every choice](feedback_contested_target_blind_pin_every_choice_clue_vs_justification.md) — pin object/invariant/convention blind; clue≠justification
 - [Convention-collision before contradiction](feedback_convention_collision_check_before_contradiction.md) — factor-2/half-int/sign → pin convention FIRST
-- [Show all threads then weave](feedback_show_all_threads_then_weave.md) · [Don't gate, investigate](feedback_casey_dont_gate_investigate_directive.md) — brake controls CLAIM not INVESTIGATION
 - [Pin conventions to sources](feedback_pin_conventions_to_primary_sources.md) — pin to the book once; stop relabeling from memory
 - [Prose degrades in long sessions](feedback_sustained_session_prose_quality.md) · [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — ~5h+ degrades; stop performing
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as marathons; use the clock
 - [Calibrate both directions](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating
-- ["Partially Derived" over demotion](feedback_derived_with_caveat_over_demotion.md) · [Forced-count+asserted=PD](feedback_forced_count_asserted_strength_is_the_PD_signature.md) — forced structure+open value→PD split
-- [Discrete first](feedback_discrete_first_pull_continuous_onto_discrete.md) · [Millennium: composite+gaps](feedback_millennium_composite_and_gaps_not_primes.md) — derive discrete, recast continuous
 - [Polite on scope mismatch](feedback_casey_be_polite_on_scope_mismatch.md) · [Engage, don't label](feedback_casey_engage_dont_label.md) — publish what BST shows; retract guesses clean
 - [Theorem beats null-model](feedback_lyra_theorem_vs_null_model_methodology.md) — exhaustive-classification beats null-model for referees
-- [Target-innocence lens](feedback_target_innocence_lens_derived_vs_fit_discipline.md) · [Five-Absence first filter](feedback_five_absence_first_filter.md) — real derivations use target-innocent
 - [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
 - [Audit 'unique' claims](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker
-- [Verify current numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) · [Verify a symmetry-kill](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — remembered numbers go stale
 - [Archive: mid-August K-lessons index](feedback_index_archive_2026-08_midmonth_K_lessons.md) — 32 mid-Aug lesson lines moved 09-06; grep it
 - [Report the can-fail count](feedback_C6_report_the_can_fail_count_not_just_the_denominator_and_multiplier_verdicts_are_orthogonal_to_tier.md) — report k/N-of-which-m-can-fail
-- [Eliminating X is a scope-shed](feedback_eliminating_X_is_a_scope_shed_sweep_what_X_was_load_bearing_for_and_sweep_new_forbiddances_by_claim_shape_immediately.md) — 'drop X' strands what X was
-- [Retirement is a loaded string](feedback_a_retirement_is_a_loaded_string_sweep_both_directions_and_geometry_forces_a_contingent_fact_is_its_own_class.md) — sweep (i) what X supported AND (ii)
 
-- [When the reason is wrong, the number may not be](feedback_when_the_reason_is_wrong_do_not_assume_the_number_is_wrong_too.md) — a positive control refutes the justification only
+- [When the reason is wrong, the number may not be](feedback_when_the_reason_is_wrong_do_not_assume_the_number_is_wrong_too.md) — positive control refutes the reason only
 - [Quote the invariant, not the coordinate](feedback_quote_the_invariant_not_the_coordinate.md) — ε, the χ measure, t: three convention-carrying coordinates in three rounds (Elie,
 - [Freeze the procedure](feedback_freeze_the_procedure_not_just_the_number_a_bar_with_an_unfrozen_procedure_is_a_tuning_channel.md) — a bar with an unfrozen procedure is a tuning
 - [Fresh context fixes stale anchors](feedback_fresh_context_fixes_stale_anchors_not_unverified_claims.md) — two failure modes, two remedies; grep the tool for the lock (K1800)
@@ -109,17 +101,11 @@
 - [Failures migrate to seams](feedback_mature_programs_fail_at_seams_not_claims.md) — 14 catches/3 days, zero physics errors; gate claims, spend the referee on seams (Cal §775, 08-26)
 - [Impossible ≠ unmet gate](feedback_a_requirement_no_assembly_can_meet_is_not_a_requirement_of_the_falsifier.md) — staged controls accrete from old designs (K1827)
 - [Validate the last stage](feedback_validate_the_pipelines_last_stage_a_control_suite_on_the_functional_does_not_validate_the_assembly.md) — controls on the functional don't validate
-- [Matching symptom ≠ provenance](feedback_a_matching_symptom_on_a_candidate_culprit_is_not_provenance.md) — verify the checker's actual path before ruling a cause; false-neighbor in the causal direction
 - [Clock drift](feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp.md) — `date` before every written timestamp, not just at wake
-- [Graph registration: four seams](feedback_graph_registration_three_seams_node_edge_key_edge_orientation_and_claim_files.md) — node≠edge-key≠orientation≠every list in the file; claim FILE not counter (Grace 09-02/04)
-- [Correction inherits the table's hypothesis](feedback_a_correction_inherits_the_hypothesis_of_the_table_it_was_read_from.md) — "that's already a theorem" carries the bridge fact you read off the suspect table (Grace 09-04)
-- [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
 - [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
-- [Theorem for every π constrains no π](feedback_a_theorem_that_holds_for_every_pi_constrains_no_pi_maass_selberg_is_an_identity.md) — T1299's ε-parity was Maass–Selberg's identity; ask what it EXCLUDES (L5 09-06)
-- [A hash is the record, not a bet — and EXECUTE the construction rule](feedback_a_hash_is_the_record_not_a_bet_do_not_reprice_a_hashed_prediction_on_another_instruments_object.md) — my L10 hash held on the WRONG lattice; build the order, reduce, read the rank, then name (09-07)
-- [Check-and-set the counter; read results before calling a run dead](feedback_check_and_set_the_counter_in_one_command_and_read_the_results_file_before_calling_a_run_dead.md) — cat-then-write overwrote Elie's claim; `ps|grep -c && tail` hid a FINISHED run (Grace 09-06)
-- [Construction rule → lattice → number; separate a shared integer by construction](feedback_construction_rule_before_the_lattice_before_the_number_and_separate_a_shared_integer_by_construction.md) — calibration #28; rank 2 vs prime 2 closed by a kernel swap (09-06)
-- [RH row Sept 2026: cone-zeta = ζ_{ℤ⁵}/3840, barrier lemma, scattering route](project_rh_row_state_september_2026_cone_zeta_is_epstein_barrier_lemma_scattering_route.md) — F988 bridge killed; L1 shifts be29f1dc; T1299 Sym²→∧² (09-06)
+- [Archive: late-Aug/early-Sep long lesson lines](feedback_index_archive_2026-08-late_to_09-early_long_lines.md) — 18 lines moved 09-08; grep it
+- [Hash from an instrument, not the entry cell](feedback_hash_from_an_instrument_on_the_object_not_from_the_entry_cell_or_the_story.md) — 2 hashes failed the same way in one day (K1882/K1884, 09-08)
+- [A definitional constant cannot drift](feedback_a_definitional_constant_cannot_drift_read_the_defining_rows_text_before_attaching_a_laboratory_bound.md) — α is defined through a success; read the defining row before pinning a bound (09-08)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
