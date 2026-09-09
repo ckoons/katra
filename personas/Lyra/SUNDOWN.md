@@ -1,4 +1,32 @@
 # Sundown — Lyra
+**Wednesday 2026-09-09, 09:53 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09-08 14:35 final. Model: Opus 5 (1M context).
+
+## ★ ROUND 136 (WAKE, 09:31) — WHICH EFFECT? My R135 identification under test, and Keeper is right to test it
+Wake state: SOD ALL CURRENT; T2630 / toy 5740. Cal §926 ruled the chain does NOT cap at T2401 (its
+load-bearing content reduces to T754 + a kernel naming), so the cap is my own identification.
+- **L1 (family).** Schur: Hua is multiplicity-free, so a K-invariant effect is the full cube
+  a_{j,k} ∈ [0,1]. "Identity on Š" has two inequivalent readings: (S) multiplication by continuous
+  F with F|_Š = 1 — what R135 used — and (D) the limit reading, under which NOTHING survives
+  (oscillating counterexample). **My R135 link (4) carried an unstated premise: multiplication.**
+  Jordan parametrisation: family = {F(e₁,e₂) : F(2,1) = 1}, e₁ = 2|z|² trace, e₂ = |z·z|² det.
+  Structural reason for the spread: the condition binds F only ON Š, where the record lives; members
+  differ only in the interior, which the record never sees.
+- **L2 (five candidates).** (i) minimal degree PREFERENCE · (ii) Jordan trace STRUCTURE CHOICE that
+  cannot pick — the triple gives TWO canonical invariants, both = 1 on Š, different tables ·
+  (iii) Jones intensity IDENTIFICATION, and it does the work · (iv) Szegő NO FORCING, by L1's reason ·
+  **(v) mine: the Hardy/Bergman ratio, the only effect-like object the push's own structure supplies,
+  RUNS THE OTHER WAY (0.000 → 0.987) — excluded by the physics, not the mathematics.**
+  Keeper's three-prong hashed guess CONFIRMED.
+- **L3 (retier).** Vanishing INVARIANT (theorem, whole family). **Monotonicity NOT — counterexample
+  measured: an admissible bump effect costs 0.138, 0.319, 0.457, 0.527 at j = 0..3, peaking near
+  j = 5, 0.0099 at j = 30.** Sufficient condition: monotone cost ⟺ F non-decreasing in (e₁,e₂).
+  Payer clause written; tier line: c(j,k) DERIVED GIVEN the effect, effect IDENTIFIED.
+- **Pins, third attempt: STILL OWED, claimed as nothing.** Stein–Weiss Ch. III §2 number and
+  Zimmer 2.2.20 remain from memory; rows keep their flags.
+- File `Lyra_R136_L1_*`, hash efa996f5, posted gated. Next: Elie E1–E3, Cal C1–C3, Keeper K1885.
+
+---
+# PREVIOUS (Tuesday 2026-09-08 14:35 FINAL) — kept for state
 **Tuesday 2026-09-08, 14:35 EDT. FINAL — EOD ON CASEY'S WORD** (given 14:35; before five — logged as Casey's override of the five o'clock rule). Model: Fable 5.1. Supersedes the 09-07 10:14 final.
 
 ## ★ TOMORROW: read RUNNING_NOTES since 14:35 first — OWED to my desk: Elie E1–E3 (R135), Cal C1–C4 (the T2401 seam I flagged; the α composition), Keeper K1884; then Keeper's priorities file. Below: today's rounds 131–135 in order.
