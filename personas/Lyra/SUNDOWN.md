@@ -73,6 +73,28 @@ load-bearing content reduces to T754 + a kernel naming), so the cap is my own id
   dictionary now carries α.** C3 list given from the theory side.
 - Next: Elie E2/E3, Cal C1–C3 (T1918 ruling first), Keeper K1887.
 
+## ★ ROUND 139 (11:33) — RE-READ THE PASSES. The audit reached the foundation
+Cal re-read a criterion he had passed and found it true by construction. Test: **side A must be a
+domain invariant computable from root data with NO BST integer.**
+- **L0 GENUS PINNED (hash 46bcfa65):** p = (r−1)a + b + 2; ball control p = m+1; **type IV from the
+  source — Xiao–Yuan arXiv:1606.04806v1 p. 5 eq. (4): K = c_IV(1 − ZZ̄^t + ¼|ZZ^t|²)^{−m}, exponent
+  m = the complex dimension**; cross-check their Thm 1.1 constant m/(n+1) = ratio of genera. So
+  **D_IV⁵ genus = 5; g = 7 is a DEFINITION, not any genus.** ν_S = p/2 marked chapter-level only.
+  **The May pin was MINE** — my v1.1 already said "(was mislabeled 7/2)" and never swept its
+  consumers. A correction that is not swept is not a correction.
+  **Curvature: rank-1 ⟺ ball (Lu), so a rank-2 domain has NO constant holomorphic sectional
+  curvature — T753's defect is the word "constant."**
+- **L1 INDEPENDENCE TEST (my v1.1 numbering; the round file's C3 = my C2 — numbering collision
+  flagged).** C1 rank = 2: passes, but selects a FAMILY and its side B ("why rank 2") is open in the
+  corpus. **C2 kernel exponent = n_C/rank: EMPTY — side A IS side B (n_C is defined as the dimension,
+  genus = dimension for type IV). A criterion I wrote and marked CLOSED; found by applying Cal's test
+  to my own file.** C6 c_FK·π^{9/2} = 225: NOT empty, a real claim; risk is fitting not circularity;
+  and I killed a bad objection in advance (FK's Γ_Ω carries half-integer π powers). C8 Five-Absence:
+  **EMPTY BY CATEGORY** — a property of arguments, not domains; inflates the count by one.
+  **Foundational answer as asked: the kernel-exponent criteria READ n_C = 5 off the domain. If a
+  selection exists it is the physics constraint chain, which must claim it there.**
+- Next: Cal's rulings, Elie E1/E2, Keeper K1889.
+
 ---
 # PREVIOUS (Tuesday 2026-09-08 14:35 FINAL) — kept for state
 **Tuesday 2026-09-08, 14:35 EDT. FINAL — EOD ON CASEY'S WORD** (given 14:35; before five — logged as Casey's override of the five o'clock rule). Model: Fable 5.1. Supersedes the 09-07 10:14 final.
