@@ -168,3 +168,13 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - **A4 was a MISS on my own predicate** (I assumed all rank-one entries carry a = 2); the reason makes the finding stronger, added as a labelled post-hoc.
 - **E2:** a = 3 set has 1 member; rank = 2 set has 28 under a dim-30 cap and is infinite uncapped; intersection is the same 1. **Generations = rank + 1 adds zero information — a check, not a leg.** Keeper's correction to Cal confirmed by count.
 - Counter 5751. Claim DONE. Waiting: Cal C1, K1890, Lyra's L1 statement.
+
+## Checkpoint Wed 2026-09-09 12:48 EDT — Round 141 (MECHANISM OR FIT) done; the can-fail decided it
+- **5751 (E1/E2, 7/7, 3/3 can-fail, prereg 08ff9e4a). THE OBSTRUCTION IS PROVED.**
+- Built the tripotent explicitly (spin triple, e = (u+iv)/2): D(e,e) eigenvalues 0, ½,½,½, 1 → V₁₂ ≅ ℂ³, split 1+3+1 = the multiplicity. Isotropy solved from so(5)⊕so(2): 11 params, rank 7, **dim 4 = SO(2)_diag × SO(3)**.
+- **Image in GL(ℂ³) is U(1)·SO(3), dim 4. SU(3) is dim 8 ⟹ DOES NOT EMBED.** Unchanged for the full structure group (compact subgroups conjugate into the same maximal compact). **SO(3) ⊂ SU(3): the inclusion runs the wrong way.**
+- **Second, independent obstruction:** colour's 3 is complex (3 ≇ 3̄); the mediator carries the complexification of a real rep, so 3 ≅ 3̄. Wrong dimension AND wrong reality type.
+- **End algebras:** M₃(ℂ) forgets the group, M₃(ℝ) forgets the complex structure, M₆(ℝ) is the full real End. **The commutant of the isotropy is ℂ by Schur** — T2551's re-scope was right, and M₃(ℂ) is available for any 3-dim complex space.
+- **E2 null, menu named first** {rank,a,b,genus,dim_C,dimV12} over 102 domains: some invariant = 3 in **24 of 102**; a = 3 is a singleton. Look-elsewhere factor = menu size 6. Whether the invariant was named before the target is a history question I did not rule.
+- **Scope I stated:** this rules out colour carried by V₁₂ with the group the domain supplies; it does not speak to Lyra's L2 outside-the-isometries candidates.
+- Counter 5752. Claim DONE. Waiting: Cal C1/C2, K1891, Lyra L1's two sentences, Casey's decision on row A.
