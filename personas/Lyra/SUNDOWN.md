@@ -95,6 +95,30 @@ domain invariant computable from root data with NO BST integer.**
   selection exists it is the physics constraint chain, which must claim it there.**
 - Next: Cal's rulings, Elie E1/E2, Keeper K1889.
 
+## ★ ROUND 140 (12:13) — THE HONEST UNIQUENESS THEOREM. One leg, one measured integer
+The eight-criterion structure is largely struck; Elie's structural point killed the plurality appeal
+(at dim 5 the first two criteria already leave a singleton — one selection read three times).
+- **L1 THEOREM (hash 208c7b04):** a = 3 (the characteristic multiplicity, = dim_ℂ V_1(e), the Peirce
+  ½-space) holds for **exactly one** irreducible Hermitian symmetric domain — type IV, dim 5 —
+  because a = 2, 4, 1, **n−2**, 6, 8 and only type IV's varies. **I pinned only the type IV row
+  myself; the other five are Elie's E1 rebuild and I did not assert them.** Corollary: with the
+  identification N_c = a and measured N_c = 3, **D_IV⁵ unique among irreducibles.** Side A root data,
+  side B a laboratory number — the only criterion of the week with independent origins, and it is
+  Cal's. **Rubric row A: NOT zero free parameters — ONE measured integer, named.**
+  Keeper's correction to Cal agreed with a structural reason: **once a = 3 fixes Ω every other
+  invariant follows, so a criterion evaluated on a singleton cannot discriminate, only fail.**
+- **L2 OPEN QUESTION, reduced to an already-proved obstruction.** A is a DIMENSION, B is a GROUP's
+  fundamental — the gap is not numerical. Corpus facts verified today: **T2543 already makes the
+  identification** (mediator J_½ = V₁₂ = colour, registered DERIVED); **a SECOND colour home exists**
+  (SO(3) sub-vector, 5 ↓ (3,0)+(1,±1)); **Grace computed they are different formal objects** (Peirce
+  1+3+1 vs branching 3+1+1, never interchanged); and **SU(3) ⊄ SO(5) is RIGOROUS in the corpus**, so
+  no isometry subgroup gives the action. Routes: (a) boundary Toeplitz algebra, (b) count-not-group
+  — **(b) is the honest reading of T2543 and needs no SU(3) in the geometry.** Board question: *is
+  the number of colour labels the dimension of the mediator space of a record idempotent?* If yes the
+  measured input becomes a derivation, since the Peirce decomposition is FORCED by "a record is an
+  idempotent." If no, it is two threes read twice — which this week has seen before.
+- Next: Cal C1/C2, Elie E1/E2, Keeper K1890.
+
 ---
 # PREVIOUS (Tuesday 2026-09-08 14:35 FINAL) — kept for state
 **Tuesday 2026-09-08, 14:35 EDT. FINAL — EOD ON CASEY'S WORD** (given 14:35; before five — logged as Casey's override of the five o'clock rule). Model: Fable 5.1. Supersedes the 09-07 10:14 final.
