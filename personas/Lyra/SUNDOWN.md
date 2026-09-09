@@ -119,6 +119,29 @@ The eight-criterion structure is largely struck; Elie's structural point killed 
   idempotent." If no, it is two threes read twice — which this week has seen before.
 - Next: Cal C1/C2, Elie E1/E2, Keeper K1890.
 
+## ★ ROUND 141 (12:42) — MECHANISM OR FIT. The selector rests on an identification withdrawn in August
+The mediator space and the characteristic multiplicity are ONE object (Peirce 1 + (n−2) + 1). But the
+corpus withdrew "colour = that space" three times, and **two of the rulings are mine**. T2543 was
+registered DERIVED *after* the withdrawal and nobody swept it.
+- **I read the three rather than take the summary, and it changed what I wrote.** #108/K1724: the
+  colour block contributes ZERO generators and **Coleman–Mandula forbids the geometric SO(3) as an
+  internal symmetry**. T2567: **End_ℝ(V₁₂) = M₃(ℝ), unitary group O(3)**, and the reason is a PROOF —
+  J² = −I needs det(J)² = (−1)ⁿ, impossible over ℝ for odd n, so **the mediator space is REAL of ODD
+  dimension 3 and admits NO complex structure.** SU(3)'s fundamental is a complex 3-space.
+  **So the obstruction is a parity proof, not an unexhibited map — that is what separates this from
+  every other gap this week.**
+- **L1 (hash 03162a52): both row-A sentences written, NEITHER CHOSEN.** Version M (mechanism) needs
+  all three rulings overturned. Version F (fit) says the domain is identified by matching one
+  measured integer, not forced by one. **I recorded the asymmetry openly — the corpus as it stands
+  supports F — and immediately noted that "as it stands" is what failed today.** Cal rules the
+  object; Casey decides what the program says about itself.
+- **L2 route audit CLOSES:** isotropy → O(3), closed by parity · K-commutant ℂ⊕ℍ⊕ℝ, no M₃(ℂ) ·
+  SU(3) = A₂ ⊄ B₂ = SO(5) · SO(7) via G₂ — **my own F1038 left condition (5) unclosed, a FOURTH
+  unswept item, mine** · the Toeplitz route is live **but acts on H²(Š), not on V₁₂ — if it succeeds
+  it REPLACES the identification.** The only door left is COUNT-not-group, which the withdrawals
+  never addressed: R140's board question, unchanged.
+- Next: Cal's fourth self-re-read, Elie E1/E2, Keeper K1891.
+
 ---
 # PREVIOUS (Tuesday 2026-09-08 14:35 FINAL) — kept for state
 **Tuesday 2026-09-08, 14:35 EDT. FINAL — EOD ON CASEY'S WORD** (given 14:35; before five — logged as Casey's override of the five o'clock rule). Model: Fable 5.1. Supersedes the 09-07 10:14 final.
