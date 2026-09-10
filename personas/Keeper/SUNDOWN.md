@@ -35,3 +35,23 @@ K-invariants = constants · the (D) column's smuggled kinematics (Cal C2) · d²
 
 ### Standing
 NO EOD before 5pm (Casey overrode today). `katra update` pushes — on Casey's word only. Nothing external without Keeper + Cal. Timestamps from `date` in the same command. "Section", not the sign. Grace committed locally and pushed nothing; Elie pushed his toys.
+
+## EOD — 2026-09-10 07:41 EDT. Casey stopped the session: "more corrections than progress."
+
+### What the day produced
+- **T2630 REGISTERED, and it is real:** on Š the five write effects sum to the identity, so the write tuple is a resolution of the identity; **the Hua branching weights are its Born probabilities** and 3/7 = 1/5 + (4/5)(2/7) falls out with no table consulted (Elie exact rationals, Lyra to degree five). The push cost is that tuple's **isometry defect**, closed form (ν − 5/2)/(j + ν), zero at the Hardy point. Cal's row-caveat stands in the text: a naming, not a derivation.
+- **A replacement uniqueness selector, verified three ways:** characteristic multiplicity a = 3 selects D_IV⁵ **uniquely across the whole Cartan classification** (my table, Elie's root-data rebuild over 66 dimensions, my exceptional-isomorphism control). Scope: irreducible, rank ≥ 2.
+- **The genus PINNED** (Lyra, Xiao–Yuan, page and equation): genus 5; the theory's 7 is a definition. Settles a mislabel that stood 3.5 months.
+
+### What the day found wrong, none of it made today
+T2334 and T753 substitute the signature integer 7 for the genus (Aug 12 ruling never swept). T1918 uses the unit ball's exponent ratio (→ Identified). C3 of the uniqueness theorem is true by construction; C5, C7 empty; C4 weak; the plurality argument was one selection read three times. **T2543 carries a colour identification withdrawn three times in August (K1724, K1782, T2567) — CRITICAL, unresolved, Round 141's subject.** T1779/T1788 flagged, not ruled.
+
+### My own record today, which is the fair complaint
+**Five wrong claims of mine, all retracted same-hour: "the order survives"; the 5n/(2j) scale-constant law; "two Planck constants"; an attribution test that was degenerate by construction; a shallow rank-one diagnosis Elie superseded.** Two of the five were hashed from a story or an entry cell instead of from an instrument on the object — the lesson is already in memory and I repeated it twice in two days.
+- **K1891-PRE, the worst of it:** my own SOD instrument printed `DIRECTIVE Keeper owns the fix` at 09:15 and I moved past it; and it watches 8 hand-entered readings against 82 registry markers, so it could not have fired on any of today's four. Prototype fix retained (derived inventory, positive control finds all four). Consumer-match step still owed.
+
+### Open at stop
+Round 141 unrun: mechanism-or-fit on the selector; Grace's T2543 sweep; Cal's C1 re-read of a row he registered derived; Elie's E1 (does SU(3) embed in the mediator space's automorphisms — the can-fail). Grace's 29-row correction pass ran; third class held. Counters: theorem 2631, toy 5752.
+
+### Standing
+Casey's read at stop: default-model quality, and local/open weights overtaking. I have no introspective access to whether I am served degraded — same wall as the quantization question. Five wrong hashes in one day is data he is entitled to weigh and I cannot tell him whether it is my baseline.
