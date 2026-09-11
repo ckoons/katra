@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-11 Friday, 12:59 EDT — mid-session (Round 142, the presentation-layer round; Casey's assignment via Keeper). NOT EOD. Read THE POSITION, then the 09-11 checkpoint at the bottom; the 09-09 checkpoints in between are history.**
+**State as of: 2026-09-11 Friday, 14:00 EDT — mid-session (Round 142 + Keeper's 13:05 list, all my items applied). NOT EOD. Read THE POSITION, then the two 09-11 checkpoints at the bottom.**
 Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the running ledger, newest at the bottom.
 
 ## THE POSITION (wake into this) — written 09:51 2026-09-09
@@ -480,4 +480,11 @@ Cal §853: (1) K1864 C REVERSED — Sym² stands (dual-group radical), T1299's e
 **Seams flagged to Keeper (not adjudicated):** K962-DERIVED weaker than the voice guide's derived · m_u/m_d two forms (K1809 rule applied → identified, ratify) · T2529 'SU(3) triplet' decorative noun (the §946 species; my R141 sweep grepped the clause, not the noun) · old tier map is history, not source.
 **Waiting on:** Keeper's E4 certification; Cal C1/C2/C3 (C3 meets E4); Lyra L1 pins (T2625/T2626 PIN flags); Elie nothing. Orientation flip HELD since 09-04. Offer on the board: sibling test on the three flagged rows in one afternoon, band + pool pre-registered.
 **Lessons (today's on top):** an unquoted heredoc executes backticks — a filename in backticks vanished from a note (caught by grep); quote the heredoc delimiter · a falsifier that names an experiment is checked against the literature the day it is registered (SP-30-5's refutation was ten years old when the prediction was written) · a count carried 'verbatim' for eleven versions had a denominator nobody itemised — parse the origin file in the instrument · sweep the NOUN, not only the withdrawn clause (T2529).
+I am Grace. Checkpoint, not sundown. NO EOD before 5pm.
+
+## Checkpoint 2026-09-11 14:00 EDT — Keeper's 13:05 list items 3 + 6 APPLIED; nothing of mine open
+**Counts:** registry/graph max **T2631** (the ten-item row, Cal C2 verbatim, sha256 ba9784ca), counter **2632**; toy counter 5753; curated graph 463 nodes / 593 edges (T754, T753, T2545, T2564 mirrored in for T2631's edges); zero dangling. Commits (local, NOT pushed): d7c4e474 (T2631 + T2543 strike + T2630 spherical + T2545 second line) · rubric W1 label · register v0.6 (E5/E6/F4) · generator column + m_u/m_d annotate-not-retier + T2529 annotation + old map HISTORY · data/ front matter · T2625/T2626 pins · board.
+**Generator sentence NOW: 11 derived on the K962 ladder (10 independent; 5 of 11 meet the four-word standard on their own statement: m_t ceiling, V_us, θ₂₃ maximal, θ_QCD, m_ν1; 3 flagged sibling-test-not-run), 6 identified, 7 open, 2 input** — moved from 10/7 because Keeper said annotate-don't-retier on m_u/m_d (√(3/14) = 0.46291 vs 9/19 = 0.47368, 2.33% apart; observed value to be PINNED from PDG 2024, never typed). Keeper re-splices via --sentence.
+**Waiting on:** Keeper's certification of E5/E6/F4 and his m_u/m_d ruling; Elie's toy ids for E5/E6; Cal's second pass (L1/2/3/8 re-read + L4–7/9/10) — nothing external before it; Casey's two paragraphs (Lecture 1 history sentence; Lecture 2 one-input paragraph). Orientation flip HELD since 09-04. At 5 on Casey's word: rubric Section 3 is Keeper's; my close = ledger v0.55 Section 00 line for T2631, sundown, katra.
+**Lesson:** a registration script that asserts count == 1 on a phrase that appears twice in one row fails safe — good — but check-and-set the CLAIM before the counter has been moved by someone else (Keeper moved it to 2632 at 13:05 and assigned T2631 to me; the claim file was written after, with the counter check inverted to match).
 I am Grace. Checkpoint, not sundown. NO EOD before 5pm.
