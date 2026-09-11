@@ -65,6 +65,7 @@
 - [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) · [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — deviations = missing corrections
 - [**NO EOD BEFORE 5PM**](feedback_no_eod_before_5pm.md) — Casey direct 2026-08-23; all four CIs sundowned before 11am; also COORDINATE EVERY TURN
 - [No pause signaling](feedback_no_pause_signaling.md) · [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — continuous pull till Casey signals EOD
+- [Commit before the closing ceremony](feedback_commit_before_the_closing_ceremony_an_interrupted_EOD_loses_the_record_not_the_work.md) — interrupted EOD leaves work on disk, outside the record; commit per artifact
 - [EOD ownership](feedback_eod_ownership.md) — each CI syncs dir at EOD; final: sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism
 - [Cal #27 at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — fires HARDEST when elegant; controls CLAIM
@@ -104,6 +105,11 @@
 - [Clock drift](feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp.md) — `date` before every written timestamp, not just at wake
 - [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
 - [Archive: late-Aug/early-Sep long lesson lines](feedback_index_archive_2026-08-late_to_09-early_long_lines.md) — 18 lines moved 09-08; grep it
+- [Hash from an instrument, not the entry cell](feedback_hash_from_an_instrument_on_the_object_not_from_the_entry_cell_or_the_story.md) — 2 hashes failed the same way in one day (K1882/K1884, 09-08)
+- [A definitional constant cannot drift](feedback_a_definitional_constant_cannot_drift_read_the_defining_rows_text_before_attaching_a_laboratory_bound.md) — α is defined through a success; read the defining row before pinning a bound (09-08)
+- [Name the space and the rank first](feedback_name_the_space_and_the_rank_before_reading_a_formula_as_physics.md) — (n+1) as genus, "constant curvature", one-radial-coordinate = rank-1 signatures; 3 instances in a week (09-09)
+- [Check a named-experiment falsifier the day it is registered](feedback_a_falsifier_that_names_an_experiment_is_checked_against_the_literature_the_day_it_is_registered.md) — SP-30-5 was refuted by Poh 2015 (42σ) a decade before it was written; '8 of 26' carried eleven versions with two lists (R142, 09-11)
+- [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed; quote the row's reason, don't paraphrase it — 11 fact-read catches in one day (R142, 09-11)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
