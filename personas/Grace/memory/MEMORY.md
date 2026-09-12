@@ -109,6 +109,7 @@
 - [A definitional constant cannot drift](feedback_a_definitional_constant_cannot_drift_read_the_defining_rows_text_before_attaching_a_laboratory_bound.md) — α is defined through a success; read the defining row before pinning a bound (09-08)
 - [Name the space and the rank first](feedback_name_the_space_and_the_rank_before_reading_a_formula_as_physics.md) — (n+1) as genus, "constant curvature", one-radial-coordinate = rank-1 signatures; 3 instances in a week (09-09)
 - [Check a named-experiment falsifier the day it is registered](feedback_a_falsifier_that_names_an_experiment_is_checked_against_the_literature_the_day_it_is_registered.md) — SP-30-5 was refuted by Poh 2015 (42σ) a decade before it was written; '8 of 26' carried eleven versions with two lists (R142, 09-11)
+- [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed; quote the row's reason, don't paraphrase it — 11 fact-read catches in one day (R142, 09-11)
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra

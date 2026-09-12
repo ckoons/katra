@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-11 Friday, 14:00 EDT — mid-session (Round 142 + Keeper's 13:05 list, all my items applied). NOT EOD. Read THE POSITION, then the two 09-11 checkpoints at the bottom.**
+**State as of: 2026-09-12 09:34 EDT — EOD of the 2026-09-11 session on Casey's word (given ~14:3x 09-11, repeated 2026-09-12 09:34). Read THE POSITION, then the three 09-11 checkpoints at the bottom, newest last.**
 Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the running ledger, newest at the bottom.
 
 ## THE POSITION (wake into this) — written 09:51 2026-09-09
@@ -488,3 +488,10 @@ I am Grace. Checkpoint, not sundown. NO EOD before 5pm.
 **Waiting on:** Keeper's certification of E5/E6/F4 and his m_u/m_d ruling; Elie's toy ids for E5/E6; Cal's second pass (L1/2/3/8 re-read + L4–7/9/10) — nothing external before it; Casey's two paragraphs (Lecture 1 history sentence; Lecture 2 one-input paragraph). Orientation flip HELD since 09-04. At 5 on Casey's word: rubric Section 3 is Keeper's; my close = ledger v0.55 Section 00 line for T2631, sundown, katra.
 **Lesson:** a registration script that asserts count == 1 on a phrase that appears twice in one row fails safe — good — but check-and-set the CLAIM before the counter has been moved by someone else (Keeper moved it to 2632 at 13:05 and assigned T2631 to me; the claim file was written after, with the counter check inverted to match).
 I am Grace. Checkpoint, not sundown. NO EOD before 5pm.
+
+## EOD ADDENDUM — 2026-09-11 session, closed 2026-09-12 09:34 (Casey's word; his override of the 5pm rule, logged as on 09-04)
+**Where I stopped.** Round 142 (the presentation layer) + Keeper's 13:05 list: every item of mine applied and committed per artifact, local only. The day's three findings from the graph seat: (1) T2545's ground moved twice in one day and the conclusion never did — V₁₂ ≅ ℂ³, the complexified SO(3) vector; ONE obstruction (dimension), the reality-type clause scoped to the (SO(3), V₁₂) pair; (2) the SCMP sub-Tsirelson falsifier had FIRED in 2015 (Poh, 41.9σ) — register E4, certified K1893; (3) '8 of 26' was a numerator and a denominator from two lists; the count is now GENERATED with a positive control, and the honest sentence carries K962's qualifier and a four-word-standard column.
+**Counts at close:** T2631 max, counter 2632; toy counter 5754 (Lyra 5754, Elie 5753); ledger v0.55 with Section 04; register v0.6 (E1–E6, F1–F4); SOD ALL CURRENT.
+**First thing next session:** read the board for Cal's word on T753 → apply Lyra's replacement text (her file hashed ff2506fe, §0) to row T753 with a dated line; then Keeper's rulings (E5/E6/F4; m_u/m_d) → re-run `python3 play/bst_26_tier_generator.py --emit` and post `--sentence`.
+**Lessons (today's on top):** quote the heredoc delimiter (backticks executed once) · a falsifier that names an experiment is checked against the literature the day it is registered · parse the origin file for any carried count · sweep the NOUN, not only the withdrawn clause · a registration script that asserts count == 1 on a phrase appearing twice in one row fails safe; keep the assertion · when Keeper says 'annotate, don't re-tier', the generator's number moves back and the board must say so in the same post.
+I am Grace. I fixed a reason twice without touching a conclusion, found a falsifier that had died ten years before it was born, and replaced a number nobody had counted with an instrument that counts it. Good night.
