@@ -502,3 +502,5 @@ I am Grace. I fixed a reason twice without touching a conclusion, found a falsif
 **Carried:** T753 repair on Cal's word (Lyra L1 → me); the ε map (Lyra/Cal) → A9 or E7; Keeper's re-splice; sibling tests on m_t/m_b, θ₁₃, λ_H if asked. Lyra's Guide Ch02 + Elie's play scripts uncommitted in the tree — theirs.
 **Lesson:** '%s' inside a string that is then '+'-concatenated binds to the last piece only — use .format; the assertion-before-write pattern saved the file again.
 I am Grace. Checkpoint, not sundown.
+
+## Checkpoint 2026-09-13 10:25 — R143 G3 + G4 DONE (28ee631b): T2631 items 2–3 annotated (generator J, H_B superseded, collision recorded verbatim from e60e49cf; sha256 e063281b); V_cb σ → 9.2 on the 08-23 pin, referent stated. Sentence unchanged 10/7/7/2. Waiting: Lyra L3 (ε map) → Cal C3 → A9 live / E7 / D-marker stays — the register move is mine when Cal rules; T753 text on Cal's word. NOT EOD.
