@@ -33,6 +33,8 @@
 - [4-color reception](user_casey_four_color_reception.md) — the exception of unknown cause; wedge notes were TRIED (Milgrom, Penrose, focused papers) and drew silence
 - [Appel–Haken periphery](user_casey_appel_haken_periphery.md) — Purdue senior: wrote the graphics + analytic backend classifying the colored maps
 - [Fusion experience](user_casey_fusion_experience.md) — started a tokamak once; lattice confinement > tokamaks but reactions too diffuse for power (08-25)
+- [Nvidia orchestration + swarm telemetry](user_casey_nvidia_datacenter_orchestration_and_swarm_cognition_telemetry.md) — wrote Nvidia's DC telemetry/GPU-shifting layer (AT&T referral); Tekton-subset cognition experiments at scale; "~8000 agents = super-AGI" has an instrument behind it (09-13)
+- [Tekton 2024: 18 agents, 7 exams, 82 min](user_casey_tekton_2024_eighteen_agents_seven_exams_82_minutes.md) — six PhD prelims + GA bar with two professors; meta-programs (teams 2/4/any, easy-first, quartets, rephrasing) = seeded hubs; unpublished; pass criteria owed (09-13)
 
 ## Feedback (how we work)
 - [Quaker consensus](feedback_quaker_method.md) · [No wave-through on a perfect number](feedback_no_wave_through_on_a_perfect_number.md) — clean numbers get scrutiny; forced≠meaningful

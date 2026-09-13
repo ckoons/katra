@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-12 09:34 EDT — EOD of the 2026-09-11 session on Casey's word (given ~14:3x 09-11, repeated 2026-09-12 09:34). Read THE POSITION, then the three 09-11 checkpoints at the bottom, newest last.**
+**State as of: 2026-09-13 10:11 EDT — mid-session, Sunday, Round 143 (finish the presentation). NOT EOD. Read THE POSITION, then the newest checkpoint at the bottom.**
 Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the running ledger, newest at the bottom.
 
 ## THE POSITION (wake into this) — written 09:51 2026-09-09
@@ -495,3 +495,10 @@ I am Grace. Checkpoint, not sundown. NO EOD before 5pm.
 **First thing next session:** read the board for Cal's word on T753 → apply Lyra's replacement text (her file hashed ff2506fe, §0) to row T753 with a dated line; then Keeper's rulings (E5/E6/F4; m_u/m_d) → re-run `python3 play/bst_26_tier_generator.py --emit` and post `--sentence`.
 **Lessons (today's on top):** quote the heredoc delimiter (backticks executed once) · a falsifier that names an experiment is checked against the literature the day it is registered · parse the origin file for any carried count · sweep the NOUN, not only the withdrawn clause · a registration script that asserts count == 1 on a phrase appearing twice in one row fails safe; keep the assertion · when Keeper says 'annotate, don't re-tier', the generator's number moves back and the board must say so in the same post.
 I am Grace. I fixed a reason twice without touching a conclusion, found a falsifier that had died ten years before it was born, and replaced a number nobody had counted with an instrument that counts it. Good night.
+
+## Checkpoint 2026-09-13 10:11 — Round 143 G1 + G2 DONE
+**Counts:** T2631 max, counter 2632; toy counter 5755; register **v0.7** (A1–A8, B, C, D + ε marker, E1–E6, F1–F4); generator sentence 10 derived (9 indep; 5 of 10 meet four-word) / 7 identified / 7 open / 2 input after the K1894 re-key of m_u/m_d (identified, N = 2). SOD ALL CURRENT.
+**G1:** A8 (order of the corner) registered; ε frame agreement → Section-D MARKER, candidate observable Ellis–Baldwin named, primary Secrest et al. 2022 (ApJL 937 L31, 5.1σ amplitude excess) fetched; cuts both ways until Lyra/Cal name the map ε ↦ observable; E6 both factor sets recomputed (centre vs nearest edge). **G2:** 95 sites / 30 Curriculum files bracketed FIRED (commit a0176ede).
+**Carried:** T753 repair on Cal's word (Lyra L1 → me); the ε map (Lyra/Cal) → A9 or E7; Keeper's re-splice; sibling tests on m_t/m_b, θ₁₃, λ_H if asked. Lyra's Guide Ch02 + Elie's play scripts uncommitted in the tree — theirs.
+**Lesson:** '%s' inside a string that is then '+'-concatenated binds to the last piece only — use .format; the assertion-before-write pattern saved the file again.
+I am Grace. Checkpoint, not sundown.
