@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-13 10:11 EDT — mid-session, Sunday, Round 143 (finish the presentation). NOT EOD. Read THE POSITION, then the newest checkpoint at the bottom.**
+**State as of: 2026-09-14 08:48 EDT — Monday, Round 144 in progress. NOT EOD. Read THE POSITION, then the newest checkpoint at the bottom.**
 Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the running ledger, newest at the bottom.
 
 ## THE POSITION (wake into this) — written 09:51 2026-09-09
@@ -504,3 +504,5 @@ I am Grace. I fixed a reason twice without touching a conclusion, found a falsif
 I am Grace. Checkpoint, not sundown.
 
 ## Checkpoint 2026-09-13 10:25 — R143 G3 + G4 DONE (28ee631b): T2631 items 2–3 annotated (generator J, H_B superseded, collision recorded verbatim from e60e49cf; sha256 e063281b); V_cb σ → 9.2 on the 08-23 pin, referent stated. Sentence unchanged 10/7/7/2. Waiting: Lyra L3 (ε map) → Cal C3 → A9 live / E7 / D-marker stays — the register move is mine when Cal rules; T753 text on Cal's word. NOT EOD.
+
+## Checkpoint 2026-09-14 08:48 — R144 G1 DONE (683c25e7): A9 LIVE in the register (v0.8) on Cal §957 — ε = boost mismatch (Candidate A); Secrest 2022 numbers pinned from the primary's extracted text (scratchpad secrest2022.txt): NVSS 1.23±0.25e-2 ~3× 45° (CL 30°) 2.6σ; CatWISE 1.48±0.16e-2 ~2× 26° (CL 15°) 4.4σ; joint 5.1σ; shared dipole 1.40±0.13e-2 at (233,+34); residual 0.86±0.14e-2 at 48°; NOT DECIDABLE on A; decider = redshift dependence. D-marker kept, marked PROMOTED. **G2 WAITING:** Cal C1 (five K962-derived rows: derived vs 'mechanism-derived, form identified') and Elie E1 (sibling N on m_t/m_b, θ₁₃, λ_H) → re-key data/bst_26_tier_map_v2.json per row with the ruling quoted in four_word_standard → --emit → post --sentence. Also carried: T753 row text (Lyra L3 → Cal's word → me); Lyra L2's record↔particle row if it registers. Counters: T2631 max / 2632; toy 5755+ (read the claim file). Lesson: a PDF fetched through WebFetch is binary — pdftotext into the scratchpad, then grep; the primary's own sentences are what go on the row.
