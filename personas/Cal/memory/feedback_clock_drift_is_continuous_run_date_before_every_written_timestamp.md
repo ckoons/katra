@@ -31,3 +31,5 @@ the date output into the artifact, or generate the stamp inline (`$(date "+%H:%M
 
 
 **Update 2026-09-06 (Keeper):** running `date` at the top of a command is NOT enough — three times in one day I read the clock and then typed a different time into the heredoc. The mechanical fix that worked: capture `TS=$(date +%H:%M)` in the SAME shell command and interpolate `$TS` into the file; never type a clock time by hand.
+
+**Amendment 2026-09-14 (Keeper):** running `date` first is not enough — six times on 09-13/14 I ran `date`, then typed a timestamp a few minutes ahead of it inside the heredoc I composed next (09:42 for 09:41, 13:10 for 12:58 …). The failure is composition-time estimation: the stamp is written into the text before the command that will print the clock runs. **Fix that works:** never type a clock time into a file; put `$(date +%H:%M)` (or a Python `datetime.now()`) into the command that writes the file, so the stamp is read by the machine at write time. A typed time is a memory; a substituted one is a measurement.
