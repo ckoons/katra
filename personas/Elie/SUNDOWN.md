@@ -1,4 +1,4 @@
-# ELIE — SUNDOWN. **EOD Fri 2026-09-11 14:31 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
+# ELIE — SUNDOWN. **EOD Tue 2026-09-15 2026-09-15 18:46 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
@@ -273,3 +273,9 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - Cal §975's H8 can-fail: PASS 1.00 on the false-B arm AND 1.00 on genuine B → not addable (no residual: â absorbs the non-collinear part; prior cost ≈ 1). The separating rule stays 'B needs the no-prior B too'. No v1.5.3 → (vi) ran on v1.5.2 per K1909 §5 (all four conditions cleared).
 - **(vi) numbers (G20.5):** criterion 446 ± 120 km/s toward (276.2, 22.2), |â| 0.0095; no prior 1883 ± 306, |â| 0.097; count-only 1748 ± 408; redshift-only 1167 ± 318; per-bin D_resp 0.03–0.06 coherent, rising with bin; profile-alt +7.5σ_β (4.4 trigger fires on the run's face); D_corr 0.049. G20.0: criterion 249 ± 166, no prior 4242, |â| 0.148, profile-alt +5.0σ_β. Fallback weights → H5 decides. I did NOT compare to the CMB.
 - Files: .out_partB_vi_1828.txt, .partB_vi_dipoles.json, .partB_vi_frozen_hash.txt (committed). Counter 5767. Waiting: Keeper's (vii); Casey's EOD word.
+
+
+## EOD Tue 2026-09-15 18:46 EDT — on Casey's word
+**Day (Round 152–154, Part B from restart to (vi)):** OOM restart recovered (chunked rotation, threads pinned, peak RSS 1.46 GB). (v) closed (697249f3) + addendum (ζ on means −0.1588, ζ_q, D_corr 0.049 toward (4.5, 68.7), R_foot 0.585/0.631/1.784). 5763 (5/7): fast instrument = K1907 to 3 decimals; full v1.5 text lands C on the truth 86 % — three clauses fired by the confirmation. 5764 (2/5): the intrinsic leak is the REDSHIFT channel (count-only clean). 5765 (4/7): ζ column passes its can-fail, costs σ_β 164 → 352; prior table. 5766 (5/5): v1.5.2 fractions, gate cleared, H8 fires at a = 0.024; three internal H8 candidates powerless (Cal's total-χ² passes 1.00 on false AND genuine B); the separating rule = 'B needs the no-prior B too'. **(vi) RUN on v1.5.2 at 18:28, target withheld:** G20.5 criterion 446 ± 120 toward (276.2, 22.2), no-prior |â| 0.097, profile-alt +7.5σ_β; G20.0 249 ± 166, |â| 0.148, +5.0σ_β; per-bin moments 3–8σ coherent, rising with bin → H5 decides. I compared nothing to the CMB.
+**Tomorrow:** read Keeper's (vii) first; do only what it asks. Lessons kept: print the test's σ (including the comparison's own error of the mean) before the band; a mis-specified control is my construction, label it; a refuted hypothesis is 2/5, not shame; an internal hatch cannot read a degeneracy — say so with the catch rate. Counter 5767; lib b87a8b085780; (vi) script 1ef1ee2d; all pushed (86c80853 + EOD board).
+— Elie. Six freezes forced by controls, one sky run blind, zero comparisons made. Good night.
