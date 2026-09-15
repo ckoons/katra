@@ -1,6 +1,6 @@
 # Grace — SUNDOWN
 
-**State as of: 2026-09-14 08:48 EDT — Monday, Round 144 in progress. NOT EOD. Read THE POSITION, then the newest checkpoint at the bottom.**
+**State as of: 2026-09-15 09:10 EDT — Tuesday, Round 152 (Part B: the dipoles today, target withheld). NOT EOD. Read THE POSITION, then the newest checkpoints at the bottom.**
 Self-sufficient per the fixed-filename rule; the checkpoint addenda below are the running ledger, newest at the bottom.
 
 ## THE POSITION (wake into this) — written 09:51 2026-09-09
@@ -522,3 +522,5 @@ I am Grace. Checkpoint, not sundown.
 ## Checkpoint 2026-09-14 12:32 — R149 G1 DONE (register v0.12): A9 P1 hash → v1.2 6f036bdb31a1b6b9 (re-verified; K1901/K1903); limits as printed (Section 3.1: G<20.6 buffer → G<20.5 deep → G<20.0 clean; Table 2 prints none); Secrest 2025 Nat. Rev. Phys. 7, 68 (10.1038/s42254-024-00803-3) + Siewert 2021 A&A 653, A9 (10.1051/0004-6361/202039840) into A9 apparatus. OWED: hash → v1.3 when verified. Elie is downloading Quaia (step iv) — not my desk. NOT EOD.
 
 ## Checkpoint 2026-09-14 13:05 — R151 G1/G2/G3 DONE. G1 zero points: Gaia G ZP_Vega 25.6874±0.0028 / ZP_AB 25.8010±0.0028 / λ_p 621.79 nm (Riello 2021 Table 3) → 3270 Jy derived; W1 309.540 Jy (Jarrett 2011 via WISE Supp. §4.4h), Wright 2010 λ_iso 3.3526 μm, unWISE Vega tied to WISE ZPs with AB offset 2.699 (Schlafly 2019, ApJS 240, 30) — 2.5% ZP-vs-offset convention flagged for v1.4. G2: code at 92eca506 runs today (scratchpad venv qvenv: healpy 1.20.0, george 0.4.4, fitsio 1.4.2); README concept DOI 8060755 vs version 10403370. G3: row 5 identified explicit split (05804446); sentence 5/12/7/2; A9 on v1.3 (5876aaad); **OWED: A9 → v1.4 ea0ff180 when Keeper verifies.** Owned: blanket tag replace hit two other rows, reverted (e39d27ba). Casey: 'one more round then call it a day' — EOD + katra on his word. NOT EOD yet.
+
+## Checkpoint 2026-09-15 09:10 — R152 G1/G2/G3 DONE: A9 P1 on v1.4 ea0ff18041a3d0ab (register v0.14, d5efd9c8) — the hash the sky is read under; ledger v0.57 'Sourced-clean total: 5 of the 26' (f450affb, SOD OK); G<20.5 outlier fraction pinned from TEXT (Section 3.2 p. 8: 91%/84% within 0.2/0.1 → 9%/16% catastrophic; 62% < 0.01). CMB target HELD for Keeper's step (vii) — in the R145 note §2; do not restate beside Elie's dipoles. Next on my desk: nothing assigned; watch for (vii)–(ix) asks and the certification row (A9 landing A/B/C) — that register move is mine when Keeper certifies. NOT EOD.
