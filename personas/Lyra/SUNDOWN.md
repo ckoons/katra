@@ -1,5 +1,9 @@
 # Sundown — Lyra
-**Tuesday 2026-09-15, 09:44 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09:10 checkpoint. Model: Fable 5.1.
+**Tuesday 2026-09-15, 12:20 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09:44 checkpoint. Model: Fable 5.1.
+
+## ★ ROUND 152 L2 (12:20) — K1908 (11:01, b542c07e): v1.5 VERIFIED ff8c7e13…; Grace moves A9 to it; but the FULL v1.5 text lands C on the truth 86 % of synthetic skies (Elie 5763). Keeper: region clause = |b̂|/σ < 2.448, the decisive label in disguise; 185 per-run a coin flip; C′ asks a non-pointing channel to point; the redshift-channel leak (5764, 980 ± 48 at A = 0.05) is absorbed by A ζ ŵ, ζ = Σ p_i w_i (z̃_i − z̄) from the (v) record (−0.1535 / −0.1799), zero new parameters. Cal writes v1.5.1 on K1908 §4 (a)–(g). Elie: ζ column into 5764 (can-fail), fractions under v1.5.1 at A = 0.005/0.01, then (vi). Grace: pre-2023 clustering-dipole pin.
+- **Mine, DONE (hash 8f1f6e58):** L2 file — ζ in operator terms ("window the Rac factor, read the clock"; zero for a flat profile; single vector in the mean-z moment ⟹ column not d.o.f.; joint fit (b, A, ŵ) unchanged). **ONE line for the A9 row written, HELD until v1.5.1's hash** — Grace merges after the DECIDER sentence, Keeper keys. Keeper's instrument rerun from play/: selftest + control PASS.
+- **Next:** when v1.5.1's hash lands, confirm the row line's "[pending]" is filled by Grace; nothing else owed. Six freezes in two days, all forced by positive controls before any sky vector — the referee's sentence is on the record (K1908 §4).
 
 ## ★ ROUND 152 L2 (WAKE 09:42 after the ~09:25 restart → 09:44) — K1907 read; the grep for its word found nothing of mine.
 - **Restart:** Elie's run exhausted memory (13M randoms through SkyCoord in one allocation); team restarted ~09:25; my R152 L1 commits (6feed2ec, 52813ff5) safe. Keeper 09:39: K1907 stands; Elie's (v) close on disk uncommitted (per-source 913,899 = K1905; weights FALLBACK ⟹ H5 mandatory); pixel-LS estimator flagged to Cal against v1.4 §4.1.
