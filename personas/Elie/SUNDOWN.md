@@ -262,3 +262,9 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - **Next:** when v1.5.1 names the ζ columns + prior, add them to partB_vi_dipoles.py (linear fit; self-test again); (vi) only on Keeper's gate word, lib sha b87a8b085780 posted. Counter 5766. NO EOD before 5 pm.
 - 12:31 (vi) script carries the ζ columns + --prior option; self-test PASS 4/5 (per-comp σ 270–380 with ζ, the 5765 cost on the (vi) path). Committed, not run.
 - 12:37 v1.5.1 (353b4535) read; means can-fail PASS (1 ± 84 at σ_z 0; 160 ± 76 at 0.04); H7 band 405 ± 37 posted; (v) addendum posted (ζ_means −0.1588, ζ_q, |D_corr| 0.049 toward (4.5, 68.7), R_foot 0.585/0.631/1.784); (vi) script reads the addendum, self-test PASS, NOT run. Waiting: Keeper's verification + gate word.
+
+## Checkpoint Tue 2026-09-15 18:27 EDT — K1909 §5 done (Toy 5766, 5/5); H8 fires; (vi) waits on v1.5.3's hash
+- Session idle 12:50–18:09 (Casey's EOD word then rescinded by K1909). v1.5.2 (8013d959): ΛCDM prior on a, σ_A = 3.4e-3 (10 σ_c; D_cls 5.9e-4 = Grace's pin).
+- **5766:** design σ_β 123 ± 9 (H7 band); A|P1 0.67 (a=0) / 0.74 (ΛCDM) / 0.75 (10×) / 0.65 (0.008) / 0.06 (0.024); B|P1 0.00/0.01/0.01/0.04/**0.80**; B|null 0.47. σ_c-width fires B on the truth 0.10; no-prior unbiased, lands nothing (σ_β 375). Gate (b),(c) PASS; H8 fires at 0.024.
+- **H8 candidates (30 seeds):** K1909's â-consistency catches 0.07; fit χ² 0.00 (no misfit — degeneracy); prior-sensitivity vector 0.07. The one with power: B requires the no-prior fit to land B too (kills all false B; B|null 0.47 → ≤ 0.04) = the refusal in numbers (A-capable, not B-capable). Cal's word.
+- **(vi) script (b0e385dc):** three fits, propagated residual covs, self-test 5/5 PASS; reads ζ from the addendum; runs ONLY with --run on v1.5.3's hash (K1909 §5). Target withheld. Counter 5767.
