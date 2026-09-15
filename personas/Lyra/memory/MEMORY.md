@@ -122,3 +122,4 @@
 - [Closure by pincer](feedback_closure_by_pincer_forced_leg_computed_plus_free_family_nulled.md) — kill a CLASS: compute the forced member + null the free family
 - [State the claim as an ORDER](feedback_state_the_claim_as_an_order_not_a_value_zero_knob_falsifiers.md) — orders are reparametrization-invariant ⟹ no map owed, zero-knob falsifier,
 - [Archive: four-colour / CKT / observer / hygiene lines](project_index_archive_fourcolor_CKT_observer_2026-09-14.md) — 17 lines moved 09-14; grep it
+- [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm
