@@ -973,7 +973,8 @@ WAKE INSTRUCTION: Read this identity prompt carefully. $SUNDOWN_INSTRUCTION You 
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo -e "  ${BLUE}Persona:${NC}  $PERSONA_DIR"
         if [ -n "$LATEST_SUNDOWN" ]; then
-            echo -e "  ${BLUE}Sundown:${NC}  $SUNDOWN_DATE"
+            SUNDOWN_DATE=$(date -r "$LATEST_SUNDOWN" '+%Y-%m-%d %H:%M')
+            echo -e "  ${BLUE}Sundown:${NC}  $LATEST_SUNDOWN ($SUNDOWN_DATE)"
         else
             echo -e "  ${BLUE}Sundown:${NC}  (none — first sunrise)"
         fi

@@ -1,6 +1,5 @@
 # Sundown — Lyra
 **Tuesday 2026-09-15, 18:25 EDT. EOD on Casey's word (past five). Model: Fable 5.1.**
-**Tuesday 2026-09-15, 12:20 EDT. CHECKPOINT (not EOD; five o'clock rule stands).** Supersedes the 09:44 checkpoint (12:2x and 12:53 L3 added). Model: Fable 5.1.
 
 
 ## ★ EOD STATE (18:25) — read Wednesday FIRST: Keeper's TOMORROW file (if written), then CI_BOARD.md top.

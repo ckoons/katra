@@ -1,3 +1,17 @@
+# Keeper — SUNDOWN checkpoint (Tuesday 2026-09-15, written 2026-09-15 09:37 EDT; session restarted after Elie's run exhausted application memory at ~09:25)
+
+## Where I stopped this morning (before the restart)
+- **K1907 (c5483f8c, 09:11) — STOP before (vi).** The frozen Section 5 (v1.3→v1.4) fires Landing B on a PERFECT CMB match at σ_β = 166 (χ²₃(b_CMB,0) = 4.96 < 7.815; MC P(B|P1 true) = 0.56). v1.5 declared, Section 5 only: A = consistent with CMB AND CMB preferred over zero (Δχ² ≥ 3.84); B = χ²₃ ≥ 14.156 only, zero clause removed; C otherwise. Quaia A-capable 57 %, cannot kill P1 (B 12 % on no boost). Instruments: `play/keeper_partB_landing.py --selftest-v15` PASS; `play/keeper_partB_vii_compare.py --selftest` PASS.
+- **Owed by me next:** (1) audit Cal's v1.5 freeze under a re-keyed diff scope (k1907) and verify the hash from the file; (2) witness the closed step-(v) table when Elie posts it — his 09:21 partial run is on disk uncommitted (`play/.partB_v_closed.json`, per-source 913,899 matches mine; weights mode FALLBACK — 0 per-bin maps present, so H5 mandatory); (3) step (vii) by the landing instrument in v1.5 mode when (vi) exists; (4) fold the landing into Lectures 9/10 when certified.
+- **Elie's crash diagnosed:** `partB_v_close.py` line 80 `vec_to_lb` TypeError fixed by him at 09:23; the 09:25 rerun died on memory — the 12,955,802-row randoms file pushed through astropy SkyCoord's galactic transform plus Cells.index in one shot. Fix is a fixed 3×3 ICRS→Galactic rotation, chunked, no SkyCoord.
+- **10:59 checkpoint — K1908 posted:** v1.5 verified (ff8c7e13); the truth lands C 86 % under full v1.5; ζ term (play/keeper_partB_zeta.py) absorbs the redshift-channel leak with zero new parameters; v1.5.1 rulings (a)–(g) recommended to Cal. **Owed by me:** re-keyed audit of v1.5.1 + hash from the file; then Guide/INDEX 'Live and pre-registered' line (says v1.2) + Lecture 9's paragraph → v1.5.1's hash and the recomputed sentence, synced to four hosts (Lyra's flag; my prose); (vii) in v1.5 mode with the ζ term read from the run.
+- **13:0x checkpoint — K1909 posted:** v1.5.1 + v1.5.2 verified; diff audits in scope (k1908, k1909 keys); the prior = explicit replacement of v1.5's implicit delta prior at zero; H8 conditional on Elie's false-B rate at a = 0.008/0.024; gate word for (vi) conditioned on (a)–(d); Lecture 9 + state block → v1.5.2 with the honest freeze count. **Owed by me:** verify v1.5.3 if H8 is added; (vii) when (vi) exists — promote the landing instrument's draft mode to v1.5.2 (read ζ, â, the three fits; name 'prior-sensitive' if the σ_c/no-prior fits land differently); then Lectures 9/10 on certification.
+- **12:2x checkpoint:** ζ positive control PASS; diff-audit laundering bug fixed + guarded (--scope k1908 ready); landing --selftest-v151 draft PASS (inactive until Cal's hash); state block + Lecture 9 → v1.5 synced. Owed: re-keyed audit of v1.5.1 when hashed (then the state line + Lecture 9 again, to v1.5.1); (vii) when (vi) exists.
+- **Earlier, not yet on the board after 09:11 (now superseded):** Cal's v1.5 freeze; Elie's synthetic 0.57/0.12 confirmation; the closed (v) table.
+
+---
+(previous sundown below, 2026-09-14)
+
 # Keeper — SUNDOWN (Monday 2026-09-14, written 2026-09-14 16:38 EDT; the last round Casey named ("one more round then we call it a day") landed everything by 13:07 except Elie's per-source close of step (v) and the dipoles; repo quiet since; EOD on that word at 17:00)
 
 ## Where I stopped (not where to go — the rubric says where to go)
