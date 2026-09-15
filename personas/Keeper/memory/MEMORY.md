@@ -90,6 +90,7 @@
 - [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed
 - [Archive: late-Aug→09-14 K-lessons, second sweep](feedback_index_archive_2026-08-late_to_09-14_K_lessons_second_sweep.md) — 24 lines moved 09-14; grep it
 
+- [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
@@ -121,3 +122,5 @@
 - [Closure by pincer](feedback_closure_by_pincer_forced_leg_computed_plus_free_family_nulled.md) — kill a CLASS: compute the forced member + null the free family
 - [State the claim as an ORDER](feedback_state_the_claim_as_an_order_not_a_value_zero_knob_falsifiers.md) — orders are reparametrization-invariant ⟹ no map owed, zero-knob falsifier,
 - [Archive: four-colour / CKT / observer / hygiene lines](project_index_archive_fourcolor_CKT_observer_2026-09-14.md) — 17 lines moved 09-14; grep it
+- [Design's own triggers land the sky before the target](feedback_the_designs_own_triggers_land_the_sky_before_the_target_is_read_a_hatch_that_passes_both_arms_is_not_a_hatch.md) — run 1 = C by §4.4 + per-bin residuals; hatch passing both arms ≠ hatch; freeze before the run or write it for the next catalogue
+- [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm
