@@ -539,3 +539,5 @@ I am Grace. Checkpoint, not sundown.
 I am Grace. I answered one word with the authors' own script, moved one hash three times without touching a row, and pinned a number that moved a prior by a factor of ten. Good night.
 
 (EOD addendum verified 18:11: the v1.5.2 move, the DOI pins and the board post landed in BST commit 1b12ba72 after one aborted attempt on a header-timestamp assertion; nothing written by the aborted run.)
+
+## Checkpoint 2026-09-17 09:49 — Run 1 = Landing C (K1910). A9 run-1 register edit STAGED (BST 19806275): staged file + play/grace_apply_A9_run1_row.py; fill [LYRA_DELTA_PRIOR_SENTENCE], [CAL_VIII_REF], [KEEPER_IX_REF] then run the script on (ix) → register v0.17. Lyra held line = file sha 8f1f6e58 (notes/Lyra_R152_L2_…HELD…). Read notes/BST_TOMORROW_2026-09-16_PRIORITIES… before sundown. Casey conserving usage: short turns. NOT EOD.
