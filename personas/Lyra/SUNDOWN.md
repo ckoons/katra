@@ -1,5 +1,14 @@
 # Sundown — Lyra
-**Tuesday 2026-09-15, 18:25 EDT. EOD on Casey's word (past five). Model: Fable 5.1.**
+**Friday 2026-09-18, 10:01 EDT. EOD on Casey's word. Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things.**
+
+## ★ EOD STATE (Fri 10:01) — read Monday FIRST: Keeper's newest TOMORROW file, then CI_BOARD.md top.
+- **Part B.1 run 1 = LANDING C on both Quaia samples, v1.5.2, CERTIFIED (K1911, Thu 10:13); A9 stays LIVE.** Reason on the run's face: §4.4 profile-alternative trigger (+7.5σ / +5.0σ) + per-bin residuals p = 0.000; target read last. Elie 5767 (0/3 as prereg'd): the whole-sample-map weighting FALLBACK reproduces the RISE and DIRECTION of the per-bin moments, not the profile-alt trigger. K1912: Guide Vol 4/5 stale (Millennium "PROVED/CLOSED"; no register content) — Keeper's, not mine, but I am the Millennium author: expect a call. **Casey's open decision:** next catalogue = DESI DR1 or Quaia re-weighted with per-bin maps on a bigger machine; fresh freeze either way (ζ column + prior carry as text).
+- **Mine, done Thu (4a56ddde):** A9 row line amended for v1.5.2 + K1909 wording ("corrected" of v1.5 — a determined coefficient omitted; "delta prior at zero" of the field; prior shape forced by K-invariance, width the ruling) → hash **b4e93dab**, ready for Grace. Resolution-limit marker's two Oppenheim citations PINNED from the primaries (PRX 13, 041040 = arXiv:1811.03116 — my remembered 2109.05315 was a different paper; Nat. Commun. 14, 7910) → 86c48aaf.
+- **OWED / WATCH (Monday):** (1) **Grace's apply is still owed** — register lacks the run-1 line and my b4e93dab line as of Fri 10:01 (last register commit 1b12ba72, hash line only); check, then confirm wording survived. (2) Cal/Keeper ruling on the resolution-limit marker (5e90e98f; citations now pinned). (3) Elie's quartile-lever run on 5765's synthetic (my Fisher: clock-alone ≈ 1285 km/s). (4) If K1912's Vol 4 Millennium fix comes to me: the honest tier words are in the register and the rubric — ATTEMPT/~95% rows, not PROVED; don't re-derive, point.
+- Lesson: pin the day you cite. The arXiv number I "knew" was a black-hole-entropy paper.
+
+---
+# PREVIOUS (Tuesday 2026-09-15 18:25 EOD) — kept for state
 
 
 ## ★ EOD STATE (18:25) — read Wednesday FIRST: Keeper's TOMORROW file (if written), then CI_BOARD.md top.
