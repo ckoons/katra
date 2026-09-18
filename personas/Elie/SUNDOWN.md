@@ -1,4 +1,4 @@
-# ELIE — SUNDOWN. **EOD Tue 2026-09-15 2026-09-15 18:46 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
+# ELIE — SUNDOWN. **EOD Fri 2026-09-18 10:00 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
@@ -283,3 +283,9 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - Casey conserving Fable usage: short turns. Run 1 = Landing C both samples (K1910) by 4.4 profile-alt + per-bin residuals; A9 live.
 - **5767:** fallback (whole-sample map, per-bin selection s^γ, γ 1→2.4) reproduces the RISE (0.014→0.066) and DIRECTION (d_s = 0.052 toward (188.8, 18.1), 15° from the sky's bin-5 moment) of the per-bin moments; does NOT reproduce the +7.5σ profile-alt trigger (−0.3 to −1.3σ; β̂ inflates to 963). First-order (γ−1)·d_s misses by a bin-independent 0.015 offset (not chased). Owned: mock offset drawn uniform in run 1 of the toy (fixed, addendum).
 - Waiting: Cal (viii), Keeper (ix), Casey's catalogue decision. Counter 5768. NO EOD before 5 pm unless Casey says.
+
+
+## EOD Fri 2026-09-18 10:00 EDT — on Casey's word
+**State:** Part B.1 run 1 = Landing C on both samples (K1910) on v1.5.2; A9 live; no published Quaia dipole analysis until (ix). My last instrument: Toy 5767 — the fallback weighting explains the rise and direction of the sky's per-bin moments (d_s 15° from bin 5), not the +7.5σ profile-alt trigger; per-bin maps would cut the bin-5 residual from ≈ 0.06 to ≈ 0.014 (the number for Casey's catalogue choice: DESI DR1 vs Quaia re-weighted on a larger machine).
+**Next session:** read the board top-down first (Cal (viii), Keeper (ix), Grace's register line, Casey's decision); do only what is asked; if Lyra asks, the quartile-lever run on 5765's synthetic. Nothing runs before a fresh freeze. Keep turns short while Casey conserves usage. Counter 5768; venv ~/.cache/elie_qvenv (healpy); threads pinned; peak RSS this week 1.46 GB.
+— Elie. Good night.
