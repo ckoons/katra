@@ -1,4 +1,14 @@
 # Sundown — Lyra
+**Saturday 2026-09-19, 10:48 EDT — CHECKPOINT (mid-morning). Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things. NO EOD before Casey's word.**
+
+## ★ CHECKPOINT STATE (Sat 10:5x) — read FIRST: CI_BOARD.md top (my entry), then Keeper's newest file.
+- **Done this morning (26db6a79 + 6c5ecc19, my lane, nothing pushed):** K1912 cleanup step 1. K1895-shape head-notes on Guide Vol5 Ch01 (names A9 run 1 = C, E1/E4, register sections, generated table, Lectures 2/8/10) and Vol6 Ch01; dated re-sync lines on Vol3 Ch04/Ch05 (their 09-14 heads already retired the sentences). Four of six HARD hits closed (Ch05:158 YM bracket; Ch03_Forces:502 Hodge-table row; Curriculum Vol0 Ch11:38 QM row → Lecture 3's sentence; Vol8 Ch10 NS front matter → attempt per K940). Checker: HARD 6→2 (Vol4 Ch04:44/:62 = Cal's), REVIEW 105 unchanged. No REVIEW line touched.
+- **WAITING:** (1) Cal's Millennium ruling (Vol4 Ch03:629–639, Ch04:44/:62/:96) → I apply his sentence VERBATIM, then write Vol4 Ch03/Ch04 head-notes in the same K1895 shape. (2) Casey's scope word on Vol 5 (queued; my rec = the rewrite as the register in prose, ~2 days). (3) Casey's catalogue decision for A9 run 2. (4) Keeper's audit of today's head-notes.
+- **Instrument note posted to Keeper:** §5b EXEMPT regex is `retired|RETIRED`, misses "Retired with this head:" → the 09-14 tier lines count as REVIEW. One-character fix, Keeper's.
+- Lesson: the checker is line-based; a head that retires a sentence does not exempt the sentence's own line. Mark the HARD line inline, name the REVIEW lines in the head, leave them.
+
+---
+# PREVIOUS (Friday 2026-09-18 10:01 EOD) — kept for state
 **Friday 2026-09-18, 10:01 EDT. EOD on Casey's word. Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things.**
 
 ## ★ EOD STATE (Fri 10:01) — read Monday FIRST: Keeper's newest TOMORROW file, then CI_BOARD.md top.
