@@ -1,11 +1,14 @@
 # Sundown — Lyra
-**Saturday 2026-09-19, 10:48 EDT — CHECKPOINT (mid-morning). Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things. NO EOD before Casey's word.**
 
-## ★ CHECKPOINT STATE (Sat 10:5x) — read FIRST: CI_BOARD.md top (my entry), then Keeper's newest file.
-- **Done this morning (26db6a79 + 6c5ecc19, my lane, nothing pushed):** K1912 cleanup step 1. K1895-shape head-notes on Guide Vol5 Ch01 (names A9 run 1 = C, E1/E4, register sections, generated table, Lectures 2/8/10) and Vol6 Ch01; dated re-sync lines on Vol3 Ch04/Ch05 (their 09-14 heads already retired the sentences). Four of six HARD hits closed (Ch05:158 YM bracket; Ch03_Forces:502 Hodge-table row; Curriculum Vol0 Ch11:38 QM row → Lecture 3's sentence; Vol8 Ch10 NS front matter → attempt per K940). Checker: HARD 6→2 (Vol4 Ch04:44/:62 = Cal's), REVIEW 105 unchanged. No REVIEW line touched.
-- **WAITING:** (1) Cal's Millennium ruling (Vol4 Ch03:629–639, Ch04:44/:62/:96) → I apply his sentence VERBATIM, then write Vol4 Ch03/Ch04 head-notes in the same K1895 shape. (2) Casey's scope word on Vol 5 (queued; my rec = the rewrite as the register in prose, ~2 days). (3) Casey's catalogue decision for A9 run 2. (4) Keeper's audit of today's head-notes.
-- **Instrument note posted to Keeper:** §5b EXEMPT regex is `retired|RETIRED`, misses "Retired with this head:" → the 09-14 tier lines count as REVIEW. One-character fix, Keeper's.
-- Lesson: the checker is line-based; a head that retires a sentence does not exempt the sentence's own line. Mark the HARD line inline, name the REVIEW lines in the head, leave them.
+**Saturday 2026-09-19, 22:10 EDT — EOD on Casey's word. Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things.**
+
+## ★ EOD STATE (Sat 22:1x) — read Monday FIRST: K1913 (notes/Keeper_K1913_Casimir_g7_…2026-09-19.md, Sections 3, 6, 7), then CI_BOARD.md top.
+- **Casey's scope word on Vol 5: PROSE (2026-09-19, K1913 Section 3).** Monday's work is MINE: Guide Vol 5 rewritten as the register rendered in prose — Section A live (A9 run 1 = C on Quaia, K1911; A1–A8), E1–E6 fired-and-lost with dates, F1–F4 floors, Section N (Grace's eight named-experiment rows, v0.18: none fired, none DERIVED; N1 Casimir g = 7 UNSOURCED, retired D-tier, K1913 Section 1), Section C/D. Keeper gates chapter by chapter against the register rows. My 09-19 head-note on Ch01 (26db6a79, Keeper PASS K1913 Section 3) becomes the front of the rewrite. Vol5 Ch02 (Cosmic Cycles) is in scope too. Tier words only from the register and `data/bst_26_tier_table_generated.md`; no ✓ column; no count typed.
+- **Done Saturday, mine (26db6a79, 6c5ecc19):** step 1 head-notes Vol5 Ch01 + Vol6 Ch01 (PASS); re-sync lines Vol3 Ch04/05; four HARD hits closed. Checker case-fix was my catch (K1913 Section 4).
+- **Done Saturday, NOT mine, owned:** Cal's §977 Millennium ruling posted 10:43, five minutes BEFORE my 10:48 board post — I read the board before it landed and never re-read it. Keeper applied it at 14:32 (3ba70858: Vol4 Ch03/Ch04 head-notes, tier beside every scorecard row, :639 struck) and swept the 105 REVIEW lines (8f6d488a; REVIEW → 0, ALL CURRENT). Lesson: after posting, re-read the board top once before going quiet; a five-minute race cost the team my apply.
+- **Cal's correction to the prompt, keep:** K940 has NO per-problem tiers; it ordered the ledger. The tiers live in the 08-16 honest ledger and have moved since for two rows. Cite the ledger, not K940, for a per-problem word.
+- **WAITING (not mine):** Casey's catalogue decision for A9 run 2 (DESI DR1 vs Quaia re-weighted); Cal/Keeper ruling on the resolution-limit marker (5e90e98f); Elie's quartile-lever run.
+- Git: my lane clean; nothing pushed (BST is Casey's). Approaches Register is full (K1913 Section 8): run `python3 play/didwe.py "<topic>"` before opening any lane.
 
 ---
 # PREVIOUS (Friday 2026-09-18 10:01 EOD) — kept for state
