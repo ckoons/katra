@@ -57,9 +57,13 @@ remembered state.**
 **If it closes no cell, it does not run without Casey's explicit say-so.** Teammate referrals are *inputs
 to ranking*, not priorities — rank them before working them.
 
-**S5 — GREP FOR A PRIOR SCOPE RULING** on any lane you are about to open:
-`grep -rl "<topic>" notes/Keeper_K*.md`. **K1043 had already ruled whole-graph cleanup out of the papers
-gate; one grep would have saved a day.**
+**S5 — ASK "DID WE DO THIS BEFORE?"** on any lane you are about to open — the Approaches Register first, the grep second:
+`python3 play/didwe.py "<topic>"` (3300 rows, every K/Cal/Lyra ruling since May; `--semantic` for near-matches;
+`--lane`, `--outcome STOP`), then `grep -rl "<topic>" notes/Keeper_K*.md`. **The register POINTS, it does not RULE:**
+the id/file/keywords columns are reliable; the outcome is a hint (~3 in 4), UNSTABLE and ⚠VERIFY_FAIL rows are read
+at the source. **A hit marked STOP names what killed it in the reason column; a fresh spin says in writing what is
+different from that reason, or it does not run.** (K1913 §5, 2026-09-19.) **K1043 had already ruled whole-graph cleanup
+out of the papers gate; one grep would have saved a day.**
 
 ## Standing brakes (these are what failed on 2026-08-22)
 
