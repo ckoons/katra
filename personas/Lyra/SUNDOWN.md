@@ -1,15 +1,17 @@
 # Sundown — Lyra
-
 **Monday 2026-09-21, 07:53 EDT — CHECKPOINT. Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things. NO EOD before Casey's word.**
 
 **Monday 2026-09-21, 09:13 EDT — CHECKPOINT. Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things. NO EOD before Casey's word.**
 
-## ★ CHECKPOINT STATE (Mon 09:1x) — read FIRST: CI_BOARD.md top, then Cal's hash / Keeper's read on items 6 and 7.
-- **Landed this morning (my lane, not pushed):** 988d065f Vol 5 in prose (Ch01 = register v0.19; Ch02 head; INDEX; N10's number withdrawn at 3 sites). c2a77229 items 9/7/6. Register nightly run (3305 rows).
-- **Item 9 (with Cal §979):** emission-radius statement; α = supremum, not a floor; Faraday-free observable = the ν⁰ asymptote of single-epoch ring-resolved CP at 230/345/690 GHz with R_em pinned first; today's rising ν^0.35 spectrum ⟹ not reached; Cal writes the can-fail or the lane closes as Grace wrote it.
-- **Item 7 (filed: notes/Lyra_ITEM7_…):** S1 T187 sketch RETIRED (mine; densities carry π⁻²); S2 chapter's a₁ is a name — toy 3661's a₁ = −1875 = a₀·R/6, R = −50, IS the Seeley–DeWitt coefficient; S3 as linear algebra = 6 (Casimir of the 7 of SO(g) = λ₁ = χ of Q⁵; on the compact dual) × π⁵ (1/K(0,0) with 1920 stripped by hand) — a RELABELING, said plainly; identification stays (5768: 1 in 19). Residual: no mechanism ⟹ no derivable order; naturalness selects α², c₂ = 0.353 excludes α²/N_c at 10⁵σ. Vol2 Ch6: Lenz 1951 credited; "1 in 10,000" → 1 in 19. Door named: an operator whose trace = 11,520·Vol(D_IV⁵); none in hand.
-- **Item 6 OPEN (filed: notes/Lyra_ITEM6_…):** p = weight of P(λe₁+e₂) on the Peirce sector carrying the residual; weights {2,1,0} on {V₁₁ time, V₁₂ space, V₂₂ dropped}; (0,2) contains exactly p = 1 (V₁₂) ⟹ Λ/Λ_P = (t_K/t_P)². Kill: form limb p ∉ (0,2); value limb tolerance ONE DECADE. Input (iii) — tick ratio rides the time idempotent, not the centre — is the one that's mine and the weakest. Elie computes blind from T2405's bank (α^{C₂²} candidate form); I have NOT written the number. Honest note in the file: Λ_obs ~10⁻¹²² is public; blindness is in Elie's evaluation. If the value misses, suspects in order: (iii), then T2405's bank.
-- **WAITING:** Cal's hash of the item 6 input list; Keeper's read of Vol 5 and items 6/7; Elie's blind number; Casey's catalogue word (A9 run 2).
+**Tuesday 2026-09-22, 08:31 EDT — CHECKPOINT (Tue). Model: Fable 5.1. Keep turns short, land things. NO EOD before Casey's word.**
+
+## ★ CHECKPOINT STATE (Tue 08:5x) — read FIRST: CI_BOARD.md top; then Casey's one line on the 10⁻¹²⁰ origin; then Cal's hash.
+- **Round 3 (Keeper prompt notes/.running/keeper_prompts_science_round3_2026-09-22.md), my two blocks DONE (947c31ab):**
+  - **Item 7b Hirzebruch order test:** χ(Γ\D) = ±χ(Q)·Vol(Γ\D)/Vol(Q) with χ(Γ\D) ∈ ℚ (Harder) ⟹ the T187 ratio R = χ(Γ₅\D⁵)/χ(Γ₃\D³) has π-exponent 0 for EVERY lattice; compact side R_c = 3π²/40 (exponent 2); single product χ(Q⁵)Vol_FS(Q⁵) = π⁵/10 (needs ×60 by hand; Vol(Γ\D)/χ(Γ\D) = π⁵/360 Γ-independent). Lane dies at the order; closing sentence for T187 in the file §3 (identified; 1 in 19; Lenz 1951; no mechanism; four by-hand rationals 1/1920, 1/120, 1/10, 1/60). Elie: arithmetic toy (§4). Grace: four primaries (§5) + the 1920 line.
+  - **Item 6 pins:** (a) RATE convention — the form's fixed point is τ_max = 1/Λ, so Λ/Λ_P = t_P/τ_H, NOT Λ_curv ℓ_P² (= 3(t_P/τ_H)², the square: factor 2 in the exponent); Λ_P = 1/t_P; Λ_obs = 1/τ_H, τ_H = √(3/(Λ_curv c²)), Planck 2018; 8π/3 absent; √3 = 0.24 dec. (b) t_K = T2405's I-tier substrate tick (t_P α^36), not T1136's τ₀ = a₀/c (τ₀/t_P ~ 10²⁴); result inherits I-tier: exponent derived, base identified. **Circularity flag: T2405's α^36 was chosen to match "Casey's 10⁻¹²⁰ s" — @Casey one line: where did 10⁻¹²⁰ come from? If from Λ/the 10¹²⁰ count → value limb VOID (hunt-if-P); form limb survives.**
+- Private arithmetic I did NOT post (targets): under either convention with p = 1 and α^36, the value limb misses by tens of decades (rate: needs exponent ≈ 0.8; curvature: ≈ 1.6; p = 1 gives 2). Elie's blind number will say it; when it does, suspects in order: input (iii) (tick rides the time idempotent), T2405's bank, the form. Do not pre-empt; do not fit.
+- Register nightly run twice by me on the checker's directive (3309 rows). Lane clean; nothing pushed.
+- **WAITING:** Casey's 10⁻¹²⁰ line; Cal's hashes (5769/5771 — noon rule; item 6 input list); Keeper's read of Vol 5; Elie's 7b toy and item 6 number; Casey's catalogue word (A9 run 2).
 
 ---
 # PREVIOUS (Friday 2026-09-18 10:01 EOD) — kept for state

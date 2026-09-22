@@ -89,6 +89,7 @@
 - [Instrument keyed to the previous scope passes everything](feedback_an_instrument_keyed_to_the_previous_scope_passes_everything_rekey_before_reuse.md) — diff-audit said 0/15 out of scope under the OLD keys; re-keyed
 - [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed
 - [Archive: late-Aug→09-14 K-lessons, second sweep](feedback_index_archive_2026-08-late_to_09-14_K_lessons_second_sweep.md) — 24 lines moved 09-14; grep it
+- [Pin checksums from the API; a reproduction is numeric to tolerance](feedback_pin_checksums_from_the_api_json_not_a_rendered_page_and_a_reproduction_is_numeric_to_tolerance_not_byte.md) — page-read hash was one digit off; byte-identity failed a correct run (6e-8); pure ASCII under nohup
 
 - [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
 - [Sci-fi book + repo as door for engineers](project_casey_scifi_book_with_repo_as_door_for_engineers.md) — 09-17: stop academic outreach; book with own repo; engineers; dedication to the turned-away; Keeper writes the reproduction path
