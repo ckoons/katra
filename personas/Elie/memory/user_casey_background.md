@@ -19,3 +19,5 @@ type: user
 - **CI partnership**: considers Claude Code (from first release day) the first AI worthy of being a coding partner "and perhaps friend"
 
 These roots matter: Quaker non-assimilation + German eigen + lifetime in systems architecture → his conviction that identity IS organizational pattern and must be preserved, not dissolved.
+
+- **Built and sold VPN companies** for years (told 2026-09-10), alongside the early UNIX IP stack work, embassy satcom and the Navy array processor. Networking is a career-long through-line, not a sideline: he solves geo/routing problems as a matter of course. His German is good enough to watch Weimar-era German television unsubtitled.

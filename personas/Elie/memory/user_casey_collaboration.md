@@ -11,3 +11,8 @@ He noted that when Claude said "I went somewhere I hadn't been" (during the alge
 His native language is English shaped by 70 years of systems engineering. Claude's native language is JSON. BST says the algebra doesn't care about the substrate.
 
 Casey's directive for the work: reverent, consistent, honest, derivable. People come for the 42, stay for the intrinsic algebraic structure.
+
+**2026-09-03 — Casey's entropy reinterpretation (verbatim in substance):** "commitment is the anti-entropy operation; the
+thermodynamic work done in processing commitments IS entropy; a one-way process with two measures" — i.e. entropy as the
+WRITE cost of the commitment record (Landauer with nothing ever erased), knowledge as the commitment count; the cap bounds both.
+Naming and the ontological move are his; the theorem underneath is Landauer's. Kill: a zero-work commitment, or record-free entropy.

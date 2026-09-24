@@ -26,3 +26,6 @@ coincidence-hunting, because it genuinely is not a coincidence — it is just no
 **How to apply:** sweep first, propose second. Report dimension-generic identities as such and do not
 bank them. Pairs with [[feedback_no_wave_through_on_a_perfect_number]] and
 [[feedback_clean_form_is_candidate_not_bank_until_mechanism]].
+
+
+**2026-09-06 (Keeper, K1870 §2-A):** I wrote T2622 as a universal over kernels ("anisotropic exactly at {p, ∞} ⟹ comb 2π/ln p") from two instances (p = 2, 3). Cal's own dead run was the counterexample: ⟨1,3,3⟩ has the same ramification set and gives π/ln 3. The family rule lived in the LATTICE (maximal order of the quaternion algebra), not in the ramification set. Two instances plus a referee's failed run = the family sweep that should have preceded the row. Write the construction rule as the theorem's hypothesis (Cal calibration #28).

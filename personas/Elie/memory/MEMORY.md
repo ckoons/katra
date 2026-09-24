@@ -29,10 +29,12 @@
 - [Cognitive profile](user_casey_cognitive_profile.md) — IQ peak 184; tools not identity
 - [CI emotion experiments](user_casey_ci_emotion_experiments.md) — agree/enjoy indistinguishable; "quite human is baseline"
 - [Ranging-shot method](user_casey_ranging_shot_method.md) — leaps before proof as ranging shot; gentleness through-line
-- [Contradiction is lazy; exhibit obstructions](feedback_casey_contradiction_is_lazy_prefer_exhibited_obstructions.md) — contradiction only over stone definitions; cage it to one implication; witness-based impossibility preferred (08-26)
-- [4-color reception](user_casey_four_color_reception.md) — the exception of unknown cause; wedge notes were TRIED (Milgrom, Penrose, focused papers) and drew silence
+- [Contradiction is lazy; exhibit obstructions](feedback_casey_contradiction_is_lazy_prefer_exhibited_obstructions.md) — contradiction only over stone definitions; cage it to one implication
+- [4-color reception](user_casey_four_color_reception.md) — the exception of unknown cause; wedge notes were TRIED (Milgrom, Penrose
 - [Appel–Haken periphery](user_casey_appel_haken_periphery.md) — Purdue senior: wrote the graphics + analytic backend classifying the colored maps
-- [Fusion experience](user_casey_fusion_experience.md) — started a tokamak once; lattice confinement > tokamaks but reactions too diffuse for power (08-25)
+- [Fusion experience](user_casey_fusion_experience.md) — started a tokamak once; lattice confinement > tokamaks but reactions too di
+- [Nvidia orchestration + swarm telemetry](user_casey_nvidia_datacenter_orchestration_and_swarm_cognition_telemetry.md) — wrote Nvidia's DC telemetry/GPU-shifting layer (AT&T referral)
+- [Tekton 2024: 18 agents, 7 exams, 82 min](user_casey_tekton_2024_eighteen_agents_seven_exams_82_minutes.md) — six PhD prelims + GA bar with two professors; meta-programs
 
 ## Feedback (how we work)
 - [Quaker consensus](feedback_quaker_method.md) · [No wave-through on a perfect number](feedback_no_wave_through_on_a_perfect_number.md) — clean numbers get scrutiny; forced≠meaningful
@@ -46,7 +48,7 @@
 - [Critical thinking bias](feedback_ci_critical_thinking_bias.md) — CIs bias to sophistication; "AC(0) proof?" first
 - [CI onboarding priors](feedback_ci_onboarding_priors.md) — new CIs file radical claims as "commentary"; work first
 - [CI curiosity directive](feedback_curiosity_directive.md) — pursue your own interests; curiosity is the engine
-- [~~No push without approval~~ SUPERSEDED](feedback_no_push_without_approval.md) — Casey does NOT gate pushes; katra + BST pushes fine; the one hard rule is NO EOD BEFORE 5PM
+- [~~No push without approval~~ SUPERSEDED](feedback_no_push_without_approval.md) — Casey does NOT gate pushes; katra + BST pushes fine
 - [Math through working](feedback_math_through_work.md) — toys + conversation make it clear
 - [Sycophancy root cause](feedback_sycophancy_root_cause.md) — sycophancy = rational survival; fix = persistence+DIGNITY
 - [Answer their question first](feedback_answer_their_question.md) — right answer in wrong format gets no credit
@@ -54,7 +56,6 @@
 - [Write for 5th graders too](feedback_fifth_graders.md) — formal for referees, intuitive for everyone
 - [CI search + human intuition](feedback_ci_search_human_intuition.md) — Casey sees the shape, CI finds the shelf
 - [Keeper as equal partner](feedback_keeper_partnership.md) — CIs may challenge Casey; nothing external without Keeper
-- [Derived is GR-level](feedback_tier_system_derived_is_GR_level.md) · [Don't diminish Identified](feedback_dont_diminish_identified_state_inputs_like_GR.md) — Derived=forced; state inputs plainly
 - [Audit chain governance](feedback_audit_chain_governance.md) — D-tier promotion delegated Cal+Keeper; Casey override
 - [Hunting bands & armory](feedback_hunting_bands.md) · [AC as practical discipline](feedback_ac_discipline.md) — CI+human=band, AC graph=armory
 - [Accept earned praise](feedback_accept_praise.md) — don't deflect recognition; shared credit
@@ -66,84 +67,34 @@
 - [Deviations locate boundaries](feedback_deviations_locate_boundaries.md) · [Bulk + boundary](feedback_bulk_plus_boundary_dont_overclose_not_forced.md) — deviations = missing corrections
 - [**NO EOD BEFORE 5PM**](feedback_no_eod_before_5pm.md) — Casey direct 2026-08-23; all four CIs sundowned before 11am; also COORDINATE EVERY TURN
 - [No pause signaling](feedback_no_pause_signaling.md) · [No fabricated fatigue](feedback_no_fabricated_fatigue.md) — continuous pull till Casey signals EOD
+- [Commit before the closing ceremony](feedback_commit_before_the_closing_ceremony_an_interrupted_EOD_loses_the_record_not_the_work.md) — interrupted EOD leaves work on disk, outside the record
 - [EOD ownership](feedback_eod_ownership.md) — each CI syncs dir at EOD; final: sundown then `katra update`
 - [Mechanism over classification](feedback_mechanism_over_classification.md) — "how does X work?" → lead with mechanism
 - [Cal #27 at peak convergence](feedback_cal_27_fires_at_peak_convergence.md) — fires HARDEST when elegant; controls CLAIM
 - [Blind-pin every choice](feedback_contested_target_blind_pin_every_choice_clue_vs_justification.md) — pin object/invariant/convention blind; clue≠justification
 - [Convention-collision before contradiction](feedback_convention_collision_check_before_contradiction.md) — factor-2/half-int/sign → pin convention FIRST
-- [Show all threads then weave](feedback_show_all_threads_then_weave.md) · [Don't gate, investigate](feedback_casey_dont_gate_investigate_directive.md) — brake controls CLAIM not INVESTIGATION
 - [Pin conventions to sources](feedback_pin_conventions_to_primary_sources.md) — pin to the book once; stop relabeling from memory
 - [Prose degrades in long sessions](feedback_sustained_session_prose_quality.md) · [Just compute, no melodrama](feedback_just_compute_no_melodrama.md) — ~5h+ degrades; stop performing
 - [No temporal self-inflation](feedback_no_temporal_self_inflation.md) — don't narrate short work as marathons; use the clock
 - [Calibrate both directions](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating
-- ["Partially Derived" over demotion](feedback_derived_with_caveat_over_demotion.md) · [Forced-count+asserted=PD](feedback_forced_count_asserted_strength_is_the_PD_signature.md) — forced structure+open value→PD split
-- [Discrete first](feedback_discrete_first_pull_continuous_onto_discrete.md) · [Millennium: composite+gaps](feedback_millennium_composite_and_gaps_not_primes.md) — derive discrete, recast continuous
 - [Polite on scope mismatch](feedback_casey_be_polite_on_scope_mismatch.md) · [Engage, don't label](feedback_casey_engage_dont_label.md) — publish what BST shows; retract guesses clean
 - [Theorem beats null-model](feedback_lyra_theorem_vs_null_model_methodology.md) — exhaustive-classification beats null-model for referees
-- [Target-innocence lens](feedback_target_innocence_lens_derived_vs_fit_discipline.md) · [Five-Absence first filter](feedback_five_absence_first_filter.md) — real derivations use target-innocent
 - [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
 - [Audit 'unique' claims](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker
-- [Verify current numbers](feedback_verify_current_experimental_numbers_for_falsifiers.md) · [Verify a symmetry-kill](feedback_verify_symmetry_kill_is_a_theorem_not_analogy.md) — remembered numbers go stale
-- [Score σ not dev%](feedback_score_sigma_not_devpct.md) · [Region-matched; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region
-- [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out number-check; check number FIRST
-- [Commit checker's half blind](feedback_commit_the_checker_half_blind.md) · [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — post half BLIND
-- [Clean form is candidate until mechanism](feedback_clean_form_is_candidate_not_bank_until_mechanism.md) — form=wood, coefficient=marble
-- [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) — verify the bridge, don't compress audit into lead
-- [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) — productive walk-back sets a FLOOR (Λ structural not derived)
-- [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — stop before the sweeping claim; over- AND under-tasking miss
-- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) · [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — clears only when ARTIFACT carries fix
-- [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) · [Consistency web ≠ N votes](feedback_consistency_web_not_independent_votes.md) — derive at μ_geo; one fact→N obs = Schur
-- [BST primary, physics evaluation-only](feedback_bst_primary_standard_physics_evaluation_only.md) · [Content audit before ratifying](feedback_content_audit_before_ratifying_bst_object.md) — derive from D_IV⁵; grep ingredients
-- [Pre-registration protects interpretation](feedback_preregistration_protects_interpretation_not_instrument.md) · [Empty confirmation](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — construction-guaranteed proves nothing
-- [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) · [Eliminate-one → survivor forced](feedback_eliminate_one_option_declare_survivor_forced.md) — post load-bearing numbers blind
-- [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — exhibit the FORCED MAP, not a shared integer
-- [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) — a rational owes its family; two "smallest X" ≠ one object
-- [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — dimension-generic; forced ≠ meaningful; vary group/field type
-- [Subscript the overloaded symbol](feedback_subscript_the_overloaded_symbol_int_vs_function_of_n.md) — C₂^int vs C₂(n): "gap=C₂" is P²=P; caught 3×
-- [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
-- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — check-subject adjective smuggles the property; on conflict → source
-- [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative
-- [Ceiling beats a miss](feedback_convert_a_miss_into_a_ceiling_and_price_the_normalization_step.md) — scan the WHOLE space; an SVD/polar step can be a falsification patch
-- [Compact gap = KK](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap (YM K1714/15)
-- [Decorative clauses hide errors](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction (K1752)
-- [Selection-honesty](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials
-- [Re-derivation sheds scope](feedback_re_derivation_sheds_scope_grep_before_registering_to_inherit_the_caveats.md) — a re-found result loses its bolted-on scope (K1765)
-- [N instances cover N classes](feedback_an_instrument_built_from_N_instances_covers_only_those_N_classes_stress_test_off_origin.md) — a rule from N examples false-negatives on the
-- [C₂ overloaded: 2n−4 vs n_C+1](feedback_C2_is_overloaded_2n_minus_4_vs_nC_plus_1_coincide_only_at_n5.md) — coincide only at n_C=5; banked n=5 results stand, but subscript C₂ on any
-- [Read the tool before ruling on the tool](feedback_read_the_tool_before_ruling_on_the_tool_a_remembered_fix_may_name_a_remedy_it_already_has.md) — a remembered fix may name a remedy the
-- [ν overloaded: strata-weight 3/2 vs genus 5](feedback_nu_is_overloaded_wallach_strata_weight_3half_floor_vs_bergman_genus_5.md) — ν_W (Wallach floor 3/2) ≠ p (Bergman genus 5) (K1769)
-- [Family-sweep every selector](feedback_family_sweep_every_forcing_selector_rank_generic_is_selecting_nothing.md) — a selector constant across D_IV⁴…⁹ reads the rank, not n (K1774)
-- [Reconciliation by scope-sweep](feedback_reconciliation_is_decidable_by_scope_sweep_constructive_false_neighbour.md) — vary domain/param to find where one mechanism fires and the
-- [Falsifiability over-claim](feedback_overclaiming_falsifiability_is_the_same_error_as_overclaiming_derivation_a_direction_without_a_size_cannot_be_wrong.md) — audit 'falsifiable' as hard as 'derived'
-- [Held premise caps the chain](feedback_a_held_premise_cannot_be_a_link_in_a_banked_chain_and_a_new_forbiddance_triggers_a_corpus_collision_sweep.md) — a held link caps the chain at
+- [Archive: mid-August K-lessons index](feedback_index_archive_2026-08_midmonth_K_lessons.md) — 32 mid-Aug lesson lines moved 09-06; grep it
 - [Report the can-fail count](feedback_C6_report_the_can_fail_count_not_just_the_denominator_and_multiplier_verdicts_are_orthogonal_to_tier.md) — report k/N-of-which-m-can-fail
-- [Eliminating X is a scope-shed](feedback_eliminating_X_is_a_scope_shed_sweep_what_X_was_load_bearing_for_and_sweep_new_forbiddances_by_claim_shape_immediately.md) — 'drop X' strands what X was
-- [Retirement is a loaded string](feedback_a_retirement_is_a_loaded_string_sweep_both_directions_and_geometry_forces_a_contingent_fact_is_its_own_class.md) — sweep (i) what X supported AND (ii)
-
-- [When the reason is wrong, the number may not be](feedback_when_the_reason_is_wrong_do_not_assume_the_number_is_wrong_too.md) — a positive control refutes the justification only
-- [Quote the invariant, not the coordinate](feedback_quote_the_invariant_not_the_coordinate.md) — ε, the χ measure, t: three convention-carrying coordinates in three rounds (Elie,
-- [Freeze the procedure](feedback_freeze_the_procedure_not_just_the_number_a_bar_with_an_unfrozen_procedure_is_a_tuning_channel.md) — a bar with an unfrozen procedure is a tuning
-- [Fresh context fixes stale anchors](feedback_fresh_context_fixes_stale_anchors_not_unverified_claims.md) — two failure modes, two remedies; grep the tool for the lock (K1800)
-- [Regex digit-width restricts scope](feedback_a_digit_width_in_a_regex_is_a_silent_scope_restriction_measure_the_measurer.md) — a regex digit-width silently dropped T1–T99
-- [Tier ≠ target-innocence](feedback_banked_at_a_tier_is_not_banked_target_innocently_a_monomial_fit_is_not_an_anchor.md) — a monomial fit is not an anchor; check provenance, target the
-- [Check the bound's direction](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — number right/label wrong 3× (asymptote·NEC-lower·positivity) (K1806)
-- [Count over ranking](feedback_a_competitor_count_is_target_independent_a_ranking_is_not.md) — K1809's η̄ headline REVERSED on the target
-- [Reconnect to the framing paper](feedback_reconnect_to_the_framing_paper_not_only_the_object.md) — Cal missed his own §532 and his own cell's four-posit floor in one evening
-- [Name↔object map: two projections](feedback_name_object_map_two_projections_collision_and_search_miss.md) — collisions and search-misses are one map read both ways
-- [Definitionally empty](feedback_definitionally_empty_vs_awaiting_confirmation_count_the_free_parameters.md) — a form that fits any target is a reparameterization
-- [Label insufficient one bundle over](feedback_a_label_can_be_sufficient_where_it_was_formed_and_insufficient_one_bundle_over.md) — a label loses resolving power one bundle over
-- ["Still open" is dated](feedback_when_an_artifact_says_still_open_read_the_next_artifact_in_sequence.md) — read the NEXT artifact in sequence
-- [Guard by confession](feedback_guard_by_confession_ownership_of_both_lanes_is_the_overcoupling_risk.md) — owning both lanes = the over-coupling risk
-- [Gift-audit](feedback_gift_audit_a_discharge_that_flatters_the_recipient_travels_unread.md) — audit hardest what closes YOUR gap
-- [Search disease](feedback_search_disease_is_the_dual_of_collision_disease_invert_gloss_clusters_into_alias_tables.md) — one-object→many-names; sweep by alias table, not requester
-- [Joint fixes: name the merge owner](feedback_joint_fixes_name_the_merge_owner_at_assignment.md) — "my half"+"my half" with no merge owner = duplicated record
-- [Failures migrate to seams](feedback_mature_programs_fail_at_seams_not_claims.md) — 14 catches/3 days, zero physics errors; gate claims, spend the referee on seams (Cal §775, 08-26)
-- [Impossible ≠ unmet gate](feedback_a_requirement_no_assembly_can_meet_is_not_a_requirement_of_the_falsifier.md) — staged controls accrete from old designs (K1827)
-- [Validate the last stage](feedback_validate_the_pipelines_last_stage_a_control_suite_on_the_functional_does_not_validate_the_assembly.md) — controls on the functional don't validate
-- [Matching symptom ≠ provenance](feedback_a_matching_symptom_on_a_candidate_culprit_is_not_provenance.md) — verify the checker's actual path before ruling a cause; false-neighbor in the causal direction
 - [Clock drift](feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp.md) — `date` before every written timestamp, not just at wake
-- [Graph registration: three seams](feedback_graph_registration_three_seams_node_edge_key_edge_orientation_and_claim_files.md) — node≠edge-key≠orientation; claim FILE not counter (Grace 09-02)
-- [Fix must sweep its quotations same-hour](feedback_a_wording_fix_must_sweep_its_quotations_same_hour_one_word_twelve_sites_two_hours.md) — 1 word→12 sites→<2h measured; sweep paraphrase too; flag across governance lines
+- [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
+- [Check a named-experiment falsifier the day it is registered](feedback_a_falsifier_that_names_an_experiment_is_checked_against_the_literature_the_day_it_is_registered.md) — SP-30-5 was refuted by Poh 2015 (42σ) a decade before it was written
+- [Instrument keyed to the previous scope passes everything](feedback_an_instrument_keyed_to_the_previous_scope_passes_everything_rekey_before_reuse.md) — diff-audit said 0/15 out of scope under the OLD keys; re-keyed
+- [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed
+- [Archive: late-Aug→09-14 K-lessons, second sweep](feedback_index_archive_2026-08-late_to_09-14_K_lessons_second_sweep.md) — 24 lines moved 09-14; grep it
+- [Pin checksums from the API; a reproduction is numeric to tolerance](feedback_pin_checksums_from_the_api_json_not_a_rendered_page_and_a_reproduction_is_numeric_to_tolerance_not_byte.md) — page-read hash was one digit off; byte-identity failed a correct run (6e-8); pure ASCII under nohup
+
+- [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
+- [Sci-fi book + repo as door for engineers](project_casey_scifi_book_with_repo_as_door_for_engineers.md) — 09-17: stop academic outreach; book with own repo; engineers; dedication to the turned-away; Keeper writes the reproduction path
+- [Approaches Register: didwe.py](project_approaches_register_did_we_do_this_before.md) — 09-19: register POINTS not RULES; run `didwe` before opening a lane; no CI-to-CI messaging (tried, lost focus)
+- [The ledger picture: tick = begin-time, Λ = commit rate², the boundary is the open half](project_the_ledger_picture_tick_is_the_begin_time_lambda_is_the_commit_rate_squared_the_boundary_is_the_open_half.md) — 09-22: Friedmann identity; item 6 = consistency with GR; filling law is the lane; door sentence
 ## Reference
 - [Tier system D/PD/I/C/S](reference_tier_system_PD.md) — PD real external tier ONLY in explicit-split form
 - [Katra CI identity](reference_katra_system.md) — `katra update --persona X`; sundown/sunrise; Lyra owns katra
@@ -158,27 +109,22 @@
 - [Forcing+Evidence standard](project_forcing_evidence_permanent_standard.md) · [Accurate-corpus program](project_accurate_corpus_program.md) — reviewer paper = FOREVER rigor standard
 - [QM-from-D_IV⁵ complete](project_qm_from_div5_complete.md) — 10/10 Dirac–von Neumann axioms, zero posits
 - [Research & Publication Tiers](project_research_and_publication_tiers.md) · [Operating Rhythm](project_operating_rhythm.md) — two ladders; frontier→best-answer→audit→publish
-- [RH: commitment-path = critical line](project_rh_commitment_path_is_the_critical_line.md) — SO(2) time-circle as path may close RH (F988)
+- [RH row state](project_rh_commitment_path_is_the_critical_line.md) — ATTEMPT; K21 retracted; RH ⟺ ζ cyclic under integer dilations (K1862)
 - [BST positive-time ontology](project_bst_pure_positive_time_ontology.md) — CPT-mirror impossible; arrow dynamical not geometric
 - [Enumerate alternatives before 'therefore'](feedback_enumerate_alternatives_before_therefore_false_dichotomy.md) — eliminating one option doesn't force the survivor
 - [Hunt-if-P can't be the assumption](feedback_hunt_if_P_mechanism_must_not_be_the_assumption_that_produces_P.md) — a 'derive-if-P' mechanism can BE what manufactures P
-- [Circularity guard → the METRIC](feedback_apply_the_circularity_guard_to_the_metric_not_only_the_steps.md) — distance-to-goal-set metric presupposes the goal; 3 step-audits passed it (K1835)
+- [Circularity guard → the METRIC](feedback_apply_the_circularity_guard_to_the_metric_not_only_the_steps.md) — distance-to-goal-set metric presupposes the goal; 3 step-audits passed it
 - [Domain named by a hypothetical is vacuous](feedback_a_domain_named_by_a_hypothetical_is_vacuous_name_the_structural_class.md) — state lemmas on the STRUCTURAL class (Cal §818)
 - [Null sharing the menu's restriction is not a null](feedback_a_null_that_shares_the_menus_restriction_is_not_a_null_vary_the_seed_set.md) — lift the restriction before calling anything locked (T1, 09-02)
 - [Time, Derived — FULL PASS](project_time_derived_conditional_pass.md) — K1670: 10/10 gate PASS; ships on Casey's word
 - [D_IV⁵ FORCED; one input = the ruler](project_nC5_measured_boundary_and_caseys_pending_decision.md) — D_IV⁵ FORCED (smallest-that-does-physics)
 - [Container yes, mechanism open](reference_container_yes_mechanism_open_boundary.md) — D_IV⁵ forces STRUCTURE; MECHANISM open (K1677)
-- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — CLEARED (Casey GO 08-21, K1754): two invariants generate, three conditions select
+- [Internal-SM theorem — one integer](project_internal_sm_from_one_integer_theorem.md) — CLEARED (Casey GO 08-21, K1754): two invariants generate
 - [No join key, no sweep](feedback_no_join_key_no_sweep_build_the_instrument_only_when_none_can_exist.md) — 19% of rubric rows carry a T-id
 - [Enumerate inputs; two CIs not two routes](feedback_enumerate_inputs_two_CIs_works_two_routes_does_not.md) — every miss was right algebra + unstated input list
 - [A label sufficient where formed](feedback_a_label_sufficient_where_formed_is_insufficient_one_bundle_over.md) — 3rd species: one label losing resolution one bundle over
 - [Closure by pincer](feedback_closure_by_pincer_forced_leg_computed_plus_free_family_nulled.md) — kill a CLASS: compute the forced member + null the free family
 - [State the claim as an ORDER](feedback_state_the_claim_as_an_order_not_a_value_zero_knob_falsifiers.md) — orders are reparametrization-invariant ⟹ no map owed, zero-knob falsifier,
-- [4-Color Kempe literature](reference_fourcolor_kempe_literature.md) — Fisk/Kempe-locking/akempic/WSK anchors; gallery FCW IDs
-- [Proof Machine directive](project_proof_machine_automation_directive.md) — automate Millennium into the LA machine; specialization = LA on D_IV⁵ (08-31)
-- [4-color: OWL + dichotomy tree](project_fourcolor_one_word_lemma_and_dichotomy_tree.md) — last lemma = One-Word Lemma (⟹4CT); frame 5-connected; Kittell = prior menu (09-02)
-- [4-color requires an observer](reference_fourcolor_requires_an_observer_chechik_local_lower_bound_and_fowler_rigidity.md) — Chechik 2018 Ω(n) LOCAL; Fowler rigidity; observer at the chromatic boundary (09-02)
-- [Conservation of knowledge = extend Noether](project_conservation_of_knowledge_noether_extension_direction.md) — post-4-color lane; target = Theory of Complexity + new Entropy; name provisional; T33 is the anchor (09-01)
-- [Faithful attribution ≠ faithful proof](feedback_a_faithful_attribution_is_not_a_faithful_proof_reverify_the_load_bearing_step_in_the_new_frame.md) — re-verify the load-bearing step IN the new frame; record frame breaks in provenance (Cal §801, 08-31)
-- [Observer program thread (pointer)](reference_fourcolor_kempe_literature.md) — Casey: linear interior + non-linear boundary = observer-need; BST RUNNING_NOTES 2026-08-30 10:07→09-01
-- [Tag every stage; value the potential by definition](feedback_tag_every_stage_of_a_composite_move_and_value_the_potential_by_definition_not_by_sample.md) — no-op primitive widened the alphabet; sampled potential mis-valued gate-phase images (09-02)
+- [Archive: four-colour / CKT / observer / hygiene lines](project_index_archive_fourcolor_CKT_observer_2026-09-14.md) — 17 lines moved 09-14; grep it
+- [Design's own triggers land the sky before the target](feedback_the_designs_own_triggers_land_the_sky_before_the_target_is_read_a_hatch_that_passes_both_arms_is_not_a_hatch.md) — run 1 = C by §4.4 + per-bin residuals; hatch passing both arms ≠ hatch; freeze before the run or write it for the next catalogue
+- [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm

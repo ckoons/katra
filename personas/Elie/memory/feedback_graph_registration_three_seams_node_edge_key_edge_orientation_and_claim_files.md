@@ -18,3 +18,5 @@ file is read once and used twice when two CIs claim in the same minute.
 against the artifact's "uses" sentence; validate both graph files' edge-key schema; read `.next_theorem` /
 `.next_toy` immediately before EVERY claim and write a claim file — the earlier timestamp keeps the id, the
 later pair renumbers (K1837). See [[reference_next_counters]], [[feedback_clock_drift_is_continuous_run_date_before_every_written_timestamp]].
+
+**Fourth seam (2026-09-04, Grace):** `play/ac_graph_data.json` holds TWO node lists — `nodes` (live, enriched) and `theorems` (raw export, read by eight analysis tools). Registrations 09-02→09-03 went to `nodes` only; `theorems` froze at T2597 and `metadata` at 2,374 while every "max = counter − 1" check read `nodes`. Rule: after a registration, assert max tid on EVERY list in the file (and `metadata`), not the one the checker happens to read. Also: dumping that file needs indent=1, ensure_ascii=False, trailing newline — a default `json.dump` collapses 133k lines to one; round-trip the previous commit before writing.

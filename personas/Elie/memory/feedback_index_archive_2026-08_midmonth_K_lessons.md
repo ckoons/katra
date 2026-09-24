@@ -1,0 +1,34 @@
+# Feedback index archive — mid-August 2026 K-lessons (moved out of MEMORY.md 2026-09-06 to keep the loaded index under 24 KB; every line is still a live memory file)
+
+- [Score σ not dev%](feedback_score_sigma_not_devpct.md) · [Region-matched; trust interior](feedback_region_matched_comparison_trust_interior.md) — σ only within a region
+- [Effort hurts detail-attention](feedback_effort_detail_attention.md) — higher /effort crowds out number-check; check number FIRST
+- [Commit checker's half blind](feedback_commit_the_checker_half_blind.md) · [External audit beats self-vigilance](feedback_external_audit_beats_self_vigilance.md) — post half BLIND
+- [Clean form is candidate until mechanism](feedback_clean_form_is_candidate_not_bank_until_mechanism.md) — form=wood, coefficient=marble
+- [Cite corpus forcing not target](feedback_cite_corpus_forcing_not_target.md) — verify the bridge, don't compress audit into lead
+- [Walk-backs reduce to a FLOOR](feedback_keeper_25_productive_walkback_boundary.md) — productive walk-back sets a FLOOR (Λ structural not derived)
+- [Pacing both directions](feedback_pacing_calibrates_both_directions.md) — stop before the sweeping claim; over- AND under-tasking miss
+- [Content-ready is not cleared](feedback_content_ready_is_not_cleared.md) · [Tier from the source](feedback_tier_from_source_not_number_or_summary.md) — clears only when ARTIFACT carries fix
+- [Running is measured input](feedback_running_is_measured_input_predict_at_mu_geo.md) · [Consistency web ≠ N votes](feedback_consistency_web_not_independent_votes.md) — derive at μ_geo; one fact→N obs = Schur
+- [BST primary, physics evaluation-only](feedback_bst_primary_standard_physics_evaluation_only.md) · [Content audit before ratifying](feedback_content_audit_before_ratifying_bst_object.md) — derive from D_IV⁵; grep ingredients
+- [Pre-registration protects interpretation](feedback_preregistration_protects_interpretation_not_instrument.md) · [Empty confirmation](feedback_empty_confirmation_cant_fail_test_and_circular_hunt_mechanism.md) — construction-guaranteed proves nothing
+- [Cheat migrates to the last prose step](feedback_cheat_migrates_to_the_last_prose_step.md) · [Eliminate-one → survivor forced](feedback_eliminate_one_option_declare_survivor_forced.md) — post load-bearing numbers blind
+- [Ingredient passes, application smuggles](feedback_ingredient_passes_application_smuggles.md) — exhibit the FORCED MAP, not a shared integer
+- [Family rule + false-neighbor](feedback_family_rule_and_false_neighbor_check.md) — a rational owes its family; two "smallest X" ≠ one object
+- [Sweep the family before a signature](feedback_sweep_the_family_before_calling_a_clean_number_a_signature.md) — dimension-generic; forced ≠ meaningful; vary group/field type
+- [Subscript the overloaded symbol](feedback_subscript_the_overloaded_symbol_int_vs_function_of_n.md) — C₂^int vs C₂(n): "gap=C₂" is P²=P; caught 3×
+- [Test existence before deriving](feedback_test_existence_before_deriving.md) — "derive the map" presupposes a map; twice there wasn't one
+- [Adjective-class audit](feedback_adjective_class_audit_the_adjective_is_usually_what_is_being_checked.md) — check-subject adjective smuggles the property; on conflict → source
+- [Validate the instrument before a negative](feedback_a_search_that_cannot_succeed_proves_nothing_empty.md) · [5 false-negative modes](feedback_validate_the_instrument_before_reporting_a_negative.md) — positive-control every negative
+- [Ceiling beats a miss](feedback_convert_a_miss_into_a_ceiling_and_price_the_normalization_step.md) — scan the WHOLE space; an SVD/polar step can be a falsification patch
+- [Compact gap = KK](feedback_compact_gap_is_KK_kinematics_not_interacting_mass_gap_check_decompactification_scaling.md) — free-op ~1/a²→0 (kinematics) ≠ fixed Clay gap (YM K1714/15)
+- [Decorative clauses hide errors](feedback_decorative_clauses_hide_errors_sweep_both_directions.md) — a false reason bolted to a correct number survives every correction (K1752)
+- [Selection-honesty](feedback_selection_honesty_full_sweep_or_preregister_the_atlas_is_look_elsewhere_by_design.md) — many objects × many verbs = many trials
+- [Re-derivation sheds scope](feedback_re_derivation_sheds_scope_grep_before_registering_to_inherit_the_caveats.md) — a re-found result loses its bolted-on scope (K1765)
+- [N instances cover N classes](feedback_an_instrument_built_from_N_instances_covers_only_those_N_classes_stress_test_off_origin.md) — a rule from N examples false-negatives on the
+- [C₂ overloaded: 2n−4 vs n_C+1](feedback_C2_is_overloaded_2n_minus_4_vs_nC_plus_1_coincide_only_at_n5.md) — coincide only at n_C=5; banked n=5 results stand, but subscript C₂ on any
+- [Read the tool before ruling on the tool](feedback_read_the_tool_before_ruling_on_the_tool_a_remembered_fix_may_name_a_remedy_it_already_has.md) — a remembered fix may name a remedy the
+- [ν overloaded: strata-weight 3/2 vs genus 5](feedback_nu_is_overloaded_wallach_strata_weight_3half_floor_vs_bergman_genus_5.md) — ν_W (Wallach floor 3/2) ≠ p (Bergman genus 5) (K1769)
+- [Family-sweep every selector](feedback_family_sweep_every_forcing_selector_rank_generic_is_selecting_nothing.md) — a selector constant across D_IV⁴…⁹ reads the rank, not n (K1774)
+- [Reconciliation by scope-sweep](feedback_reconciliation_is_decidable_by_scope_sweep_constructive_false_neighbour.md) — vary domain/param to find where one mechanism fires and the
+- [Falsifiability over-claim](feedback_overclaiming_falsifiability_is_the_same_error_as_overclaiming_derivation_a_direction_without_a_size_cannot_be_wrong.md) — audit 'falsifiable' as hard as 'derived'
+- [Held premise caps the chain](feedback_a_held_premise_cannot_be_a_link_in_a_banked_chain_and_a_new_forbiddance_triggers_a_corpus_collision_sweep.md) — a held link caps the chain at

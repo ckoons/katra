@@ -29,3 +29,6 @@ coordinate must be quoted, state its normalization in the same sentence, every t
 Related: [[feedback_subscript_the_overloaded_symbol_int_vs_function_of_n]],
 [[feedback_convention_collision_check_before_contradiction]],
 [[feedback_pin_conventions_to_primary_sources]]
+
+
+**2026-09-06 (Keeper, K1864):** a fourth instance — "the long-root reflection" is convention-carrying (B₂ vs C₂ exchange the names). My blind L2 pre-score named the functional-equation involution by a root label and attached it to the wrong reflection; Lyra pinned B₂ first and named each Weyl element by its ACTION (negates one polydisc coordinate = the FE, realized by a K-rotation; exchanges the two = spatial parity). Name reflections by what they do.

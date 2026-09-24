@@ -17,3 +17,5 @@ Cal's structural fix (§614, adopted K1707, 2026-08-19): **any symbol that is so
 3. **The Yang–Mills mass gap** (K1707): "λ₁ = C₂ = 6 derived gap" is the Bergman-rep Casimir (=n+1 by construction) dressed as a discovery — nearly went into a Millennium-problem paper.
 
 **How to apply:** when a load-bearing number equals one of the five integers, ask FIRST "is this integer *defined* as the expression the formula produces here?" If yes, the honest claim is "geometry-fixed, no free parameter," NOT "equals [integer], a discovery." Subscript in the artifact so grep separates the two. Relatedly, a value that equals the *dimension* of the space (e.g. λ₁=n on a round Sⁿ) is dimension-generic — carries no theory-specific content. See [[feedback_sweep_the_family_before_calling_a_clean_number_a_signature]] and [[feedback_same_name_different_object]].
+
+**Fourth catch (2026-09-03):** n* is overloaded — T307's ratchet parameter n* = n_C = 5 (η_n = η_0/(1+n/n*)) vs I18/T312's coherence cycle n* ≈ 12. Keeper's circularity worry dissolved on subscripting: n*_ratchet ≠ n*_coh. Same pattern as C₂, ν, ε.

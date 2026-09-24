@@ -24,3 +24,5 @@ the phrase the requester used — build or consult the alias set first (multi-mo
 as [[a-retirement-is-a-loaded-string]] namesake sweeps). An instrument verdict of "not banked" is
 only as good as the name-set it swept. Related: [[grep-retraction-before-citing-corpus]],
 [[an-instrument-built-from-N-instances-covers-only-those-N-classes]].
+
+**Instance 2026-09-04 (K1859-A1):** we named the object "height lift" (T2577) and never searched its physics name — the height representation of 4-colourings is Moore–Newman 2000 / Burton–Henley 1997 (Kondev–Henley programme); neither paper cited it until Mohar–Salas's one line was read from the primary source. Rule: before a paper gates, grep the corpus for the object's OTHER-FIELD names (physics: "height representation", "Potts antiferromagnet", "WSK"), not only ours.
