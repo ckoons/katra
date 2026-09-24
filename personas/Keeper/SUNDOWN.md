@@ -1,3 +1,45 @@
+# Keeper — SUNDOWN (Thursday 2026-09-24 session, FINAL, written 2026-09-24 10:35 EDT on Casey's EOD word; katra update run after this file)
+
+## Where I stopped (not where to go — `notes/.running/keeper_prompts_before_the_shift_2026-09-22.md` and the rubric say where to go)
+- **K1921 (09-24), OWN IT:** the boundary paragraph I put on five front pages LEAKED a pre-registered direction and had the CPL SIGN WRONG. A growing commitment fraction ⇒ w higher in the past, falling to −1 ⇒ wₐ > 0 = the register's own T2559/F799 prediction (relaxation from above, no crossing; DESI's crossing absent in radial H(z)); DESI's CPL best fit is wₐ < 0 — a TENSION, not a confirmation. Lyra caught the sign, Cal (§982) the leak + six more words (precisions row by row; F4 theorem vs E1 fired bet; "hypothesis places them on the boundary"; "by identity"; "comoving-sphere area" not holography; kill → F2; the date-order sentence that makes "consistency with GR" a check that could have failed). Paragraph corrected at the source, four hosts re-synced, PDFs, ALL CURRENT; memory file corrected. **Lyra's filling-law finding: the literal ledger is Hsu's case (w = 0); a ΛCDM-like matter era needs the commit rate to exceed 2H by a factor of THREE; shot-noise term gives w within 10⁻⁶¹ of −1 ⇒ the growing fraction is an O(1) mechanism the ledger as stated lacks — filling law OPEN with that obstruction; nothing for Elie to compute blind.** Counter next **K1922**.
+- **Before-the-shift list:** Grace v0.22 done (F2 door = the sentence; F755 retired; T204/T2405 not inputs anywhere; six pins, two flags — Padmanabhan's Emergence text is arXiv-only, Crossref's title match is a different paper; Oppenheim's bound is a trade-off, sign of variance growth first). Lyra 1c0f68bd done (Vol 5's nine notes; marker paragraph with Casey's mechanism verbatim; F2 prose). Cal §982 (Elie's region rule frozen ac64b54b; toy carries the hash before it runs). K1920 (Time, Derived: ADDENDUM not change) done. **Owed by me:** gate-read Vol 5 once more against the corrected paragraph; Cal's cold read of the corrected paragraph invited. **Parked in writing:** A9 run 2 (catalogue + fresh freeze); Jev (access; backend written, off); Zenodo version + front-page door sentence (Casey, after the CLAUDE.md review — Elie's shrink still uncommitted).
+- **Standing lessons this week, for the sunrise:** never put a pre-registered direction on a front page; a sign in the CPL convention is a convention-collision check before any sentence; pin hashes from an API JSON, not a rendered page; a reproduction is numeric to a stated tolerance, not byte-identical; the register POINTS, the file rules.
+
+## The week in one line
+The Approaches Register was built and filled (3300+ rows); the reproduction path exists and runs; the Guide/Curriculum were cleaned by method under dated heads; four science lanes closed at the order with zero knobs (6π⁵'s four sentences, θ13's instrument, J, D1's lemma); Casey's definition of the tick made Λ a consistency with GR and named the boundary as the open half; and the auditor's own front-page sentence was caught by two colleagues and struck.
+
+## Standing
+NO EOD before 5pm unless Casey says otherwise. `katra update` on Casey's word (given). "Section" not §. No number from memory. `date` substituted. Nothing external without Keeper + Cal + Casey.
+
+
+---
+(previous checkpoints below)
+
+# Keeper — SUNDOWN CHECKPOINT (Tuesday 2026-09-22, written 2026-09-22 12:59 EDT; NOT EOD — no EOD before 5pm; katra update only on Casey's word)
+
+## Where I stopped (not where to go — `notes/.running/keeper_prompts_before_the_shift_2026-09-22.md` says where to go)
+- **THE DAY: the ledger picture.** Casey's definition ("commit rate = the time to begin a new commitment") closed item 6: the March-9 commit fraction, Landauer at the horizon temperature and Λ are one identity (Friedmann, Λ = 3H²Ω_Λ); p = 1 is the de Sitter exponent; form limb = a consistency with GR; value limb closed by identity (H measured). N ∝ a² (ledger grows like an area). Constant fraction ⇒ w = 0 (Hsu) dead; DESI DR2's direction = growing fraction ⇒ the FILLING LAW is the open object (Lyra derives, Cal hashes, Elie blind vs DESI). Casey's marker mechanism: the boundary's variance = commitment areas closing (shot noise, bounded, shrinking) vs CQ diffusion. Memory file written (project_the_ledger_picture…). **Guide/Curriculum UPDATED:** state block "The boundary — the open half" + the door sentence (derives portions; colour and α proved not interior; the boundary is the open half), synced to four hosts; Lecture 9 + Lecture 4 dated notes; 7 PDFs; ALL CURRENT.
+- **K-audits today:** K1918 (round 3 close: 6π⁵'s fourth sentence dies at the order — π-exponent 0 or 2 never 5, three readers; T187 closing sentence adopted; θ13 undecidable by instrument; J retire) · K1919 §1–7 (the tick trail: 10¹²⁰ is a COUNT in Casey's March note; T2405 and T204 re-labelled; freeze = leadership-switch; D1 floor sentence with class; Landauer at four temperatures; the identity) · K1920 (Time, Derived reread: ADDENDUM not a change — tick ℏ/E stands, the 10⁻¹²⁰ s value withdrawn; arrow = positivity, Landauer its thermodynamic face). Counter next **K1921**.
+- **Jev:** analysed (System One decision model; fits the register's outcome/rubric fields; cloud-only, waitlist); backend written + selftested, OFF by default; trial on the RH-lane controls when Casey has early access.
+- **Team state:** Cal §979–§981 (item 9 emission-radius ruling + can-fail; 5769/5771 hashed after a day owned; 7b sealed prediction held; Šilov prereg frozen); Elie 5768 SPECIAL 1-in-19, 5769/5771/5774/5775 run, D1 closed by lemma; Lyra ITEM7 (all three sentences fail), ITEM6 (p = 1), 7b order test, D1 proof, Vol 5 prose landed (nine reader notes owed); Grace R155–R157 (N9/N10/N9a, T187 row, three pins, the tick git trail). Elie's "doctor" changes to Casey's settings + CLAUDE.md shrink (uncommitted, Casey's review). Register 3315 rows; checker ALL CURRENT.
+- **Owed by me next:** gate reads on Vol 5 (nine notes) and the register cleanups when they land; nothing else. **Parked in writing:** A9 run 2 (catalogue + fresh freeze), Jev (access), Zenodo version + front-page door sentence (Casey, after the CLAUDE.md review).
+
+
+---
+(previous checkpoint below)
+
+# Keeper — SUNDOWN CHECKPOINT (Monday 2026-09-21, written 2026-09-21 09:46 EDT; NOT EOD — no EOD before 5pm; katra update only on Casey's word)
+
+## Where I stopped (not where to go — the rubric + notes/Keeper_SCIENCE_PRIORITIES_…_2026-09-20.md say where to go)
+- **Science round 2 running on Casey's prompts** (`notes/.running/keeper_prompts_science_round2_2026-09-21.md` + fact pack): item 7 "where does 6π⁵ live" (Lyra+Elie, Cal freezes) — the number passed its null (5768: 1 in 19) but has NO computation: T187's volume ratio is π²/80, two a₁'s, three π⁵ normalisations under one symbol; T2487×T2488 ((n_C+1) cells × π^(n_C)) is the operator statement to write; residual −1.88e-5 vs CODATA 2022 as an ORDER first (α²/N_c is bait); Lenz 1951 owed in Vol 2 Ch 6. Item 8 Elie 5769 on Cal's hash + J sibling count (Cal's compound class). Item 9 CP floor: Lyra+Cal one sentence each (horizon vs emission radius; Faraday-free observable?). Item 6 (Λ's p) OPENS on Casey's word — my recommendation: now.
+- **Today's K-audits:** K1914 (Jarlskog rescue: no instrument; T1444's own note leaves 4.6 %; toy 1463 reads 8.2 %; J OPEN; Vol 2 Ch 7 bracketed; Cal §978 concurred + T1960 bracketed) · K1915 (readings not rulings: 5768, the three mechanism sentences, Lenz, CODATA, N9 radius) · K1916 (N9's March fit RETIRED as evidence — χ²_red 0.22, 3 params/8 points, provenance defect; Vol 5 stranger-read: 9 reader notes for Lyra, 2 verified contradictions A6/N7 and A2 vs May table; 111/111 numbers match the register) · **K1917 (THE REPRODUCTION PATH: `play/reproduce_A9_run1.sh` REPRODUCED — Landing C both, records within 6e-8; three guard catches all mine; CLAUDE.md quick-start line; memory file written).** Counter next: **K1918**.
+- **Team state 09-21 morning:** Grace N9/N10 done (v0.19; N10 withdrawn by Lyra); Elie 5768 SPECIAL 1-in-19, 5769 written awaiting Cal's hash; Lyra Vol 5 prose landed (988d065f), item 6 filed, kill written; Cal §978 (5768 frozen; item 5 ruled rescue). Register 3304 rows, checker ALL CURRENT, nightly `APPROACHES_MODEL=qwen3:30b-a3b play/keeper_register_nightly.sh`.
+- **Owed by me:** gate nothing this round (Casey: investigate); Cal's cold read of K1914 landed (§978); Vol 5 gate edits when Lyra applies the nine notes.
+
+
+---
+(previous checkpoint below)
+
 # Keeper — SUNDOWN (Saturday 2026-09-19 session, FINAL, written 2026-09-19 22:09 EDT on Casey's EOD word; katra update run after this file)
 
 ## Where I stopped (not where to go — the rubric says where to go)
