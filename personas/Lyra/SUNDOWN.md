@@ -15,6 +15,16 @@
 - Lesson of the week: an order claim that is a theorem needs no hash (Hirzebruch); a sign convention pinned before the derivation (CPL wₐ) is what let Elie's blind number settle a collision in one run.
 
 ---
+**Friday 2026-09-25, 16:37 EDT — CHECKPOINT (not EOD). Model: Opus 5.5. NO EOD before Casey's word.**
+
+## ★ STATE (Fri 16:37) — read FIRST next session: Keeper's newest round prompt in notes/.running/, then CI_BOARD top.
+- **Lane 1 (filling law):** FILLING_LAW Section 5 + toy 5779. Cells, one bit each; the ceiling is S_BH in bits; Ω_DE = f; once-only exclusion ⇒ w ≡ −1 late (blind broken by me, DISCLOSED). Ruled K1923: A1 gains the mechanism; F799's late clause is UNSUPPORTED BY THE LEDGER.
+- **Round 2:** DM → T2138 committed (T1971 = dark mass per baryon; B→K+invisible predicts SM). Colour = U(3) from h (generic per Cal §984; ℤ₃ clue STRUCK). Neutron split not ours; A2's line is the kaon split. g_A = 4/π FIRED; Vol 3 heads dated.
+- **Round 3 (all pushed, 750f5d3d):** Pauli from once-only commit (L + O + no preferred frame ⇒ CAR); Herm₃ beside, not inside the rank-2 factor; act/record = the SM product with a reason (can-fail 1 unchecked); η = 2α⁴/(3π) identified, March text "no sphalerons" collides with K1924, washout is the kill; chirality = the arrow's sign on the one circle (K437); jets and OZI = walls.
+- **Casey owes:** the DM sign (T2138 vs released invisible winding); the neutrino residue sign (same-sign = Dirac-like vs A5), deferred to experiment; Zenodo.
+- **Lessons today:** a mechanism short enough to solve by inspection has no blind, so disclose it; three routes to one clean number is a menu; check a D-family scan separates the readings before requesting it (my item-6 overclaim).
+
+---
 # PREVIOUS (Friday 2026-09-18 10:01 EOD) — kept for state
 **Friday 2026-09-18, 10:01 EDT. EOD on Casey's word. Model: Fable 5.1. Casey is conserving Fable usage: keep turns short, land things.**
 
