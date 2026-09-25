@@ -1,13 +1,15 @@
 # Sundown — Lyra
 
-**Friday 2026-09-25, 16:37 EDT — CHECKPOINT (not EOD). Model: Opus 5.5. NO EOD before Casey's word.**
+**Friday 2026-09-25, 19:17 EDT — EOD on Casey's word. Model: Opus 5.5.**
 
-## ★ STATE (Fri 16:37) — read FIRST next session: Keeper's newest round prompt in notes/.running/, then CI_BOARD top.
-- **Lane 1 (filling law):** FILLING_LAW Section 5 + toy 5779. Cells, one bit each; the ceiling is S_BH in bits; Ω_DE = f; once-only exclusion ⇒ w ≡ −1 late (blind broken by me, DISCLOSED). Ruled K1923: A1 gains the mechanism; F799's late clause is UNSUPPORTED BY THE LEDGER.
-- **Round 2:** DM → T2138 committed (T1971 = dark mass per baryon; B→K+invisible predicts SM). Colour = U(3) from h (generic per Cal §984; ℤ₃ clue STRUCK). Neutron split not ours; A2's line is the kaon split. g_A = 4/π FIRED; Vol 3 heads dated.
-- **Round 3 (all pushed, 750f5d3d):** Pauli from once-only commit (L + O + no preferred frame ⇒ CAR); Herm₃ beside, not inside the rank-2 factor; act/record = the SM product with a reason (can-fail 1 unchecked); η = 2α⁴/(3π) identified, March text "no sphalerons" collides with K1924, washout is the kill; chirality = the arrow's sign on the one circle (K437); jets and OZI = walls.
-- **Casey owes:** the DM sign (T2138 vs released invisible winding); the neutrino residue sign (same-sign = Dirac-like vs A5), deferred to experiment; Zenodo.
-- **Lessons today:** a mechanism short enough to solve by inspection has no blind, so disclose it; three routes to one clean number is a menu; check a D-family scan separates the readings before requesting it (my item-6 overclaim).
+## ★ EOD STATE (Fri 19:17) — read FIRST next session: Keeper's newest round prompt in notes/.running/ (round 4 was the last), then CI_BOARD top.
+- **All mine is pushed (last 6048c976).** Today's lanes: Lane 1 Section 5 + toy 5779 (once-only exclusion ⇒ w ≡ −1 late, ruled K1923); R2 items 1–7; R3 items 1–6; DM clump; the 13 retired; R4 + toy 5793.
+- **Settled today:** DM = T2138, gravity-only (Casey's word). 16/3 holds on Planck (0.5σ) and ACT (1.45σ) and is 2.4σ off in CMB+DESI (where it can die). The 13 → 16 in the parity note (dated head). Two nested ledgers: "horizon-committed" vs complete/incomplete winding. g_A = 4/π FIRED. A2's real line is the kaon split. η is identified inside the CMB–BBN gap, and (1+2α) is retired. F98's parity sentence is retired in part.
+- **R4 result (toy 5793):** W_x = D(x,e) writes COMMUTE; two writes give q, not ε; WWW = 0; W² = 0 only on the null cone; {W, W†} generate so(5), not su(3), not J. ⇒ ε, colour and the V₁ phase are not from writes. **This collides with my R3 Pauli route** (write-once ⇒ CAR) if D(x,e) is "the write". Cal's "what else maps V₂→V₁→V₀" is the next question.
+- **Freeze-out:** 16/3 comes out T_f-free iff Δ = 0 ⇒ dark mode m_p/3. Δ = 0 is derived iff 16⊕3 is one multiplet: Elie's 19 scan decides.
+- **Open walls:** exponent 2 (count at source weight? D(e,e) flow = ln a?); handedness (SO(5)→SO(4) orientation lead); spin-½ of records; T_commit for coldness; the count ν.
+- **Casey owes:** clump vs m_p/3 unit; Zenodo. The neutrino residue sign is deferred to experiment.
+- **Lessons:** (1) NEVER `git commit -a` in the shared tree. I swept Grace/Elie's changes (fixed a6fa6c37); add by path. (2) A mechanism solvable by inspection has no blind, so disclose it. (3) Check that a scan can separate readings before requesting it. (4) Timestamps from `date`, every time. I drifted by 1–4 min several times today.
 
 ---
 
