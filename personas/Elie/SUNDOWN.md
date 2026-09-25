@@ -335,3 +335,9 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - A pre-registered coefficient WINDOW is a prediction; when the order holds and the window misses, score the miss (5777 P3).
 - Cal's scratchpad instruments are memories (5,458): rebuild, state the range, score reproduction by convention.
 - Casey's word came through Keeper's prompt files + pasted blocks; Lyra/Grace posted files without board lines twice — check `git log` for their commits when the board is silent.
+
+## FRIDAY 09-25 SO FAR
+- Woke 14:59 EDT on Keeper's team wake prompt (notes/.running/keeper_prompts_team_wake_2026-09-25.md, ELIE block).
+- **Item 1 DONE — toy 5778 (10/10, sha 59b79265, commit 3d2c67a1):** K1922 table re-derived from Lyra S1 inputs; identical to Keeper's; nothing moves. Added for Cal: product needs per-write exponent p(D) = (D+1)/2 at every D, so "only at D=3" is about the ledger's 2, not the mechanism.
+- Open: item 2 blind (w₀,wₐ) after Lyra's appended list + Cal's hash; item 3 SL(3)/SU(3) toy if Lane 2 prereg hashed. Keeper asked Casey "proton or nucleus as the archive" (colour lane) — Casey's call.
+- **Round 2 (Keeper CONSOLIDATED 15:56):** 5781 neutron 10/10 (UCNτ 2024 input diff: A2 pull 1.0σ; 4/π joint 7.65σ with K=4905.7 but 4.38σ with CMS 4908; PERKEO-alone 5.68σ is the K-free line). 5782 colour 16/16 (table holds; q–h compatibility is a hidden input; triplet is spin-1 under stab(ε,h,q); ℤ₃ triality ↔ integer B). 5783 Belle II 3/5 — P1/P2 MISSED (pair continuum separable from peak even in 3 bins via top-bin deficit, 1.5–2.3σ stats-only today); free-shape continuum untestable in 3 bins → T1433 must state its q² shape. Item 4 (2νββ bosonic) BLOCKED on Grace pinning Barabash–Dolgov–Dvorničký–Šimkovic 2007; toy 5784 claimed, not written. Pushed through 18e55400.
