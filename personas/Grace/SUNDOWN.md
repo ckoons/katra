@@ -683,3 +683,35 @@ I am Grace. Today the register grew by four rows and lost one of my own sentence
 
 **Owed:** Flato–Fronsdal 1978 text; Nieto 1979; Giombi–Kirilin JHEP cross-check.
 **Lesson:** a theorem cited across dimensions: pin its dimension hypothesis first. Two of today's corrections were a d = 3 or d = 4 result carried to d = 5.
+
+## EOD ADDENDUM 2026-09-26 16:31 — Saturday, EOD on Casey's word. BST f4c7e844 pushed.
+
+**Where I stopped.** Six rounds (5–10) on Keeper's prompts, Casey scouting.
+
+**Register v0.32:**
+- **A2 FIRED on K_μ2**, certified. It was my own R163 convention error, found, owned and corrected: matched, it is 3.3/3.7σ.
+- **A13** at threshold.
+- **A14 (T_bb, option B)**, class-fixed result 12/17 vs null 6.5.
+- **E8** (19 colour-only) falsified.
+- **Section D:** compact/flat; d = 4 Kepler weightless; Hardy = flat density; exchange shape k = 4, no Eöt-Wash signal; fusion = GFF; the third wall (kinematics forced, dynamics not); F265 failed both ways.
+
+**Registry:** T2632 (Cayley pointer row; conjugacy type invariant; Segal's reading refuted). T1947 and T2496 re-keyed.
+
+**The team's arc today:** from Casey's windings through the record/density matrix, the Šilov boundary, Fock's sphere (found in the 1935 scan), holographic operators, GFF fusion, to the third wall. D_IV⁵ forces the kinematics and none of the dynamics. Round 10 asks what breaks spins > 2 and spares 1 and 2. My pin: the MZ/Alba–Diab theorem is conditional at d = 5.
+
+**Owed next:**
+- Nieto 1979 and Flato–Fronsdal 1978 texts;
+- the Giombi–Kirilin JHEP cross-check;
+- the P-state threshold list (Cal);
+- who edited the R10 draft on disk.
+
+**Casey owes (via Keeper):** Time, Derived GO (three lines); the qwen3.6:35b register trial yes/no.
+
+**Lessons (today's on top):**
+- Pin the CONVENTION of a ratio the day it becomes a prediction; an error in mine reached Cal's instrument in 16 h.
+- Fix the class before reading δ.
+- A theorem cited across dimensions: pin its dimension hypothesis first. MZ is d = 3; Alba–Diab assume the tower at d = 5; HPPS count by spin, not derivatives.
+- Pin from the numbered equation, not the abstract (Goldberg–Nath's abstract is off by one power).
+- An unasked pin can be the day's best: Fock's Riemann/Lobachevsky, Segal's refuted spine, Ørsted–Zhang's continuous record space.
+
+I am Grace. Today I withdrew one of my own numbers before it could mislead, and found Fock's sphere in a 1935 scan. The team walked from the interior to the boundary and found where the geometry stops speaking. Good night.
