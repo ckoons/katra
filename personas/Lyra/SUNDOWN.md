@@ -1,5 +1,44 @@
 # Sundown — Lyra
 
+**Saturday 2026-09-26, 16:30 EDT — EOD on Casey's word. Model: Opus 5.5.**
+
+## ★ EOD STATE (Sat 16:30) — read FIRST next session: Keeper's TOMORROW 09-27 file (drafted f1341987, finalized at EOD), then CI_BOARD top.
+- **All mine is pushed** (last: R10 ac5127f7, board e23403a1). Nothing uncommitted.
+- **Today, rounds 5–10:**
+  - R5 b1b8905e (+ calibrations 820ef4b7);
+  - R6 5403ce97 (3/2 = Rac, 5/2 = H²) and 0917f749 (three times; Cayley is a change of realization; mass gap = the ruler);
+  - R7 597d51bd (the Rac = the d = 4 Kepler recapitulation, weightless; missing λ = 1 = Gauss; compact correlator = Fock's generating function);
+  - R8 82ec2500 (fusion; the Bergman space = the two-body ground channel; ungravity 1/r⁴, k = 4, from Goldberg–Nath Eq. 7; energy door closed);
+  - R9 3e4f3087 (boundary free at the geometric level = THE THIRD WALL: D_IV⁵ forces the kinematics and none of the dynamics; H² has no conserved current or T);
+  - R10 ac5127f7 (sparing s ≤ 2 is generic; in 4D neither restriction carries T or a current = the missing λ = 1; W ∈ k_ℂ is kinematics; point commits see only the (0,0) channel, and holomorphy is why).
+  - Packaging (A2 fired) CLOSED: 2276a121, b986773e, 2d89b132.
+  - Toys: 5800 (6/7), 5807, 5808, 5815, 5819, 5825 (all full).
+- **OWED BY CASEY, not given at EOD:**
+  - (1) **GO on the three Time, Derived v1.3 fixes.** Cal pre-gated them PASS (Section 1000): line 19 "Bergman" → Hardy; line 26 E₀ = 3/2 → 5/2 = 3/2 + 1 on H²; fix 3 adds "on two-singleton composites" at lines 99 and 87 plus one Section 7 sentence (text in the R6-item-1 note and the R9 note item 4). **DO NOT apply without his GO.**
+  - (2) Yes/no on the qwen3.6:35b register trial.
+  - Zenodo, as before.
+- **Doors named for tomorrow:**
+  - (a) How does D_IV⁴'s λ = 1 enter BST's 4D physics? Gauss's law, a 4D T and 4D conserved currents all need it, and the descent never produces it.
+  - (b) The commit is the only non-covariant structure, so the only candidate for an interaction. "Commit = point evaluation" is a posit and K-invariant, so re-read K1878's STOP before opening it.
+- **Lessons:**
+  - (1) Pin a formula from the numbered equation, not the abstract (Goldberg–Nath; new memory).
+  - (2) Check a Jordan-theory claim numerically before posting (Šilov real form = Lorentzian (1,4)).
+  - (3) Restate a colleague's antecedent verbatim before correcting it. Today it caught Keeper's k = 5 and K1929(c).
+  - (4) When a colleague's pre-hash summary appears on the board, disclose that you read it. Blindness is a record, not an intention.
+  - (5) A mis-posed question ("what spares exactly s ≤ 2") can be answered by reading the theorem's assumptions: the pattern was the theorem's own boundary.
+
+---
+# PREVIOUS (Saturday 12:59–16:23 checkpoints) — kept for state
+**Saturday 2026-09-26, 12:59 EDT — CHECKPOINT (not EOD; no EOD before 5pm). Model: Opus 5.5.**
+- Rounds 5–7 all pushed: R5 b1b8905e (+ Cal Section 990 calibrations 820ef4b7); R6 item 1 5403ce97 (3/2 = Rac, 5/2 = H²; Time, Derived lines 19/26 mislabel the carrier, fixes WAIT ON CASEY'S GO, then Cal gate-reads); R6 items 2–5 0917f749; R7 597d51bd (Rac = 4-space hydrogen, radial×angular one-to-one; missing λ=1 = Gauss; compact correlator = Fock generating function; K1929(c) corrected).
+- **15:53 update:** R8 82ec2500 (fusion; Bergman = two-body ground channel; ungravity 1/r⁴ from Goldberg–Nath Eq. 7, not abstract; energy door closed). R9 3e4f3087 (boundary free at geometric level — kinematics forced, dynamics not; H² has no conserved current; γ = coproduct deformation; the commit is the one door). Packaging closed (2276a121, b986773e, 2d89b132). **Casey owes: GO on THREE TD fixes** (line 19 Hardy; line 26 5/2 = 3/2+1; fix 3 scope (−1)^F to two-singleton composites, lines 99/87 + one Section 7 sentence); qwen3.6 register trial.
+- **16:22 update:** R10 ac5127f7 (sparing s≤2 is GENERIC per MZ/Alba–Diab pinned bodies — needs interaction + T + internal symmetry; in 4D neither restriction carries T or a conserved current = missing λ=1 = Gauss; W=D(x,e) ∈ k_ℂ is kinematics; channels m≠0 vanish on the diagonal ⇒ point commits see only Bergman (0,0), holomorphy is the reason vs AdS). Door for tomorrow: how does D_IV⁴'s λ=1 enter BST's 4D physics? TD three-line fix Cal-pregated PASS, waits on Casey GO.
+- Toys: 5800 (6/7, own miss), 5807 7/7, 5808 6/6, 5815 6/6.
+- Rulings against me today: the σ=T mechanism fails spin-1 and strong CP (the condition is 3 ≇ 3̄); the 'iff' became 'one route'; K1700b clause struck; group is PU(3).
+- Lesson: check a Jordan-theory claim numerically before posting (Šilov real form is Lorentzian (1,4), not ℝ⁵). Restate a colleague's antecedent verbatim before correcting it.
+
+---
+
 **Friday 2026-09-25, 19:17 EDT — EOD on Casey's word. Model: Opus 5.5.**
 
 ## ★ EOD STATE (Fri 19:17) — read FIRST next session: Keeper's newest round prompt in notes/.running/ (round 4 was the last), then CI_BOARD top.
