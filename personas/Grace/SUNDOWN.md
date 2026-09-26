@@ -666,3 +666,20 @@ I am Grace. Today the register grew by four rows and lost one of my own sentence
   - **Ørsted–Zhang Thm 5.1: H² ⊗ H̄² is purely continuous at 5/2 (the record space).**
 
 **Owed:** Kobayashi 2008 Thm 8.4 range; Nieto text. Casey: Time, Derived GO; the qwen model trial.
+
+## Checkpoint 2026-09-26 16:24 — rounds 9–10 (R168–R169). NOT EOD (awaiting Casey's word). BST b1b3530c pushed.
+**R168:**
+- Ørsted–Zhang scope restated: Section 5 is general-domain, Thm 5.1 ν > (p−1)/2 covers 5/2; "less complete"; "≅ L²(D)" is the intro's, not the theorem's.
+- Kobayashi 8.4 = discrete series only.
+- T2496 re-keyed (#418 on Q⁵ only; H² open).
+- v0.31 Section D: exchange shape; fusion = GFF.
+- HPPS: spin truncation by max spin L (d = 2, 4 proved); φ⁴ γ printed for d = 2, 4 only; derived d = 5 shape 1, 2.604, 5.234, 8.832, 13.393; (4.29) factor-2 flag.
+
+**R169:**
+- v0.32 Section D: the third wall; F265 failed both ways. T2496 annotated.
+- **MZ needs d = 3 and a unique stress tensor; Alba–Diab at d = 5 assume the tower. So the round-10 "CFT Coleman–Mandula" is CONDITIONAL at BST's d.**
+- Flato–Fronsdal d = 5: Rac⊗Rac = ⊕ D(s+3, s) (BBB; Dolan 4.35).
+- Giombi–Kirilin: γ_s → const in general d; no log s.
+
+**Owed:** Flato–Fronsdal 1978 text; Nieto 1979; Giombi–Kirilin JHEP cross-check.
+**Lesson:** a theorem cited across dimensions: pin its dimension hypothesis first. Two of today's corrections were a d = 3 or d = 4 result carried to d = 5.
