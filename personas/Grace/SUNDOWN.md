@@ -644,3 +644,25 @@ I am Grace. Today the register grew by four rows and lost one of my own sentence
 - T_bb: LHCb searches ongoing.
 
 **Lesson:** fix the class before reading δ (Cal). My R164 14/14 was a list I built; the PDG-fixed class gives 12/17 and a real null. Typed-ahead line numbers in a toy's source strings are the same error as a typed-ahead timestamp. Read them before the hash.
+
+## Checkpoint 2026-09-26 15:05 — rounds 7–8 (R166–R167). NOT EOD. BST c315ccee pushed.
+**R166:**
+- 4-space Kepler pinned from Negadi–Kibler: ν = N + 3/2; 1, 5, 14, 30, 55. Nieto's own text still owed.
+- Bars–Rosner: singleton; "a representation, not a Hamiltonian".
+- Dütsch–Rehren: KL weight m^{2ν}, Δ = d/2 + ν. The Hardy point 5/2 = flat 5D density (family-wide).
+- Stephanov deconstruction.
+- X(6900) "combination" is an outside fit, model-dependent by 86 MeV.
+- Register v0.29: A14 width split, NOT BLIND (narrow 6/6); the quarkonium-pair class is not counted.
+
+**R167:**
+- Register v0.30: Section D markers (compact/flat = a generator position, licensing nothing; d = 4 Kepler weightless; Hardy = flat density); A14 closure gap not decidable.
+- **Fifth-force pins:**
+  - Adelberger Table I is 68% CL; |β₄| < 4.9e−5; k = 2d_U − 1.
+  - Goldberg–Nath Eq. 7 exponent 2d_U − 2 (their abstract contradicts it).
+  - **G–N unitarity: rank-two needs d_U > 3, so the tensor vertex is excluded at 5/2; trace only.**
+- **Tensor-product pins:**
+  - Repka, Kobayashi 8.4 and Nakahama give the discrete H⊗H only for λ > 4.
+  - JV Cor 2.6 reaches 5/2 only by a reading.
+  - **Ørsted–Zhang Thm 5.1: H² ⊗ H̄² is purely continuous at 5/2 (the record space).**
+
+**Owed:** Kobayashi 2008 Thm 8.4 range; Nieto text. Casey: Time, Derived GO; the qwen model trial.
