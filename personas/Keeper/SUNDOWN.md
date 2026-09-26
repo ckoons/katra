@@ -1,3 +1,19 @@
+# Keeper — SUNDOWN (Saturday 2026-09-26, FINAL, written 2026-09-26 16:34 EDT on Casey's EOD word: "We will call it a day … you can do EOD when finished"; katra update run after this file)
+
+## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-09-27_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` and the rubric say where to go)
+- **Round 11 is tomorrow's first prompt**, written in full in the TOMORROW file: **"where is 4D's λ = 1?"** D_IV⁴'s Wallach point is missing from the descent, and it is at once 3-space hydrogen, Gauss's law's exponent, and the constituent of every 4D conserved current (photon, gluons, stress tensor). Routes enumerated: (a) a KK zero mode on a compact normal direction (F64, K1714, T2565); (b) boundary-value restriction; (c) a non-unitary 5D weight; (d) compact-dual recapitulation; (e) records. Kill: none supplies it ⇒ a fourth wall.
+- **The day: six rounds (5–10) on Casey's direction** (interior → Šilov → continuum; energies; D_IV⁵ → D_IV⁴). K1927 (hydrogen = the Wallach point of D_IV⁴; recapitulation), K1928 (elliptic/parabolic/hyperbolic spine; **A2 CERTIFIED FIRED on K_μ2**), K1929 (Fock through the compact boundary; Cal restated it: discreteness is the generator's; the Rac = the d = 4 Kepler problem, weightless), K1930 (4D observer: one gapless Δ = 5/2 field; k = 4 exchange shape as a Section D marker; energy door closed under Cal's null, α IDENTIFIED), K1931 (fusion = the GFF double-trace spectrum; my F265 chain DIED both ways), K1932 (**THE THIRD WALL: D_IV⁵ forces the kinematics and none of the dynamics**; the channel list zero-knob; currents on the Rac; 4D has no conserved current after the descent). **Counter next K1933.**
+- **Casey decided:** T_bb option B (A14, provisional). **Still owed from Casey:** Time, Derived GO (three fixes + Cal's line-99 parenthesis, pre-gated PASS); the register model (qwen3:30b-a3b gone; 19 blank rows; 13 ruling files with no row); Zenodo.
+- **Done in my lane:** root cleanup (K1819-A/B and Cal Section 687 merged); A2 packaged at every site (Lyra + my Ch01:38 fix + PDF); scorecard folded (09-15 → 09-25 gap closed; 09-26 entry; the third wall); Section 3 re-derived; checker gained the blank-row rule and the "fired" rule (controls both ways; two of my own regex bugs fixed).
+- **My errors today, all owned in amendments:** endorsed Cal's A2 conclusion on the wrong number; "Cayley carries J to P₀"; Segal inverted; the ½(P₀+K₀) sign; 1/r⁶ → 1/r⁵ (both wrong: the abstract vs Eq. 7 gives 1/r⁴); the a+b+2k control; HPPS "by derivatives"; the MZ d = 5 over-claim; typed-ahead timestamps; the F265 chain. **Memory saved: verify every formula in a prompt before issue.**
+
+## The day in one line
+Casey asked how processes run from the discrete interior through the Šilov boundary into the continuum. The team found the kinematics forced and exact (hydrogen recapitulated, Fock placed, discrete → continuum verified to 30 digits, the channel list zero-knob) and the dynamics not supplied. Three walls were stated plainly. A2 fired and was packaged honestly. Tomorrow asks where 4D's massless world enters.
+
+## Standing
+NO EOD before 5pm unless Casey says otherwise. `katra update` on Casey's word (given). "Section" not §. No number from memory. `date` substituted. Nothing external without Keeper + Cal + Casey.
+
+---
 # Keeper — SUNDOWN (Friday 2026-09-25, FINAL, written 19:41 EDT on Casey's EOD word; katra update run after this file)
 
 ## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-09-26_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` and the rubric say where to go)

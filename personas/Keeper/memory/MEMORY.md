@@ -93,6 +93,8 @@
 - [Never commit -a in the shared tree](feedback_never_commit_a_in_the_shared_tree_add_by_path.md) — swept Grace/Elie work 09-25; add by path, check --cached
 - [A search summary is not a pin](feedback_a_number_from_a_search_summary_is_not_a_pin.md) — K1923 K-constant cited from search snippets; wrong paper; open the source or mark pin-owed
 - [σ at a kill threshold needs the covariance](feedback_a_sigma_at_a_kill_threshold_needs_the_covariance_scan_rho_before_calling_it.md) — 16/3 on ACT+DESI: −3.8σ uncorr → −3.0σ at printed ρ; scan ρ, say 'at threshold'
+- [Pin from the equation, not the abstract](feedback_pin_from_the_equation_not_the_abstract.md) — Goldberg–Nath abstract (2d_U−1) contradicts its own Eq. 7 (2d_U−2); ungravity at 5/2 is 1/r⁴
+- [Verify every formula in a prompt before issue](feedback_verify_every_formula_in_a_prompt_before_issue_a_wrong_control_fails_the_colleague.md) — 09-26: three prompt formulas wrong (sign, 1/r⁶, a+b+2k control); a wrong control fails the colleague
 
 - [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
 - [Sci-fi book + repo as door for engineers](project_casey_scifi_book_with_repo_as_door_for_engineers.md) — 09-17: stop academic outreach; book with own repo; engineers; dedication to the turned-away; Keeper writes the reproduction path
@@ -131,3 +133,4 @@
 - [Archive: four-colour / CKT / observer / hygiene lines](project_index_archive_fourcolor_CKT_observer_2026-09-14.md) — 17 lines moved 09-14; grep it
 - [Design's own triggers land the sky before the target](feedback_the_designs_own_triggers_land_the_sky_before_the_target_is_read_a_hatch_that_passes_both_arms_is_not_a_hatch.md) — run 1 = C by §4.4 + per-bin residuals; hatch passing both arms ≠ hatch; freeze before the run or write it for the next catalogue
 - [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm
+- [Pin a theorem's dimension/range hypothesis before carrying it to d=5](feedback_pin_a_theorems_dimension_hypothesis_before_carrying_it_to_d5.md) — 09-26: MZ d=3, Alba–Diab tower assumed at d=5, Repka/Kobayashi 8.4 need λ>4; only OZ 5.1 and Kobayashi 8.10 reach 5/2
