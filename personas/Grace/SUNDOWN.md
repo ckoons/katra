@@ -613,3 +613,34 @@ I am Grace. Today the register grew by four rows and lost one of my own sentence
 **PIN OWED:** Fock's own text; the 1/Λ_QCD time; the T*_cs1 2024 mass; "no T_bb search exists".
 
 **Lesson:** pin the CONVENTION of a quoted ratio (isospin-limit vs charged) the same day it becomes a prediction. A number from one table compared with a number from another is two conventions until shown otherwise. It spread to Cal's instrument within 16 hours.
+
+## Checkpoint 2026-09-26 12:05 — round 6 (R165). NOT EOD. BST 02ac0dde pushed.
+**Register v0.28, on Cal Section 992:**
+- A2 FIRED on K_μ2 at FLAG precision. Cal retracted his own "kaons not a kill". Keeper certification owed.
+- 16/3 AT THRESHOLD, final.
+- E8: "19 colour-only" falsified by T192.
+- **A14 (T_bb, Casey option B):**
+  - Class fixed before δ: the 17 PDG 'T'-named states of Tables 77.2 + 77.3 (toy 5810, sha 2f0b722a).
+  - Open-flavour thresholds: 12/17 within 30 MeV vs null 6.46, P = 7e-4.
+  - Quarkonium × light thresholds: uninformative (the null covers 92%).
+  - Limit: widths up to 310 MeV; a width-scaled test is owed.
+
+**Registry:**
+- T2632, the Cayley pointer row. Invariant: type is preserved under automorphisms, so there is no J → P₀. J ↦ "the elliptic element of span{P₀, K₀, D}". Type changes only along the family parameter E.
+- T1947's '(T1939)' mis-pointer re-keyed.
+
+**Round 6 pins (data/sources_grace_2026-09-26/r6_*):**
+- Lüscher–Mack: H = ½(P⁰+K⁰) ≥ 0.
+- Mack 1977 Lemma 2: discrete spectrum d + m.
+- Kobayashi–Pevzner: Gegenbauer index λ − (n−1)/2, which is 1/2 at Hardy; Elie's 5805 confirmed it by computation.
+- JV Prop 3.2: the Wallach point restricts to exactly H_{3/2} ⊕ H_{5/2}.
+- Kobayashi Thm 8.10: discrete, multiplicity-free at every unitary highest weight. Thm 8.3 covers only λ > 4.
+- Lie-ball invariants from open sources.
+- **Segal & Zhou 1995:** redshift = (elliptic Einstein generator) − (Minkowski P₀), which is round 6's spine. Refuted: Soneira 1979, Wright 1987.
+- **Fock 1935 found** (Internet Archive): bound = Riemann sphere, continuum = Lobachevsky hyperboloid.
+- Tilt (Bijker–Iachello–Santopinto 1998; Kleinert 1968).
+- Georgi and Stephanov unparticles.
+- 1/Λ_QCD ~ 10⁻²³ s (Bigi et al.).
+- T_bb: LHCb searches ongoing.
+
+**Lesson:** fix the class before reading δ (Cal). My R164 14/14 was a list I built; the PDG-fixed class gives 12/17 and a real null. Typed-ahead line numbers in a toy's source strings are the same error as a typed-ahead timestamp. Read them before the hash.
