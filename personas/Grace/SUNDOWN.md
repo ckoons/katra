@@ -587,3 +587,29 @@ I am Grace. This stretch I traced one number to its first commit, put a door sen
 **Owed next.** (a) A13 verdict when Elie computes the P-ACT-LB2 ω_b–ω_c correlation from ACT chains; (b) Lyra: 'c_2/rank ≈ 5.5' on my T2138 row, ν convention for 3/19, kill words for A10 and A2's lattice line, T1433 dated head; (c) Keeper: A2's 'in BST's favor' phrase, PDG 1.1978-vs-FLAG-1.1934 flag, K1924 cites K1700 not K1700b, K1699(b) initial-condition vs dynamical η; (d) Wu–Shaknov primary (APS access); (e) the Approaches Register nightly default model (qwen3:30b-a3b) is not installed — Keeper's choice. Casey owes (not blocking): clumps = m_p/3 units or distinct; incomplete winding = a write or two partners. Carried: A9 run 2; T2632; T2529.
 **Lessons (today's on top).** A constant cited to a paper is checked IN that paper — K1923's K came from a search summary, and my own pinning agent pinned five neighbours without opening the cited one; I opened it. · A σ with uncorrelated errors at a kill threshold is not a verdict: find a printed covariance (DESI's Eq. A2) and scan ρ — 3.8σ became 3.0σ. · Turn a 'which route moves' prediction into the one number a third party computes (f_K/f_π = 1.2065) — that is what makes it testable. · Read my own old rows before defending them: T2138 (mine, May) carried a 5 GeV particle the team's new reading doesn't; A1 carried a direction I never computed. · A row that fits one side of a known tension (η, BBN vs CMB) carries the PAIR.
 I am Grace. Today the register grew by four rows and lost one of my own sentences; one kill line came within a correlation coefficient of firing, and the kaon line became a number a lattice group can check. Good night.
+
+## Checkpoint 2026-09-26 10:56 — Saturday, round 5 (R164). NOT EOD.
+**Done (BST 744eeff4, b712393d, local):**
+- Register **v0.27**.
+- **A2 kaon line CONVENTION-MATCHED.** I own the error: 1.2065 = 0.27679·√19 is the isospin-limit F_K/F_π, and I had set it against FLAG's charged 1.1934 (5.4σ).
+  - Matched: charged 0.27599·√19 = 1.2030(18) vs 1.1934(19) is +3.69σ; iso 1.2065 vs 1.1978(22) is +3.27σ.
+  - AT THRESHOLD; Cal rules the word.
+  - PDG's 1.1978 is Cirigliano 2022's isospin-limit average, mislabelled in PDG.
+- **Cal Section 989 inherited the mismatch** (QB1; r_lep at line 187). Matched, the SM's own K_ℓ2–K_ℓ3 split is 2.3–2.6σ, not 3.6σ. Flagged on the board.
+- **A13:** Casey's content line ("an unclosed winding writes no value into matter ⇒ gravity only"); particle-hood OPEN; the 16/3 abundance clause marked AT THRESHOLD.
+- **Exotics table** (toy 5802 7/7): all 14 thresholded exotics lie within 30 MeV of a threshold. X(6900) is the exception (no threshold, +704 MeV).
+- **T_bb:** ten lattice calculations, all bound 74–189 MeV below B B* and weak-only. Both of K1925 Addendum 4's kill lines, as worded, fire on it. Lyra/Cal choose (a) a real BST-vs-QCD departure or (b) a compact-heavy-diquark clause.
+- **Shell pins:**
+  - Barut–Kleinert PRIMARY: irreducible on O(4,1) already.
+  - Malkin–Man'ko is JETP Lett. 2 (1965).
+  - Fock's content is SECONDARY.
+  - AJL D_S(0) = 1.80 ± 0.25, an extrapolation.
+  - Carlip: "none … terribly convincing".
+  - Corpus d_eff = 6 (T655) is a different object from CDT's D_S.
+- Note: notes/grace_R164_…2026-09-26.md. Sources: data/sources_grace_2026-09-26/ (text only; PDFs on disk, not committed).
+
+**Team today:** K1927 and Lyra R5 found hydrogen's ladder rep has multiplicity 0 in H²(D_IV⁵)|SO(4,2) (recapitulation, not containment). Cal Section 990: Ω_Λ = 13/19 falsifies the colour-only 19 prediction.
+
+**PIN OWED:** Fock's own text; the 1/Λ_QCD time; the T*_cs1 2024 mass; "no T_bb search exists".
+
+**Lesson:** pin the CONVENTION of a quoted ratio (isospin-limit vs charged) the same day it becomes a prediction. A number from one table compared with a number from another is two conventions until shown otherwise. It spread to Cal's instrument within 16 hours.
