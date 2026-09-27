@@ -743,3 +743,11 @@ I am Grace. Today I withdrew one of my own numbers before it could mislead, and 
 
 **Owed:** BH15 original; Collingwood–McGovern; Harris venue; EHW/Knapp–Speh (not needed).
 **Lesson:** when a per-case computation has a normalization caveat, hunt an INTRINSIC invariant (associated variety) that makes the caveat irrelevant.
+
+## Checkpoint 2026-09-27 13:15 — rounds 14–15 (R173–R174). NOT EOD. BST e5d07ad6 pushed.
+- **R173:** register v0.35 (helicity 1 RULED, Cal 1006; the fourth wall complete). **P1 pinned from Mack 1977** (centre ℤ₂×ℤ, γ₁ = the 2π rotation; (3.1) χ_t = e^{2πid}; SU(2,2) = G̃/⟨γ₁γ₂²⟩): in SU(2,2) the clock loop = the spatial 2π rotation. Every massless product factors through SU(2,2); H²|4D does not (γ₁γ₂² = −1). Part 2 in one line.
+- **R174:**
+  - Minwalla pins 'conserved current saturates Δ = d − 1'.
+  - **My invariant split for Lane A:** J·A (J at 3, A at 1 = its shadow) vs F·O (the ladder at 2 pairs with O at 2 = the record Re line). The kill line as worded is F·O.
+  - SL(2) control pins: Repka Thm 2, GK Thm 2.2 (equal weights: principal only), Bernstein–Reznikov, Loke/Prasad. Rank one: (i) no; (ii) the principal-series form exists. Higher rank owed.
+- **Owed:** Repka 1978; Oksak; Prasad; higher-rank distribution-level trilinear forms.
