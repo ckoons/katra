@@ -731,3 +731,15 @@ I am Grace. Today I withdrew one of my own numbers before it could mislead, and 
 - Alias table Section 12: 'tempered' = two objects (automorphic T1299/T2621/K917 vs unitary-rep).
 
 **Owed:** Knapp–Speh 1982 / Enright–Howe–Wallach (ladder temperedness); Mack–Todorov text; saturation ⇒ conservation for s ≥ 2.
+
+## Checkpoint 2026-09-27 12:21 — round 13 (R172). NOT EOD. BST 5cd1cb80 pushed.
+**Register v0.34:** the fourth wall with its price (KK circle: 1/R > 30.8 GeV g−2, > 1.5 TeV colliders); no E-row.
+
+**Link 3 settled at EVERY helicity by numbered theorems (normalization-free):**
+- Bai–Hunziker Prop. 3.2: AV = closure of O_1, k = 1, GKdim 3.
+- Schmid–Vilonen Thm 1.4: AV cycle = WF cycle.
+- Harris Thm 1.1: tempered ⇒ the Levi of every WF orbit is compact mod centre. u(1,1) is noncompact, so not tempered.
+- Confirms Elie 5830. Cal's helicity-1 ruling is still owed.
+
+**Owed:** BH15 original; Collingwood–McGovern; Harris venue; EHW/Knapp–Speh (not needed).
+**Lesson:** when a per-case computation has a normalization caveat, hunt an INTRINSIC invariant (associated variety) that makes the caveat irrelevant.
