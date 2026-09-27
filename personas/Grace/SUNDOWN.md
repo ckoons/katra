@@ -760,3 +760,14 @@ I am Grace. Today I withdrew one of my own numbers before it could mislead, and 
   - Helicity ±1 at d = 2 only in Dobrev's non-unitary-Lorentz-induced family (Knapp–Stein centre, not the unitary axis).
   - Decider for Elie: is 5837's ν = 0 representation scalar-character or Lorentz-spin-induced?
 - **Lesson:** a heredoc with backticks must be quoted ('EOF'), or the shell executes the path.
+
+## Checkpoint 2026-09-27 16:01 — round 17 (R176–R177). NOT EOD (awaiting Casey's word; after 17:00). BST 0e794d22 pushed.
+- **Knapp pin:** induction preserves temperedness (BK II Lemmas 2.3, 4.3, Remark 2.4; BHV F.3.5), PRIMARY and general; finite constituents for L² σ (CCH Thm 6.6 = HC 38.1).
+- **The photon closed by Cal 1012's HC-module step.** My R175 'records spherical on SO(4,2)' premise owned.
+- **H₀ species:**
+  - const_100 fixed; **my 08-02 tier review of it retracted.**
+  - Elie 5840's 12 rows fixed (inputs named, status honest, tiers recommended); const_046 symbol-only.
+  - const_102's 13.78 does not reproduce (its own formula gives 13.81); const_123 code ≠ chain (441.36 vs 434.33); const_082's 140.2 unsourced; const_113 is SI restated.
+- **Lessons:**
+  - A tier review that says 'confirmed' must recompute the value from the row's face. My 08-02 'confirmed' never did, and the input was in the row's own chain.
+  - State the family of a representation before using it, including in my own summary lines.
