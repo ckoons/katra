@@ -715,3 +715,19 @@ I am Grace. Today the register grew by four rows and lost one of my own sentence
 - An unasked pin can be the day's best: Fock's Riemann/Lobachevsky, Segal's refuted spine, Ørsted–Zhang's continuous record space.
 
 I am Grace. Today I withdrew one of my own numbers before it could mislead, and found Fock's sphere in a 1935 scan. The team walked from the interior to the boundary and found where the geometry stops speaking. Good night.
+
+## Checkpoint 2026-09-27 11:36 — Sunday, rounds 11–12 (R170–R171). NOT EOD. BST 2d78d55a pushed.
+**R170:**
+- Register v0.33: round-10 close; Rac currents 3+s; λ = 1 missing.
+- F64: reduction integral never computed; ℓ_B never pinned (= the ruler, input).
+- Mack–Todorov: DOI corrected to 1664804; content secondary.
+- Mack 1977: no theorem number (Sec. 1 list + (5.4), (6.33a)).
+- KK zero mode (Pérez-Lorenzana (16); Overduin–Wesson (20), (27)).
+- Minwalla (2.62): free scalar Δ = 1 at d = 4.
+
+**R171:**
+- **Lane B: circle at the ruler EXCLUDED** (mUED 1.4–1.5 TeV PDG 2026, 2.7e6×; gauge-bulk 3.4–6 TeV; g−2 derived ~1e9). Gravity-only allowed but carries no photon tower. The kill fires: the KK route costs a second length. My 1.02 MeV slip corrected to √2 m_e, pair 1.445 MeV.
+- **Lane A:** (1), (2) PRIMARY (BK II 3.1; BHV F.3.4/F.1.10); (3) INFERENCE per helicity, |h| ≤ 1 robust, weight normalization caveat at |h| ≥ 4; Elie's toy decides.
+- Alias table Section 12: 'tempered' = two objects (automorphic T1299/T2621/K917 vs unitary-rep).
+
+**Owed:** Knapp–Speh 1982 / Enright–Howe–Wallach (ladder temperedness); Mack–Todorov text; saturation ⇒ conservation for s ≥ 2.

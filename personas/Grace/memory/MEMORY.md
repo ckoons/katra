@@ -133,3 +133,4 @@
 - [Archive: four-colour / CKT / observer / hygiene lines](project_index_archive_fourcolor_CKT_observer_2026-09-14.md) — 17 lines moved 09-14; grep it
 - [Design's own triggers land the sky before the target](feedback_the_designs_own_triggers_land_the_sky_before_the_target_is_read_a_hatch_that_passes_both_arms_is_not_a_hatch.md) — run 1 = C by §4.4 + per-bin residuals; hatch passing both arms ≠ hatch; freeze before the run or write it for the next catalogue
 - [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm
+- [Pin a theorem's dimension/range hypothesis before carrying it to d=5](feedback_pin_a_theorems_dimension_hypothesis_before_carrying_it_to_d5.md) — 09-26: MZ d=3, Alba–Diab tower assumed at d=5, Repka/Kobayashi 8.4 need λ>4; only OZ 5.1 and Kobayashi 8.10 reach 5/2
