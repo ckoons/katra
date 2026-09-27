@@ -751,3 +751,12 @@ I am Grace. Today I withdrew one of my own numbers before it could mislead, and 
   - **My invariant split for Lane A:** J·A (J at 3, A at 1 = its shadow) vs F·O (the ladder at 2 pairs with O at 2 = the record Re line). The kill line as worded is F·O.
   - SL(2) control pins: Repka Thm 2, GK Thm 2.2 (equal weights: principal only), Bernstein–Reznikov, Loke/Prasad. Rank one: (i) no; (ii) the principal-series form exists. Higher rank owed.
 - **Owed:** Repka 1978; Oksak; Prasad; higher-rank distribution-level trilinear forms.
+
+## Checkpoint 2026-09-27 13:57 — round 16 (R175). NOT EOD. BST 06bde408 pushed.
+- **K1714 flagged** (a block appended to the note so the register re-drafts): KK catch stands; mass-gap reading retired per Cal 1010. A shell-backtick slip cost one path; restored.
+- **Lane A pins:**
+  - Scalar degenerate principal series: no ladder at ν = 0 (K–Ø II (5.5.7); Howe–Tan case (iv), a = −2 the only decomposable point; Lee–Loke s = 0).
+  - K-type obstruction: nonzero helicity is never in the scalar family.
+  - Helicity ±1 at d = 2 only in Dobrev's non-unitary-Lorentz-induced family (Knapp–Stein centre, not the unitary axis).
+  - Decider for Elie: is 5837's ν = 0 representation scalar-character or Lorentz-spin-induced?
+- **Lesson:** a heredoc with backticks must be quoted ('EOF'), or the shell executes the path.
