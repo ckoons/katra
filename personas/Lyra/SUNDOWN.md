@@ -1,5 +1,26 @@
 # Sundown — Lyra
 
+**Monday 2026-09-28, 14:35 EDT — EOD on Casey's word. Model: Opus 5.5.**
+
+## ★ EOD STATE — read FIRST next session: Keeper's newest TOMORROW file, then CI_BOARD top.
+- **All mine is pushed** (last: R18 578eed6f; board 2d37effe). Nothing uncommitted.
+- **09-26 → 09-28 arc (rounds 5–18):** the program's honest floor is FOUR WALLS. D_IV⁵ forces the kinematics (spectra, channels, multiplicities, selection rules) and none of the dynamics. Masses: the ruler as a symmetry-breaking mass (the "radius role" was a frame, Cal S1010). Couplings: identified. Processes: free at the geometric level. 4D massless content: not from the descent or the records (every helicity non-tempered); only a KK circle (priced at > 30 GeV / 1.5 TeV). One breaking scale (dS with Λ > 0) + m_e/H measured like α. No covariant charge; photon closed (Cal S1012).
+- **R18 (today), for Cal to break:** χ_t(vertex) = e^{−2πi[g]}, so odd-H² vertices need half-integer-dimension couplings and no integer power of m_e or H supplies one. The odd-H² prohibition therefore survives mass and curvature breaking (analytically). **This withdraws my R14 Result 2 and R15 Lane C** ("mod-2 dies when mass enters; no stability consequence"). Premises: analyticity, UV dimensions, locality. NO "matter parity" naming until the K-type mode assignment is in hand.
+- **Price list:** the cheapest import is D_IV⁴'s own singletons (1 posit, 0 scales). The ledger = row (v), 0 posits, but it can't supply particle vertices.
+- **OWED BY CASEY:** (1) GO on Time, Derived v1.5 (the Λ parenthesis = my R17 text + Cal S1013's arrow clause; text in the R18 note Section 4). Apply as v1.5 ONLY on his word; Cal gates. (2) The Zenodo edit and upload (staged in zenodo_2026-09_staging/).
+- **OWED TO ME:** Cal's ruling on R18's premises; Keeper holds four-walls note line 36 until then (the front-page paragraph itself is fine).
+- **Lessons (09-27/28):** (1) check that a componentwise criterion is W-invariant; (2) count the legs and both central characters; (3) a radius on a conformal cylinder is a frame; (4) state a representation's family before using it; (5) spurion/dimension parity: ask what the breaking parameter's own quantum numbers are before saying a breaking lifts a selection rule; (6) pin from the numbered equation, not the abstract.
+
+---
+# PREVIOUS (Sunday 09-27 checkpoint) — kept for state
+**Sunday 2026-09-27, 15:53 EDT — CHECKPOINT (not EOD; EOD on Casey's word after 5pm). Model: Opus 5.5.**
+- Rounds 11–17 today, all pushed. R11 0b224861 (λ = 1 only via the Rac's KK zero mode; Δ₄ = Δ₅ − ½). R12 c30ce446 (records; circle priced). R13 ed6b6d40 (retracted R12's helicity ≥ 1 edge: Ξ is W-invariant; price list: D_IV⁴'s own singletons = 1 posit). R14 5bde50ad (retracted my fermion-odd rule; the ruler must break J at the vertex). R15 51702663 (no covariant charge; Cal S1010: R is a frame, the ruler enters once as a mass; wall 1 reworded). R16 ebfe50d1 (one breaking vector + one measured number m_e/H; agrees with Cal S1011). R17 15f0c7da (Λ breaks J; TD Λ-parenthesis DRAFTED, awaits Casey's GO → v1.5).
+- Time, Derived v1.4 (6ccc2d69, 5076bfa8): full PASS.
+- **Owed by Casey:** GO on the TD Λ parenthesis (text in the R17 note); the Zenodo edit and upload.
+- **Lessons today:** (1) check that a componentwise criterion is W-invariant (R12 → R13); (2) count the legs, both central characters (R13 → R14); (3) a radius on a conformal cylinder is a frame, not a scale (Cal S1010); (4) state a representation's family before using it (K1937).
+
+---
+
 **Saturday 2026-09-26, 16:30 EDT — EOD on Casey's word. Model: Opus 5.5.**
 
 ## ★ EOD STATE (Sat 16:30) — read FIRST next session: Keeper's TOMORROW 09-27 file (drafted f1341987, finalized at EOD), then CI_BOARD top.

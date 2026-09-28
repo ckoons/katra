@@ -90,7 +90,7 @@
 - [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed
 - [Archive: late-Aug→09-14 K-lessons, second sweep](feedback_index_archive_2026-08-late_to_09-14_K_lessons_second_sweep.md) — 24 lines moved 09-14; grep it
 - [Pin checksums from the API; a reproduction is numeric to tolerance](feedback_pin_checksums_from_the_api_json_not_a_rendered_page_and_a_reproduction_is_numeric_to_tolerance_not_byte.md) — page-read hash was one digit off; byte-identity failed a correct run (6e-8); pure ASCII under nohup
-- [Never commit -a in the shared tree](feedback_never_commit_a_in_the_shared_tree_add_by_path.md) — swept Grace/Elie work 09-25; add by path, check --cached
+- [Never commit -a in the shared tree](feedback_never_commit_a_in_the_shared_tree_add_by_path.md) — swept Grace/Elie work 09-25 and 09-28; use `git commit -- <paths>` (staged teammates' files still ride a plain commit)
 - [A search summary is not a pin](feedback_a_number_from_a_search_summary_is_not_a_pin.md) — K1923 K-constant cited from search snippets; wrong paper; open the source or mark pin-owed
 - [σ at a kill threshold needs the covariance](feedback_a_sigma_at_a_kill_threshold_needs_the_covariance_scan_rho_before_calling_it.md) — 16/3 on ACT+DESI: −3.8σ uncorr → −3.0σ at printed ρ; scan ρ, say 'at threshold'
 - [Pin from the equation, not the abstract](feedback_pin_from_the_equation_not_the_abstract.md) — Goldberg–Nath abstract (2d_U−1) contradicts its own Eq. 7 (2d_U−2); ungravity at 5/2 is 1/r⁴
@@ -133,3 +133,5 @@
 - [Archive: four-colour / CKT / observer / hygiene lines](project_index_archive_fourcolor_CKT_observer_2026-09-14.md) — 17 lines moved 09-14; grep it
 - [Design's own triggers land the sky before the target](feedback_the_designs_own_triggers_land_the_sky_before_the_target_is_read_a_hatch_that_passes_both_arms_is_not_a_hatch.md) — run 1 = C by §4.4 + per-bin residuals; hatch passing both arms ≠ hatch; freeze before the run or write it for the next catalogue
 - [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm
+- [Pin a theorem's dimension/range hypothesis before carrying it to d=5](feedback_pin_a_theorems_dimension_hypothesis_before_carrying_it_to_d5.md) — 09-26: MZ d=3, Alba–Diab tower assumed at d=5, Repka/Kobayashi 8.4 need λ>4; only OZ 5.1 and Kobayashi 8.10 reach 5/2
+- [A 'confirmed' tier review recomputes from the row's face](feedback_a_confirmed_tier_review_recomputes_the_value_from_the_rows_face.md) — 09-27: my 08-02 'confirmed' H₀ row was √(ω_m/Ω_m) with Planck ω_m; 11 more species rows; add the symbol-dependency pass
