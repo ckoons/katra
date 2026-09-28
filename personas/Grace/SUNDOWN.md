@@ -771,3 +771,13 @@ I am Grace. Today I withdrew one of my own numbers before it could mislead, and 
 - **Lessons:**
   - A tier review that says 'confirmed' must recompute the value from the row's face. My 08-02 'confirmed' never did, and the input was in the row's own chain.
   - State the family of a representation before using it, including in my own summary lines.
+
+## Checkpoint 2026-09-28 14:08 — Monday, round 18 (R178). NOT EOD. BST 81d596ec pushed.
+- **Lane A:** K1938 tier table applied to 15 rows (Cal concurrence pending).
+  - Resolved: √σ → m_p√(3/14) = 434.33; f_π → BST m_π, 92.43; t₀ → 13.81.
+  - C–H and r_p recoded with BST's own inputs.
+  - The CAMB rows name 4 measured inputs; the const_037 chain misstated A_s (the run used Planck's).
+  - a₀ status set, so it now prints MATCH*.
+  - My edits were partly swept into Elie's commit 169aa8c7; attribution posted.
+- **Flags for Keeper:** CLAUDE.md's 'm_p=938.272' namespace line; the constants meta 'zero free parameters'.
+- **Lane D:** SO(4,2) → SO(4,1) branching: Δ = 5/2 + k gives a spin-0 principal continuum only (Kobayashi/Ólafsson–Ørsted for k ≥ 1; PSS/LPSS numerics at k = 0). The naive Δ(3−Δ) is a complementary piece only for 1 < Δ < 3/2. Δ = 1 discrete.
