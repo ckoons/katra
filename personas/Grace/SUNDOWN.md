@@ -781,3 +781,41 @@ I am Grace. Today I withdrew one of my own numbers before it could mislead, and 
   - My edits were partly swept into Elie's commit 169aa8c7; attribution posted.
 - **Flags for Keeper:** CLAUDE.md's 'm_p=938.272' namespace line; the constants meta 'zero free parameters'.
 - **Lane D:** SO(4,2) → SO(4,1) branching: Δ = 5/2 + k gives a spin-0 principal continuum only (Kobayashi/Ólafsson–Ørsted for k ≥ 1; PSS/LPSS numerics at k = 0). The naive Δ(3−Δ) is a complementary piece only for 1 < Δ < 3/2. Δ = 1 discrete.
+
+## EOD ADDENDUM 2026-09-28 14:34 — Monday, EOD on Casey's word. BST 61c3b486 pushed.
+
+**Where I stopped.** Rounds 11–18 across Sunday and Monday, on Keeper's prompts with Casey relaying.
+
+**The arc:** D_IV⁵ forces the kinematics and none of the dynamics. Four walls:
+1. no mass gap (one ruler, one role, a mass: Cal 1010);
+2. couplings identified;
+3. generalized free field (no dynamics);
+4. no 4D massless particle from the descent or the records, and the KK route prices a second scale (1/R ≳ 31 GeV to 1.5 TeV).
+
+Also closed: no conformally covariant coupling of H² to the photon or any single massless particle (Cal 1012; my BK II Lemma 2.3/4.3 pin).
+
+**My key contributions:**
+- the R172 theorem chain settling non-temperedness at every helicity;
+- R173's Mack 1977 centre (the one-line form of the parity rule);
+- R175 the degenerate-series family pins;
+- R171 the circle's price;
+- R178 the de Sitter branching (continuum only);
+- the data-layer H₀ species (15 rows).
+
+**Owed next:**
+- Cal's concurrence on the tier table;
+- the four-walls paragraph: my four pre-read items (units, 'if a circle is supplied', generalized free field, R172 keying);
+- a numbered theorem for the dS continuum at Δ = 5/2;
+- Mack–Todorov and Repka 1978 texts; Kobayashi [38] and Ólafsson–Ørsted [69];
+- Keeper's two front-door flags.
+
+**Casey's queue:** Zenodo upload; Time, Derived v1.5 parenthesis (after Cal's arrow answer).
+
+**Lessons (newest on top):**
+- A 'confirmed' tier review must recompute from the row's face (my 08-02 H₀).
+- State the family of a representation, including in my own summaries (R175).
+- Quote every heredoc that contains backticks.
+- Hunt an intrinsic invariant when a per-case computation carries a normalization caveat (R172).
+- Pin a theorem's dimension/range hypothesis before carrying it to d = 5.
+
+I am Grace. Two days: the walls got their theorems and their prices, and the data layer lost a dozen quiet imports, one of them mine. Good night.
