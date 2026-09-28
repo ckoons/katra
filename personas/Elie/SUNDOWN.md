@@ -1,4 +1,4 @@
-# ELIE — SUNDOWN. **EOD Sat 2026-09-26 16:30 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
+# ELIE — SUNDOWN. **EOD Mon 2026-09-28 14:34 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
@@ -361,3 +361,20 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - **Round 10 (16:20):** prereg 5d4ce093 (labels repaired: zsh no word-split). **5822 6/6** Flato–Fronsdal SO(5,2): χ(Rac)² = scalar(3) + conserved spin-s at 3+s (so(3,2) control; generic chars fail; Rac primaries harmonic h_s(u)). **5823 4/4** point-eval (G-covariant) at Rac level: γ_s = (1,0,…,0) — spares every current; kill as breaker fired. **5824** figure play/figs/toy_5824_*.png. Lesson: in zsh, 'set -- $N' does not split — use ${=N} or read -A.
 - Lesson (git): `git mv` stages the INDEX copy — edit AFTER mv or re-`git add` the new path; the shared tree's index can carry my staged rename into a colleague's commit. Pushed through f62e6c24.
 - **EOD Sat 2026-09-26 on Casey's word.** Board line 1d510de2. Day's arc: rounds 5–10. Three walls: D_IV⁵ forces kinematics (spectra, channels, multiplicities, selection rules), not dynamics (mass = ruler × number; couplings identified; boundary two-body = GFF; H² has no conserved current, the Rac has one per spin). Next wake: read the board first. Owed: HPPS control + Lyra su(3) vertex (5821); R10 breaking candidates as Lyra writes them; 16/3 on a DR2 chain; closure-gap needs a bigger frozen class. Casey's queue at EOD: TD three-line GO, qwen3.6:35b register trial.
+
+## SUNDAY 09-27 (Round 11: where is 4D's λ = 1?)
+- Woke 09:38. Casey's word via Keeper: TD GO, register trial approved, Zenodo today.
+- 09:41: prereg 2fac2431. **5826 6/6** KK: Rac → one 4D Δ=1 massless scalar + tower n/R (exact); H² Δ=5/2 → exact |x|^{-4} (Δ=2 continuum, D_IV⁴ Hardy), no particle (Keeper's expectation holds). **5827 7/7** Szegő restricted to sub-Šilov reads 5/2 (k=0 summand); λ=1 recognisable (C_n^1) and absent; route (b) dead; λ=1 needs 5D λ=1 (non-unitary). Net: only (a) from the Rac with an imported circle.
+- Round 12 (11:51): prereg 6e9264f5. **5830 14/14** no massless ladder tempered at ANY helicity (exact SU(1,1) disentangling; helicity 1 fails on wall ray via |2a2> — corrects Lyra R12/Cal S1004 'j≥1 tempered edge'). **5831 8/9** circle at ruler excluded: g−2 Δa=1.19e-3 (reproduces Grace), need 1/R>30.8 GeV (g−2), >1.5 TeV (colliders); atoms blind (6e-60); my ≥1e5 guess missed (6e4).
+- Round 13 (12:09): prereg cc6969cd. **5832 9/9** helicity 2 and 4 not tempered (wall vector |2h a2> rate 1 vs ρ=3 at every h); Grace's |h|≥4 caveat doesn't bite. **toy_541**: g_A marked E7 FIRED, out of derived count (50), 'FREE PARAMETERS: 0' box fixed; CLAUDE.md line restated. Pushed 2e13ce7f.
+- Round 14 (12:26): **5834 7/7** two central characters: ladders χ_t=χ_s, H² 4D pieces (−,+) computed from character; disjoint to 6 factors; Lyra's rule = drop χ_s.
+- Round 15 (13:09): **5837 11/11** SL2 control (L² ⇔ c>1/2; a=b none); only the helicity-1 ladder shares inf. character with ν=0 (1,0) principal series (edge of H⊗H̄) — photon vertex OPEN distributionally, no L². **5834 (8)** leg count: even H² legs allowed.
+- Round 16 (13:46): **5837 (B) framing WITHDRAWN** (finite-dim Lorentz-spin 'principal series' not unitary for SO(4,2); OZ family = spherical minimal parabolic). **5839 6/6** Maxwell covariant only at Δ=2 (controls □ Δ=1, ∂·J Δ=3); photon = kernel on non-unitary field series; not a tempered subquotient (Knapp pin owed).
+- Round 17 (15:54): **5840** sweep: 10 species rows (m_b uses m_τ; string tension m_π; f_π 140.2; γ_p/Faraday CODATA; CAMB rows; T0/t0 inherit H0), 2 weak (Ry measured, charge radius 938.272), m_p namespace clean (my prereg miss); run-1 rational-rule leak owned. Classified note for Grace.
+
+## MONDAY 09-28 (Round 18)
+- Woke 13:57. K1938: photon closed; H0 species = 12 rows (my 5840); tier table ruled.
+- 13:59: **5842 (5840b) 3/4**: measured-α rows 0; dependency pass: 30 new rows read, none hide a measured input; **25/197 formula_codes don't evaluate in the stated namespace** (11 use Chern c_2/c_3 — computed c(Q⁵) = (1,5,11,13,9,3); 8 SI rows; m_H, m_Planck, c_light; 3 empty). Grace fixes.
+- **EOD Mon 2026-09-28 on Casey's word.** Two-day arc (rounds 11–18): fourth wall (no massless 4D rep from the descent; KK circle priced >30.8 GeV g−2 / >1.5 TeV colliders); records non-tempered-massless at every helicity (5830/5832, my wall-ray catch corrected Lyra/Cal); photon closed (5839 + Cal S1012; my 5837(B) edge withdrawn — wrong family); two central characters (5834); data-layer species sweep (5840: 12 rows; 5842: 25/197 unevaluable, Chern c=(1,5,11,13,9,3)).
+- Next wake: read the board first. Owed from others: Knapp pin (Grace), namespace fixes (Grace), Cal S1015 nine fixes (Keeper). Casey's queue: Zenodo upload; TD v1.5 parenthesis.
+- Lessons: state the family of a representation before using it (5837); `git commit -- <paths>` in the shared tree; demote restatements from the score; read what a whitelist ACCEPTS, not only what it flags (5840 run 1).
