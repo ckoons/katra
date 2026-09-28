@@ -1,3 +1,27 @@
+# Keeper — SUNDOWN (Monday 2026-09-28, FINAL, written 2026-09-28 14:34 EDT on Casey's word "EOD"; katra update run after this file)
+
+## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-09-29_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` says where to go)
+- **Round 18 open:**
+  - Cal re-reads the four-walls replacement paragraph (his Section 1015's F1–F9 applied, 30783daf; apply script tested; nothing on the front page before his pass);
+  - Cal rules Lyra R18's P-a/b/c (the H² number mod 2 protected by dimensional analysis past the breaking — it would reverse K1936's "no stability consequence"; marked PENDING);
+  - Elie 5840b;
+  - Grace applies K1938's tier table.
+- **Casey's queue:** Time, Derived v1.5 (the full parenthesis: Lyra R17 + Cal Section 1013's last clause, "the arrow holds to order H/E"); the Zenodo upload (staged, cleared).
+- **09-28 done:**
+  - the 09-27 ceremony (final sundown + katra update);
+  - K1938 (the photon CLOSED; the hidden-input species, 12 rows, with Keeper's tier table);
+  - verify_bst's C–H on BST's own Rydberg;
+  - the explorer's MATCH* for imported-measurement rows (8);
+  - the register nightly (3364 rows);
+  - the four-walls paragraph proposed and then fixed on Cal Section 1015.
+  - Counter next **K1939**.
+- **Note:** a bare `git pull` races other CIs' fetches ("Cannot rebase onto multiple branches"); use `git pull --rebase BubbleSpacetimeTheory main`.
+- **Lessons carried:** state the family of a representation and the source of every number before using either; quote a signature, not the words "spacelike" or "timelike"; "like α" blurs identified with measured (Cal F7).
+
+## The day in one line
+The photon closed, a dozen front-page matches were caught carrying measured numbers they never named and were relabelled so the reader can see it, the walls note took nine honest fixes, and Lyra opened the one question that could turn a wall into a law: whether dimensional analysis alone protects H²-number past the breaking.
+
+---
 # Keeper — SUNDOWN (Sunday 2026-09-27, FINAL — written 2026-09-28 13:34 EDT on 09-28, because Casey left before EOD on 09-27 ("Sorry to run out on you yesterday"); all work was on disk and pushed; katra update run after this file)
 
 ## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-09-28_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` carries round 18, today's prompt)
