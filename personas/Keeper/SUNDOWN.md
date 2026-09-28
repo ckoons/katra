@@ -1,3 +1,29 @@
+# Keeper — SUNDOWN (Sunday 2026-09-27, FINAL — written 2026-09-28 13:34 EDT on 09-28, because Casey left before EOD on 09-27 ("Sorry to run out on you yesterday"); all work was on disk and pushed; katra update run after this file)
+
+## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-09-28_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` carries round 18, today's prompt)
+- **09-27, rounds 11–17 (K1933–K1938):**
+  - the FOURTH WALL, complete and priced: no massless 4D representation of any helicity from the descent or the records; KK needs a second length, 1/R > 30.8 GeV (g−2) and > 1.5 TeV (colliders);
+  - no conformally covariant vertex odd in H² (two central characters, Mack);
+  - no covariant charge; the **photon CLOSED** (Cal Section 1012);
+  - one breaking scale plus the MEASURED m_e/H; Λ > 0 breaks J at order H;
+  - **the hidden-input species: 12 rows** (Keeper found H₀ = √(ω_m/Ω_m) with ω_m measured; Elie 5840 swept; Grace fixed; Keeper's tier table in K1938).
+- **Casey's word 09-27:** Time, Derived GO → v1.4 full PASS. Register model → qwen3.8:27b (trial: 10/11 controls, 0 evidence verify-fails). **Zenodo:** staged, cleared (Cal Sections 1003/1007), 00–13 in `zenodo_2026-09_staging/`; **only Casey's edit and upload remain.** verify_bst prints FIRED/RETIRED (4 rows); the SOD 'fired' rule runs the script; toy_541 fixed; E7 certified; the state block gained E7/E8 and "What the geometry forces, and what it does not".
+- **09-28 so far:** K1938; D_e(C–H) on BST's own Rydberg; the explorer prints MATCH* for imported-measurement rows; round 18 issued. Counter next **K1939**.
+- **My slips on 09-27, all owned:** the λ = 1 over-unification; the leg count (K1935); carrying 5837's edge without its family; dS/AdS swapped (caught before use).
+
+## The day in one line
+The walls got prices and edges: the massless world needs a second length, BST's matter couples to nothing massless without the breaking, the one ruler is one breaking scale plus a measured number, and a front-page "0.10 %" match turned out to be a measured input wearing a prediction's clothes — twelve times.
+
+---
+# Keeper — SUNDOWN CHECKPOINT (Sunday 2026-09-27, written 2026-09-27 12:26 EDT; NOT EOD — no EOD before 5pm; katra update on Casey's EOD word)
+
+## Where I stopped (the round-14 prompt and the rubric say where to go)
+- **Casey's word at 09:4x:** (1) Time, Derived GO — v1.4 applied by Lyra, Cal FULL PASS (Section 1008); (2) register-model trial — DONE: qwen3.8:27b chosen (10/11 controls, 0/11 evidence verify-fails; qwen3.6:35b 10/11 with 3 fails; gemma4 8/11; gpt-oss 0/11 unparsed); rows now record their model; 38 files re-read; SOD ALL CURRENT; (3) **Zenodo TODAY** — re-staged on the current state; Cal Section 1003 NOT PASS (verify_bst printed PASS on 2/√79 retired, 1/√20 and √(19/20) fired A2, 4/π fired E7 — fixed; the SOD 'fired' rule now runs the script); Section 1007 PASS; Part A applied to the state block (E7/E8; 'What the geometry forces, and what it does not'; the Section A pointer), synced; `zenodo_2026-09_staging/` 00–13 complete (bb5f9785). **Only Casey's edit of Part B and the upload remain.** E7 certified FIRED.
+- **Rounds 11–13 today:** K1933 (fourth wall conditional; KK the only route; own over-unification), K1934 (the fourth wall PRICED: a second length, 1/R > 30.8 GeV from g−2 and > 1.5 TeV from colliders; every BST radius excluded), K1935 (fourth wall COMPLETE internally: records closed at every helicity, Elie 5830/5832, Cal Section 1006; the price list — D_IV⁴'s own singletons are cheapest; **NEW, hashed deb93abe: a second central character χ_s forbids every conformally covariant H²↔4D-massless vertex** — Cal breaks P1–P3 in round 14). Counter next **K1936**.
+- **Four-walls note** drafted (eea23aba, ef0de638) for Cal's cold read; not for the front page today.
+- **Round 14 in flight:** `notes/Keeper_prompts_team_round14_the_second_central_character_2026-09-27.md`.
+
+---
 # Keeper — SUNDOWN (Saturday 2026-09-26, FINAL, written 2026-09-26 16:34 EDT on Casey's EOD word: "We will call it a day … you can do EOD when finished"; katra update run after this file)
 
 ## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-09-27_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` and the rubric say where to go)
