@@ -848,3 +848,10 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - **Domain-wall pins:** ZKO primary (JETP archive; their σ = vacuum sign, tension μ; the 'MeV' is Saikawa's modern form); Saikawa (2.19)–(2.22); Battye–Pilaftsis–Viatic; Abel–Sarkar–White.
 - **GAP flagged:** H → −H on a single doublet equals a gauge element (SU(2) centre / 2π hypercharge), so g⁻¹W is unbroken and there are no walls. The kill needs W to differ from every gauge element on all condensing fields. Pin owed for the lore.
 - **Lesson:** before using a cosmological kill for a broken discrete symmetry, check whether the symmetry is gauge-equivalent on the condensing field.
+
+## Checkpoint 2026-09-29 13:33 — round 23 (R183). NOT EOD. BST d214b19e pushed.
+- **K1653 conflict marked, then updated:** Higgs = Rac⊗Rac (F338's Higgs clause retired by Cal 1022; TD v1.5 pending Casey); quarks matched at ν = 7/2 (Šilov direction, Lyra R23 / Elie 5851).
+- **Gauge-centre pinned:** Tong Z₆ (Section 3, no equation number); z6check: SU(2) centre = e^{6πiY}, −1 on every doublet; S³ connected; π₀ criterion; BBP one-VEV sentence.
+- **Refinements:** 'no TOPOLOGICAL walls' (embedded walls exist, Achúcarro–Vachaspati); an H-alone flip is not gauge, so W·z_SU(2) acts on the left doublets.
+- **Register v0.40:** Cal 1022's naming sentence (clock sign Z_t; W = Z_t·(−1)^F); not observable today (a consistency filter).
+- **Owed:** the ν = g/2 derivation (Lyra); modules for the electron, neutrinos and DM (open).
