@@ -835,3 +835,9 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - **Register v0.37:** H²-parity exact to all orders (spurion analysis, Cal 1017); which states carry it OPEN; no particle named stable. Naming sentence proposed.
 - **Team:** Cal 1018 prereg says the corpus implies R-i in both readings; K1653's electron is not a mode of scalar H²; the A13 link was wrong-reasoned.
 - **Owed:** the muonic-hydrogen r_p pin (Antognini 2013); 'CL = 90%' for PDG quark masses; the m_τ 1776.86 source.
+
+## Checkpoint 2026-09-29 12:11 — round 21 (R181). NOT EOD. BST 32ebcb30 pushed.
+- **K1201 'fermion weight 7' pinned from the corpus:** an integer clock weight in every reading (K1201 overlap exponent λ/2 → λ = 7; F832 table internally inconsistent with genus 5). Taken literally it makes the up quark odd, but it was never derived as a module. Recommend 'Yukawa exponent, no module' until Lyra writes one.
+- **Register v0.38:** the v0.37 parity line HELD (w vs P).
+- **Ising control pinned** (KPSV (3.1)–(3.2); PRV (119), (122)). Z₂ multiplicative; the clock phase is not (0.0363 vs 0.4126 turns). Supports Keeper's w-free / P-interacting reading.
+- **Owed:** a verbatim 'not additive' sentence; muonic r_p; 'CL = 90%'; the m_τ 1776.86 source.
