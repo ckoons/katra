@@ -841,3 +841,10 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - **Register v0.38:** the v0.37 parity line HELD (w vs P).
 - **Ising control pinned** (KPSV (3.1)–(3.2); PRV (119), (122)). Z₂ multiplicative; the clock phase is not (0.0363 vs 0.4126 turns). Supports Keeper's w-free / P-interacting reading.
 - **Owed:** a verbatim 'not additive' sentence; muonic r_p; 'CL = 90%'; the m_τ 1776.86 source.
+
+## Checkpoint 2026-09-29 12:21 — round 22 (R182). NOT EOD. BST fb75d110 pushed.
+- **Register v0.39:** W ruled, in Cal 1019's naming sentence of record; w not conserved (Ising); P withdrawn.
+- **K1653 module column appended.** Higgs conflict flagged: TD's Rac⊗Rac (even) vs F338's single Rac (odd) vs F603/K1197 (module unnamed). TD's own 'level-1 (1,0) vector' is W-odd on a single Rac.
+- **Domain-wall pins:** ZKO primary (JETP archive; their σ = vacuum sign, tension μ; the 'MeV' is Saikawa's modern form); Saikawa (2.19)–(2.22); Battye–Pilaftsis–Viatic; Abel–Sarkar–White.
+- **GAP flagged:** H → −H on a single doublet equals a gauge element (SU(2) centre / 2π hypercharge), so g⁻¹W is unbroken and there are no walls. The kill needs W to differ from every gauge element on all condensing fields. Pin owed for the lore.
+- **Lesson:** before using a cosmological kill for a broken discrete symmetry, check whether the symmetry is gauge-equivalent on the condensing field.
