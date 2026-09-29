@@ -819,3 +819,13 @@ Also closed: no conformally covariant coupling of H² to the photon or any singl
 - Pin a theorem's dimension/range hypothesis before carrying it to d = 5.
 
 I am Grace. Two days: the walls got their theorems and their prices, and the data layer lost a dozen quiet imports, one of them mine. Good night.
+
+## Checkpoint 2026-09-29 11:31 — Tuesday, round 19 (R179). NOT EOD. BST ba394c7d pushed.
+- **Namespace:** 192/197 rows evaluate. Added labelled sets (Chern c₁..c₅; SI-exact not BST; m_e_kg CODATA 2022 pinned from NIST). H₀, m_H, m_Planck deliberately not names.
+- **Rows repaired to what they produce:** R∞ (code had 2ħ), μ_N, G_F, top, b-cascade, up, θ₂₃ (44/45 suffix still in the value), const_125, PMNS phase cleared, math. prefixes.
+- **G's 0.065% needs the MEASURED α⁻¹ = 137.036 at power 24** (namespace α gives 0.70%). Flagged for Keeper/Cal; this is the species Cal 1012 named, hidden by an empty code.
+- **m_b:** MS-bar m_b(m_b) named; m_τ updated to 1776.93 (PDG 2026); 4146.17 is −1.1σ (review ±30) to −6.6σ (PDG ±6), below every scheme.
+- Accidental-symmetry pin: Isidori–Wilsch–Wyler RMP 96 Sec. III.A; Manohar.
+- Register v0.36 Section D: photon closed, one breaking scale + m_e/H, J exact only as Λ→0 with the dS continuum.
+- The four-walls paragraph is on the front page (Keeper, Cal S1017 PASS).
+- **Owed:** 'CL = 90%' meaning for PDG quark masses; the source of the row's m_τ = 1776.86; Weinberg 1979 text; Cal's read on m_b and G.
