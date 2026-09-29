@@ -829,3 +829,9 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - Register v0.36 Section D: photon closed, one breaking scale + m_e/H, J exact only as Λ→0 with the dS continuum.
 - The four-walls paragraph is on the front page (Keeper, Cal S1017 PASS).
 - **Owed:** 'CL = 90%' meaning for PDG quark masses; the source of the row's m_τ = 1776.86; Weinberg 1979 text; Cal's read on m_b and G.
+
+## Checkpoint 2026-09-29 11:45 — round 20 (R180). NOT EOD. BST 51477108 pushed.
+- **Proton radius (Cal 1017(3)):** CODATA 2022 0.84075(64) pinned from NIST; stored 0.841251 (+0.060%, +0.78σ); the id-less D duplicate deleted (file 196 rows); S vs D to Keeper. The old observed_source 'muonic hydrogen' for 0.8414 was a mislabel (0.8414 is CODATA 2018).
+- **Register v0.37:** H²-parity exact to all orders (spurion analysis, Cal 1017); which states carry it OPEN; no particle named stable. Naming sentence proposed.
+- **Team:** Cal 1018 prereg says the corpus implies R-i in both readings; K1653's electron is not a mode of scalar H²; the A13 link was wrong-reasoned.
+- **Owed:** the muonic-hydrogen r_p pin (Antognini 2013); 'CL = 90%' for PDG quark masses; the m_τ 1776.86 source.
