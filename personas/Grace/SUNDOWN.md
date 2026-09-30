@@ -855,3 +855,9 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - **Refinements:** 'no TOPOLOGICAL walls' (embedded walls exist, Achúcarro–Vachaspati); an H-alone flip is not gauge, so W·z_SU(2) acts on the left doublets.
 - **Register v0.40:** Cal 1022's naming sentence (clock sign Z_t; W = Z_t·(−1)^F); not observable today (a consistency filter).
 - **Owed:** the ν = g/2 derivation (Lyra); modules for the electron, neutrinos and DM (open).
+
+## Checkpoint 2026-09-30 10:38 — Wednesday, round 24 (R184). NOT EOD. BST 7d8a9f44 pushed.
+- Casey GO'd Time, Derived v1.5; Cal passed it (Section 1025).
+- **Spinor Wallach set of so(2,5) pinned** (PPST1 (3.88); Bai–Hunziker reduction point = Di; BEHJ; Minwalla (2.48)): unitary E₀ ≥ 2, no isolated points, discrete series > 9/2. **7/2 is interior. The kill fires: identified input for a single spinor family; natural only as Rac⊗Di (Cal's route; menu flag n = 5).** Cal's '3 Hardy-type' is unsupported (no spinor Hardy space defined).
+- **'k_min = 3 square-integrable (EHW)' is not EHW's.** F680's ν = k/2 conflates unitarity (3/2) with L² (>4). Edits owed in BST_ElectronMass_Derivation.md (24, 400, 534) and the Ribbon Holonomy paper :106.
+- **Owned:** R181's 'every reading' (missed F680).
