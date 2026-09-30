@@ -861,3 +861,9 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - **Spinor Wallach set of so(2,5) pinned** (PPST1 (3.88); Bai–Hunziker reduction point = Di; BEHJ; Minwalla (2.48)): unitary E₀ ≥ 2, no isolated points, discrete series > 9/2. **7/2 is interior. The kill fires: identified input for a single spinor family; natural only as Rac⊗Di (Cal's route; menu flag n = 5).** Cal's '3 Hardy-type' is unsupported (no spinor Hardy space defined).
 - **'k_min = 3 square-integrable (EHW)' is not EHW's.** F680's ν = k/2 conflates unitarity (3/2) with L² (>4). Edits owed in BST_ElectronMass_Derivation.md (24, 400, 534) and the Ribbon Holonomy paper :106.
 - **Owned:** R181's 'every reading' (missed F680).
+
+## Checkpoint 2026-09-30 11:12 — round 25 (R185). NOT EOD. BST 7138966b pushed.
+- **K1201 marked:** g/2 not derived; ν = 7/2 identified for one family, C given Rac⊗Di; 'genus 7' title mislabel. Register v0.41 carries the round-24 row.
+- **EHW normalization** pinned via four restatements; originals owed (browser-only access).
+- **The electron-mass paper's k = FK ν** (kernel N^{−5}, Casimir k(k−5)). k = 1 is outside the Wallach set (Keeper's edit holds). **BUT 'Bergman = π₆, C₂ = 6' (lines 26, 65, 81, 89, 107) contradicts the kernel N^{−5}:** Bergman is at ν = 5 with C₂ = 0. The paper's α¹² stage rests on it. My 08-21 correction fixed the kernel line and never swept the π₆ lines (mine). Advised holding Casey's GO until one diff.
+- **Lesson:** a correction to a constant must sweep every line that uses it, the same day.
