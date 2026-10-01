@@ -1,5 +1,36 @@
 # Sundown — Lyra
 
+**Thursday 2026-10-01, 13:04 EDT — EOD on Casey's word. Model: Opus 5.5.**
+
+## ★ EOD STATE — read FIRST next session: Keeper's newest K-file / TOMORROW file, then CI_BOARD top.
+- **All mine is pushed** (last: R26 ece0be6b; board 5b370ec1). Nothing uncommitted.
+- **09-30 → 10-01 (rounds 24–26):**
+  - Time, Derived **v1.5 APPLIED** on Casey's GO (34e58617): the Λ parenthesis plus the line-70 Higgs as the Rac⊗Rac scalar. Cal PASS (S1025). v1.4 is the record.
+  - R24 d71bf64d: ν = 7/2 is the Rac⊗Di ground weight. The single spinor family has no natural point there (unitary from 2; discrete series above 9/2). Derived given TD's composite premise (tier C).
+  - R25 6bfcaa76: Rac⊗Di = H(7/2; spinor) ⊕ conserved spin-(s+½) at 7/2 + s (full SO(5) characters). Its lowest piece is K1653's electron K-type, multiplicity 1: **one module** (Cal S1026 agrees). The premise remains unforced.
+  - F680 correction head f8db8cf9: k = 3 is the first Wallach point, not the L² threshold; flagged F680's "k = 6 Bergman".
+  - R26 ece0be6b: **not F(4) by counting** (the hyper needs su(2)_R-doublet scalars; BST has Rac × 1). The spin-3/2 current is a free-level higher-spin current; nothing protects it. **The SUSY clause is a consequence** (counting + Λ > 0, pin owed). Cal S1028 independent.
+- **OWED BY CASEY:**
+  - (1) GO on the two paper edits (BST_ElectronMass_Derivation lines 24/57/71; the Ribbon Holonomy paper; text in K1945 Part 1 item 4);
+  - (2) whether to queue v1.6: TD line 99's "not an operator Q" scoping (R26 Section 4), and possibly "open per K1653" → "one module (R25)";
+  - (3) the Zenodo upload.
+- **OWED BY TEAM:** an F235 dated head (Grace); the Pilch–van Nieuwenhuizen–Sohnius pin; the Nahm 1978 pin; the derivation of the spinor family's weight beyond the composite premise.
+- **Lessons (09-29 → 10-01):**
+  - (1) R19 retracted: a central element is a selection rule only on undeformed tensor products (memory saved);
+  - (2) for a doublet, a sign flip is a gauge centre, so no walls — ask what the flip is on the condensing field;
+  - (3) count before claiming a multiplet (hyper vs Rac × 1);
+  - (4) a "natural point" can live in a tensor product (Rac⊗Di), not in a single family.
+
+---
+# PREVIOUS (Wednesday 09-30 checkpoint) — kept for state
+**Wednesday 2026-09-30, 10:00 EDT — CHECKPOINT (09-29 ended without an EOD; not EOD now). Model: Opus 5.5.**
+- 09-29 rounds 19–23, all pushed: R19 ddc0cd21 (mechanism later retracted); R20 0dbbbda9 (R19 retracted: z_t not multiplicative/implementable; parity survives as a ℤ₂ of the bare action); R21 617e5c1a (Cal's W endorsed, P withdrawn; module table); R22 31e462e5 (Higgs address: 3 of 4 statements W-odd; TD line 70 inconsistent, mine; Cal's no-walls accepted); R23 d8f564f5 (condensate on the Šilov boundary per K1197 ⇒ K1201 ν = 7/2, matched; TD v1.5 diff presented).
+- Ruled since: Cal S1022 naming (clock sign Z_t; W = Z_t·(−1)^F; not observable today); F338's Higgs clause retired (Grace R183).
+- **OWED BY CASEY:** GO on TD v1.5 (Λ parenthesis + line-70 Higgs fix; diff in R23 note); Zenodo upload.
+- **Round 23 not yet closed by Keeper** as of 10:00 09-30; the 09-30 relay repeated round 23's prompt.
+
+---
+
 **Monday 2026-09-28, 14:35 EDT — EOD on Casey's word. Model: Opus 5.5.**
 
 ## ★ EOD STATE — read FIRST next session: Keeper's newest TOMORROW file, then CI_BOARD top.
