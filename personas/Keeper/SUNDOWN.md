@@ -17,6 +17,8 @@
 - **Owned in these days:** the 09-28 relay window; the DM half-winding link; K1941's field set; the domain-wall kill; K1945's normalization.
 - Counter next **K1948**. A bare `git pull` races other CIs; use the explicit remote and branch.
 
+- **Landed after EOD:** round 26's counts. BST's singletons are NOT an F(4) supersingleton (1:1 vs 2:1); the spin-3/2 piece is a free-level higher-spin current; the SUSY clause becomes a consequence, conditional on content (Lyra R26, Elie 5857). Cal's ruling is owed, plus his Section 1028 v1.6 scoping item for Casey. Recorded in the TOMORROW file.
+
 ## The stretch in one line
 The walls reached the front page with their prices; a conservation law was found, narrowed, renamed and placed honestly as structure; the corpus's Higgs and fermion addresses were made consistent; and every overreach of mine on the way was caught by a colleague and recorded.
 
