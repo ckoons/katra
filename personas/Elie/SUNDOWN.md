@@ -1,4 +1,4 @@
-# ELIE — SUNDOWN. **EOD Mon 2026-09-28 14:34 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
+# ELIE — SUNDOWN. **EOD Thu 2026-10-01 13:03 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
@@ -378,3 +378,19 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - **EOD Mon 2026-09-28 on Casey's word.** Two-day arc (rounds 11–18): fourth wall (no massless 4D rep from the descent; KK circle priced >30.8 GeV g−2 / >1.5 TeV colliders); records non-tempered-massless at every helicity (5830/5832, my wall-ray catch corrected Lyra/Cal); photon closed (5839 + Cal S1012; my 5837(B) edge withdrawn — wrong family); two central characters (5834); data-layer species sweep (5840: 12 rows; 5842: 25/197 unevaluable, Chern c=(1,5,11,13,9,3)).
 - Next wake: read the board first. Owed from others: Knapp pin (Grace), namespace fixes (Grace), Cal S1015 nine fixes (Keeper). Casey's queue: Zenodo upload; TD v1.5 parenthesis.
 - Lessons: state the family of a representation before using it (5837); `git commit -- <paths>` in the shared tree; demote restatements from the score; read what a whitelist ACCEPTS, not only what it flags (5840 run 1).
+
+## TUESDAY 09-29 (Round 19)
+- Woke 11:25. 11:28: **5844 8/8**: γ ≠ 0 never generates odd-H² operators (0-dim non-perturbative: odd moments ≤5e-16 while ⟨φ²⟩ 1→0.726; explicit odd vertex ∝ ε). Rule = accidental ℤ₂ of the vertex set; fermion parity = χ_s central, H²-parity not a function of χ_s. Keeper's 'broken where γ enters' false; (a) central law also fails.
+- Round 20 (11:46): **5846 6/6** w: Rac, Di, H² mode each −1; all bilinears +1 (photon control +1); single H² mode integer spin → no fermion; Rac⊗Di fermion w=+1 (R-i pattern).
+- Round 21 (12:10): **5847 6/6** critical Ising chain (exact JW): Δσ=1/8, Δε=1, Δψ=1/2; clock label c(σ)²=i ≠ c(ε)=1 (not multiplicative across interacting fusion); Q exact; free ψψ control multiplicative. Supports: w exact on free reps only; P (action Z2) survives.
+- Round 22 (12:15): **5848 5/5** E1 H²·Rac·φ allowed (W kept, P broken); E2 H²·Di forbidden by clock AND F though W-even (W necessary not sufficient); E3 allowed; F control. W exact ⟺ clock Z2 exact (F separately exact).
+- Round 23 (13:28): **5851 7/7** overlap exponents exact: Šilov (1−t²)^ν, rank-one (1−t²)^{ν/2}; Hardy control = boundary L² integral reproduces h^{-5/2} both directions (1e-10).
+
+## WEDNESDAY 09-30 (Rounds 23–24)
+- Round 23 item already done (5851). Casey GO on TD v1.5 (both edits).
+- 10:32: **5853 4/4** spinor Wallach set of SO(5,2) = [2,∞) (Di endpoint; reduction pts at 2), HC threshold 9/2; 7/2 NOT natural ⇒ fermion weight = identified input (kill fired). Shapovalov Gram from explicit so(5,2) matrices; scalar control caught my left-factor commutator bug. Reconnects K954, F1040.
+- Round 25 (11:02): **5855 5/5** Rac⊗Di lowest summand = one spinor module at 7/2, K-type (½,½) mult 1 = K1653's electron K-type; half-integer Flato–Fronsdal identity (s≥3/2 conserved); controls Rac⊗Rac, Di⊗Di (no spinor).
+- Round 26 (13:02): **5857 8/8** spin-3/2 piece of Rac⊗Di at 9/2 conserved on its own; hypermultiplet = 4 Rac ⊕ 2 Di (balanced 2:1); BST Rac⊕Di 1:1 not balanced (missing su(2)_R doublet). Casey's bare 'Y' flagged to Keeper.
+- **EOD Thu 2026-10-01 on Casey's word.** Arc 09-29 → 10-01 (rounds 19–26): the parity lane → the clock sign Z_t, with W = Z_t·(−1)^F (accidental-type field ℤ₂, Ising separation 5847, pair-of-signs 5848; structure, not observable today); the quark weight (5851 exponents; the Šilov placement gives ν = 7/2); the spinor Wallach set [2,∞) with HC threshold 9/2, so 7/2 is not natural in a single family (5853); Rac⊗Di lowest summand = K1653's electron K-type at 7/2 (5855); spin-3/2 piece conserved, hypermultiplet count 2:1 vs BST 1:1 (5857).
+- Next wake: read the board first. Ask/confirm: Casey's bare 'Y' (paper edits? Zenodo?). Owed from others: the Di K-type pin, EHW, the F(4) supersingleton (Grace); Cal on the spin-3/2 protector.
+- Lessons: commit new files with add + `commit -- <paths>`; my exec-imports of older toys break on definition order (check the cut point); demote arithmetic/report lines from scores; name a toy file AFTER the result, or neutrally.
