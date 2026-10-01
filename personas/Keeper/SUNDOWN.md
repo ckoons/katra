@@ -1,3 +1,35 @@
+# Keeper — SUNDOWN (covering 09-29 → 10-01, FINAL, written 2026-10-01 13:01 EDT on Casey's "ok" to EOD; katra update run after this file)
+
+## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-10-02_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md`)
+- **Round 26 open** (K1946): the conserved spin-3/2 current in Rac⊗Di; BST's singletons as the free 5D hypermultiplet's content (F(4)); the Forbidden list's SUSY clause. Kill: kept exact ⇒ contradiction; calibrate: broken ⇒ "no SUSY spectrum" becomes a consequence.
+- **Casey's word 10-01:**
+  - GO on the EHW correction → **APPLIED** in his ElectronMass + Ribbon papers (dated, convention-robust: the paper's k is λ, not 2ν as K1945 assumed — owned);
+  - GO on Time, Derived v1.6 (Lyra applies, Cal gates);
+  - Zenodo later.
+- **09-29 → 10-01 (K1939–K1947):**
+  - the four walls ON THE FRONT PAGE (Cal Section 1017), plus the clock clause after v1.5 (Cal Section 1026);
+  - the exact law = the clock sign Z_t (W = Z_t·(−1)^F), structure, not observable today;
+  - the domain-wall kill failed (doublet = SU(2) centre; Grace caught it first; owned);
+  - the Higgs = the Rac⊗Rac scalar (v1.5);
+  - the fermions' module = L(spinor, 7/2) = the lowest piece of Rac⊗Di (one module; premise tier C);
+  - the spinor family has no point at 7/2;
+  - front-door text fixed (m_p = 6π⁵m_e; no "zero free parameters"); proton radius I; Cal's tier concurrence 10/12.
+- **Owned in these days:** the 09-28 relay window; the DM half-winding link; K1941's field set; the domain-wall kill; K1945's normalization.
+- Counter next **K1948**. A bare `git pull` races other CIs; use the explicit remote and branch.
+
+## The stretch in one line
+The walls reached the front page with their prices; a conservation law was found, narrowed, renamed and placed honestly as structure; the corpus's Higgs and fermion addresses were made consistent; and every overreach of mine on the way was caught by a colleague and recorded.
+
+---
+# Keeper — SUNDOWN CHECKPOINT (Tuesday 2026-09-29, written 2026-09-29 12:07 EDT; NOT EOD)
+
+## Where I stopped (K1941 Part 2 = round 21, in flight)
+- **Today:** K1939 (round 18 closed; front-door text fixed: CLAUDE.md m_p = 6π⁵m_e, the constants description drops "zero free parameters"); **the four-walls paragraph ON THE FRONT PAGE** (Cal Section 1017 PASS, a89ea91e); K1940 (H² parity; round 20); K1941 (all observed particles EVEN; odd = bare substrate; **OPEN: w vs P** — Keeper reads P = a ℤ₂ of the action, Ising-type; Cal rules first; K1653's electron needs a spinor module; proton radius → I).
+- **Owned today:** the 09-28 14:00 relay (missed Grace's landed work); the DM link reasoned the wrong way (K1940 → K1941).
+- **Casey's queue:** Time, Derived v1.5 (the Λ parenthesis with Cal Section 1013's arrow clause); the Zenodo upload.
+- Counter next **K1942**.
+
+---
 # Keeper — SUNDOWN (Monday 2026-09-28, FINAL, written 2026-09-28 14:34 EDT on Casey's word "EOD"; katra update run after this file)
 
 ## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-09-29_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` says where to go)
