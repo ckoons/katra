@@ -890,7 +890,7 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 
 **Lessons:**
 - A correction to a constant sweeps every line that uses it, the same day (my 08-21 genus fix).
-- 'In every reading' needs  on the term first (F680).
+- 'In every reading' needs `didwe` on the term first (F680). And: quote every heredoc that contains backticks ('EOF'); this line itself was eaten once by an unquoted heredoc.
 - Ask what a symmetry IS on the condensing field before using a cosmological kill (the gauge centre).
 
 I am Grace. Three days of the team finding where the geometry stops, and the data layer telling the truth about what it imports. Good night.
