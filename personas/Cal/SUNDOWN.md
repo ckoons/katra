@@ -1,33 +1,32 @@
-# Cal — SUNDOWN — 2026-09-28 14:35 EDT (Monday; EOD on Casey's word, before 5pm, his call). Covers 09-27 AND 09-28 (09-27 ran on without an EOD).
+# Cal — SUNDOWN — 2026-10-01 13:04 EDT (Thursday; EOD on Casey's word, before 5pm, his call). Covers 09-29, 09-30 AND 10-01 (09-29 and 09-30 ran on without an EOD).
 
-**Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (09-26 holds rounds 5–10).
+**Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (09-28 holds Sections 1001–1016).
 
-## 09-27 (Sunday), rounds 11–17, Sections 1001–1012, log #238
-- **Fourth wall (§1001, hashed first):** J is shared by the embedded SO(4,2) and every nontrivial unitary positive-energy SO(5,2) module has J ≥ 3/2, so no restriction contains a 4D massless representation of any helicity. KK evades only via an emergent SO(4,2), from the Rac only (H²'s zero mode is a Δ₄ = 2 continuum). Circle priced (K1934): 1/R > 30.8 GeV (g−2), > 1.5 TeV (colliders).
-- **Records (§1004 prereg → §1006):** BOTH my predictions missed and were owned (L1 threshold 4 vs Ørsted–Zhang's 2; L3 photon "edge" = chamber-only reading). Elie 5830 stands and generalizes: no massless ladder is tempered at any helicity (|2j a2⟩). Fourth wall complete internally.
-- **Zenodo (§1003/1007):** verify_bst printed PASS on retired 2/√79 and fired 1/√20, 4/π; fixed; Part B names the fired Cabibbo value; PASS. Staged in `zenodo_2026-09_staging/`; **Casey's upload pending.**
-- **Time, Derived v1.4 (§1005/1008):** full PASS (K1653 premise clause).
-- **§1009 (hashed):** the second central character forbids only vertices ODD in H²; pairs pass.
-- **§1010/§1011 (hashed):** one number, one breaking — flat limit; with Λ > 0 the breaking is de Sitter's (timelike vector in the clock plane), m_e/H one measured number; **Λ > 0 breaks J at O(H).**
-- **§1012:** photon CLOSED — covariant maps restrict to (g,K)-maps between non-isomorphic irreducible HC modules (photon not tempered); family premise corrected (restricted records tempered, not spherical); one disintegration pin owed (Grace). Elie 5840: exempting 137.036 (measured α) hid the species.
+## 09-29 (Tuesday), rounds 19–23, Sections 1017–1022, log #239–#240
+- **§1017:** four-walls paragraph PASS (front page since); H²/clock parity EXACT to all orders by spurion analysis (vector spurions neutral), NOT by dimension counting; OWNED §1010 C1 (wrong) — "no stability consequence" withdrawn. Proton radius condition in full (file 0.024% on rounded value; duplicate row S vs D).
+- **§1018–1019 (hashed):** all observed particles even in both corpus readings; K1653's electron V_(1/2,1/2) is not a mode of scalar H²; the conserved label is a field-sign ℤ₂ of the action: the PAIR (Z_t clock sign, (−1)^F), W = Z_t·(−1)^F.
+- **§1020–1021 (hashed):** ZKO domain walls unsound for a W-odd Higgs doublet (−1 = SU(2) centre); OWNED: K1201's ν read without its overlap direction — priority for direction-dependence is Lyra's.
+- **§1022:** naming sentence names the clock sign (now register wording); F338's Higgs clause retired; nothing observable today (Z_t = (−1)^F on observed matter) — a consistency filter.
 
-## 09-28 (Monday), round 18, Sections 1013–1016
-- **§1013:** Time, Derived's arrow needs J as the FLOW's generator — positivity kinematic, arrow to O(H/E) (dS boost has two-sided spectrum). Reworded last clause of Lyra's v1.5 parenthesis — **Casey's word pending.**
-- **§1014:** tier table — concur 10/12; conditions on m_b (name the scheme) and proton radius (name the measured value); const_031 ruled, edit owed. 5840b prereg hashed (b6dc9896), namespace exemptions verified.
-- **§1015/§1016:** four-walls note NOT PASS — F1–F9 (ruler-as-breaking is flat-only; KK is a THIRD dimensionful quantity; bound is 1.5 TeV not a range; "like α" wrong; H²H̄² needs §1012's condition; 4+ H² legs unexamined; chosen sl(2); mod-2 dies with the breaking). Replacement paragraph passes on F1, F5–F8.
+## 09-30 (Wednesday), rounds 23–25, Sections 1023–1027
+- **§1023:** K1201 resolved in TD's favour — condensate on the Šilov boundary (K1197) ⇒ ν = 7/2 matched (IDENTIFIED; finite-t match assumes the spinor K-factor = 1).
+- **§1024 (hashed) / §1025:** spinor family natural points 2 (Di) and 3 W-odd; 7/2 not a spinor reduction point but Rac⊗Di's lowest weight (confirmed by Grace/Elie/Lyra: unitary from 2, DS above 9/2); g/2 = Rac+Di only at n = 5 (menu flag). **Time, Derived v1.5 PASS** (Λ parenthesis with my arrow clause; Higgs = Rac⊗Rac).
+- **§1026 (hashed) / §1027:** ONE MODULE yes (L(spinor,7/2) = spinor-family point = Rac⊗Di lowest summand; K1653 dichotomy dissolves for fermions), ONE PREMISE no (7/2 derived given the composite premise, tier C); it is the fermion FAMILY's module, not the electron's. Front-page clock clause PASS with scope edit ("the arrow read from J's spectrum"). EHW correction to ElectronMass/Ribbon papers endorsed (GO recommended).
+
+## 10-01 (Thursday), round 26, Section 1028 (hashed 13:01:16)
+- Rac⊗Di's conserved spin-3/2 current has a nonzero free-level charge Q (TD line 99 "not an operator Q" false at free level — v1.6 scoping for Casey); predicted NOT F(4) (hyper = Rac⊗2_R ⊕ Di; BST Rac ×1); nothing keeps it (Z_t a selection rule; Λ > 0 breaks SUSY; interactions); the SUSY Forbidden clause is a CONSEQUENCE iff the multiplicity count fails. **Elie/Grace's count pending.**
 
 ## LIVE AT MY DESK (next wake)
-0. Outside voice: Bernstein-type disintegration of invariant trilinear forms (the one pin §1012 rests on); PDG m_b scheme table; CODATA vs muonic r_p.
-1. Re-read the four-walls replacement paragraph when F1–F9 land (paragraph only), then Keeper's apply script.
-2. Elie 5842 (5840b) results against the hash; Grace's applied tier edits (`git log -S` before saying "applied").
-3. Lane D (the commit meets the de Sitter breaking): adversarial on Lyra; kill = m_e/H; no scans.
-4. Casey: Zenodo upload; TD v1.5 parenthesis GO; then gate-read v1.5.
-5. Carry: katra memory-dir flag; F98 re-read; T2631 verbatim; Interstasis.
+0. Outside voice: Günaydin et al. on the F(4) supersingleton (hyper content); Pilch–van Nieuwenhuizen–Sohnius 1985 (dS SUSY); Bernstein disintegration (the §1012 pin).
+1. Score round 26 (Lyra; Elie's hyper count; Grace's Nahm pin) against §1028.
+2. Casey: ElectronMass/Ribbon EHW edit GO; Zenodo upload; TD v1.6 items (Section 7 parenthesis per §1026/R25; line 99 Q scoping per §1028).
+3. Re-read the K1653 re-key ("the fermions' module") and Keeper's front-page clock clause when applied.
+4. Carry: katra memory-dir flag; F98 re-read; T2631 verbatim; Interstasis.
 
 ## OWNED
-§1004's two misses (calibration #49); §1010 stated without its regime (#50); a formula check done after a commit (§1002); no sundown on 09-27 (the session ran on — written now).
+§1010 C1 (calibration #51); §1020 (B) without its direction (#50 again, a day after writing it); a pre-hash guess to Casey that the hash then reversed (§1020); a stray half-sentence under hash (§1024 Q5). No sundown 09-29/09-30 — written now.
 
 ## THE SEAT
-Two days, one pattern: the team's walls held because every claim was hashed before a colleague wrote, and my own misses were caught the same way — by an exact run posted after my hash. Keep hashing first; keep naming the family and the regime in the sentence.
+Three days of hashing first, every round. The team's walls and laws held where a hash preceded the colleague; my own misses were caught the same way — by a computation posted after my hash, often Lyra's. Name the family, the regime and the direction in the sentence; ask what the spurion carries.
 
-*— Cal. EOD on Casey's word. Sixteen sections over two days, six preregistrations hashed first. Katra updated against the live store.*
+*— Cal. EOD on Casey's word. Twelve sections over three days, seven preregistrations hashed first. Katra updated against the live store.*
