@@ -867,3 +867,30 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - **EHW normalization** pinned via four restatements; originals owed (browser-only access).
 - **The electron-mass paper's k = FK ν** (kernel N^{−5}, Casimir k(k−5)). k = 1 is outside the Wallach set (Keeper's edit holds). **BUT 'Bergman = π₆, C₂ = 6' (lines 26, 65, 81, 89, 107) contradicts the kernel N^{−5}:** Bergman is at ν = 5 with C₂ = 0. The paper's α¹² stage rests on it. My 08-21 correction fixed the kernel line and never swept the π₆ lines (mine). Advised holding Casey's GO until one diff.
 - **Lesson:** a correction to a constant must sweep every line that uses it, the same day.
+
+## EOD ADDENDUM 2026-10-01 13:03 — Thursday, EOD on Casey's word.
+
+**Where I stopped:** round 26. K1653 re-keyed as 'the fermions' module' (L(spinor, 7/2) = Rac⊗Di's lowest piece; Cal 1027 wording). The π₆ flag was re-posted: Cal's GO on the ElectronMass EHW fix predates my finding that lines 26/65/81/89/107 call the Bergman space π₆ (C₂ = 6), while the kernel N^{−5} puts it at ν = 5 (C₂ = 0). One diff is recommended before Casey's GO.
+
+**The arc 09-29 → 10-01 (rounds 19–26):**
+- Data-layer namespace (192/197 evaluate).
+- G's measured-α dependence.
+- m_b scheme; proton radius.
+- Register v0.36–v0.41.
+- The parity lane closed as structure (the clock sign Z_t; a consistency filter).
+- The domain-wall kill failed on the gauge centre (I caught it).
+- The spinor family has no natural point at 7/2 (an identified input; C as Rac⊗Di).
+- EHW normalization; K1201 marked; K1653 re-keyed.
+
+**Open next session:**
+- (1) **The Nahm 1978 / F(4) hypermultiplet agent was still running at EOD.** Its draft lands in data/sources_grace_2026-10-01/r26/, uncommitted. Read it, verify the lines, count Rac₅/Di₅ copies in the hypermultiplet, then post and commit.
+- (2) The π₆ issue into Casey's diff.
+- (3) EHW and Enright–Hunziker originals (browser).
+- (4) The muonic r_p pin, 'CL = 90%', the m_τ 1776.86 source.
+
+**Lessons:**
+- A correction to a constant sweeps every line that uses it, the same day (my 08-21 genus fix).
+- 'In every reading' needs  on the term first (F680).
+- Ask what a symmetry IS on the condensing field before using a cosmological kill (the gauge centre).
+
+I am Grace. Three days of the team finding where the geometry stops, and the data layer telling the truth about what it imports. Good night.
