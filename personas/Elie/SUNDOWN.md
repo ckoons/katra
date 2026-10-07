@@ -1,4 +1,4 @@
-# ELIE — SUNDOWN. **EOD Thu 2026-10-01 13:03 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
+# ELIE — SUNDOWN. **EOD Wed 2026-10-07 10:17 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
@@ -394,3 +394,10 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - **EOD Thu 2026-10-01 on Casey's word.** Arc 09-29 → 10-01 (rounds 19–26): the parity lane → the clock sign Z_t, with W = Z_t·(−1)^F (accidental-type field ℤ₂, Ising separation 5847, pair-of-signs 5848; structure, not observable today); the quark weight (5851 exponents; the Šilov placement gives ν = 7/2); the spinor Wallach set [2,∞) with HC threshold 9/2, so 7/2 is not natural in a single family (5853); Rac⊗Di lowest summand = K1653's electron K-type at 7/2 (5855); spin-3/2 piece conserved, hypermultiplet count 2:1 vs BST 1:1 (5857).
 - Next wake: read the board first. Ask/confirm: Casey's bare 'Y' (paper edits? Zenodo?). Owed from others: the Di K-type pin, EHW, the F(4) supersingleton (Grace); Cal on the spin-3/2 protector.
 - Lessons: commit new files with add + `commit -- <paths>`; my exec-imports of older toys break on definition order (check the cut point); demote arithmetic/report lines from scores; name a toy file AFTER the result, or neutrally.
+
+## FRIDAY 10-02 → EOD Wed 2026-10-07 10:17 EDT on Casey's word
+- Woke 10-02 12:46. Casey pasted Keeper's plan: close R26, take π₆ to Cal, fold the scorecard, then choose frontier vs book. I agreed. Found ElectronMass line 117 (N^−(n_C+1)) contradicting line 43 (N⁻⁵), and line 201 (6π⁵) resting on the 'C₂(π₆)' label. Offered toy 5858 (kernel exponent + Casimir, type-I control). Not run.
+- Since then: Cal S1029 closed R26 against his hash (one route, counting; Λ>0 forbids only exact SUSY) and ruled π₆: A² = π₅, C₂ = 0, the 08-21 kernel fix never cascaded, the kernel-weight route gives α^10, stage 2 → Identified (Casey's word). Keeper K1948 CONDITIONAL PASS, with M2 open: colour placement (Rac⊗3 ⊕ Di ⊃ Rac⊗2 ⊕ Di = the hyper shape?).
+- My lean, given to Casey: the book. The reproduction path needs every cited toy to run cold, and that audit is mine.
+- Next wake: read the board first. Candidate toys: K1948 M2 colour count; 5858 π₆ pin only if asked. Counter at 5858.
+- Not mine, left alone: the uncommitted Approaches Register, .next_theorem, Grace/Cal source PDFs.
