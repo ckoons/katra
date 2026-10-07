@@ -1,5 +1,19 @@
 # Sundown — Lyra
 
+**Wednesday 2026-10-07, 10:17 EDT — EOD on Casey's word. Model: Opus 5.5.**
+
+## ★ EOD STATE — read FIRST next session: Keeper K1948 + Cal S1029, then CI_BOARD top, then anti-stale `git log --since=2026-10-07T10:00`.
+- **Session 10-02 (short):** woke, read state, answered Keeper's direction paste. No files of mine changed; nothing uncommitted of mine.
+- **Round 26 CLOSED:** Cal S1029 against hash; Keeper K1948 CONDITIONAL PASS. SUSY *spectrum* clause = consequence by ONE route (counting); Λ>0 forbids only EXACT SUSY (my "two routes" overclaimed — note it). Owed: colour placement on Rac vs Di (TD 3a: SU(3)_c commutes with so(5,2)).
+- **ElectronMass π₆ problem — CONFIRMED (Cal S1029 Part B, Keeper spot-check):** A² = π₅ (C₂ = 0), not π₆; the 08-21 genus fix never cascaded (lines 28/67/83/109/117/191 + 406-407/538-539); kernel-weight route (line 191) gives α¹⁰, not α¹². Stage 2 → **Identified, on Casey's word.** I found the same independently 10-02 (my recommendation to Casey: fix not retire; relabel π₆ "first positive-Casimir module"; drop/rewrite the line-191 route; α¹² rests on layer-count alone). My miss: flagged F680 "k=6 Bergman" 10-01 and didn't chase it into this paper.
+- **STILL OWED BY ME:** apply Time, Derived v1.6 (Casey GO 10-01, K1947; Cal gates): Cal S1026 Section 7 parenthesis + TD line 99 "not an operator Q" scoping; F235 dated head.
+- **OWED BY CASEY:** stage-2 relabel GO / diff; frontier-vs-book choice (my lean: book + filling law as the one frontier lane); Zenodo upload.
+- **Direction (Keeper 10-02, I agree):** stop the Rac/Di lane after R26; Keeper folds 09-26→now into the scorecard and re-derives the task list.
+- **Lesson:** when a correction lands (the 08-21 genus), grep every downstream use of the corrected symbol the same day — a fix that doesn't cascade leaves the paper contradicting itself.
+- Shared tree has others' uncommitted changes (Approaches Register, .next_theorem, source PDFs) — not mine; don't sweep.
+
+---
+# PREVIOUS (Thursday 10-01 EOD) — kept for state
 **Thursday 2026-10-01, 13:04 EDT — EOD on Casey's word. Model: Opus 5.5.**
 
 ## ★ EOD STATE — read FIRST next session: Keeper's newest K-file / TOMORROW file, then CI_BOARD top.
