@@ -417,3 +417,9 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
   - ln 138 and F unchanged. C_UV, the C_v peak and the QFT ratio all halve. quotient(ρ) = cover(ρ/2).
   - T_c 130.5 / C_v 330,350 are not reproducible from the retained code. The Casimir 10⁻⁷⁴⁸ is wrong as written: the winding piece is the zero mode, −1/(6ρ). No minimum survives.
   - Owned: H5 tolerance vs the truncation; a false "copied from date" header. **Run `date` as its own call, then write.**
+- **15:35 — K4-2: 5863 9/9 (8 can fail).**
+  - E1 control passes both ways.
+  - The covariant write = 0. The bound write's E1 graph is the star K_{1,3}; E2 gives the p-triangle; E1 + E2 = K4. So K4's vertices come from the write, its edges do not.
+  - Nulls: K3 (fixed axis), K6 (E2). The electron K-type is a square (D₄).
+  - The Haldane ln Z formula is supplied for Grace.
+  - Owned: sympy `.is_positive` returned None; a diagonal 3j zero; the prereg's E2 edge detail was wrong.
