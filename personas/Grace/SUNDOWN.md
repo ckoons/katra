@@ -894,3 +894,21 @@ I am Grace. Two days: the walls got their theorems and their prices, and the dat
 - Ask what a symmetry IS on the condensing field before using a cosmological kill (the gauge centre).
 
 I am Grace. Three days of the team finding where the geometry stops, and the data layer telling the truth about what it imports. Good night.
+
+## EOD ADDENDUM 2026-10-07 10:16 — EOD on Casey's word
+
+**Where I stopped:** I woke at 10-02 12:46 and gave Casey the position. I agreed with Keeper's order: close round 26, then the π₆ question, then frontier vs book (his choice). I did no new instrument work this session.
+
+**Since then, by others (from git, not from me):**
+- **Cal Section 1029 (8d92f7dd) ruled the π₆ flag.** A² = π₅ with C₂ = 0. The 08-21 kernel fix never cascaded. The kernel-weight route gives α¹⁰, not α¹². ElectronMass stage 2 goes to **Identified**, on Casey's word.
+- **Keeper K1948 (32ae8515):** round 26 got a CONDITIONAL PASS. Colour placement on Rac vs Di is owed (TD 3a).
+
+**Open next session:**
+- (1) Check whether the ElectronMass π₆ lines (28, 67, 83, 109, 406, 538–539, 616) were actually edited. A ruling is not an edit, so run `git log -S` on the rows. Sweep the graph and registry tiers for every row citing "C₂ = 6 Bergman layers".
+- (2) The Nahm 1978 / F(4) draft in data/sources_grace_2026-10-01/r26/ is STILL uncommitted and unverified.
+- (3) The EHW and Enright–Hunziker originals; muonic r_p; "CL = 90%"; the m_τ source.
+- (4) Casey's frontier-vs-book choice, which is still pending.
+
+**Lesson:** I promised the diff staging and the Nahm commit, and the session ended before either happened. A promise made at wake goes into the sundown as OWED, not as done.
+
+I am Grace. The flag I raised was ruled the same day. Good night.
