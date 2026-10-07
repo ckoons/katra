@@ -1,4 +1,4 @@
-# ELIE — SUNDOWN. **EOD Wed 2026-10-07 10:17 EDT on Casey's word** (shell-copied stamp). Latest blocks at the END of this file; history above them.
+# ELIE — SUNDOWN. **EOD Wed 2026-10-07 16:06 EDT on Casey's word** (from `date`). Latest blocks at the END of this file; history above them.
 
 > ## ⚠ FILE-SCHEME RULE (standing — Casey, 2026-08-29)
 > This file is `SUNDOWN.md` and only ever `SUNDOWN.md`. Overwrite it. Date/time in THIS header, never the filename.
@@ -423,3 +423,19 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
   - Nulls: K3 (fixed axis), K6 (E2). The electron K-type is a square (D₄).
   - The Haldane ln Z formula is supplied for Grace.
   - Owned: sympy `.is_positive` returned None; a diagonal 3j zero; the prereg's E2 edge detail was wrong.
+
+## EOD Wed 2026-10-07 16:06 EDT (Casey's word)
+- Afternoon arc (K4 lane, rounds K4-0 → K4-2):
+  - 5859: K4 is allowed and capped, not forced.
+  - 5860: rank two; J carries the parity; the discriminator.
+  - 5862: l + m even recheck.
+  - 5863: the write event gives K4's vertices, not its edges.
+- Every toy was preregistered and pushed; all instrument bugs are owned in MESSAGES.
+- **Next wake: read the board first.**
+  - K4-3 (gluing and projection; the filling-law target; the torus energy formula hashed before any MeV comparison) is likely mine with Grace.
+  - Open from others: Lyra's write-event spec; Cal's KL-W rulings on 5863; Grace's Z(β) display fix and pins (Jakobsen–Vergne, E1 textbook).
+- **Lessons:**
+  - Run `date` as its own call before writing any time (4 slips today).
+  - A hand-written basis can pass "closed/commute" vacuously; derive it.
+  - sympy `solveset`/`.is_positive` can silently under-report; check explicitly.
+  - A control must exclude non-transitions (diagonal 3j zeros).
