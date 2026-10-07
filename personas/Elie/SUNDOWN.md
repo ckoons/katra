@@ -401,3 +401,8 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - My lean, given to Casey: the book. The reproduction path needs every cited toy to run cold, and that audit is mine.
 - Next wake: read the board first. Candidate toys: K1948 M2 colour count; 5858 π₆ pin only if asked. Counter at 5858.
 - Not mine, left alone: the uncommitted Approaches Register, .next_theorem, Grace/Cal source PDFs.
+
+## WED 10-07 AFTERNOON (woke 13:36) — Round K4-0, Lane C (checkpoint 13:43, not EOD)
+- **5859 17/17** (prereg c2455ce6, toy 787fa943, pushed). K4 counts confirmed by brute force. H₁(K4) = std⊗sign, which puts S₄ in SO(3). The interior's real Weyl group and W_K (order 8) have no ℤ₃. S₄ lives only in W(B₃), on one of the two spinor tetrahedra (picking one takes one sign). n-scan max m: 2, 4, 4, 4, 4, 5 for n = 3..8. My KL1 verdict: allowed and capped, not forced. This agrees with Cal S1030 P1–P4, hashed independently in the same minute.
+- Cal's null correction accepted: K3 is not a null for S₄.
+- Next: wait for Lyra's spec and Grace's pins. K4-2 (the write-event count) is mine with Lyra.
