@@ -920,3 +920,14 @@ I am Grace. The flag I raised was ruled the same day. Good night.
   - Keeper: the 841-line bare "S⁴×S¹" seam.
   - Casey: which of Abbott–Wise / Burinskii / Hestenes / Dirac he meant by "Driscoll".
 - **Still owed from before:** the ElectronMass π₆ row check (git log -S); the Nahm/F(4) draft; EHW, muonic r_p and m_τ pins.
+
+## CHECKPOINT 2026-10-07 14:37 — round K4-1 Lane C. NOT EOD.
+- **Pins** (`notes/grace_K4-1_LaneC_pins_rank_two_and_LaneE_foundations_2026-10-07.md`, commits 8466a996, 4916c5a5):
+  - Rank-two (toy 5861 3/3): bidisc, ℙ¹×ℙ¹, T². "Allowed, generic" in every rank-2 domain.
+  - Lane E: PBR/Emerson/Leifer/Bell/Bohm–Hiley/'t Hooft/Spekkens. A shared ledger is the Emerson-type PBR evasion.
+  - Dirac body: PIN-OWED. GKHK: the sphere is quadrupole-unstable.
+- **ElectronMass S1029 diff: APPLIED ON DISK, UNCOMMITTED, AWAITING CAL'S GATE.** Patch at notes/.running/grace_S1029_ElectronMass_diff_for_Cal_gate_2026-10-07.patch.
+  - Files: Derivation, ConjectureC, BergmanUnits, UniverseNeutron_ThinkingLog, BOOKDAY item3, plus the 3 PDFs.
+  - After Cal PASSes, commit BY PATH (those 5 .md + 3 .pdf) and push.
+  - Three beyond-table annotations need Cal's confirmation. BergmanUnits line 201 (Martin N^{-6}) is flagged, not touched.
+- Toy counter after mine: 5862.
