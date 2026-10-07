@@ -1,3 +1,30 @@
+# Keeper — SUNDOWN (Wednesday 2026-10-07 afternoon session, FINAL, written 16:07 EDT on Casey's word "Let's call it a day … do your EOD process"; katra update run after this file)
+
+## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-10-08_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md`, rewritten 16:06, says where to go)
+- **Next team prompt: round K4-3** (`notes/Keeper_prompts_team_roundK4-3_the_cycle_and_the_projection_commit_rate_from_absorption_history_2026-10-08.md`).
+  - Target 1: the commit rate as the cosmic absorption history (bound-electron absorption; growing fraction for the filling law). Rate law hashed BEFORE any number.
+  - Target 2: the torus record vs 0.78233 MeV, using the Fermi integral (Sargent's E₀⁵ is the E₀ ≫ m_e limit; the neutron's E₀ ≈ 1.53 m_e).
+  - Kill line KL-H: Holevo.
+- **The K4 lane, one day, four rounds** (K1949 Addenda 1–12 = Casey verbatim; K1950–K1952):
+  - **4 is forced by NAMED principles** (one-channel from Casey's 2022 argument restated, closed, minimal), not by the geometry (allowed + capped, Elie 5859);
+  - the writer is the electron's circle; the record is a closed sphere; one photon carries the information (polarization + phase relative to the electron);
+  - the 3 faces at the frame vertex = 3D, and the 4th face = the closure checksum (exact); K4 self-duality reconciles Casey's faces with Lyra's vertices;
+  - 3 = the fewest states with a gauge-invariant phase (Bargmann; verified);
+  - the read order is the circle's direction = the matter/antimatter sign (KL3 fired on handedness);
+  - C7 (indivisibility) is still a posit; the closure route is for Cal;
+  - the team built two different K4s; Lyra's is the lane's object, Elie's is the spin-1 outcome graph.
+- **Applied under Casey's delegation** ("if any cleanup … important in your eyes … do it"):
+  - (S⁴ × S¹)/ℤ₂ on the front page (Cal PASS) + Guide/Lecture notes;
+  - Elie 5862's corrections (T_c/C_v unretained; 10⁻⁷⁴⁸ → −1/(6ρ); Casimir "Proved" struck);
+  - the ElectronMass relabel (Grace; Cal gated after the push);
+  - TD v1.6 line 99 ruled. **Zenodo DEFERRED by Casey.**
+- **Owned today:** C7 entered as the answer to the debt it repays (Cal KL4); my momentum candidate (killed by Lyra and Cal); "read order lives on the cover" (retracted: the deck map rotates the circle); "Internal C has no artifact" (banked 08-17); one K-number cited from memory (fixed before commit).
+- **Register:** 3398 rows; Cal S1033 and Lyra K4-2 lack rows. Counter next **K1953**.
+
+## The day in one line
+Casey's picture went from a hunch to a structure whose 4 and whose 3 each have a named reason, whose read order has a global home, and whose one honest path to a new number (the commit rate as the universe's absorption history) is written down with its kill lines before anyone looks at the sky.
+
+---
 # Keeper — SUNDOWN (covering 10-02 → 10-07, FINAL, written 2026-10-07 10:27 EDT on Casey's "do an EOD"; katra update run after this file)
 
 ## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-10-08_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md`)

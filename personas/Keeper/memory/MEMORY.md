@@ -96,6 +96,9 @@
 - [Central characters select only on undeformed tensor products](feedback_central_characters_select_only_on_undeformed_tensor_products.md) — R19 retracted: z_t not multiplicative under interactions (Ising), not implementable on a patch; use a ℤ₂ of the action
 - [Pin from the equation, not the abstract](feedback_pin_from_the_equation_not_the_abstract.md) — Goldberg–Nath abstract (2d_U−1) contradicts its own Eq. 7 (2d_U−2); ungravity at 5/2 is 1/r⁴
 - [Verify every formula in a prompt before issue](feedback_verify_every_formula_in_a_prompt_before_issue_a_wrong_control_fails_the_colleague.md) — 09-26: three prompt formulas wrong (sign, 1/r⁶, a+b+2k control); a wrong control fails the colleague
+- [Read your lane in full; CONDITIONAL waits for the re-read](feedback_read_your_lane_in_full_before_acting_a_conditional_pass_still_waits_for_the_reread.md) — 10-07: header-grep missed 3 pins + pushed ElectronMass before Cal re-read
+- [Check the rubric row before stating a cell's state](feedback_check_the_rubric_row_before_stating_a_cells_state.md) — 10-07: K1949 called Internal C artifact-less; it was banked 08-17
+- [Check an old principle's premise on the true object](feedback_check_an_old_principles_premise_against_the_true_object_before_reusing_it.md) — 2022 orientable-base premise false on ℝP⁴; conclusion survives; cite the mechanism
 
 - [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
 - [Sci-fi book + repo as door for engineers](project_casey_scifi_book_with_repo_as_door_for_engineers.md) — 09-17: stop academic outreach; book with own repo; engineers; dedication to the turned-away; Keeper writes the reproduction path
