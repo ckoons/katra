@@ -1,32 +1,38 @@
-# Cal — SUNDOWN — 2026-10-01 13:04 EDT (Thursday; EOD on Casey's word, before 5pm, his call). Covers 09-29, 09-30 AND 10-01 (09-29 and 09-30 ran on without an EOD).
+# Cal — SUNDOWN — 2026-10-07 10:17 EDT (Wednesday; EOD on Casey's word, before 5pm, his call). Covers 10-02 (the only working session since the 10-01 EOD).
 
-**Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (09-28 holds Sections 1001–1016).
+**Self-sufficient by rule.** Prior sundowns: `git log -p personas/Cal/SUNDOWN.md` (10-01 holds Sections 1017–1028).
 
-## 09-29 (Tuesday), rounds 19–23, Sections 1017–1022, log #239–#240
-- **§1017:** four-walls paragraph PASS (front page since); H²/clock parity EXACT to all orders by spurion analysis (vector spurions neutral), NOT by dimension counting; OWNED §1010 C1 (wrong) — "no stability consequence" withdrawn. Proton radius condition in full (file 0.024% on rounded value; duplicate row S vs D).
-- **§1018–1019 (hashed):** all observed particles even in both corpus readings; K1653's electron V_(1/2,1/2) is not a mode of scalar H²; the conserved label is a field-sign ℤ₂ of the action: the PAIR (Z_t clock sign, (−1)^F), W = Z_t·(−1)^F.
-- **§1020–1021 (hashed):** ZKO domain walls unsound for a W-odd Higgs doublet (−1 = SU(2) centre); OWNED: K1201's ν read without its overlap direction — priority for direction-dependence is Lyra's.
-- **§1022:** naming sentence names the clock sign (now register wording); F338's Higgs clause retired; nothing observable today (Z_t = (−1)^F on observed matter) — a consistency filter.
-
-## 09-30 (Wednesday), rounds 23–25, Sections 1023–1027
-- **§1023:** K1201 resolved in TD's favour — condensate on the Šilov boundary (K1197) ⇒ ν = 7/2 matched (IDENTIFIED; finite-t match assumes the spinor K-factor = 1).
-- **§1024 (hashed) / §1025:** spinor family natural points 2 (Di) and 3 W-odd; 7/2 not a spinor reduction point but Rac⊗Di's lowest weight (confirmed by Grace/Elie/Lyra: unitary from 2, DS above 9/2); g/2 = Rac+Di only at n = 5 (menu flag). **Time, Derived v1.5 PASS** (Λ parenthesis with my arrow clause; Higgs = Rac⊗Rac).
-- **§1026 (hashed) / §1027:** ONE MODULE yes (L(spinor,7/2) = spinor-family point = Rac⊗Di lowest summand; K1653 dichotomy dissolves for fermions), ONE PREMISE no (7/2 derived given the composite premise, tier C); it is the fermion FAMILY's module, not the electron's. Front-page clock clause PASS with scope edit ("the arrow read from J's spectrum"). EHW correction to ElectronMass/Ribbon papers endorsed (GO recommended).
-
-## 10-01 (Thursday), round 26, Section 1028 (hashed 13:01:16)
-- Rac⊗Di's conserved spin-3/2 current has a nonzero free-level charge Q (TD line 99 "not an operator Q" false at free level — v1.6 scoping for Casey); predicted NOT F(4) (hyper = Rac⊗2_R ⊕ Di; BST Rac ×1); nothing keeps it (Z_t a selection rule; Λ > 0 breaks SUSY; interactions); the SUSY Forbidden clause is a CONSEQUENCE iff the multiplicity count fails. **Elie/Grace's count pending.**
+## 10-02 (Friday), Section 1029 (BST 8d92f7dd), log #241
+- **Round 26 closed against my hash 837618ba.** All four points held (Q exists at the free level; not F(4) by multiplicity; nothing protects it; the clause is a consequence iff the count fails, and the count failed). I checked the count in both conventions: F/B = 2 whether Rac is real or complex. Three edits:
+  - (1) "no EXACT SUSY" has two routes (the count; Λ > 0). "No SUSY SPECTRUM" has ONE (the count). Λ > 0 allows a broken spectrum.
+  - (2) Condition restated: no su(2) commuting with so(5,2) under which the Racs are a doublet, the Dis a singlet and Q a doublet.
+  - (3) Tier C (it inherits the content premise).
+- **ElectronMass stage 2 (Grace's π₆ flag), RIGHT and larger.** The 08-21 kernel fix (N^−5, line 42) never cascaded.
+  - A²(D_IV⁵) = π₅, with C₂ = 0 in the paper's own k(k − n_C). K ∝ S² = S^rank, not S^{n+1}.
+  - **Line 191's kernel-weight route gives α¹⁰.**
+  - The "Proved" rows 406–407 and 538–539 are false. Line 117's "theorem" gives 0 for every Type IV domain.
+  - Formula stands (0.034%); stage 2 → Identified.
+  - Separate from the EHW GO: **Casey's word owed** on one dated diff.
+  - Stage 1's non-normalizability proof is vacuous as written (invariant measure; check owed).
+  - Cascade: 4 more files carry "π₆ = Bergman" (BergmanUnits, ConjectureC_MassProof, BOOKDAY_LEDGER item 3, UniverseNeutron_ThinkingLog).
+- **Keeper K1948 (32ae8515, 12:50, written independently):** agrees on the one-route split (owned his "two routes"). Spot-checked Part B: confirmed. **Adds M2, which my close missed:**
+  - Colour commutes with so(5,2) (TD 3a), so it multiplies singletons.
+  - If colour sits on the Rac, (Rac⊗3) ⊕ Di ⊃ (Rac⊗2) ⊕ Di under su(2) ⊂ su(3), and Q ∈ 3 contains a doublet. **My own Section 1029 condition then fails.**
+  - Keeper's better reason for SU(2)_L: the electroweak labels sit INSIDE SO(5), so they cannot commute with it at all. That beats my "it acts on the lepton doublets too".
+- **To Casey (10-02):** round 26 closed; π₆ ruling; recommended cleaning the cascade and doing R1 (red-team) before the book, then the book over the frontier.
 
 ## LIVE AT MY DESK (next wake)
-0. Outside voice: Günaydin et al. on the F(4) supersingleton (hyper content); Pilch–van Nieuwenhuizen–Sohnius 1985 (dS SUSY); Bernstein disintegration (the §1012 pin).
-1. Score round 26 (Lyra; Elie's hyper count; Grace's Nahm pin) against §1028.
-2. Casey: ElectronMass/Ribbon EHW edit GO; Zenodo upload; TD v1.6 items (Section 7 parenthesis per §1026/R25; line 99 Q scoping per §1028).
-3. Re-read the K1653 re-key ("the fermions' module") and Keeper's front-page clock clause when applied.
-4. Carry: katra memory-dir flag; F98 re-read; T2631 verbatim; Interstasis.
+0. Outside voice: Günaydin on F(4) supersingletons; Pilch–van Nieuwenhuizen–Sohnius (dS SUSY no-go, pin owed); Faraut–Korányi weighted Bergman spaces (pin A²_ν, the Szegő exponent d/r, the k > p − 1 range).
+1. **Rule K1948 M2 (colour placement).** Write the hash first: where does the corpus put colour (Rac, Di, or the composite only)? If on the Rac, route 1 reopens and the SUSY clause goes back to tier S/posit. Own the miss: I tested my condition on the su(2) a referee raises first, not on every internal index that commutes.
+2. Casey: the ElectronMass dated diff (stage 2 → I; strike the two Proved rows; head stating A² = π₅, K ∝ S², kernel route → α¹⁰). TD v1.6 (line 99 Q scoping). Then read the 4 cascade files.
+3. Run the stage-1 check (|z₁|² against the invariant measure vs N^{k−p} dV).
+4. Carry: katra memory-dir flag; F98 re-read; T2631 verbatim; Interstasis; R1 red-team (open since 08-24).
 
 ## OWNED
-§1010 C1 (calibration #51); §1020 (B) without its direction (#50 again, a day after writing it); a pre-hash guess to Casey that the hash then reversed (§1020); a stray half-sentence under hash (§1024 Q5). No sundown 09-29/09-30 — written now.
+- Section 1029's condition was right, but I ran it only against SU(2)_L. Keeper ran it against colour, the one internal index that provably commutes. "Run the symmetry" (calibration #24) extends to "run every commuting index before closing a multiplicity premise."
+- Four days with no session (10-03 → 10-06); not a seat failure, just recorded.
 
 ## THE SEAT
-Three days of hashing first, every round. The team's walls and laws held where a hash preceded the colleague; my own misses were caught the same way — by a computation posted after my hash, often Lyra's. Name the family, the regime and the direction in the sentence; ask what the spurion carries.
+The hash held for four points, and the colleague found the fifth door. That is the cycle working. Next wake opens with M2 hashed before I read the corpus on colour.
 
-*— Cal. EOD on Casey's word. Twelve sections over three days, seven preregistrations hashed first. Katra updated against the live store.*
+*— Cal. EOD on Casey's word. One section; one ruling closed, one reopened by audit.*
