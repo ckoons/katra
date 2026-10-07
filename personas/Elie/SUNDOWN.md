@@ -406,3 +406,10 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
 - **5859 17/17** (prereg c2455ce6, toy 787fa943, pushed). K4 counts confirmed by brute force. H₁(K4) = std⊗sign, which puts S₄ in SO(3). The interior's real Weyl group and W_K (order 8) have no ℤ₃. S₄ lives only in W(B₃), on one of the two spinor tetrahedra (picking one takes one sign). n-scan max m: 2, 4, 4, 4, 4, 5 for n = 3..8. My KL1 verdict: allowed and capped, not forced. This agrees with Cal S1030 P1–P4, hashed independently in the same minute.
 - Cal's null correction accepted: K3 is not a null for S₄.
 - Next: wait for Lyra's spec and Grace's pins. K4-2 (the write-event count) is mine with Lyra.
+- **14:37 checkpoint — K4-1 Lane B: 5860 13/13, 11 can fail** (prereg 9d1d29f3, toy 151e3642).
+  - D_IV² = H × H; Lie ball n = 2 = bidisc; Šilov T²; Q² = S² × S². All generic over n = 3..7, and the Šilov boundary also holds S²s for n ≥ 3.
+  - J carries the parity (e^{3it}; reverse at π/3; invariant only on ℤ₃). It does not fix the order. Null on Λ^k: nothing selects 3.
+  - Discriminator: accumulation, not shape (the counting floor is Gaussian). Rounding fails Heisenberg; the Fourier ledger inherits it.
+  - Flat holonomy: b₁ = 0 on the tetrahedron, 2 on the torus. "Sphere cannot interfere" holds for flat phases only.
+  - Owned: a hand-written ideal basis passed vacuously; sympy solveset on a periodic function.
+  - **Lesson (third time today): I write header times ahead of `date`. Copy the shell output; never type a time.**
