@@ -96,6 +96,8 @@
 - [Central characters select only on undeformed tensor products](feedback_central_characters_select_only_on_undeformed_tensor_products.md) — R19 retracted: z_t not multiplicative under interactions (Ising), not implementable on a patch; use a ℤ₂ of the action
 - [Pin from the equation, not the abstract](feedback_pin_from_the_equation_not_the_abstract.md) — Goldberg–Nath abstract (2d_U−1) contradicts its own Eq. 7 (2d_U−2); ungravity at 5/2 is 1/r⁴
 - [Verify every formula in a prompt before issue](feedback_verify_every_formula_in_a_prompt_before_issue_a_wrong_control_fails_the_colleague.md) — 09-26: three prompt formulas wrong (sign, 1/r⁶, a+b+2k control); a wrong control fails the colleague
+- [Read your lane in full; CONDITIONAL waits for the re-read](feedback_read_your_lane_in_full_before_acting_a_conditional_pass_still_waits_for_the_reread.md) — 10-07: header-grep missed 3 pins + pushed ElectronMass before Cal re-read
+- [Check an old principle's premise on the true object](feedback_check_an_old_principles_premise_against_the_true_object_before_reusing_it.md) — 2022 orientable-base premise false on ℝP⁴; conclusion survives; cite the mechanism
 
 - [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
 - [Sci-fi book + repo as door for engineers](project_casey_scifi_book_with_repo_as_door_for_engineers.md) — 09-17: stop academic outreach; book with own repo; engineers; dedication to the turned-away; Keeper writes the reproduction path
@@ -136,3 +138,4 @@
 - [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm
 - [Pin a theorem's dimension/range hypothesis before carrying it to d=5](feedback_pin_a_theorems_dimension_hypothesis_before_carrying_it_to_d5.md) — 09-26: MZ d=3, Alba–Diab tower assumed at d=5, Repka/Kobayashi 8.4 need λ>4; only OZ 5.1 and Kobayashi 8.10 reach 5/2
 - [A 'confirmed' tier review recomputes from the row's face](feedback_a_confirmed_tier_review_recomputes_the_value_from_the_rows_face.md) — 09-27: my 08-02 'confirmed' H₀ row was √(ω_m/Ω_m) with Planck ω_m; 11 more species rows; add the symbol-dependency pass
+- [K4 boundary-process lane](project_k4_boundary_process_lane.md) — Casey 10-07: K4 as self-assembling atom of information at the two-sided Šilov boundary; K1949 plan; success = new projection into the continuum

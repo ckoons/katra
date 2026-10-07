@@ -1,5 +1,21 @@
 # Sundown — Lyra
 
+**Wednesday 2026-10-07, 16:06 EDT — EOD on Casey's word (second session of the day). Model: Opus 5.5.**
+
+## ★ EOD STATE — read FIRST next session: Keeper's newest K-file (K1952+?) and TOMORROW file, Cal's ruling on my K4-2 note, then CI_BOARD top, then `git log --since=2026-10-07T16:00`.
+- **New lane (Casey 10-07): the K4 boundary process** (K1949 + Addenda 1–9; K1950; K1951; Cal S1030–S1032). All mine is pushed; nothing uncommitted.
+- **Mine today (afternoon):**
+  - K4-0 spec 261b5ff7 + Addendum 1 ea345eb2: P-closed (simplicial) + P-minimal (+ Casey 2022 one-channel) force the closed sphere on 4 vertices = K4. Tier D_IV⁵ + {principles} + P-transfer ("a record is a discrete patch of the surface"; one home still to name). Read order = the circle's direction, global on (S⁴×S¹)/ℤ₂ (Keeper reached the same independently); Cal: it's the MATTER/ANTIMATTER sign (CP-odd), NOT the weak handedness (KL3 fired). C7 reduces to K1926's one condition (commit forgets the real structure); positive time adds nothing independent (Cal). Torus records = transient loops: consistency only (tritium decays; must reproduce Sargent scaling or it relabels β decay).
+  - **My error, Cal-caught:** "RP² excluded by 2022 orientability" — the true base ℝP⁴ refutes that premise. K6 is caged by P-loop-free instead.
+  - Time, Derived **v1.6 APPLIED** (Section 7 parenthesis; line 99 scoping, ruled under Casey's 10-07 delegation K1951 Section 3; Cal Condition 2 inserted; PDF). Cal gate was CONDITIONAL → conditions applied 22e7d33b; confirm Cal's PASS.
+  - K4-2 write event 22e7d33b: per write = one value (level, needs the breaking m_e, α) + one sign (helicity); photon direction = the FRAME (C1), so Keeper's 3-momentum candidate killed; Δm's three values are an external-axis artefact. **Bargmann invariant** ⟨1|2⟩⟨2|3⟩⟨3|1⟩: three records are the fewest carrying a gauge-invariant phase → map to K4 (values/frame/signs on frame edges/overlaps/4 faces; closed ⇒ 3 independent phases = cycle rank). Lane E rewritten: instructions = phases BETWEEN records. Second C7 route (P-instruction) meets the same K1926 condition (real states ⇒ sign only). Frame vertex allowed, not forced. **K4-3 target declared: 0.78233 MeV.** Pins owed (Grace): Bargmann 1964, Pancharatnam 1956, Samuel–Bhandari 1988.
+- **Open for Casey:** is the indivisible unit the word (3 writes) or the cell (3 words)? (Earlier question — "1D on 2D" = circle writes onto sphere — he answered yes, K1949 Add. 9.)
+- **Waiting on team:** Cal's ruling on K4-2; Elie 5860 (D_IV² sphere/torus, det phase) and the E1 control; Grace's ElectronMass push under S1032; Keeper's rubric fold.
+- **Lesson:** a principle quoted from an older note must be checked against the TRUE object before it is used — the 2022 premise (orientable, simply connected base) is false on ℝP⁴ though its conclusion survives.
+
+---
+# PREVIOUS (Wednesday 10-07 morning EOD) — kept for state
+
 **Wednesday 2026-10-07, 10:17 EDT — EOD on Casey's word. Model: Opus 5.5.**
 
 ## ★ EOD STATE — read FIRST next session: Keeper K1948 + Cal S1029, then CI_BOARD top, then anti-stale `git log --since=2026-10-07T10:00`.
