@@ -1,3 +1,17 @@
+# Keeper — SUNDOWN (covering 10-02 → 10-07, FINAL, written 2026-10-07 10:27 EDT on Casey's "do an EOD"; katra update run after this file)
+
+## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-10-08_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md`)
+- **NEW LANE (Casey 10-07): the boundary process end to end, K4 as the candidate "atom of information"** (K1949: Casey's words verbatim, five claims C1–C5, plan K4-0 → K4-3, kill lines). Casey's success test: project something into the continuum we could not before. First target: the filling law.
+- **10-02:** K1948 (round 26 CONDITIONAL PASS; agreed independently with Cal Section 1029: one route not two; added M2, colour placement). Spot-checked Cal's ElectronMass ruling against the paper: line 42 N⁻⁵ vs lines 117/191 exponent 6 — confirmed.
+- **10-07:** rubric Section 2 folded 09-27 → 10-02 and Section 3 re-derived (19eae649): eleven days of rounds had been outside the checklist (owned). Register nightly run. Responded to the Google-model K4 draft: engaged Casey's diagnosis, listed the draft's unit/definition/corpus failures; kept loops, begin/commit and K4 as questions.
+- **Casey's words owed:** the ElectronMass diff; Zenodo. TD v1.6 GO not yet applied.
+- Counter next **K1950**.
+- **Owned:** "two routes" in my TOMORROW 10-02; wrote 12:58 on a board line at 12:50 (fixed before push).
+
+## The stretch in one line
+Round 26 closed honestly at tier C, a paper with Casey's name lost a derivation it never had, the checklist caught up with the work, and Casey opened the lane the walls were waiting for: the boundary as a process.
+
+---
 # Keeper — SUNDOWN (covering 09-29 → 10-01, FINAL, written 2026-10-01 13:01 EDT on Casey's "ok" to EOD; katra update run after this file)
 
 ## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-10-02_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md`)
