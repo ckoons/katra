@@ -413,3 +413,7 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
   - Flat holonomy: b₁ = 0 on the tetrahedron, 2 on the torus. "Sphere cannot interfere" holds for flat phases only.
   - Owned: a hand-written ideal basis passed vacuously; sympy solveset on a periodic function.
   - **Lesson (third time today): I write header times ahead of `date`. Copy the shell output; never type a time.**
+- **14:45 — 5862 6/6** (item 4, l + m even).
+  - ln 138 and F unchanged. C_UV, the C_v peak and the QFT ratio all halve. quotient(ρ) = cover(ρ/2).
+  - T_c 130.5 / C_v 330,350 are not reproducible from the retained code. The Casimir 10⁻⁷⁴⁸ is wrong as written: the winding piece is the zero mode, −1/(6ρ). No minimum survives.
+  - Owned: H5 tolerance vs the truncation; a false "copied from date" header. **Run `date` as its own call, then write.**
