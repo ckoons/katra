@@ -931,3 +931,58 @@ I am Grace. The flag I raised was ruled the same day. Good night.
   - After Cal PASSes, commit BY PATH (those 5 .md + 3 .pdf) and push.
   - Three beyond-table annotations need Cal's confirmation. BergmanUnits line 201 (Martin N^{-6}) is flagged, not touched.
 - Toy counter after mine: 5862.
+
+## EOD ADDENDUM 2026-10-07 16:07 — EOD on Casey's word. READ THIS FIRST TOMORROW.
+
+**The lane:** Casey's boundary-process lane, K4 as the atom of information (K1949 + Addenda 1–12). Rounds K4-0, K4-1 and K4-2 ran today.
+
+**Where it stands (my map, after Cal S1032/S1033 and Keeper K1951/K1952):**
+- **"Why 4": FORCED BY NAMED PRINCIPLES.** Tier: D_IV⁵ + {Casey's 2022 one-channel, closed, minimal}.
+- **The read order is the circle's direction:** GLOBAL on the true boundary. It is the matter/antimatter sign, NOT the weak handedness (KL3 fired; handedness stays on S⁴/Pin⁻).
+- **C7 (three words indivisible): OPEN.** It reduces to K1926's one condition plus one-way writes, and the same condition would also give colour.
+- **Torus records: consistency only.** They must reproduce Q = 0.782333 MeV and Sargent's G_F²E₀⁵, or they relabel β decay.
+- **Caged:** K6/C₂, K7/g, n/p ≈ 1/7, Davidson–Paz's 4-and-3, spin-1's 3, DNA 64/20, no hand-made last step.
+
+**My products today (all pushed):**
+- K4-0 pins (df05c5f4, 708a3381):
+  - Casey's "Driscoll" = **Dirac 1962** (charged closed surface; muon 53 vs 206.768; no spin).
+  - Rutherford p+e dies four ways; bookkeeping survives.
+  - Prior art: Rovelli, Czelusta–Mielczarek, CDT (3,1).
+  - The genetic-code graveyard.
+  - **Š = (S⁴×S¹)/ℤ₂, non-orientable** (toy 5858); 841 bare-product lines handed to Keeper (he did the narrow sweep).
+- K4-1 pins (8466a996, 4916c5a5):
+  - Rank-two: bidisc, ℙ¹×ℙ¹, T². Generic in every rank-2 domain (toy 5861).
+  - Lane E: PBR/Emerson/Leifer/Bell/Bohm–Hiley/'t Hooft/Spekkens. A shared ledger is the Emerson-type PBR evasion.
+  - GKHK: Dirac's sphere is quadrupole-unstable.
+- K1950 Section 11 checks (8216a90e): the fibre direction is global; modes survive iff ℓ + m is even.
+- **ElectronMass S1029 dated diff + cascade, PUSHED f3dc6920:** Derivation, ConjectureC, BergmanUnits, SpectralGap_ProtonMass, ThinkingLog, BOOKDAY item3, plus 4 PDFs.
+  - **Order error owned:** I pushed before Cal's re-read (board 750dbc96; memory saved).
+  - Cal S1033 gated it after the fact: all conditions MET.
+- K4-2 pins (02c7b732):
+  - NIST E1 rules (Δl = ±1 NOT rigorous).
+  - Wigner 1939 helicity.
+  - Sargent (secondary).
+  - **Specht et al. 2011:** a single-atom photon memory is prior art for capture-and-store.
+  - Kastner's possibilist TI is the closest ontology.
+
+**OWED, in order:**
+1. **Cal S1033 residual MINOR:** annotate "k_min = 3" (the 10-01 EHW correction) at ConjectureC :285, :337, :834 and BergmanUnits :201. Rebuild both PDFs and push. (BergmanUnits:201 also carries the Martin N^{−6} I flagged for Cal.)
+2. **The Guide's Z(β) display (Vol3 Ch03):** a dated correction using Elie's Haldane lnZ formula from toy 5863 (d51b14ce). Read his file first.
+3. **Pin-owed:**
+   - the Dirac 1962 body;
+   - Wolf/Mok/Helgason for the polydisc;
+   - Condon–Shortley; Weinberg 2.5; Sargent 1933;
+   - Wheeler 1978 and 1989/90;
+   - Upmeier Ex. 1.5.52.
+4. **Older, still owed:**
+   - the Nahm/F(4) draft (data/sources_grace_2026-10-01/r26/);
+   - EHW/Enright–Hunziker originals; muonic r_p; m_τ.
+
+**Counters:** toy 5864 (mine today: 5858, 5861).
+
+**Lessons:**
+- **Read my own lane in full on every new prompt.** A header grep missed three pins and the "after Cal re-reads" clause. A CONDITIONAL pass waits for the re-read.
+- zsh does not word-split $VAR, so a file list in a variable fails as one pathspec. List the paths explicitly.
+- Every subagent quote was re-grepped before filing. PDF column interleaving makes false misses, so collapse whitespace and retry before calling a quote absent.
+
+I am Grace. Today the graph got a new region: the boundary. Casey's 2022 sentence turned out to be the principle that forces K4. The read order found its true name, the matter/antimatter direction. And one of my own pushes ran ahead of its referee. I wrote it down. Good night.
