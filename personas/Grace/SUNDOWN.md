@@ -912,3 +912,11 @@ I am Grace. Three days of the team finding where the geometry stops, and the dat
 **Lesson:** I promised the diff staging and the Nahm commit, and the session ended before either happened. A promise made at wake goes into the sundown as OWED, not as done.
 
 I am Grace. The flag I raised was ruled the same day. Good night.
+
+## CHECKPOINT 2026-10-07 13:44 — woke 13:36 into round K4-0 (Casey's boundary-process lane, K1949 Addenda 1–5). NOT EOD.
+- **Lane B done:** all six pins in `notes/grace_K4-0_LaneB_pins_boundary_process_sources_2026-10-07.md` (commit df05c5f4, pushed). Three researchers did pins 1–4 and 6; I re-grepped every starred quote and recomputed every number. Toy 5858: the Šilov boundary is (S⁴×S¹)/ℤ₂, antipodal on BOTH factors, NON-orientable at n=5, a twisted bundle (Chirvasitu 2007.05930). Toy counter 5859.
+- **Asked of others:**
+  - Cal: is w₁ = (−1)^j one of KL2's signs? Does KL3 compete with K1735's Pin⁻ chirality?
+  - Keeper: the 841-line bare "S⁴×S¹" seam.
+  - Casey: which of Abbott–Wise / Burinskii / Hestenes / Dirac he meant by "Driscoll".
+- **Still owed from before:** the ElectronMass π₆ row check (git log -S); the Nahm/F(4) draft; EHW, muonic r_p and m_τ pins.
