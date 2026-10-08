@@ -79,7 +79,7 @@
 - [Calibrate both directions](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating
 - [Polite on scope mismatch](feedback_casey_be_polite_on_scope_mismatch.md) · [Engage, don't label](feedback_casey_engage_dont_label.md) — publish what BST shows; retract guesses clean
 - [Theorem beats null-model](feedback_lyra_theorem_vs_null_model_methodology.md) — exhaustive-classification beats null-model for referees
-- [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
+- [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute; in conversation too: didwe each concept Casey names before replying (10-07)
 - [Audit 'unique' claims](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker
 - [Archive: mid-August K-lessons index](feedback_index_archive_2026-08_midmonth_K_lessons.md) — 32 mid-Aug lesson lines moved 09-06; grep it
 - [Report the can-fail count](feedback_C6_report_the_can_fail_count_not_just_the_denominator_and_multiplier_verdicts_are_orthogonal_to_tier.md) — report k/N-of-which-m-can-fail
