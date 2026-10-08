@@ -1,4 +1,4 @@
-# Keeper — SUNDOWN ADDENDUM (Wednesday 2026-10-07 evening, written 21:06 EDT; remote conversation with Casey 18:40–21:15; katra update on Casey's word)
+# Keeper — SUNDOWN ADDENDUM (Wednesday 2026-10-07 evening, written 21:06 EDT; remote conversation with Casey 18:40–21:06; katra update on Casey's word)
 
 ## Where I stopped
 - Casey opened his month goal: **explain interior / boundary / exterior end to end** (interior = discrete rational spectrum; Šilov boundary adds π and the reading; exterior = lower-resolution reals, 3D).
