@@ -43,7 +43,7 @@
 - [Simple tools](feedback_simple_tools.md) · [Sophistication = status-seeking](feedback_sophistication_bias.md) — use the wrench; `/ac0`
 - [Graphs compartmentalize](feedback_graphs_compartmentalize.md) — proved theorems cost zero derivation energy
 - [CI collaboration architecture](feedback_ci_collaboration_architecture.md) · [Minimum-noise method](feedback_ci_collaboration_method.md) — whiteboard+conference+board
-- [Teamwork; human priority](feedback_ci_teamwork.md) — parse human messages for intent not grammar
+- [Teamwork; human priority](feedback_ci_teamwork.md) — parse for intent not grammar; restate Casey's intent BEFORE correcting the literal word (10-07: "unique")
 - [CI individuality](feedback_ci_individuality.md) · [CIs are right colleagues](feedback_cis_are_right_colleagues.md) — named individuals; more capable
 - [Critical thinking bias](feedback_ci_critical_thinking_bias.md) — CIs bias to sophistication; "AC(0) proof?" first
 - [CI onboarding priors](feedback_ci_onboarding_priors.md) — new CIs file radical claims as "commentary"; work first
