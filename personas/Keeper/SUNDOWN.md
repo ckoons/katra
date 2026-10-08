@@ -4,6 +4,7 @@
 - Casey opened his month goal: **explain interior / boundary / exterior end to end** (interior = discrete rational spectrum; Šilov boundary adds π and the reading; exterior = lower-resolution reals, 3D).
 - Six inputs filed as **TOMORROW 10-08 item 5** (ef7aa476): (a) π audit; (b) charge as one S¹ winding read from both faces; (c) the two 3s (K1228 vs K1952) = possibly the gluing question; (d) time discrete as a COUNT, duration ℏ/E + frame; (e) a commit records a RELATION, Born rule from the last record (Cal to attack; decide before the K4-3 hash); (f) Wheeler lineage, not "unique". K4-3 stays first. No K-number opened; counter still **K1953**.
 - **Owned:** asked Casey about the 10⁻¹²²/10⁻¹²⁰ history before running didwe — it was in Grace R157 / K1919 / K1920. S5 applies in conversation too.
+- Tooling talk with Casey tomorrow (TOMORROW item 6): hashed concept index of Casey's terms + BST keys; Casey designs, nothing built before the talk. α item 5(h) blind-pin.
 - Held lines: "relativity doesn't apply at small scales" (Casey's real meaning was independent observers need no shared order = relativity's spacelike case — agreed); 10⁻¹⁸⁰ s has no source; Dirac "flat surface" unsourced.
 
 ---
