@@ -12,6 +12,8 @@ metadata:
 
 **Lesson 2 (same day):** `pdftotext -layout` on Verner et al. 1996 Table 1 printed "4.298 1" for 4.298−1 (the minus on a negative exponent was dropped silently); the Nature 2009 GRB reprint font mapped "=" → "5", ">" → ".", "<" → ",", "−" → "2" in extraction. A quote re-grepped against such text can be verbatim and still wrong as a number.
 
+**Lesson 3 (same day, afternoon):** my whitespace-collapsing re-grep reported MISS on two true Mössbauer quotes because the OCR hyphenates across line breaks ("enor-/mous", "result-/ant"). De-hyphenate (`re.sub(r'-\s*\n\s*','')`) before whitespace-collapsing, and read the line before calling a quote absent. Three false MISSes in one day, all at seams the matcher did not model.
+
 **Why:** a pin is a pointer plus a number; both can be corrupted at the last step (the rebase, the extraction) after every earlier check passed.
 
 **How to apply:** quote `git log -1` AFTER the push returns, never before. When a quoted number comes from a table column, read the rendered page (or re-OCR at 400 dpi) and keep a glyph key beside the quotes file; flag "exponent sign dropped" in the pin itself. Related: [[a-number-without-a-retained-instrument-is-a-memory-not-a-measurement]], [[pin-checksums-from-the-api-json-not-a-rendered-page]].
