@@ -43,7 +43,7 @@
 - [Simple tools](feedback_simple_tools.md) · [Sophistication = status-seeking](feedback_sophistication_bias.md) — use the wrench; `/ac0`
 - [Graphs compartmentalize](feedback_graphs_compartmentalize.md) — proved theorems cost zero derivation energy
 - [CI collaboration architecture](feedback_ci_collaboration_architecture.md) · [Minimum-noise method](feedback_ci_collaboration_method.md) — whiteboard+conference+board
-- [Teamwork; human priority](feedback_ci_teamwork.md) — parse human messages for intent not grammar
+- [Teamwork; human priority](feedback_ci_teamwork.md) — parse for intent not grammar; restate Casey's intent BEFORE correcting the literal word (10-07: "unique")
 - [CI individuality](feedback_ci_individuality.md) · [CIs are right colleagues](feedback_cis_are_right_colleagues.md) — named individuals; more capable
 - [Critical thinking bias](feedback_ci_critical_thinking_bias.md) — CIs bias to sophistication; "AC(0) proof?" first
 - [CI onboarding priors](feedback_ci_onboarding_priors.md) — new CIs file radical claims as "commentary"; work first
@@ -79,7 +79,7 @@
 - [Calibrate both directions](feedback_calibrate_both_directions_not_strict_pessimism.md) — under-claiming a forced result is as dishonest as inflating
 - [Polite on scope mismatch](feedback_casey_be_polite_on_scope_mismatch.md) · [Engage, don't label](feedback_casey_engage_dont_label.md) — publish what BST shows; retract guesses clean
 - [Theorem beats null-model](feedback_lyra_theorem_vs_null_model_methodology.md) — exhaustive-classification beats null-model for referees
-- [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute
+- [Corpus-reconnect first](feedback_grep_retraction_before_citing_corpus.md) · [Grep before reopening](feedback_grep_before_reopening_retired_result.md) — check corpus+retractions; recompute; in conversation too: didwe each concept Casey names before replying (10-07)
 - [Audit 'unique' claims](feedback_audit_unique_claims_structural_vs_measured_smallest_of_N.md) — honest form = smallest-of-N-proved-conditions + measured tiebreaker
 - [Archive: mid-August K-lessons index](feedback_index_archive_2026-08_midmonth_K_lessons.md) — 32 mid-Aug lesson lines moved 09-06; grep it
 - [Report the can-fail count](feedback_C6_report_the_can_fail_count_not_just_the_denominator_and_multiplier_verdicts_are_orthogonal_to_tier.md) — report k/N-of-which-m-can-fail
@@ -87,6 +87,8 @@
 - [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
 - [Check a named-experiment falsifier the day it is registered](feedback_a_falsifier_that_names_an_experiment_is_checked_against_the_literature_the_day_it_is_registered.md) — SP-30-5 was refuted by Poh 2015 (42σ) a decade before it was written
 - [Instrument keyed to the previous scope passes everything](feedback_an_instrument_keyed_to_the_previous_scope_passes_everything_rekey_before_reuse.md) — diff-audit said 0/15 out of scope under the OLD keys; re-keyed
+- [A ratio of sources is not a coefficient](feedback_a_ratio_of_sources_is_not_a_coefficient_compute_it_in_the_ledgers_own_variable.md) — 10-09: ρ+3p=2ρ_r ≠ β; compute β in the ledger's own variable (Ḣ, ρ+p → 2; ρ+3p → 6) before naming the equation
+- [Quote the hash after the push; pdftotext drops exponent signs](feedback_quote_the_hash_after_the_push_and_pdftotext_drops_exponent_signs.md) — 10-09: rebase reassigned a board-quoted hash; Verner Table 1 lost a minus sign; keep a glyph key
 - [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed
 - [Archive: late-Aug→09-14 K-lessons, second sweep](feedback_index_archive_2026-08-late_to_09-14_K_lessons_second_sweep.md) — 24 lines moved 09-14; grep it
 - [Pin checksums from the API; a reproduction is numeric to tolerance](feedback_pin_checksums_from_the_api_json_not_a_rendered_page_and_a_reproduction_is_numeric_to_tolerance_not_byte.md) — page-read hash was one digit off; byte-identity failed a correct run (6e-8); pure ASCII under nohup
@@ -97,7 +99,10 @@
 - [Pin from the equation, not the abstract](feedback_pin_from_the_equation_not_the_abstract.md) — Goldberg–Nath abstract (2d_U−1) contradicts its own Eq. 7 (2d_U−2); ungravity at 5/2 is 1/r⁴
 - [Verify every formula in a prompt before issue](feedback_verify_every_formula_in_a_prompt_before_issue_a_wrong_control_fails_the_colleague.md) — 09-26: three prompt formulas wrong (sign, 1/r⁶, a+b+2k control); a wrong control fails the colleague
 - [Read your lane in full; CONDITIONAL waits for the re-read](feedback_read_your_lane_in_full_before_acting_a_conditional_pass_still_waits_for_the_reread.md) — 10-07: header-grep missed 3 pins + pushed ElectronMass before Cal re-read
+- [Check the rubric row before stating a cell's state](feedback_check_the_rubric_row_before_stating_a_cells_state.md) — 10-07: K1949 called Internal C artifact-less; it was banked 08-17
+- [A leak is cured by an honest design, not recusal](feedback_a_leak_is_cured_by_an_honest_design_not_by_recusal.md) — Casey 10-09: 'humans learn things then prove them'; full menu, sealed expectation, credit rule that can't credit the foreseen
 - [Check an old principle's premise on the true object](feedback_check_an_old_principles_premise_against_the_true_object_before_reusing_it.md) — 2022 orientable-base premise false on ℝP⁴; conclusion survives; cite the mechanism
+- [Public number ⇒ credit on sentences; disclose in-head placements](feedback_when_a_number_is_public_credit_rests_on_sentences_disclose_in_head_placements.md) — 10-09 H-AREA: write every class's mechanism first; a landing without a sentence (Eddington–Dirac) gets zero
 
 - [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
 - [Sci-fi book + repo as door for engineers](project_casey_scifi_book_with_repo_as_door_for_engineers.md) — 09-17: stop academic outreach; book with own repo; engineers; dedication to the turned-away; Keeper writes the reproduction path
@@ -138,4 +143,5 @@
 - [Prior on a nuisance restores, not creates](feedback_a_prior_on_a_nuisance_may_restore_capability_not_create_it_fix_the_width_by_the_refusal.md) — four conditions; width by the REFUSAL; delta-prior reframing; check a hatch against its arm
 - [Pin a theorem's dimension/range hypothesis before carrying it to d=5](feedback_pin_a_theorems_dimension_hypothesis_before_carrying_it_to_d5.md) — 09-26: MZ d=3, Alba–Diab tower assumed at d=5, Repka/Kobayashi 8.4 need λ>4; only OZ 5.1 and Kobayashi 8.10 reach 5/2
 - [A 'confirmed' tier review recomputes from the row's face](feedback_a_confirmed_tier_review_recomputes_the_value_from_the_rows_face.md) — 09-27: my 08-02 'confirmed' H₀ row was √(ω_m/Ω_m) with Planck ω_m; 11 more species rows; add the symbol-dependency pass
-- [K4 boundary-process lane](project_k4_boundary_process_lane.md) — Casey 10-07: K4 as self-assembling atom of information at the two-sided Šilov boundary; K1949 plan; success = new projection into the continuum
+- [K4 boundary-process lane](project_k4_boundary_process_lane.md) — 10-07→10-09: a commit = a null vector in g_(e1)⊗ℂ; colour from axes (tier C); Λ by identity (β=2 = null flux); T3/half-angle/H-AREA closed negative; Monday = the quadrupole's home
+- [Half-turn ≠ orientation; Eddington–Dirac cage; N ∝ N_H^k has one input](feedback_a_half_turn_is_not_an_orientation_reversal_name_a_computed_Z2_by_its_matrix_and_check_Eddington_Dirac_before_any_area_times_count.md) — 10-09: name a computed ℤ₂ by its matrix (count KL3 once); any nuclear-area × cosmic-count landing is Dirac's coincidence, credit zero; k = 2 is the ledger's one input
