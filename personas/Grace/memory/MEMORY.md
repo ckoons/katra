@@ -100,6 +100,7 @@
 - [Verify every formula in a prompt before issue](feedback_verify_every_formula_in_a_prompt_before_issue_a_wrong_control_fails_the_colleague.md) — 09-26: three prompt formulas wrong (sign, 1/r⁶, a+b+2k control); a wrong control fails the colleague
 - [Read your lane in full; CONDITIONAL waits for the re-read](feedback_read_your_lane_in_full_before_acting_a_conditional_pass_still_waits_for_the_reread.md) — 10-07: header-grep missed 3 pins + pushed ElectronMass before Cal re-read
 - [Check the rubric row before stating a cell's state](feedback_check_the_rubric_row_before_stating_a_cells_state.md) — 10-07: K1949 called Internal C artifact-less; it was banked 08-17
+- [A leak is cured by an honest design, not recusal](feedback_a_leak_is_cured_by_an_honest_design_not_by_recusal.md) — Casey 10-09: 'humans learn things then prove them'; full menu, sealed expectation, credit rule that can't credit the foreseen
 - [Check an old principle's premise on the true object](feedback_check_an_old_principles_premise_against_the_true_object_before_reusing_it.md) — 2022 orientable-base premise false on ℝP⁴; conclusion survives; cite the mechanism
 
 - [Randomness = resolution limit (Casey 09-15)](project_randomness_is_a_resolution_limit_quantization_floor_vs_CQ_diffusion_discriminator.md) — CQ diffusion Gaussian/accumulating/free vs N_max/τ₀ bounded floor; toy + Section D marker owed; not a row
