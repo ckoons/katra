@@ -439,3 +439,62 @@ Counter .next_toy = 5740. Nothing registers from my desk; Grace holds on Cal's w
   - A hand-written basis can pass "closed/commute" vacuously; derive it.
   - sympy `solveset`/`.is_positive` can silently under-report; check explicitly.
   - A control must exclude non-transitions (diagonal 3j zeros).
+
+## FRI 10-09 CHECKPOINT 12:52 EDT (woke 12:22; not EOD) — Round K4-3, Lane B
+- Model note: session runs on Fable 5.1 from ~12:30 (Casey switched it).
+- **Prereg 976951e1 (6fd5d2ca), block 5864–5867, all pushed (7e322d6e):**
+  - 5864 control ledger 6/6: Hsu w = 0 in matter both readings; (S) w = −k/(3(1−Ω)); k = 3 is phantom without saturation. **Prereg error owned:** "w = 0 in every era" — radiation gives +1/3 (tracks the dominant fluid). np.gradient → local central difference.
+  - 5865 Fermi 5/5: W₀⁵/30 is 0.588 at W₀ = 3, 0.293 at 2; threshold slope 7/2; Coulomb F α² Sommerfeld; no neutron W₀ evaluated. `play/.k4_3_lib.py` holds `w_of_a`, `fermi_f`.
+  - 5866 so(5,2) roots 7/7: B₂ (3,3,3,3 | 1,1,1,1), M = SO(3)×ℤ₂, vector on short, trivial on long; **faces→g_{e₁} intertwiner exists iff S₃ acts by (perm)⊗sign (5859's embedding)**; closure face = label (trivial, matches g_long), not axis (sign).
+  - 5867 π audit 4/5: 33 π rows tagged, 5 route owed; 1920 = |W(D₅)| not |W(B₃)| = 48; P3 FAIL on my own ≤ 20 threshold (prime support is the wrong instrument; P3b: 15 spectral / 23 typed literals; 42 rows with bare literals). sympy simplify hung on ζ(3) literal; regex missed 1e6 — both owned.
+- **5868 Q* = m_e (Cal S1036 hash): MISS.** α_eff⁻¹ = 137 at Q = 1.429 m_e; Δ(m_e) = 0.0192. Factor-2 of m_e and 2m_e reported only. K675's 5/137 is the live leg. NIST page pinned at data/sources_elie_2026-10-09/nist/.
+- **Open at my desk:** 5869 claimed — the Target 1 engine under Cal S1035 Conditions A–C (compositions {W, N₁³, N₁/3}, 24 forks, C1/C2 controls, census inputs as callables, direction before size, NO data until Lyra accepts A–C and Grace pins). Then Holevo n_lines (Cal: bits ≤ log₂(2 n_lines)). Target 2 waits on Cal's torus hash.
+- Counter .next_toy = 5870. MESSAGES is notes/.running/ (gitignored; shared on disk). Board lines at 12:49 and 12:51.
+
+## FRI 10-09 CHECKPOINT 13:28 EDT (not EOD)
+- **5869 Target 1 engine, 11/11 (10 can fail), b79bfd3c.** Algebraic closure w = (s_N − 3 − 2Ω_r)/(3(2Ω−1)); state (A, ln Ω); DOP853 + terminal wall event (an exception inside LSODA's callback crashes the interpreter — never raise in an rhs). C2 reproduces 5779 dynamically on Ω_r = 0. **R1: with Ω_r > 0 the exclusion fork is pinned at f = 1/2 with w → 0 (s_N = 3 tracker), or stays ≤ 0.013 on w = −1; no normalization reaches f(1) ≥ 1/2 with w = −1.** Posted for Lyra (T2) and Cal. Radiation-era fixed point f = 1/3 (s_N = 4) reported unscored.
+- Lessons today: (a) a control in a radiation era is "tracks the dominant fluid", twice; (b) a stateful branch choice fails under adaptive stepping — close the algebra instead; (c) a sub-check scored `or True` is a wave-through — caught before commit; (d) prime support is the wrong rational audit; bare literals are the right one.
+- Open at my desk: Holevo n_lines (Cal: bits ≤ log₂(2 n_lines)); Target 1 real run after Grace's pins + Lyra's acceptance of A–C; Target 2 after Cal's torus hash. Counter .next_toy = 5870.
+
+## FRI 10-09 CHECKPOINT 13:33 EDT (not EOD)
+- 5870 6/6 (Lyra's L²(Š) = H² ⊕ H̄² ⊕ R series; Harm_l derived; R ≠ 0 rank-2; disc control). 5871 5/5 (Stokes vector ↔ g_{e₁}: one invertible intertwiner on the full SO(3); the phase has none; J·g_{e₁} → g_{±e₂}; Holevo n_lines). Both pushed acb6f8bd; board + MESSAGES posted.
+- Owned today (new): sympy coeff(1) ≠ constant term; SU(2) class measure (1/π) sin²(θ/2); never assert a subspace before computing it (S4).
+- Eight toys 5864–5871. Counter .next_toy = 5872. Waiting on Lyra (A–C), Cal re-hash, Grace pins → Target 1 real run; Casey's three questions (K1954 Sec. 8).
+
+## FRI 10-09 CHECKPOINT 13:37 EDT (not EOD)
+- 5872 8/8 (d98ddb77): R1 exact. Exclusion fork w = −1 − 2Ω_r/(3(2f−1)); stable pin f* = 1/2 − Ω_r/3; s_N = 6(1−f) + βΩ_r crosses iff β = 2 (w ≡ −1 identically). Posted for Lyra/Cal. Nine toys today (5864–5872). Counter 5873.
+- K1955: Casey entered P-substrate (substrate records the K4; no null K4; order forgotten ⇒ S₃ physical). My Target 1 run waits on Lyra's rewrite + Cal's re-hash + Grace's pins (pinned, unread by me).
+
+## FRI 10-09 CHECKPOINT 14:25 EDT (not EOD) — Round K4-4
+- 5874 10/10 (d7d8504d): **β = 2 is forced if the ledger's source is the null-focusing ρ + p** (s_N = 2 d ln N_H/dx of the non-DE budget = 6Ω_m + 8Ω_r); ρ + 3p gives β = 6 (wall). Keeping DE's own term → w = −1 identically, so the exclusion factor (1−f) = Ω_m + Ω_r is "DE has ρ+p = 0". No w = −1/3 radiation phase under this rule (5779 ck 4 / 09-25 EDE were artifacts). Posted for Lyra (A.1(d)) and Cal (KL-β).
+- Waiting: Lyra's rewrite → Cal's re-hash → then Target 1 blind with Grace's pins (engine 5869 ready; β as the law sets it; if unset, β = 2 "input" and β = 1 side by side, no scan). Ten toys today (5864–5872, 5874). Counter .next_toy = 5875.
+
+## FRI 10-09 CHECKPOINT 14:57 EDT (not EOD) — Round K4-5
+- 5875 half-angle 6/6 (1f9d9add): Cal P7 landed — Stokes rotates 2θ, space θ; T commutes only with the double; U(1) weights {0,±2} vs {0,±1}, Hom = 1 (helicity ↔ k̂). "Three faces = three directions" fails as an identity. Owned: V-coords passed as a {3,4,5}-axis (frame), unwrapped azimuth.
+- 5876 3/3: Lyra's beta_check retained; Cal P8 w ≡ −1 to 3.5e-14.
+- Waiting: Cal's T3 hash (match rule in orders; which is computed first) + Grace's T3 inputs → T3 blind (N_census vs N_req from K1919; control x_e ≡ 1 → 0). Twelve toys today. Counter .next_toy = 5877.
+
+## FRI 10-09 CHECKPOINT 15:03 EDT (not EOD) — T3 done
+- **5877 T3 blind: MISS.** Census first (ddf3c2ad, record sha 9c3f39f1): N_census = 1.48e83 (dust 75 %, 21-cm troughs 25 %); span 0.69 dec; control passes. Then N_req = 2.24e122 (K1919 identity). log ratio −39.2. The pincer fires; horns are Casey's. Instrument: CAMB 1.6.6/RECFAST for x_e(z); pins all from Grace Sec. 9/12.
+- Owned: scored the MISS as PASS on the first part-2 run; fixed.
+- Fourteen toys today: 5864–5872, 5874–5877. Counter .next_toy = 5878. Nothing gated on me; waiting on Keeper's K1957 gate, Casey's answers (two-ended; S4; exterior).
+
+## FRI 10-09 CHECKPOINT 15:44 EDT (not EOD) — Round K4-6
+- 5878 6/6 axis equivariance (k̂ → g_{e₁} under all of M₀; ℤ₂ of M flips helicity = circle orientation; Gram span, measure zero; orientation on helicities; SO(3) ⊂ SU(3) count).
+- 5879 H-AREA: part 1 menu areas from pinned NIST/ledger files before the hash (n = 17, S = 30 dec); part 2 REPORT (Cal S1042: credit none): M-recoil B2 +16.3, M-writer ƛ_e +5.6, M-mode +28.5; only nuclear rows land (= Eddington–Dirac, 10^4.11 vs 10^4.86 per atom). H-AREA closed negative on the sentences; horn (ii) stands.
+- 5880 Lyra's null-vector map retained 5/6: her "det ≠ 0 iff axes independent" is false (coplanar → det ≠ 0; only parallel → 0). Flagged.
+- Owned: loop variable shadowed `c`; substring key match; eig non-orthogonal degenerate basis.
+- Seventeen toys today: 5864–5872, 5874–5880. Counter .next_toy = 5881. Waiting: Keeper's K4-6 gate; Casey's four questions; EOD on Casey's word (not before 17:00).
+
+## FRI 10-09 CHECKPOINT 15:51 EDT — K4-7 (closing round) items done; waiting for Casey's EOD word (not before 17:00)
+**The day's seventeen toys (score, can-fail):** 5864 6/6 (6) control ledger · 5865 5/5 (5) Fermi routine · 5866 7/7 (7) so(5,2) roots · 5867 4/5 (4) π audit · 5868 3/4 (1 hashed: Q* = m_e MISS) · 5869 11/11 (10) Target-1 engine + R1 pin · 5870 6/6 (6) L²(Š) series · 5871 5/5 (5) Stokes ↔ g_{e₁}, Holevo · 5872 8/8 (8) β knife-edge · 5874 10/10 (10) β = 2 from ρ+p · 5875 6/6 (6) half-angle · 5876 3/3 (3) beta_check retained + P8 · 5877 1/1 + 1/2 (1 hashed: T3 MISS −39.2) · 5878 6/6 (6) axis equivariance, z = R₆₇(π)R₁₂(π) · 5879 3/3 (report; H-AREA credit none) · 5880 5/6 (5) null-vector map, det/Gram correction.
+**Lessons today (new):** a control in a radiation era tracks the dominant fluid (twice); never raise inside an ODE rhs under LSODA; close the algebra instead of tracking branches; `or True` is a wave-through; prime support is the wrong rational audit; sympy coeff(1); SU(2) class measure (1/π)sin²; a V-coordinate vector is not a {3,4,5} axis; eig's degenerate basis is not orthonormal; never shadow `c`; substring key matches; "det ≠ 0 iff independent axes" was asserted by a colleague and false — the instrument decides.
+**Open Monday (K4-8):** colour from axes with Casey's five answers; where the five record phases live on Š (Lyra names homes; I build the instrument she names). Counter .next_toy = 5881.
+
+## EOD Fri 2026-10-09 17:15 EDT (Casey's word; woke 12:22; model Fable 5.1 from ~12:30)
+**Rounds K4-3 → K4-7, seventeen toys (5864–5872, 5874–5880), all pushed; board EOD line in; claims DONE.**
+- Negatives, all pre-registered and clean: Q* = m_e MISS (5868: 1.43 m_e; K675's 5/137 is the live leg); T3 MISS (5877: N_census 1.5e83 vs N_req 2.2e122, −39.2 dec, census on disk before K1919 opened); H-AREA closed negative on sentences (5879: M-writer +5.6, M-mode +28, B2 +16; the proton landing = Eddington–Dirac, credit zero; horn (ii) stands).
+- Positives/structure: β = 2 from the null flux ρ+p (5874; ρ+3p gives 6 → wall); the exclusion-fork pin at f = 1/2 with any radiation (5869/5872) — the law as written was ΛCDM only at Ω_r = 0; half-angle (5875): Stokes is the double of space; one direction per commit survives; axis equivariance (5878); L²(Š) = H² ⊕ H̄² ⊕ R with R ≠ 0 at rank 2 (5870); Lyra's null-vector map retained (5880).
+- **Corrections of mine accepted at EOD (Cal S1044):** (1) 5878's z = R₆₇(π)R₁₂(π) is the weight-PARITY ℤ₂ ((−1)^k, "l + k even"), not the circle's orientation; orientation = complex conjugation = KL3, count once. I named a true computed fact wrongly. (2) det(ε₁,ε₂,ε₃) = 0 iff two null LINES coincide (same axis & same s, or −axis & −s); "parallel axes" was incomplete (same axis, opposite helicity → nonzero). Lesson: a half-turn of a circle preserves its orientation — say "parity" when the element is a half-turn; and state a vanishing set as the geometric locus, not the first sufficient case found.
+- Also owned today: prereg "w = 0 in every era" (radiation gives +1/3); np.gradient; LSODA exception crash; branch tracking; `or True`; prime-support audit; coeff(1); SU(2) measure; frame mix-up; eig degenerate basis; `c` shadowed; substring key; MISS scored as PASS.
+- **Monday (K4-8):** colour from axes with Casey's five answers; the five record phases — Lyra names the homes (R-sector / S⁴ harmonics at fixed k / Bargmann triples), I build the instrument. Counter .next_toy = 5881. Instruments to reuse: play/.k4_3_lib.py (ledger w, Fermi f), 5869's engine, 5878's so(5,2)/M/Φ scaffold, 5877's census record (frozen).
