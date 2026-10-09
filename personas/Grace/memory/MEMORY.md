@@ -87,6 +87,7 @@
 - [Number without retained instrument = memory](feedback_a_number_without_a_retained_instrument_is_a_memory_not_a_measurement.md) — point at the toy that made it or rerun under one (K 09-06)
 - [Check a named-experiment falsifier the day it is registered](feedback_a_falsifier_that_names_an_experiment_is_checked_against_the_literature_the_day_it_is_registered.md) — SP-30-5 was refuted by Poh 2015 (42σ) a decade before it was written
 - [Instrument keyed to the previous scope passes everything](feedback_an_instrument_keyed_to_the_previous_scope_passes_everything_rekey_before_reuse.md) — diff-audit said 0/15 out of scope under the OLD keys; re-keyed
+- [A ratio of sources is not a coefficient](feedback_a_ratio_of_sources_is_not_a_coefficient_compute_it_in_the_ledgers_own_variable.md) — 10-09: ρ+3p=2ρ_r ≠ β; compute β in the ledger's own variable (Ḣ, ρ+p → 2; ρ+3p → 6) before naming the equation
 - [Quote the hash after the push; pdftotext drops exponent signs](feedback_quote_the_hash_after_the_push_and_pdftotext_drops_exponent_signs.md) — 10-09: rebase reassigned a board-quoted hash; Verner Table 1 lost a minus sign; keep a glyph key
 - [A ruling is not an edit](feedback_a_ruling_is_not_an_edit_say_ruled_until_the_row_changes_and_quote_the_row_not_its_paraphrase.md) — say 'ruled, edit owed' until `git log -S` shows the row changed
 - [Archive: late-Aug→09-14 K-lessons, second sweep](feedback_index_archive_2026-08-late_to_09-14_K_lessons_second_sweep.md) — 24 lines moved 09-14; grep it
