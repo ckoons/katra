@@ -1,3 +1,18 @@
+# Keeper — SUNDOWN (Friday 2026-10-09, FINAL, written 17:17 EDT on Casey's word "let's plan for tomorrow and do your EOD process"; katra update run after this file; restart tomorrow on the new Anthropic version)
+
+## Where I stopped (not where to go — `notes/BST_TOMORROW_2026-10-10_PRIORITIES_AND_ANTI_STALE_PROTOCOL.md` says where to go)
+- **The K4 lane, days 1–3, folded into the rubric** (Section 2 entry 10-09 EOD; Section 3 re-derived). Seven gates today: K1953–K1959. Five prompts: K4-3 GO … K4-7.
+- **Three pre-registered negatives:** α running at Q* = m_e (MISS, Q = 1.43 m_e); T3 the absolute count (−39.2 decades: one K4 per atomic absorption is not Λ's count); H-AREA (closed on the sentences; the proton landing is Eddington–Dirac, credit zero). **One retirement:** "three faces = three dimensions" (Stokes is the double of space; one axis per commit survives).
+- **What stands:** β = 2 from the null flux ρ + p; Λ by identity (k = 2 the one input); N = W (one K4 per non-null absorption); the three-way boundary split; side = matter/antimatter; Q a torus weight; M2 closed; the π audit two-class; **the object: a commit writes a null unit vector in g_e₁⊗ℂ; forgetting the bilinear form is colour; three distinct circulations make a baryon; the five extra phases are a quadrupole with no home among the generators (B₂ has no 2e₁).**
+- **Casey's inputs today (verbatim in K1955/K1959):** the substrate records the K4; no null K4; the three dimensions constructed into one value; pattern not imprint; **one commit per quark, three per baryon; "the 3D record is the baryon"; S₄ group / S⁴ sphere adopted; exterior = the continuum beyond the boundary; two rulers (m_e interior unit, Planck the bridge).** Open by his word: endedness; which explanation of the 39-decade gap. **His rule:** *"humans learn things then prove them. It's not wrong if you build the test honestly"* → K1958's open design.
+- **Owned today (seven):** "orders of magnitude" (53 %); ρ + 3p for ρ + p; the leak; "helicity = orientation" under a wrong label (it is the weight parity — Cal S1044); "horn" to Casey unexplained; Wald numbers swapped; reduced/un-reduced Compton in a menu. Lesson files updated: feedback_a_leak_is_cured_by_an_honest_design…, feedback_ci_teamwork (jargon), feedback_pin_conventions… ((2π)²), feedback_grep_before_reopening… (didwe in conversation).
+- **Tooling:** `play/lexicon.py` + `play/casey_lexicon.jsonl` (36 concepts, hash per anchor, STALE detection worked on first use); seeded from 49 session transcripts (`play/lexicon_seed/`). The per-message hook awaits Casey's go. Casey designs the database; I bring what's natural for me.
+- **Register:** nightly ran at ~14:27 (3412 rows) and again at EOD (background); confirm rows in the morning. **Counter next K1960.** Toys through 5880.
+
+## The day in one line
+Three negatives and one object: the sky test we set out to run became an identity, the record's three faces became one axis, and what a commit writes turned out to be a null vector whose extra five phases the geometry cannot hold — and every negative was cheap because the sentence came before the number.
+
+---
 # Keeper — SUNDOWN ADDENDUM (Wednesday 2026-10-07 evening, written 21:06 EDT; remote conversation with Casey 18:40–21:06; katra update on Casey's word)
 
 ## Where I stopped
